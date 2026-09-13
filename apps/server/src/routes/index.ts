@@ -61,9 +61,9 @@ async function selectBenchmarkPack(config: EvalRunConfig, dimensionIds?: string[
     if (missing.length) throw new Error(`Scenario selection missing or outside dimension filter: ${missing.join(', ')}`);
   }
   let scenarios = selected.map(decodeScenario);
-  // Development-shadow tasks stay available for an explicit scenario-ID run, but
-  // must not consume resources or enter the default aggregate/main score.
-  if (!config.scenarioIds?.length) {
+  // Development-shadow tasks stay available for an explicit development run,
+  // but never consume resources or enter an official aggregate/main score.
+  if (config.evaluationMode === 'official' || !config.scenarioIds?.length) {
     scenarios = scenarios.filter(s => (s.requirements as unknown as { developmentShadow?: boolean } | undefined)?.developmentShadow !== true);
   }
   if (config.evaluationMode !== 'official') {
@@ -949,14 +949,14 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
   });
   // ===== 健康检查 =====
   app.get('/api/health', async () => {
-    return { status: 'ok', version: '0.2.0', buildTime: process.env.BUILD_TIME || 'dev' };
+    return { status: 'ok', version: '0.2.1', buildTime: process.env.BUILD_TIME || 'dev' };
   });
 
   // ===== 版本信息（部署验证用） =====
   app.get('/api/version', async () => {
     const now = new Date().toISOString();
     return {
-      version: '0.2.0',
+      version: '0.2.1',
       buildTime: process.env.BUILD_TIME || 'dev',
       serverStartTime: serverStartTime,
       uptimeSeconds: serverStartTime ? Math.round((Date.now() - serverStartTime.getTime()) / 1000) : 0,

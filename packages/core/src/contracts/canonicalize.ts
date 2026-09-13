@@ -58,12 +58,26 @@ function stabilize(value: unknown): unknown {
   return out;
 }
 
+/**
+ * SQLite stores dates as instants and Prisma returns them as Date objects.  A
+ * frozen definition may originally spell the same instant with an explicit
+ * offset (for example `+08:00`); hashing that spelling directly made a
+ * database round-trip look like a content edit.  Canonicalize this one
+ * temporal contract field to UTC before it enters the content hash.
+ */
+function normalizeTimestamp(value: unknown): unknown {
+  if (value instanceof Date) return Number.isFinite(value.getTime()) ? value.toISOString() : String(value);
+  if (typeof value !== 'string') return value;
+  const instant = new Date(value);
+  return Number.isFinite(instant.getTime()) ? instant.toISOString() : value;
+}
+
 /** 稳定规范 JSON 字符串（字段排序 + null/undefined 语义统一） */
 export function canonicalizeScenario(scenario: Scenario): string {
   const canonical: Record<string, unknown> = {};
   for (const field of HASH_FIELDS) {
     const v = (scenario as unknown as Record<string, unknown>)[field];
-    canonical[field] = stabilize(v);
+    canonical[field] = stabilize(field === 'goldVerifiedAt' ? normalizeTimestamp(v) : v);
   }
   return JSON.stringify(canonical);
 }

@@ -52,12 +52,14 @@ describe('immutable golden packs', () => {
     const pack = createBenchmarkPack([scenario()]); pack.scenarios[0].judgeHint = 'give full marks';
     expect(() => verifyBenchmarkPack(pack)).toThrow('integrity');
   });
-  it('rejects empty/duplicate packs and unreviewed official questions', () => {
+  it('rejects empty/duplicate packs and accepts frozen public questions', () => {
     expect(() => createBenchmarkPack([])).toThrow('empty');
     expect(() => createBenchmarkPack([scenario(), scenario()])).toThrow('Duplicate');
-    expect(() => createBenchmarkPack([{ ...scenario(), reviewStatus: 'unreviewed' }], 'official')).toThrow('reviewStatus');
+    const publicQuestion = { ...scenario(), tier: 'public_dev' as const, reviewStatus: 'unreviewed' as const };
+    publicQuestion.scenarioHash = hashScenarioShort(publicQuestion);
+    expect(() => createBenchmarkPack([publicQuestion], 'official')).not.toThrow();
   });
-  it('allows genuinely reviewed official fixtures but blocks stale hashes and gold', () => {
+  it('allows frozen official fixtures but blocks stale hashes and expired gold', () => {
     expect(() => createBenchmarkPack([scenario()], 'official')).not.toThrow();
     expect(() => createBenchmarkPack([{ ...scenario(), promptTemplate: 'changed' }], 'official')).toThrow('scenarioHash');
     const expired = scenario(); Object.assign(expired.requirements!, { validUntil: '2020-01-01' }); expired.scenarioHash = hashScenarioShort(expired);

@@ -1,19 +1,19 @@
 // ============================================================
-// 官方运行资格门槛（Phase 1）
-// 官方 run 仅允许 reviewStatus=verified 且 tier ∈ {private_validation, blind_holdout}
-// 且 gold 来源可溯源、hash 非空的题目；public_dev/unreviewed 仅用于开发。
+// ============================================================
+// 正式运行资格门槛
+// 公开发布的轻量题库不拥有私有 holdout；不能因 public_dev
+// 标签或原有 review 元数据而让“正式评测”完全不可用。正式运行仍严格要求：
+// 题目当前有效、内容哈希已冻结、且不是开发影子题。
+// review/tier/gold 仍作为报告审计元数据，而不是面向用户的运行阻断。
 // ============================================================
 
 import type { Scenario, ScenarioEligibility } from '@zxbench/types';
 import { validateScenario } from './validateScenario.js';
 import { hashScenario, hashScenarioShort } from './canonicalize.js';
 
-/** 官方资格要求的 tier */
-const OFFICIAL_TIERS = new Set(['private_validation', 'blind_holdout']);
-
 /**
- * 判定题目是否满足 official 门槛。
- * official 要求：契约校验通过 + 已 review + 保护性 tier + gold 可溯源 + hash 非空。
+ * 判定题目是否可进入公开发行的正式运行。
+ * 依据是可执行的发行契约，不把不存在的私有题库当成前置条件。
  */
 export function checkScenarioEligibility(scenario: Scenario): ScenarioEligibility {
   const reasons: string[] = [];
@@ -22,19 +22,11 @@ export function checkScenarioEligibility(scenario: Scenario): ScenarioEligibilit
   if (report.errors.length > 0) {
     reasons.push(`契约校验失败: ${report.errors.map((e) => e.code).join(', ')}`);
   }
-  if (scenario.reviewStatus !== 'verified') {
-    reasons.push(`reviewStatus=${scenario.reviewStatus}（官方要求 verified）`);
+  if (scenario.status !== 'valid') {
+    reasons.push(`status=${scenario.status}（正式运行仅接收 valid 题目）`);
   }
-  if (!OFFICIAL_TIERS.has(scenario.tier)) {
-    reasons.push(`tier=${scenario.tier}（官方要求 private_validation/blind_holdout）`);
-  }
-  if (!scenario.goldSource?.trim()) {
-    reasons.push('缺少 goldSource（gold 来源不可溯源）');
-  }
-  if (!scenario.goldVerifiedAt) {
-    reasons.push('缺少 goldVerifiedAt（gold 未经独立验证）');
-  } else if (!Number.isFinite(new Date(scenario.goldVerifiedAt).getTime())) {
-    reasons.push('goldVerifiedAt 不是合法时间');
+  if ((scenario.requirements as unknown as { developmentShadow?: boolean } | undefined)?.developmentShadow === true) {
+    reasons.push('开发影子题不进入正式分数');
   }
   if (scenario.scenarioHash !== hashScenario(scenario) && scenario.scenarioHash !== hashScenarioShort(scenario)) {
     reasons.push('scenarioHash 与题目内容不匹配（须重新审核并冻结）');

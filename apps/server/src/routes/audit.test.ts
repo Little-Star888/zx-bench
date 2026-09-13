@@ -92,12 +92,16 @@ describe('audited run API without network or real database', () => {
     expect(res.statusCode).toBe(200);
     expect(db.scenarioDefinition.upsert).toHaveBeenCalledWith(expect.objectContaining({ update: expect.objectContaining({ reviewStatus: 'unreviewed', goldVerifiedAt: null }) }));
   });
-  it('rejects unreviewed official selection before run creation or model calls', async () => {
+  it('allows a frozen public item in an official run', async () => {
+    const frozen = { ...row, scenarioHash: undefined as string | undefined };
+    const { hashScenarioShort } = await import('@zxbench/core');
+    frozen.scenarioHash = hashScenarioShort({ ...frozen, requirements: JSON.parse(frozen.requirements), scoring: JSON.parse(frozen.scoring) } as any);
+    db.scenarioDefinition.findMany.mockResolvedValue([frozen]);
     const res = await app.inject({ method: 'POST', url: '/api/runs', payload: { modelConfigId: 'mock', config: { evaluationMode: 'official' } } });
-    expect(res.statusCode).toBe(400);
-    expect(res.json().error).toContain('reviewStatus');
-    expect(db.evalRun.create).not.toHaveBeenCalled();
-    expect(runMultipleEvaluations).not.toHaveBeenCalled();
+    expect(res.statusCode).toBe(200);
+    const id = res.json().data.id;
+    await vi.waitFor(() => expect(saved.get(id)?.status).toBe('completed'));
+    expect(runMultipleEvaluations).toHaveBeenCalledWith(expect.objectContaining({ id: row.id }), expect.anything());
   });
   it('rejects invalid counts and missing requested questions', async () => {
     for (const payload of [{ config: { runsPerQuestion: 0 } }, { scenarioIds: ['not-in-pack'] }]) {

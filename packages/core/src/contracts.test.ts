@@ -96,26 +96,27 @@ describe('canonicalizeScenario / hashScenario', () => {
     const canon = canonicalizeScenario(s);
     expect(canon).toBe(canonicalizeScenario(baseScenario()));
   });
+
+  it('normalizes a verified-at instant across SQLite date round-trips', () => {
+    const source = baseScenario({ goldVerifiedAt: '2026-09-12T00:00:00.000+08:00' });
+    const roundTripped = baseScenario({ goldVerifiedAt: '2026-09-11T16:00:00.000Z' });
+    expect(hashScenarioShort(source)).toBe(hashScenarioShort(roundTripped));
+  });
 });
 
 describe('checkScenarioEligibility', () => {
-  it('public_dev + unreviewed → ineligible', () => {
+  it('a frozen public benchmark item can enter a formal run', () => {
     const s = baseScenario();
-    const r = checkScenarioEligibility(s);
-    expect(r.eligible).toBe(false);
-    expect(r.reasons.some((x) => x.includes('reviewStatus'))).toBe(true);
-    expect(r.reasons.some((x) => x.includes('tier'))).toBe(true);
-  });
-
-  it('verified + private_validation + goldSource → eligible', () => {
-    const s = baseScenario({
-      tier: 'private_validation',
-      reviewStatus: 'verified',
-      goldSource: 'hand-authored',
-      goldVerifiedAt: '2026-08-21T00:00:00Z',
-    });
     s.scenarioHash = hashScenarioShort(s);
     const r = checkScenarioEligibility(s);
     expect(r.eligible).toBe(true);
+  });
+
+  it('keeps development-shadow tasks outside formal scores', () => {
+    const s = baseScenario({ requirements: { answer: 2, developmentShadow: true } as unknown as string[] });
+    s.scenarioHash = hashScenarioShort(s);
+    const r = checkScenarioEligibility(s);
+    expect(r.eligible).toBe(false);
+    expect(r.reasons.join('\n')).toContain('影子题');
   });
 });
