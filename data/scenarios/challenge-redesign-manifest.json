@@ -1,0 +1,10 @@
+{
+  "version": "challenge-redesign-2026-09-13-v1",
+  "predecessor": "MC2-004",
+  "successor": "MC2-004-R1",
+  "status": "development_requires_model_screen",
+  "includedInBankVersion": null,
+  "reason": "原题在三模型试跑中全部失败，且一次达到 90000 思考 token 截断；修订版缩小状态空间，并加入余数分布证书，保留约束计数能力而降低无效拖尾。",
+  "judgeCalls": 0,
+  "promotionRule": "至少三个模型家族同题完成，达到轻量区分度门槛并经维护者确认后，才进入后续题库版本；不修改 1.30.0。"
+}

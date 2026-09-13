@@ -60,7 +60,8 @@ const promoted = CHALLENGE_SUPPLEMENT_IDS.map((id) => {
     environmentImage: null,
     seed: null,
     goldSource: `${CHALLENGE_SUPPLEMENT_VERSION}:deterministic-oracle`,
-    goldVerifiedAt: '2026-09-13T00:00:00.000+08:00',
+    // Persist the canonical UTC spelling used by Prisma's DateTime round-trip.
+    goldVerifiedAt: '2026-09-12T16:00:00.000Z',
     reviewStatus: 'verified',
     answerFirst: null,
     maxAnswerTokens: null,

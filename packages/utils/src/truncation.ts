@@ -3,7 +3,6 @@ import type { FinishReason, OutputMetadata } from '@zxbench/types';
 /** 截断检测模式 */
 const TRUNCATION_PATTERNS = [
   /(?:wait|let me|let's check|i'll|i will|continuing|继续|让我)\s*$/i,
-  /```\s*$/,  // 代码块只有开始没有结束
   /\.\.\.\s*$/,
   /\/\/\s*\.\.\.\s*$/,
 ];

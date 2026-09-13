@@ -4,10 +4,14 @@ import { projectRepairEvaluator } from '../packages/core/dist/index.js';
 const args=process.argv.slice(2);
 const bank=JSON.parse(readFileSync(new URL('../data/scenarios/benchmark.json',import.meta.url),'utf8'));
 const meta=JSON.parse(readFileSync(new URL('../data/scenarios/benchmark-meta.json',import.meta.url),'utf8'));
+const frozenGold=JSON.parse(readFileSync(new URL('../data/gold/project-repair-maintainer-sample-v1.json',import.meta.url),'utf8'));
 const idsArg=args.find(a=>a.startsWith('--ids='));
 const ids=idsArg?idsArg.slice(6).split(/[\s,]+/).filter(Boolean):meta.lightweightReleasePolicy.projectRepair.maintainerRiskSample;
 const answersArg=args.find(a=>a.startsWith('--answers='));
-const answers=answersArg?JSON.parse(readFileSync(answersArg.slice(10),'utf8')):{};
+const loadedAnswers=answersArg?JSON.parse(readFileSync(answersArg.slice(10),'utf8')):frozenGold;
+const answers=loadedAnswers.entries
+  ? Object.fromEntries(Object.entries(loadedAnswers.entries).map(([id,item])=>[id,item.answer]))
+  : loadedAnswers;
 const rows=[];
 for(const id of ids){
   const scenario=bank.find(item=>item.id===id);
@@ -24,6 +28,9 @@ for(const id of ids){
     testPass:baseline.axisScores?.test_pass??null,rejected:baselineRejected},candidate});
 }
 const ready=rows.every(row=>row.baseline.rejected&&row.candidate?.verified===true);
+const positiveGoldVerified=rows.filter(row=>row.candidate?.verified===true).map(row=>row.id);
+const positiveGoldPending=rows.filter(row=>row.candidate?.verified!==true).map(row=>row.id);
 console.log(JSON.stringify({version:'project-repair-maintainer-sample-v1',scope:'development_shadow_only',ids,rows,
+  positiveGoldVerified,positiveGoldPending,
   readyForOfficialReview:ready,note:'A missing positive answer keeps the item in development; it never becomes a model failure or official score.'},null,2));
 if(args.includes('--gate')&&!ready)process.exitCode=1;

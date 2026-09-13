@@ -206,6 +206,21 @@
     "allOriginalWorkspacesRejected": true,
     "positiveGoldPending": true
    },
+   "positiveGoldAudit": {
+    "checkedAt": "2026-09-13",
+    "artifact": "data/gold/project-repair-maintainer-sample-v1.json",
+    "verifiedIds": [
+     "CP-L4-JS-001",
+     "CP-L4-PY-002",
+     "CP-L4-GO-001"
+    ],
+    "pendingIds": [
+     "CP-L4-CS-001",
+     "CP-L4-RS-001",
+     "CP-L4-SQL-001"
+    ],
+    "acceptance": "original workspace rejected and frozen positive answer passes every hidden test without environment error"
+   },
    "defaultRunEligible": false,
    "explicitRunOnly": true
   },

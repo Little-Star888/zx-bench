@@ -69,6 +69,7 @@ export type { ProbabilityTrial } from './evaluationLab/probabilityConfirmation.j
 export { observedDiscrimination, lightweightDiscriminationGate } from './evaluationLab/observedDiscrimination.js';
 export type { ObservedDimensionModel, LightweightDiscriminationOptions } from './evaluationLab/observedDiscrimination.js';
 export { CHALLENGE_SUPPLEMENT_VERSION, CHALLENGE_SUPPLEMENT_GRADER_VERSION, CHALLENGE_SUPPLEMENT_SOURCE_VERSION, CHALLENGE_SUPPLEMENT_SOURCE_HASH, CHALLENGE_SUPPLEMENT_IDS } from './evaluationLab/challengeRelease.js';
+export { MC2_004_REVISION_VERSION, buildMc2004Revision, mc2004RevisionReference, gradeMc2004Revision } from './evaluationLab/challengeMathRevision.js';
 export { judgeRoleEvidence } from './evaluationLab/judgeRoleEvidence.js';
 export type { BoundedJudgeControl, BoundedJudgeRealSignal } from './evaluationLab/judgeRoleEvidence.js';
 export { buildLatentCensoringProbability, latentCensoringReference, verifyLatentCensoring, scoreLatentCensoring } from './evaluationLab/latentCensoringProbability.js';
