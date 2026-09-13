@@ -94,6 +94,8 @@ node scripts/seed-benchmark.mjs    # import into DB
 node scripts/export-scenarios.mjs # export benchmark.json + meta
 ```
 
+Only the current `benchmark.json` is imported. Running the importer again is a safe upgrade: bundled CR2/development rows accidentally imported by older versions are retired, while custom questions and historical results are preserved. Official runs are bound to the released ID and content-hash catalogue, so stale database rows cannot expand the benchmark.
+
 ### Reviewed data-extraction v3 bank
 
 The data-extraction dimension now contains 56 reviewed questions: the original 35 were aligned with their scored fields and 21 medium/hard/adversarial cases were added. `json_atomic_v3` freezes the complete expected JSON, required leaf paths, every container/field type, JSON-only output, and a no-extra-fields policy. It is fully deterministic and does not call a Judge. See [the v3 review record](docs/data-extraction-v3-review.md).

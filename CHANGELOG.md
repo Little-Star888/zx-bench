@@ -2,6 +2,15 @@
 
 All notable changes to ZxBench are documented here.
 
+## [0.2.2] — 2026-09-13
+
+### Hotfix
+
+- Restore all 20 pre-existing multi-file long tasks to formal scope: benchmark 1.31.1 runs 620 questions, including 150 programming questions.
+- Make `benchmark.json` the only released import catalogue. Development fixtures and historical CR2 subsets are no longer imported as formal questions.
+- On upgrade, retire only accidentally imported bundled-history rows while preserving user-created custom questions and historical result rows.
+- Bind official-run selection and dashboard counts to the released catalogue, and reject same-ID database definitions whose frozen content hash is out of sync.
+
 ## [0.2.1] — 2026-09-13
 
 ### Hotfix

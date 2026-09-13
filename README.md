@@ -158,6 +158,8 @@ node scripts/seed-benchmark.mjs   # 导入
 node scripts/export-scenarios.mjs # 导出
 ```
 
+导入只认当前版本的 `benchmark.json`。直接运行即可安全升级：历史版本误从 CR2/开发 JSON 导入、但已不属于正式题库的内置题目会被标记为退役；用户自行创建的题目与历史成绩不会被删除。正式评测始终按发布题库白名单及内容哈希冻结，数据库残留行不会扩大题量。
+
 ---
 
 ## 核心概念：综合分是怎么算出来的

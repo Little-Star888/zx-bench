@@ -132,15 +132,45 @@ describe('audited run API without network or real database', () => {
     expect(db.scenarioDefinition.upsert).toHaveBeenCalledWith(expect.objectContaining({ update: expect.objectContaining({ reviewStatus: 'unreviewed', goldVerifiedAt: null }) }));
   });
   it('allows a frozen public item in an official run', async () => {
-    const frozen = { ...row, scenarioHash: undefined as string | undefined };
-    const { hashScenarioShort } = await import('@zxbench/core');
-    frozen.scenarioHash = hashScenarioShort({ ...frozen, requirements: JSON.parse(frozen.requirements), scoring: JSON.parse(frozen.scoring) } as any);
+    const { readFileSync } = await import('node:fs');
+    const released = JSON.parse(readFileSync('data/scenarios/benchmark.json', 'utf8'))[0];
+    const frozen = { ...released, scoring: JSON.stringify(released.scoring),
+      requirements: JSON.stringify(released.requirements), hiddenTests: JSON.stringify(released.hiddenTests),
+      tags: JSON.stringify(released.tags), goldVerifiedAt: released.goldVerifiedAt ? new Date(released.goldVerifiedAt) : null };
     db.scenarioDefinition.findMany.mockResolvedValue([frozen]);
     const res = await app.inject({ method: 'POST', url: '/api/runs', payload: { modelConfigId: 'mock', config: { evaluationMode: 'official' } } });
     expect(res.statusCode).toBe(200);
     const id = res.json().data.id;
     await vi.waitFor(() => expect(saved.get(id)?.status).toBe('completed'));
-    expect(runMultipleEvaluations).toHaveBeenCalledWith(expect.objectContaining({ id: row.id }), expect.anything());
+    expect(runMultipleEvaluations).toHaveBeenCalledWith(expect.objectContaining({ id: released.id }), expect.anything());
+  });
+  it('excludes stale valid database rows from an official run', async () => {
+    const { readFileSync } = await import('node:fs');
+    const released = JSON.parse(readFileSync('data/scenarios/benchmark.json', 'utf8'))[0];
+    const dbReleased = { ...released, scoring: JSON.stringify(released.scoring),
+      requirements: JSON.stringify(released.requirements), hiddenTests: JSON.stringify(released.hiddenTests),
+      tags: JSON.stringify(released.tags), goldVerifiedAt: released.goldVerifiedAt ? new Date(released.goldVerifiedAt) : null };
+    db.scenarioDefinition.findMany.mockResolvedValue([dbReleased, { ...row, id: 'CR2-STALE-001' }]);
+    const res = await app.inject({ method: 'POST', url: '/api/runs', payload: { modelConfigId: 'mock', config: { evaluationMode: 'official' } } });
+    expect(res.statusCode).toBe(200);
+    const id = res.json().data.id;
+    await vi.waitFor(() => expect(saved.get(id)?.status).toBe('completed'));
+    expect(vi.mocked(runMultipleEvaluations).mock.calls.map((call) => call[0].id)).toEqual([released.id]);
+    expect(JSON.parse(saved.get(id)!.manifest).benchmarkPack.scenarios).toHaveLength(1);
+  });
+  it('rejects a released ID whose database content hash is out of sync', async () => {
+    const { readFileSync } = await import('node:fs');
+    const released = JSON.parse(readFileSync('data/scenarios/benchmark.json', 'utf8'))[0];
+    db.scenarioDefinition.findMany.mockResolvedValue([{ ...released, scenarioHash: 'stale-content-hash',
+      scoring: JSON.stringify(released.scoring), requirements: JSON.stringify(released.requirements),
+      hiddenTests: JSON.stringify(released.hiddenTests), tags: JSON.stringify(released.tags),
+      goldVerifiedAt: released.goldVerifiedAt ? new Date(released.goldVerifiedAt) : null }]);
+    const res = await app.inject({ method: 'POST', url: '/api/runs', payload: {
+      modelConfigId: 'mock', config: { evaluationMode: 'official' },
+    } });
+    expect(res.statusCode).toBe(400);
+    expect(res.json().error).toContain('out of sync');
+    expect(db.evalRun.create).not.toHaveBeenCalled();
   });
   it('rejects invalid counts and missing requested questions', async () => {
     for (const payload of [{ config: { runsPerQuestion: 0 } }, { scenarioIds: ['not-in-pack'] }]) {

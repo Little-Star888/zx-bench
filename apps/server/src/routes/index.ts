@@ -30,6 +30,15 @@ import { URL } from 'node:url';
 import { createCipheriv, createDecipheriv, randomBytes, scryptSync } from 'node:crypto';
 import { selectLatestResultsByKey, selectLatestScenarioResults } from '../resultSelection.js';
 
+// The database is mutable and may retain bundled development/history rows from
+// an older import. Official runs are therefore selected against the released
+// benchmark catalogue, not every row that happens to remain `valid` in SQLite.
+const RELEASE_BENCHMARK = JSON.parse(fs.readFileSync(
+  new URL('../../../../data/scenarios/benchmark.json', import.meta.url),
+  'utf8',
+)) as Scenario[];
+const RELEASE_BENCHMARK_BY_ID = new Map(RELEASE_BENCHMARK.map((scenario) => [scenario.id, scenario]));
+
 /** Pack 短名 → 维度映射（all 表示不过滤） */
 const PACK_DIMENSION_MAP: Record<string, string> = {
   de: 'data_extraction',
@@ -55,6 +64,15 @@ async function selectBenchmarkPack(config: EvalRunConfig, dimensionIds?: string[
   }
   const rows = await prisma.scenarioDefinition.findMany({ where: { status: 'valid' } });
   let selected = rows.filter(s => !dimensionIds?.length || dimensionIds.includes(s.dimension));
+  if (config.evaluationMode === 'official') {
+    selected = selected.filter((scenario) => RELEASE_BENCHMARK_BY_ID.has(scenario.id));
+    const drifted = selected.filter((scenario) =>
+      scenario.scenarioHash !== RELEASE_BENCHMARK_BY_ID.get(scenario.id)?.scenarioHash,
+    );
+    if (drifted.length) {
+      throw new Error(`Official benchmark database is out of sync: ${drifted.map((s) => s.id).join(', ')}`);
+    }
+  }
   if (config.scenarioIds?.length) {
     selected = selected.filter(s => config.scenarioIds!.includes(s.id));
     const found = new Set(selected.map(s => s.id));
@@ -2219,6 +2237,7 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
     const totalResults = await prisma.scenarioResult.count();
     const dimensions = await prisma.scenarioDefinition.groupBy({
       by: ['dimension'],
+      where: { status: 'valid', id: { in: [...RELEASE_BENCHMARK_BY_ID.keys()] } },
       _count: { id: true },
     });
 
