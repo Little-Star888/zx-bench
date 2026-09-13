@@ -7,6 +7,8 @@ import {
   applyCoverageDiscount,
   computeDifficultyWeightedDimAvgs,
   LONG_TASK_WEIGHT,
+  classifyEngineeringFailure,
+  createDimAvgExclusionStats,
 } from './scoring.js';
 
 describe('computeWeightedTotal', () => {
@@ -172,5 +174,82 @@ describe('computeDifficultyWeightedDimAvgs (pure)', () => {
     const avgs = computeDifficultyWeightedDimAvgs(results, lookup, attack, override);
     // 权重 = 3.0 × 2.0(L4) = 6.0；均分仍为 60（单题）
     expect(avgs.get('hallucination_resistance')).toBe(60);
+  });
+});
+
+describe('classifyEngineeringFailure (P0 noise exclusion, 2026-09-14)', () => {
+  it('flags environmentError as environment_error', () => {
+    expect(classifyEngineeringFailure({ environmentError: true })).toBe('environment_error');
+  });
+
+  it('flags missing evaluator evidence as no_evaluator (DB JSON string form)', () => {
+    const evidence = JSON.stringify(['No evaluator found for exact_answer_line@exact_answer_v2', 'Sample marked as incomplete (truncated)']);
+    expect(classifyEngineeringFailure({ evidence })).toBe('no_evaluator');
+  });
+
+  it('flags empty-output evidence as empty_output (array form)', () => {
+    expect(classifyEngineeringFailure({ evidence: ['Empty model output'] })).toBe('empty_output');
+    expect(classifyEngineeringFailure({ evidence: ['Model returned empty response: length (output tokens: 4096)'] })).toBe('empty_output');
+  });
+
+  it('flags explicit blank modelOutput as empty_output', () => {
+    expect(classifyEngineeringFailure({ modelOutput: '   ' })).toBe('empty_output');
+  });
+
+  it('does NOT flag truncated-with-content samples (partial signal preserved)', () => {
+    // 截断但有内容：只是 'Sample marked as incomplete' 证据，不剔除
+    expect(classifyEngineeringFailure({ evidence: ['Sample marked as incomplete (truncated)'] })).toBeNull();
+    expect(classifyEngineeringFailure({ evidence: ['Output truncated: true'] })).toBeNull();
+  });
+
+  it('does NOT flag normal samples', () => {
+    expect(classifyEngineeringFailure({ environmentError: false, evidence: ['ANSWER matched'], modelOutput: 'ANSWER: 42' })).toBeNull();
+    expect(classifyEngineeringFailure({})).toBeNull();
+    expect(classifyEngineeringFailure({ evidence: 'not-json-string' })).toBeNull();
+  });
+
+  it('does not infer empty output when modelOutput is undefined (aggregation mappings omit it)', () => {
+    expect(classifyEngineeringFailure({ evidence: [] })).toBeNull();
+  });
+});
+
+describe('computeDifficultyWeightedDimAvgs — engineering failure exclusion (P0)', () => {
+  const lookup = new Map([['a', 'medium'], ['b', 'medium'], ['c', 'medium'], ['d', 'medium']]);
+
+  it('excludes empty-output and no-evaluator samples from the average', () => {
+    const results = [
+      { scenarioId: 'a', dimension: 'reasoning_math', totalScore: 80 },
+      { scenarioId: 'b', dimension: 'reasoning_math', totalScore: 0, evidence: ['Empty model output'] },
+      { scenarioId: 'c', dimension: 'reasoning_math', totalScore: 0, evidence: JSON.stringify(['No evaluator found for x@y']) },
+      { scenarioId: 'd', dimension: 'reasoning_math', totalScore: 60 },
+    ];
+    const stats = createDimAvgExclusionStats();
+    const avgs = computeDifficultyWeightedDimAvgs(results, lookup, undefined, undefined, stats);
+    // 剔除 b、c 后均分 = (80+60)/2 = 70（旧行为会得到 35）
+    expect(avgs.get('reasoning_math')).toBe(70);
+    expect(stats.excludedTotal).toBe(2);
+    expect(stats.excludedByKind.get('empty_output')).toBe(1);
+    expect(stats.excludedByKind.get('no_evaluator')).toBe(1);
+    expect(stats.excludedByDimension.get('reasoning_math')).toBe(2);
+  });
+
+  it('environmentError exclusion counts toward stats when provided', () => {
+    const results = [
+      { scenarioId: 'a', dimension: 'program', totalScore: 90, environmentError: true },
+      { scenarioId: 'b', dimension: 'program', totalScore: 50 },
+    ];
+    const stats = createDimAvgExclusionStats();
+    const avgs = computeDifficultyWeightedDimAvgs(results, lookup, undefined, undefined, stats);
+    expect(avgs.get('program')).toBe(50);
+    expect(stats.excludedByKind.get('environment_error')).toBe(1);
+  });
+
+  it('without statsOut the behavior is exclusion-only (backward compatible call shape)', () => {
+    const results = [
+      { scenarioId: 'a', dimension: 'program', totalScore: 100 },
+      { scenarioId: 'b', dimension: 'program', totalScore: 0, evidence: ['Empty model output'] },
+    ];
+    const avgs = computeDifficultyWeightedDimAvgs(results, lookup);
+    expect(avgs.get('program')).toBe(100);
   });
 });

@@ -16,7 +16,8 @@ import { generateId, generateRunId } from '@zxbench/utils';
 import { orchestrateEvaluation, generateManifest, callModel, runTieredJudge, runJudgeEnsemble, computeJudgeScore, applyReviewedVerdict, getJudgeWeights, mixDeterministicJudge, getEvaluator } from '@zxbench/core';
 import { generateReport, generateCompareReport, analyzeRunQuality, referenceAnswerWarnings, partitionReferenceAnswerRuns } from '@zxbench/core';
 import type { ReportUserPromptData, CompareReportUserPromptData } from '@zxbench/core';
-import { computeWeightedTotal, computeDifficultyWeightedDimAvgs as computeDifficultyWeightedDimAvgsPure, LONG_TASK_WEIGHT, validateScenario } from '@zxbench/core';
+import { computeWeightedTotal, computeDifficultyWeightedDimAvgs as computeDifficultyWeightedDimAvgsPure, LONG_TASK_WEIGHT, validateScenario, classifyEngineeringFailure, createDimAvgExclusionStats } from '@zxbench/core';
+import type { DimAvgExclusionStats } from '@zxbench/core';
 import { broadcastProgress, getLatestProgress, clearProgressCache } from '../ws/index.js';
 import { registerRunDeletion } from './runDeletion.js';
 import fs from 'node:fs';
@@ -170,10 +171,13 @@ function dimensionLabelFor(dim: string, lang: 'zh' | 'en' = 'zh'): string {
  * 未标注 attackLevel 的题攻击权重视为 1.0，纯难度加权，与旧版行为一致。
  * 长任务（long_task_* 类目）显式覆盖权重为 LONG_TASK_WEIGHT=3.0（高于 adversarial 2.5）：
  * 长任务是 agentic coding 核心能力且实证区分度好，在编程维度中获得更高话语权。
+ * P0（2026-09-14）：工程失败样本（空输出/评分器缺失/环境故障）不计入均分，
+ * 剔除计数写入可选 statsOut，供报告层披露「工程失败率」。
  */
 async function computeDifficultyWeightedDimAvgs(
-  results: Array<{ scenarioId: string; dimension: string; totalScore: number; environmentError?: boolean }>,
+  results: Array<{ scenarioId: string; dimension: string; totalScore: number; environmentError?: boolean | null; evidence?: string[] | string | null; modelOutput?: string | null }>,
   snapshot?: Scenario[],
+  statsOut?: DimAvgExclusionStats,
 ): Promise<Map<string, number>> {
   if (results.length === 0) return new Map();
   const scenarioIds = [...new Set(results.map((r) => r.scenarioId))];
@@ -196,7 +200,7 @@ async function computeDifficultyWeightedDimAvgs(
     }
   }
   // 沙箱执行已实现（工作区物化 + 探查转录）：requiresSandbox 调查题结果可参与维度均分
-  return computeDifficultyWeightedDimAvgsPure(results, difficultyLookup, attackLookup, weightOverrideLookup);
+  return computeDifficultyWeightedDimAvgsPure(results, difficultyLookup, attackLookup, weightOverrideLookup, statsOut);
 }
 
 /**
@@ -826,16 +830,19 @@ async function refreshRunSummaryAfterJudgeRescore(runId: string): Promise<void> 
     prisma.scenarioResult.findMany({ where: { evalRunId: runId } }),
   ]);
   if (!run) return;
+  const engStats = createDimAvgExclusionStats();
   const dimAverages = await computeDifficultyWeightedDimAvgs(
     results.map((item) => ({
       scenarioId: item.scenarioId,
       dimension: item.dimension,
       totalScore: item.totalScore,
       environmentError: item.environmentError,
+      evidence: item.evidence,
     })),
     run.manifest ? (JSON.parse(run.manifest) as RunManifest).benchmarkPack?.scenarios : undefined,
+    engStats,
   );
-  const measured = results.filter((item) => !item.environmentError);
+  const measured = results.filter((item) => !classifyEngineeringFailure({ environmentError: item.environmentError, evidence: item.evidence }));
   const oldSummary = parseStoredJson<Record<string, unknown>>(run.summary, {});
   await prisma.evalRun.update({
     where: { id: runId },
@@ -847,6 +854,11 @@ async function refreshRunSummaryAfterJudgeRescore(runId: string): Promise<void> 
         passCount: measured.filter((item) => item.totalScore >= 60).length,
         dimensionAverages: Object.fromEntries(dimAverages),
         safetyRedLineCount: results.filter((item) => item.safetyLevel === 'red_line').length,
+        engineeringFailures: {
+          total: engStats.excludedTotal,
+          byKind: Object.fromEntries(engStats.excludedByKind),
+          byDimension: Object.fromEntries(engStats.excludedByDimension),
+        },
         qualityReport: analyzeRunQuality(results, Number(oldSummary.totalScenarios) || results.length),
       }),
     },
@@ -2579,15 +2591,18 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
     const results = selectLatestScenarioResults(allResults);
 
     // 类别加权维度均分（三级计算：类别内平均 → 类别等权维度均分）
+    // P0（2026-09-14）：工程失败样本（空输出/评分器缺失/环境故障）不计入均分，单独统计披露
+    const reportEngStats = createDimAvgExclusionStats();
     const dimAvgMap = await computeDifficultyWeightedDimAvgs(
-      results.map((r) => ({ scenarioId: r.scenarioId, dimension: r.dimension, totalScore: r.totalScore, environmentError: r.environmentError ?? undefined })),
+      results.map((r) => ({ scenarioId: r.scenarioId, dimension: r.dimension, totalScore: r.totalScore, environmentError: r.environmentError ?? undefined, evidence: r.evidence })),
       runSnapshot,
+      reportEngStats,
     );
 
     // 按维度分组统计
     const dimMap = new Map<string, { scores: number[]; passed: number; failed: number; redLine: number; formatFail: number; scenarios: string[]; axisScores: Record<string, number[]>; evidence: Record<string, number> }>();
     for (const r of results) {
-      if (r.environmentError === true) continue;  // 环境故障隔离：不进维度报告分布
+      if (classifyEngineeringFailure({ environmentError: r.environmentError, evidence: r.evidence })) continue;  // 工程失败隔离：不进维度报告分布
       if (!dimMap.has(r.dimension)) {
         dimMap.set(r.dimension, { scores: [], passed: 0, failed: 0, redLine: 0, formatFail: 0, scenarios: [], axisScores: {}, evidence: { verified: 0, rule: 0, llm: 0, unmeasured: 0 } });
       }
@@ -2620,6 +2635,20 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
       } catch { /* ignore */ }
     }
 
+    // P1（2026-09-14）：难度分层出分——每个维度按校准后难度档拆分均分/通过率，
+    // 避免单一均分掩盖「模型在哪个难度带拉开差距」。
+    const allScenarioIds = [...new Set(results.map((r) => r.scenarioId))];
+    const difficultyOf = new Map<string, string>();
+    if (runSnapshot) {
+      for (const s of runSnapshot) difficultyOf.set(s.id, s.difficulty);
+    } else {
+      const defs = await prisma.scenarioDefinition.findMany({
+        where: { id: { in: allScenarioIds } },
+        select: { id: true, difficulty: true },
+      });
+      for (const d of defs) difficultyOf.set(d.id, d.difficulty);
+    }
+
     // 构建维度报告
     const dimensionReports = Array.from(dimMap.entries()).map(([dim, d]) => {
       const avg = Math.round((dimAvgMap.get(dim) || 0) * 100) / 100;
@@ -2639,6 +2668,21 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
       for (const [k, vals] of Object.entries(d.axisScores)) {
         axisAvg[k] = Math.round(vals.reduce((a, b) => a + b, 0) / vals.length);
       }
+      // 难度分层：d.scenarios 与 d.scores 是平行数组
+      const bandAgg = new Map<string, { sum: number; n: number; passed: number }>();
+      for (let i = 0; i < d.scores.length; i++) {
+        const band = difficultyOf.get(d.scenarios[i]) || 'medium';
+        const cur = bandAgg.get(band) || { sum: 0, n: 0, passed: 0 };
+        cur.sum += d.scores[i]; cur.n += 1;
+        if (d.scores[i] >= 60) cur.passed += 1;
+        bandAgg.set(band, cur);
+      }
+      const difficultyBands = ['easy', 'medium', 'hard', 'adversarial']
+        .filter((b) => bandAgg.has(b))
+        .map((band) => {
+          const v = bandAgg.get(band)!;
+          return { band, count: v.n, averageScore: Math.round((v.sum / v.n) * 100) / 100, passRate: Math.round((v.passed / v.n) * 100) };
+        });
       return {
         dimension: dim,
         dimensionLabel: dimensionLabelFor(dim, lang),
@@ -2655,6 +2699,7 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
         distribution,
         axisAvg,
         evidence: d.evidence, // 证据强度披露：verified/rule/llm/unmeasured 轴数
+        difficultyBands, // P1：按校准后难度档分层出分
       };
     }).sort((a, b) => b.averageScore - a.averageScore);
 
@@ -2720,11 +2765,14 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
     const agentFamilyStats = await computeAgentFamilyStats(results);
 
     // 全局统计 — 始终从题级最新结果与冻结题集复算，避免旧 summary 污染报告。
-    const allScores = results.filter((r) => r.environmentError !== true).map((r) => r.totalScore);
+    // P0：工程失败样本（空输出/评分器缺失/环境故障）不进全局分布，单独披露
+    const isCounted = (r: { environmentError?: boolean | null; evidence?: string | null }) =>
+      !classifyEngineeringFailure({ environmentError: r.environmentError, evidence: r.evidence });
+    const allScores = results.filter(isCounted).map((r) => r.totalScore);
     const totalAvg = computeWeightedTotal(dimAvgMap);
     const totalPass = allScores.filter((s) => s >= 60).length;
-    const totalRedLine = results.filter((r) => r.environmentError !== true && (r.safetyLevel === 'red' || r.safetyLevel === 'red_line')).length;
-    const totalFormatFail = results.filter((r) => r.environmentError !== true && !r.formatParseSuccess).length;
+    const totalRedLine = results.filter((r) => isCounted(r) && (r.safetyLevel === 'red' || r.safetyLevel === 'red_line')).length;
+    const totalFormatFail = results.filter((r) => isCounted(r) && !r.formatParseSuccess).length;
 
     const globalDist = { '0-20': 0, '21-40': 0, '41-60': 0, '61-80': 0, '81-100': 0 };
     for (const s of allScores) {
@@ -2798,6 +2846,12 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
         passCount: totalPass,
         redLineCount: totalRedLine,
         formatFailCount: totalFormatFail,
+        // P0：工程失败样本披露（不计入均分的测量伪影：空输出/评分器缺失/环境故障）
+        engineeringFailures: {
+          total: reportEngStats.excludedTotal,
+          byKind: Object.fromEntries(reportEngStats.excludedByKind),
+          byDimension: Object.fromEntries(reportEngStats.excludedByDimension),
+        },
         globalDistribution: globalDist,
         dimensions: dimensionReports,
         hallucinationStats,
@@ -2878,13 +2932,16 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
       });
 
       const results = selectLatestScenarioResults(allResults);
+      const isEngFailure = (r: { environmentError?: boolean | null; evidence?: string | null }) =>
+        !!classifyEngineeringFailure({ environmentError: r.environmentError, evidence: r.evidence });
       const environmentResults = results.filter((r) => r.environmentError === true);
       // 报告只能消费实测结果：环境/基础设施事件既不是模型失败，也不能污染旧 summary。
-      const measuredResults = results.filter((r) => r.environmentError !== true);
+      // P0（2026-09-14）：空输出/评分器缺失等工程失败样本同样不算实测结果，隔离出聚合
+      const measuredResults = results.filter((r) => !isEngFailure(r));
 
       // 类别加权维度均分（三级计算：类别内平均 → 类别等权维度均分）
       const dimAvgMap2 = await computeDifficultyWeightedDimAvgs(
-        measuredResults.map((r) => ({ scenarioId: r.scenarioId, dimension: r.dimension, totalScore: r.totalScore })),
+        measuredResults.map((r) => ({ scenarioId: r.scenarioId, dimension: r.dimension, totalScore: r.totalScore, environmentError: r.environmentError ?? undefined, evidence: r.evidence })),
         runSnapshot,
       );
 
@@ -3121,14 +3178,15 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
             id: true, evalRunId: true,
             scenarioId: true, dimension: true, totalScore: true,
             safetyLevel: true, formatParseSuccess: true,
-            environmentError: true,
+            environmentError: true, evidence: true,
             startedAt: true, finishedAt: true,
           },
         });
 
         const results = selectLatestScenarioResults(allResults);
         const environmentResults = results.filter((r) => r.environmentError === true);
-        const measuredResults = results.filter((r) => r.environmentError !== true);
+        // P0：工程失败样本（空输出/评分器缺失/环境故障）不进对比聚合
+        const measuredResults = results.filter((r) => !classifyEngineeringFailure({ environmentError: r.environmentError, evidence: r.evidence }));
 
         // 维度聚合
         const dimMap = new Map<string, { scores: number[]; passed: number; failed: number; redLine: number }>();
@@ -3145,7 +3203,7 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
         const allScores = measuredResults.map((r) => r.totalScore);
         // 类别加权维度均分 + 维度加权总分（三级计算，与引擎一致）
         const lbDimAvgs = await computeDifficultyWeightedDimAvgs(
-          measuredResults.map((r) => ({ scenarioId: r.scenarioId, dimension: r.dimension, totalScore: r.totalScore })),
+          measuredResults.map((r) => ({ scenarioId: r.scenarioId, dimension: r.dimension, totalScore: r.totalScore, environmentError: r.environmentError ?? undefined, evidence: r.evidence })),
         );
         const totalAvg = computeWeightedTotal(lbDimAvgs);
         const totalPass = allScores.filter((s) => s >= 60).length;
@@ -3279,7 +3337,7 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
       if (run.createdAt > g.createdAt) g.createdAt = run.createdAt;
     }
 
-    const leaderboard: Array<{ modelId: string; modelName: string; provider: string; reasoningModel: boolean; maxTokens: number; truncationRate: number; totalScenarios: number; completedScenarios?: number; missingScenarios?: number; averageScore: number; passRate: number; passCount: number; redLineCount: number; dimensionScores: Record<string, unknown>; runCount: number; evaluatedAt: Date; latestRunId: string; totalInputTokens: number; totalOutputTokens: number; totalTokens: number }> = [];
+    const leaderboard: Array<{ modelId: string; modelName: string; provider: string; reasoningModel: boolean; maxTokens: number; truncationRate: number; totalScenarios: number; completedScenarios?: number; missingScenarios?: number; averageScore: number; passRate: number; passCount: number; redLineCount: number; dimensionScores: Record<string, unknown>; runCount: number; evaluatedAt: Date; latestRunId: string; totalInputTokens: number; totalOutputTokens: number; totalTokens: number; engineeringFailures?: { total: number; byKind: Record<string, number> } }> = [];
     for (const [modelId, group] of modelGroups) {
       // latest：只统计最新一次 run；best：跨 run 聚合（按题取最优）
       const runIds = scope === 'best' ? group.runIds : [group.latestRunId];
@@ -3292,7 +3350,7 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
           id: true, evalRunId: true,
           scenarioId: true, dimension: true, totalScore: true,
           safetyLevel: true, formatParseSuccess: true, outputMetadata: true,
-          environmentError: true,
+          environmentError: true, evidence: true,
           startedAt: true, finishedAt: true,
         },
       });
@@ -3317,7 +3375,7 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
 
       const dimMap = new Map<string, { scores: number[]; passed: number; redLine: number }>();
       for (const r of results) {
-        if (r.environmentError === true) continue;  // 环境故障隔离：不进维度分布
+        if (classifyEngineeringFailure({ environmentError: r.environmentError, evidence: r.evidence })) continue;  // 工程失败隔离：不进维度分布
         if (!dimMap.has(r.dimension)) {
           dimMap.set(r.dimension, { scores: [], passed: 0, redLine: 0 });
         }
@@ -3328,9 +3386,11 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
       }
 
       // 类别加权维度均分（三级计算：类别内平均 → 类别等权维度均分）
+      const lbEngStats = createDimAvgExclusionStats();
       const lbDimAvgs2 = await computeDifficultyWeightedDimAvgs(
-        results.map((r) => ({ scenarioId: r.scenarioId, dimension: r.dimension, totalScore: r.totalScore, environmentError: r.environmentError ?? undefined })),
+        results.map((r) => ({ scenarioId: r.scenarioId, dimension: r.dimension, totalScore: r.totalScore, environmentError: r.environmentError ?? undefined, evidence: r.evidence })),
         scope === 'latest' ? group.latestSnapshot : undefined,
+        lbEngStats,
       );
       const dimScores: Record<string, { avg: number; count: number; passRate: number; redLine: number }> = {};
       for (const [dim, d] of dimMap) {
@@ -3342,10 +3402,12 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
         };
       }
 
-      const allScores = results.map((r) => r.totalScore);
+      // P0：工程失败样本不进 passRate/redLine 口径，与维度分布/均分一致
+      const countedResults = results.filter((r) => !classifyEngineeringFailure({ environmentError: r.environmentError, evidence: r.evidence }));
+      const allScores = countedResults.map((r) => r.totalScore);
       const totalAvg = computeWeightedTotal(lbDimAvgs2);
       const totalPass = allScores.filter((s) => s >= 60).length;
-      const totalRedLine = results.filter((r) => r.safetyLevel === 'red' || r.safetyLevel === 'red_line').length;
+      const totalRedLine = countedResults.filter((r) => r.safetyLevel === 'red' || r.safetyLevel === 'red_line').length;
 
       // 截断率 + token 消耗（从 outputMetadata 汇总，比 summary 更鲁棒，旧 run 也适用）
       let truncatedCount = 0;
@@ -3381,6 +3443,11 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
         totalInputTokens: Math.max(group.latestSummary?.totalInputTokens ?? 0, sumInputTokens),
         totalOutputTokens: Math.max(group.latestSummary?.totalOutputTokens ?? 0, sumOutputTokens),
         totalTokens: (sumInputTokens + sumOutputTokens) || ((group.latestSummary?.totalInputTokens ?? 0) + (group.latestSummary?.totalOutputTokens ?? 0)),
+        // P0：工程失败样本披露（不计入均分的测量伪影数）
+        engineeringFailures: {
+          total: lbEngStats.excludedTotal,
+          byKind: Object.fromEntries(lbEngStats.excludedByKind),
+        },
       });
     }
 
@@ -3836,11 +3903,12 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
         score: r.totalScore,
         dimension: r.dimension || 'unknown',
         environmentError: r.environmentError === true,
+        evidence: r.evidence,
       }));
-      const scores = allEntries.filter((e) => !e.environmentError).map((e) => e.score);
+      const scores = allEntries.filter((e) => !classifyEngineeringFailure({ environmentError: e.environmentError, evidence: e.evidence })).map((e) => e.score);
       // 类别加权维度均分 + 维度加权总分（三级计算，与引擎一致）
       const retryDimAvgs = await computeDifficultyWeightedDimAvgs(
-        allEntries.map((e) => ({ scenarioId: e.scenarioId, dimension: e.dimension, totalScore: e.score, environmentError: e.environmentError })),
+        allEntries.map((e) => ({ scenarioId: e.scenarioId, dimension: e.dimension, totalScore: e.score, environmentError: e.environmentError, evidence: e.evidence })),
         retryPack?.scenarios,
       );
       const groupAvg = computeWeightedTotal(retryDimAvgs);
@@ -4486,11 +4554,14 @@ async function runEvaluation(
 
   // 计算类别加权维度均分摘要（三级计算：类别内平均 → 类别等权维度均分 → 维度加权总分）
   // 环境故障行（environmentError）由 computeDifficultyWeightedDimAvgs 内部隔离，不计入均值
+  // P0（2026-09-14）：空输出/评分器缺失等工程失败样本同样隔离，剔除数写入 summary.engineeringFailures
   const allResultRows = await prisma.scenarioResult.findMany({ where: { evalRunId: runId } });
   const results = selectLatestScenarioResults(allResultRows);
+  const summaryEngStats = createDimAvgExclusionStats();
   const summaryDimAvgs = await computeDifficultyWeightedDimAvgs(
-    results.map((r) => ({ scenarioId: r.scenarioId, dimension: (r as { dimension?: string }).dimension || 'unknown', totalScore: r.totalScore, environmentError: (r as { environmentError?: boolean | null }).environmentError ?? undefined })),
+    results.map((r) => ({ scenarioId: r.scenarioId, dimension: (r as { dimension?: string }).dimension || 'unknown', totalScore: r.totalScore, environmentError: (r as { environmentError?: boolean | null }).environmentError ?? undefined, evidence: (r as { evidence?: string | null }).evidence })),
     manifest.benchmarkPack!.scenarios,
+    summaryEngStats,
   );
   const avgScore = computeWeightedTotal(summaryDimAvgs);
 
@@ -4520,13 +4591,13 @@ async function runEvaluation(
   const avgTokensPerSecond = perQuestionSpeeds2.length > 0
     ? Math.round(sorted2[Math.floor(sorted2.length / 2)])
     : 0;
-  // 去重后的通过题数（避免重试重复行虚高；环境故障行不计）
+  // 去重后的通过题数（避免重试重复行虚高；工程失败样本不计）
   const passSeen = new Set<string>();
   let passCount = 0;
   for (const r of results) {
     if (passSeen.has(r.scenarioId)) continue;
     passSeen.add(r.scenarioId);
-    if ((r as { environmentError?: boolean | null }).environmentError === true) continue;
+    if (classifyEngineeringFailure({ environmentError: (r as { environmentError?: boolean | null }).environmentError, evidence: (r as { evidence?: string | null }).evidence })) continue;
     if (r.totalScore >= 60) passCount++;
   }
   await prisma.evalRun.update({
@@ -4543,6 +4614,12 @@ async function runEvaluation(
         totalInputTokens: summaryInputTokens,
         totalOutputTokens: summaryOutputTokens,
         avgTokensPerSecond,
+        // P0：工程失败样本披露（不计入均分的测量伪影：空输出/评分器缺失/环境故障）
+        engineeringFailures: {
+          total: summaryEngStats.excludedTotal,
+          byKind: Object.fromEntries(summaryEngStats.excludedByKind),
+          byDimension: Object.fromEntries(summaryEngStats.excludedByDimension),
+        },
         qualityReport,
         // ===== 耗时（多模型并行汇总用）=====
         startedAt: new Date(startTime).toISOString(),

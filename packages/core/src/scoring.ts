@@ -216,25 +216,105 @@ export function computeConsistencyScore(scores: number[]): number {
 }
 
 /**
+ * 工程失败样本分类（P0 噪声剔除，2026-09-14）。
+ * 背景：实测 reasoning_math 维度低分(<25)样本占 26%，其中 56% 是测量伪影而非模型能力——
+ * 输出截断/思考耗尽 token 导致空输出、评分器未注册、环境故障。这些样本把维度均分无差别
+ * 下压，是"分数带压缩、天花板效应"的主要成因之一。
+ *
+ * 判定为工程失败的样本不计入维度均分（与 environmentError 隔离逻辑一致），
+ * 由调用方单独统计上报「工程失败率」。
+ *
+ * 注意边界：截断但已有内容的样本**不**在此剔除（保留部分信号，与 multi-run
+ * "include truncated attempts" 设计一致）；只有完全没有可评估内容的样本才剔除。
+ */
+export type EngineeringFailureKind = 'environment_error' | 'no_evaluator' | 'empty_output';
+
+export interface EngineeringFailureInput {
+  environmentError?: boolean | null;
+  /** 证据数组（内存态）或 JSON 字符串（DB 态） */
+  evidence?: string[] | string | null;
+  /** 可选；仅当显式传入且为空白时作为空输出佐证 */
+  modelOutput?: string | null;
+}
+
+const NO_EVALUATOR_RE = /No evaluator found/i;
+const EMPTY_OUTPUT_EVIDENCE_RE = /^(Empty model output|Model returned empty response)/i;
+
+function normalizeEvidence(evidence: string[] | string | null | undefined): string[] {
+  if (!evidence) return [];
+  if (Array.isArray(evidence)) return evidence;
+  try {
+    const parsed = JSON.parse(evidence);
+    return Array.isArray(parsed) ? parsed.filter((e): e is string => typeof e === 'string') : [evidence];
+  } catch {
+    return [evidence];
+  }
+}
+
+/** 判定样本是否为工程失败（测量伪影），返回失败类别；正常样本返回 null。 */
+export function classifyEngineeringFailure(r: EngineeringFailureInput): EngineeringFailureKind | null {
+  if (r.environmentError === true) return 'environment_error';
+  const ev = normalizeEvidence(r.evidence);
+  if (ev.some((e) => NO_EVALUATOR_RE.test(e))) return 'no_evaluator';
+  if (ev.some((e) => EMPTY_OUTPUT_EVIDENCE_RE.test(e))) return 'empty_output';
+  // 仅当调用方显式提供 modelOutput 且为空白时才据此判定（聚合映射常省略该字段，不可臆断）
+  if (r.modelOutput !== undefined && r.modelOutput !== null && !r.modelOutput.trim()) return 'empty_output';
+  return null;
+}
+
+/** 聚合统计出口：按维度累计被剔除的工程失败样本数。 */
+export interface DimAvgExclusionStats {
+  /** dimension → 剔除样本数 */
+  excludedByDimension: Map<string, number>;
+  /** 失败类别 → 剔除样本数 */
+  excludedByKind: Map<EngineeringFailureKind, number>;
+  excludedTotal: number;
+}
+
+export function createDimAvgExclusionStats(): DimAvgExclusionStats {
+  return { excludedByDimension: new Map(), excludedByKind: new Map(), excludedTotal: 0 };
+}
+
+/**
  * 难度加权维度均分（纯函数，难度映射由调用方注入）。
  * 维度均分 = Σ(题目得分 × 难度权重) / Σ(难度权重)
  * environmentError=true 的结果（harness/容器故障，非模型错误）不计入均值，
  * 避免测试环境缺陷污染模型分数。
+ * P0（2026-09-14）：空输出/评分器缺失等工程失败样本同样不计入均值（见 classifyEngineeringFailure），
+ * 剔除计数写入可选的 statsOut 供报告层披露「工程失败率」。
  * attackLookup（可选）：scenarioId → attackLevel（幻觉抵抗 v4 专用）。
  * 提供时权重 = 难度权重 × 攻击等级权重；未提供的题攻击权重视为 1.0，纯难度加权。
  * weightOverrideLookup（可选）：scenarioId → 显式权重覆盖（如长任务 long_task_* → 3.0）。
  * 覆盖难度权重，优先级：显式覆盖 > 难度权重；attackLevel 乘子仍叠加。
  */
 export function computeDifficultyWeightedDimAvgs(
-  results: Array<{ scenarioId: string; dimension: string; totalScore: number; environmentError?: boolean }>,
+  results: Array<{
+    scenarioId: string;
+    dimension: string;
+    totalScore: number;
+    environmentError?: boolean | null;
+    evidence?: string[] | string | null;
+    modelOutput?: string | null;
+  }>,
   difficultyLookup: Map<string, string>,
   attackLookup?: Map<string, string>,
   weightOverrideLookup?: Map<string, number>,
+  statsOut?: DimAvgExclusionStats,
 ): Map<string, number> {
   const dimWeightedSums = new Map<string, number>();
   const dimWeightTotals = new Map<string, number>();
   for (const r of results) {
-    if (r.environmentError === true) continue;  // 环境故障隔离：不计入维度均值
+    const failure = classifyEngineeringFailure(r);
+    if (failure) {
+      // 工程失败隔离：不计入维度均值，单独统计
+      if (statsOut) {
+        const dim = normalizeDimension(r.dimension);
+        statsOut.excludedByDimension.set(dim, (statsOut.excludedByDimension.get(dim) || 0) + 1);
+        statsOut.excludedByKind.set(failure, (statsOut.excludedByKind.get(failure) || 0) + 1);
+        statsOut.excludedTotal += 1;
+      }
+      continue;
+    }
     const dim = normalizeDimension(r.dimension); // A3-3：code_repair 等别名归一到 program
     const diff = difficultyLookup.get(r.scenarioId) || 'medium';
     let weight = weightOverrideLookup?.get(r.scenarioId) ?? DIFFICULTY_WEIGHTS[diff] ?? 1;

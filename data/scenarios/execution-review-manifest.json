@@ -68,7 +68,7 @@
     "scripts/sync-reviewed-question-contracts.mjs": "e9c71b338afdf8a797f6d4db07209b053ecf3d26c70fe01ea789807dc86efea0",
     "scripts/test-containers.mjs": "51179d56761f73ef7ed8d53fa95c8627abc2e3f98ccc949b10a9baca51ca3318",
     "packages/core/src/orchestrator.ts": "d96e545af4d3b2e591871e0c68cbb6ddc1c7b526ebaf13cfb355dfa92cc95599",
-    "apps/server/src/routes/index.ts": "5c4db6429af015576a8a4de0ce2e77fec0792017951a133873212293e4e03674",
+    "apps/server/src/routes/index.ts": "e9e0012ef9de9c79e74ada36db101f66f85a79c3567682df0659b4067a087f33",
     "packages/core/src/evaluationLab/deepAdversarial.ts": "6e3592c0b01c8a76f5c357d35fb8d1b6fa9385d0b658c3e8907a2081516728fe",
     "packages/core/src/evaluators/codeRepair.ts": "56d61329e0a537c9b52aa1e5734012407efa272ef435dbbacced40071c13a2dc",
     "packages/core/src/evaluators/instructionChecklist.ts": "c4409c61447e661d6c9c106096f0406869eeecba3ac48e5f1b25ebd28e11f6d5",
