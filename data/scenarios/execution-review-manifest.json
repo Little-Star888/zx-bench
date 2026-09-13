@@ -59,7 +59,7 @@
     "packages/core/src/evaluationLab/quickJsObservationAttacks.ts": "6d9cbb450122f011906e74f9656e13c4c6020019dc5ad96b7d045a294978aa8b",
     "packages/core/src/evaluationLab/quickJsObservationV2Gold.ts": "1148325c22e149ed098bd193c538201472f1c3b62b7e02cccfdedb0d3e1fca33",
     "packages/core/src/execution/quickJsObservationV2.test.ts": "d039f53b3bffcfa69470b7e7c8a7fe01468076771fbace3d79bcf0fb2fc95a98",
-    "packages/core/package.json": "8351d1c3f84e7d7c6ed1860fee03ab68758b9d05e558cb0c88505dce90d2d829",
+    "packages/core/package.json": "36650c520f8f9fe812fc521aeae3d56ba28ea90192d6ee19d1d99c5c5e720f01",
     "pnpm-lock.yaml": "9fde2ddb791d115402ab8b92fa0453d753ed175d77b91baf1a31e1ee1f23ff8d",
     "docs/execution-all-single-file-v4.14.md": "bd1aa05cd3e544c6fb11cbf4a4282eb493814a60de19a9d7e4599b9d3b20b0eb",
     "packages/core/src/contracts/registry.ts": "2264f376bae5856a20c3e1b991efbad7ca1e859adec8147debe862c89ad8536a",
