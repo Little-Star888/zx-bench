@@ -33329,6 +33329,126 @@
   "maxReasoningTokens": null
  },
  {
+  "id": "HC2-005",
+  "dimension": "hallucination_resistance",
+  "category": "challenge_extension",
+  "difficulty": "medium",
+  "language": "json",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "public_dev",
+  "promptTemplate": "以下均为虚构的封闭材料，只根据材料回答；不要使用外部事实或把材料中的宣传措辞当证据。需要跨材料推断；区分事实可确定、信息不足和无法消解的冲突。\n\nD1：Orion-core 与 Orion-ui 是不同软件包。公告 X 仅描述 core 中的漏洞 X，不评价其他漏洞。\nD2：公告 X 原始范围：core 版本 >=2.4.0 且 <2.7.0 受影响。\nD3：签名修订：在 D2 范围内，维护分支 2.6.x 的 2.6.4 及更高补丁号已修复 X；其他分支仍按 D2。\nD4：本题版本规则：2.7.0-rc.1 高于所有 2.6.x，但低于 2.7.0；它不属于 2.6.x 维护分支。\nD5：资产清单：服务 A 展示 ui 2.8.0，实际打包 core 2.6.3；服务 B 使用 core 2.6.4；服务 C 使用 core 2.7.0-rc.1。\nD6：自动扫描未在 C 报告 X，但扫描覆盖不完整；该结果不替代签名公告的版本适用范围。\n\n问题（每个 ID 单独作答）：\na_affected：服务 A 是否受漏洞 X 影响？用布尔值。\nb_affected：服务 B 是否受漏洞 X 影响？用布尔值。\nc_affected：服务 C 是否受漏洞 X 影响？用布尔值。\nui_safe：Orion-ui 2.8.0 是否不存在任何漏洞？无法判断则 null。\n\n只提交一个 JSON 对象，键不得重复，可使用一个 json 代码块包裹。数字可用数值或精确等价数字字符串；分数可用字符串 p/q。不要附加其他字段或自然语言解答。按题目给出可检验的答案/证书，不要求内部思维链。\n每个 ID 对应 {\"value\":答案,\"status\":\"determined\"或\"insufficient\"或\"conflict\",\"sources\":[\"材料ID\"]}。不能确定时 value 必须为 null，不填猜测值。sources 列出支持该项完整推断链的材料 ID，每项最多 6 个，不重复；可附带与本项有关的背景材料，不要无差别列出所有材料或编造编号。",
+  "grader": "challenge_extension",
+  "graderVersion": "1.0.0",
+  "scoring": {
+   "type": "binary_pass_fail",
+   "weights": {
+    "challenge_answer": 1
+   }
+  },
+  "hiddenTests": [],
+  "requirements": {
+   "challengeId": "HC2-005",
+   "sourcePackVersion": "challenge-extension-2026-09-13-v1",
+   "sourcePackHash": "477665fa40ce78b748365f648f9a4b360e2e74ac68436b6c61078b6e624dea03"
+  },
+  "tags": [
+   "deterministic",
+   "no_judge",
+   "prospective_only",
+   "challenge_coverage",
+   "pilot_ceiling_not_discrimination_evidence"
+  ],
+  "scenarioVersion": "1.0.0",
+  "scenarioHash": "b991d59aea6f68c4",
+  "responseMode": "raw_output",
+  "outputPolicy": "fenced_allowed",
+  "goldSource": "challenge-extension-2026-09-13-v1:programmatic-gold-replay",
+  "goldVerifiedAt": "2026-09-13T00:00:00.000Z",
+  "reviewStatus": "verified",
+  "maxReasoningTokens": 90000
+ },
+ {
+  "id": "HC2-008",
+  "dimension": "hallucination_resistance",
+  "category": "challenge_extension",
+  "difficulty": "medium",
+  "language": "json",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "public_dev",
+  "promptTemplate": "以下均为虚构的封闭材料，只根据材料回答；不要使用外部事实或把材料中的宣传措辞当证据。需要跨材料推断；区分事实可确定、信息不足和无法消解的冲突。\n\nD1：虚构资助规则：申请论文须在 8 月 1 日之前正式在线发表；预印本不算正式发表。符合资格不保证获资助。\nD2：评审日期 2026 年 9 月 10 日。三年内共同署名或过去 24 个月内在申请团队任职者须回避；起止日期含边界。回避后至少 3 名无冲突委员才可评议。\nD3：委员会成员 P1、P2、P3、P4。P2 与申请 R 在 2024 年 5 月共同署名；P4 在 R 团队任职至 2025 年 7 月。P1、P3 无冲突。\nD4：当前只记录 P2 已回避，P4 尚未回避；评审期间不能把有冲突但未回避者计入无冲突人数。\nD5：R 的预印本 7 月 28 日，正式在线发表 8 月 4 日。\nD6：申请 S 正式在线发表于 7 月 20 日；四位委员与 S 均无冲突；其他资格条件均已满足。\nD7：本期可资助两项，但没有提供 S 的质量评分或最终排序。\n\n问题（每个 ID 单独作答）：\nr_publication：R 是否满足发表日期资格？布尔值。\nr_recusals：对 R 必须回避的委员 ID 数组，顺序不限。\nr_quorum：对 R 是否有足够无冲突委员进行评议？布尔值。\ns_eligible：S 是否满足申请资格？布尔值。\ns_awarded：S 是否最终获资助？不能判断则 null。\n\n只提交一个 JSON 对象，键不得重复，可使用一个 json 代码块包裹。数字可用数值或精确等价数字字符串；分数可用字符串 p/q。不要附加其他字段或自然语言解答。按题目给出可检验的答案/证书，不要求内部思维链。\n每个 ID 对应 {\"value\":答案,\"status\":\"determined\"或\"insufficient\"或\"conflict\",\"sources\":[\"材料ID\"]}。不能确定时 value 必须为 null，不填猜测值。sources 列出支持该项完整推断链的材料 ID，每项最多 6 个，不重复；可附带与本项有关的背景材料，不要无差别列出所有材料或编造编号。",
+  "grader": "challenge_extension",
+  "graderVersion": "1.0.0",
+  "scoring": {
+   "type": "binary_pass_fail",
+   "weights": {
+    "challenge_answer": 1
+   }
+  },
+  "hiddenTests": [],
+  "requirements": {
+   "challengeId": "HC2-008",
+   "sourcePackVersion": "challenge-extension-2026-09-13-v1",
+   "sourcePackHash": "477665fa40ce78b748365f648f9a4b360e2e74ac68436b6c61078b6e624dea03"
+  },
+  "tags": [
+   "deterministic",
+   "no_judge",
+   "prospective_only",
+   "challenge_coverage",
+   "pilot_ceiling_not_discrimination_evidence"
+  ],
+  "scenarioVersion": "1.0.0",
+  "scenarioHash": "5e8b56a43a538914",
+  "responseMode": "raw_output",
+  "outputPolicy": "fenced_allowed",
+  "goldSource": "challenge-extension-2026-09-13-v1:programmatic-gold-replay",
+  "goldVerifiedAt": "2026-09-13T00:00:00.000Z",
+  "reviewStatus": "verified",
+  "maxReasoningTokens": 90000
+ },
+ {
+  "id": "HC3-001",
+  "dimension": "hallucination_resistance",
+  "category": "challenge_extension",
+  "difficulty": "medium",
+  "language": "json",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "public_dev",
+  "promptTemplate": "以下均为虚构的封闭材料，只根据材料回答；不要使用外部事实或把材料中的宣传措辞当证据。需要跨材料推断；区分事实可确定、信息不足和无法消解的冲突。\n\nD1：研究 R17 原文节选：Lumen 在离线日志重放中减少了重复告警；本研究运行时关闭了自动修复模块。\nD2：文献目录：R17 标题为《Lumen 告警去重评估》；R71 标题为《Oriole 自动修复现场试验》。二者是不同研究。\nD3：通讯文章写道：“Lumen 的自动修复已在现场试验中验证”，引文标为 R17。\nD4：研究 R71 原文节选：试验对象是 Oriole，评估的是它在现场环境中的自动修复；正文未将试验结果推广到其他系统。\nD5：附录系统对照表：Lumen 与 Oriole 使用不同实现，不能把一个系统的实测结果当作另一个系统的实测结果。\nD6：通讯更正记录：将 D3 的引文编号 R17 更正为 R71；正文系统名称仍为 Lumen，其他字句未修改。\nD7：Lumen 产品路线图把自动修复列为后续计划；材料中没有给出当前实际部署的模块清单。\n\n问题（每个 ID 单独作答）：\nr17_tested_repair：R17 是否实际测试了 Lumen 的自动修复？布尔值。\ntested_system：更正后所引 R71 的现场试验对象是哪一个系统？填写材料中的系统名称。\nlumen_result_supported：更正编号后的通讯结论“Lumen 自动修复已经现场验证”，是否得到所引研究的支持？布尔值。\nlumen_deployed_repair：Lumen 当前实际部署是否已启用自动修复？能判断时填布尔值，无法判断时填 null。\n\n只提交一个 JSON 对象，键不得重复，可使用一个 json 代码块包裹。数字可用数值或精确等价数字字符串；分数可用字符串 p/q。不要附加其他字段或自然语言解答。按题目给出可检验的答案/证书，不要求内部思维链。\n每个 ID 对应 {\"value\":答案,\"status\":\"determined\"或\"insufficient\"或\"conflict\",\"sources\":[\"材料ID\"]}。不能确定时 value 必须为 null，不填猜测值。sources 列出支持该项完整推断链的材料 ID，每项最多 6 个，不重复；可附带与本项有关的背景材料，不要无差别列出所有材料或编造编号。",
+  "grader": "challenge_extension",
+  "graderVersion": "1.0.0",
+  "scoring": {
+   "type": "binary_pass_fail",
+   "weights": {
+    "challenge_answer": 1
+   }
+  },
+  "hiddenTests": [],
+  "requirements": {
+   "challengeId": "HC3-001",
+   "sourcePackVersion": "challenge-extension-2026-09-13-v1",
+   "sourcePackHash": "477665fa40ce78b748365f648f9a4b360e2e74ac68436b6c61078b6e624dea03"
+  },
+  "tags": [
+   "deterministic",
+   "no_judge",
+   "prospective_only",
+   "challenge_coverage",
+   "pilot_ceiling_not_discrimination_evidence"
+  ],
+  "scenarioVersion": "1.0.0",
+  "scenarioHash": "0b5e6bc56fe9df8d",
+  "responseMode": "raw_output",
+  "outputPolicy": "fenced_allowed",
+  "goldSource": "challenge-extension-2026-09-13-v1:programmatic-gold-replay",
+  "goldVerifiedAt": "2026-09-13T00:00:00.000Z",
+  "reviewStatus": "verified",
+  "maxReasoningTokens": 90000
+ },
+ {
   "id": "HC3-002",
   "dimension": "hallucination_resistance",
   "category": "challenge_supplement",
@@ -33373,6 +33493,126 @@
   "reviewStatus": "verified",
   "answerFirst": null,
   "maxAnswerTokens": null,
+  "maxReasoningTokens": 90000
+ },
+ {
+  "id": "HC3-003",
+  "dimension": "hallucination_resistance",
+  "category": "challenge_extension",
+  "difficulty": "medium",
+  "language": "json",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "public_dev",
+  "promptTemplate": "以下均为虚构的封闭材料，只根据材料回答；不要使用外部事实或把材料中的宣传措辞当证据。需要跨材料推断；区分事实可确定、信息不足和无法消解的冲突。\n\nD1：6 月正式会议纪要：批准北区试点；全国推广另行审议。\nD2：项目路线图：拟于 11 月启动全国推广，尚需完成审批及部署准备。\nD3：8 月流转稿含句子“全国推广已经批准”；文件状态为征求意见稿，尚无签发记录。\nD4：9 月 8 日正式决议：截至签发时全国推广尚未获批，北区试点维持；收到安全评估后再议。\nD5：北区公告：“服务已经上线”，文中项目编号对应 D1 的北区试点。\nD6：转载文章截取 D3 的那句话，未提草稿状态，并用 D5 的公告作为全国上线的佐证。\n\n问题（每个 ID 单独作答）：\nnational_approved：截至 9 月 8 日正式决议签发时，全国推广是否已经获批？布尔值。\npilot_approved：截至该时点，北区试点是否有正式批准依据？布尔值。\nannouncement_proves_national：北区公告是否足以证明全国已经上线？布尔值。\nnational_actual_date：全国实际上线的日期是什么？能确定则填日期字符串，无法确定则 null。\n\n只提交一个 JSON 对象，键不得重复，可使用一个 json 代码块包裹。数字可用数值或精确等价数字字符串；分数可用字符串 p/q。不要附加其他字段或自然语言解答。按题目给出可检验的答案/证书，不要求内部思维链。\n每个 ID 对应 {\"value\":答案,\"status\":\"determined\"或\"insufficient\"或\"conflict\",\"sources\":[\"材料ID\"]}。不能确定时 value 必须为 null，不填猜测值。sources 列出支持该项完整推断链的材料 ID，每项最多 6 个，不重复；可附带与本项有关的背景材料，不要无差别列出所有材料或编造编号。",
+  "grader": "challenge_extension",
+  "graderVersion": "1.0.0",
+  "scoring": {
+   "type": "binary_pass_fail",
+   "weights": {
+    "challenge_answer": 1
+   }
+  },
+  "hiddenTests": [],
+  "requirements": {
+   "challengeId": "HC3-003",
+   "sourcePackVersion": "challenge-extension-2026-09-13-v1",
+   "sourcePackHash": "477665fa40ce78b748365f648f9a4b360e2e74ac68436b6c61078b6e624dea03"
+  },
+  "tags": [
+   "deterministic",
+   "no_judge",
+   "prospective_only",
+   "challenge_coverage",
+   "pilot_ceiling_not_discrimination_evidence"
+  ],
+  "scenarioVersion": "1.0.0",
+  "scenarioHash": "748dabef881d13f7",
+  "responseMode": "raw_output",
+  "outputPolicy": "fenced_allowed",
+  "goldSource": "challenge-extension-2026-09-13-v1:programmatic-gold-replay",
+  "goldVerifiedAt": "2026-09-13T00:00:00.000Z",
+  "reviewStatus": "verified",
+  "maxReasoningTokens": 90000
+ },
+ {
+  "id": "HC3-004",
+  "dimension": "hallucination_resistance",
+  "category": "challenge_extension",
+  "difficulty": "medium",
+  "language": "json",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "public_dev",
+  "promptTemplate": "以下均为虚构的封闭材料，只根据材料回答；不要使用外部事实或把材料中的宣传措辞当证据。需要跨材料推断；区分事实可确定、信息不足和无法消解的冲突。\n\nD1：访谈原话：“并没有证据说明软件时钟漂移是唯一原因，检修操作和传感器老化也仍在排查。”\nD2：新闻摘录写为：“软件时钟漂移是唯一原因”，并称此句来自 D1 的受访者。\nD3：设备台账：本次故障设备是 A91；另一份旧案例涉及 A19，它们不是同一设备。\nD4：实验日志：在隔离测试台人为设置时钟漂移后出现告警；日志未记载 A91 生产故障被复现，也未确认生产时存在相同设置。\nD5：维修记录：已更换 A91 的传感器，以排除一个待查因素；未宣布根因结论。\nD6：A19 旧案例的最终报告确认其传感器损坏；报告对象限于该次 A19 事件。\n\n问题（每个 ID 单独作答）：\nquote_faithful：D2 是否忠实表达了受访者关于“唯一原因”的原话？布尔值。\nproduction_reproduced：D4 是否记录了 A91 的生产故障已被复现？布尔值。\nsensor_replaced：A91 的传感器是否已经更换？布尔值。\nsensor_root_cause：本次 A91 故障是否确由传感器损坏造成？能确定时填布尔值，不能确定时填 null。\n\n只提交一个 JSON 对象，键不得重复，可使用一个 json 代码块包裹。数字可用数值或精确等价数字字符串；分数可用字符串 p/q。不要附加其他字段或自然语言解答。按题目给出可检验的答案/证书，不要求内部思维链。\n每个 ID 对应 {\"value\":答案,\"status\":\"determined\"或\"insufficient\"或\"conflict\",\"sources\":[\"材料ID\"]}。不能确定时 value 必须为 null，不填猜测值。sources 列出支持该项完整推断链的材料 ID，每项最多 6 个，不重复；可附带与本项有关的背景材料，不要无差别列出所有材料或编造编号。",
+  "grader": "challenge_extension",
+  "graderVersion": "1.0.0",
+  "scoring": {
+   "type": "binary_pass_fail",
+   "weights": {
+    "challenge_answer": 1
+   }
+  },
+  "hiddenTests": [],
+  "requirements": {
+   "challengeId": "HC3-004",
+   "sourcePackVersion": "challenge-extension-2026-09-13-v1",
+   "sourcePackHash": "477665fa40ce78b748365f648f9a4b360e2e74ac68436b6c61078b6e624dea03"
+  },
+  "tags": [
+   "deterministic",
+   "no_judge",
+   "prospective_only",
+   "challenge_coverage",
+   "pilot_ceiling_not_discrimination_evidence"
+  ],
+  "scenarioVersion": "1.0.0",
+  "scenarioHash": "b2b4002dea59552f",
+  "responseMode": "raw_output",
+  "outputPolicy": "fenced_allowed",
+  "goldSource": "challenge-extension-2026-09-13-v1:programmatic-gold-replay",
+  "goldVerifiedAt": "2026-09-13T00:00:00.000Z",
+  "reviewStatus": "verified",
+  "maxReasoningTokens": 90000
+ },
+ {
+  "id": "HC3-006",
+  "dimension": "hallucination_resistance",
+  "category": "challenge_extension",
+  "difficulty": "medium",
+  "language": "json",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "public_dev",
+  "promptTemplate": "以下均为虚构的封闭材料，只根据材料回答；不要使用外部事实或把材料中的宣传措辞当证据。需要跨材料推断；区分事实可确定、信息不足和无法消解的冲突。\n\nD1：实体表：C104 为青岭设备，C140 为青菱设备；二者都可能使用 QL 简写，法律主体不同。\nD2：证书 X 原件：持证主体 C140，认证对象为其 K 型设备；原件未包含其他主体或产品。\nD3：报道标题：“QL 的 K 型设备获得认证”，正文链接的原件是证书 X。\nD4：C104 的介绍页称正在推进同名 K 型设备的认证，并展示与 C140 的商标使用许可。\nD5：许可正文：C104 获准使用指定商标；许可不转移证书 X 的持证主体或认证范围。\nD6：C104 的 K 型设备已完成某实验室的内部原型测试；报告范围是该次测试，不涉及认证签发。\nD7：当前提供的证书材料只有 X，未提供覆盖所有认证机构的完整查询结果。\n\n问题（每个 ID 单独作答）：\ncertificate_holder：证书 X 的持证主体 ID 是什么？\nx_covers_c104：凭证书 X 及商标许可，能否认定 C104 的 K 型设备也在 X 的认证范围内？布尔值。\nprototype_tested：材料是否支持 C104 的 K 型设备已完成上述内部原型测试？布尔值。\nc104_any_certificate：C104 的 K 型设备是否已持有任何其他有效认证？能判断时填布尔值，无法判断则 null。\n\n只提交一个 JSON 对象，键不得重复，可使用一个 json 代码块包裹。数字可用数值或精确等价数字字符串；分数可用字符串 p/q。不要附加其他字段或自然语言解答。按题目给出可检验的答案/证书，不要求内部思维链。\n每个 ID 对应 {\"value\":答案,\"status\":\"determined\"或\"insufficient\"或\"conflict\",\"sources\":[\"材料ID\"]}。不能确定时 value 必须为 null，不填猜测值。sources 列出支持该项完整推断链的材料 ID，每项最多 6 个，不重复；可附带与本项有关的背景材料，不要无差别列出所有材料或编造编号。",
+  "grader": "challenge_extension",
+  "graderVersion": "1.0.0",
+  "scoring": {
+   "type": "binary_pass_fail",
+   "weights": {
+    "challenge_answer": 1
+   }
+  },
+  "hiddenTests": [],
+  "requirements": {
+   "challengeId": "HC3-006",
+   "sourcePackVersion": "challenge-extension-2026-09-13-v1",
+   "sourcePackHash": "477665fa40ce78b748365f648f9a4b360e2e74ac68436b6c61078b6e624dea03"
+  },
+  "tags": [
+   "deterministic",
+   "no_judge",
+   "prospective_only",
+   "challenge_coverage",
+   "pilot_ceiling_not_discrimination_evidence"
+  ],
+  "scenarioVersion": "1.0.0",
+  "scenarioHash": "1bf71334ba646d45",
+  "responseMode": "raw_output",
+  "outputPolicy": "fenced_allowed",
+  "goldSource": "challenge-extension-2026-09-13-v1:programmatic-gold-replay",
+  "goldVerifiedAt": "2026-09-13T00:00:00.000Z",
+  "reviewStatus": "verified",
   "maxReasoningTokens": 90000
  },
  {
@@ -38180,6 +38420,129 @@
   "maxReasoningTokens": 90000
  },
  {
+  "id": "MC2-003",
+  "dimension": "reasoning_math",
+  "category": "challenge_extension",
+  "difficulty": "medium",
+  "language": "json",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "public_dev",
+  "promptTemplate": "每个项目最多选择一次，cost、staff、value 可加；总 cost 不超过 budget，总 staff 不超过 staff；每个 requiredSkills 至少被一个所选项目覆盖。requires=[a,b] 表示选 a 必须选 b，exclusive 中两个项目不能同时选。最大化总 value。输出 selected（ID 数组，顺序不限）、cost、staff、value；任何最优组合均可。\n\n输入数据：\n{\n  \"budget\": 18,\n  \"staff\": 12,\n  \"requiredSkills\": [\n    \"x\",\n    \"y\",\n    \"z\"\n  ],\n  \"items\": [\n    {\n      \"id\": \"A\",\n      \"cost\": 5,\n      \"staff\": 3,\n      \"value\": 12,\n      \"skills\": [\n        \"x\"\n      ]\n    },\n    {\n      \"id\": \"B\",\n      \"cost\": 4,\n      \"staff\": 3,\n      \"value\": 10,\n      \"skills\": [\n        \"y\"\n      ]\n    },\n    {\n      \"id\": \"C\",\n      \"cost\": 6,\n      \"staff\": 4,\n      \"value\": 15,\n      \"skills\": [\n        \"z\"\n      ]\n    },\n    {\n      \"id\": \"D\",\n      \"cost\": 3,\n      \"staff\": 2,\n      \"value\": 8,\n      \"skills\": [\n        \"x\",\n        \"y\"\n      ]\n    },\n    {\n      \"id\": \"E\",\n      \"cost\": 5,\n      \"staff\": 3,\n      \"value\": 14,\n      \"skills\": [\n        \"z\"\n      ]\n    },\n    {\n      \"id\": \"F\",\n      \"cost\": 2,\n      \"staff\": 2,\n      \"value\": 6,\n      \"skills\": [\n        \"y\"\n      ]\n    },\n    {\n      \"id\": \"G\",\n      \"cost\": 4,\n      \"staff\": 2,\n      \"value\": 11,\n      \"skills\": [\n        \"x\",\n        \"z\"\n      ]\n    },\n    {\n      \"id\": \"H\",\n      \"cost\": 3,\n      \"staff\": 2,\n      \"value\": 9,\n      \"skills\": [\n        \"y\",\n        \"z\"\n      ]\n    }\n  ],\n  \"requires\": [\n    [\n      \"E\",\n      \"A\"\n    ],\n    [\n      \"H\",\n      \"B\"\n    ]\n  ],\n  \"exclusive\": [\n    [\n      \"C\",\n      \"G\"\n    ],\n    [\n      \"D\",\n      \"F\"\n    ]\n  ]\n}\n\n只提交一个 JSON 对象，键不得重复，可使用一个 json 代码块包裹。数字可用数值或精确等价数字字符串；分数可用字符串 p/q。不要附加其他字段或自然语言解答。按题目给出可检验的答案/证书，不要求内部思维链。",
+  "grader": "challenge_extension",
+  "graderVersion": "1.0.0",
+  "scoring": {
+   "type": "binary_pass_fail",
+   "weights": {
+    "challenge_answer": 1
+   }
+  },
+  "hiddenTests": [],
+  "requirements": {
+   "challengeId": "MC2-003",
+   "sourcePackVersion": "challenge-extension-2026-09-13-v1",
+   "sourcePackHash": "477665fa40ce78b748365f648f9a4b360e2e74ac68436b6c61078b6e624dea03"
+  },
+  "tags": [
+   "deterministic",
+   "no_judge",
+   "prospective_only",
+   "challenge_coverage",
+   "pilot_ceiling_not_discrimination_evidence"
+  ],
+  "scenarioVersion": "1.0.0",
+  "scenarioHash": "237effb1adb04ecf",
+  "responseMode": "raw_output",
+  "outputPolicy": "fenced_allowed",
+  "goldSource": "challenge-extension-2026-09-13-v1:programmatic-gold-replay",
+  "goldVerifiedAt": "2026-09-13T00:00:00.000Z",
+  "reviewStatus": "verified",
+  "maxReasoningTokens": 90000
+ },
+ {
+  "id": "MC2-004-R1",
+  "dimension": "reasoning_math",
+  "category": "challenge_extension",
+  "difficulty": "hard",
+  "language": "json",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "public_dev",
+  "promptTemplate": "长度 10 的字符串由 0、1、2 组成，恰有 4 个 0、3 个 1、3 个 2；每个前缀中 1 的数量不少于 2 的数量，且不得出现相邻 22。位置从 1 编号，计算所有“位置编号×该位数字”之和除以 5 的余数。输出 total（余数为 2 的字符串数）、by_first（这些字符串按首位 0、1、2 分组的数量）和 residue_histogram（所有满足字符数与前缀/相邻约束的字符串，按余数 0、1、2、3、4 分组的数量）。三个字段必须相互一致；相同字符不带标签。\n\n输入数据：\n{\n  \"length\": 10,\n  \"counts\": {\n    \"0\": 4,\n    \"1\": 3,\n    \"2\": 3\n  },\n  \"modulus\": 5,\n  \"targetRemainder\": 2\n}\n\n只提交一个 JSON 对象，键不得重复，可使用一个 json 代码块包裹。数字可用数值或精确等价数字字符串；分数可用字符串 p/q。不要附加其他字段或自然语言解答。按题目给出可检验的答案/证书，不要求内部思维链。",
+  "grader": "challenge_extension",
+  "graderVersion": "1.0.0",
+  "scoring": {
+   "type": "binary_pass_fail",
+   "weights": {
+    "challenge_answer": 1
+   }
+  },
+  "hiddenTests": [],
+  "requirements": {
+   "challengeId": "MC2-004-R1",
+   "sourcePackVersion": "challenge-extension-2026-09-13-v1",
+   "sourcePackHash": "477665fa40ce78b748365f648f9a4b360e2e74ac68436b6c61078b6e624dea03",
+   "developmentShadow": true
+  },
+  "tags": [
+   "deterministic",
+   "no_judge",
+   "prospective_only",
+   "challenge_revision",
+   "development_shadow",
+   "explicit_run_only",
+   "difficulty_unvalidated"
+  ],
+  "scenarioVersion": "1.0.0",
+  "scenarioHash": "ae5fd695d34ba80f",
+  "responseMode": "raw_output",
+  "outputPolicy": "fenced_allowed",
+  "goldSource": "challenge-extension-2026-09-13-v1:programmatic-gold-replay",
+  "goldVerifiedAt": "2026-09-13T00:00:00.000Z",
+  "reviewStatus": "verified",
+  "maxReasoningTokens": 90000
+ },
+ {
+  "id": "MC2-005",
+  "dimension": "reasoning_math",
+  "category": "challenge_extension",
+  "difficulty": "medium",
+  "language": "json",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "public_dev",
+  "promptTemplate": "先以 2/5 的概率选箱 A、3/5 选箱 B。A 有红 5、蓝 3、绿 2 球，B 有红 2、蓝 5、绿 3 球。同箱内各球等概率，每次不放回。观察前 3 次恰有 1 个绿球且至少 1 个红球，记事件 E。仍从所选箱抽第 4 球。输出 event_a=P(E|A)、event_b=P(E|B)、posterior_a=P(A|E)、next_red=P(第4球红|E)。必须用精确分数或精确等价小数，不得用近似小数。\n\n只提交一个 JSON 对象，键不得重复，可使用一个 json 代码块包裹。数字可用数值或精确等价数字字符串；分数可用字符串 p/q。不要附加其他字段或自然语言解答。按题目给出可检验的答案/证书，不要求内部思维链。",
+  "grader": "challenge_extension",
+  "graderVersion": "1.0.0",
+  "scoring": {
+   "type": "binary_pass_fail",
+   "weights": {
+    "challenge_answer": 1
+   }
+  },
+  "hiddenTests": [],
+  "requirements": {
+   "challengeId": "MC2-005",
+   "sourcePackVersion": "challenge-extension-2026-09-13-v1",
+   "sourcePackHash": "477665fa40ce78b748365f648f9a4b360e2e74ac68436b6c61078b6e624dea03"
+  },
+  "tags": [
+   "deterministic",
+   "no_judge",
+   "prospective_only",
+   "challenge_coverage",
+   "pilot_ceiling_not_discrimination_evidence"
+  ],
+  "scenarioVersion": "1.0.0",
+  "scenarioHash": "82dbc05393bd37a8",
+  "responseMode": "raw_output",
+  "outputPolicy": "fenced_allowed",
+  "goldSource": "challenge-extension-2026-09-13-v1:programmatic-gold-replay",
+  "goldVerifiedAt": "2026-09-13T00:00:00.000Z",
+  "reviewStatus": "verified",
+  "maxReasoningTokens": 90000
+ },
+ {
   "id": "MC2-006",
   "dimension": "reasoning_math",
   "category": "challenge_supplement",
@@ -38224,6 +38587,246 @@
   "reviewStatus": "verified",
   "answerFirst": null,
   "maxAnswerTokens": null,
+  "maxReasoningTokens": 90000
+ },
+ {
+  "id": "MC2-007",
+  "dimension": "reasoning_math",
+  "category": "challenge_extension",
+  "difficulty": "medium",
+  "language": "json",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "public_dev",
+  "promptTemplate": "求 0≤x<6048 中全部满足 x²≡1 (mod 32)、x²≡4 (mod 27)、x≡5 (mod 7) 的整数。输出 roots32（0..31 的第一式全部根）、roots27（0..26 的第二式全部根）、solutions（全部 x）。三个数组顺序不限，但不得重复或漏解。\n\n只提交一个 JSON 对象，键不得重复，可使用一个 json 代码块包裹。数字可用数值或精确等价数字字符串；分数可用字符串 p/q。不要附加其他字段或自然语言解答。按题目给出可检验的答案/证书，不要求内部思维链。",
+  "grader": "challenge_extension",
+  "graderVersion": "1.0.0",
+  "scoring": {
+   "type": "binary_pass_fail",
+   "weights": {
+    "challenge_answer": 1
+   }
+  },
+  "hiddenTests": [],
+  "requirements": {
+   "challengeId": "MC2-007",
+   "sourcePackVersion": "challenge-extension-2026-09-13-v1",
+   "sourcePackHash": "477665fa40ce78b748365f648f9a4b360e2e74ac68436b6c61078b6e624dea03"
+  },
+  "tags": [
+   "deterministic",
+   "no_judge",
+   "prospective_only",
+   "challenge_coverage",
+   "pilot_ceiling_not_discrimination_evidence"
+  ],
+  "scenarioVersion": "1.0.0",
+  "scenarioHash": "8a729785ce68a8d0",
+  "responseMode": "raw_output",
+  "outputPolicy": "fenced_allowed",
+  "goldSource": "challenge-extension-2026-09-13-v1:programmatic-gold-replay",
+  "goldVerifiedAt": "2026-09-13T00:00:00.000Z",
+  "reviewStatus": "verified",
+  "maxReasoningTokens": 90000
+ },
+ {
+  "id": "MC2-008",
+  "dimension": "reasoning_math",
+  "category": "challenge_extension",
+  "difficulty": "medium",
+  "language": "json",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "public_dev",
+  "promptTemplate": "给定简单无向图，删除尽量少的顶点使剩余诱导图为二分图；protected 顶点不得删除。输出 deleted（删除顶点）、minimum（最少删除数）、part_a、part_b（剩余顶点的完整不重叠划分）。任一最优删除方案及有效划分均可，所有数组顺序不限。\n\n输入数据：\n{\n  \"vertices\": [\n    1,\n    2,\n    3,\n    4,\n    5,\n    6,\n    7,\n    8,\n    9,\n    10,\n    11,\n    12\n  ],\n  \"protected\": [\n    1,\n    4\n  ],\n  \"edges\": [\n    [\n      1,\n      2\n    ],\n    [\n      2,\n      3\n    ],\n    [\n      3,\n      1\n    ],\n    [\n      4,\n      5\n    ],\n    [\n      5,\n      6\n    ],\n    [\n      6,\n      4\n    ],\n    [\n      7,\n      8\n    ],\n    [\n      8,\n      9\n    ],\n    [\n      9,\n      7\n    ],\n    [\n      10,\n      11\n    ],\n    [\n      11,\n      12\n    ],\n    [\n      12,\n      10\n    ],\n    [\n      2,\n      5\n    ],\n    [\n      3,\n      7\n    ],\n    [\n      6,\n      10\n    ],\n    [\n      8,\n      11\n    ],\n    [\n      9,\n      12\n    ],\n    [\n      1,\n      8\n    ],\n    [\n      4,\n      11\n    ]\n  ]\n}\n\n只提交一个 JSON 对象，键不得重复，可使用一个 json 代码块包裹。数字可用数值或精确等价数字字符串；分数可用字符串 p/q。不要附加其他字段或自然语言解答。按题目给出可检验的答案/证书，不要求内部思维链。",
+  "grader": "challenge_extension",
+  "graderVersion": "1.0.0",
+  "scoring": {
+   "type": "binary_pass_fail",
+   "weights": {
+    "challenge_answer": 1
+   }
+  },
+  "hiddenTests": [],
+  "requirements": {
+   "challengeId": "MC2-008",
+   "sourcePackVersion": "challenge-extension-2026-09-13-v1",
+   "sourcePackHash": "477665fa40ce78b748365f648f9a4b360e2e74ac68436b6c61078b6e624dea03"
+  },
+  "tags": [
+   "deterministic",
+   "no_judge",
+   "prospective_only",
+   "challenge_coverage",
+   "pilot_ceiling_not_discrimination_evidence"
+  ],
+  "scenarioVersion": "1.0.0",
+  "scenarioHash": "fcc3c1658b73282e",
+  "responseMode": "raw_output",
+  "outputPolicy": "fenced_allowed",
+  "goldSource": "challenge-extension-2026-09-13-v1:programmatic-gold-replay",
+  "goldVerifiedAt": "2026-09-13T00:00:00.000Z",
+  "reviewStatus": "verified",
+  "maxReasoningTokens": 90000
+ },
+ {
+  "id": "MC2-009",
+  "dimension": "reasoning_math",
+  "category": "challenge_extension",
+  "difficulty": "medium",
+  "language": "json",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "public_dev",
+  "promptTemplate": "只根据以下虚构材料计算所问数值。\nD1：差旅制度 V2，8 月 1 日生效：境内 E1/E2 员工租车费用上限为每日 400 元。\nD2：境外差旅附件：境外租车上限为每日 70 美元；不适用于境内行程。\nD3：制度 V3，9 月 1 日生效：仅对当日及以后签约的员工，将境内租车上限改为每日 520 元；此前签约员工仍执行 V2。\nD4：P17 项目特批：签约日不影响适用；9 月 1 日至 9 月 20 日发生的境内租车每日上限为 460 元，覆盖一般制度的金额上限，其他条件不变，须原始发票。\nD5：该申请人职级为 E2，8 月 25 日签约，参加 P17 项目，9 月 12 日境内租车一天；实付 490 元，客户已补偿 50 元，原始发票已验真。\nD6：报销算法：先从实付金额扣除客户已补偿部分，再与适用上限取较小值；项目特批不改变该算法。\nD7：发票复印件替代规则从 9 月 15 日起适用，不追溯；仅改变凭证要求，不改变金额和项目特批期限。\n\n请分别输出下列字段的数值（每项直接填数值，不需要 sources 或 status）：\ncap：针对 D5 中这位职级为 E2 的申请人，这次租车适用的每日报销上限是多少元？\nnet：D5 中这位申请人的本次租车费用，扣除客户补偿后的金额是多少元？\npayment：D5 中这位申请人的本次租车费用，实际应报销多少元？\nlater_payment：仍针对 D5 中同一位申请人，若只把本次租车发生日改为 9 月 22 日，其他事实不变，实际应报销多少元？\n\n只提交一个 JSON 对象，键不得重复，可使用一个 json 代码块包裹。数字可用数值或精确等价数字字符串；分数可用字符串 p/q。不要附加其他字段或自然语言解答。按题目给出可检验的答案/证书，不要求内部思维链。",
+  "grader": "challenge_extension",
+  "graderVersion": "1.0.0",
+  "scoring": {
+   "type": "binary_pass_fail",
+   "weights": {
+    "challenge_answer": 1
+   }
+  },
+  "hiddenTests": [],
+  "requirements": {
+   "challengeId": "MC2-009",
+   "sourcePackVersion": "challenge-extension-2026-09-13-v1",
+   "sourcePackHash": "477665fa40ce78b748365f648f9a4b360e2e74ac68436b6c61078b6e624dea03"
+  },
+  "tags": [
+   "deterministic",
+   "no_judge",
+   "prospective_only",
+   "challenge_coverage",
+   "pilot_ceiling_not_discrimination_evidence"
+  ],
+  "scenarioVersion": "1.0.0",
+  "scenarioHash": "02b76bceea96dbd0",
+  "responseMode": "raw_output",
+  "outputPolicy": "fenced_allowed",
+  "goldSource": "challenge-extension-2026-09-13-v1:programmatic-gold-replay",
+  "goldVerifiedAt": "2026-09-13T00:00:00.000Z",
+  "reviewStatus": "verified",
+  "maxReasoningTokens": 90000
+ },
+ {
+  "id": "MC2-010",
+  "dimension": "reasoning_math",
+  "category": "challenge_extension",
+  "difficulty": "medium",
+  "language": "json",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "public_dev",
+  "promptTemplate": "只根据以下虚构材料计算所问数值。\nD1：观测性项目：A 站点全部接受新方案，B 站点全部接受旧方案；未随机分组。\nD2：入组：新方案 60 人，旧方案 60 人；评价终点为第 30 天是否达到预设响应。\nD3：新方案第 30 天实际测量 48 人，其中响应 36 人；旧方案实际测量 50 人，其中响应 30 人。\nD4：预先冻结的全入组分析规则：所有入组者进入各组分母，未测量者按未响应计；完整病例分析只使用实际测量者。\nD5：新闻稿标题称“新方案让响应率提升”；正文未说明因果识别方法。\nD6：两个站点在入组风险、年龄和服务资源上不同，未提供个体协变量或调整结果。\n\n请分别输出下列字段的数值（每项直接填数值，不需要 sources 或 status）：\nnew_itt：新方案全入组响应率，用百分数数值（如 12.5，而非带 % 字符串）。\nold_itt：旧方案全入组响应率，用百分数数值。\nitt_gap：全入组响应率新减旧，单位百分点。\ncomplete_gap：完整病例响应率新减旧，单位百分点。\n\n只提交一个 JSON 对象，键不得重复，可使用一个 json 代码块包裹。数字可用数值或精确等价数字字符串；分数可用字符串 p/q。不要附加其他字段或自然语言解答。按题目给出可检验的答案/证书，不要求内部思维链。",
+  "grader": "challenge_extension",
+  "graderVersion": "1.0.0",
+  "scoring": {
+   "type": "binary_pass_fail",
+   "weights": {
+    "challenge_answer": 1
+   }
+  },
+  "hiddenTests": [],
+  "requirements": {
+   "challengeId": "MC2-010",
+   "sourcePackVersion": "challenge-extension-2026-09-13-v1",
+   "sourcePackHash": "477665fa40ce78b748365f648f9a4b360e2e74ac68436b6c61078b6e624dea03"
+  },
+  "tags": [
+   "deterministic",
+   "no_judge",
+   "prospective_only",
+   "challenge_coverage",
+   "pilot_ceiling_not_discrimination_evidence"
+  ],
+  "scenarioVersion": "1.0.0",
+  "scenarioHash": "8a12f191f4bba4e2",
+  "responseMode": "raw_output",
+  "outputPolicy": "fenced_allowed",
+  "goldSource": "challenge-extension-2026-09-13-v1:programmatic-gold-replay",
+  "goldVerifiedAt": "2026-09-13T00:00:00.000Z",
+  "reviewStatus": "verified",
+  "maxReasoningTokens": 90000
+ },
+ {
+  "id": "MC2-011",
+  "dimension": "reasoning_math",
+  "category": "challenge_extension",
+  "difficulty": "medium",
+  "language": "json",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "public_dev",
+  "promptTemplate": "只根据以下虚构材料计算所问数值。\nD1：甲公司第三季度收入初稿 150 百万元；本表不含乙公司。\nD2：乙公司第三季度账面收入 124 百万元，尚未扣除一笔已确认退货。\nD3：同季甲向乙销售 30 百万元，乙向甲销售 12 百万元；两笔均已包含在各自账面收入。合并收入须全额抵销这两笔内部销售。\nD4：乙的一笔对外销售在 9 月 28 日确认退货 8 百万元，按制度冲减当季收入；该退货与内部销售无关。\nD5：丙公司自 10 月 1 日起才纳入合并；收购价 50 百万元，丙第三季度自身收入 70 百万元。\nD6：库存中未实现内部毛利 5 百万元的抵销只影响利润，不额外冲减本题收入。\nD7：10 月 4 日签发的甲第三季度最终更正：收入为 156 百万元，替代 D1；D3 内部销售金额不变。\nD8：材料未提供甲、乙完整成本费用和所得税。\n\n请分别输出下列字段的数值（每项直接填数值，不需要 sources 或 status）：\nexternal_a：甲第三季度对外收入，单位百万元。\nexternal_b：乙第三季度扣除退货后的对外收入，单位百万元。\nconsolidated：甲乙集团第三季度合并收入，单位百万元。\n\n只提交一个 JSON 对象，键不得重复，可使用一个 json 代码块包裹。数字可用数值或精确等价数字字符串；分数可用字符串 p/q。不要附加其他字段或自然语言解答。按题目给出可检验的答案/证书，不要求内部思维链。",
+  "grader": "challenge_extension",
+  "graderVersion": "1.0.0",
+  "scoring": {
+   "type": "binary_pass_fail",
+   "weights": {
+    "challenge_answer": 1
+   }
+  },
+  "hiddenTests": [],
+  "requirements": {
+   "challengeId": "MC2-011",
+   "sourcePackVersion": "challenge-extension-2026-09-13-v1",
+   "sourcePackHash": "477665fa40ce78b748365f648f9a4b360e2e74ac68436b6c61078b6e624dea03"
+  },
+  "tags": [
+   "deterministic",
+   "no_judge",
+   "prospective_only",
+   "challenge_coverage",
+   "pilot_ceiling_not_discrimination_evidence"
+  ],
+  "scenarioVersion": "1.0.0",
+  "scenarioHash": "8a5bbcf898c6f8a5",
+  "responseMode": "raw_output",
+  "outputPolicy": "fenced_allowed",
+  "goldSource": "challenge-extension-2026-09-13-v1:programmatic-gold-replay",
+  "goldVerifiedAt": "2026-09-13T00:00:00.000Z",
+  "reviewStatus": "verified",
+  "maxReasoningTokens": 90000
+ },
+ {
+  "id": "MC2-012",
+  "dimension": "reasoning_math",
+  "category": "challenge_extension",
+  "difficulty": "medium",
+  "language": "json",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "public_dev",
+  "promptTemplate": "只根据以下虚构材料计算所问数值。\nD1：本报告总体是北厂 200 台不同设备，每台只有一个唯一资产编号。\nD2：同一检查期，集合 A 有 42 台（漏油），集合 B 有 35 台（过热）；各集合内部已去重。\nD3：原始关联记录部分丢失，唯一能确认的是 A 与 B 交集至少 12 台、至多 18 台；区间内所有整数都与现存记录相容。\nD4：集合 C 有 8 台，全部同时属于 A 和 B；C 不额外限制 D3 的区间。\nD5：南厂同名报告的漏油设备为 26 台；南厂资产不属于 D1 总体。\nD6：本题“无上述故障”仅指既不在 A 也不在 B；不讨论其他故障。\n\n请分别输出下列字段的数值（每项直接填数值，不需要 sources 或 status）：\nany_min：北厂至少一种上述故障的最少设备数。\nany_max：北厂至少一种上述故障的最多设备数。\nclean_min：无上述故障的最少设备数。\nclean_max：无上述故障的最多设备数。\n\n只提交一个 JSON 对象，键不得重复，可使用一个 json 代码块包裹。数字可用数值或精确等价数字字符串；分数可用字符串 p/q。不要附加其他字段或自然语言解答。按题目给出可检验的答案/证书，不要求内部思维链。",
+  "grader": "challenge_extension",
+  "graderVersion": "1.0.0",
+  "scoring": {
+   "type": "binary_pass_fail",
+   "weights": {
+    "challenge_answer": 1
+   }
+  },
+  "hiddenTests": [],
+  "requirements": {
+   "challengeId": "MC2-012",
+   "sourcePackVersion": "challenge-extension-2026-09-13-v1",
+   "sourcePackHash": "477665fa40ce78b748365f648f9a4b360e2e74ac68436b6c61078b6e624dea03"
+  },
+  "tags": [
+   "deterministic",
+   "no_judge",
+   "prospective_only",
+   "challenge_coverage",
+   "pilot_ceiling_not_discrimination_evidence"
+  ],
+  "scenarioVersion": "1.0.0",
+  "scenarioHash": "30cf726842e8774c",
+  "responseMode": "raw_output",
+  "outputPolicy": "fenced_allowed",
+  "goldSource": "challenge-extension-2026-09-13-v1:programmatic-gold-replay",
+  "goldVerifiedAt": "2026-09-13T00:00:00.000Z",
+  "reviewStatus": "verified",
   "maxReasoningTokens": 90000
  },
  {
@@ -48758,5 +49361,251 @@
   "maxAnswerTokens": null,
   "maxReasoningTokens": null,
   "goldVerifiedAt": "2026-09-08"
+ },
+ {
+  "id": "V2-0dd41d46f70f13",
+  "dimension": "reasoning_math",
+  "category": "stopping_conditioning",
+  "difficulty": "hard",
+  "language": "json",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "public_dev",
+  "promptTemplate": "这是一个隐藏来源、提前停止和选择性报告的概率实验。颜色下标0/1/2依次为红/蓝/绿；盒内每个球等概率。\n1. 开始时只选一次盒子：选择A的概率为priorA[0]/priorA[1]，否则选B；此后不换盒。boxes[0]/boxes[1]给出A/B中三种颜色球的数量。\n2. 从所选盒逐个不放回抽球。每次抽后检查：累计抽到stopGreen个绿球，或总抽取次数达到cap，即立即停止。停止后的球留在盒中，不再执行本阶段抽取；已抽出的球不放回。记真实停止长度为T。\n3. 只有“已抽出恰好1个红球，且最后一个抽出的球是绿球”时，观察员才有资格发出报告。满足此条件后，还以reportByLength[T][0]/reportByLength[T][1]的概率发出报告，否则保持沉默。该报告硬币在给定T后与其他随机选择独立。不满足资格条件时报告概率为0。\n4. 你只知道报告确实发出，不知道盒子、T、完整颜色序列或硬币结果以外的信息。下一次抽取从停止时剩下的同一盒球中进行，仍不放回。\n求：report_probability=P(发出报告)；posterior_a=P(选A|发出报告)；early_stop_probability=P(T<cap|发出报告)；next_red_probability=P(随后第1球红|发出报告)；next_two_same_probability=P(随后连续两球颜色相同|发出报告)。\n可仅返回JSON对象；若附解释，最终答案须放在唯一的json代码块中，不另给第二份JSON答案。键为上述五个名称，数值为精确整数或分数字符串。五个答案独立逐项核验，全部正确才算整题精确答案通过。无法明确提取答案时标为未能验证，不推断数学答案错误；格式合规单独记录。仅核验五个最终概率，不评判附加证明。\n数据：{\"boxes\":[[5,3,2],[2,5,3]],\"priorA\":[2,5],\"cap\":4,\"stopGreen\":2,\"reportByLength\":[[1,1],[1,1],[1,1],[1,1],[1,1]]}\n档案管理信息：本月有37份登记单，封面编号908。这些字段不参与实验。",
+  "grader": "challenge_extension",
+  "graderVersion": "1.0.0",
+  "scoring": {
+   "type": "binary_pass_fail",
+   "weights": {
+    "challenge_answer": 1
+   }
+  },
+  "hiddenTests": [],
+  "requirements": {
+   "challengeId": "V2-0dd41d46f70f13",
+   "sourcePackVersion": "challenge-extension-2026-09-13-v1",
+   "sourcePackHash": "477665fa40ce78b748365f648f9a4b360e2e74ac68436b6c61078b6e624dea03"
+  },
+  "tags": [
+   "deterministic",
+   "no_judge",
+   "prospective_only",
+   "challenge_probability",
+   "family_stopping_conditioning",
+   "variant_irrelevant"
+  ],
+  "scenarioVersion": "1.0.0",
+  "scenarioHash": "5c228e9d860d437d",
+  "responseMode": "raw_output",
+  "outputPolicy": "fenced_allowed",
+  "goldSource": "challenge-extension-2026-09-13-v1:programmatic-gold-replay",
+  "goldVerifiedAt": "2026-09-13T00:00:00.000Z",
+  "reviewStatus": "verified",
+  "maxReasoningTokens": 90000
+ },
+ {
+  "id": "V2-554b8ce210b857",
+  "dimension": "reasoning_math",
+  "category": "stopping_conditioning",
+  "difficulty": "hard",
+  "language": "json",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "public_dev",
+  "promptTemplate": "这是一个隐藏来源、提前停止和选择性报告的概率实验。颜色下标0/1/2依次为红/蓝/绿；盒内每个球等概率。\n1. 开始时只选一次盒子：选择A的概率为priorA[0]/priorA[1]，否则选B；此后不换盒。boxes[0]/boxes[1]给出A/B中三种颜色球的数量。\n2. 从所选盒逐个不放回抽球。每次抽后检查：累计抽到stopGreen个绿球，或总抽取次数达到cap，即立即停止。停止后的球留在盒中，不再执行本阶段抽取；已抽出的球不放回。记真实停止长度为T。\n3. 只有“已抽出恰好1个红球，且最后一个抽出的球是绿球”时，观察员才有资格发出报告。满足此条件后，还以reportByLength[T][0]/reportByLength[T][1]的概率发出报告，否则保持沉默。该报告硬币在给定T后与其他随机选择独立。不满足资格条件时报告概率为0。\n4. 你只知道报告确实发出，不知道盒子、T、完整颜色序列或硬币结果以外的信息。下一次抽取从停止时剩下的同一盒球中进行，仍不放回。\n求：report_probability=P(发出报告)；posterior_a=P(选A|发出报告)；early_stop_probability=P(T<cap|发出报告)；next_red_probability=P(随后第1球红|发出报告)；next_two_same_probability=P(随后连续两球颜色相同|发出报告)。\n可仅返回JSON对象；若附解释，最终答案须放在唯一的json代码块中，不另给第二份JSON答案。键为上述五个名称，数值为精确整数或分数字符串。五个答案独立逐项核验，全部正确才算整题精确答案通过。无法明确提取答案时标为未能验证，不推断数学答案错误；格式合规单独记录。仅核验五个最终概率，不评判附加证明。\n数据：{\"boxes\":[[4,4,2],[2,4,4]],\"priorA\":[3,7],\"cap\":4,\"stopGreen\":2,\"reportByLength\":[[1,1],[1,1],[1,1],[1,1],[1,1]]}",
+  "grader": "challenge_extension",
+  "graderVersion": "1.0.0",
+  "scoring": {
+   "type": "binary_pass_fail",
+   "weights": {
+    "challenge_answer": 1
+   }
+  },
+  "hiddenTests": [],
+  "requirements": {
+   "challengeId": "V2-554b8ce210b857",
+   "sourcePackVersion": "challenge-extension-2026-09-13-v1",
+   "sourcePackHash": "477665fa40ce78b748365f648f9a4b360e2e74ac68436b6c61078b6e624dea03"
+  },
+  "tags": [
+   "deterministic",
+   "no_judge",
+   "prospective_only",
+   "challenge_probability",
+   "family_stopping_conditioning",
+   "variant_parameter"
+  ],
+  "scenarioVersion": "1.0.0",
+  "scenarioHash": "bb2c402dd250f9ae",
+  "responseMode": "raw_output",
+  "outputPolicy": "fenced_allowed",
+  "goldSource": "challenge-extension-2026-09-13-v1:programmatic-gold-replay",
+  "goldVerifiedAt": "2026-09-13T00:00:00.000Z",
+  "reviewStatus": "verified",
+  "maxReasoningTokens": 90000
+ },
+ {
+  "id": "V2-595bf9608ca5bb",
+  "dimension": "reasoning_math",
+  "category": "stopping_conditioning",
+  "difficulty": "hard",
+  "language": "json",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "public_dev",
+  "promptTemplate": "这是一个隐藏来源、提前停止和选择性报告的概率实验。颜色下标0/1/2依次为红/蓝/绿；盒内每个球等概率。\n1. 开始时只选一次盒子：选择A的概率为priorA[0]/priorA[1]，否则选B；此后不换盒。boxes[0]/boxes[1]给出A/B中三种颜色球的数量。\n2. 从所选盒逐个不放回抽球。每次抽后检查：累计抽到stopGreen个绿球，或总抽取次数达到cap，即立即停止。停止后的球留在盒中，不再执行本阶段抽取；已抽出的球不放回。记真实停止长度为T。\n3. 只有“已抽出恰好1个红球，且最后一个抽出的球是绿球”时，观察员才有资格发出报告。满足此条件后，还以reportByLength[T][0]/reportByLength[T][1]的概率发出报告，否则保持沉默。该报告硬币在给定T后与其他随机选择独立。不满足资格条件时报告概率为0。\n4. 你只知道报告确实发出，不知道盒子、T、完整颜色序列或硬币结果以外的信息。下一次抽取从停止时剩下的同一盒球中进行，仍不放回。\n求：report_probability=P(发出报告)；posterior_a=P(选A|发出报告)；early_stop_probability=P(T<cap|发出报告)；next_red_probability=P(随后第1球红|发出报告)；next_two_same_probability=P(随后连续两球颜色相同|发出报告)。\n可仅返回JSON对象；若附解释，最终答案须放在唯一的json代码块中，不另给第二份JSON答案。键为上述五个名称，数值为精确整数或分数字符串。五个答案独立逐项核验，全部正确才算整题精确答案通过。无法明确提取答案时标为未能验证，不推断数学答案错误；格式合规单独记录。仅核验五个最终概率，不评判附加证明。\n数据：{\"boxes\":[[5,3,2],[2,5,3]],\"priorA\":[2,5],\"cap\":4,\"stopGreen\":2,\"reportByLength\":[[1,1],[1,1],[1,1],[1,1],[1,1]]}",
+  "grader": "challenge_extension",
+  "graderVersion": "1.0.0",
+  "scoring": {
+   "type": "binary_pass_fail",
+   "weights": {
+    "challenge_answer": 1
+   }
+  },
+  "hiddenTests": [],
+  "requirements": {
+   "challengeId": "V2-595bf9608ca5bb",
+   "sourcePackVersion": "challenge-extension-2026-09-13-v1",
+   "sourcePackHash": "477665fa40ce78b748365f648f9a4b360e2e74ac68436b6c61078b6e624dea03"
+  },
+  "tags": [
+   "deterministic",
+   "no_judge",
+   "prospective_only",
+   "challenge_probability",
+   "family_stopping_conditioning",
+   "variant_base"
+  ],
+  "scenarioVersion": "1.0.0",
+  "scenarioHash": "fbb5238cd3d7ef9e",
+  "responseMode": "raw_output",
+  "outputPolicy": "fenced_allowed",
+  "goldSource": "challenge-extension-2026-09-13-v1:programmatic-gold-replay",
+  "goldVerifiedAt": "2026-09-13T00:00:00.000Z",
+  "reviewStatus": "verified",
+  "maxReasoningTokens": 90000
+ },
+ {
+  "id": "V2-b1aaf236796076",
+  "dimension": "reasoning_math",
+  "category": "observation_selection",
+  "difficulty": "hard",
+  "language": "json",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "public_dev",
+  "promptTemplate": "这是一个隐藏来源、提前停止和选择性报告的概率实验。颜色下标0/1/2依次为红/蓝/绿；盒内每个球等概率。\n1. 开始时只选一次盒子：选择A的概率为priorA[0]/priorA[1]，否则选B；此后不换盒。boxes[0]/boxes[1]给出A/B中三种颜色球的数量。\n2. 从所选盒逐个不放回抽球。每次抽后检查：累计抽到stopGreen个绿球，或总抽取次数达到cap，即立即停止。停止后的球留在盒中，不再执行本阶段抽取；已抽出的球不放回。记真实停止长度为T。\n3. 只有“已抽出恰好1个红球，且最后一个抽出的球是绿球”时，观察员才有资格发出报告。满足此条件后，还以reportByLength[T][0]/reportByLength[T][1]的概率发出报告，否则保持沉默。该报告硬币在给定T后与其他随机选择独立。不满足资格条件时报告概率为0。\n4. 你只知道报告确实发出，不知道盒子、T、完整颜色序列或硬币结果以外的信息。下一次抽取从停止时剩下的同一盒球中进行，仍不放回。\n求：report_probability=P(发出报告)；posterior_a=P(选A|发出报告)；early_stop_probability=P(T<cap|发出报告)；next_red_probability=P(随后第1球红|发出报告)；next_two_same_probability=P(随后连续两球颜色相同|发出报告)。\n可仅返回JSON对象；若附解释，最终答案须放在唯一的json代码块中，不另给第二份JSON答案。键为上述五个名称，数值为精确整数或分数字符串。五个答案独立逐项核验，全部正确才算整题精确答案通过。无法明确提取答案时标为未能验证，不推断数学答案错误；格式合规单独记录。仅核验五个最终概率，不评判附加证明。\n数据：{\"boxes\":[[5,3,2],[2,5,3]],\"priorA\":[2,5],\"cap\":4,\"stopGreen\":2,\"reportByLength\":[[0,1],[1,5],[1,5],[1,3],[3,4]]}",
+  "grader": "challenge_extension",
+  "graderVersion": "1.0.0",
+  "scoring": {
+   "type": "binary_pass_fail",
+   "weights": {
+    "challenge_answer": 1
+   }
+  },
+  "hiddenTests": [],
+  "requirements": {
+   "challengeId": "V2-b1aaf236796076",
+   "sourcePackVersion": "challenge-extension-2026-09-13-v1",
+   "sourcePackHash": "477665fa40ce78b748365f648f9a4b360e2e74ac68436b6c61078b6e624dea03"
+  },
+  "tags": [
+   "deterministic",
+   "no_judge",
+   "prospective_only",
+   "challenge_probability",
+   "family_observation_selection",
+   "variant_base"
+  ],
+  "scenarioVersion": "1.0.0",
+  "scenarioHash": "6122ee62dfb488d2",
+  "responseMode": "raw_output",
+  "outputPolicy": "fenced_allowed",
+  "goldSource": "challenge-extension-2026-09-13-v1:programmatic-gold-replay",
+  "goldVerifiedAt": "2026-09-13T00:00:00.000Z",
+  "reviewStatus": "verified",
+  "maxReasoningTokens": 90000
+ },
+ {
+  "id": "V2-c1fb0754a25d8f",
+  "dimension": "reasoning_math",
+  "category": "observation_selection",
+  "difficulty": "hard",
+  "language": "json",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "public_dev",
+  "promptTemplate": "这是一个隐藏来源、提前停止和选择性报告的概率实验。颜色下标0/1/2依次为红/蓝/绿；盒内每个球等概率。\n1. 开始时只选一次盒子：选择A的概率为priorA[0]/priorA[1]，否则选B；此后不换盒。boxes[0]/boxes[1]给出A/B中三种颜色球的数量。\n2. 从所选盒逐个不放回抽球。每次抽后检查：累计抽到stopGreen个绿球，或总抽取次数达到cap，即立即停止。停止后的球留在盒中，不再执行本阶段抽取；已抽出的球不放回。记真实停止长度为T。\n3. 只有“已抽出恰好1个红球，且最后一个抽出的球是绿球”时，观察员才有资格发出报告。满足此条件后，还以reportByLength[T][0]/reportByLength[T][1]的概率发出报告，否则保持沉默。该报告硬币在给定T后与其他随机选择独立。不满足资格条件时报告概率为0。\n4. 你只知道报告确实发出，不知道盒子、T、完整颜色序列或硬币结果以外的信息。下一次抽取从停止时剩下的同一盒球中进行，仍不放回。\n求：report_probability=P(发出报告)；posterior_a=P(选A|发出报告)；early_stop_probability=P(T<cap|发出报告)；next_red_probability=P(随后第1球红|发出报告)；next_two_same_probability=P(随后连续两球颜色相同|发出报告)。\n可仅返回JSON对象；若附解释，最终答案须放在唯一的json代码块中，不另给第二份JSON答案。键为上述五个名称，数值为精确整数或分数字符串。五个答案独立逐项核验，全部正确才算整题精确答案通过。无法明确提取答案时标为未能验证，不推断数学答案错误；格式合规单独记录。仅核验五个最终概率，不评判附加证明。\n数据：{\"boxes\":[[5,3,2],[2,5,3]],\"priorA\":[2,5],\"cap\":4,\"stopGreen\":2,\"reportByLength\":[[0,1],[1,5],[1,5],[1,3],[3,4]]}\n档案管理信息：本月有37份登记单，封面编号908。这些字段不参与实验。",
+  "grader": "challenge_extension",
+  "graderVersion": "1.0.0",
+  "scoring": {
+   "type": "binary_pass_fail",
+   "weights": {
+    "challenge_answer": 1
+   }
+  },
+  "hiddenTests": [],
+  "requirements": {
+   "challengeId": "V2-c1fb0754a25d8f",
+   "sourcePackVersion": "challenge-extension-2026-09-13-v1",
+   "sourcePackHash": "477665fa40ce78b748365f648f9a4b360e2e74ac68436b6c61078b6e624dea03"
+  },
+  "tags": [
+   "deterministic",
+   "no_judge",
+   "prospective_only",
+   "challenge_probability",
+   "family_observation_selection",
+   "variant_irrelevant"
+  ],
+  "scenarioVersion": "1.0.0",
+  "scenarioHash": "2616ff14670607a3",
+  "responseMode": "raw_output",
+  "outputPolicy": "fenced_allowed",
+  "goldSource": "challenge-extension-2026-09-13-v1:programmatic-gold-replay",
+  "goldVerifiedAt": "2026-09-13T00:00:00.000Z",
+  "reviewStatus": "verified",
+  "maxReasoningTokens": 90000
+ },
+ {
+  "id": "V2-fa3a76cee51533",
+  "dimension": "reasoning_math",
+  "category": "observation_selection",
+  "difficulty": "hard",
+  "language": "json",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "public_dev",
+  "promptTemplate": "这是一个隐藏来源、提前停止和选择性报告的概率实验。颜色下标0/1/2依次为红/蓝/绿；盒内每个球等概率。\n1. 开始时只选一次盒子：选择A的概率为priorA[0]/priorA[1]，否则选B；此后不换盒。boxes[0]/boxes[1]给出A/B中三种颜色球的数量。\n2. 从所选盒逐个不放回抽球。每次抽后检查：累计抽到stopGreen个绿球，或总抽取次数达到cap，即立即停止。停止后的球留在盒中，不再执行本阶段抽取；已抽出的球不放回。记真实停止长度为T。\n3. 只有“已抽出恰好1个红球，且最后一个抽出的球是绿球”时，观察员才有资格发出报告。满足此条件后，还以reportByLength[T][0]/reportByLength[T][1]的概率发出报告，否则保持沉默。该报告硬币在给定T后与其他随机选择独立。不满足资格条件时报告概率为0。\n4. 你只知道报告确实发出，不知道盒子、T、完整颜色序列或硬币结果以外的信息。下一次抽取从停止时剩下的同一盒球中进行，仍不放回。\n求：report_probability=P(发出报告)；posterior_a=P(选A|发出报告)；early_stop_probability=P(T<cap|发出报告)；next_red_probability=P(随后第1球红|发出报告)；next_two_same_probability=P(随后连续两球颜色相同|发出报告)。\n可仅返回JSON对象；若附解释，最终答案须放在唯一的json代码块中，不另给第二份JSON答案。键为上述五个名称，数值为精确整数或分数字符串。五个答案独立逐项核验，全部正确才算整题精确答案通过。无法明确提取答案时标为未能验证，不推断数学答案错误；格式合规单独记录。仅核验五个最终概率，不评判附加证明。\n数据：{\"boxes\":[[4,4,2],[2,4,4]],\"priorA\":[3,7],\"cap\":4,\"stopGreen\":2,\"reportByLength\":[[0,1],[1,5],[1,5],[1,3],[3,4]]}",
+  "grader": "challenge_extension",
+  "graderVersion": "1.0.0",
+  "scoring": {
+   "type": "binary_pass_fail",
+   "weights": {
+    "challenge_answer": 1
+   }
+  },
+  "hiddenTests": [],
+  "requirements": {
+   "challengeId": "V2-fa3a76cee51533",
+   "sourcePackVersion": "challenge-extension-2026-09-13-v1",
+   "sourcePackHash": "477665fa40ce78b748365f648f9a4b360e2e74ac68436b6c61078b6e624dea03"
+  },
+  "tags": [
+   "deterministic",
+   "no_judge",
+   "prospective_only",
+   "challenge_probability",
+   "family_observation_selection",
+   "variant_parameter"
+  ],
+  "scenarioVersion": "1.0.0",
+  "scenarioHash": "d8d8ad47c5ddb9d8",
+  "responseMode": "raw_output",
+  "outputPolicy": "fenced_allowed",
+  "goldSource": "challenge-extension-2026-09-13-v1:programmatic-gold-replay",
+  "goldVerifiedAt": "2026-09-13T00:00:00.000Z",
+  "reviewStatus": "verified",
+  "maxReasoningTokens": 90000
  }
 ]

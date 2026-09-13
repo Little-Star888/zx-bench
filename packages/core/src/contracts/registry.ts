@@ -265,6 +265,14 @@ export const GRADER_CONTRACTS: Record<string, GraderContract> = {
     requiredFields: ['challengeId', 'sourcePackVersion', 'sourcePackHash', 'releaseVersion'],
     capabilities: { supportedLanguages: ['json'], executableLanguages: ['json'] },
   },
+  challenge_extension: {
+    grader: 'challenge_extension', version: '1.0.0',
+    dimension: ['hallucination_resistance', 'reasoning_math'],
+    consumedFields: ['challengeId', 'sourcePackVersion', 'sourcePackHash', 'developmentShadow'],
+    declaredFields: ['challengeId', 'sourcePackVersion', 'sourcePackHash', 'developmentShadow'],
+    requiredFields: ['challengeId', 'sourcePackVersion', 'sourcePackHash'],
+    capabilities: { supportedLanguages: ['json'], executableLanguages: ['json'] },
+  },
 };
 
 /** 按 grader 名查契约（含别名；未注册 → undefined） */

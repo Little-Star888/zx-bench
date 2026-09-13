@@ -1,0 +1,48 @@
+{
+ "version": "challenge-extension-2026-09-13-v1",
+ "bankVersion": "1.31.0",
+ "sourceHash": "477665fa40ce78b748365f648f9a4b360e2e74ac68436b6c61078b6e624dea03",
+ "grader": "challenge_extension@1.0.0",
+ "judgeWeight": 0,
+ "definitions": 21,
+ "defaultRunAdditions": 20,
+ "coverageIds": [
+  "HC3-001",
+  "HC3-003",
+  "HC3-004",
+  "HC3-006",
+  "HC2-005",
+  "HC2-008",
+  "MC2-003",
+  "MC2-005",
+  "MC2-007",
+  "MC2-008",
+  "MC2-009",
+  "MC2-010",
+  "MC2-011",
+  "MC2-012"
+ ],
+ "probabilityIds": [
+  "V2-c1fb0754a25d8f",
+  "V2-fa3a76cee51533",
+  "V2-595bf9608ca5bb",
+  "V2-b1aaf236796076",
+  "V2-554b8ce210b857",
+  "V2-0dd41d46f70f13"
+ ],
+ "explicitOnlyIds": [
+  "MC2-004-R1"
+ ],
+ "originalUnreleasedIds": [
+  "MC2-004"
+ ],
+ "review": "maintainer integration review plus deterministic positive/negative replay; not independent human review",
+ "limitations": [
+  "Coverage items were previously all-pass in the pilot; no new discrimination claim.",
+  "Six probability items represent two families with base/parameter/irrelevant variants, not six independent families.",
+  "MC2-004-R1 lacks a model difficulty pilot and is explicit-only.",
+  "Unparseable probability output is unmeasured, not evidence of mathematical failure."
+ ],
+ "historicalDefinitionsChanged": false,
+ "historicalScoresChanged": false
+}

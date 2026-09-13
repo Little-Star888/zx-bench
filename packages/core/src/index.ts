@@ -38,6 +38,7 @@ export { sandboxEvaluator } from './evaluators/sandbox.js';
 export { llmJudgeEvaluator } from './evaluators/llmJudge.js';
 export { prExecutableEvidenceEvaluator } from './evaluators/prExecutableEvidence.js';
 export { challengeSupplementEvaluator } from './evaluators/challengeSupplement.js';
+export { challengeExtensionEvaluator } from './evaluators/challengeExtension.js';
 
 // 沙箱执行
 export { runInSandbox, runTestCase, runTestSuite, runReplacedCodeTest, runReplacedCodeTestPython, runTestCaseInContainer, runReplacedCodeTestPythonInContainer } from './sandbox/index.js';

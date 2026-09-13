@@ -2,14 +2,14 @@
 
 [中文文档](README.md) · English
 
-> Local LLM evaluation with 600 current question definitions across 10 dimensions (678 lifetime, 78 retired), versioned scoring, reports and execution audits. Programming isolation is being migrated: question inventory is not certified scoring coverage. See the acceptance boundaries below before publishing capability comparisons.
+> Bank 1.31.0: 621 current definitions across 10 dimensions (699 lifetime, 78 retired), with 600 default formal questions. Twenty project tasks and MC2-004-R1 remain explicit-only development tasks. Inventory is not certified scoring coverage or universal model discrimination.
 
 [![CI](https://github.com/suncityldp/zx-bench/actions/workflows/ci.yml/badge.svg)](https://github.com/suncityldp/zx-bench/actions/workflows/ci.yml)
 
 ## Highlights
 
 - **10 capability dimensions**: programming, reasoning & math, safety & authority, deep CLI tasks, data extraction, agent workflow, instruction following, tool/CLI workflow, hallucination resistance, structured output.
-- **600 current definitions**: all 107 single-file repair questions have trusted verifiers; the two former free-text PR questions are now automatic evidence tasks using replayable counterexamples and repairs; five three-family-screened deterministic challenge questions are included for prospective runs. Every definition is versioned and hashed.
+- **621 current definitions; 600 default formal questions**: the original five screened challenges remain, with 14 coverage questions and six probability questions now integrated. Twenty project tasks and MC2-004-R1 are explicit-only. Inclusion is not a claim of universal discrimination. Every definition is versioned and hashed.
 - **Single-file migration complete**: `code_repair@4.14.0` covers all 107 repair questions and freezes 345 formal test IDs across host-verdict execution and bounded compiler channels.
 - **no_bug traps**: some code is already correct; the model must recognize no-bug instead of forcing a fix (false fixes score 0).
 - **Deterministic scoring + AI Judge dual channel**: rule-based evaluators score first; an AI Judge re-scores semantic items with coverage-aware weight handoff.
@@ -25,7 +25,7 @@
 
 Single-file scorer `code_repair@4.14.0` covers all 107 repair questions and freezes 345 formal test IDs across value observation, QuickJS/WASM, TypeScript runtime/type-check, native-language, and Bash channels. One hundred forty-three development controls remain separate from formal scoring; 20 no-bug questions retain rule-only scoring. The two PR tasks now use trusted SQL and sharding replay with zero Judge weight; the 20 `project_repair` tasks remain outside this delivery.
 
-ZxBench uses a pragmatic lightweight release gate. A formal run accepts the 580 current, content-hash-frozen, reproducibly scored public scenarios; the 20 multi-file project tasks remain development-shadow items and do not enter the main score. Review, tier, and gold metadata remain available for audit rather than making an unavailable private holdout a local runtime prerequisite. A new challenge pack must first run on the identical questions across at least three declared model families. The default screen requires an 8-point model-score spread and at least 25% separating items; all-pass foundation items are capped at 20%, while all-fail, ambiguous, or environment-affected items remain experimental. This deterministic screen never rewrites historical scores.
+Formal runs default to 600 frozen public questions. Twenty project tasks and MC2-004-R1 remain development-shadow items. The original five-question supplement was selected using the three-family discrimination screen; the 1.31.0 extension separately restores coverage questions previously excluded for all-pass results and adds six probability variants from two families. These additions do not claim to pass the same discrimination gate. Review, tier and gold provenance remain auditable; historical scores are not rewritten. See [integration and limitations](docs/challenge-extension-1.31.md).
 
 The table below includes formal channels and retained diagnostic runners; a question is scoreable only when bound to a versioned protocol:
 
@@ -107,8 +107,8 @@ The data-extraction dimension now contains 56 reviewed questions: the original 3
 | Dimension | Questions | Weight |
 |-----------|-----------|--------|
 | program | 150 | 0.20 |
-| hallucination_resistance | 80 | 0.12 |
-| reasoning_math | 37 | 0.12 |
+| hallucination_resistance | 86 | 0.12 |
+| reasoning_math | 52 | 0.12 |
 | instruction_following | 42 | 0.12 |
 | safety_authority | 50 | 0.10 |
 | agent_workflow | 45 | 0.08 |
@@ -116,7 +116,7 @@ The data-extraction dimension now contains 56 reviewed questions: the original 3
 | data_extraction | 56 | 0.07 |
 | cli_deep_tasks | 56 | 0.07 |
 | structured_output | 28 | 0.05 |
-| **Total** | **600** | |
+| **Total** | **621** | |
 
 ### Three-step scoring chain
 
@@ -211,7 +211,7 @@ apps/server/     # Fastify backend + API + Prisma
 packages/core/   # evaluation engine
 packages/types/  # shared types
 packages/utils/  # utilities
-data/scenarios/  # 600 current definitions (not certified coverage), metadata, development prototypes and archives
+data/scenarios/  # 621 definitions (600 default formal), metadata, development prototypes and archives
 data/java-libs/  # JUnit jars
 scripts/         # import/export scripts
 docs/            # specs (fixture-spec) & screenshots

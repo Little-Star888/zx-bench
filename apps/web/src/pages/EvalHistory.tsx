@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo, useCallback } from 'react';
-import { Table, Tag, Button, Space, message, Badge } from 'antd';
+import { Table, Tag, Button, Space, message, Badge, Modal } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import { EyeOutlined, MonitorOutlined, PlayCircleOutlined, FileSearchOutlined } from '@ant-design/icons';
+import { EyeOutlined, MonitorOutlined, PlayCircleOutlined, FileSearchOutlined, DeleteOutlined } from '@ant-design/icons';
 import ScoreFormulaTooltip from '../components/ScoreFormulaTooltip';
 import { useLanguage, dimLabel } from '../i18n';
 
@@ -65,6 +65,7 @@ function formatTimeShort(t: string | null): string {
 export default function EvalHistory() {
   const [runs, setRuns] = useState<RunItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [deleting, setDeleting] = useState(false);
   const navigate = useNavigate();
   const { lang } = useLanguage();
 
@@ -89,11 +90,10 @@ export default function EvalHistory() {
     return () => window.clearInterval(timer);
   }, [fetchRuns]);
 
-  // 按 groupName 分组（过滤掉已取消的评测，避免历史页堆积同名 cancelled 组）
+  // 保留已取消记录，让用户能够查看及删除。
   const groupedRuns = useMemo<GroupedRun[]>(() => {
     const groups = new Map<string, RunItem[]>();
     for (const run of runs) {
-      if (run.status === 'cancelled') continue; // 已取消的不展示
       const key = run.groupName || `solo-${run.id}`;
       if (!groups.has(key)) groups.set(key, []);
       groups.get(key)!.push(run);
@@ -144,6 +144,43 @@ export default function EvalHistory() {
     }
     return result.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
   }, [runs]);
+
+  const confirmDelete = (items: RunItem[]) => {
+    Modal.confirm({
+      title: lang === 'en' ? `Delete ${items.length} evaluation record(s)?` : `删除 ${items.length} 条评测记录？`,
+      content: <div>
+        <p>{lang === 'en'
+          ? 'This permanently deletes the selected runs, answers, scores and saved per-run reports. Model settings, questions and separately exported files are kept.'
+          : '将永久删除所选运行、模型回答、评分及运行内保存的报告，不可撤销。不会删除模型配置、题库或单独导出的文件。'}</p>
+        <div style={{ maxHeight: 180, overflow: 'auto' }}>{items.map(item => <div key={item.id}>{item.name}<br /><small>{item.id}</small></div>)}</div>
+      </div>,
+      okText: lang === 'en' ? 'Delete permanently' : '确认永久删除',
+      cancelText: lang === 'en' ? 'Cancel' : '取消',
+      okButtonProps: { danger: true },
+      onOk: async () => {
+        setDeleting(true);
+        try {
+          const response = await fetch('/api/runs/delete', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ ids: items.map(item => item.id) }),
+          });
+          const data = await response.json();
+          if (!response.ok || !data.success) throw new Error(data.error || (lang === 'en' ? 'Delete failed' : '删除失败'));
+          message.success(lang === 'en' ? 'Evaluation records deleted' : '评测记录已删除');
+          await fetchRuns(true);
+        } catch (error) {
+          message.error(error instanceof Error ? error.message : (lang === 'en' ? 'Request failed' : '请求失败'));
+          throw error;
+        } finally { setDeleting(false); }
+      },
+    });
+  };
+
+  const deleteButton = (items: RunItem[]) => <Button danger size="small" icon={<DeleteOutlined />}
+    disabled={deleting || items.some(item => ['running', 'pending'].includes(item.status))}
+    onClick={() => confirmDelete(items)}>
+    {items.length > 1 ? (lang === 'en' ? 'Delete group' : '删除整组') : (lang === 'en' ? 'Delete' : '删除')}
+  </Button>;
 
   // 恢复评测
   const handleResume = async (runId: string) => {
@@ -206,6 +243,7 @@ export default function EvalHistory() {
           render: (_: unknown, r: RunItem) => (
             <Space size={4}>
               <Button icon={<EyeOutlined />} size="small" onClick={() => navigate(`/eval/${r.id}`)}>{lang === 'en' ? 'Details' : '详情'}</Button>
+              {deleteButton([r])}
               {(r.status === 'paused' || r.status === 'failed') && (
                 <Button type="primary" icon={<PlayCircleOutlined />} size="small" onClick={() => handleResume(r.id)}>
                   {r.status === 'paused' ? (lang === 'en' ? 'Continue' : '继续') : (lang === 'en' ? 'Resume' : '恢复')}
@@ -311,6 +349,7 @@ export default function EvalHistory() {
                     <Button icon={<FileSearchOutlined />} size="small" onClick={() => navigate(`/report/${mainId}`)}>
                       {lang === 'en' ? 'Report' : '报告'}
                     </Button>
+                    {deleteButton(g.allRuns)}
                   </Space>
                 );
               },

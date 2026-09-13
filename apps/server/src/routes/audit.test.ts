@@ -45,6 +45,26 @@ beforeEach(async () => {
 afterEach(async () => { await app.close(); });
 
 describe('audited run API without network or real database', () => {
+  it('includes all 20 default extension questions through the official create-run API', async () => {
+    const { readFileSync } = await import('node:fs');
+    const bank = JSON.parse(readFileSync('data/scenarios/benchmark.json', 'utf8'));
+    const additions = bank.filter((s: any) => s.grader === 'challenge_extension' && !s.requirements?.developmentShadow);
+    db.scenarioDefinition.findMany.mockResolvedValue(additions.map((s: any) => ({ ...s,
+      scoring: JSON.stringify(s.scoring), requirements: JSON.stringify(s.requirements),
+      hiddenTests: JSON.stringify(s.hiddenTests), tags: JSON.stringify(s.tags),
+      goldVerifiedAt: new Date(s.goldVerifiedAt),
+    })));
+    const response = await app.inject({ method: 'POST', url: '/api/runs', payload: {
+      modelConfigId: 'mock', config: { evaluationMode: 'official' },
+    } });
+    expect(response.statusCode, response.body).toBe(200);
+    const id = response.json().data.id;
+    await vi.waitFor(() => expect(saved.get(id)?.status).toBe('completed'));
+    const calledIds = vi.mocked(runMultipleEvaluations).mock.calls.map(call => call[0].id);
+    expect(calledIds.sort()).toEqual(additions.map((s: any) => s.id).sort());
+    expect(calledIds).toHaveLength(20);
+    expect(JSON.parse(saved.get(id)!.manifest).benchmarkPack.scenarios).toHaveLength(20);
+  });
   it.each(['RM-CN-004', 'RM-CN-013'])('blocks obsolete or disputed frozen math retries without a live definition: %s', async scenarioId => {
     const frozen = { ...row, id: scenarioId, dimension: 'reasoning_math', grader: 'exact_answer_line',
       scenarioVersion: '2.0.1', graderVersion: 'exact_answer_v2', scoring: { type: 'exact_answer_line' }, requirements: { answer: 1 } };

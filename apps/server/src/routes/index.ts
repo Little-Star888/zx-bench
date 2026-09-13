@@ -17,7 +17,8 @@ import { orchestrateEvaluation, generateManifest, callModel, runTieredJudge, run
 import { generateReport, generateCompareReport, analyzeRunQuality, referenceAnswerWarnings, partitionReferenceAnswerRuns } from '@zxbench/core';
 import type { ReportUserPromptData, CompareReportUserPromptData } from '@zxbench/core';
 import { computeWeightedTotal, computeDifficultyWeightedDimAvgs as computeDifficultyWeightedDimAvgsPure, LONG_TASK_WEIGHT, validateScenario } from '@zxbench/core';
-import { broadcastProgress, getLatestProgress } from '../ws/index.js';
+import { broadcastProgress, getLatestProgress, clearProgressCache } from '../ws/index.js';
+import { registerRunDeletion } from './runDeletion.js';
 import fs from 'node:fs';
 import fsp from 'node:fs/promises';
 import path from 'node:path';
@@ -938,6 +939,9 @@ async function checkPause(runId: string, expectedCtrl?: EvalRunController): Prom
 }
 
 export async function registerRoutes(app: FastifyInstance): Promise<void> {
+  registerRunDeletion(app, prisma,
+    id => evalControllers.has(id) || [...judgeRescoreJobs.values()].some(job => job.status === 'running' && job.runIds.includes(id)),
+    id => { runLiveStates.delete(id); clearProgressCache(id); });
   await registerCalibrationRoutes(app, prisma);
   // Fastify close is reached on SIGTERM/SIGINT as well as deliberate restarts.
   // Abort first: changing the DB status alone leaves an OpenAI-compatible model

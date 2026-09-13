@@ -17,6 +17,7 @@ import { hallucinationResistanceEvaluator } from './hallucinationResistance.js';
 import { sandboxEvaluator } from './sandbox.js';
 import { prExecutableEvidenceEvaluator } from './prExecutableEvidence.js';
 import { challengeSupplementEvaluator } from './challengeSupplement.js';
+import { challengeExtensionEvaluator } from './challengeExtension.js';
 import { getEvaluator, registerEvaluator, type Evaluator } from './index.js';
 import { hashScenario } from '../contracts/canonicalize.js';
 import { checkSafetyRedLines } from '../safety/index.js';
@@ -107,6 +108,7 @@ describe('P0: scenario identity and evaluator version are fail-closed', () => {
       challengeSupplementEvaluator,
     ].forEach(registerEvaluator);
     const scenarios = JSON.parse(readFileSync('data/scenarios/benchmark.json', 'utf8')) as Array<{ grader: string; graderVersion: string; id: string }>;
+    registerEvaluator(challengeExtensionEvaluator);
     const unresolved = scenarios.filter((scenario) => !getEvaluator(scenario.grader, scenario.graderVersion)).map((scenario) => scenario.id);
     expect(unresolved).toEqual([]);
   });
