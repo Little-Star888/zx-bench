@@ -22,18 +22,22 @@ const find = (id: string) => bank.find(s => s.id === id)!;
 registerEvaluator(challengeExtensionEvaluator);
 registerEvaluator(challengeSupplementEvaluator);
 
-describe('bank 1.31.0 missing challenge integration', () => {
+describe('bank 1.31.1 challenge integration and restored formal scope', () => {
   it('freezes the exact source, counts, hashes and default eligibility', () => {
     expect(pack.hash).toBe(manifest.sourceHash);
     expect(pack.cases).toHaveLength(21);
     expect(bank).toHaveLength(621);
-    expect(bank.filter(s => !(s.requirements as any)?.developmentShadow)).toHaveLength(600);
+    expect(bank.filter(s => !(s.requirements as any)?.developmentShadow)).toHaveLength(620);
     for (const item of pack.cases) {
       const scenario = find(item.id);
       expect(scenario.scenarioHash, item.id).toBe(hashScenarioShort(scenario));
       expect(checkScenarioEligibility(scenario).eligible, item.id).toBe(!item.developmentShadow);
       expect(getJudgeWeights(scenario.dimension, scenario.grader).judge).toBe(0);
     }
+    const projectRepairs = bank.filter(s => s.grader === 'project_repair');
+    expect(projectRepairs).toHaveLength(20);
+    expect(projectRepairs.every(s => !(s.requirements as any)?.developmentShadow)).toBe(true);
+    expect(projectRepairs.every(s => checkScenarioEligibility(s).eligible)).toBe(true);
   });
   it.each(pack.cases)('replays gold and rejects wrong/incomplete answers: $id', async item => {
     const scenario = find(item.id), gold = JSON.stringify(item.reference);

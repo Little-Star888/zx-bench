@@ -7,6 +7,14 @@ const read = name => JSON.parse(readFileSync(new URL(name, root), 'utf8'));
 const write = (name, value) => writeFileSync(new URL(name, root), JSON.stringify(value, null, 1) + '\n');
 const bank = read('benchmark.json'), meta = read('benchmark-meta.json'), pack = buildChallengeExtension();
 if (pack.cases.length !== 21 || new Set(pack.cases.map(c => c.id)).size !== 21) throw Error('Unexpected extension scope');
+// Project-repair questions predate this extension and remain part of the formal bank.
+// Quality/audit limitations are metadata; they must not silently change user-selected scope.
+for (const scenario of bank.filter(item => item.grader === 'project_repair')) {
+  const { developmentShadow: _removed, ...requirements } = scenario.requirements ?? {};
+  scenario.requirements = requirements;
+  scenario.tags = (scenario.tags ?? []).filter(tag => !['development_shadow', 'explicit_run_only'].includes(tag));
+  scenario.scenarioHash = hashScenarioShort(scenario);
+}
 const added = pack.cases.map(item => {
   const scenario = {
     id: item.id, dimension: item.dimension, category: item.kind === 'probability' ? item.family : 'challenge_extension',
@@ -34,13 +42,17 @@ const ids = new Set(added.map(s => s.id));
 const next = [...bank.filter(s => !ids.has(s.id)), ...added].sort((a, b) => a.id.localeCompare(b.id, 'en'));
 const valid = next.filter(s => s.status === 'valid');
 const defaultCount = valid.filter(s => !s.requirements?.developmentShadow).length;
-if (next.length !== 621 || defaultCount !== 600) throw Error('Unexpected bank/default counts');
-meta.version = '1.31.0';
+if (next.length !== 621 || defaultCount !== 620) throw Error('Unexpected bank/default counts');
+meta.version = '1.31.1';
 meta.count = meta.validCount = valid.length;
 meta.totalCount = next.length + meta.retiredCount;
 meta.defaultRunCount = defaultCount;
 meta.generatedAt = '2026-09-13T00:00:00.000Z';
 meta.dimensions = Object.fromEntries([...new Set(valid.map(s => s.dimension))].sort().map(d => [d, valid.filter(s => s.dimension === d).length]));
+Object.assign(meta.lightweightReleasePolicy.projectRepair, {
+  status: 'formal_with_disclosed_audit_limitations', officialScoreEligible: 20,
+  defaultRunEligible: true, explicitRunOnly: false,
+});
 const manifest = { version: pack.version, bankVersion: meta.version, sourceHash: pack.hash,
   grader: 'challenge_extension@1.0.0', judgeWeight: 0, definitions: 21, defaultRunAdditions: 20,
   coverageIds: pack.cases.filter(c => c.kind === 'coverage').map(c => c.id),
@@ -51,7 +63,7 @@ const manifest = { version: pack.version, bankVersion: meta.version, sourceHash:
     'Six probability items represent two families with base/parameter/irrelevant variants, not six independent families.',
     'MC2-004-R1 lacks a model difficulty pilot and is explicit-only.',
     'Unparseable probability output is unmeasured, not evidence of mathematical failure.'],
-  historicalDefinitionsChanged: false, historicalScoresChanged: false,
+  projectRepairScopeRestored: 20, historicalScoresChanged: false,
 };
 meta.challengeExtension = manifest;
 write('benchmark.json', next);

@@ -1,6 +1,6 @@
 {
  "version": "challenge-extension-2026-09-13-v1",
- "bankVersion": "1.31.0",
+ "bankVersion": "1.31.1",
  "sourceHash": "477665fa40ce78b748365f648f9a4b360e2e74ac68436b6c61078b6e624dea03",
  "grader": "challenge_extension@1.0.0",
  "judgeWeight": 0,
@@ -43,6 +43,6 @@
   "MC2-004-R1 lacks a model difficulty pilot and is explicit-only.",
   "Unparseable probability output is unmeasured, not evidence of mathematical failure."
  ],
- "historicalDefinitionsChanged": false,
+ "projectRepairScopeRestored": 20,
  "historicalScoresChanged": false
 }

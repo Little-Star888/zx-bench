@@ -1,5 +1,5 @@
-// Idempotently promote the five screened challenge questions and mark project-repair
-// questions as explicit-only development shadow tasks.
+// Idempotently promote the five screened challenge questions. Existing project-repair
+// questions retain their formal scope; audit warnings must not silently exclude them.
 import { readFileSync, writeFileSync } from 'node:fs';
 import { hashScenarioShort } from '../packages/core/dist/contracts/canonicalize.js';
 import { buildChallengePack, candidateQuestion } from '../packages/core/dist/evaluationLab/challengePack.js';
@@ -20,8 +20,9 @@ if (pack.version !== CHALLENGE_SUPPLEMENT_SOURCE_VERSION || pack.hash !== CHALLE
 }
 
 for (const scenario of bank.filter((item) => item.grader === 'project_repair')) {
-  scenario.requirements = { ...scenario.requirements, developmentShadow: true };
-  scenario.tags = [...new Set([...(scenario.tags ?? []), 'development_shadow', 'explicit_run_only'])];
+  const { developmentShadow: _removed, ...requirements } = scenario.requirements ?? {};
+  scenario.requirements = requirements;
+  scenario.tags = (scenario.tags ?? []).filter(tag => !['development_shadow', 'explicit_run_only'].includes(tag));
   scenario.scenarioHash = hashScenarioShort(scenario);
 }
 
@@ -85,8 +86,8 @@ meta.totalCount = next.length + Number(meta.retiredCount ?? 0);
 meta.dimensions = Object.fromEntries([...new Set(valid.map((item) => item.dimension))].sort()
   .map((dimension) => [dimension, valid.filter((item) => item.dimension === dimension).length]));
 meta.generatedAt = '2026-09-13T00:00:00.000+08:00';
-meta.lightweightReleasePolicy.projectRepair.defaultRunEligible = false;
-meta.lightweightReleasePolicy.projectRepair.explicitRunOnly = true;
+meta.lightweightReleasePolicy.projectRepair.defaultRunEligible = true;
+meta.lightweightReleasePolicy.projectRepair.explicitRunOnly = false;
 meta.lightweightReleasePolicy.challengeDiscrimination.currentPilot.promotedIds = [...CHALLENGE_SUPPLEMENT_IDS];
 meta.lightweightReleasePolicy.challengeDiscrimination.currentPilot.promotedForProspectiveRuns = true;
 meta.lightweightReleasePolicy.challengeDiscrimination.currentPilot.nextRequiredAction = 'run prospective model comparisons on the five frozen questions; redesign MC2-004 separately';

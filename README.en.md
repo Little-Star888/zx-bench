@@ -2,14 +2,14 @@
 
 [中文文档](README.md) · English
 
-> Bank 1.31.0: 621 current definitions across 10 dimensions (699 lifetime, 78 retired), with 600 default formal questions. Twenty project tasks and MC2-004-R1 remain explicit-only development tasks. Inventory is not certified scoring coverage or universal model discrimination.
+> Bank 1.31.1: 621 current definitions across 10 dimensions (699 lifetime, 78 retired), with 620 default formal questions. Only MC2-004-R1 remains explicit-only. Inventory is not certified scoring coverage or universal model discrimination.
 
 [![CI](https://github.com/suncityldp/zx-bench/actions/workflows/ci.yml/badge.svg)](https://github.com/suncityldp/zx-bench/actions/workflows/ci.yml)
 
 ## Highlights
 
 - **10 capability dimensions**: programming, reasoning & math, safety & authority, deep CLI tasks, data extraction, agent workflow, instruction following, tool/CLI workflow, hallucination resistance, structured output.
-- **621 current definitions; 600 default formal questions**: the original five screened challenges remain, with 14 coverage questions and six probability questions now integrated. Twenty project tasks and MC2-004-R1 are explicit-only. Inclusion is not a claim of universal discrimination. Every definition is versioned and hashed.
+- **621 current definitions; 620 default formal questions**: all 150 original programming questions remain formal; the original five screened challenges, 14 coverage questions and six probability questions are integrated. Only MC2-004-R1 is explicit-only. Inclusion is not a claim of universal discrimination.
 - **Single-file migration complete**: `code_repair@4.14.0` covers all 107 repair questions and freezes 345 formal test IDs across host-verdict execution and bounded compiler channels.
 - **no_bug traps**: some code is already correct; the model must recognize no-bug instead of forcing a fix (false fixes score 0).
 - **Deterministic scoring + AI Judge dual channel**: rule-based evaluators score first; an AI Judge re-scores semantic items with coverage-aware weight handoff.
@@ -23,9 +23,9 @@
 
 ## Questions & Real Execution (Key Design)
 
-Single-file scorer `code_repair@4.14.0` covers all 107 repair questions and freezes 345 formal test IDs across value observation, QuickJS/WASM, TypeScript runtime/type-check, native-language, and Bash channels. One hundred forty-three development controls remain separate from formal scoring; 20 no-bug questions retain rule-only scoring. The two PR tasks now use trusted SQL and sharding replay with zero Judge weight; the 20 `project_repair` tasks remain outside this delivery.
+Single-file scorer `code_repair@4.14.0` covers all 107 repair questions and freezes 345 formal test IDs across value observation, QuickJS/WASM, TypeScript runtime/type-check, native-language, and Bash channels. One hundred forty-three development controls remain separate from formal scoring; 20 no-bug questions retain rule-only scoring. The two PR tasks now use trusted SQL and sharding replay with zero Judge weight. All 20 pre-existing `project_repair` long tasks remain in formal scope; incomplete positive-gold coverage is disclosed as an audit limitation.
 
-Formal runs default to 600 frozen public questions. Twenty project tasks and MC2-004-R1 remain development-shadow items. The original five-question supplement was selected using the three-family discrimination screen; the 1.31.0 extension separately restores coverage questions previously excluded for all-pass results and adds six probability variants from two families. These additions do not claim to pass the same discrimination gate. Review, tier and gold provenance remain auditable; historical scores are not rewritten. See [integration and limitations](docs/challenge-extension-1.31.md).
+Formal runs default to 620 questions. All 150 original programming questions remain in scope; incomplete positive-gold coverage for project tasks is disclosed as an audit limitation rather than silently changing the benchmark. Only MC2-004-R1 is explicit-only. Historical scores are not rewritten. See [integration and limitations](docs/challenge-extension-1.31.md).
 
 The table below includes formal channels and retained diagnostic runners; a question is scoreable only when bound to a versioned protocol:
 
@@ -211,7 +211,7 @@ apps/server/     # Fastify backend + API + Prisma
 packages/core/   # evaluation engine
 packages/types/  # shared types
 packages/utils/  # utilities
-data/scenarios/  # 621 definitions (600 default formal), metadata, development prototypes and archives
+data/scenarios/  # 621 definitions (620 default formal), metadata, development prototypes and archives
 data/java-libs/  # JUnit jars
 scripts/         # import/export scripts
 docs/            # specs (fixture-spec) & screenshots

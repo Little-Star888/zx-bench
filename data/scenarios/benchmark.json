@@ -21193,19 +21193,16 @@
    "explanationKeywords": [
     "幂等"
    ],
-   "image": null,
-   "developmentShadow": true
+   "image": null
   },
   "tags": [
    "cpp",
    "long_task_debug",
    "fix",
-   "private_validation",
-   "development_shadow",
-   "explicit_run_only"
+   "private_validation"
   ],
   "scenarioVersion": "1.2.0",
-  "scenarioHash": "40fdc9000606ed46",
+  "scenarioHash": "d33891e7b496d8e6",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -21352,19 +21349,16 @@
      "timeoutMs": 120000
     },
     "coldStartTimeoutIsEnvironmentError": true
-   },
-   "developmentShadow": true
+   }
   },
   "tags": [
    "csharp",
    "long_task_refactor",
    "fix",
-   "private_validation",
-   "development_shadow",
-   "explicit_run_only"
+   "private_validation"
   ],
   "scenarioVersion": "1.2.0",
-  "scenarioHash": "a2244a91a1c5ab32",
+  "scenarioHash": "b8b930805776f821",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -21515,19 +21509,16 @@
      "timeoutMs": 120000
     },
     "coldStartTimeoutIsEnvironmentError": true
-   },
-   "developmentShadow": true
+   }
   },
   "tags": [
    "csharp",
    "long_task_debug",
    "fix",
-   "private_validation",
-   "development_shadow",
-   "explicit_run_only"
+   "private_validation"
   ],
   "scenarioVersion": "1.2.0",
-  "scenarioHash": "4a0a91f66293bc81",
+  "scenarioHash": "c09c47d7cbe59f59",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -21649,19 +21640,16 @@
    "explanationKeywords": [
     "内存"
    ],
-   "image": null,
-   "developmentShadow": true
+   "image": null
   },
   "tags": [
    "go",
    "long_task_refactor",
    "fix",
-   "private_validation",
-   "development_shadow",
-   "explicit_run_only"
+   "private_validation"
   ],
   "scenarioVersion": "1.2.0",
-  "scenarioHash": "503add484188fec1",
+  "scenarioHash": "72ac75cdada30a5b",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -21791,19 +21779,16 @@
    "explanationKeywords": [
     "stream"
    ],
-   "image": null,
-   "developmentShadow": true
+   "image": null
   },
   "tags": [
    "go",
    "long_task_debug",
    "fix",
-   "private_validation",
-   "development_shadow",
-   "explicit_run_only"
+   "private_validation"
   ],
   "scenarioVersion": "1.2.0",
-  "scenarioHash": "940aaad3c5f79069",
+  "scenarioHash": "4f045514d2a1497e",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -21930,19 +21915,16 @@
     "重试",
     "退避"
    ],
-   "image": null,
-   "developmentShadow": true
+   "image": null
   },
   "tags": [
    "javascript",
    "long_task_debug",
    "fix",
-   "private_validation",
-   "development_shadow",
-   "explicit_run_only"
+   "private_validation"
   ],
   "scenarioVersion": "1.2.0",
-  "scenarioHash": "d45cf8b9464ad239",
+  "scenarioHash": "4d0e734d7766f739",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -22068,19 +22050,16 @@
    "explanationKeywords": [
     "并发"
    ],
-   "image": null,
-   "developmentShadow": true
+   "image": null
   },
   "tags": [
    "javascript",
    "long_task_refactor",
    "fix",
-   "private_validation",
-   "development_shadow",
-   "explicit_run_only"
+   "private_validation"
   ],
   "scenarioVersion": "1.2.0",
-  "scenarioHash": "69481a14e2920d1b",
+  "scenarioHash": "db571835c66b3edd",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -22216,19 +22195,16 @@
    ],
    "functionName": null,
    "explanationKeywords": [],
-   "image": "zxbench-java-spring:3.2.5",
-   "developmentShadow": true
+   "image": "zxbench-java-spring:3.2.5"
   },
   "tags": [
    "java",
    "long_task_refactor",
    "fix",
-   "private_validation",
-   "development_shadow",
-   "explicit_run_only"
+   "private_validation"
   ],
   "scenarioVersion": "1.2.0",
-  "scenarioHash": "9f262156bf1cadf2",
+  "scenarioHash": "ef206f50817b7cb4",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -22370,19 +22346,16 @@
     "lock",
     "优雅关闭"
    ],
-   "image": null,
-   "developmentShadow": true
+   "image": null
   },
   "tags": [
    "java",
    "long_task_debug",
    "fix",
-   "private_validation",
-   "development_shadow",
-   "explicit_run_only"
+   "private_validation"
   ],
   "scenarioVersion": "1.2.0",
-  "scenarioHash": "4a3a45ef595ee4b8",
+  "scenarioHash": "73182a65abbae89a",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -22501,19 +22474,16 @@
      "timeoutMs": 120000
     },
     "coldStartTimeoutIsEnvironmentError": true
-   },
-   "developmentShadow": true
+   }
   },
   "tags": [
    "python",
    "long_task_refactor",
    "fix",
-   "private_validation",
-   "development_shadow",
-   "explicit_run_only"
+   "private_validation"
   ],
   "scenarioVersion": "1.2.0",
-  "scenarioHash": "e56f220db51b89bc",
+  "scenarioHash": "5ead17d193a491d0",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -22662,19 +22632,16 @@
     "并发",
     "优雅关闭"
    ],
-   "image": null,
-   "developmentShadow": true
+   "image": null
   },
   "tags": [
    "python",
    "long_task_implement",
    "fix",
-   "private_validation",
-   "development_shadow",
-   "explicit_run_only"
+   "private_validation"
   ],
   "scenarioVersion": "1.2.0",
-  "scenarioHash": "77f50ee96d829e07",
+  "scenarioHash": "ca54ec50e4a7a3cd",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -22803,19 +22770,16 @@
     "幂等",
     "内存"
    ],
-   "image": null,
-   "developmentShadow": true
+   "image": null
   },
   "tags": [
    "python",
    "long_task_debug",
    "fix",
-   "private_validation",
-   "development_shadow",
-   "explicit_run_only"
+   "private_validation"
   ],
   "scenarioVersion": "1.2.0",
-  "scenarioHash": "ba8cdc106fa24c70",
+  "scenarioHash": "bbabbc3be6701696",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -22943,19 +22907,16 @@
     "retry",
     "退避"
    ],
-   "image": null,
-   "developmentShadow": true
+   "image": null
   },
   "tags": [
    "python",
    "long_task_implement",
    "fix",
-   "private_validation",
-   "development_shadow",
-   "explicit_run_only"
+   "private_validation"
   ],
   "scenarioVersion": "1.2.0",
-  "scenarioHash": "71f18dd9cffc6856",
+  "scenarioHash": "05c1c0ac7176d8b5",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -23095,19 +23056,16 @@
      "timeoutMs": 120000
     },
     "coldStartTimeoutIsEnvironmentError": true
-   },
-   "developmentShadow": true
+   }
   },
   "tags": [
    "rust",
    "long_task_debug",
    "fix",
-   "private_validation",
-   "development_shadow",
-   "explicit_run_only"
+   "private_validation"
   ],
   "scenarioVersion": "1.2.1",
-  "scenarioHash": "c578a3c060e5cbd3",
+  "scenarioHash": "c5f9b24af4c758b4",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -23230,19 +23188,16 @@
     "并发",
     "锁"
    ],
-   "image": null,
-   "developmentShadow": true
+   "image": null
   },
   "tags": [
    "rust",
    "long_task_refactor",
    "fix",
-   "private_validation",
-   "development_shadow",
-   "explicit_run_only"
+   "private_validation"
   ],
   "scenarioVersion": "1.2.0",
-  "scenarioHash": "fb60067ad7be7c46",
+  "scenarioHash": "07cf7bbdc79154b8",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -23384,19 +23339,16 @@
     "锁",
     "lock"
    ],
-   "image": null,
-   "developmentShadow": true
+   "image": null
   },
   "tags": [
    "shell",
    "long_task_refactor",
    "fix",
-   "private_validation",
-   "development_shadow",
-   "explicit_run_only"
+   "private_validation"
   ],
   "scenarioVersion": "1.2.0",
-  "scenarioHash": "c70b41f5cd6d2c83",
+  "scenarioHash": "3f3b15d7239dda3f",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -23524,19 +23476,16 @@
     "幂等",
     "锁"
    ],
-   "image": null,
-   "developmentShadow": true
+   "image": null
   },
   "tags": [
    "sql",
    "long_task_refactor",
    "fix",
-   "private_validation",
-   "development_shadow",
-   "explicit_run_only"
+   "private_validation"
   ],
   "scenarioVersion": "1.2.0",
-  "scenarioHash": "5bd11bc411c2025a",
+  "scenarioHash": "65addadaf5d954c6",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -23670,19 +23619,16 @@
      "timeoutMs": 120000
     },
     "coldStartTimeoutIsEnvironmentError": true
-   },
-   "developmentShadow": true
+   }
   },
   "tags": [
    "typescript",
    "long_task_refactor",
    "fix",
-   "private_validation",
-   "development_shadow",
-   "explicit_run_only"
+   "private_validation"
   ],
   "scenarioVersion": "1.2.0",
-  "scenarioHash": "1c9296270bef0f1d",
+  "scenarioHash": "dab2117c5a681c50",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -23827,19 +23773,16 @@
      "timeoutMs": 120000
     },
     "coldStartTimeoutIsEnvironmentError": true
-   },
-   "developmentShadow": true
+   }
   },
   "tags": [
    "typescript",
    "long_task_debug",
    "fix",
-   "private_validation",
-   "development_shadow",
-   "explicit_run_only"
+   "private_validation"
   ],
   "scenarioVersion": "1.2.0",
-  "scenarioHash": "92178f903af559b7",
+  "scenarioHash": "edeea70c4ad9ef52",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -23975,19 +23918,16 @@
      "timeoutMs": 120000
     },
     "coldStartTimeoutIsEnvironmentError": true
-   },
-   "developmentShadow": true
+   }
   },
   "tags": [
    "typescript",
    "long_task_refactor",
    "fix",
-   "private_validation",
-   "development_shadow",
-   "explicit_run_only"
+   "private_validation"
   ],
   "scenarioVersion": "1.2.0",
-  "scenarioHash": "673c98f42e8140f9",
+  "scenarioHash": "f5fd5bbd5c76bf7b",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,

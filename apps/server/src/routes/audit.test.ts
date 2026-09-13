@@ -52,7 +52,7 @@ describe('audited run API without network or real database', () => {
     db.scenarioDefinition.findMany.mockResolvedValue(additions.map((s: any) => ({ ...s,
       scoring: JSON.stringify(s.scoring), requirements: JSON.stringify(s.requirements),
       hiddenTests: JSON.stringify(s.hiddenTests), tags: JSON.stringify(s.tags),
-      goldVerifiedAt: new Date(s.goldVerifiedAt),
+      goldVerifiedAt: s.goldVerifiedAt ? new Date(s.goldVerifiedAt) : null,
     })));
     const response = await app.inject({ method: 'POST', url: '/api/runs', payload: {
       modelConfigId: 'mock', config: { evaluationMode: 'official' },
@@ -64,6 +64,25 @@ describe('audited run API without network or real database', () => {
     expect(calledIds.sort()).toEqual(additions.map((s: any) => s.id).sort());
     expect(calledIds).toHaveLength(20);
     expect(JSON.parse(saved.get(id)!.manifest).benchmarkPack.scenarios).toHaveLength(20);
+  });
+  it('keeps all 20 pre-existing project repair questions in official scope', async () => {
+    const { readFileSync } = await import('node:fs');
+    const bank = JSON.parse(readFileSync('data/scenarios/benchmark.json', 'utf8'));
+    const projects = bank.filter((s: any) => s.grader === 'project_repair');
+    expect(projects).toHaveLength(20);
+    db.scenarioDefinition.findMany.mockResolvedValue(projects.map((s: any) => ({ ...s,
+      scoring: JSON.stringify(s.scoring), requirements: JSON.stringify(s.requirements),
+      hiddenTests: JSON.stringify(s.hiddenTests), tags: JSON.stringify(s.tags),
+      goldVerifiedAt: s.goldVerifiedAt ? new Date(s.goldVerifiedAt) : null,
+    })));
+    const response = await app.inject({ method: 'POST', url: '/api/runs', payload: {
+      modelConfigId: 'mock', config: { evaluationMode: 'official' },
+    } });
+    expect(response.statusCode, response.body).toBe(200);
+    const id = response.json().data.id;
+    await vi.waitFor(() => expect(saved.get(id)?.status).toBe('completed'));
+    expect(vi.mocked(runMultipleEvaluations).mock.calls.map(call => call[0].id).sort())
+      .toEqual(projects.map((s: any) => s.id).sort());
   });
   it.each(['RM-CN-004', 'RM-CN-013'])('blocks obsolete or disputed frozen math retries without a live definition: %s', async scenarioId => {
     const frozen = { ...row, id: scenarioId, dimension: 'reasoning_math', grader: 'exact_answer_line',

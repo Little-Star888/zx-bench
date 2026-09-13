@@ -30,7 +30,7 @@ for(const id of ids){
 const ready=rows.every(row=>row.baseline.rejected&&row.candidate?.verified===true);
 const positiveGoldVerified=rows.filter(row=>row.candidate?.verified===true).map(row=>row.id);
 const positiveGoldPending=rows.filter(row=>row.candidate?.verified!==true).map(row=>row.id);
-console.log(JSON.stringify({version:'project-repair-maintainer-sample-v1',scope:'development_shadow_only',ids,rows,
+console.log(JSON.stringify({version:'project-repair-maintainer-sample-v1',scope:'formal_scope_audit',ids,rows,
   positiveGoldVerified,positiveGoldPending,
-  readyForOfficialReview:ready,note:'A missing positive answer keeps the item in development; it never becomes a model failure or official score.'},null,2));
+  readyForOfficialReview:ready,note:'Missing positive-gold coverage is disclosed as an audit limitation; it does not silently remove pre-existing formal questions.'},null,2));
 if(args.includes('--gate')&&!ready)process.exitCode=1;
