@@ -14,7 +14,6 @@ import {
   ApiOutlined,
 } from '@ant-design/icons';
 import type { EvalProgress, DimensionProgress, QuestionLiveResult, EvalStage } from '@zxbench/types';
-import { useTheme } from '../theme';
 import { useLanguage, dimLabel } from '../i18n';
 
 const { Text, Paragraph } = Typography;
@@ -89,7 +88,6 @@ interface GroupRunInfo {
 export default function EvalLive() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { mode } = useTheme();
   const { lang } = useLanguage();
   const [progress, setProgress] = useState<EvalProgress | null>(null);
   const [runInfo, setRunInfo] = useState<RunInfo | null>(null);
@@ -1036,16 +1034,17 @@ export default function EvalLive() {
               return (
               <Col key={dim.dimension} span={6}>
                 <div
-                  className="swiss-card"
+                  className={`swiss-card dimension-progress-card${
+                    isDimActive ? ' dimension-progress-card--active' :
+                    isCompleted ? ' dimension-progress-card--completed' : ''
+                  }${isPending ? ' dimension-progress-card--pending' : ''}`}
                   style={{
                     borderLeft: `4px solid ${DIMENSION_COLORS[dim.dimension] || 'var(--accent)'}`,
-                    background: isDimActive ? 'var(--bg-active)' : isCompleted ? '#f6ffed' : 'var(--bg-card)',
                     padding: 16,
-                    opacity: isPending ? 0.7 : 1,
                   }}
                 >
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-                    <Text strong style={{ fontSize: 13 }}>
+                    <Text strong className="dimension-progress-title" style={{ fontSize: 13 }}>
                       {dimLabel(dim.dimension, lang)}
                     </Text>
                     {statusBadge}

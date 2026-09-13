@@ -634,6 +634,35 @@ body {
   border-bottom-color: var(--text-primary);
 }
 
+/* Eval live: keep every progress-card state on the active theme surface.
+   A fixed light-green completed background made dark-theme Ant text invisible. */
+.dimension-progress-card {
+  background: var(--bg-card);
+  color: var(--text-primary);
+}
+
+.dimension-progress-card--active {
+  background: var(--bg-active);
+}
+
+.dimension-progress-card--completed {
+  background: #f1faeb;
+  border-color: #b7d7a8;
+}
+
+.dimension-progress-card--pending {
+  opacity: 0.72;
+}
+
+.dimension-progress-card .dimension-progress-title {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .dimension-progress-card--completed {
+  background: #243429;
+  border-color: #46634d;
+}
+
 /* ================================================================
    点阵装饰类 (from PPT)
    ================================================================ */
