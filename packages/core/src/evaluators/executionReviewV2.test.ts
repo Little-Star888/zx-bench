@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import type { Scenario, OutputMetadata } from '@zxbench/types';
 import { instructionChecklistEvaluator as instruction } from './instructionChecklist.js';
-import { llmJudgeEvaluator as pr } from './llmJudge.js';
+import { prRuleDiagnosticEvaluator as pr } from './llmJudge.js';
 import { hashScenarioShort } from '../contracts/canonicalize.js';
 import { callModel } from '../model/caller.js';
 vi.mock('../model/caller.js',()=>({callModel:vi.fn()}));

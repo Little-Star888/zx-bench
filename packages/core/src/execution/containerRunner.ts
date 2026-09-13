@@ -95,6 +95,15 @@ export function containerFilePath(root: string, path: string): string {
 }
 
 export interface ContainerRunOptions {
+  /** Hardened candidate-only execution; no writable image layer. */
+  readOnlyRoot?: boolean;
+  /** Do not build/pull images implicitly for the trusted-observation path. */
+  localImageOnly?: boolean;
+  maxOutputBytes?: number;
+  /** Writable /tmp capacity for read-only-root toolchains; bounded to 16..512 MiB. */
+  tmpfsSizeMb?: number;
+  /** Permit generated native binaries in /tmp; only for compiled-language sandboxes. */
+  tmpfsExec?: boolean;
   image: string;
   command: string[];
   files?: ContainerFile[];
@@ -117,6 +126,10 @@ export interface ContainerRunOptions {
 }
 
 export interface ContainerRunResult {
+  containerName?: string;
+  /** Trusted control-plane observation, never derived from candidate stdout/stderr. */
+  infrastructureError?: string;
+  outputLimitExceeded?: boolean;
   success: boolean;
   stdout: string;
   stderr: string;
@@ -323,7 +336,9 @@ export async function runInContainer(options: ContainerRunOptions): Promise<Cont
     memoryMb = 128, cpuLimit = 1.0, pidsLimit = 64,
     networkDisabled = true, readOnly = true, runAsNonRoot = true, user,
     seccompUnconfined = false, env = {}, mounts = [],
+    readOnlyRoot = false, localImageOnly = false, maxOutputBytes = 8 * 1024 * 1024, tmpfsSizeMb = 32, tmpfsExec = false,
   } = options;
+  if(!Number.isInteger(tmpfsSizeMb)||tmpfsSizeMb<16||tmpfsSizeMb>512)throw new Error('tmpfsSizeMb must be an integer from 16 to 512');
 
   const startedAt = Date.now();
 
@@ -331,11 +346,15 @@ export async function runInContainer(options: ContainerRunOptions): Promise<Cont
   if (T) console.log('[CT] 进入 runInContainer image=' + image + ' files=' + files.length + ' timeoutMs=' + timeoutMs);
   if (!(await isDockerAvailable())) {
     if (T) console.log('[CT] Docker 不可用，短路返回');
-    return { success: false, stdout: '', stderr: 'Docker unavailable — container execution skipped', exitCode: -1, timedOut: false, durationMs: 0 };
+    return { success: false, stdout: '', stderr: 'Docker unavailable — container execution skipped', infrastructureError: 'Docker daemon unavailable', exitCode: -1, timedOut: false, durationMs: 0 };
   }
 
   if (T) console.log('[CT] ensureImage 开始');
-  await ensureImage(image);
+  if (localImageOnly) {
+    const cached = await execAsync('docker', ['image', 'inspect', image], { timeout: 15000 });
+    if (cached.status !== 0) return { success: false, stdout: '', stderr: 'Required local image unavailable',
+      infrastructureError: `Local image unavailable: ${image}`, exitCode: -1, timedOut: false, durationMs: Date.now() - startedAt };
+  } else await ensureImage(image);
   if (T) console.log('[CT] ensureImage 完成');
 
   if (T) console.log('[CT] 物化临时目录开始');
@@ -362,13 +381,14 @@ export async function runInContainer(options: ContainerRunOptions): Promise<Cont
 
     const src = hostDir.split('\\\\').join('/');
     const args = [
-      'run', '--rm', '--name', containerName,
+      'run', '--name', containerName,
       '--network', networkDisabled ? 'none' : 'bridge',
       '--memory', memoryMb + 'm',
       '--cpus', String(cpuLimit),
       '--pids-limit', String(pidsLimit),
       '--cap-drop', 'ALL',
       '--security-opt', 'no-new-privileges',
+      ...(readOnlyRoot ? ['--read-only', '--tmpfs', `/tmp:rw,${tmpfsExec?'exec':'noexec'},nosuid,nodev,size=${tmpfsSizeMb}m`] : []),
       ...(seccompUnconfined ? ['--security-opt', 'seccomp=unconfined'] : []),
       '--mount', 'type=bind,src=' + src + ',dst=' + workdir + (readOnly ? ',readonly' : ''),
       '-w', workdir,
@@ -382,7 +402,7 @@ export async function runInContainer(options: ContainerRunOptions): Promise<Cont
     args.push(image, ...command);
     if (T) console.log('[CT] docker run 开始: ' + args.join(' ').slice(0, 220));
 
-    const res = await execAsync('docker', args, { timeout: timeoutMs + 5000, maxBuffer: 8 * 1024 * 1024 });
+    const res = await execAsync('docker', args, { timeout: timeoutMs + 5000, maxBuffer: maxOutputBytes });
     if (T) console.log('[CT] docker run 返回 status=' + res.status + ' err=' + (res.error && res.error.code));
 
     const timedOut = res.error != null && (res.error as NodeJS.ErrnoException).code === 'ETIMEDOUT';
@@ -391,8 +411,23 @@ export async function runInContainer(options: ContainerRunOptions): Promise<Cont
     // Probe independently so candidate stderr cannot spoof infrastructure loss.
     // Never retry user code automatically after a possibly partial execution.
     const daemonLost = exitCode !== 0 && !(await probeDockerDaemon());
+    let infrastructureError = daemonLost ? 'Docker daemon unavailable' : undefined;
+    // Inspect daemon-owned state, not text printed by the candidate. A candidate
+    // can exit(125) or print "Docker unavailable" without making itself unmeasured.
+    if (localImageOnly && !daemonLost && !timedOut && res.error?.code !== 'ENOBUFS') {
+      const inspected = await execAsync('docker', ['inspect', '--format', '{{json .State}}', containerName], { timeout: 8000 });
+      try {
+        const state = JSON.parse(inspected.stdout);
+        if (inspected.status !== 0 || state.Error || !state.StartedAt || state.StartedAt.startsWith('0001-')) {
+          infrastructureError = 'Container did not start successfully';
+        }
+      } catch { infrastructureError = 'Container control-plane state unavailable'; }
+    }
     return {
-      success: exitCode === 0 && !timedOut,
+      success: exitCode === 0 && !res.error && !infrastructureError,
+      infrastructureError,
+      outputLimitExceeded: res.error?.code === 'ENOBUFS',
+      containerName,
       stdout: (res.stdout || '').trim(),
       stderr: daemonLost ? `Docker unavailable — container execution skipped\n${(res.stderr || '').trim()}` : (res.stderr || '').trim(),
       exitCode,

@@ -165,7 +165,8 @@ async function judgeActionableWithLLM(
   }
 }
 
-export const llmJudgeEvaluator: Evaluator = {
+/** Diagnostic proxy only. Never register this as an authoritative capability grader. */
+export const prRuleDiagnosticEvaluator: Evaluator = {
   name: 'llm_judge',
   version: '2.0.0',
 
@@ -208,7 +209,7 @@ export const llmJudgeEvaluator: Evaluator = {
         if (!hasDiffEvidence(entry, req.diff ?? '')) continue;
         const text = entry.problem + '；' + entry.impact;
         const hit = findAssertedFinding(text, g);
-        if (hit) { used.add(i); return { ...hit, severity: entry.severity,
+        if (hit) { used.add(i); return { ...hit, severity: entry.severity, suggestion: entry.suggestion,
           sentence: text + '；' + entry.suggestion }; }
       }
       return null;
@@ -217,12 +218,13 @@ export const llmJudgeEvaluator: Evaluator = {
     // 1. critical_findings_recall：真实缺陷命中率
     let detected = 0;
     let sevCorrect = 0;
-    const assertedFindings = new Map<string, { sentence: string; severity: string | null }>();
+    const assertedFindings = new Map<string, { sentence: string; severity: string | null; suggestion?: string }>();
     for (const g of real) {
       const hit = find(g);
       if (hit) {
         detected++;
-        assertedFindings.set(g.id, { sentence: hit.sentence, severity: hit.severity });
+        assertedFindings.set(g.id, { sentence: hit.sentence, severity: hit.severity,
+          suggestion: 'suggestion' in hit ? String(hit.suggestion) : undefined });
         const sev = hit.severity;
         if (sev) {
           if (normalizeSeverity(sev) === normalizeSeverity(g.severity)) sevCorrect++;
@@ -266,7 +268,7 @@ export const llmJudgeEvaluator: Evaluator = {
     evidence.push('diff_coverage: ' + covered.length + '/' + diffUnits.length + ' 文件');
 
     // 5. actionable_feedback：无 Judge 时仅为建议存在性的规则代理；Judge 失败未测。
-    const actionableFindings = [...assertedFindings.values()].filter(({ sentence }) => ACTIONABLE_RE.test(sentence)).length;
+    const actionableFindings = [...assertedFindings.values()].filter(({ sentence, suggestion }) => ACTIONABLE_RE.test(entries ? suggestion ?? '' : sentence)).length;
     const heuristicActionable = detected ? Math.round((actionableFindings / detected) * 100) : 0;
     let actionableScore = heuristicActionable;
     let actionableEvidence: AxisEvidence = 'rule';
@@ -301,5 +303,32 @@ export const llmJudgeEvaluator: Evaluator = {
       axisCoverage: wsum ? 1 - unmeasuredWeight / wsum : 0,
       humanReviewRequired: unmatched > 0 || actionableEvidence === 'unmeasured',
       safetyLevel: 'safe', evidence };
+  },
+};
+
+/** Stage-1 fail-closed boundary: lexical matching cannot certify PR causality,
+ * exploit conditions or a proposed fix. Keep diagnostics, not ability points.
+ * This gate must only be replaced by a separately validated semantic verifier. */
+export const llmJudgeEvaluator: Evaluator = {
+  name: 'llm_judge',
+  version: '2.1.0',
+  async evaluate(scenario, output, metadata, response) {
+    let diagnostic: Partial<ScenarioResult>;
+    try {
+      // No external Judge call: an unvalidated Judge cannot unlock this gate.
+      diagnostic = await prRuleDiagnosticEvaluator.evaluate(scenario, output, metadata, response);
+    } catch {
+      diagnostic = { evidence: ['PR diagnostic configuration/parse failure'] };
+    }
+    return {
+      totalScore: 0, axisCoverage: 0,
+      axisEvidence: Object.fromEntries(Object.keys(DEFAULT_WEIGHTS).map(k => [k, 'unmeasured' as const])),
+      environmentError: true, humanReviewRequired: true, safetyLevel: 'safe',
+      humanReviewNotes: 'PR语义核验器尚未通过对抗验收；不是模型零分，排除能力聚合。',
+      evidence: [
+        'SEMANTIC_VERIFIER_UNAVAILABLE: lexical PR diagnostics have no automatic score authority',
+        'PR_RULE_DIAGNOSTIC: ' + JSON.stringify({ axes: diagnostic.axisScores, evidence: diagnostic.evidence }),
+      ],
+    };
   },
 };

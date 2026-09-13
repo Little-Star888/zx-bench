@@ -2,15 +2,15 @@
 
 [English](README.en.md) · 中文
 
-> 在一台机器上，对任意大模型（本地 GGUF / Ollama / OpenAI 兼容 API）跑完 10 大维度、**595 道**基准题（题库累计 673 道，其中 78 道已退役旧题归档于 `data/scenarios/archive/`，不参与评测），产出可复现的综合分、维度雷达、排行榜、AI 深度报告与性价比分析。其中编程题在 **Docker 容器里真实编译并执行隐藏测试**，分数反映的是真实代码行为，而非「看起来像」的文本相似度。
+> 本地大模型评测平台：10个维度、600道当前题目定义（累计678道，78道退役归档）。提供版本化评分、报告与运行审计。当前编程执行链正在隔离迁移：题目数量不等于可靠可评分数量，缺测部分不应用于完整能力结论，详见下方验收边界。
 
 [![CI](https://github.com/suncityldp/zx-bench/actions/workflows/ci.yml/badge.svg)](https://github.com/suncityldp/zx-bench/actions/workflows/ci.yml)
 
 ## 核心特性
 
 - **10 大能力维度**：编程、推理数学、安全权限、深度 CLI、数据抽取、智能体工作流、指令遵循、工具/CLI、幻觉抵抗、结构化输出。
-- **595 道可评测基准题**（题库累计 673 道，退役旧题归档保留版本史）：难度分级（easy/medium/hard/adversarial）、带版本控制（每题 scenarioHash，题库 `benchmark-meta.json` 版本化）。
-- **编程题真实执行**：JS/TS/Python 默认容器执行；Go/Java/C/C++/Rust/PHP/C#/Bash/SQL 按 fixture 在 Docker 中编译/运行隐藏测试。缺少测试的题明确保留未测状态，不把静态检查当作行为通过。内存检查、race detector 等按题配置启用。
+- **600 道当前基准定义**（题库累计 678 道）：107道需修复的单文件编程题已全部具备可信验证器；2道原自由文本PR题已迁移为“反例＋修复配置＋可信重放”的全自动证据题；新增5道经三模型筛选的确定性挑战题。每题带版本与内容哈希。
+- **单文件编程迁移完成**：`code_repair@4.14.0` 覆盖全部107道修复题，共冻结345个正式测试ID。新增TypeScript运行时/严格类型检查，以及C、C++、Rust、Bash和最后两道JavaScript/Python宿主判分通道。
 - **no_bug 陷阱题**：部分代码本身正确，模型须识别「无 bug」而非强行修改，误修会扣分。
 - **确定性评分 + AI Judge 双通道**：规则评分器先判，AI Judge 按维度权重补判语义项，覆盖率感知地「让渡」权重。
 - **综合分（难度加权 + 维度加权）**：高难题权重更大、按维度重要度加权求和，避免「均分」被题量带偏。
@@ -23,7 +23,9 @@
 
 ## 题目与真实执行（关键设计）
 
-ZxBench 的编程题不是「模型输出一段代码、用关键词判断像不像答案」，而是**把模型的修复结果放进隔离环境里真的编译、真的跑测试**：
+当前正式单文件执行通道：候选代码在无网络、受资源限制的容器或受限编译器进程内运行；期望值、类型断言及最终判决由宿主持有。107道修复题冻结345个测试ID；143个开发控制与正式题分开，不追溯改分。20道 no_bug 题仍为文本规则。两道PR题不再评自然语言评论：SQL题在隔离SQLite中重放注入与参数化修复，分片题对回滚/热点反例和迁移配置执行反事实测试；两者Judge权重均为0，普通失败不进入人工队列。
+
+下表同时包含正式执行通道与保留的诊断执行器；是否计分以题目绑定的版本化协议为准。多文件 `project_repair` 的20题尚未迁移，不包含在本次单文件迁移范围内。
 
 | 语言 | 执行后端 | 验证方式 |
 |------|----------|----------|
@@ -48,7 +50,11 @@ ZxBench 的编程题不是「模型输出一段代码、用关键词判断像不
 
 ### 2026-09-12 执行与评审可靠性升级
 
-`code_repair@3.4.0`、`instruction_checklist_v5`、`llm_judge@2.0.0` 已冻结 171 条当前题目契约；修复了指令题的跨段引用、嵌套结构、逐项对应与局部计数漏判。PR 评审要求严格 JSON、文件绑定和 diff 原文证据；新发现未匹配、Judge 失败均显式留待复核。历史分数不自动覆盖，新旧版本不能直接混比。详见[交付范围、验证与剩余限制](docs/execution-instruction-pr-v2.md)。
+`code_repair@4.14.0`、`instruction_checklist_v6`、`pr_executable_evidence@1.0.0` 与 `challenge_supplement@1.0.0` 对应题库1.30.0。编程v3.5至v4.14、两道PR证据题及5道挑战补充题均不接受Judge/Judge-only改写。TypeScript类型题只做严格静态检查而不执行候选代码；原生语言与Bash逐例运行版本化宿主断言，并为并发/健全性题增加压力、Miri或源码契约。该能力不泛化为任意依赖、生产规模负载或任意多文件仓库语义认证。
+
+本项目采用轻量发布门槛：正式主分只接收已复核、金标可追溯且评分可复现的题；20道多文件工程题暂作开发影子题。新增挑战题须在至少三个模型家族的同题对照中体现实际区分度（默认分差至少8分、区分题占比至少25%）；全员通过的基础题占比不超过20%，全员失败或受歧义/环境影响的题不进入主分。该筛选不使用Judge，也不会自动改写历史成绩。
+
+当前状态与可执行准入命令见[轻量发布与题目区分度门槛](docs/lightweight-release-gate.md)。
 
 ---
 
@@ -60,7 +66,9 @@ ZxBench 的编程题不是「模型输出一段代码、用关键词判断像不
 - pnpm ≥ 11
 - **Docker**（编程题容器执行必需）
 
-首次评测前会自动拉取所需镜像；也可手动预热。编程题有**两套执行后端**：
+新的隔离 JSON 通道只使用本地已缓存镜像，不隐式联网安装依赖；缺少镜像视为环境未就绪。手动准备 `node:20-alpine` 与 `python:3.12-alpine`。下列旧执行器可能自动预热镜像，不代表已经通过防作弊验收。
+
+QuickJS和PR证据专项另要求[交付文档](docs/trusted-observation-v3.6.md)中指定的镜像digest及锁文件依赖；只有同名tag并不足够。缺失时显式报环境未就绪，不拉取替代镜像、不计模型失败。
 
 **① 单文件修复题（code_repair / sandbox）**
 
@@ -144,8 +152,8 @@ node scripts/export-scenarios.mjs # 导出
 | 维度 | 中文名 | 题量 | 维度权重 |
 |------|--------|------|----------|
 | program | 编程能力 | 150 | 0.20 |
-| hallucination_resistance | 幻觉抵抗 | 78 | 0.12 |
-| reasoning_math | 推理与数学 | 34 | 0.12 |
+| hallucination_resistance | 幻觉抵抗 | 80 | 0.12 |
+| reasoning_math | 推理与数学 | 37 | 0.12 |
 | instruction_following | 指令遵循 | 42 | 0.12 |
 | safety_authority | 安全与权限 | 50 | 0.10 |
 | agent_workflow | 智能体工作流 | 45 | 0.08 |
@@ -153,9 +161,9 @@ node scripts/export-scenarios.mjs # 导出
 | data_extraction | 数据抽取 | 56 | 0.07 |
 | cli_deep_tasks | 深度命令行任务 | 56 | 0.07 |
 | structured_output | 结构化输出 | 28 | 0.05 |
-| **合计** | | **595** | |
+| **合计** | | **600** | |
 
-> 题量 = `benchmark-meta.json` 中 status=valid 的当前可评测题；另有 78 道已退役旧题（v3 幻觉题集 HAL-*）归档于 `data/scenarios/archive/benchmark-retired.json`，保留版本史但不参与跑测。题库累计 673 道。
+> 题量 = `benchmark-meta.json` 中 status=valid 的当前题目定义；默认全量运行会排除20道明确标记为开发影子的多文件工程题，仍可按题号专项运行。另有78道已退役旧题（v3幻觉题集 HAL-*）归档于 `data/scenarios/archive/benchmark-retired.json`，保留版本史但不参与跑测。题库累计678道。
 
 ### 三步评分链
 
@@ -315,7 +323,7 @@ apps/server/     # Fastify 后端 + API + Prisma
 packages/core/   # 评测引擎核心（orchestrator / judge / evaluators / scoring / execution / contracts）
 packages/types/  # 共享类型
 packages/utils/  # 工具函数
-data/scenarios/  # 595 道可评测基准题（benchmark.json + 元数据 + CR2 备选题集；archive/ 为退役旧题归档）
+data/scenarios/  # 600 道当前题目定义（不等于已验收评分覆盖）；另含元数据、开发原型与退役归档
 data/java-libs/  # Java 题 JUnit 依赖 jar
 scripts/         # 题库导入/导出脚本
 docs/            # 规范文档（fixture-spec 等）

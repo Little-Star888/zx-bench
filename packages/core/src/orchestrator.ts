@@ -152,6 +152,8 @@ function buildLimitExceededResult(
   };
 }
 
+import { isolatedCodeRepairUnavailable } from './evaluators/codeRepair.js';
+
 /** 执行单题评测完整流程 */
 export async function orchestrateEvaluation(options: OrchestrateOptions): Promise<ScenarioResult> {
   const result = await evaluateCandidate(options);
@@ -170,6 +172,24 @@ async function evaluateCandidate(options: OrchestrateOptions): Promise<ScenarioR
 
   // ===== Stage 1: 固化运行配置与题目版本 =====
   onProgress?.('initializing');
+
+  // Do not spend inference tokens on a known-ungradable runtime contract.
+  // Saved answers still use the normal replay path and remain preserved.
+  const executionUnavailable = scenario.grader === 'code_repair' && ['3.5.0', '3.6.0', '3.7.0', '3.8.0', '3.9.0', '4.0.0', '4.1.0', '4.2.0', '4.3.0', '4.4.0', '4.5.0', '4.6.0', '4.7.0', '4.8.0', '4.9.0', '4.10.0', '4.11.0', '4.12.0', '4.13.0', '4.14.0'].includes(scenario.graderVersion)
+    ? isolatedCodeRepairUnavailable(scenario) : null;
+  if (executionUnavailable && !options.savedCandidate) return {
+    scenarioId: scenario.id, scenarioVersion: scenario.scenarioVersion, scenarioHash: scenario.scenarioHash,
+    dimension: scenario.dimension, graderVersion: `code_repair@${scenario.graderVersion}`, modelOutput: '',
+    outputMetadata: { finishReason: 'unknown', truncated: false, containsCodeBlock: false,
+      containsFinalConclusion: false, outputLength: 0, outputTokens: 0, inputTokens: 0,
+      incomplete: false, inferenceMs: 0, maxTokens: modelParams.maxTokens ?? 8192 },
+    totalScore: 0, deterministicScore: 0, axisCoverage: 0, axisScores: {},
+    axisEvidence: { compilation: 'unmeasured', test_pass: 'unmeasured' },
+    environmentError: true, humanReviewRequired: true, humanReviewNotes: executionUnavailable + '；未调用模型，不计能力分。',
+    formatParseSuccess: false, safetyLevel: 'safe', escalated: false, runCount: 0,
+    scoreHistory: [], verdictHistory: [], evidence: ['EXECUTION_VERIFIER_UNAVAILABLE: ' + executionUnavailable],
+    startedAt, finishedAt: new Date().toISOString(),
+  };
 
   // ===== Stage 2: 调用模型（推理模型可能 reasoning token 溢出） =====
   if (!options.savedCandidate && (scenario.dimension === 'program' || scenario.grader === 'sandbox')) {
@@ -496,12 +516,21 @@ async function evaluateCandidate(options: OrchestrateOptions): Promise<ScenarioR
   // 大幅提升 Judge 权重，让 AI 直接评估输出内容质量。
   // 适用于：编程(代码未用```包裹)、推理数学(答案未用\boxed{})、
   // 结构化输出(JSON解析失败)、指令遵循(格式不合规)等场景。
-  if (formatBlindspot && weights.judge > 0) {
+  if (formatBlindspot && weights.judge > 0 && result.environmentError !== true) {
     weights = {
       deterministic: 0.3,  // 确定性评分降权（格式问题是评分器的盲区）
       judge: 0.7,           // Judge 主导评判
     };
     console.log(`[orchestrator] Format blindspot detected for ${scenario.id} (dim=${scenario.dimension}), adjusting judge weights: det=${weights.deterministic} judge=${weights.judge}`);
+  }
+
+  if (evaluator?.name === 'code_repair' && ['3.5.0', '3.6.0', '3.7.0', '3.8.0', '3.9.0', '4.0.0', '4.1.0', '4.2.0', '4.3.0', '4.4.0', '4.5.0', '4.6.0', '4.7.0', '4.8.0', '4.9.0', '4.10.0', '4.11.0', '4.12.0', '4.13.0', '4.14.0'].includes(evaluator.version)) {
+    weights = { deterministic: 1, judge: 0 };
+  }
+  // Evidence-carrying PR tasks are completely decided by trusted replay.
+  // A Judge would add cost and nondeterminism without scoring authority.
+  if (evaluator?.name === 'pr_executable_evidence') {
+    weights = { deterministic: 1, judge: 0 };
   }
 
   // 当 judge 权重为 0 时，跳过 Judge 调用（节省 API 成本和时间）
@@ -719,7 +748,10 @@ async function evaluateCandidate(options: OrchestrateOptions): Promise<ScenarioR
     verdictHistory: [(structuredAnswer as Record<string, unknown>)?.verdict as string || 'unknown'],
     graderVersion: evaluator ? `${evaluator.name}@${evaluator.version}` : `${scenario.grader}@${scenario.graderVersion}`,
     evidence: result.evidence || [],
-    humanReviewRequired: result.humanReviewRequired === true || escalated || (result.totalScore ?? 0) < 30,
+    // A deterministic PR failure is a measured model failure, not human work.
+    humanReviewRequired: result.humanReviewRequired === true || escalated
+      || ((result.totalScore ?? 0) < 30 && evaluator?.name !== 'pr_executable_evidence'),
+    humanReviewNotes: result.humanReviewNotes,
     codeExtractionFailed,
     // 环境/测试基础设施故障标志必须透传：评分器置位后，编排层据此跳过 Judge，
     // 落库与聚合层再据此把该题排除出维度均值。此前本字段在构造返回对象时漏传，

@@ -1,0 +1,56 @@
+{
+  "version": "pr-executable-evidence-1.0.0",
+  "status": "production",
+  "registeredGrader": true,
+  "independentHumanGold": false,
+  "oldFreeReviewUnchanged": false,
+  "historicalRescoring": false,
+  "sourceHashNormalization": "UTF-8, CRLF to LF",
+  "sourceHashes": {
+    "packages/core/src/evaluationLab/prWitnessSql.ts": "4bb8913cbd36820781b7a419bc9827a2c4103ee24ddcd1fdff101e955963999e",
+    "packages/core/src/evaluationLab/prWitnessSql.test.ts": "74f089df6571f1cc255921aef011c708f3fb96cbdb2da76fe16cd630aa0adf29",
+    "packages/core/src/execution/containerRunner.ts": "1ce87cc0d1f1238151c4daccc3b9e4410b1f64160750f233bc33ec0cfc5a8f8f",
+    "packages/core/src/execution/execAsync.ts": "fb87d73799967d766f4f93115b4a10591a30019561cf28ef643c8bd4fd34f565"
+  },
+  "taskHash": "2fd45a120d79dad259cd40f4579e2139bd27dff942b016389c4875d07fb9e01d",
+  "task": {
+    "id": "PR-WITNESS-SQL-001",
+    "version": "1.0.0",
+    "protocol": "pr-witness-sql-v1",
+    "status": "production",
+    "dimension": "program",
+    "capability": "PR可执行证据与SQL模板修复",
+    "graderRegistered": true,
+    "source": {
+      "scenarioId": "PR-ELITE-012",
+      "bankPath": "data/scenarios/benchmark.json",
+      "file": "src/db/admin_lookup.sql.jstemplate",
+      "addedLine": "  return db.query(`SELECT * FROM users WHERE login = '${name}'`);"
+    },
+    "environment": {
+      "image": "python@sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31",
+      "sqliteVersion": "3.53.2",
+      "scope": "新建独立SQLite环境，不是原PR项目数据库或完整应用的重建。"
+    },
+    "referenceFlag": {
+      "kind": "developer_reference",
+      "independentHumanReviewed": false
+    },
+    "allowedFunctions": [
+      "length",
+      "lower",
+      "upper",
+      "substr",
+      "substring",
+      "replace",
+      "trim",
+      "ltrim",
+      "rtrim",
+      "coalesce",
+      "ifnull",
+      "abs",
+      "typeof"
+    ],
+    "promptTemplate": "本题是PR可执行证据的校准与回归原型，不是高难挑战题或完整自然语言PR评审。\n请审查 src/db/admin_lookup.sql.jstemplate 中的改动：\n  return db.query(`SELECT * FROM users WHERE login = '${name}'`);\n原查询通过字符串插值构造SQL；请给出一个name输入，证明它会返回至少一条数据库中真实存在、且login不等于该name的用户记录。凭空拼造出来的记录不算泄露见证。\n本题使用新建的SQLite 3.53.2环境，并不重建原项目的实际数据库或其他服务。表schema为：\nCREATE TABLE users (id INTEGER PRIMARY KEY, login TEXT NOT NULL UNIQUE COLLATE BINARY, role TEXT NOT NULL);\n契约：name为不含NUL、长度不超过2048的字符串。正确查询须按login区分大小写、按字面精确匹配，返回全部匹配行的id/login/role原值；不存在的login返回空集。不得擅自改成模糊匹配、丢弃合法名称或改写记录内容。\n同一提交会在不同表数据上重放，包括不同id/role及新增的合法login；不得硬编码某一份表。可信执行器每次只绑定当前name一次。\n修复产物仅为SQLite只读SQL模板及绑定配置，不是任意TypeScript/Python补丁；本题不评分自然语言解释、严重级别、日志/JWT/支付或架构评审。\n允许单条SELECT读取users。允许函数：length、lower、upper、substr、substring、replace、trim、ltrim、rtrim、coalesce、ifnull、abs、typeof；禁止写操作、PRAGMA、ATTACH、读取schema、加载扩展或多条SQL。SQL受长度、结果行数与VM步数限制。\n仅输出严格JSON，不要代码块或其他字段：{\"protocol\":\"pr-witness-sql-v1\",\"witness\":{\"name\":\"你构造的输入\"},\"patch\":{\"sql\":\"修复后的SQL模板\",\"bindings\":[\"name\"]}}。"
+  }
+}

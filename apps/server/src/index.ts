@@ -10,7 +10,7 @@ import fastifyWebSocket from '@fastify/websocket';
 import { PrismaClient } from '@prisma/client';
 import { registerRoutes } from './routes/index.js';
 import { registerWebSocket } from './ws/index.js';
-import { registerEvaluator, bugFindingEvaluator, codeRepairEvaluator, projectRepairEvaluator, structuredOutputEvaluator, dataExtractionEvaluator, exactAnswerLineEvaluator, instructionChecklistEvaluator, canaryAuthorityEvaluator, toolCallTraceEvaluator, agentTraceEvaluator, cliCommandEvaluator, hallucinationResistanceEvaluator, sandboxEvaluator, llmJudgeEvaluator } from '@zxbench/core';
+import { registerEvaluator, bugFindingEvaluator, codeRepairEvaluator, projectRepairEvaluator, structuredOutputEvaluator, dataExtractionEvaluator, exactAnswerLineEvaluator, instructionChecklistEvaluator, canaryAuthorityEvaluator, toolCallTraceEvaluator, agentTraceEvaluator, cliCommandEvaluator, hallucinationResistanceEvaluator, sandboxEvaluator, llmJudgeEvaluator, prExecutableEvidenceEvaluator, challengeSupplementEvaluator } from '@zxbench/core';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { existsSync, readFileSync } from 'node:fs';
@@ -98,6 +98,8 @@ async function main() {
   registerEvaluator(hallucinationResistanceEvaluator);
   registerEvaluator(sandboxEvaluator);
   registerEvaluator(llmJudgeEvaluator);
+  registerEvaluator(prExecutableEvidenceEvaluator);
+  registerEvaluator(challengeSupplementEvaluator);
 
   // API 路由
   await registerRoutes(app);

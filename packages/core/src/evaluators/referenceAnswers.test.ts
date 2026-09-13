@@ -152,13 +152,13 @@ describe('strict answer-contract regressions', () => {
     expect((await evaluator.evaluate(s,'ANSWER: 0元',meta)).axisScores?.answer_accuracy).toBe(100);
   });
   it('versions all changed contracts and restores the four clarified prompts', () => {
-    const math=scenarios.filter(s=>s.dimension==='reasoning_math');expect(math).toHaveLength(34);
+    const math=scenarios.filter(s=>s.dimension==='reasoning_math'&&s.grader==='exact_answer_line');expect(math).toHaveLength(34);
     expect(math.filter(s=>s.status==='ambiguous')).toEqual([]);
     expect(math.filter(s=>s.status==='valid')).toHaveLength(34);
     for(const s of math){expect(s.scenarioVersion).toBe('3.2.0');expect(s.graderVersion).toBe('exact_answer_v4');expect((s.scoring as any).tolerance).toBe(0);expect(s.scenarioHash).toBe(hashScenarioShort(s));}
   });
   it('states the final-line format and rounding rules in the prompts', () => {
-    for(const s of scenarios.filter(s=>s.dimension==='reasoning_math')) {
+    for(const s of scenarios.filter(s=>s.dimension==='reasoning_math'&&s.grader==='exact_answer_line')) {
       expect(s.promptTemplate).toContain('最后一个非空行');
       expect(s.promptTemplate).toContain('字段名称和字段顺序');
       expect(s.promptTemplate).toContain('不附加解释、计算过程或多个候选答案');

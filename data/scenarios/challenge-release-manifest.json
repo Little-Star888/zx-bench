@@ -1,0 +1,65 @@
+{
+  "version": "challenge-supplement-2026-09-13-v1",
+  "status": "frozen_for_prospective_runs",
+  "sourcePackVersion": "capability-challenge-2026-09-10-v1.3.0",
+  "sourcePackHash": "42929b253e9e2f4d32568c5e164ab4fcb651cca3712b6472950c7907c2ed10e3",
+  "judgeCalls": 0,
+  "historicalScoresChanged": false,
+  "reviewPolicy": "single maintainer wording review plus deterministic gold replay and three-model-family discrimination screen",
+  "independentHumanReviewRequired": false,
+  "selectionPolicy": {
+    "minimumDistinctModelFamilies": 3,
+    "minimumScoreSpreadPoints": 8,
+    "minimumSeparatingItemRate": 0.25,
+    "maximumFoundationItemRate": 0.2
+  },
+  "models": [
+    "gsq-rco-iq3s",
+    "ornith15-q4km",
+    "deepseek-v4-flash"
+  ],
+  "selected": {
+    "hallucination_resistance": [
+      "HC3-002",
+      "HC3-007"
+    ],
+    "reasoning_math": [
+      "MC2-001",
+      "MC2-002",
+      "MC2-006"
+    ]
+  },
+  "foundationOverflow": [
+    "HC3-001",
+    "HC3-003",
+    "HC3-004",
+    "HC3-006",
+    "HC2-005",
+    "HC2-008",
+    "MC2-003",
+    "MC2-005",
+    "MC2-007",
+    "MC2-008",
+    "MC2-009",
+    "MC2-010",
+    "MC2-011",
+    "MC2-012"
+  ],
+  "reviseOrExperimental": [
+    "MC2-004"
+  ],
+  "evidence": {
+    "priorTwoModelRun": "reports/challenge-citation-regrade-2026-09-10-v1.3.0/regrade.json",
+    "thirdModelRun": "reports/challenge-third-model-deepseek-v4-flash-2026-09-13-v1",
+    "hallucinationResistance": {
+      "scores": [100, 75, 87.5],
+      "spreadPoints": 25,
+      "separatingItemRate": 0.25
+    },
+    "reasoningMath": {
+      "scores": [75, 83.3333333333, 91.6666666667],
+      "spreadPoints": 16.6666666667,
+      "separatingItemRate": 0.25
+    }
+  }
+}

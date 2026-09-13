@@ -94,7 +94,7 @@ integration('real cross-language positive/negative execution controls', () => {
     try {
       for (const language of ['javascript', 'python']) {
         const source = language === 'python' ? 'def answer(): return 42' : 'function answer() { return 42; }';
-        const s = {id:'container-default',language,grader:'code_repair',graderVersion:'3.4.0',sourceCode:source,functionName:'answer',requirements:{},scoring:{},hiddenTests:[tc(language==='python'?'assert answer()==42':'if(answer()!==42) throw Error("wrong");')]} as any;
+        const s = {id:'container-default',language,grader:'code_repair',graderVersion:'3.5.0',sourceCode:source,functionName:'answer',requirements:{isolatedJson:{protocol:'isolated-json-v1',entrypoint:'answer',cases:[{id:'behavior',calls:[[]],expected:[42]}]}},scoring:{},hiddenTests:[tc(language==='python'?'assert answer()==42':'if(answer()!==42) throw Error("wrong");')]} as any;
         const r = await codeRepairEvaluator.evaluate(s,'```\n'+source+'\n```',{incomplete:false,truncated:false} as any,{} as any);
         expect(r.axisScores?.test_pass, r.evidence?.join('\n')).toBe(100);
         expect(r.environmentError).not.toBe(true);

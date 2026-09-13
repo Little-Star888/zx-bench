@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { Scenario, OutputMetadata } from '@zxbench/types';
-import { codeRepairEvaluator } from './codeRepair.js';
+import { codeRepairDiagnosticEvaluator as codeRepairEvaluator } from './codeRepair.js';
 import { projectRepairEvaluator } from './projectRepair.js';
 import { isDockerAvailable, runInContainer } from '../execution/index.js';
 import { runReplacedCodeTest, runReplacedCodeTestPython } from '../sandbox/index.js';

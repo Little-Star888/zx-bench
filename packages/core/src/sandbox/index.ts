@@ -76,7 +76,7 @@ export interface SandboxResult {
   duration: number;     // ms
   timedOut: boolean;
   oomKilled: boolean;
-  /** Received an authenticated terminal message, rather than just exit(0). */
+  /** Legacy completion hint, NOT authentication against hostile candidate code. */
   completed?: boolean;
 }
 
@@ -525,7 +525,8 @@ function applyPatch(sourceCode: string, patch: string): string {
 
 import { runInContainer, CONTAINER_IMAGES } from '../execution/containerRunner.js';
 
-/** JS/TS hidden test 容器执行（垂直切片）：复用 applyPatch + toRunnableJs */
+/** LEGACY DIAGNOSTIC ONLY: shared harness/markers are forgeable. Official
+ * code_repair@3.5 uses isolatedJson; do not use this helper to certify candidates. */
 export async function runTestCaseInContainer(
   sourceCode: string,
   patch: string | null,
@@ -574,7 +575,7 @@ export async function runTestCaseInContainer(
   };
 }
 
-/** Python hidden test 容器执行（垂直切片） */
+/** Legacy Python diagnostic only; same-process completion evidence is forgeable. */
 export async function runReplacedCodeTestPythonInContainer(
   replacedCode: string,
   testCase: HiddenTestCase,

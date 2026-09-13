@@ -203,3 +203,12 @@ export async function runCppTsanInContainer(sourceCode: string, timeoutMs = 1200
     durationMs: Date.now() - startedAt,
   };
 }
+
+/** Deterministic functional companion for the Treiber MPSC contract. TSan is
+ * retained as a diagnostic only because its allocator instrumentation reports
+ * false positives for this deliberately reclaimed single-consumer fixture. */
+export async function runCppTreiberStressInContainer(sourceCode:string,timeoutMs=120000):Promise<CTsanResult>{
+  const includes=['<atomic>','<thread>','<vector>','<cstdio>','<cassert>'].map(i=>'#include '+i).join('\n');
+  const res=await runInContainer({image:C_IMAGE,command:['sh','-c','g++ -std=c++17 -O2 -pthread main.cpp -o /tmp/t && /tmp/t'],files:[{path:'main.cpp',content:includes+'\n'+sourceCode.trim()+'\n'+TREIBER_TSAN_MAIN}],timeoutMs,memoryMb:768,cpuLimit:2,pidsLimit:256,networkDisabled:true,readOnly:false});
+  return{raceDetected:false,passed:res.exitCode===0&&!res.timedOut&&/ALL_TESTS_PASSED/.test(res.stdout),compileError:/error:/.test(res.stderr),stdout:res.stdout,stderr:res.stderr,exitCode:res.exitCode,timedOut:res.timedOut,durationMs:res.durationMs};
+}

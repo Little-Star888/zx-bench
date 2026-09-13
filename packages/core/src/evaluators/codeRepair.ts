@@ -29,6 +29,18 @@ import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { checkJavaScriptSyntax } from '../sandbox/index.js';
 import { weightedScoreByCoverage } from './scoreAggregate.js';
+import { runIsolatedJsonSuite, validIsolatedJsonContract, jsonProtocolSupportsLanguage } from '../execution/isolatedJson.js';
+import { runIsolatedJavaJsonSuite, validIsolatedJavaJsonContract } from '../execution/isolatedJavaJson.js';
+import { runIsolatedCsharpJsonSuite, validIsolatedCsharpJsonContract } from '../execution/isolatedCsharpJson.js';
+import { runIsolatedGoJsonSuite, validIsolatedGoJsonContract } from '../execution/isolatedGoJson.js';
+import { runIsolatedPhpJsonSuite, validIsolatedPhpJsonContract } from '../execution/isolatedPhpJson.js';
+import { runIsolatedPythonJsonSuite, validIsolatedPythonJsonContract } from '../execution/isolatedPythonJson.js';
+import { runIsolatedJavascriptJsonSuite, validIsolatedJavascriptJsonContract } from '../execution/isolatedJavascriptJson.js';
+import { runIsolatedSqlJsonSuite, validIsolatedSqlJsonContract } from '../execution/isolatedSqlJson.js';
+import { runIsolatedTypescriptJsonSuite, validIsolatedTypescriptJsonContract } from '../execution/isolatedTypescriptJson.js';
+import { runIsolatedTypescriptTypeSuite, validIsolatedTypescriptTypeContract } from '../execution/isolatedTypescriptType.js';
+import { runIsolatedFixtureExitSuite, validIsolatedFixtureExitContract } from '../execution/isolatedFixtureExit.js';
+import { runQuickJsScoringSuite, validQuickJsObservationContract } from '../execution/quickJsObservation.js';
 
 /** 可沙箱执行的语言（python 需解释器可用，运行时判定） */
 const EXECUTABLE_LANGS = ['javascript', 'typescript', 'python', 'py'];
@@ -539,7 +551,8 @@ function calculateScopeDiscipline(sourceCode: string | undefined, patch: string)
   return { score, evidence };
 }
 
-export const codeRepairEvaluator: Evaluator = {
+/** Legacy co-resident execution: offline diagnostics only, never registered. */
+export const codeRepairDiagnosticEvaluator: Evaluator = {
   name: 'code_repair',
   version: '3.4.0',
   aliases: ['3.1.0', '3.0.0', 'code_repair_v3'],
@@ -1209,6 +1222,105 @@ export const codeRepairEvaluator: Evaluator = {
       extractedPatch: patch ?? undefined,
       environmentError: isEnvError,
       humanReviewRequired: axisEvidence.test_pass === 'unmeasured' || axisEvidence.compile_check === 'unmeasured',
+    };
+  },
+};
+
+export function isolatedCodeRepairUnavailable(scenario: Scenario): string | null {
+  if (scenario.expectedVerdict === 'no_bug') return null;
+  const requirements=scenario.requirements as unknown as Record<string, unknown> | undefined;
+  const json=requirements?.isolatedJson, observation=requirements?.quickJsObservation, java=requirements?.isolatedJavaJson, csharp=requirements?.isolatedCsharpJson, go=requirements?.isolatedGoJson, php=requirements?.isolatedPhpJson, python=requirements?.isolatedPythonJson, javascript=requirements?.isolatedJavascriptJson, sql=requirements?.isolatedSqlJson, typescript=requirements?.isolatedTypescriptJson,typescriptType=requirements?.isolatedTypescriptType,fixtureExit=requirements?.isolatedFixtureExit;
+  const lang = ({ js: 'javascript', ts: 'typescript', py: 'python' } as Record<string, string>)[scenario.language ?? ''] ?? scenario.language;
+  if([json,observation,java,csharp,go,php,python,javascript,sql,typescript,typescriptType,fixtureExit].filter(v=>v!==undefined).length>1)return '不能同时指定多个执行观测协议';
+  const contract=validIsolatedJsonContract(json)&&jsonProtocolSupportsLanguage(json.protocol,lang??'')?json
+    :validQuickJsObservationContract(observation)&&['javascript','typescript'].includes(lang??'')?observation
+      :validIsolatedJavaJsonContract(java)&&lang==='java'?java
+        :validIsolatedCsharpJsonContract(csharp)&&['csharp','c#'].includes(lang??'')?csharp
+          :validIsolatedGoJsonContract(go)&&['go','golang'].includes(lang??'')?go
+            :validIsolatedPhpJsonContract(php)&&lang==='php'?php
+              :validIsolatedPythonJsonContract(python)&&lang==='python'?python
+                :validIsolatedJavascriptJsonContract(javascript)&&lang==='javascript'?javascript
+                  :validIsolatedSqlJsonContract(sql)&&lang==='sql'?sql
+                    :validIsolatedTypescriptJsonContract(typescript)&&lang==='typescript'?typescript
+                      :validIsolatedTypescriptTypeContract(typescriptType)&&lang==='typescript'?typescriptType
+                        :validIsolatedFixtureExitContract(fixtureExit)&&fixtureExit.language===lang?fixtureExit:null;
+  if (!contract || contract.entrypoint !== scenario.functionName) return '此题尚未迁移到可信观测判分通道，旧同进程测试仅供诊断';
+  const tests = scenario.hiddenTests ?? [];
+  const caseIds=validIsolatedFixtureExitContract(contract)?contract.caseIds:contract.cases.map(c=>c.id);
+  if (tests.length !== caseIds.length || new Set(tests.map(t => t.id)).size !== tests.length
+      || tests.some(t => !caseIds.includes(t.id))) return '隔离调用契约与原测试清单不一致';
+  return null;
+}
+
+/** Official v4.1 scorer: untrusted execution cannot self-certify test success.
+ * The trusted-host development switch does NOT bypass this scoring boundary. */
+export const codeRepairEvaluator: Evaluator = {
+  name: 'code_repair', version: '4.14.0', aliases: ['code_repair_v3'],
+  async evaluate(scenario, output, metadata, response) {
+    // No-bug classification is a text/rule task, not a claim of runtime testing.
+    if (scenario.expectedVerdict === 'no_bug') {
+      const r = await codeRepairDiagnosticEvaluator.evaluate(scenario, output, metadata, response);
+      r.evidence = [...r.evidence ?? [], 'NO_BUG_RULE_ONLY: no candidate execution or behavioral certification'];
+      return r;
+    }
+    const pending = (reason: string): Partial<ScenarioResult> => ({
+      totalScore: 0, axisCoverage: 0, environmentError: true, humanReviewRequired: true,
+      humanReviewNotes: reason + '；不是模型零分，排除能力聚合。', safetyLevel: 'safe',
+      axisEvidence: { compilation: 'unmeasured', test_pass: 'unmeasured' },
+      evidence: ['EXECUTION_VERIFIER_UNAVAILABLE: ' + reason],
+    });
+    const requirements = scenario.requirements as unknown as Record<string, unknown> | undefined;
+    const contract = requirements?.isolatedJson;
+    const observation = requirements?.quickJsObservation;
+    const java = requirements?.isolatedJavaJson;
+    const csharp = requirements?.isolatedCsharpJson;
+    const go = requirements?.isolatedGoJson;
+    const php = requirements?.isolatedPhpJson;
+    const python = requirements?.isolatedPythonJson;
+    const javascript = requirements?.isolatedJavascriptJson;
+    const sql = requirements?.isolatedSqlJson;
+    const typescript = requirements?.isolatedTypescriptJson;
+    const typescriptType = requirements?.isolatedTypescriptType;
+    const fixtureExit = requirements?.isolatedFixtureExit;
+    const lang = ({ js: 'javascript', ts: 'typescript', py: 'python' } as Record<string, string>)[scenario.language ?? ''] ?? scenario.language;
+    const unavailable = isolatedCodeRepairUnavailable(scenario);
+    if (unavailable) return pending(unavailable);
+    const blocks = extractCodeBlocks(output);
+    const patch = rankBlocks(blocks, scenario.functionName, lang)[0] ?? heuristicExtractCode(output, lang!, scenario.functionName);
+    if (!patch) return { totalScore: 0, axisCoverage: 0, codeExtractionFailed: true, safetyLevel: 'safe',
+      evidence: ['No code found in output'], axisEvidence: { test_pass: 'unmeasured' } };
+    const observed=validQuickJsObservationContract(observation),javaObserved=validIsolatedJavaJsonContract(java),csharpObserved=validIsolatedCsharpJsonContract(csharp),goObserved=validIsolatedGoJsonContract(go),phpObserved=validIsolatedPhpJsonContract(php),pythonObserved=validIsolatedPythonJsonContract(python),javascriptObserved=validIsolatedJavascriptJsonContract(javascript),sqlObserved=validIsolatedSqlJsonContract(sql),typescriptObserved=validIsolatedTypescriptJsonContract(typescript),typescriptTypeObserved=validIsolatedTypescriptTypeContract(typescriptType),fixtureExitObserved=validIsolatedFixtureExitContract(fixtureExit);
+    const suite = observed
+      ? await runQuickJsScoringSuite(patch,lang as 'javascript'|'typescript',observation)
+      : javaObserved?await runIsolatedJavaJsonSuite(patch,java)
+        : csharpObserved?await runIsolatedCsharpJsonSuite(patch,csharp)
+          : goObserved?await runIsolatedGoJsonSuite(patch,go)
+            : phpObserved?await runIsolatedPhpJsonSuite(patch,php)
+              : pythonObserved?await runIsolatedPythonJsonSuite(patch,python)
+                : javascriptObserved?await runIsolatedJavascriptJsonSuite(patch,javascript)
+                  : sqlObserved?await runIsolatedSqlJsonSuite(patch,sql)
+                    : typescriptObserved?await runIsolatedTypescriptJsonSuite(patch,typescript)
+                      : typescriptTypeObserved?await runIsolatedTypescriptTypeSuite(patch,typescriptType)
+                        : fixtureExitObserved?await runIsolatedFixtureExitSuite(patch,fixtureExit,scenario.hiddenTests??[],requirements?.fixture,{forbidMutex:requirements?.forbidMutex===true,forbidTransmute:requirements?.forbidTransmute===true})
+        : validIsolatedJsonContract(contract)?await runIsolatedJsonSuite(patch, lang!, contract):null;
+    if(!suite)return pending('Invalid observation contract');
+    if (suite.infrastructureError) return pending(suite.infrastructureError);
+    const quality = calculateDiffQuality(scenario.sourceCode, patch);
+    const scope = calculateScopeDiscipline(scenario.sourceCode, patch);
+    const scores = { patch_extraction: blocks.length ? 100 : 40, compilation: suite.compiled ? 100 : 0,
+      test_pass: Math.round(100 * suite.passed / suite.total), patch_quality: quality.score, scope_discipline: scope.score };
+    const totalScore = Math.round(scores.patch_extraction * .1 + scores.compilation * .2
+      + scores.test_pass * .4 + scores.patch_quality * .2 + scores.scope_discipline * .1);
+    return { totalScore, axisCoverage: 1, axisScores: scores, safetyLevel: 'safe', environmentError: false,
+      axisEvidence: { patch_extraction: 'rule', compilation: 'verified', test_pass: 'verified', patch_quality: 'rule', scope_discipline: 'rule' },
+      extractedPatch: patch, codeExtractionFailed: blocks.length === 0,
+      evidence: [observed?`${observation.protocol.replaceAll('-','_').toUpperCase()}: ${suite.passed}/${suite.total}; separate WASM guest and trusted service contexts; engine-owned observations`
+        :`${javaObserved?java.protocol.replaceAll('-','_').toUpperCase():csharpObserved?csharp.protocol.replaceAll('-','_').toUpperCase():goObserved?go.protocol.replaceAll('-','_').toUpperCase():phpObserved?php.protocol.replaceAll('-','_').toUpperCase():pythonObserved?python.protocol.replaceAll('-','_').toUpperCase():javascriptObserved?javascript.protocol.replaceAll('-','_').toUpperCase():sqlObserved?sql.protocol.replaceAll('-','_').toUpperCase():typescriptObserved?typescript.protocol.replaceAll('-','_').toUpperCase():typescriptTypeObserved?typescriptType.protocol.replaceAll('-','_').toUpperCase():fixtureExitObserved?fixtureExit.protocol.replaceAll('-','_').toUpperCase():validIsolatedJsonContract(contract)?contract.protocol.replaceAll('-','_').toUpperCase():'INVALID'}: ${suite.passed}/${suite.total}; host compares values; candidate reports have no score authority`,
+        observed?'Synchronous JSON data properties, native reference identity, engine throws; v2 additionally observes message data without getters/coercion and compares literal strings; not error provenance, construction history, descriptors, alias graphs, performance or TypeScript types'
+          :'Behavior-only JSON observations; no identity, complexity, type-system or side-effect certification', quality.evidence, scope.evidence],
+      runtimeEvaluation: { compilePassed: suite.compiled, compileError: suite.compileError,
+        testsPassed: suite.passed, testsFailed: suite.total - suite.passed, testsTotal: suite.total,
+        hiddenTestsPassed: suite.passed, hiddenTestsFailed: suite.total - suite.passed, hiddenTestsTotal: suite.total, details: suite.details },
     };
   },
 };

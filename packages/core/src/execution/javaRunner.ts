@@ -13,6 +13,8 @@ export interface JavaFixture {
   imports?: string[];
   wrapInClass?: boolean;
   helpers?: string;
+  /** Process/thread ceiling for explicitly concurrent fixtures. */
+  pidsLimit?: number;
 }
 
 export interface JavaRunResult {
@@ -111,7 +113,7 @@ export async function runJavaTestsInContainer(
     mounts: [{ src: libs, dst: '/libs', readonly: true }],
     timeoutMs,
     memoryMb: 384,
-    pidsLimit: 64,
+    pidsLimit: fixture.pidsLimit ?? 64,
     // MAVEN_CONFIG 把 entrypoint 的 .m2 目录从 /root/.m2 改到 /tmp/.m2，
     // 从源头消除 mkdir /root 的良性警告（非 root 下必现）
     env: { HOME: '/tmp', TMPDIR: '/tmp', MAVEN_CONFIG: '/tmp/.m2' },

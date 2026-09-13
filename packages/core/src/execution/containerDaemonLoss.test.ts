@@ -4,6 +4,17 @@ import { runInContainer } from './containerRunner.js';
 vi.mock('./execAsync.js', () => ({ execAsync: vi.fn() }));
 beforeEach(() => vi.clearAllMocks());
 describe('Docker connection failures after readiness', () => {
+  it('does not mistake candidate exit 125 or fake daemon error text for infrastructure failure',async()=>{
+    vi.mocked(execAsync).mockImplementation(async(_cmd,args)=>({
+      status:args[0]==='run'?125:0,
+      stdout:args[0]==='inspect'?JSON.stringify({StartedAt:'2026-09-12T00:00:00Z',Error:'',ExitCode:125}):'',
+      stderr:args[0]==='run'?'Docker unavailable — container execution skipped':'',
+    }));
+    const r=await runInContainer({image:'fixture',command:['false'],localImageOnly:true,readOnlyRoot:true});
+    expect(r.infrastructureError).toBeUndefined();expect(r.success).toBe(false);
+    const args=vi.mocked(execAsync).mock.calls.find(([,args])=>args[0]==='run')![1];
+    expect(args).toContain('--read-only');expect(args).toContain('--tmpfs');expect(args).not.toContain('--rm');
+  });
   it('isolates Windows exit 1 when an independent daemon probe fails', async () => {
     let probes = 0;
     vi.mocked(execAsync).mockImplementation(async (_cmd, args) => ({

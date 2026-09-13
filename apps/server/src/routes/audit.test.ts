@@ -117,6 +117,20 @@ describe('audited run API without network or real database', () => {
     const patch = await app.inject({ method: 'PATCH', url: `/api/runs/${id}/config`, payload: { maxTokens: 10000 } });
     expect(patch.statusCode).toBe(409);
   });
+  it('excludes development-shadow tasks by default but allows an explicit run', async () => {
+    const shadow = { ...row, id: 'shadow', dimension: 'program', grader: 'project_repair', requirements: '{"files":[],"developmentShadow":true}' };
+    db.scenarioDefinition.findMany.mockResolvedValue([row, shadow]);
+    const ordinary = await app.inject({ method: 'POST', url: '/api/runs', payload: { modelConfigId: 'mock' } });
+    await vi.waitFor(() => expect(saved.get(ordinary.json().data.id)?.status).toBe('completed'));
+    expect(runMultipleEvaluations).toHaveBeenCalledTimes(1);
+    expect(runMultipleEvaluations).toHaveBeenLastCalledWith(expect.objectContaining({ id: row.id }), expect.anything());
+
+    vi.mocked(runMultipleEvaluations).mockClear();
+    const explicit = await app.inject({ method: 'POST', url: '/api/runs', payload: { modelConfigId: 'mock', scenarioIds: ['shadow'] } });
+    await vi.waitFor(() => expect(saved.get(explicit.json().data.id)?.status).toBe('completed'));
+    expect(runMultipleEvaluations).toHaveBeenCalledTimes(1);
+    expect(runMultipleEvaluations).toHaveBeenLastCalledWith(expect.objectContaining({ id: 'shadow' }), expect.anything());
+  });
   it('shows eligibility failures without rewriting review status', async () => {
     const res = await app.inject({ method: 'GET', url: '/api/scenarios/eligibility' });
     expect(res.statusCode).toBe(200);

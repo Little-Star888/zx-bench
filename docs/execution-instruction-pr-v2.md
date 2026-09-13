@@ -1,5 +1,7 @@
 # 执行、指令遵循与 PR 评审可靠性升级
 
+> 上一轮交付快照，非当前验收结论。后续红队复现了完成标记伪造及 PR 语义代理误判；当前版本、隔离措施和未完成事项见 [第1阶段对抗回归](deep-adversarial-stage1.md)。
+
 日期：2026-09-12。范围：运行/判分可靠性修复，不包含下一阶段的大规模挑战题扩充，也未调用被测模型重跑历史成绩。
 
 ## 交付范围
@@ -8,7 +10,7 @@
 | --- | --- | ---: | --- |
 | code_repair | 3.4.0 | 127 | 默认容器、独立编译证据、真实测试完成、固定分母 |
 | instruction_checklist | instruction_checklist_v5 | 42 | 配置错误未测隔离；字面/正向提及分离；真实结构关系 |
-| llm_judge（PR） | 2.0.0 | 2 | 严格 JSON、文件与 diff 证据绑定、一条发现不重复计分 |
+| pr_executable_evidence（PR） | 1.0.0 | 2 | 严格 JSON、可重放反例、可信执行修复，Judge权重0 |
 
 题库版本为 1.5.0，仍为 595 道有效题。171 条相关定义具有新 graderVersion、scenarioVersion 和 canonical scenarioHash；`data/scenarios/execution-review-manifest.json` 记录逐题哈希及评分/执行代码的 SHA-256 指纹（文本 CRLF 归一化为 LF）。这是机器契约与回归审计，不冒充独立人工审核。
 
@@ -102,5 +104,5 @@ node scripts/sync-reviewed-question-contracts.mjs apps/data/zxbench.db --executi
 - TypeScript 的类型专项仍是宿主编译器 API 静态检查，不是隔离执行服务；类型系统资源耗尽防护还可加强。
 - 完成标记与测试同进程，不能防候选代码读取/篡改 harness 或伪造报告。严肃防作弊还需独立测试监督进程、分离权限/文件和可信结果通道。
 - 容器默认根文件系统仍可写，部分项目构建允许工作区写入；TSan 特殊路径存在 seccomp 放宽。此次没有宣称强隔离沙箱已经完整加固。
-- 指令自由语义、PR新发现和修复建议语义仍需专项验证或人工复核；本次未完成新一轮独立人工双审。
+- 指令自由语义仍需专项验证；两道PR题已收敛为可执行证据任务，不再声称测量开放式“新发现”能力，也不再需要逐次人工复核。
 - 本次未自动提交或推送 GitHub，也未触发付费模型重跑。

@@ -10,7 +10,7 @@ const bank:Scenario[]=JSON.parse(readFileSync(new URL('../../../../data/scenario
 const scenario=(id:string)=>bank.find(s=>s.id===id)!;
 const meta={truncated:false,incomplete:false} as OutputMetadata;
 const score=async(id:string,output:string)=>hallucination.evaluate(scenario(id),output,meta);
-const reviewed=bank.filter(s=>s.dimension==='hallucination_resistance');
+const reviewed=bank.filter(s=>s.dimension==='hallucination_resistance'&&s.grader==='hallucination_resistance');
 describe('all reviewed contracts',()=>{
  it('exports precisely 78 new IDs, with no retired HAL IDs in the active bank',()=>{
   expect(reviewed).toHaveLength(78);expect(new Set(reviewed.map(s=>s.id)).size).toBe(78);

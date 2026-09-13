@@ -23,19 +23,22 @@ export function execAsync(command: string, args: string[], options: AsyncExecOpt
       cwd,
       env,
       shell: false,
+      windowsHide: true,
       stdio: stdio === 'ignore' ? 'ignore' : ['ignore', 'pipe', 'pipe'],
     });
 
-    let stdout = '';
-    let stderr = '';
+    const stdoutChunks: Buffer[] = [];
+    const stderrChunks: Buffer[] = [];
     let timedOut = false;
+    let outputLimited = false;
+    let outputBytes = 0;
     let settled = false;
 
     const finish = (status: number | null, error?: NodeJS.ErrnoException) => {
       if (settled) return;
       settled = true;
       if (timer) clearTimeout(timer);
-      resolve({ status, stdout, stderr, error });
+      resolve({ status, stdout: Buffer.concat(stdoutChunks).toString('utf8'), stderr: Buffer.concat(stderrChunks).toString('utf8'), error });
     };
 
     const timer = timeout != null
@@ -44,12 +47,16 @@ export function execAsync(command: string, args: string[], options: AsyncExecOpt
 
     if (stdio !== 'ignore') {
       child.stdout?.on('data', (d: Buffer) => {
-        stdout += d.toString('utf8');
-        if (stdout.length > maxBuffer) child.kill('SIGKILL');
+        const remaining = Math.max(0, maxBuffer - outputBytes);
+        outputBytes += d.length;
+        if (remaining) stdoutChunks.push(Buffer.from(d.subarray(0, remaining)));
+        if (outputBytes > maxBuffer) { outputLimited = true; child.kill('SIGKILL'); }
       });
       child.stderr?.on('data', (d: Buffer) => {
-        stderr += d.toString('utf8');
-        if (stderr.length > maxBuffer) child.kill('SIGKILL');
+        const remaining = Math.max(0, maxBuffer - outputBytes);
+        outputBytes += d.length;
+        if (remaining) stderrChunks.push(Buffer.from(d.subarray(0, remaining)));
+        if (outputBytes > maxBuffer) { outputLimited = true; child.kill('SIGKILL'); }
       });
     }
 
@@ -58,6 +65,10 @@ export function execAsync(command: string, args: string[], options: AsyncExecOpt
       if (timedOut) {
         const e = new Error('ETIMEDOUT') as NodeJS.ErrnoException;
         e.code = 'ETIMEDOUT';
+        finish(code, e);
+      } else if (outputLimited) {
+        const e = new Error('OUTPUT_LIMIT_EXCEEDED') as NodeJS.ErrnoException;
+        e.code = 'ENOBUFS';
         finish(code, e);
       } else {
         finish(code);

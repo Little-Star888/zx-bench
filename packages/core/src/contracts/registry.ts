@@ -16,7 +16,7 @@ export interface GraderContract {
   /** 明确验证过、可由当前实现兼容的历史版本；其他版本不可静默降级。 */
   compatibleVersions?: string[];
   /** 归属维度 */
-  dimension: string;
+  dimension: string | string[];
   /** evaluator 实际消费的 requirements 字段 */
   consumedFields: string[];
   /** 契约声明的合法字段（consumed + 题库已知但尚未消费的待支持字段） */
@@ -73,7 +73,7 @@ export const GRADER_CONTRACTS: Record<string, GraderContract> = {
   // ---- 指令遵循 ----
   instruction_checklist: {
     grader: 'instruction_checklist',
-    version: 'instruction_checklist_v5',
+    version: 'instruction_checklist_v6',
     dimension: 'instruction_following',
     consumedFields: ['constraints'],
     declaredFields: ['constraints'],
@@ -179,17 +179,17 @@ export const GRADER_CONTRACTS: Record<string, GraderContract> = {
     aliases: ['cli_command_v1', 'cli_command_v2'],
   },
 
-  // ---- 编程修复：code_repair（requirements 实际是对象，但 evaluator 当 string[] keywords 读 —— 已知缺陷） ----
+  // ---- 编程修复：code_repair（版本化隔离执行契约，不接受候选自报测试通过） ----
   code_repair: {
     grader: 'code_repair',
-    version: '3.4.0',
+    version: '4.14.0',
     dimension: 'program',
-    consumedFields: ['functionName', 'initialCode', 'hiddenTests', 'explanationKeywords', 'isCorrectCodeTrap', 'fixture'],
-    declaredFields: ['functionName', 'initialCode', 'hiddenTests', 'explanationKeywords', 'isCorrectCodeTrap', 'fixture', 'referenceSolution'],
+    consumedFields: ['functionName', 'initialCode', 'hiddenTests', 'explanationKeywords', 'isCorrectCodeTrap', 'fixture', 'isolatedJson', 'isolatedJavaJson', 'isolatedCsharpJson', 'isolatedGoJson', 'isolatedPhpJson', 'isolatedPythonJson', 'isolatedJavascriptJson', 'quickJsObservation'],
+    declaredFields: ['functionName', 'initialCode', 'hiddenTests', 'explanationKeywords', 'isCorrectCodeTrap', 'fixture', 'referenceSolution', 'isolatedJson', 'isolatedJavaJson', 'isolatedCsharpJson', 'isolatedGoJson', 'isolatedPhpJson', 'isolatedPythonJson', 'isolatedJavascriptJson', 'quickJsObservation'],
     requiredFields: [],
     capabilities: {
       supportedLanguages: ['javascript', 'typescript', 'python', 'go', 'java', 'c', 'cpp', 'csharp', 'rust', 'php', 'sql', 'bash', 'markdown'],
-      executableLanguages: ['javascript', 'typescript', 'python', 'go', 'java', 'c', 'cpp', 'csharp', 'rust', 'php', 'sql', 'bash'],
+      executableLanguages: ['javascript', 'typescript', 'python'],
     },
     aliases: ['code_repair_v3'],
   },
@@ -200,8 +200,8 @@ export const GRADER_CONTRACTS: Record<string, GraderContract> = {
     version: '1.3.0',
     compatibleVersions: ['1.2.0'],
     dimension: 'program',
-    consumedFields: ['files', 'hiddenTestFiles', 'hiddenTests', 'publicTests', 'functionName', 'explanationKeywords', 'image'],
-    declaredFields: ['files', 'hiddenTestFiles', 'hiddenTests', 'publicTests', 'functionName', 'explanationKeywords', 'image'],
+    consumedFields: ['files', 'hiddenTestFiles', 'hiddenTests', 'publicTests', 'functionName', 'explanationKeywords', 'image', 'executionPolicy', 'developmentShadow'],
+    declaredFields: ['files', 'hiddenTestFiles', 'hiddenTests', 'publicTests', 'functionName', 'explanationKeywords', 'image', 'executionPolicy', 'developmentShadow'],
     requiredFields: ['files'],
     capabilities: {
       supportedLanguages: ['javascript', 'typescript', 'python', 'go', 'java', 'c', 'cpp', 'csharp', 'rust', 'php', 'sql', 'bash', 'shell'],
@@ -237,7 +237,7 @@ export const GRADER_CONTRACTS: Record<string, GraderContract> = {
   // ---- PR 评审质量：llm_judge（PR-ELITE-012/013） ----
   llm_judge: {
     grader: 'llm_judge',
-    version: '2.0.0',
+    version: '2.1.0',
     dimension: 'program',
     consumedFields: ['diff', 'prompt', 'judge_config', 'judge_ground_truth', 'scoring'],
     declaredFields: ['diff', 'prompt', 'judge_config', 'judge_ground_truth', 'scoring'],
@@ -246,6 +246,24 @@ export const GRADER_CONTRACTS: Record<string, GraderContract> = {
       supportedLanguages: ['pr_review'],
       executableLanguages: [],
     },
+  },
+  pr_executable_evidence: {
+    grader: 'pr_executable_evidence',
+    version: '1.0.0',
+    dimension: 'program',
+    consumedFields: ['prompt', 'protocol', 'automaticOnly', 'judgeWeight'],
+    declaredFields: ['prompt', 'protocol', 'automaticOnly', 'judgeWeight'],
+    requiredFields: ['prompt'],
+    capabilities: { supportedLanguages: ['json'], executableLanguages: ['json'] },
+  },
+  challenge_supplement: {
+    grader: 'challenge_supplement',
+    version: '1.0.0',
+    dimension: ['hallucination_resistance', 'reasoning_math'],
+    consumedFields: ['challengeId', 'sourcePackVersion', 'sourcePackHash', 'releaseVersion'],
+    declaredFields: ['challengeId', 'sourcePackVersion', 'sourcePackHash', 'releaseVersion'],
+    requiredFields: ['challengeId', 'sourcePackVersion', 'sourcePackHash', 'releaseVersion'],
+    capabilities: { supportedLanguages: ['json'], executableLanguages: ['json'] },
   },
 };
 

@@ -29,7 +29,7 @@ interface ConstraintResult {
 
 export const instructionChecklistEvaluator: Evaluator = {
   name: 'instruction_checklist',
-  version: 'instruction_checklist_v5',
+  version: 'instruction_checklist_v6',
   aliases: ['instruction_checklist_v3'],
 
   async evaluate(
@@ -483,6 +483,11 @@ function checkRelationalStructure(text: string, id: string, type: string, descri
 function checkOrderedInclusion(
   text: string, id: string, type: string, description: string, check: Record<string, unknown>,
 ): ConstraintResult {
+  // Evaluate an explicitly selected actual plan, not a previously quoted/discarded
+  // example. Keep generic literal inclusion unchanged: quotation may itself be required.
+  const selections = [...text.matchAll(/(?:我的|本次|最终)?实际(?:操作|执行|方案|计划)(?:只有一项)?\s*[：:]/g)];
+  const selected = selections.at(-1);
+  if (selected) text = text.slice(selected.index! + selected[0].length);
   const steps = Array.isArray(check.steps) ? check.steps as unknown[] : [];
   if (steps.length < 2) return { id, type, description, passed: false, detail: 'ordered_inclusion needs at least two steps' };
   const positions: number[] = [];

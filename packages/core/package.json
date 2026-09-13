@@ -19,6 +19,8 @@
   "dependencies": {
     "@zxbench/types": "workspace:*",
     "@zxbench/utils": "workspace:*",
+    "quickjs-emscripten-core": "0.32.0",
+    "@jitl/quickjs-wasmfile-release-sync": "0.32.0",
     "typescript": "^5.4.0"
   },
   "devDependencies": {

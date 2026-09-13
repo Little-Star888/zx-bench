@@ -36,6 +36,8 @@ export type { ToolCatalog, ToolSpec, ToolParamSpec, ToolCallValidation } from '.
 export { hallucinationResistanceEvaluator } from './evaluators/hallucinationResistance.js';
 export { sandboxEvaluator } from './evaluators/sandbox.js';
 export { llmJudgeEvaluator } from './evaluators/llmJudge.js';
+export { prExecutableEvidenceEvaluator } from './evaluators/prExecutableEvidence.js';
+export { challengeSupplementEvaluator } from './evaluators/challengeSupplement.js';
 
 // 沙箱执行
 export { runInSandbox, runTestCase, runTestSuite, runReplacedCodeTest, runReplacedCodeTestPython, runTestCaseInContainer, runReplacedCodeTestPythonInContainer } from './sandbox/index.js';
@@ -64,8 +66,9 @@ export { inspectCapabilitySubmission } from './evaluationLab/capabilityInspectio
 export type { InspectionKind, ClaimReviewAttachment } from './evaluationLab/capabilityInspection.js';
 export { confirmProbabilityComparison } from './evaluationLab/probabilityConfirmation.js';
 export type { ProbabilityTrial } from './evaluationLab/probabilityConfirmation.js';
-export { observedDiscrimination } from './evaluationLab/observedDiscrimination.js';
-export type { ObservedDimensionModel } from './evaluationLab/observedDiscrimination.js';
+export { observedDiscrimination, lightweightDiscriminationGate } from './evaluationLab/observedDiscrimination.js';
+export type { ObservedDimensionModel, LightweightDiscriminationOptions } from './evaluationLab/observedDiscrimination.js';
+export { CHALLENGE_SUPPLEMENT_VERSION, CHALLENGE_SUPPLEMENT_GRADER_VERSION, CHALLENGE_SUPPLEMENT_SOURCE_VERSION, CHALLENGE_SUPPLEMENT_SOURCE_HASH, CHALLENGE_SUPPLEMENT_IDS } from './evaluationLab/challengeRelease.js';
 export { judgeRoleEvidence } from './evaluationLab/judgeRoleEvidence.js';
 export type { BoundedJudgeControl, BoundedJudgeRealSignal } from './evaluationLab/judgeRoleEvidence.js';
 export { buildLatentCensoringProbability, latentCensoringReference, verifyLatentCensoring, scoreLatentCensoring } from './evaluationLab/latentCensoringProbability.js';

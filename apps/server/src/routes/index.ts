@@ -61,6 +61,11 @@ async function selectBenchmarkPack(config: EvalRunConfig, dimensionIds?: string[
     if (missing.length) throw new Error(`Scenario selection missing or outside dimension filter: ${missing.join(', ')}`);
   }
   let scenarios = selected.map(decodeScenario);
+  // Development-shadow tasks stay available for an explicit scenario-ID run, but
+  // must not consume resources or enter the default aggregate/main score.
+  if (!config.scenarioIds?.length) {
+    scenarios = scenarios.filter(s => (s.requirements as unknown as { developmentShadow?: boolean } | undefined)?.developmentShadow !== true);
+  }
   if (config.evaluationMode !== 'official') {
     scenarios = scenarios.filter(s => {
       const until = (s.requirements as unknown as { validUntil?: string })?.validUntil;
@@ -619,6 +624,8 @@ async function rejudgeSavedResult(
     include: { evalRun: { include: { modelConfig: true } } },
   });
   if (!saved) throw new Error('saved result not found');
+  // Historical and current isolated execution facts cannot be rescued by Judge-only.
+  if (['code_repair@3.5.0', 'code_repair@3.6.0', 'code_repair@3.7.0', 'code_repair@3.8.0', 'code_repair@3.9.0', 'code_repair@4.0.0', 'code_repair@4.1.0', 'code_repair@4.2.0', 'code_repair@4.3.0', 'code_repair@4.4.0', 'code_repair@4.5.0', 'code_repair@4.6.0', 'code_repair@4.7.0', 'code_repair@4.8.0', 'code_repair@4.9.0', 'code_repair@4.10.0', 'code_repair@4.11.0', 'code_repair@4.12.0', 'code_repair@4.13.0', 'code_repair@4.14.0', 'pr_executable_evidence@1.0.0'].includes(saved.graderVersion)) return { status: 'skipped', judgeCalls: 0 };
   const savedEvidence = parseStoredJson<string[]>(saved.evidence, []);
   const unavailableSemantic = savedEvidence.some(item => item.startsWith('GRADING_UNAVAILABLE:'))
     && savedEvidence.some(item => item.startsWith('SEMANTIC_JUDGE_REQUIRED:'));
@@ -3738,7 +3745,7 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
           environmentError: newIsEnv,
           durationMs: Date.now() - questionStartTime,
           stage: newIsEnv ? 'environment_error' : 'completed',
-          error: newIsEnv ? (result.evidence?.find((e) => e.startsWith('ENVIRONMENT_ERROR:')) ?? '环境/基础设施故障') : undefined,
+          error: newIsEnv ? (result.humanReviewNotes ?? result.evidence?.find((e) => e.startsWith('ENVIRONMENT_ERROR:')) ?? '环境/基础设施故障') : undefined,
         };
         if (idx >= 0) {
           const old = liveState.recentResults[idx];
@@ -4272,7 +4279,7 @@ async function runEvaluation(
         durationMs: Date.now() - questionStartTime,
         stage: isReasoningLimit ? 'reasoning_limit' : (result.environmentError === true ? 'environment_error' : 'completed'),
         error: isReasoningLimit ? (result.evidence?.[0] ?? '思考/输出超限')
-          : (result.environmentError === true ? (result.evidence?.find((e) => e.startsWith('ENVIRONMENT_ERROR:')) ?? '环境/基础设施故障') : undefined),
+          : (result.environmentError === true ? (result.humanReviewNotes ?? result.evidence?.find((e) => e.startsWith('ENVIRONMENT_ERROR:')) ?? '环境/基础设施故障') : undefined),
         outputTokens: result.outputMetadata?.outputTokens,
         inputTokens: result.outputMetadata?.inputTokens,
         inferenceMs: result.outputMetadata?.inferenceMs,

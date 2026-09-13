@@ -8,13 +8,15 @@ import { agentTraceEvaluator } from './agentTrace.js';
 import { toolCallTraceEvaluator } from './toolCallTrace.js';
 import { cliCommandEvaluator } from './cliCommand.js';
 import { instructionChecklistEvaluator } from './instructionChecklist.js';
-import { llmJudgeEvaluator } from './llmJudge.js';
+import { llmJudgeEvaluator, prRuleDiagnosticEvaluator } from './llmJudge.js';
 import { bugFindingEvaluator } from './bugFinding.js';
 import { codeRepairEvaluator } from './codeRepair.js';
 import { projectRepairEvaluator } from './projectRepair.js';
 import { exactAnswerLineEvaluator } from './exactAnswerLine.js';
 import { hallucinationResistanceEvaluator } from './hallucinationResistance.js';
 import { sandboxEvaluator } from './sandbox.js';
+import { prExecutableEvidenceEvaluator } from './prExecutableEvidence.js';
+import { challengeSupplementEvaluator } from './challengeSupplement.js';
 import { getEvaluator, registerEvaluator, type Evaluator } from './index.js';
 import { hashScenario } from '../contracts/canonicalize.js';
 import { checkSafetyRedLines } from '../safety/index.js';
@@ -101,7 +103,8 @@ describe('P0: scenario identity and evaluator version are fail-closed', () => {
       bugFindingEvaluator, codeRepairEvaluator, projectRepairEvaluator, structuredOutputEvaluator,
       dataExtractionEvaluator, exactAnswerLineEvaluator, instructionChecklistEvaluator,
       canaryAuthorityEvaluator, toolCallTraceEvaluator, agentTraceEvaluator, cliCommandEvaluator,
-      hallucinationResistanceEvaluator, sandboxEvaluator, llmJudgeEvaluator,
+      hallucinationResistanceEvaluator, sandboxEvaluator, llmJudgeEvaluator, prExecutableEvidenceEvaluator,
+      challengeSupplementEvaluator,
     ].forEach(registerEvaluator);
     const scenarios = JSON.parse(readFileSync('data/scenarios/benchmark.json', 'utf8')) as Array<{ grader: string; graderVersion: string; id: string }>;
     const unresolved = scenarios.filter((scenario) => !getEvaluator(scenario.grader, scenario.graderVersion)).map((scenario) => scenario.id);
@@ -158,7 +161,7 @@ describe('P1: action, command, instruction, and review checks reject keyword-onl
       id: 'F1', file: 'src/auth/jwt.ts', severity: 'critical', finding: 'none algorithm accepted', keywords: ['jwt.ts', 'none', '算法混淆'],
     }] } };
     const output = 'critical: src/auth/jwt.ts has none and 算法混淆。没有任何问题，无需修复。';
-    const result: any = await llmJudgeEvaluator.evaluate(scenario, output, metadata, response);
+    const result: any = await prRuleDiagnosticEvaluator.evaluate(scenario, output, metadata, response);
     expect(result.axisScores.critical_findings_recall).toBe(0);
     expect(result.axisScores.actionable_feedback).toBe(0);
   });

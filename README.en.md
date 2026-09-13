@@ -2,15 +2,15 @@
 
 [中文文档](README.md) · English
 
-> Run any large language model (local GGUF / Ollama / OpenAI-compatible API) through **595 benchmark questions** across 10 dimensions (673 total bank size; 78 retired questions archived under data/scenarios/archive/) on a single machine — producing reproducible composite scores, dimension radar, leaderboards, AI deep-dive reports and cost-effectiveness analysis. Programming questions are **actually compiled and executed with hidden tests inside Docker containers**, so scores reflect real code behavior, not text similarity.
+> Local LLM evaluation with 600 current question definitions across 10 dimensions (678 lifetime, 78 retired), versioned scoring, reports and execution audits. Programming isolation is being migrated: question inventory is not certified scoring coverage. See the acceptance boundaries below before publishing capability comparisons.
 
 [![CI](https://github.com/suncityldp/zx-bench/actions/workflows/ci.yml/badge.svg)](https://github.com/suncityldp/zx-bench/actions/workflows/ci.yml)
 
 ## Highlights
 
 - **10 capability dimensions**: programming, reasoning & math, safety & authority, deep CLI tasks, data extraction, agent workflow, instruction following, tool/CLI workflow, hallucination resistance, structured output.
-- **595 evaluable benchmark questions** (673 lifetime bank, 78 retired archived): difficulty-graded (easy/medium/hard/adversarial), version-controlled (per-question scenarioHash, versioned benchmark-meta.json).
-- **Real code execution**: JS/TS/Python use containers by default; other supported languages execute according to their fixtures. Missing behavioral tests remain unmeasured. Memory/race checks are opt-in per fixture, not universally enabled.
+- **600 current definitions**: all 107 single-file repair questions have trusted verifiers; the two former free-text PR questions are now automatic evidence tasks using replayable counterexamples and repairs; five three-family-screened deterministic challenge questions are included for prospective runs. Every definition is versioned and hashed.
+- **Single-file migration complete**: `code_repair@4.14.0` covers all 107 repair questions and freezes 345 formal test IDs across host-verdict execution and bounded compiler channels.
 - **no_bug traps**: some code is already correct; the model must recognize no-bug instead of forcing a fix (false fixes score 0).
 - **Deterministic scoring + AI Judge dual channel**: rule-based evaluators score first; an AI Judge re-scores semantic items with coverage-aware weight handoff.
 - **Composite score (difficulty-weighted + dimension-weighted)**: harder questions weigh more, dimensions weighted by importance.
@@ -23,7 +23,11 @@
 
 ## Questions & Real Execution (Key Design)
 
-ZxBench programming questions do not judge code by keyword similarity — the model's fix is put into an isolated environment and truly compiled and tested:
+Single-file scorer `code_repair@4.14.0` covers all 107 repair questions and freezes 345 formal test IDs across value observation, QuickJS/WASM, TypeScript runtime/type-check, native-language, and Bash channels. One hundred forty-three development controls remain separate from formal scoring; 20 no-bug questions retain rule-only scoring. The two PR tasks now use trusted SQL and sharding replay with zero Judge weight; the 20 `project_repair` tasks remain outside this delivery.
+
+ZxBench uses a pragmatic lightweight release gate. The official main score accepts only reviewed questions with traceable frozen gold and reproducible grading; the 20 multi-file project tasks remain development-shadow items. A new challenge pack must first run on the identical questions across at least three declared model families. The default screen requires an 8-point model-score spread and at least 25% separating items; all-pass foundation items are capped at 20%, while all-fail, ambiguous, or environment-affected items remain experimental. This deterministic screen never rewrites historical scores.
+
+The table below includes formal channels and retained diagnostic runners; a question is scoreable only when bound to a versioned protocol:
 
 | Language | Execution backend | Verification |
 |----------|-------------------|--------------|
@@ -44,11 +48,11 @@ Beyond regular fix-the-bug questions, the programming dimension also includes:
 - **plan questions**: migration review / incident triage (zero-downtime column rename, p99 latency diagnosis), scored by step checklist, in the instruction-following dimension.
 - **implementation questions**: complete a given signature (e.g. safeParseInt, Top-N query).
 
-Run `pnpm test:containers` for real positive/negative controls across 12 languages. This verifies runners, not every historical question's gold answer: reference-solution/fixture coverage remains incomplete. Containers default to non-root, no network and a read-only workspace; some builds require writable workspaces. The root filesystem is not universally read-only, and completion markers do not provide an anti-tampering boundary.
+Run `pnpm test:containers` for real positive/negative controls across 12 languages. All 107 single-file repair questions now have frozen gold/original/mutant/development coverage. Containers default to non-root, no network and a read-only workspace where supported; native toolchains that require build output use a bounded writable workspace. Multi-file repository semantics remain outside this delivery.
 
 ### 2026-09-12 execution and review update
 
-Frozen 171 current contracts with `code_repair@3.4.0`, `instruction_checklist_v5` and `llm_judge@2.0.0`. Structural relations replace keyword proxies in targeted instruction questions. PR review requires strict JSON, file binding and original diff evidence; unmatched findings or Judge failures require review. Historical scores are not overwritten or silently migrated. See [verification and limitations](docs/execution-instruction-pr-v2.md).
+Bank 1.30.0 uses `code_repair@4.14.0`, `instruction_checklist_v6`, `pr_executable_evidence@1.0.0` and `challenge_supplement@1.0.0`. Judge/Judge-only cannot override these deterministic results. Type-only TypeScript candidates are never executed; native and Bash candidates run versioned host-owned assertions, with stress, Miri, or source-contract checks for specialized cases. This does not certify arbitrary dependencies, production-scale load, or arbitrary multi-file repository semantics.
 
 ---
 
@@ -60,7 +64,7 @@ Frozen 171 current contracts with `code_repair@3.4.0`, `instruction_checklist_v5
 - pnpm >= 11
 - **Docker** (required for containerized programming questions)
 
-Images are pulled automatically on first run; pre-warm them with:
+The new isolated JSON path requires locally cached `node:20-alpine` and `python:3.12-alpine`; it never implicitly downloads dependencies. Legacy diagnostic runners may pull images. Existing image preparation examples:
 
 ```bash
 docker pull golang:1.21 eclipse-temurin:17-jdk-alpine gcc:13 rust:1.75 php:8.2-cli mono:6.12 bash:5 node:22-alpine
@@ -103,8 +107,8 @@ The data-extraction dimension now contains 56 reviewed questions: the original 3
 | Dimension | Questions | Weight |
 |-----------|-----------|--------|
 | program | 150 | 0.20 |
-| hallucination_resistance | 78 | 0.12 |
-| reasoning_math | 34 | 0.12 |
+| hallucination_resistance | 80 | 0.12 |
+| reasoning_math | 37 | 0.12 |
 | instruction_following | 42 | 0.12 |
 | safety_authority | 50 | 0.10 |
 | agent_workflow | 45 | 0.08 |
@@ -112,7 +116,7 @@ The data-extraction dimension now contains 56 reviewed questions: the original 3
 | data_extraction | 56 | 0.07 |
 | cli_deep_tasks | 56 | 0.07 |
 | structured_output | 28 | 0.05 |
-| **Total** | **595** | |
+| **Total** | **600** | |
 
 ### Three-step scoring chain
 
@@ -207,7 +211,7 @@ apps/server/     # Fastify backend + API + Prisma
 packages/core/   # evaluation engine
 packages/types/  # shared types
 packages/utils/  # utilities
-data/scenarios/  # 595 evaluable benchmark questions (+ archive/ retired set)
+data/scenarios/  # 600 current definitions (not certified coverage), metadata, development prototypes and archives
 data/java-libs/  # JUnit jars
 scripts/         # import/export scripts
 docs/            # specs (fixture-spec) & screenshots

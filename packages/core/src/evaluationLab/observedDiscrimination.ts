@@ -32,3 +32,50 @@ export function observedDiscrimination(dimension:string,models:ObservedDimension
     independentGold:false,difficultyCalibrated:false,productionEligible:false,combinedScore:null,
     interpretation:'Observed outcomes under documented execution classes; mixed local/API conditions do not isolate model weights or establish a causal ranking.'};
 }
+
+export interface LightweightDiscriminationOptions {
+  minModelFamilies?:number;
+  minScoreSpread?:number;
+  minSeparatingRate?:number;
+  maxFoundationRate?:number;
+}
+
+/** Practical promotion screen for a lightweight benchmark.
+ * It nominates questions for maintainer review; it never mutates the bank or
+ * promotes a question merely because a strong model answered it correctly. */
+export function lightweightDiscriminationGate(
+  dimension:string,
+  models:ObservedDimensionModel[],
+  options:LightweightDiscriminationOptions={},
+){
+  const report=observedDiscrimination(dimension,models);
+  const policy={
+    minModelFamilies:options.minModelFamilies??3,
+    minScoreSpread:options.minScoreSpread??8,
+    minSeparatingRate:options.minSeparatingRate??0.25,
+    maxFoundationRate:options.maxFoundationRate??0.20,
+  };
+  for(const [key,value] of Object.entries(policy))if(!Number.isFinite(value)||value<0)throw new Error(`Invalid ${key}`);
+  if(policy.maxFoundationRate>1||policy.minSeparatingRate>1)throw new Error('Rates must be between 0 and 1');
+  const separating=report.items.filter(i=>i.separatesObservedRuns);
+  const foundation=report.items.filter(i=>i.allPass);
+  const revise=report.items.filter(i=>i.allFail);
+  // Apply the cap to the final selected set, not the original candidate pool:
+  // foundation / (separating + foundation) <= maxFoundationRate.
+  const foundationLimit=policy.maxFoundationRate>=1?foundation.length:
+    Math.floor(separating.length*policy.maxFoundationRate/(1-policy.maxFoundationRate));
+  const enoughFamilies=report.distinctDeclaredModelFamilies>=policy.minModelFamilies;
+  const separatingRate=report.items.length?separating.length/report.items.length:0;
+  const readyForMaintainerFreeze=enoughFamilies&&report.scoreSpread>=policy.minScoreSpread&&separatingRate>=policy.minSeparatingRate;
+  return {...report,policy,separatingRate,
+    disposition:{
+      officialCandidates:separating.map(i=>i.id),
+      foundationCandidates:foundation.slice(0,foundationLimit).map(i=>i.id),
+      foundationOverflow:foundation.slice(foundationLimit).map(i=>i.id),
+      reviseOrExperimental:revise.map(i=>i.id),
+    },
+    readyForMaintainerFreeze,
+    productionEligible:false,
+    promotionRule:'Only officialCandidates plus the bounded foundation subset may be reviewed for freezing; ambiguous, environment-failed and all-fail items are excluded.',
+  };
+}
