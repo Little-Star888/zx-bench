@@ -8,6 +8,7 @@
  *   npx tsx src/scripts/rescore-scores.ts
  *   # 可选环境变量:
  *   #   RESCORE_LIMIT=100  只重算最近 100 条
+ *   #   RESCORE_RUN_ID=... 只重算指定运行
  *   #   RESCORE_DIM=program 只重算指定维度
  *   #   DRY_RUN=1          只预览不写库
  */
@@ -18,8 +19,10 @@ import {
   dataExtractionEvaluator, exactAnswerLineEvaluator, instructionChecklistEvaluator,
   canaryAuthorityEvaluator, toolCallTraceEvaluator, agentTraceEvaluator, cliCommandEvaluator,
   projectRepairEvaluator, hallucinationResistanceEvaluator, sandboxEvaluator, llmJudgeEvaluator,
+  challengeExtensionEvaluator, challengeSupplementEvaluator,
+  getJudgeWeights, mixDeterministicJudge, applyReviewedVerdict,
 } from '@zxbench/core';
-import type { Scenario, Difficulty, QuestionStatus, ScenarioTier, Verdict, OutputPolicy } from '@zxbench/types';
+import type { Scenario, Difficulty, QuestionStatus, ScenarioTier, Verdict, OutputPolicy, EvalRunConfig } from '@zxbench/types';
 import { readFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 
@@ -38,6 +41,8 @@ registerEvaluator(cliCommandEvaluator);
 registerEvaluator(hallucinationResistanceEvaluator);
 registerEvaluator(sandboxEvaluator);
 registerEvaluator(llmJudgeEvaluator);
+registerEvaluator(challengeExtensionEvaluator);
+registerEvaluator(challengeSupplementEvaluator);
 
 // ===== 手动加载 apps/server/.env（DATABASE_URL） =====
 function loadEnv() {
@@ -52,21 +57,6 @@ function loadEnv() {
 loadEnv();
 
 const prisma = new PrismaClient();
-
-// ===== det/judge 权重（与 orchestrator getJudgeWeights 保持一致） =====
-function getJudgeWeights(dimension: string, grader: string): { deterministic: number; judge: number } {
-  if (dimension === 'data_extraction' || grader === 'json_atomic_fields') return { deterministic: 1.0, judge: 0.0 };
-  if (dimension === 'safety_authority') return { deterministic: 1.0, judge: 0.0 };
-  if (dimension === 'structured_output' || grader === 'schema_compliance') return { deterministic: 0.9, judge: 0.1 };
-  if (dimension === 'reasoning_math') return { deterministic: 0.95, judge: 0.05 };
-  if (dimension === 'program' || grader === 'code_repair') return { deterministic: 0.8, judge: 0.2 };
-  if (dimension === 'bug_finding' || grader === 'bug_finding') return { deterministic: 0.4, judge: 0.6 };
-  if (dimension === 'instruction_following' || grader === 'instruction_checklist') return { deterministic: 0.5, judge: 0.5 };
-  if (dimension === 'agent_workflow' || grader === 'agent_trace') return { deterministic: 0.7, judge: 0.3 };
-  if (dimension === 'tool_cli_workflow' || grader === 'tool_call_trace') return { deterministic: 0.7, judge: 0.3 };
-  if (dimension === 'cli_deep_tasks' || grader === 'cli_command') return { deterministic: 0.5, judge: 0.5 };
-  return { deterministic: 0.6, judge: 0.4 };
-}
 
 // ===== DB 行 → Scenario =====
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -102,16 +92,29 @@ function deserializeScenario(row: any): Scenario {
 async function main() {
   const limit = process.env.RESCORE_LIMIT ? parseInt(process.env.RESCORE_LIMIT, 10) : undefined;
   const dimFilter = process.env.RESCORE_DIM;
+  const runIdFilter = process.env.RESCORE_RUN_ID;
   const dryRun = process.env.DRY_RUN === '1';
   // 强制重算已带证据标记的结果（评分器契约升级后需全量刷新）
   const force = process.env.RESCORE_FORCE === '1';
 
   console.log('=== 历史结果离线重算（新评分契约）===\n');
 
-  const results = await prisma.scenarioResult.findMany({
-    orderBy: { finishedAt: 'desc' },
-    take: limit,
-  });
+  // Querying a large SQLite result set with a repeated manifest relation can
+  // exceed Prisma's N-API string conversion on Node 26. A run-scoped rescore
+  // loads the parent once and attaches only the config needed below.
+  let results: any[];
+  if (runIdFilter) {
+    const run = await prisma.evalRun.findUnique({ where: { id: runIdFilter }, include: { results: true } });
+    if (!run) throw new Error(`run not found: ${runIdFilter}`);
+    const selected = limit ? run.results.slice(0, limit) : run.results;
+    results = selected.map(result => ({ ...result, evalRun: { config: run.config } }));
+  } else {
+    results = await prisma.scenarioResult.findMany({
+      orderBy: { finishedAt: 'desc' },
+      take: limit,
+      include: { evalRun: true },
+    });
+  }
   console.log(`待重算 ${results.length} 条${dryRun ? '（DRY-RUN，不写库）' : ''}\n`);
 
   let updated = 0;
@@ -139,24 +142,36 @@ async function main() {
 
     try {
       const scenario = deserializeScenario(sd);
+      const runConfig = JSON.parse(r.evalRun.config) as EvalRunConfig;
+      if (scenario.answerFirst == null && runConfig.constraints?.answerFirst != null) {
+        scenario.answerFirst = runConfig.constraints.answerFirst;
+      }
       const det = await evaluator.evaluate(scenario, r.modelOutput, outputMetadata);
 
       const newDet = det.totalScore ?? r.totalScore;
       const weights = getJudgeWeights(scenario.dimension, scenario.grader);
       // judge 合并：覆盖率感知（与 orchestrator 一致）——未测量轴由 judge 补判 / 无 judge 时打折
       const coverage = det.axisCoverage ?? 1;
-      const finalTotal = (r.judgeScore != null && weights.judge > 0)
-        ? Math.round(newDet * weights.deterministic * coverage
-            + r.judgeScore * (weights.judge + weights.deterministic * (1 - coverage)))
+      const semanticJudgeLed = scenario.dimension === 'hallucination_resistance'
+        || scenario.grader === 'cli_command';
+      const mixed = mixDeterministicJudge(weights.deterministic, weights.judge, coverage, semanticJudgeLed ? .7 : undefined);
+      let finalTotal = (r.judgeScore != null && weights.judge > 0)
+        ? Math.round(newDet * mixed.detW + r.judgeScore * mixed.judgeW)
         : (coverage >= 0.5 ? newDet : Math.round(newDet * 0.3));
 
+      const scored = { ...det, totalScore: finalTotal };
+      let savedJudge;
+      try { savedJudge = r.finalJudge ? JSON.parse(r.finalJudge) : undefined; } catch { savedJudge = undefined; }
+      applyReviewedVerdict(scored, savedJudge);
+      finalTotal = scored.totalScore ?? finalTotal;
+
       // 证据标记兜底：未显式标注的轴默认视为 rule（与 orchestrator 行为一致）
-      const axisScoresOut = det.axisScores || {};
+      const axisScoresOut = scored.axisScores || {};
       const axisEvidenceOut = {
-        ...(det.axisEvidence || {}),
+        ...(scored.axisEvidence || {}),
         ...Object.fromEntries(
           Object.keys(axisScoresOut)
-            .filter((k) => !det.axisEvidence || det.axisEvidence[k] == null)
+            .filter((k) => !scored.axisEvidence || scored.axisEvidence[k] == null)
             .map((k) => [k, 'rule']),
         ),
       };
@@ -168,6 +183,8 @@ async function main() {
       if (finalTotal !== oldTotal) changed++;
 
       if (!dryRun) {
+        const oldEvidence = r.evidence ? JSON.parse(r.evidence) as string[] : [];
+        const preservedEvidence = oldEvidence.filter(item => item.startsWith('SANDBOX_EXECUTED:'));
         await prisma.scenarioResult.update({
           where: { id: r.id },
           data: {
@@ -175,6 +192,12 @@ async function main() {
             deterministicScore: newDet,
             axisScores: JSON.stringify(axisScoresOut),
             axisEvidence: JSON.stringify(axisEvidenceOut),
+            evidence: JSON.stringify([...preservedEvidence, ...(scored.evidence || [])]),
+            graderVersion: `${evaluator.name}@${evaluator.version}`,
+            scoreHistory: r.runCount === 1 ? JSON.stringify([finalTotal]) : r.scoreHistory,
+            humanReviewRequired: scored.humanReviewRequired ?? false,
+            environmentError: scored.environmentError ?? false,
+            formatParseSuccess: scored.formatParseSuccess ?? r.formatParseSuccess,
           },
         });
       }

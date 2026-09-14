@@ -635,7 +635,8 @@ async function evaluateCandidate(options: OrchestrateOptions): Promise<ScenarioR
       // 覆盖率感知合并：确定性评分器未测量轴（题集缺检查项）的权重让渡给 AI Judge 补判
       // 例：tool_cli 缺 tool 配置（coverage=0.15）→ det 仅按已测轴计权，其余由 Judge 语义判分
       const coverage = result.axisCoverage ?? 1;
-      const mixed = mixDeterministicJudge(weights.deterministic, weights.judge, coverage, isHallucination ? .7 : undefined);
+      const semanticJudgeLed = isHallucination || scenario.grader === 'cli_command';
+      const mixed = mixDeterministicJudge(weights.deterministic, weights.judge, coverage, semanticJudgeLed ? .7 : undefined);
       result.totalScore = Math.round(result.totalScore * mixed.detW + judgeScore * mixed.judgeW);
     }
 

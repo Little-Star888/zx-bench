@@ -17,6 +17,7 @@ describe('reference answer compatibility and historical preservation', () => {
     const before = JSON.stringify(rows);
     expect(referenceAnswerWarnings(rows)).toHaveLength(2);
     expect(referenceAnswerWarnings([{scenarioId:'FR-001',scenarioVersion:'5.0.0',graderVersion:'hallucination_resistance@hallucination_v5'}])).toEqual([]);
+    expect(referenceAnswerWarnings([{scenarioId:'FR-001',scenarioVersion:'5.0.0',graderVersion:'hallucination_resistance@hallucination_v6'}])).toEqual([]);
     expect(partitionReferenceAnswerRuns([{id:'old',results:rows}]).eligible).toEqual([]);
     expect(JSON.stringify(rows)).toBe(before);
   });

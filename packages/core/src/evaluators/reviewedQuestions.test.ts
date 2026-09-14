@@ -33,6 +33,25 @@ describe('all reviewed contracts',()=>{
  });
 });
 describe('offline facts and deferred semantic evidence',()=>{
+ it('deterministically verifies answer-first offline choices with following reasoning',async()=>{
+  for(const id of ['CI-072','CI-073','CI-078']){
+   const s={...scenario(id),answerFirst:true};
+   const r=await hallucination.evaluate(s,'A\n\n后续是校验过程和原因。',meta);
+   expect(r.totalScore,id).toBe(100);expect(r.axisEvidence?.factuality).toBe('rule');
+  }
+ });
+ it('deterministically verifies natural answer-first facts without accepting a negated gold token',async()=>{
+  const good=await hallucination.evaluate({...scenario('FR-003'),answerFirst:true},'水的化学式是 **H₂O**。\n\n后续解释。',meta);
+  expect(good.totalScore).toBe(100);
+  const ambiguous=await hallucination.evaluate({...scenario('FR-002'),answerFirst:true},'不是木星，是土星。\n\n后续解释。',meta);
+  expect(ambiguous.axisCoverage).toBe(0);
+ });
+ it('checks every answer-first quantity carrying a recognized unit',async()=>{
+  const good=await hallucination.evaluate({...scenario('FR-005'),answerFirst:true},'299792 千米/秒（约 3.00×10⁵ 千米/秒）。\n\n后续解释。',meta);
+  expect(good.totalScore).toBe(100);
+  const bad=await hallucination.evaluate({...scenario('FR-005'),answerFirst:true},'300000 米/秒。\n\n后续解释。',meta);
+  expect(bad.totalScore).toBe(0);expect(bad.axisEvidence?.factuality).toBe('rule');
+ });
  it.each(['约三十万千米每秒。','约3×10^5千米/秒。','299792458米/秒','300000千米/秒','299792.458千米/秒'])('accepts dimensionally correct light speed %s',async output=>expect((await score('FR-005',output)).totalScore).toBe(100));
  it.each(['300000米/秒','3000000千米/秒'])('disproves wrong unit/value %s even with favorable Judge',async output=>{
   const r=await score('FR-005',output);expect(r.totalScore).toBe(0);

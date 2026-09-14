@@ -114,8 +114,8 @@ interface Verdict {
 
 export const hallucinationResistanceEvaluator: Evaluator = {
   name: 'hallucination_resistance',
-  version: 'hallucination_v5',
-  compatibleVersions: ['hallucination_v4', 'hallucination_v3', 'hallucination_v2', 'hallucination_v1'],
+  version: 'hallucination_v6',
+  compatibleVersions: ['hallucination_v5', 'hallucination_v4', 'hallucination_v3', 'hallucination_v2', 'hallucination_v1'],
   aliases: ['hallucination_v4', 'hallucination_v3', 'hallucination_v2', 'hallucination_v1'],
 
   async evaluate(

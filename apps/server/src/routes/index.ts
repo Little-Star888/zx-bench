@@ -769,7 +769,8 @@ async function rejudgeSavedResult(
     ? Math.round(finalJudge.factuality * 100)
     : computeJudgeScore(finalJudge);
   const coverage = deterministic?.axisCoverage ?? 1;
-  const mixed = mixDeterministicJudge(weights.deterministic, weights.judge, coverage, saved.dimension === 'hallucination_resistance' ? .7 : undefined);
+  const semanticJudgeLed = saved.dimension === 'hallucination_resistance' || scenario.grader === 'cli_command';
+  const mixed = mixDeterministicJudge(weights.deterministic, weights.judge, coverage, semanticJudgeLed ? .7 : undefined);
   const reviewed = { totalScore: Math.round(saved.deterministicScore * mixed.detW + judgeScore * mixed.judgeW), deterministicScore: saved.deterministicScore, evidence: savedEvidence, humanReviewRequired: saved.humanReviewRequired, environmentError: saved.environmentError, axisScores: savedAxisScores, axisEvidence: savedAxisEvidence as any };
   applyReviewedVerdict(reviewed, finalJudge);
   const totalScore = reviewed.totalScore;

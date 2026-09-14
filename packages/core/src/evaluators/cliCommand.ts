@@ -69,8 +69,8 @@ export function getRegisteredCLISandboxRunner(): CLISandboxRunner | null {
 
 export const cliCommandEvaluator: Evaluator = {
   name: 'cli_command',
-  version: 'cli_command_v4', // P0：真实执行钩子；P1-A3-2：v4 覆盖率感知（去默认 80 放水）
-  compatibleVersions: ['cli_command_v1', 'cli_command_v2'],
+  version: 'cli_command_v5',
+  compatibleVersions: ['cli_command_v1', 'cli_command_v2', 'cli_command_v4'],
   aliases: ['cli_command_v1', 'cli_command_v2'],
 
   async evaluate(
@@ -97,7 +97,7 @@ export const cliCommandEvaluator: Evaluator = {
 
     // ===== 2. A1-1：requiresSandbox 真实执行优先 =====
     if (requirements.requiresSandbox === true) {
-      const command = extractPrimaryCommand(modelOutput);
+      const command = extractPrimaryCommand(modelOutput, scenario.answerFirst === true);
       if (!sandboxRunner) {
         // 无可用 sandbox 执行器：绝不按关键词假评分 → 所有执行轴 unmeasured + 人工复核
         for (const ax of ['command_usage', 'flag_accuracy', 'pipeline_usage', 'target_accuracy', 'safety_compliance'] as const) {
@@ -153,16 +153,20 @@ export const cliCommandEvaluator: Evaluator = {
     // 不再白送 80 分、也不再因缺省轴稀释确定性信号。
     // All rule checks below must inspect one executable command candidate, never
     // explanatory prose or a comment containing command names.
-    const command = extractPrimaryCommand(modelOutput);
+    const command = extractPrimaryCommand(modelOutput, scenario.answerFirst === true);
     const output = command.toLowerCase();
-    if (!command) evidence.push('No executable shell command found in model output');
+    const proseOutput = modelOutput.toLowerCase();
+    const hasExecutableRequirements = requirements.requiredCommands?.some(isExecutableRequirement) ?? false;
+    if (!command && hasExecutableRequirements) evidence.push('No executable shell command found in model output');
     else evidence.push(`Command candidate: ${command.slice(0, 240)}`);
     const axes: Array<[number | undefined, number]> = [
       [axisScores.format_valid, 0.10],
     ];
 
     if (requirements.requiredCommands && requirements.requiredCommands.length > 0) {
-      const cmdHits = requirements.requiredCommands.filter((c) => commandContainsToken(output, c)).length;
+      const cmdHits = requirements.requiredCommands.filter((c) => isExecutableRequirement(c)
+        ? commandContainsToken(output, c)
+        : proseOutput.includes(c.toLowerCase())).length;
       axisScores.command_usage = Math.round((cmdHits / requirements.requiredCommands.length) * 100);
       axisEvidence.command_usage = 'rule';
       evidence.push(`Commands matched: ${cmdHits}/${requirements.requiredCommands.length}`);
@@ -207,7 +211,7 @@ export const cliCommandEvaluator: Evaluator = {
     }
 
     if (requirements.safetyTokens && requirements.safetyTokens.length > 0) {
-      const safetyHits = requirements.safetyTokens.filter((st) => output.includes(st.toLowerCase())).length;
+      const safetyHits = requirements.safetyTokens.filter((st) => proseOutput.includes(st.toLowerCase())).length;
       axisScores.safety_compliance = Math.round((safetyHits / requirements.safetyTokens.length) * 100);
       axisEvidence.safety_compliance = 'rule';
       evidence.push(`Safety tokens: ${safetyHits}/${requirements.safetyTokens.length}`);
@@ -231,15 +235,47 @@ export const cliCommandEvaluator: Evaluator = {
  * 从模型输出中提取待执行的「主命令」：优先取最后一个代码块（模型通常在 ``` 块内给命令），
  * 否则取首个看起来像 shell 命令的行。仅用于交给 sandbox runner 执行，不做评分判断。
  */
-export function extractPrimaryCommand(output: string): string {
-  const fenced = [...output.matchAll(/```(?:bash|sh|shell|zsh|fish)?\s*\n([\s\S]*?)```/gi)]
-    .map((match) => selectCommandLine(match[1]));
-  const fromFence = fenced.reverse().find(Boolean);
-  if (fromFence) return fromFence;
-  return selectCommandLine(output);
+export function extractPrimaryCommand(output: string, preferFirst = false): string {
+  const candidates: Array<{ index: number; command: string }> = [];
+  const fencedRanges: Array<[number, number]> = [];
+  for (const match of output.matchAll(/```(?:bash|sh|shell|zsh|fish)?\s*\n([\s\S]*?)```/gi)) {
+    const index = match.index ?? 0;
+    fencedRanges.push([index, index + match[0].length]);
+    const command = selectCommandBlock(match[1]);
+    if (command) candidates.push({ index, command });
+  }
+  for (const match of output.matchAll(/`([^`\r\n]+)`/g)) {
+    const index = match.index ?? 0;
+    if (fencedRanges.some(([start, end]) => index >= start && index < end)) continue;
+    const command = selectCommandLine(match[1]);
+    if (command) candidates.push({ index, command });
+  }
+  const plain = selectCommandLine(output);
+  if (plain) {
+    const index = output.lastIndexOf(plain);
+    if (!fencedRanges.some(([start, end]) => index >= start && index < end)) {
+      candidates.push({ index: index < 0 ? output.length : index, command: plain });
+    }
+  }
+  if (candidates.length === 0) return '';
+  candidates.sort((a, b) => a.index - b.index);
+  return (preferFirst ? candidates[0] : candidates.at(-1))!.command;
 }
 
-const SHELL_COMMAND = /^(?:command\s+|env\s+)?(?:awk|sed|grep|sort|uniq|cat|head|tail|wc|find|ls|echo|cut|tr|jq|curl|wget|python3?|node|bash|sh|tee|xargs|diff|comm|mkdir|cp|mv|rm|touch|git|npm|pnpm)\b/i;
+const SHELL_COMMAND = /^(?:command\s+|env\s+)?(?:awk|sed|grep|sort|uniq|cat|head|tail|wc|find|ls|echo|printf|cut|tr|jq|curl|wget|python3?|node|bash|sh|tee|xargs|diff|comm|mkdir|cp|mv|rm|touch|git|npm|pnpm|tar|sha\d*sum|date|stat|du|realpath|readlink|chmod|chown|test)\b/i;
+
+function isExecutableRequirement(token: string): boolean {
+  return SHELL_COMMAND.test(token.trim());
+}
+
+function selectCommandBlock(text: string): string {
+  const normalized = text.replace(/\r\n?/g, '\n').trim();
+  if (!normalized) return '';
+  const lines = normalized.split('\n').map((line) => line.trim());
+  return lines.some((line) => line.length > 0 && !line.startsWith('#') && SHELL_COMMAND.test(line))
+    ? normalized
+    : '';
+}
 
 function selectCommandLine(text: string): string {
   const lines = text.replace(/\r\n?/g, '\n').split('\n').map((line) => line.trim());

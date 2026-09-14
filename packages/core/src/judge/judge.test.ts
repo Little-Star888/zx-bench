@@ -18,6 +18,12 @@ describe('Judge integrity', () => {
     expect(buildJudgeUserPrompt(input)).toContain('LAST_FILE_REQUIRED');
     expect(buildJudgeUserPrompt(input)).not.toContain('[truncated for judge]');
   });
+  it('treats CLI command and flag lists as reference implementations', () => {
+    const prompt = buildJudgeUserPrompt({ ...input, dimension: 'cli_deep_tasks' });
+    expect(prompt).toContain('CLI Semantic-Equivalence Policy');
+    expect(prompt).toContain('Accept semantically equivalent pipelines');
+    expect(prompt).toContain('awk instead of grep');
+  });
   it('uses configured generation budget and accepts a complete judgment', async () => {
     response(JSON.stringify(valid));
     expect((await runTieredJudge(input, options)).finalJudge.patchCorrectness).toBe(1);

@@ -67,6 +67,17 @@ describe('bank 1.31.1 challenge integration and restored formal scope', () => {
       expect((await challengeSupplementEvaluator.evaluate(scenario, JSON.stringify(referenceAnswer(item)), metadata)).totalScore).toBe(100);
     }
   });
+  it('scores coverage answers by verified field checks instead of an all-or-zero cliff', async () => {
+    const item = pack.cases.find(c => c.id === 'HC3-003')!;
+    const answer = structuredClone(item.reference) as any;
+    answer.announcement_proves_national.sources = ['D5', 'D4'];
+    const result = await challengeExtensionEvaluator.evaluate(find(item.id), JSON.stringify(answer), metadata);
+    expect(result.totalScore).toBeGreaterThan(0);
+    expect(result.totalScore).toBeLessThan(100);
+    expect(result.axisScores?.challenge_answer).toBe(100);
+    expect(result.axisScores?.evidence_attribution).toBeLessThan(100);
+    expect(result.evidence).toContain('FAILED_CHECK:announcement_proves_national.sources');
+  });
   it('rejects stale source hashes or changed prompts, and separates unparseable probability output', async () => {
     const probability = pack.cases.find(c => c.kind === 'probability')!, scenario = find(probability.id);
     expect(await challengeExtensionEvaluator.evaluate({ ...scenario, promptTemplate: 'changed' }, '{}', metadata)).toMatchObject({ environmentError: true });

@@ -49,7 +49,8 @@ describe('getJudgeWeights', () => {
     ['instruction_following', '', 0.5, 0.5],
     ['agent_workflow', '', 0.85, 0.15],
     ['tool_cli_workflow', '', 0.85, 0.15],
-    ['cli_deep_tasks', '', 0.7, 0.3],
+    ['cli_deep_tasks', '', 0.3, 0.7],
+    ['cli_deep_tasks', 'exact_answer_line', 0.95, 0.05],
     ['unknown_dim', '', 0.6, 0.4],
   ];
   for (const c of cases) {

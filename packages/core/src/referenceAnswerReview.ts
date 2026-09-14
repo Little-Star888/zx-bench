@@ -19,7 +19,7 @@ export function referenceAnswerWarnings(rows: ReferenceAnswerRow[]): string[] {
       continue;
     }
     if (/^(?:FR|UB|TD|HP|GC|CI)-\d{3}$/.test(row.scenarioId)) {
-      if (row.scenarioVersion !== '5.0.0' || !['hallucination_v5','hallucination_resistance@hallucination_v5'].includes(row.graderVersion ?? '')) warnings.add(row.scenarioId + ': needs reviewed hallucination 5.0.0 / hallucination_v5');
+      if (row.scenarioVersion !== '5.0.0' || !['hallucination_v5','hallucination_resistance@hallucination_v5','hallucination_v6','hallucination_resistance@hallucination_v6'].includes(row.graderVersion ?? '')) warnings.add(row.scenarioId + ': needs reviewed hallucination 5.0.0 / hallucination_v5-v6');
       continue;
     }
     if (!mathIds.has(row.scenarioId)) continue;

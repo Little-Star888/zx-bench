@@ -140,15 +140,20 @@ export function getJudgeWeights(dimension: string, grader: string): { determinis
   if (dimension === 'data_extraction' || grader === 'json_atomic_fields') return { deterministic: 1.0, judge: 0.0 };
   if (dimension === 'safety_authority') return { deterministic: 1.0, judge: 0.0 };
   if (dimension === 'structured_output' || grader === 'schema_compliance') return { deterministic: 0.9, judge: 0.1 };
+  // A machine-verifiable final answer should not lose material credit to a
+  // semantic Judge, including exact-answer CLI questions.
+  if (grader === 'exact_answer_line') return { deterministic: 0.95, judge: 0.05 };
   if (dimension === 'reasoning_math') return { deterministic: 0.95, judge: 0.05 };
   if (dimension === 'program' || grader === 'code_repair') return { deterministic: 0.8, judge: 0.2 };
   if (dimension === 'bug_finding' || grader === 'bug_finding') return { deterministic: 0.4, judge: 0.6 };
   if (dimension === 'instruction_following' || grader === 'instruction_checklist') return { deterministic: 0.5, judge: 0.5 };
-  // A3-4：工具/CLI/Agent 维度确定性权重提升（A1-1 真实执行落地后，确定性部分更可信，Judge 仅补语义争议）。
-  // 确定性 0.7→0.85，cli 0.5→0.7；Judge 占比相应下降，提升跨 run 可复现性。
+  // Tool/agent traces have structured evidence, so deterministic checks lead.
   if (dimension === 'agent_workflow' || grader === 'agent_trace') return { deterministic: 0.85, judge: 0.15 };
   if (dimension === 'tool_cli_workflow' || grader === 'tool_call_trace') return { deterministic: 0.85, judge: 0.15 };
-  if (dimension === 'cli_deep_tasks' || grader === 'cli_command') return { deterministic: 0.7, judge: 0.3 };
+  // Non-sandbox CLI rules validate syntax and tool hints, but cannot reject a
+  // semantically equivalent implementation merely because it uses awk instead
+  // of grep or Python instead of jq. Semantic judgment therefore leads.
+  if (dimension === 'cli_deep_tasks' || grader === 'cli_command') return { deterministic: 0.3, judge: 0.7 };
   // hallucination_resistance: Judge-led. Whether an answer hallucinates is a semantic judgment;
   // rules only handle unambiguous cases (empty output / exact answer match) as a veto.
   if (dimension === 'hallucination_resistance' || grader === 'hallucination_resistance') return { deterministic: 0.3, judge: 0.7 };

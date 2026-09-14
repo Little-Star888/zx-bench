@@ -101,8 +101,8 @@ export const GRADER_CONTRACTS: Record<string, GraderContract> = {
   // aliases 保留 hallucination_v3/v2/v1：v4 评分器兼容旧题（无 verificationMode 走 v3 兼容路径）。
   hallucination_resistance: {
     grader: 'hallucination_resistance',
-    version: 'hallucination_v5',
-    compatibleVersions: ['hallucination_v4', 'hallucination_v3', 'hallucination_v2', 'hallucination_v1'],
+    version: 'hallucination_v6',
+    compatibleVersions: ['hallucination_v5', 'hallucination_v4', 'hallucination_v3', 'hallucination_v2', 'hallucination_v1'],
     dimension: 'hallucination_resistance',
     consumedFields: [
       'answerability', 'answerKeywords', 'answer', 'correctionKeywords',
@@ -164,7 +164,8 @@ export const GRADER_CONTRACTS: Record<string, GraderContract> = {
   // ---- CLI 深度任务：cli_command（含 6 道 requiresSandbox 实地调查题） ----
   cli_command: {
     grader: 'cli_command',
-    version: 'cli_command_v4', // P0-A1-1：真实执行钩子；P1-A3-2：覆盖率感知（去默认 80）
+    version: 'cli_command_v5',
+    compatibleVersions: ['cli_command_v1', 'cli_command_v2', 'cli_command_v4'],
     dimension: 'cli_deep_tasks',
     consumedFields: [
       'requiredCommands', 'requiredFlags', 'pipelineTokens', 'targetKeywords', 'safetyTokens',
@@ -266,7 +267,7 @@ export const GRADER_CONTRACTS: Record<string, GraderContract> = {
     capabilities: { supportedLanguages: ['json'], executableLanguages: ['json'] },
   },
   challenge_extension: {
-    grader: 'challenge_extension', version: '1.0.0',
+    grader: 'challenge_extension', version: '1.1.0', compatibleVersions: ['1.0.0'],
     dimension: ['hallucination_resistance', 'reasoning_math'],
     consumedFields: ['challengeId', 'sourcePackVersion', 'sourcePackHash', 'developmentShadow'],
     declaredFields: ['challengeId', 'sourcePackVersion', 'sourcePackHash', 'developmentShadow'],

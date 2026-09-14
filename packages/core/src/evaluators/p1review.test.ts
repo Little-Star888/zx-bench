@@ -39,13 +39,13 @@ function scenario(overrides: Record<string, unknown>): Scenario {
   } as unknown as Scenario;
 }
 
-describe('P1-A3-4: 工具/CLI/Agent 维度确定性权重提升、Judge 占比下降', () => {
+describe('P1-A3-4: 工具/Agent 确定性主导，非沙箱 CLI 语义主导', () => {
   it('tool_cli_workflow & agent_workflow 确定性 0.85 / judge 0.15', () => {
     expect(getJudgeWeights('tool_cli_workflow', 'tool_call_trace')).toEqual({ deterministic: 0.85, judge: 0.15 });
     expect(getJudgeWeights('agent_workflow', 'agent_trace')).toEqual({ deterministic: 0.85, judge: 0.15 });
   });
-  it('cli_deep_tasks 确定性 0.7 / judge 0.3', () => {
-    expect(getJudgeWeights('cli_deep_tasks', 'cli_command')).toEqual({ deterministic: 0.7, judge: 0.3 });
+  it('cli_deep_tasks 确定性 0.3 / judge 0.7', () => {
+    expect(getJudgeWeights('cli_deep_tasks', 'cli_command')).toEqual({ deterministic: 0.3, judge: 0.7 });
   });
 });
 

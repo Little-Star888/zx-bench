@@ -231,6 +231,11 @@ export function buildJudgeUserPrompt(input: JudgeInput): string {
   sections.push(`## Question: ${input.questionId}`);
   sections.push(`### Task:\n${input.task}`);
 
+  if (input.dimension === 'cli_deep_tasks') {
+    sections.push(`### CLI Semantic-Equivalence Policy:
+Judge the executable behavior required by the task. Values in requiredCommands and requiredFlags describe a reference implementation unless the task itself explicitly mandates a particular command or flag. Accept semantically equivalent pipelines, scripts, and standard tools when they preserve the required filtering, ordering, duplicates, paths, output, and safety behavior. Do not deduct merely because the candidate uses a different tool, such as awk instead of grep or Python instead of jq.`);
+  }
+
   if (input.sourceCode) {
     sections.push(`### Source Code:\n\`\`\`javascript\n${input.sourceCode}\n\`\`\``);
   }
