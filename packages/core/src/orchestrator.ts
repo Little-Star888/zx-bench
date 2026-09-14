@@ -225,6 +225,10 @@ async function evaluateCandidate(options: OrchestrateOptions): Promise<ScenarioR
   let sandboxEvaluation: RuntimeEvaluation | undefined;
   let sandboxSummary: string | null = null;
   const scenarioRequirements = (scenario.requirements ?? {}) as Record<string, unknown>;
+  const partHardSeconds = Number(scenarioRequirements.hardSeconds);
+  const scenarioTimeout = Number.isFinite(partHardSeconds) && partHardSeconds > 0
+    ? partHardSeconds * 1000
+    : modelParams.timeout;
 
   // ===== Stage 1.55: 多文件仓库题（project_repair）——注入仓库文件内容 =====
   // P4 事故修复：AG 系列新题的 promptTemplate 是通用英文模板（不内嵌源码），而
@@ -268,7 +272,7 @@ async function evaluateCandidate(options: OrchestrateOptions): Promise<ScenarioR
   try {
     modelResponse = options.savedCandidate ? options.savedCandidate.response : await callModelWithRetry({
       config: modelConfig,
-      params: { ...modelParams, maxTokens: effectiveMaxTokens },
+      params: { ...modelParams, maxTokens: effectiveMaxTokens, timeout: scenarioTimeout },
       systemPrompt,
       userPrompt,
       signal: options.signal,
@@ -336,7 +340,7 @@ async function evaluateCandidate(options: OrchestrateOptions): Promise<ScenarioR
       );
       modelResponse = await callModelWithRetry({
         config: modelConfig,
-        params: { ...modelParams, maxTokens: effectiveMaxTokens },
+        params: { ...modelParams, maxTokens: effectiveMaxTokens, timeout: scenarioTimeout },
         systemPrompt,
         userPrompt,
         signal: options.signal,

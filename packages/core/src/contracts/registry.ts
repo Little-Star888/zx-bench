@@ -274,6 +274,21 @@ export const GRADER_CONTRACTS: Record<string, GraderContract> = {
     requiredFields: ['challengeId', 'sourcePackVersion', 'sourcePackHash'],
     capabilities: { supportedLanguages: ['json'], executableLanguages: ['json'] },
   },
+  ultra_batch_part: {
+    grader: 'ultra_batch_part', version: '1.0.0',
+    dimension: ['data_extraction', 'hallucination_resistance', 'reasoning_math'],
+    consumedFields: ['groupId', 'partNumber', 'points', 'hardSeconds', 'questionHash', 'sourcePackVersion'],
+    declaredFields: ['groupId', 'partNumber', 'points', 'hardSeconds', 'questionHash', 'sourcePackVersion'],
+    requiredFields: ['groupId', 'partNumber', 'points', 'hardSeconds', 'questionHash', 'sourcePackVersion'],
+    capabilities: { supportedLanguages: ['json'], executableLanguages: ['json'] },
+  },
+  ultra_proof_part: {
+    grader: 'ultra_proof_part', version: '1.0.0', dimension: 'reasoning_math',
+    consumedFields: ['groupId', 'partNumber', 'points', 'hardSeconds', 'questionHash', 'sourcePackVersion', 'reviewedRubric'],
+    declaredFields: ['groupId', 'partNumber', 'points', 'hardSeconds', 'questionHash', 'sourcePackVersion', 'reviewedRubric'],
+    requiredFields: ['groupId', 'partNumber', 'points', 'hardSeconds', 'questionHash', 'sourcePackVersion', 'reviewedRubric'],
+    capabilities: { supportedLanguages: ['general'], executableLanguages: [] },
+  },
 };
 
 /** 按 grader 名查契约（含别名；未注册 → undefined） */

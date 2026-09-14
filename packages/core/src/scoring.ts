@@ -136,6 +136,8 @@ export function computeWeightedTotal(dimAvgs: Map<string, number>): number {
  * 按维度/题型定义确定性评分与 AI Judge 权重
  */
 export function getJudgeWeights(dimension: string, grader: string): { deterministic: number; judge: number } {
+  if (grader === 'ultra_batch_part') return { deterministic: 1, judge: 0 };
+  if (grader === 'ultra_proof_part') return { deterministic: 0, judge: 1 };
   if (grader === 'challenge_supplement' || grader === 'challenge_extension') return { deterministic: 1, judge: 0 };
   if (dimension === 'data_extraction' || grader === 'json_atomic_fields') return { deterministic: 1.0, judge: 0.0 };
   if (dimension === 'safety_authority') return { deterministic: 1.0, judge: 0.0 };

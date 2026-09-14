@@ -20,6 +20,7 @@ import {
   canaryAuthorityEvaluator, toolCallTraceEvaluator, agentTraceEvaluator, cliCommandEvaluator,
   projectRepairEvaluator, hallucinationResistanceEvaluator, sandboxEvaluator, llmJudgeEvaluator,
   challengeExtensionEvaluator, challengeSupplementEvaluator,
+  ultraBatchPartEvaluator, ultraProofPartEvaluator,
   getJudgeWeights, mixDeterministicJudge, applyReviewedVerdict,
 } from '@zxbench/core';
 import type { Scenario, Difficulty, QuestionStatus, ScenarioTier, Verdict, OutputPolicy, EvalRunConfig } from '@zxbench/types';
@@ -43,6 +44,8 @@ registerEvaluator(sandboxEvaluator);
 registerEvaluator(llmJudgeEvaluator);
 registerEvaluator(challengeExtensionEvaluator);
 registerEvaluator(challengeSupplementEvaluator);
+registerEvaluator(ultraBatchPartEvaluator);
+registerEvaluator(ultraProofPartEvaluator);
 
 // ===== 手动加载 apps/server/.env（DATABASE_URL） =====
 function loadEnv() {

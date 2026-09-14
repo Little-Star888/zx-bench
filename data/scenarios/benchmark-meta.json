@@ -1,16 +1,16 @@
 {
- "version": "1.31.1",
- "count": 621,
+ "version": "1.32.0",
+ "count": 765,
  "retiredCount": 78,
- "totalCount": 699,
+ "totalCount": 843,
  "dimensions": {
   "agent_workflow": 45,
   "cli_deep_tasks": 56,
-  "data_extraction": 56,
-  "hallucination_resistance": 86,
+  "data_extraction": 104,
+  "hallucination_resistance": 134,
   "instruction_following": 42,
   "program": 150,
-  "reasoning_math": 52,
+  "reasoning_math": 100,
   "safety_authority": 50,
   "structured_output": 28,
   "tool_cli_workflow": 56
@@ -18,8 +18,8 @@
  "retiredDimensions": {
   "hallucination_resistance": 78
  },
- "generatedAt": "2026-09-13T00:00:00.000Z",
- "validCount": 621,
+ "generatedAt": "2026-09-14T00:00:00.000Z",
+ "validCount": 765,
  "ambiguousCount": 0,
  "reviewCount": 0,
  "questionReview": "math-3.2-hallucination-5.0",
@@ -280,7 +280,7 @@
   "sourcePackHash": "42929b253e9e2f4d32568c5e164ab4fcb651cca3712b6472950c7907c2ed10e3",
   "prospectiveOnly": true
  },
- "defaultRunCount": 620,
+ "defaultRunCount": 764,
  "challengeExtension": {
   "version": "challenge-extension-2026-09-13-v1",
   "bankVersion": "1.31.1",
@@ -328,5 +328,12 @@
   ],
   "projectRepairScopeRestored": 20,
   "historicalScoresChanged": false
+ },
+ "ultraProgressiveExam": {
+  "version": "ultra-three-dimension-batch-2026-09-14-v1",
+  "definitions": 144,
+  "groups": 36,
+  "partsPerGroup": 4,
+  "defaultRunEligible": true
  }
 }
