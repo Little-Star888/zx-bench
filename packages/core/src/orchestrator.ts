@@ -200,6 +200,12 @@ async function evaluateCandidate(options: OrchestrateOptions): Promise<ScenarioR
 
   // 合并题目级 + 运行级约束（反拖尾：防止模型无限思考）
   const effectiveConstraints = resolveConstraints(scenario, constraints);
+  // The scorer must honor the same answer-placement contract that was injected
+  // into the candidate prompt. In particular, run-level answerFirst overrides a
+  // scenario prompt that normally requires the answer on the final line.
+  const evaluationScenario = effectiveConstraints.answerFirst === scenario.answerFirst
+    ? scenario
+    : { ...scenario, answerFirst: effectiveConstraints.answerFirst };
   const constraintsActive = hasActiveConstraints(effectiveConstraints);
   const onLimit = effectiveConstraints.onLimit ?? 'fail';
 
@@ -444,7 +450,7 @@ async function evaluateCandidate(options: OrchestrateOptions): Promise<ScenarioR
   let result: Partial<ScenarioResult>;
 
   if (evaluator) {
-    result = await evaluator.evaluate(scenario, modelResponse.content, outputMetadata, modelResponse);
+    result = await evaluator.evaluate(evaluationScenario, modelResponse.content, outputMetadata, modelResponse);
     // 沙箱探查摘要（存在则置顶，便于审计）
     if (sandboxSummary) {
       result.evidence = [sandboxSummary, ...(result.evidence || [])];

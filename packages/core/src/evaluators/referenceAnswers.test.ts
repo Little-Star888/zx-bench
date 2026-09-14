@@ -109,6 +109,36 @@ ANSWER: ${answer}次`)).toBe(100);
 });
 
 describe('strict answer-contract regressions', () => {
+  it('uses the first labelled line when the effective run enables answerFirst', async () => {
+    const answerFirstScenario = { ...scenario(4), answerFirst: true } as Scenario;
+    const result = await evaluator.evaluate(
+      answerFirstScenario,
+      'ANSWER: 497776.30元\n下面继续解释计算过程。\nANSWER: 这一行只是解释中的干扰内容',
+      meta,
+    );
+    expect(result.axisScores?.answer_accuracy).toBe(100);
+    expect(result.totalScore).toBe(100);
+  });
+  it('preserves the normal final-line contract when the first line has no answer label', async () => {
+    const answerFirstScenario = { ...scenario(4), answerFirst: true } as Scenario;
+    const result = await evaluator.evaluate(
+      answerFirstScenario,
+      '我先说明一下。\nANSWER: 497776.30元',
+      meta,
+    );
+    expect(result.axisScores?.answer_accuracy).toBe(100);
+    expect(result.totalScore).toBe(100);
+  });
+  it('keeps a valid default-position answer when the labelled first form does not match the strict grammar', async () => {
+    const answerFirstScenario = { ...scenario(4), answerFirst: true } as Scenario;
+    const result = await evaluator.evaluate(
+      answerFirstScenario,
+      '最终答案：最终金额为497776.30元。\n下面继续解释。\nANSWER: 497776.30元',
+      meta,
+    );
+    expect(result.axisScores?.answer_accuracy).toBe(100);
+    expect(result.totalScore).toBe(100);
+  });
   it('prefers the final ANSWER line over intermediate equations and earlier answers', async () => {
     expect(await accuracy(4,'小计 = 470000\nANSWER: 442717元\n会员价 = 446500\nANSWER: 497776.30元')).toBe(100);
     expect(await accuracy(4,'ANSWER: 497776.30元\nANSWER: 无法确定')).toBe(0);

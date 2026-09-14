@@ -24,7 +24,12 @@ describe('reference answer compatibility and historical preservation', () => {
     for (const row of [old, { ...current, graderVersion: old.graderVersion }, { scenarioId: old.scenarioId }, { ...current, scenarioVersion: '3.1.0', scenarioId: 'RM-CN-031' }]) {
       expect(referenceAnswerWarnings([row]).length).toBe(1);
     }
-    expect(referenceAnswerWarnings([current, { ...current, graderVersion: 'exact_answer_v4' }, { scenarioId: 'CP-L4-001' }])).toEqual([]);
+    expect(referenceAnswerWarnings([
+      current,
+      { ...current, graderVersion: 'exact_answer_v4' },
+      { ...current, graderVersion: 'exact_answer_line@exact_answer_v5' },
+      { scenarioId: 'CP-L4-001' },
+    ])).toEqual([]);
   });
   it('excludes the whole mixed run before latest/best can use cached or highest scores', () => {
     const runs = [
@@ -40,7 +45,7 @@ describe('reference answer compatibility and historical preservation', () => {
   });
   it.each(['RM-CN-013','RM-CN-014','RM-CN-028','RM-CN-031'])('admits only the verified restored version of %s', scenarioId => {
     const restored = {...current, scenarioId, scenarioVersion:'3.2.0'};
-    for (const graderVersion of ['exact_answer_v4','exact_answer_line@exact_answer_v4']) {
+    for (const graderVersion of ['exact_answer_v4','exact_answer_line@exact_answer_v4','exact_answer_v5','exact_answer_line@exact_answer_v5']) {
       expect(referenceAnswerWarnings([{...restored,graderVersion}])).toEqual([]);
     }
     for (const scenarioVersion of [undefined,'2.0.0','3.0.0','3.1.0']) {

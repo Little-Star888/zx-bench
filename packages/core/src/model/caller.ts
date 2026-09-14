@@ -532,7 +532,7 @@ function buildConstraintInstructions(constraints?: EvalConstraints): string {
   const lines: string[] = [];
 
   if (constraints.answerFirst) {
-    lines.push('请先给出最终答案，再给出原因或推理过程。不要把答案埋在长段分析中间，开头第一句必须直接给出答案。');
+    lines.push('请先给出最终答案，再给出原因或推理过程。不要把答案埋在长段分析中间。如果题目要求使用 ANSWER:/答案: 标签，必须把该标签答案放在第一个非空行；如果题面另有“最后一行给出答案”等位置要求，以本先答模式为准。');
   }
   if (constraints.maxAnswerTokens) {
     lines.push(`最终答案必须控制在 ${constraints.maxAnswerTokens} 个 token（约 ${Math.round(constraints.maxAnswerTokens * 0.75)} 个汉字或 ${Math.round(constraints.maxAnswerTokens * 3)} 个英文字符）以内。`);

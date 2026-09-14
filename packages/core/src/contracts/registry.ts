@@ -34,8 +34,8 @@ export const GRADER_CONTRACTS: Record<string, GraderContract> = {
   // ---- 推理数学：精确答案行 ----
   exact_answer_line: {
     grader: 'exact_answer_line',
-    version: 'exact_answer_v4',
-    compatibleVersions: ['exact_answer_v2', 'exact_answer_v3'],
+    version: 'exact_answer_v5',
+    compatibleVersions: ['exact_answer_v2', 'exact_answer_v3', 'exact_answer_v4'],
     dimension: 'reasoning_math',
     consumedFields: ['answer'],
     declaredFields: ['answer', 'acceptedVariants', 'answerGrammar', 'answerType', 'units', 'validUntil'],

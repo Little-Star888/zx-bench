@@ -10,8 +10,8 @@ import { formatValidScore } from './responseState.js';
 
 export const exactAnswerLineEvaluator: Evaluator = {
   name: 'exact_answer_line',
-  version: 'exact_answer_v4',
-  compatibleVersions: ['exact_answer_v2', 'exact_answer_v3'],
+  version: 'exact_answer_v5',
+  compatibleVersions: ['exact_answer_v2', 'exact_answer_v3', 'exact_answer_v4'],
   aliases: ['exact_answer_v3'],
 
   async evaluate(
@@ -66,8 +66,15 @@ export const exactAnswerLineEvaluator: Evaluator = {
     const strict = scoring.comparisonMode === 'strict';
     // Versioned benchmark contracts keep the whole final line (dates and multi-field
     // answers must never be truncated by parseFloat or a preceding intermediate '=').
-    const extractedAnswer = strict ? extractAnswerLine(modelOutput) : extractFinalAnswer(modelOutput);
-    if (extractedAnswer === null) {
+    const defaultAnswer = strict ? extractAnswerLine(modelOutput) : extractFinalAnswer(modelOutput);
+    // Answer-first is an additional valid delivery position, not a replacement
+    // for the scenario's normal extraction path. Score both candidates and keep
+    // the better exact match so enabling the anti-truncation option is monotonic:
+    // it can recover an early answer but can never invalidate a valid final one.
+    const extractedAnswers = scenario.answerFirst === true
+      ? [...new Set([extractFirstAnswer(modelOutput), defaultAnswer].filter((value): value is string | number => value !== null))]
+      : defaultAnswer === null ? [] : [defaultAnswer];
+    if (extractedAnswers.length === 0) {
       if (strict) axisScores.format_valid = 0;
       axisScores.answer_accuracy = 0;
       axisEvidence.answer_accuracy = 'rule';
@@ -76,14 +83,23 @@ export const exactAnswerLineEvaluator: Evaluator = {
       return { axisScores, axisEvidence, totalScore, safetyLevel: 'safe', evidence };
     }
 
-    evidence.push(`Extracted answer: ${JSON.stringify(extractedAnswer)}`);
-
     // ===== 5. 比较答案（移除 reasoning_valid 伪轴：它只测截断、不测推理） =====
     const variants = Array.isArray(requirements.acceptedVariants)
       ? requirements.acceptedVariants.filter((v): v is string => typeof v === 'string') : [];
-    let accuracy = strict
-      ? Math.max(...[expectedAnswer, ...variants].map(v => compareStrictAnswer(extractedAnswer, v, scoring.answerUnit)))
-      : compareAnswer(extractedAnswer, expectedAnswer, tolerance, toleranceMode);
+    const scoreAnswer = (answer: string | number) => strict
+      ? Math.max(...[expectedAnswer, ...variants].map(v => compareStrictAnswer(answer, v, scoring.answerUnit)))
+      : compareAnswer(answer, expectedAnswer, tolerance, toleranceMode);
+    let extractedAnswer = extractedAnswers[0];
+    let accuracy = scoreAnswer(extractedAnswer);
+    for (const candidate of extractedAnswers.slice(1)) {
+      const candidateAccuracy = scoreAnswer(candidate);
+      if (candidateAccuracy > accuracy) {
+        extractedAnswer = candidate;
+        accuracy = candidateAccuracy;
+      }
+    }
+    evidence.push(`Extracted answer: ${JSON.stringify(extractedAnswer)}`);
+    if (extractedAnswers.length > 1) evidence.push('Answer-first and default answer positions were both evaluated');
     if (requirements.solutionVerifier === 'river_crossing' && !validRiverCrossing(modelOutput)) {
       accuracy = 0;
       evidence.push('DETERMINISTIC_VETO: required river crossing sequence is missing or illegal');
@@ -115,11 +131,23 @@ export const exactAnswerLineEvaluator: Evaluator = {
   },
 };
 
-/** Read only the last nonempty line, as required by the versioned prompt contract. */
+/** Read only the last nonempty line for the default versioned prompt contract. */
 export function extractAnswerLine(text: string): string | null {
   const lines = text.split(/\r?\n/).filter(line => line.trim().length > 0);
   const match = lines.at(-1)?.match(/^[ \t]*(?:\*\*)?(?:ANSWER|最终答案|答案)(?:\*\*)?[ \t]*[:：][ \t]*(.*)$/i);
   return match ? match[1].trim().replace(/\*\*/g, '') : null;
+}
+
+/**
+ * In answer-first mode the first nonempty line is the answer by contract. Strip
+ * an optional answer label but do not scan later reasoning for heuristic phrases
+ * such as “因此”, which can otherwise displace an already correct first answer.
+ */
+export function extractFirstAnswer(text: string): string | null {
+  const first = text.split(/\r?\n/).find(line => line.trim().length > 0)?.trim();
+  if (!first) return null;
+  const labelled = first.match(/^(?:\*\*)?(?:ANSWER|最终答案|答案|最终结果|结果)(?:\*\*)?\s*(?:是|为|[:：])\s*(.+)$/i);
+  return labelled?.[1]?.trim().replace(/\*\*/g, '') ?? null;
 }
 
 function normalizeAnswer(text: string): string {

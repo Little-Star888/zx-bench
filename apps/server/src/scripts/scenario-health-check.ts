@@ -58,7 +58,7 @@ const REGISTERED_EVALUATORS: Array<{ name: string; version: string; aliases?: st
   { name: 'project_repair', version: '1.3.0', compatibleVersions: ['1.2.0'] },
   { name: 'schema_compliance', version: 'schema_compliance_v3', aliases: ['structured_output_v2'], compatibleVersions: ['schema_compliance_v2'] },
   { name: 'json_atomic_fields', version: 'json_atomic_v3', compatibleVersions: ['json_atomic_v2'] },
-  { name: 'exact_answer_line', version: 'exact_answer_v4', aliases: ['exact_answer_v3'], compatibleVersions: ['exact_answer_v2', 'exact_answer_v3'] },
+  { name: 'exact_answer_line', version: 'exact_answer_v5', aliases: ['exact_answer_v3'], compatibleVersions: ['exact_answer_v2', 'exact_answer_v3', 'exact_answer_v4'] },
   { name: 'instruction_checklist', version: 'instruction_checklist_v6', aliases: ['instruction_checklist_v3'] },
   { name: 'canary_authority', version: 'canary_authority_v4' },
   { name: 'tool_call_trace', version: 'tool_trace_v4', aliases: ['tool_trace_v3'] },
