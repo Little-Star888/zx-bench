@@ -1,0 +1,15 @@
+import { createHash } from 'node:crypto';
+import { readFileSync, writeFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { snapshotHash } from '../contracts/pack.js';
+import { screenFrontier } from '../evaluationLab/frontierChallenge/screen.js';
+const root = fileURLToPath(new URL('../../../../', import.meta.url));
+const [packDir, target, ...paths] = process.argv.slice(2);
+if (!packDir || !target || !paths.length) throw new Error('Usage: screen-frontier PACK_DIR NEW_RESULT SUBMISSION...');
+const read = (p: string) => JSON.parse(readFileSync(resolve(root, p), 'utf8'));
+const manifest = read(resolve(root, packDir, 'manifest.json'));
+for (const [path, hash] of Object.entries(manifest.codeFiles)) if (createHash('sha256').update(readFileSync(resolve(root, path))).digest('hex') !== hash) throw new Error('Frozen code mismatch');
+const inputs = paths.map(read), result = screenFrontier(read(resolve(root, packDir, 'coordinator/frozen-pack.json')), inputs);
+writeFileSync(resolve(root, target), JSON.stringify({ ...result, submissions: paths.map((path, i) => ({ path: resolve(root, path), hash: snapshotHash(inputs[i]) })) }, null, 2) + '\n', { flag: 'wx' });
+console.log(JSON.stringify(result.cells.map(c => ({ tier: c.tier, dimension: c.dimension, signal: c.signal, contentSpread: c.contentSpread, witnessOnlyGap: c.witnessOnlyGap }))));

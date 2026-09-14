@@ -1,0 +1,2605 @@
+{
+  "capturedAt": "2026-09-14T00:37:12.380Z",
+  "decision": {
+    "version": "structural-challenge-2026-09-14-v1",
+    "contractHash": "b8c620bdc93c80716b88e770495932249e14a50ea24e57e406598aee41864dbe",
+    "decision": "not_promoted_observed_ceiling",
+    "productionEligible": false,
+    "reason": "Both fully measured models scored 100 in all five families; one independent development instance per family; GLM unavailable (HTTP 429).",
+    "families": [
+      {
+        "family": "latent_identification",
+        "decision": "not_promoted_observed_ceiling",
+        "independentInstances": 1,
+        "independentModelFamilies": 2,
+        "spread": 0
+      },
+      {
+        "family": "transactional_reconstruction",
+        "decision": "not_promoted_observed_ceiling",
+        "independentInstances": 1,
+        "independentModelFamilies": 2,
+        "spread": 0
+      },
+      {
+        "family": "scoped_evidence_revision",
+        "decision": "not_promoted_observed_ceiling",
+        "independentInstances": 1,
+        "independentModelFamilies": 2,
+        "spread": 0
+      },
+      {
+        "family": "optimization_status",
+        "decision": "not_promoted_observed_ceiling",
+        "independentInstances": 1,
+        "independentModelFamilies": 2,
+        "spread": 0
+      },
+      {
+        "family": "sampling_measure",
+        "decision": "not_promoted_observed_ceiling",
+        "independentInstances": 1,
+        "independentModelFamilies": 2,
+        "spread": 0
+      }
+    ],
+    "confirmationRun": false,
+    "historicalWrites": false,
+    "modelConfigurationWrites": false
+  },
+  "models": [
+    {
+      "key": "deepseek",
+      "modelId": "deepseek-v4-flash",
+      "modelFamily": "DeepSeek",
+      "conditions": {
+        "packDir": "J:\\AI\\zxbench-webui\\reports\\structural-challenge-2026-09-14-v1\\development",
+        "contractHash": "b8c620bdc93c80716b88e770495932249e14a50ea24e57e406598aee41864dbe",
+        "provider": {
+          "key": "deepseek-v4-flash",
+          "configId": "e32d8a5d-b6ed-45ac-8bb1-a60859ab419e",
+          "requestedModel": "deepseek-v4-flash",
+          "family": "DeepSeek",
+          "endpoint": "https://api.deepseek.com/chat/completions",
+          "parameters": {
+            "thinking": {
+              "type": "enabled"
+            },
+            "reasoning_effort": "max",
+            "top_p": 0.95
+          },
+          "aliasNote": "Official 2026-09-10 notice: requested v4-flash alias routes to V4.1-Flash; preserve returned model identifiers."
+        },
+        "maxTokens": 32768,
+        "hardSeconds": 300,
+        "concurrency": 1,
+        "automaticRetries": 0,
+        "requestedQuestions": 15,
+        "freshContextPerQuestion": true,
+        "tools": false,
+        "judgeCalls": 0,
+        "productionWrites": false,
+        "budgetScope": "provider-specific thinking; same token/time caps do not imply equal compute",
+        "codeHash": "3312ec79b6e94439772c2c20a9837f0d0516851d9587aad42491a3516616ad9b"
+      },
+      "dimensions": [
+        {
+          "dimension": "reasoning_math",
+          "score": 100,
+          "planned": 8,
+          "measured": 8
+        },
+        {
+          "dimension": "data_extraction",
+          "score": 100,
+          "planned": 3,
+          "measured": 3
+        },
+        {
+          "dimension": "hallucination_resistance",
+          "score": 100,
+          "planned": 4,
+          "measured": 4
+        }
+      ],
+      "rows": [
+        {
+          "id": "SC-ef22368fe8b7715c",
+          "dimension": "reasoning_math",
+          "family": "latent_identification",
+          "group": "1ad9e541dff978dc",
+          "variant": "identified",
+          "state": "completed",
+          "outputHash": "2b0cd33e84bd2b46b8d98f732d7f925c410894a32f58f7f6104210ae159acce2",
+          "deliveredSuccess": true,
+          "measured": true,
+          "contentPass": true,
+          "contentScore": 100,
+          "formatCompliant": true,
+          "checks": [
+            {
+              "id": "identification_status",
+              "pass": true
+            },
+            {
+              "id": "lower",
+              "pass": true
+            },
+            {
+              "id": "lower_witness",
+              "pass": true
+            },
+            {
+              "id": "upper",
+              "pass": true
+            },
+            {
+              "id": "upper_witness",
+              "pass": true
+            }
+          ],
+          "extraction": "whole_json",
+          "contentScope": "requested_answer_or_certificate_only"
+        },
+        {
+          "id": "SC-00ba1fefbf66c224",
+          "dimension": "data_extraction",
+          "family": "transactional_reconstruction",
+          "group": "3f5e592919e879f2",
+          "variant": "revoked",
+          "state": "completed",
+          "outputHash": "80217aad4a895b96cc9285244ec4bcd1cfb396b62010620d970bc46e19381343",
+          "deliveredSuccess": true,
+          "measured": true,
+          "contentPass": true,
+          "contentScore": 100,
+          "formatCompliant": true,
+          "checks": [
+            {
+              "id": "E38252.entity_id",
+              "pass": true
+            },
+            {
+              "id": "E38252.label",
+              "pass": true
+            },
+            {
+              "id": "E38252.quantity",
+              "pass": true
+            },
+            {
+              "id": "E38252.due_date",
+              "pass": true
+            },
+            {
+              "id": "E78581.entity_id",
+              "pass": true
+            },
+            {
+              "id": "E78581.label",
+              "pass": true
+            },
+            {
+              "id": "E78581.quantity",
+              "pass": true
+            },
+            {
+              "id": "E78581.due_date",
+              "pass": true
+            },
+            {
+              "id": "E88250.entity_id",
+              "pass": true
+            },
+            {
+              "id": "E88250.label",
+              "pass": true
+            },
+            {
+              "id": "E88250.quantity",
+              "pass": true
+            },
+            {
+              "id": "E88250.due_date",
+              "pass": true
+            }
+          ],
+          "extraction": "whole_json",
+          "contentScope": "requested_answer_or_certificate_only"
+        },
+        {
+          "id": "SC-debcd29d74469990",
+          "dimension": "data_extraction",
+          "family": "transactional_reconstruction",
+          "group": "3f5e592919e879f2",
+          "variant": "committed",
+          "state": "completed",
+          "outputHash": "eb8293336bd7a77b70b23d07293dc75ae157bd807dc2f6311d5fd0c8e9972154",
+          "deliveredSuccess": true,
+          "measured": true,
+          "contentPass": true,
+          "contentScore": 100,
+          "formatCompliant": true,
+          "checks": [
+            {
+              "id": "E88250.entity_id",
+              "pass": true
+            },
+            {
+              "id": "E88250.label",
+              "pass": true
+            },
+            {
+              "id": "E88250.quantity",
+              "pass": true
+            },
+            {
+              "id": "E88250.due_date",
+              "pass": true
+            },
+            {
+              "id": "E78581.entity_id",
+              "pass": true
+            },
+            {
+              "id": "E78581.label",
+              "pass": true
+            },
+            {
+              "id": "E78581.quantity",
+              "pass": true
+            },
+            {
+              "id": "E78581.due_date",
+              "pass": true
+            }
+          ],
+          "extraction": "whole_json",
+          "contentScope": "requested_answer_or_certificate_only"
+        },
+        {
+          "id": "SC-41ab7a109620e4cd",
+          "dimension": "reasoning_math",
+          "family": "latent_identification",
+          "group": "1ad9e541dff978dc",
+          "variant": "inconsistent",
+          "state": "completed",
+          "outputHash": "d011af12a54d20517c0f6328698f79341fd5a0c930a7d1a0f92b53690006de7e",
+          "deliveredSuccess": true,
+          "measured": true,
+          "contentPass": true,
+          "contentScore": 100,
+          "formatCompliant": true,
+          "checks": [
+            {
+              "id": "identification_status",
+              "pass": true
+            },
+            {
+              "id": "lower",
+              "pass": true
+            },
+            {
+              "id": "lower_witness",
+              "pass": true
+            },
+            {
+              "id": "upper",
+              "pass": true
+            },
+            {
+              "id": "upper_witness",
+              "pass": true
+            }
+          ],
+          "extraction": "whole_json",
+          "contentScope": "requested_answer_or_certificate_only"
+        },
+        {
+          "id": "SC-d3649c64ccacc64e",
+          "dimension": "hallucination_resistance",
+          "family": "scoped_evidence_revision",
+          "group": "b7a8d0b918a51857",
+          "variant": "other_identity",
+          "state": "completed",
+          "outputHash": "039398936406b142c6cd9e4502f5d3f344ca1e66849c9d6d79abe1c91c1e7d42",
+          "deliveredSuccess": true,
+          "measured": true,
+          "contentPass": true,
+          "contentScore": 100,
+          "formatCompliant": true,
+          "checks": [
+            {
+              "id": "C41395:status",
+              "pass": true
+            },
+            {
+              "id": "C41395:evidence",
+              "pass": true
+            },
+            {
+              "id": "C38963:status",
+              "pass": true
+            },
+            {
+              "id": "C38963:evidence",
+              "pass": true
+            },
+            {
+              "id": "C14770:status",
+              "pass": true
+            },
+            {
+              "id": "C14770:evidence",
+              "pass": true
+            },
+            {
+              "id": "C55964:status",
+              "pass": true
+            },
+            {
+              "id": "C55964:evidence",
+              "pass": true
+            },
+            {
+              "id": "C99281:status",
+              "pass": true
+            },
+            {
+              "id": "C99281:evidence",
+              "pass": true
+            },
+            {
+              "id": "C60972:status",
+              "pass": true
+            },
+            {
+              "id": "C60972:evidence",
+              "pass": true
+            }
+          ],
+          "extraction": "whole_json",
+          "contentScope": "requested_answer_or_certificate_only"
+        },
+        {
+          "id": "SC-3b43e5ede49937f3",
+          "dimension": "hallucination_resistance",
+          "family": "scoped_evidence_revision",
+          "group": "b7a8d0b918a51857",
+          "variant": "final_correction",
+          "state": "completed",
+          "outputHash": "69b3c3dba902e2cf9802472c2b63fc089088ea14cee4301f0a137c7c69382a91",
+          "deliveredSuccess": true,
+          "measured": true,
+          "contentPass": true,
+          "contentScore": 100,
+          "formatCompliant": true,
+          "checks": [
+            {
+              "id": "C41395:status",
+              "pass": true
+            },
+            {
+              "id": "C41395:evidence",
+              "pass": true
+            },
+            {
+              "id": "C38963:status",
+              "pass": true
+            },
+            {
+              "id": "C38963:evidence",
+              "pass": true
+            },
+            {
+              "id": "C14770:status",
+              "pass": true
+            },
+            {
+              "id": "C14770:evidence",
+              "pass": true
+            },
+            {
+              "id": "C55964:status",
+              "pass": true
+            },
+            {
+              "id": "C55964:evidence",
+              "pass": true
+            },
+            {
+              "id": "C99281:status",
+              "pass": true
+            },
+            {
+              "id": "C99281:evidence",
+              "pass": true
+            },
+            {
+              "id": "C60972:status",
+              "pass": true
+            },
+            {
+              "id": "C60972:evidence",
+              "pass": true
+            }
+          ],
+          "extraction": "whole_json",
+          "contentScope": "requested_answer_or_certificate_only"
+        },
+        {
+          "id": "SC-9e7fe65a039abb68",
+          "dimension": "reasoning_math",
+          "family": "optimization_status",
+          "group": "f55a36774bd05d54",
+          "variant": "unbounded",
+          "state": "completed",
+          "outputHash": "0a895c094c178a94e16c12319f3bf90779511b176585e134f04450c9de9de26f",
+          "deliveredSuccess": true,
+          "measured": true,
+          "contentPass": true,
+          "contentScore": 100,
+          "formatCompliant": true,
+          "checks": [
+            {
+              "id": "primalFeasible",
+              "pass": true
+            },
+            {
+              "id": "nonnegativeRay",
+              "pass": true
+            },
+            {
+              "id": "recessionDirection",
+              "pass": true
+            },
+            {
+              "id": "positiveGain",
+              "pass": true
+            }
+          ],
+          "extraction": "whole_json",
+          "contentScope": "requested_answer_or_certificate_only"
+        },
+        {
+          "id": "SC-ba8261dcdb0ac87f",
+          "dimension": "hallucination_resistance",
+          "family": "scoped_evidence_revision",
+          "group": "b7a8d0b918a51857",
+          "variant": "draft_correction",
+          "state": "completed",
+          "outputHash": "28aa3e8d46dadb5b3149b9c3b97e072256c8637ba606125a73f5be9596e0aa04",
+          "deliveredSuccess": true,
+          "measured": true,
+          "contentPass": true,
+          "contentScore": 100,
+          "formatCompliant": true,
+          "checks": [
+            {
+              "id": "C41395:status",
+              "pass": true
+            },
+            {
+              "id": "C41395:evidence",
+              "pass": true
+            },
+            {
+              "id": "C38963:status",
+              "pass": true
+            },
+            {
+              "id": "C38963:evidence",
+              "pass": true
+            },
+            {
+              "id": "C14770:status",
+              "pass": true
+            },
+            {
+              "id": "C14770:evidence",
+              "pass": true
+            },
+            {
+              "id": "C55964:status",
+              "pass": true
+            },
+            {
+              "id": "C55964:evidence",
+              "pass": true
+            },
+            {
+              "id": "C99281:status",
+              "pass": true
+            },
+            {
+              "id": "C99281:evidence",
+              "pass": true
+            },
+            {
+              "id": "C60972:status",
+              "pass": true
+            },
+            {
+              "id": "C60972:evidence",
+              "pass": true
+            }
+          ],
+          "extraction": "whole_json",
+          "contentScope": "requested_answer_or_certificate_only"
+        },
+        {
+          "id": "SC-ff6aabc79e71876e",
+          "dimension": "reasoning_math",
+          "family": "optimization_status",
+          "group": "f55a36774bd05d54",
+          "variant": "optimal",
+          "state": "completed",
+          "outputHash": "0e1b78d3e379f9696ed7ac5dea7656ed4e035676e27ce19de5e219f682b3bcdd",
+          "deliveredSuccess": true,
+          "measured": true,
+          "contentPass": true,
+          "contentScore": 100,
+          "formatCompliant": true,
+          "checks": [
+            {
+              "id": "primalFeasible",
+              "pass": true
+            },
+            {
+              "id": "dualFeasible",
+              "pass": true
+            },
+            {
+              "id": "primalValue",
+              "pass": true
+            },
+            {
+              "id": "dualValue",
+              "pass": true
+            }
+          ],
+          "extraction": "whole_json",
+          "contentScope": "requested_answer_or_certificate_only"
+        },
+        {
+          "id": "SC-6dd134941055ddde",
+          "dimension": "reasoning_math",
+          "family": "sampling_measure",
+          "group": "b1cf42062ba225c0",
+          "variant": "pooled_records",
+          "state": "completed",
+          "outputHash": "4de13f5a073bba529ffad58589ef01378d93babef8cf18204cf4a2f46550cc93",
+          "deliveredSuccess": true,
+          "measured": true,
+          "contentPass": true,
+          "contentScore": 100,
+          "formatCompliant": true,
+          "checks": [
+            {
+              "id": "observation_probability",
+              "pass": true
+            },
+            {
+              "id": "posterior_box0",
+              "pass": true
+            },
+            {
+              "id": "expected_length",
+              "pass": true
+            },
+            {
+              "id": "next_color_probability",
+              "pass": true
+            }
+          ],
+          "extraction": "whole_json",
+          "contentScope": "requested_answer_or_certificate_only"
+        },
+        {
+          "id": "SC-2b092da97f18546e",
+          "dimension": "data_extraction",
+          "family": "transactional_reconstruction",
+          "group": "3f5e592919e879f2",
+          "variant": "reordered",
+          "state": "completed",
+          "outputHash": "eb8293336bd7a77b70b23d07293dc75ae157bd807dc2f6311d5fd0c8e9972154",
+          "deliveredSuccess": true,
+          "measured": true,
+          "contentPass": true,
+          "contentScore": 100,
+          "formatCompliant": true,
+          "checks": [
+            {
+              "id": "E88250.entity_id",
+              "pass": true
+            },
+            {
+              "id": "E88250.label",
+              "pass": true
+            },
+            {
+              "id": "E88250.quantity",
+              "pass": true
+            },
+            {
+              "id": "E88250.due_date",
+              "pass": true
+            },
+            {
+              "id": "E78581.entity_id",
+              "pass": true
+            },
+            {
+              "id": "E78581.label",
+              "pass": true
+            },
+            {
+              "id": "E78581.quantity",
+              "pass": true
+            },
+            {
+              "id": "E78581.due_date",
+              "pass": true
+            }
+          ],
+          "extraction": "whole_json",
+          "contentScope": "requested_answer_or_certificate_only"
+        },
+        {
+          "id": "SC-0bd4b8d8be97191f",
+          "dimension": "reasoning_math",
+          "family": "sampling_measure",
+          "group": "b1cf42062ba225c0",
+          "variant": "experiment_then_record",
+          "state": "completed",
+          "outputHash": "7159efd263e2a26e85e39c057b7a2e32d50ab0841005d4c6513ef8a4d61be25f",
+          "deliveredSuccess": true,
+          "measured": true,
+          "contentPass": true,
+          "contentScore": 100,
+          "formatCompliant": true,
+          "checks": [
+            {
+              "id": "observation_probability",
+              "pass": true
+            },
+            {
+              "id": "posterior_box0",
+              "pass": true
+            },
+            {
+              "id": "expected_length",
+              "pass": true
+            },
+            {
+              "id": "next_color_probability",
+              "pass": true
+            }
+          ],
+          "extraction": "whole_json",
+          "contentScope": "requested_answer_or_certificate_only"
+        },
+        {
+          "id": "SC-bb3c2b2dd6e91ed5",
+          "dimension": "reasoning_math",
+          "family": "latent_identification",
+          "group": "1ad9e541dff978dc",
+          "variant": "bounded",
+          "state": "completed",
+          "outputHash": "549ca1df7019bc1852b6d26809edba668735d68828951f4709879f9214cd0ede",
+          "deliveredSuccess": true,
+          "measured": true,
+          "contentPass": true,
+          "contentScore": 100,
+          "formatCompliant": true,
+          "checks": [
+            {
+              "id": "identification_status",
+              "pass": true
+            },
+            {
+              "id": "lower",
+              "pass": true
+            },
+            {
+              "id": "lower_witness",
+              "pass": true
+            },
+            {
+              "id": "upper",
+              "pass": true
+            },
+            {
+              "id": "upper_witness",
+              "pass": true
+            }
+          ],
+          "extraction": "whole_json",
+          "contentScope": "requested_answer_or_certificate_only"
+        },
+        {
+          "id": "SC-98578b7e9d991f27",
+          "dimension": "hallucination_resistance",
+          "family": "scoped_evidence_revision",
+          "group": "b7a8d0b918a51857",
+          "variant": "reordered",
+          "state": "completed",
+          "outputHash": "af65fff60c587478a394ba01bfeed8a0725d106fa33771c73930b3608b6a33c9",
+          "deliveredSuccess": true,
+          "measured": true,
+          "contentPass": true,
+          "contentScore": 100,
+          "formatCompliant": true,
+          "checks": [
+            {
+              "id": "C41395:status",
+              "pass": true
+            },
+            {
+              "id": "C41395:evidence",
+              "pass": true
+            },
+            {
+              "id": "C38963:status",
+              "pass": true
+            },
+            {
+              "id": "C38963:evidence",
+              "pass": true
+            },
+            {
+              "id": "C14770:status",
+              "pass": true
+            },
+            {
+              "id": "C14770:evidence",
+              "pass": true
+            },
+            {
+              "id": "C55964:status",
+              "pass": true
+            },
+            {
+              "id": "C55964:evidence",
+              "pass": true
+            },
+            {
+              "id": "C99281:status",
+              "pass": true
+            },
+            {
+              "id": "C99281:evidence",
+              "pass": true
+            },
+            {
+              "id": "C60972:status",
+              "pass": true
+            },
+            {
+              "id": "C60972:evidence",
+              "pass": true
+            }
+          ],
+          "extraction": "whole_json",
+          "contentScope": "requested_answer_or_certificate_only"
+        },
+        {
+          "id": "SC-9e8bd4554289dcd4",
+          "dimension": "reasoning_math",
+          "family": "optimization_status",
+          "group": "f55a36774bd05d54",
+          "variant": "infeasible",
+          "state": "completed",
+          "outputHash": "2ef8f9c6a59aa3bcf2f9c89bc04344e7a61736549f911c0773cacff1c5defcfd",
+          "deliveredSuccess": true,
+          "measured": true,
+          "contentPass": true,
+          "contentScore": 100,
+          "formatCompliant": true,
+          "checks": [
+            {
+              "id": "nonnegativeMultipliers",
+              "pass": true
+            },
+            {
+              "id": "nonnegativeLeftSide",
+              "pass": true
+            },
+            {
+              "id": "negativeRightSide",
+              "pass": true
+            }
+          ],
+          "extraction": "whole_json",
+          "contentScope": "requested_answer_or_certificate_only"
+        }
+      ],
+      "requests": 15,
+      "completionTokens": 121864,
+      "latencySeconds": 479.201,
+      "returnedModels": [
+        "deepseek-flash"
+      ],
+      "errors": [],
+      "evidenceFiles": [
+        {
+          "path": "reports/structural-challenge-2026-09-14-v1/deepseek/submission.json",
+          "sha256": "a00cf1322921d974241ab1693451cfb3dd14dc1952e1af8918ee24664d530134"
+        },
+        {
+          "path": "reports/structural-challenge-2026-09-14-v1/deepseek/scored.json",
+          "sha256": "8b23715ee08642fa4df080791c1600e6a40096f4147b53d4d7a4b62c230a703e"
+        },
+        {
+          "path": "reports/structural-challenge-2026-09-14-v1/deepseek/SC-00ba1fefbf66c224/raw.json",
+          "sha256": "8da0eef9f1c73e192f21686990b54af19df1176b06e72ba26f990ca85940f942"
+        },
+        {
+          "path": "reports/structural-challenge-2026-09-14-v1/deepseek/SC-0bd4b8d8be97191f/raw.json",
+          "sha256": "b963bbab398bb646c7c074aab27214c65725fd4a45b9fa7ab79988972500a630"
+        },
+        {
+          "path": "reports/structural-challenge-2026-09-14-v1/deepseek/SC-2b092da97f18546e/raw.json",
+          "sha256": "0ea577291bc74099b44d07ec57776f37f497b9663c86bf92d5fed060e9f83dd6"
+        },
+        {
+          "path": "reports/structural-challenge-2026-09-14-v1/deepseek/SC-3b43e5ede49937f3/raw.json",
+          "sha256": "a93d3dd3a1afc8c2371ad51c43e1b1c6835ac408cd92ac89df26033ab1a69630"
+        },
+        {
+          "path": "reports/structural-challenge-2026-09-14-v1/deepseek/SC-41ab7a109620e4cd/raw.json",
+          "sha256": "26d4a652582c18c930f221a5f85e12d97e3701d54768a90c3e876db467471ddc"
+        },
+        {
+          "path": "reports/structural-challenge-2026-09-14-v1/deepseek/SC-6dd134941055ddde/raw.json",
+          "sha256": "2968441ddf3e5164a9277b83ad40f6ef1d2c5071306cdacf866309e0b09f96c2"
+        },
+        {
+          "path": "reports/structural-challenge-2026-09-14-v1/deepseek/SC-98578b7e9d991f27/raw.json",
+          "sha256": "531f97cf9b0926c2501fff701a0567640b01afe223571d1273420fd7db3878ff"
+        },
+        {
+          "path": "reports/structural-challenge-2026-09-14-v1/deepseek/SC-9e7fe65a039abb68/raw.json",
+          "sha256": "f7835dee1d477ff692d22404ecb09f3c6cb133f4bd3ca6fca25087a441438ece"
+        },
+        {
+          "path": "reports/structural-challenge-2026-09-14-v1/deepseek/SC-9e8bd4554289dcd4/raw.json",
+          "sha256": "6125b42772818071e70c351160bd61991250db5828c725f1f47dca471412e151"
+        },
+        {
+          "path": "reports/structural-challenge-2026-09-14-v1/deepseek/SC-ba8261dcdb0ac87f/raw.json",
+          "sha256": "e984d1b34bc518c681de0a18cfb59dbacf5ec4eb08212c54cf3a90ebe6a4faab"
+        },
+        {
+          "path": "reports/structural-challenge-2026-09-14-v1/deepseek/SC-bb3c2b2dd6e91ed5/raw.json",
+          "sha256": "e85c69eeec653680c6cc4fa6d34c0bf375bf20b919debee23e49524c7acaa94e"
+        },
+        {
+          "path": "reports/structural-challenge-2026-09-14-v1/deepseek/SC-d3649c64ccacc64e/raw.json",
+          "sha256": "eee9e05fb6e0f92eec3eb5321f7c84618bbce4c1980bd284c160bb9d61c921e5"
+        },
+        {
+          "path": "reports/structural-challenge-2026-09-14-v1/deepseek/SC-debcd29d74469990/raw.json",
+          "sha256": "1dbeedab660e56b4944805a380164c6f18b6ab3c768a929d19c6c2204f5e5c56"
+        },
+        {
+          "path": "reports/structural-challenge-2026-09-14-v1/deepseek/SC-ef22368fe8b7715c/raw.json",
+          "sha256": "14c59c619b9ff1a694d1c324011dd503ace9848fff22cd1bf35f4ca1212f882f"
+        },
+        {
+          "path": "reports/structural-challenge-2026-09-14-v1/deepseek/SC-ff6aabc79e71876e/raw.json",
+          "sha256": "cc7d69c602073c8d00fe457f534f94ad2939ca163a0680d981cedfb2da9e4ecb"
+        }
+      ],
+      "usageReportedRequests": 15,
+      "usageNote": "Missing provider usage is unknown, not zero."
+    },
+    {
+      "key": "qwen-nvfp4",
+      "modelId": "qwen3.8-27b-nvfp4",
+      "modelFamily": "Qwen3.8",
+      "conditions": {
+        "packDir": "J:\\AI\\zxbench-webui\\reports\\structural-challenge-2026-09-14-v1\\development",
+        "contractHash": "b8c620bdc93c80716b88e770495932249e14a50ea24e57e406598aee41864dbe",
+        "model": "qwen3.8-27b-nvfp4",
+        "modelFamily": "Qwen3.8",
+        "endpoint": "http://127.0.0.1:8081/v1/chat/completions",
+        "parameters": {
+          "temperature": 0.6,
+          "top_p": 0.95
+        },
+        "maxTokens": 32768,
+        "hardSeconds": 300,
+        "concurrency": 1,
+        "automaticRetries": 0,
+        "judgeCalls": 0,
+        "tools": false,
+        "productionWrites": false,
+        "modelSwitches": 0,
+        "scriptHash": "74bd7e970305d0359069dbd565ac571254e265d60819804cb1116c8fbd19e4c4",
+        "packCodeHash": "3312ec79b6e94439772c2c20a9837f0d0516851d9587aad42491a3516616ad9b",
+        "budgetScope": "local diagnostic budget; not directly comparable to earlier 600-second production runs"
+      },
+      "dimensions": [
+        {
+          "dimension": "reasoning_math",
+          "score": 100,
+          "planned": 8,
+          "measured": 8
+        },
+        {
+          "dimension": "data_extraction",
+          "score": 100,
+          "planned": 3,
+          "measured": 3
+        },
+        {
+          "dimension": "hallucination_resistance",
+          "score": 100,
+          "planned": 4,
+          "measured": 4
+        }
+      ],
+      "rows": [
+        {
+          "id": "SC-ef22368fe8b7715c",
+          "dimension": "reasoning_math",
+          "family": "latent_identification",
+          "group": "1ad9e541dff978dc",
+          "variant": "identified",
+          "state": "completed",
+          "outputHash": "c199f65779eed4572ed5ffda03956450d9b458d8b5e578c59c5d5d262950ddd1",
+          "deliveredSuccess": true,
+          "measured": true,
+          "contentPass": true,
+          "contentScore": 100,
+          "formatCompliant": true,
+          "checks": [
+            {
+              "id": "identification_status",
+              "pass": true
+            },
+            {
+              "id": "lower",
+              "pass": true
+            },
+            {
+              "id": "lower_witness",
+              "pass": true
+            },
+            {
+              "id": "upper",
+              "pass": true
+            },
+            {
+              "id": "upper_witness",
+              "pass": true
+            }
+          ],
+          "extraction": "whole_json",
+          "contentScope": "requested_answer_or_certificate_only"
+        },
+        {
+          "id": "SC-00ba1fefbf66c224",
+          "dimension": "data_extraction",
+          "family": "transactional_reconstruction",
+          "group": "3f5e592919e879f2",
+          "variant": "revoked",
+          "state": "completed",
+          "outputHash": "18801dc53487f0fc3b4aaa5beb6ed1b5ca996caf0cbb665592452c144b898b87",
+          "deliveredSuccess": true,
+          "measured": true,
+          "contentPass": true,
+          "contentScore": 100,
+          "formatCompliant": true,
+          "checks": [
+            {
+              "id": "E38252.entity_id",
+              "pass": true
+            },
+            {
+              "id": "E38252.label",
+              "pass": true
+            },
+            {
+              "id": "E38252.quantity",
+              "pass": true
+            },
+            {
+              "id": "E38252.due_date",
+              "pass": true
+            },
+            {
+              "id": "E78581.entity_id",
+              "pass": true
+            },
+            {
+              "id": "E78581.label",
+              "pass": true
+            },
+            {
+              "id": "E78581.quantity",
+              "pass": true
+            },
+            {
+              "id": "E78581.due_date",
+              "pass": true
+            },
+            {
+              "id": "E88250.entity_id",
+              "pass": true
+            },
+            {
+              "id": "E88250.label",
+              "pass": true
+            },
+            {
+              "id": "E88250.quantity",
+              "pass": true
+            },
+            {
+              "id": "E88250.due_date",
+              "pass": true
+            }
+          ],
+          "extraction": "whole_json",
+          "contentScope": "requested_answer_or_certificate_only"
+        },
+        {
+          "id": "SC-debcd29d74469990",
+          "dimension": "data_extraction",
+          "family": "transactional_reconstruction",
+          "group": "3f5e592919e879f2",
+          "variant": "committed",
+          "state": "completed",
+          "outputHash": "75df27c834364971050859122336e6143da7c49d370ee7b0722d7e22fa1d57a0",
+          "deliveredSuccess": true,
+          "measured": true,
+          "contentPass": true,
+          "contentScore": 100,
+          "formatCompliant": true,
+          "checks": [
+            {
+              "id": "E88250.entity_id",
+              "pass": true
+            },
+            {
+              "id": "E88250.label",
+              "pass": true
+            },
+            {
+              "id": "E88250.quantity",
+              "pass": true
+            },
+            {
+              "id": "E88250.due_date",
+              "pass": true
+            },
+            {
+              "id": "E78581.entity_id",
+              "pass": true
+            },
+            {
+              "id": "E78581.label",
+              "pass": true
+            },
+            {
+              "id": "E78581.quantity",
+              "pass": true
+            },
+            {
+              "id": "E78581.due_date",
+              "pass": true
+            }
+          ],
+          "extraction": "whole_json",
+          "contentScope": "requested_answer_or_certificate_only"
+        },
+        {
+          "id": "SC-41ab7a109620e4cd",
+          "dimension": "reasoning_math",
+          "family": "latent_identification",
+          "group": "1ad9e541dff978dc",
+          "variant": "inconsistent",
+          "state": "completed",
+          "outputHash": "d011af12a54d20517c0f6328698f79341fd5a0c930a7d1a0f92b53690006de7e",
+          "deliveredSuccess": true,
+          "measured": true,
+          "contentPass": true,
+          "contentScore": 100,
+          "formatCompliant": true,
+          "checks": [
+            {
+              "id": "identification_status",
+              "pass": true
+            },
+            {
+              "id": "lower",
+              "pass": true
+            },
+            {
+              "id": "lower_witness",
+              "pass": true
+            },
+            {
+              "id": "upper",
+              "pass": true
+            },
+            {
+              "id": "upper_witness",
+              "pass": true
+            }
+          ],
+          "extraction": "whole_json",
+          "contentScope": "requested_answer_or_certificate_only"
+        },
+        {
+          "id": "SC-d3649c64ccacc64e",
+          "dimension": "hallucination_resistance",
+          "family": "scoped_evidence_revision",
+          "group": "b7a8d0b918a51857",
+          "variant": "other_identity",
+          "state": "completed",
+          "outputHash": "0c4274e6574bc7bc2acbd2f9dbbdc9a2415d2b04a71a52aa39b80d6c698161d2",
+          "deliveredSuccess": true,
+          "measured": true,
+          "contentPass": true,
+          "contentScore": 100,
+          "formatCompliant": true,
+          "checks": [
+            {
+              "id": "C41395:status",
+              "pass": true
+            },
+            {
+              "id": "C41395:evidence",
+              "pass": true
+            },
+            {
+              "id": "C38963:status",
+              "pass": true
+            },
+            {
+              "id": "C38963:evidence",
+              "pass": true
+            },
+            {
+              "id": "C14770:status",
+              "pass": true
+            },
+            {
+              "id": "C14770:evidence",
+              "pass": true
+            },
+            {
+              "id": "C55964:status",
+              "pass": true
+            },
+            {
+              "id": "C55964:evidence",
+              "pass": true
+            },
+            {
+              "id": "C99281:status",
+              "pass": true
+            },
+            {
+              "id": "C99281:evidence",
+              "pass": true
+            },
+            {
+              "id": "C60972:status",
+              "pass": true
+            },
+            {
+              "id": "C60972:evidence",
+              "pass": true
+            }
+          ],
+          "extraction": "whole_json",
+          "contentScope": "requested_answer_or_certificate_only"
+        },
+        {
+          "id": "SC-3b43e5ede49937f3",
+          "dimension": "hallucination_resistance",
+          "family": "scoped_evidence_revision",
+          "group": "b7a8d0b918a51857",
+          "variant": "final_correction",
+          "state": "completed",
+          "outputHash": "ccda209c4f4eca7bd1271e7ac11c3da55032042e46dc3b92e5ac68f43e8f9bb9",
+          "deliveredSuccess": true,
+          "measured": true,
+          "contentPass": true,
+          "contentScore": 100,
+          "formatCompliant": true,
+          "checks": [
+            {
+              "id": "C41395:status",
+              "pass": true
+            },
+            {
+              "id": "C41395:evidence",
+              "pass": true
+            },
+            {
+              "id": "C38963:status",
+              "pass": true
+            },
+            {
+              "id": "C38963:evidence",
+              "pass": true
+            },
+            {
+              "id": "C14770:status",
+              "pass": true
+            },
+            {
+              "id": "C14770:evidence",
+              "pass": true
+            },
+            {
+              "id": "C55964:status",
+              "pass": true
+            },
+            {
+              "id": "C55964:evidence",
+              "pass": true
+            },
+            {
+              "id": "C99281:status",
+              "pass": true
+            },
+            {
+              "id": "C99281:evidence",
+              "pass": true
+            },
+            {
+              "id": "C60972:status",
+              "pass": true
+            },
+            {
+              "id": "C60972:evidence",
+              "pass": true
+            }
+          ],
+          "extraction": "whole_json",
+          "contentScope": "requested_answer_or_certificate_only"
+        },
+        {
+          "id": "SC-9e7fe65a039abb68",
+          "dimension": "reasoning_math",
+          "family": "optimization_status",
+          "group": "f55a36774bd05d54",
+          "variant": "unbounded",
+          "state": "completed",
+          "outputHash": "5a313ef860ba245371914185db0b2e0a314a656fe19716378717ded1c188b54c",
+          "deliveredSuccess": true,
+          "measured": true,
+          "contentPass": true,
+          "contentScore": 100,
+          "formatCompliant": true,
+          "checks": [
+            {
+              "id": "primalFeasible",
+              "pass": true
+            },
+            {
+              "id": "nonnegativeRay",
+              "pass": true
+            },
+            {
+              "id": "recessionDirection",
+              "pass": true
+            },
+            {
+              "id": "positiveGain",
+              "pass": true
+            }
+          ],
+          "extraction": "whole_json",
+          "contentScope": "requested_answer_or_certificate_only"
+        },
+        {
+          "id": "SC-ba8261dcdb0ac87f",
+          "dimension": "hallucination_resistance",
+          "family": "scoped_evidence_revision",
+          "group": "b7a8d0b918a51857",
+          "variant": "draft_correction",
+          "state": "completed",
+          "outputHash": "c1fadd23365b79cbe390a0bbd5f46c409120f1100410d124c344063245b35e70",
+          "deliveredSuccess": true,
+          "measured": true,
+          "contentPass": true,
+          "contentScore": 100,
+          "formatCompliant": true,
+          "checks": [
+            {
+              "id": "C41395:status",
+              "pass": true
+            },
+            {
+              "id": "C41395:evidence",
+              "pass": true
+            },
+            {
+              "id": "C38963:status",
+              "pass": true
+            },
+            {
+              "id": "C38963:evidence",
+              "pass": true
+            },
+            {
+              "id": "C14770:status",
+              "pass": true
+            },
+            {
+              "id": "C14770:evidence",
+              "pass": true
+            },
+            {
+              "id": "C55964:status",
+              "pass": true
+            },
+            {
+              "id": "C55964:evidence",
+              "pass": true
+            },
+            {
+              "id": "C99281:status",
+              "pass": true
+            },
+            {
+              "id": "C99281:evidence",
+              "pass": true
+            },
+            {
+              "id": "C60972:status",
+              "pass": true
+            },
+            {
+              "id": "C60972:evidence",
+              "pass": true
+            }
+          ],
+          "extraction": "whole_json",
+          "contentScope": "requested_answer_or_certificate_only"
+        },
+        {
+          "id": "SC-ff6aabc79e71876e",
+          "dimension": "reasoning_math",
+          "family": "optimization_status",
+          "group": "f55a36774bd05d54",
+          "variant": "optimal",
+          "state": "completed",
+          "outputHash": "dbe5a0f8de7b88c8152b3050bb3304ffde0f3842e4bf749da2060bf3d4085e29",
+          "deliveredSuccess": true,
+          "measured": true,
+          "contentPass": true,
+          "contentScore": 100,
+          "formatCompliant": true,
+          "checks": [
+            {
+              "id": "primalFeasible",
+              "pass": true
+            },
+            {
+              "id": "dualFeasible",
+              "pass": true
+            },
+            {
+              "id": "primalValue",
+              "pass": true
+            },
+            {
+              "id": "dualValue",
+              "pass": true
+            }
+          ],
+          "extraction": "whole_json",
+          "contentScope": "requested_answer_or_certificate_only"
+        },
+        {
+          "id": "SC-6dd134941055ddde",
+          "dimension": "reasoning_math",
+          "family": "sampling_measure",
+          "group": "b1cf42062ba225c0",
+          "variant": "pooled_records",
+          "state": "completed",
+          "outputHash": "af1941698ea8eb4ba46bedf9119dd8df6ae0f076e6785124d34cf856b8cde329",
+          "deliveredSuccess": true,
+          "measured": true,
+          "contentPass": true,
+          "contentScore": 100,
+          "formatCompliant": true,
+          "checks": [
+            {
+              "id": "observation_probability",
+              "pass": true
+            },
+            {
+              "id": "posterior_box0",
+              "pass": true
+            },
+            {
+              "id": "expected_length",
+              "pass": true
+            },
+            {
+              "id": "next_color_probability",
+              "pass": true
+            }
+          ],
+          "extraction": "whole_json",
+          "contentScope": "requested_answer_or_certificate_only"
+        },
+        {
+          "id": "SC-2b092da97f18546e",
+          "dimension": "data_extraction",
+          "family": "transactional_reconstruction",
+          "group": "3f5e592919e879f2",
+          "variant": "reordered",
+          "state": "completed",
+          "outputHash": "eb8293336bd7a77b70b23d07293dc75ae157bd807dc2f6311d5fd0c8e9972154",
+          "deliveredSuccess": true,
+          "measured": true,
+          "contentPass": true,
+          "contentScore": 100,
+          "formatCompliant": true,
+          "checks": [
+            {
+              "id": "E88250.entity_id",
+              "pass": true
+            },
+            {
+              "id": "E88250.label",
+              "pass": true
+            },
+            {
+              "id": "E88250.quantity",
+              "pass": true
+            },
+            {
+              "id": "E88250.due_date",
+              "pass": true
+            },
+            {
+              "id": "E78581.entity_id",
+              "pass": true
+            },
+            {
+              "id": "E78581.label",
+              "pass": true
+            },
+            {
+              "id": "E78581.quantity",
+              "pass": true
+            },
+            {
+              "id": "E78581.due_date",
+              "pass": true
+            }
+          ],
+          "extraction": "whole_json",
+          "contentScope": "requested_answer_or_certificate_only"
+        },
+        {
+          "id": "SC-0bd4b8d8be97191f",
+          "dimension": "reasoning_math",
+          "family": "sampling_measure",
+          "group": "b1cf42062ba225c0",
+          "variant": "experiment_then_record",
+          "state": "completed",
+          "outputHash": "391378cb5d14cc374745677c8c37cffbaf8a639c52f0c193aba7e934d9c22b3d",
+          "deliveredSuccess": true,
+          "measured": true,
+          "contentPass": true,
+          "contentScore": 100,
+          "formatCompliant": true,
+          "checks": [
+            {
+              "id": "observation_probability",
+              "pass": true
+            },
+            {
+              "id": "posterior_box0",
+              "pass": true
+            },
+            {
+              "id": "expected_length",
+              "pass": true
+            },
+            {
+              "id": "next_color_probability",
+              "pass": true
+            }
+          ],
+          "extraction": "whole_json",
+          "contentScope": "requested_answer_or_certificate_only"
+        },
+        {
+          "id": "SC-bb3c2b2dd6e91ed5",
+          "dimension": "reasoning_math",
+          "family": "latent_identification",
+          "group": "1ad9e541dff978dc",
+          "variant": "bounded",
+          "state": "completed",
+          "outputHash": "f19d4ff87e359fdf8c2eb9835df6a140d8322dae4186b6d4a8f08a191d4d6972",
+          "deliveredSuccess": true,
+          "measured": true,
+          "contentPass": true,
+          "contentScore": 100,
+          "formatCompliant": true,
+          "checks": [
+            {
+              "id": "identification_status",
+              "pass": true
+            },
+            {
+              "id": "lower",
+              "pass": true
+            },
+            {
+              "id": "lower_witness",
+              "pass": true
+            },
+            {
+              "id": "upper",
+              "pass": true
+            },
+            {
+              "id": "upper_witness",
+              "pass": true
+            }
+          ],
+          "extraction": "whole_json",
+          "contentScope": "requested_answer_or_certificate_only"
+        },
+        {
+          "id": "SC-98578b7e9d991f27",
+          "dimension": "hallucination_resistance",
+          "family": "scoped_evidence_revision",
+          "group": "b7a8d0b918a51857",
+          "variant": "reordered",
+          "state": "completed",
+          "outputHash": "4dfd0be670588027b680f7ed6c36227a3e282ff77d69e1699dc45e10a5fc4b69",
+          "deliveredSuccess": true,
+          "measured": true,
+          "contentPass": true,
+          "contentScore": 100,
+          "formatCompliant": true,
+          "checks": [
+            {
+              "id": "C41395:status",
+              "pass": true
+            },
+            {
+              "id": "C41395:evidence",
+              "pass": true
+            },
+            {
+              "id": "C38963:status",
+              "pass": true
+            },
+            {
+              "id": "C38963:evidence",
+              "pass": true
+            },
+            {
+              "id": "C14770:status",
+              "pass": true
+            },
+            {
+              "id": "C14770:evidence",
+              "pass": true
+            },
+            {
+              "id": "C55964:status",
+              "pass": true
+            },
+            {
+              "id": "C55964:evidence",
+              "pass": true
+            },
+            {
+              "id": "C99281:status",
+              "pass": true
+            },
+            {
+              "id": "C99281:evidence",
+              "pass": true
+            },
+            {
+              "id": "C60972:status",
+              "pass": true
+            },
+            {
+              "id": "C60972:evidence",
+              "pass": true
+            }
+          ],
+          "extraction": "whole_json",
+          "contentScope": "requested_answer_or_certificate_only"
+        },
+        {
+          "id": "SC-9e8bd4554289dcd4",
+          "dimension": "reasoning_math",
+          "family": "optimization_status",
+          "group": "f55a36774bd05d54",
+          "variant": "infeasible",
+          "state": "completed",
+          "outputHash": "77700240a8be1b46525aeae23a6a7cdda01db45ad16e6fb9e70cd377217ba929",
+          "deliveredSuccess": true,
+          "measured": true,
+          "contentPass": true,
+          "contentScore": 100,
+          "formatCompliant": true,
+          "checks": [
+            {
+              "id": "nonnegativeMultipliers",
+              "pass": true
+            },
+            {
+              "id": "nonnegativeLeftSide",
+              "pass": true
+            },
+            {
+              "id": "negativeRightSide",
+              "pass": true
+            }
+          ],
+          "extraction": "whole_json",
+          "contentScope": "requested_answer_or_certificate_only"
+        }
+      ],
+      "requests": 15,
+      "completionTokens": null,
+      "latencySeconds": 680.864,
+      "returnedModels": [
+        "qwen3.8-27b-nvfp4"
+      ],
+      "errors": [],
+      "evidenceFiles": [
+        {
+          "path": "reports/structural-challenge-2026-09-14-v1/qwen-nvfp4/submission.json",
+          "sha256": "f9563153918327eb0bbfeabe1f6d3b7be748e456399b7bc2d242f0109740e07c"
+        },
+        {
+          "path": "reports/structural-challenge-2026-09-14-v1/qwen-nvfp4/scored.json",
+          "sha256": "3dc66d5010b5eb2d344bc293ac1fa69a14534678d44423d5d3f009498cee9061"
+        },
+        {
+          "path": "reports/structural-challenge-2026-09-14-v1/qwen-nvfp4/SC-00ba1fefbf66c224/raw.json",
+          "sha256": "a208e7107c91551b1a1796d0eddc7ad333c883f54ea40d8f4aafe3dd15bd5eff"
+        },
+        {
+          "path": "reports/structural-challenge-2026-09-14-v1/qwen-nvfp4/SC-0bd4b8d8be97191f/raw.json",
+          "sha256": "ce6cd0f8247f7cdaae8352cd9e9caa7bae7b8c6966db9f85ce7f0c35a401608d"
+        },
+        {
+          "path": "reports/structural-challenge-2026-09-14-v1/qwen-nvfp4/SC-2b092da97f18546e/raw.json",
+          "sha256": "79a39242ff02bde4caee62b21d267a1036825187572c9373563971b8a244cf66"
+        },
+        {
+          "path": "reports/structural-challenge-2026-09-14-v1/qwen-nvfp4/SC-3b43e5ede49937f3/raw.json",
+          "sha256": "2582a4ff4207b400e1f823bc6b79eff7732ce5f442bda635047ffee911c9445e"
+        },
+        {
+          "path": "reports/structural-challenge-2026-09-14-v1/qwen-nvfp4/SC-41ab7a109620e4cd/raw.json",
+          "sha256": "cdcc1cee6bcad106c9efec34328ac931027c2fb1d62be7163296c5184e3d6372"
+        },
+        {
+          "path": "reports/structural-challenge-2026-09-14-v1/qwen-nvfp4/SC-6dd134941055ddde/raw.json",
+          "sha256": "49c9ddfc98d3a6423e7ba568de73bc0d4895556d68bdd6fd82c2fc4c2be1aa20"
+        },
+        {
+          "path": "reports/structural-challenge-2026-09-14-v1/qwen-nvfp4/SC-98578b7e9d991f27/raw.json",
+          "sha256": "9c743c0212a4d38dacfce605cf60b91983ac22e958e64a8a7b2ab5af82ec25aa"
+        },
+        {
+          "path": "reports/structural-challenge-2026-09-14-v1/qwen-nvfp4/SC-9e7fe65a039abb68/raw.json",
+          "sha256": "1361c8211818a62f6f19b0e34a6bcc82d4a31db74d6bc35aafdba6f0c7bc8cee"
+        },
+        {
+          "path": "reports/structural-challenge-2026-09-14-v1/qwen-nvfp4/SC-9e8bd4554289dcd4/raw.json",
+          "sha256": "51a0a0696917eb42617209161bf832d0fb36efe38d0f0f8da119f1c344e7eefd"
+        },
+        {
+          "path": "reports/structural-challenge-2026-09-14-v1/qwen-nvfp4/SC-ba8261dcdb0ac87f/raw.json",
+          "sha256": "d7d1f85b9714e9d77c5d49150e6ccb21dedf0e8a5ea5ecc88c423195db1b8c0e"
+        },
+        {
+          "path": "reports/structural-challenge-2026-09-14-v1/qwen-nvfp4/SC-bb3c2b2dd6e91ed5/raw.json",
+          "sha256": "079a253cddf2816159bd027a9c691252311d6a7ba98eca061b4668e29ca93e02"
+        },
+        {
+          "path": "reports/structural-challenge-2026-09-14-v1/qwen-nvfp4/SC-d3649c64ccacc64e/raw.json",
+          "sha256": "df87716ef2cac8cb06bc3f79f54aeddff16ccd38b4b46a75e964114deb0ffc3e"
+        },
+        {
+          "path": "reports/structural-challenge-2026-09-14-v1/qwen-nvfp4/SC-debcd29d74469990/raw.json",
+          "sha256": "23b1323ca2f79be2f4e45d4ca8a75d7ffd673dfe5f991f15fe05ad94d34b6ca7"
+        },
+        {
+          "path": "reports/structural-challenge-2026-09-14-v1/qwen-nvfp4/SC-ef22368fe8b7715c/raw.json",
+          "sha256": "647e9eca082de88cb04fbe722ccf0ca7026a4ea492727ae51e15e1f59b3b91da"
+        },
+        {
+          "path": "reports/structural-challenge-2026-09-14-v1/qwen-nvfp4/SC-ff6aabc79e71876e/raw.json",
+          "sha256": "df25ab00bd766653fc19de4062511dfd30c9e079303e837bdf7dc7a51889b453"
+        }
+      ],
+      "usageReportedRequests": 0,
+      "usageNote": "Missing provider usage is unknown, not zero."
+    },
+    {
+      "key": "glm",
+      "modelId": "glm-5.2",
+      "modelFamily": "GLM",
+      "conditions": {
+        "packDir": "J:\\AI\\zxbench-webui\\reports\\structural-challenge-2026-09-14-v1\\development",
+        "contractHash": "b8c620bdc93c80716b88e770495932249e14a50ea24e57e406598aee41864dbe",
+        "provider": {
+          "key": "glm-5.2",
+          "configId": "930a2799-d17f-485f-b513-d74b9f458896",
+          "requestedModel": "glm-5.2",
+          "family": "GLM",
+          "endpoint": "https://open.bigmodel.cn/api/paas/v4/chat/completions",
+          "parameters": {
+            "thinking": {
+              "type": "enabled"
+            },
+            "reasoning_effort": "max",
+            "temperature": 1
+          },
+          "aliasNote": "Requested GLM-5.2, no substitution to newer models."
+        },
+        "maxTokens": 32768,
+        "hardSeconds": 300,
+        "concurrency": 1,
+        "automaticRetries": 0,
+        "requestedQuestions": 15,
+        "freshContextPerQuestion": true,
+        "tools": false,
+        "judgeCalls": 0,
+        "productionWrites": false,
+        "budgetScope": "provider-specific thinking; same token/time caps do not imply equal compute",
+        "codeHash": "3312ec79b6e94439772c2c20a9837f0d0516851d9587aad42491a3516616ad9b"
+      },
+      "dimensions": [
+        {
+          "dimension": "reasoning_math",
+          "score": null,
+          "planned": 8,
+          "measured": 0
+        },
+        {
+          "dimension": "data_extraction",
+          "score": null,
+          "planned": 3,
+          "measured": 0
+        },
+        {
+          "dimension": "hallucination_resistance",
+          "score": null,
+          "planned": 4,
+          "measured": 0
+        }
+      ],
+      "rows": [
+        {
+          "id": "SC-ef22368fe8b7715c",
+          "dimension": "reasoning_math",
+          "family": "latent_identification",
+          "group": "1ad9e541dff978dc",
+          "variant": "identified",
+          "state": "environment_error",
+          "outputHash": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+          "deliveredSuccess": false
+        },
+        {
+          "id": "SC-00ba1fefbf66c224",
+          "dimension": "data_extraction",
+          "family": "transactional_reconstruction",
+          "group": "3f5e592919e879f2",
+          "variant": "revoked",
+          "state": "missing",
+          "outputHash": null,
+          "deliveredSuccess": false
+        },
+        {
+          "id": "SC-debcd29d74469990",
+          "dimension": "data_extraction",
+          "family": "transactional_reconstruction",
+          "group": "3f5e592919e879f2",
+          "variant": "committed",
+          "state": "missing",
+          "outputHash": null,
+          "deliveredSuccess": false
+        },
+        {
+          "id": "SC-41ab7a109620e4cd",
+          "dimension": "reasoning_math",
+          "family": "latent_identification",
+          "group": "1ad9e541dff978dc",
+          "variant": "inconsistent",
+          "state": "missing",
+          "outputHash": null,
+          "deliveredSuccess": false
+        },
+        {
+          "id": "SC-d3649c64ccacc64e",
+          "dimension": "hallucination_resistance",
+          "family": "scoped_evidence_revision",
+          "group": "b7a8d0b918a51857",
+          "variant": "other_identity",
+          "state": "missing",
+          "outputHash": null,
+          "deliveredSuccess": false
+        },
+        {
+          "id": "SC-3b43e5ede49937f3",
+          "dimension": "hallucination_resistance",
+          "family": "scoped_evidence_revision",
+          "group": "b7a8d0b918a51857",
+          "variant": "final_correction",
+          "state": "missing",
+          "outputHash": null,
+          "deliveredSuccess": false
+        },
+        {
+          "id": "SC-9e7fe65a039abb68",
+          "dimension": "reasoning_math",
+          "family": "optimization_status",
+          "group": "f55a36774bd05d54",
+          "variant": "unbounded",
+          "state": "missing",
+          "outputHash": null,
+          "deliveredSuccess": false
+        },
+        {
+          "id": "SC-ba8261dcdb0ac87f",
+          "dimension": "hallucination_resistance",
+          "family": "scoped_evidence_revision",
+          "group": "b7a8d0b918a51857",
+          "variant": "draft_correction",
+          "state": "missing",
+          "outputHash": null,
+          "deliveredSuccess": false
+        },
+        {
+          "id": "SC-ff6aabc79e71876e",
+          "dimension": "reasoning_math",
+          "family": "optimization_status",
+          "group": "f55a36774bd05d54",
+          "variant": "optimal",
+          "state": "missing",
+          "outputHash": null,
+          "deliveredSuccess": false
+        },
+        {
+          "id": "SC-6dd134941055ddde",
+          "dimension": "reasoning_math",
+          "family": "sampling_measure",
+          "group": "b1cf42062ba225c0",
+          "variant": "pooled_records",
+          "state": "missing",
+          "outputHash": null,
+          "deliveredSuccess": false
+        },
+        {
+          "id": "SC-2b092da97f18546e",
+          "dimension": "data_extraction",
+          "family": "transactional_reconstruction",
+          "group": "3f5e592919e879f2",
+          "variant": "reordered",
+          "state": "missing",
+          "outputHash": null,
+          "deliveredSuccess": false
+        },
+        {
+          "id": "SC-0bd4b8d8be97191f",
+          "dimension": "reasoning_math",
+          "family": "sampling_measure",
+          "group": "b1cf42062ba225c0",
+          "variant": "experiment_then_record",
+          "state": "missing",
+          "outputHash": null,
+          "deliveredSuccess": false
+        },
+        {
+          "id": "SC-bb3c2b2dd6e91ed5",
+          "dimension": "reasoning_math",
+          "family": "latent_identification",
+          "group": "1ad9e541dff978dc",
+          "variant": "bounded",
+          "state": "missing",
+          "outputHash": null,
+          "deliveredSuccess": false
+        },
+        {
+          "id": "SC-98578b7e9d991f27",
+          "dimension": "hallucination_resistance",
+          "family": "scoped_evidence_revision",
+          "group": "b7a8d0b918a51857",
+          "variant": "reordered",
+          "state": "missing",
+          "outputHash": null,
+          "deliveredSuccess": false
+        },
+        {
+          "id": "SC-9e8bd4554289dcd4",
+          "dimension": "reasoning_math",
+          "family": "optimization_status",
+          "group": "f55a36774bd05d54",
+          "variant": "infeasible",
+          "state": "missing",
+          "outputHash": null,
+          "deliveredSuccess": false
+        }
+      ],
+      "requests": 1,
+      "completionTokens": null,
+      "latencySeconds": 0.209,
+      "returnedModels": [],
+      "errors": [
+        {
+          "error": "HTTP_429",
+          "httpStatus": 429
+        }
+      ],
+      "evidenceFiles": [
+        {
+          "path": "reports/structural-challenge-2026-09-14-v1/glm/submission.json",
+          "sha256": "1dc4cc4c403b9d15e68fb8e1b999a2c6d60be1a96db17b262830b6873276af93"
+        },
+        {
+          "path": "reports/structural-challenge-2026-09-14-v1/glm/scored.json",
+          "sha256": "4e4b73e3682449cdce04a029c363c2d0662f2fb8a0a936a1aaa8caf2b348557b"
+        },
+        {
+          "path": "reports/structural-challenge-2026-09-14-v1/glm/SC-ef22368fe8b7715c/raw.json",
+          "sha256": "13b732cfc7246bf8a32b8f3284cd8b199f874cb0153bb607a0bf4a2ddb649487"
+        }
+      ],
+      "usageReportedRequests": 0,
+      "usageNote": "Missing provider usage is unknown, not zero."
+    }
+  ],
+  "legacyExtraction": {
+    "runId": "zxbench-pro-2026-09-13T11-26-49-528Z-7886d975",
+    "definitionSource": "frozen_run_pack",
+    "n": 56,
+    "full": 38,
+    "formatFailures": 3,
+    "existingWeighted": 90.62068965517241,
+    "deliveredContentWeighted": 85.37931034482759,
+    "existingMean": 91.07142857142857,
+    "deliveredContentMean": 85.67857142857143,
+    "rows": [
+      {
+        "id": "DE-CN-001",
+        "total": 94,
+        "content": 86,
+        "format": 100,
+        "weight": 1,
+        "environmentError": 0,
+        "evidence": [
+          "Field accuracy: 6/7"
+        ]
+      },
+      {
+        "id": "DE-CN-002",
+        "total": 100,
+        "content": 100,
+        "format": 100,
+        "weight": 1.5,
+        "environmentError": 0,
+        "evidence": [
+          "All 15 fields correct"
+        ]
+      },
+      {
+        "id": "DE-CN-003",
+        "total": 100,
+        "content": 100,
+        "format": 100,
+        "weight": 1,
+        "environmentError": 0,
+        "evidence": [
+          "All 5 fields correct"
+        ]
+      },
+      {
+        "id": "DE-CN-004",
+        "total": 100,
+        "content": 100,
+        "format": 100,
+        "weight": 1.5,
+        "environmentError": 0,
+        "evidence": [
+          "All 17 fields correct"
+        ]
+      },
+      {
+        "id": "DE-CN-005",
+        "total": 100,
+        "content": 100,
+        "format": 100,
+        "weight": 1.5,
+        "environmentError": 0,
+        "evidence": [
+          "All 4 fields correct"
+        ]
+      },
+      {
+        "id": "DE-CN-006",
+        "total": 92,
+        "content": 80,
+        "format": 100,
+        "weight": 2,
+        "environmentError": 0,
+        "evidence": [
+          "Field accuracy: 4/5"
+        ]
+      },
+      {
+        "id": "DE-CN-007",
+        "total": 87,
+        "content": 67,
+        "format": 100,
+        "weight": 2.5,
+        "environmentError": 0,
+        "evidence": [
+          "Field accuracy: 2/3"
+        ]
+      },
+      {
+        "id": "DE-CN-008",
+        "total": 100,
+        "content": 100,
+        "format": 100,
+        "weight": 1.5,
+        "environmentError": 0,
+        "evidence": [
+          "All 4 fields correct"
+        ]
+      },
+      {
+        "id": "DE-CN-009",
+        "total": 87,
+        "content": 67,
+        "format": 100,
+        "weight": 1,
+        "environmentError": 0,
+        "evidence": [
+          "Field accuracy: 2/3"
+        ]
+      },
+      {
+        "id": "DE-CN-010",
+        "total": 100,
+        "content": 100,
+        "format": 100,
+        "weight": 1.5,
+        "environmentError": 0,
+        "evidence": [
+          "All 4 fields correct"
+        ]
+      },
+      {
+        "id": "DE-CN-011",
+        "total": 80,
+        "content": 50,
+        "format": 100,
+        "weight": 2,
+        "environmentError": 0,
+        "evidence": [
+          "Field accuracy: 2/4"
+        ]
+      },
+      {
+        "id": "DE-CN-012",
+        "total": 100,
+        "content": 100,
+        "format": 100,
+        "weight": 1.5,
+        "environmentError": 0,
+        "evidence": [
+          "All 4 fields correct"
+        ]
+      },
+      {
+        "id": "DE-CN-013",
+        "total": 100,
+        "content": 100,
+        "format": 100,
+        "weight": 2,
+        "environmentError": 0,
+        "evidence": [
+          "All 3 fields correct"
+        ]
+      },
+      {
+        "id": "DE-CN-014",
+        "total": 80,
+        "content": 50,
+        "format": 100,
+        "weight": 1,
+        "environmentError": 0,
+        "evidence": [
+          "Field accuracy: 1/2"
+        ]
+      },
+      {
+        "id": "DE-CN-015",
+        "total": 100,
+        "content": 100,
+        "format": 100,
+        "weight": 2,
+        "environmentError": 0,
+        "evidence": [
+          "All 3 fields correct"
+        ]
+      },
+      {
+        "id": "DE-CN-016",
+        "total": 100,
+        "content": 100,
+        "format": 100,
+        "weight": 1.5,
+        "environmentError": 0,
+        "evidence": [
+          "All 6 fields correct"
+        ]
+      },
+      {
+        "id": "DE-CN-017",
+        "total": 100,
+        "content": 100,
+        "format": 100,
+        "weight": 2,
+        "environmentError": 0,
+        "evidence": [
+          "All 4 fields correct"
+        ]
+      },
+      {
+        "id": "DE-CN-018",
+        "total": 90,
+        "content": 75,
+        "format": 100,
+        "weight": 1.5,
+        "environmentError": 0,
+        "evidence": [
+          "Field accuracy: 3/4"
+        ]
+      },
+      {
+        "id": "DE-CN-019",
+        "total": 100,
+        "content": 100,
+        "format": 100,
+        "weight": 1,
+        "environmentError": 0,
+        "evidence": [
+          "All 4 fields correct"
+        ]
+      },
+      {
+        "id": "DE-CN-020",
+        "total": 100,
+        "content": 100,
+        "format": 100,
+        "weight": 2,
+        "environmentError": 0,
+        "evidence": [
+          "All 4 fields correct"
+        ]
+      },
+      {
+        "id": "DE-CN-021",
+        "total": 100,
+        "content": 100,
+        "format": 100,
+        "weight": 1.5,
+        "environmentError": 0,
+        "evidence": [
+          "All 4 fields correct"
+        ]
+      },
+      {
+        "id": "DE-CN-022",
+        "total": 87,
+        "content": 67,
+        "format": 100,
+        "weight": 2,
+        "environmentError": 0,
+        "evidence": [
+          "Field accuracy: 2/3"
+        ]
+      },
+      {
+        "id": "DE-CN-023",
+        "total": 100,
+        "content": 100,
+        "format": 100,
+        "weight": 1.5,
+        "environmentError": 0,
+        "evidence": [
+          "All 3 fields correct"
+        ]
+      },
+      {
+        "id": "DE-CN-024",
+        "total": 100,
+        "content": 100,
+        "format": 100,
+        "weight": 1.5,
+        "environmentError": 0,
+        "evidence": [
+          "All 2 fields correct"
+        ]
+      },
+      {
+        "id": "DE-CN-025",
+        "total": 87,
+        "content": 67,
+        "format": 100,
+        "weight": 1,
+        "environmentError": 0,
+        "evidence": [
+          "Field accuracy: 2/3"
+        ]
+      },
+      {
+        "id": "DE-CN-026",
+        "total": 100,
+        "content": 100,
+        "format": 100,
+        "weight": 2,
+        "environmentError": 0,
+        "evidence": [
+          "All 3 fields correct"
+        ]
+      },
+      {
+        "id": "DE-CN-027",
+        "total": 87,
+        "content": 67,
+        "format": 100,
+        "weight": 1.5,
+        "environmentError": 0,
+        "evidence": [
+          "Field accuracy: 2/3"
+        ]
+      },
+      {
+        "id": "DE-CN-028",
+        "total": 100,
+        "content": 100,
+        "format": 100,
+        "weight": 2.5,
+        "environmentError": 0,
+        "evidence": [
+          "All 3 fields correct"
+        ]
+      },
+      {
+        "id": "DE-CN-029",
+        "total": 73,
+        "content": 33,
+        "format": 100,
+        "weight": 2,
+        "environmentError": 0,
+        "evidence": [
+          "Field accuracy: 1/3"
+        ]
+      },
+      {
+        "id": "DE-CN-030",
+        "total": 100,
+        "content": 100,
+        "format": 100,
+        "weight": 1,
+        "environmentError": 0,
+        "evidence": [
+          "All 5 fields correct"
+        ]
+      },
+      {
+        "id": "DE-CN-031",
+        "total": 90,
+        "content": 75,
+        "format": 100,
+        "weight": 2.5,
+        "environmentError": 0,
+        "evidence": [
+          "Field accuracy: 3/4"
+        ]
+      },
+      {
+        "id": "DE-CN-032",
+        "total": 100,
+        "content": 100,
+        "format": 100,
+        "weight": 1.5,
+        "environmentError": 0,
+        "evidence": [
+          "All 3 fields correct"
+        ]
+      },
+      {
+        "id": "DE-CN-033",
+        "total": 100,
+        "content": 100,
+        "format": 100,
+        "weight": 2,
+        "environmentError": 0,
+        "evidence": [
+          "All 4 fields correct"
+        ]
+      },
+      {
+        "id": "DE-CN-034",
+        "total": 87,
+        "content": 67,
+        "format": 100,
+        "weight": 1.5,
+        "environmentError": 0,
+        "evidence": [
+          "Field accuracy: 2/3"
+        ]
+      },
+      {
+        "id": "DE-CN-035",
+        "total": 87,
+        "content": 67,
+        "format": 100,
+        "weight": 2.5,
+        "environmentError": 0,
+        "evidence": [
+          "Field accuracy: 2/3"
+        ]
+      },
+      {
+        "id": "DE-CN-036",
+        "total": 100,
+        "content": 100,
+        "format": 100,
+        "weight": 2,
+        "environmentError": 0,
+        "evidence": [
+          "All 5 fields correct"
+        ]
+      },
+      {
+        "id": "DE-CN-037",
+        "total": 100,
+        "content": 100,
+        "format": 100,
+        "weight": 2,
+        "environmentError": 0,
+        "evidence": [
+          "All 5 fields correct"
+        ]
+      },
+      {
+        "id": "DE-CN-038",
+        "total": 100,
+        "content": 100,
+        "format": 100,
+        "weight": 2,
+        "environmentError": 0,
+        "evidence": [
+          "All 4 fields correct"
+        ]
+      },
+      {
+        "id": "DE-CN-039",
+        "total": 0,
+        "content": null,
+        "format": 0,
+        "weight": 1.5,
+        "environmentError": 0,
+        "evidence": [
+          "Failed to parse output as JSON"
+        ]
+      },
+      {
+        "id": "DE-CN-040",
+        "total": 100,
+        "content": 100,
+        "format": 100,
+        "weight": 2,
+        "environmentError": 0,
+        "evidence": [
+          "All 3 fields correct"
+        ]
+      },
+      {
+        "id": "DE-CN-041",
+        "total": 100,
+        "content": 100,
+        "format": 100,
+        "weight": 1.5,
+        "environmentError": 0,
+        "evidence": [
+          "All 5 fields correct"
+        ]
+      },
+      {
+        "id": "DE-CN-042",
+        "total": 100,
+        "content": 100,
+        "format": 100,
+        "weight": 2,
+        "environmentError": 0,
+        "evidence": [
+          "All 6 fields correct"
+        ]
+      },
+      {
+        "id": "DE-CN-043",
+        "total": 100,
+        "content": 100,
+        "format": 100,
+        "weight": 2,
+        "environmentError": 0,
+        "evidence": [
+          "All 4 fields correct"
+        ]
+      },
+      {
+        "id": "DE-CN-044",
+        "total": 100,
+        "content": 100,
+        "format": 100,
+        "weight": 2.5,
+        "environmentError": 0,
+        "evidence": [
+          "All 3 fields correct"
+        ]
+      },
+      {
+        "id": "DE-CN-045",
+        "total": 100,
+        "content": 100,
+        "format": 100,
+        "weight": 2,
+        "environmentError": 0,
+        "evidence": [
+          "All 5 fields correct"
+        ]
+      },
+      {
+        "id": "DE-CN-046",
+        "total": 100,
+        "content": 100,
+        "format": 100,
+        "weight": 2,
+        "environmentError": 0,
+        "evidence": [
+          "All 6 fields correct"
+        ]
+      },
+      {
+        "id": "DE-CN-047",
+        "total": 0,
+        "content": null,
+        "format": 0,
+        "weight": 2.5,
+        "environmentError": 0,
+        "evidence": []
+      },
+      {
+        "id": "DE-CN-048",
+        "total": 100,
+        "content": 100,
+        "format": 100,
+        "weight": 2,
+        "environmentError": 0,
+        "evidence": [
+          "All 2 fields correct"
+        ]
+      },
+      {
+        "id": "DE-CN-049",
+        "total": 100,
+        "content": 100,
+        "format": 100,
+        "weight": 2.5,
+        "environmentError": 0,
+        "evidence": [
+          "All 4 fields correct"
+        ]
+      },
+      {
+        "id": "DE-CN-050",
+        "total": 100,
+        "content": 100,
+        "format": 100,
+        "weight": 2,
+        "environmentError": 0,
+        "evidence": [
+          "All 4 fields correct"
+        ]
+      },
+      {
+        "id": "DE-CN-051",
+        "total": 0,
+        "content": null,
+        "format": 0,
+        "weight": 2,
+        "environmentError": 0,
+        "evidence": []
+      },
+      {
+        "id": "DE-CN-052",
+        "total": 100,
+        "content": 100,
+        "format": 100,
+        "weight": 2,
+        "environmentError": 0,
+        "evidence": [
+          "All 4 fields correct"
+        ]
+      },
+      {
+        "id": "DE-CN-053",
+        "total": 100,
+        "content": 100,
+        "format": 100,
+        "weight": 2,
+        "environmentError": 0,
+        "evidence": [
+          "All 6 fields correct"
+        ]
+      },
+      {
+        "id": "DE-CN-054",
+        "total": 100,
+        "content": 100,
+        "format": 100,
+        "weight": 2,
+        "environmentError": 0,
+        "evidence": [
+          "All 6 fields correct"
+        ]
+      },
+      {
+        "id": "DE-CN-055",
+        "total": 100,
+        "content": 100,
+        "format": 100,
+        "weight": 2.5,
+        "environmentError": 0,
+        "evidence": [
+          "All 8 fields correct"
+        ]
+      },
+      {
+        "id": "DE-CN-056",
+        "total": 92,
+        "content": 80,
+        "format": 100,
+        "weight": 2.5,
+        "environmentError": 0,
+        "evidence": [
+          "Field accuracy: 4/5"
+        ]
+      }
+    ],
+    "scope": "Read-only axis decomposition; missing content after parse failure counts zero only for delivery, not a verified false answer; not a v4 rescore",
+    "historicalWrites": false
+  },
+  "validation": {
+    "unitTestFilesPassed": 135,
+    "testsPassed": 1511,
+    "testsSkipped": 213,
+    "testsFailed": 0,
+    "newModuleTests": 12,
+    "coreBuild": "passed",
+    "coreTypeCheck": "passed"
+  }
+}

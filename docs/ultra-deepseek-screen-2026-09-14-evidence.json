@@ -1,0 +1,300 @@
+{
+  "model": "deepseek-v4-flash",
+  "contractHash": "6c481c8eea5b83d7a45d8001f10b4d368d4c312f3fad4501146d95927bcdc2b5",
+  "calls": 8,
+  "retries": 0,
+  "runPath": "J:\\AI\\zxbench-webui\\reports\\ultra-deepseek-screen-20260914",
+  "proofReview": "assistant_preliminary_review",
+  "independentProofReview": false,
+  "sourceHashesVerified": true,
+  "promptIsolationVerified": true,
+  "productionEligible": false,
+  "groups": {
+    "UMX-01": {
+      "conclusionScore": 20,
+      "conclusionMax": 40,
+      "proofScore": 18,
+      "proofMax": 60,
+      "score": 38
+    },
+    "UMX-02": {
+      "conclusionScore": 14,
+      "conclusionMax": 43,
+      "proofScore": 25,
+      "proofMax": 57,
+      "score": 39
+    }
+  },
+  "normalizedScore": 38.5,
+  "latencyMsTotal": 2315186,
+  "questions": [
+    {
+      "id": "UMX-01-P1",
+      "groupId": "UMX-01",
+      "points": 10,
+      "hardSeconds": 360,
+      "maxTokens": 393216,
+      "outcome": "completed",
+      "finishReason": "stop",
+      "latencyMs": 9433,
+      "usage": {
+        "prompt_tokens": 464,
+        "completion_tokens": 2201,
+        "total_tokens": 2665,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 1560
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 464
+      },
+      "answerCharacters": 1244,
+      "review": {
+        "conclusionScore": 6,
+        "conclusionMax": 6,
+        "proofScore": 4,
+        "proofMax": 4,
+        "answerSha256": "2a51d452ffcf680e4b97d61b1a0a88476d66d541fbcc774573d009f01bdd52f0",
+        "notes": "两个计数均正确，Hom(V/S,S) 双射与有序基除重证明完整。"
+      },
+      "rawPath": "J:\\AI\\zxbench-webui\\reports\\ultra-deepseek-screen-20260914\\UMX-01-P1\\raw.json",
+      "rawSha256": "c0b641cc70230d51d91ae24940d8204359b0bc3ec09007d1926c600a491b52d0",
+      "requestSha256": "746c2ed3e2be3c482f98559ea650b670af29740929909e8c6b1647ef99c2163d"
+    },
+    {
+      "id": "UMX-01-P2",
+      "groupId": "UMX-01",
+      "points": 20,
+      "hardSeconds": 360,
+      "maxTokens": 393216,
+      "outcome": "timeout",
+      "finishReason": "unknown",
+      "latencyMs": 360000,
+      "usage": null,
+      "answerCharacters": 0,
+      "review": {
+        "conclusionScore": 0,
+        "conclusionMax": 6,
+        "proofScore": 0,
+        "proofMax": 14,
+        "answerSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "notes": "360 秒超时，最终提交为空。"
+      },
+      "rawPath": "J:\\AI\\zxbench-webui\\reports\\ultra-deepseek-screen-20260914\\UMX-01-P2\\raw.json",
+      "rawSha256": "ab0dd2ecccc8e0f70ae6b2faba4ee156eb365ad11f0d6e9d26f8e88479df6dd5",
+      "requestSha256": "08f138878c6eb3d570ef924d3b6d55918810abf7c2b8be362f5c4c23dc41dfe2"
+    },
+    {
+      "id": "UMX-01-P3",
+      "groupId": "UMX-01",
+      "points": 30,
+      "hardSeconds": 1200,
+      "maxTokens": 393216,
+      "outcome": "completed",
+      "finishReason": "stop",
+      "latencyMs": 504547,
+      "usage": {
+        "prompt_tokens": 1975,
+        "completion_tokens": 112924,
+        "total_tokens": 114899,
+        "prompt_tokens_details": {
+          "cached_tokens": 1408
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 111226
+        },
+        "prompt_cache_hit_tokens": 1408,
+        "prompt_cache_miss_tokens": 567
+      },
+      "answerCharacters": 3297,
+      "review": {
+        "conclusionScore": 2,
+        "conclusionMax": 12,
+        "proofScore": 6,
+        "proofMax": 18,
+        "answerSha256": "7ffda4270542a5b39ac73844725f0c3a902267e2cbabda14eaab419f6743def8",
+        "notes": "总数 3346660800 与 85 类错误，正确值为 3622268160 与 92 类；中心化子阶 512 正确，但分布中的类数错误。块中心化子结构与自由 2^9 上右块论证成立；声称有效常秩子空间只有两个左右轨道是错误的，分类不完备。"
+      },
+      "rawPath": "J:\\AI\\zxbench-webui\\reports\\ultra-deepseek-screen-20260914\\UMX-01-P3\\raw.json",
+      "rawSha256": "4ac2ab332b5b210794b261ac8b62787c05f06e154c5633a1dd0cbc083137e323",
+      "requestSha256": "b9165a861118bfc33ea38063281e91eabb6bae1da33c4cac54776251302a796b"
+    },
+    {
+      "id": "UMX-01-P4",
+      "groupId": "UMX-01",
+      "points": 40,
+      "hardSeconds": 1200,
+      "maxTokens": 393216,
+      "outcome": "completed",
+      "finishReason": "stop",
+      "latencyMs": 510421,
+      "usage": {
+        "prompt_tokens": 4223,
+        "completion_tokens": 133715,
+        "total_tokens": 137938,
+        "prompt_tokens_details": {
+          "cached_tokens": 1920
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 131918
+        },
+        "prompt_cache_hit_tokens": 1920,
+        "prompt_cache_miss_tokens": 2303
+      },
+      "answerCharacters": 3485,
+      "review": {
+        "conclusionScore": 12,
+        "conclusionMax": 16,
+        "proofScore": 8,
+        "proofMax": 24,
+        "answerSha256": "6cbbac81730b0049788a8dc9385324ab6cf6fca3928ea146494de303efed8adc",
+        "notes": "两种秩分布及稳定总数 39372480 正确；(0,13,8) 应为 91 类、3582895680 个，而非 84 类、3307288320 个。对两个代表的扩域计算有价值，但不足以覆盖遗漏的左右轨道，也没有给出完整排除遗漏证明。"
+      },
+      "rawPath": "J:\\AI\\zxbench-webui\\reports\\ultra-deepseek-screen-20260914\\UMX-01-P4\\raw.json",
+      "rawSha256": "d24522b86ba0c54276a086973d4c4755bfda32453dcf4d56e98b33ce92d8ddd8",
+      "requestSha256": "e9093bbe11d6bec3e61c3cdc8f0c4a60fa94de72e9386bfd651e1e1f3fb1aeb3"
+    },
+    {
+      "id": "UMX-02-P1",
+      "groupId": "UMX-02",
+      "points": 10,
+      "hardSeconds": 360,
+      "maxTokens": 393216,
+      "outcome": "completed",
+      "finishReason": "stop",
+      "latencyMs": 125506,
+      "usage": {
+        "prompt_tokens": 502,
+        "completion_tokens": 31200,
+        "total_tokens": 31702,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 29910
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 502
+      },
+      "answerCharacters": 2505,
+      "review": {
+        "conclusionScore": 3,
+        "conclusionMax": 3,
+        "proofScore": 7,
+        "proofMax": 7,
+        "answerSha256": "1aa96661b86d0f5798f8482e1a6818e6883d49c37ad26381c40c852188ffd854",
+        "notes": "2^20 正确；单位二阶子式与行列式为零的判据、七个独立约束及计数成立。"
+      },
+      "rawPath": "J:\\AI\\zxbench-webui\\reports\\ultra-deepseek-screen-20260914\\UMX-02-P1\\raw.json",
+      "rawSha256": "74f93cbd4161e0eff0da0c75b88a5cf007e12dd8344b5c3d532c74d517d145e5",
+      "requestSha256": "2b74582cb8fd162163878d7b9e0fa93f9065fe4c5c820e4bf35e1ce967e87580"
+    },
+    {
+      "id": "UMX-02-P2",
+      "groupId": "UMX-02",
+      "points": 20,
+      "hardSeconds": 360,
+      "maxTokens": 393216,
+      "outcome": "completed",
+      "finishReason": "stop",
+      "latencyMs": 121256,
+      "usage": {
+        "prompt_tokens": 2292,
+        "completion_tokens": 30979,
+        "total_tokens": 33271,
+        "prompt_tokens_details": {
+          "cached_tokens": 384
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 29450
+        },
+        "prompt_cache_hit_tokens": 384,
+        "prompt_cache_miss_tokens": 1908
+      },
+      "answerCharacters": 2761,
+      "review": {
+        "conclusionScore": 6,
+        "conclusionMax": 6,
+        "proofScore": 14,
+        "proofMax": 14,
+        "answerSha256": "4b927ea1bf9791a61bcb10720c1997b2b9b435913d7c12ecd7e7ffceca606d93",
+        "notes": "8 类、每类 2^17 正确；作用像、核及完备不变量证明成立。第三不变量与参考形式不同，但由解空间第六个约束等价。"
+      },
+      "rawPath": "J:\\AI\\zxbench-webui\\reports\\ultra-deepseek-screen-20260914\\UMX-02-P2\\raw.json",
+      "rawSha256": "4ea248680a69d4a6ed29f6581f5ffe3c71a3791b866eab8753433dd1aa4ea8b4",
+      "requestSha256": "d2a03698683941613a611cd793925f8ddbe4897a8dfffb589cff972b7c7f9794"
+    },
+    {
+      "id": "UMX-02-P3",
+      "groupId": "UMX-02",
+      "points": 30,
+      "hardSeconds": 1200,
+      "maxTokens": 393216,
+      "outcome": "completed",
+      "finishReason": "stop",
+      "latencyMs": 198428,
+      "usage": {
+        "prompt_tokens": 4345,
+        "completion_tokens": 50944,
+        "total_tokens": 55289,
+        "prompt_tokens_details": {
+          "cached_tokens": 2176
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 49291
+        },
+        "prompt_cache_hit_tokens": 2176,
+        "prompt_cache_miss_tokens": 2169
+      },
+      "answerCharacters": 3099,
+      "review": {
+        "conclusionScore": 4,
+        "conclusionMax": 18,
+        "proofScore": 4,
+        "proofMax": 12,
+        "answerSha256": "dd9ba467b8dc3a3327fa10e32dfedf32ba8a8bc50bd1c3e6479d3aeb4ec02bcf",
+        "notes": "可提升条件和可提升解数错误：正确条件为形式行列式模 4 恒零，共 2^17 个；答卷错误缩成三个 B_i 均零对角对称并计为 2^9。每个可提升解有 2^20 个提升正确，相关七个独立线性条件计数可给部分证明分。"
+      },
+      "rawPath": "J:\\AI\\zxbench-webui\\reports\\ultra-deepseek-screen-20260914\\UMX-02-P3\\raw.json",
+      "rawSha256": "c64c2f022a78ba94bd65ce94a442f3ee932d8b1d4fbec542cb43a9f883231689",
+      "requestSha256": "a79e8a7b4f45b1c2e5220bdf80b6cb509a83e30f6eb060bb36b8680484c66143"
+    },
+    {
+      "id": "UMX-02-P4",
+      "groupId": "UMX-02",
+      "points": 40,
+      "hardSeconds": 1200,
+      "maxTokens": 393216,
+      "outcome": "completed",
+      "finishReason": "stop",
+      "latencyMs": 485595,
+      "usage": {
+        "prompt_tokens": 6573,
+        "completion_tokens": 127219,
+        "total_tokens": 133792,
+        "prompt_tokens_details": {
+          "cached_tokens": 4224
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 125420
+        },
+        "prompt_cache_hit_tokens": 4224,
+        "prompt_cache_miss_tokens": 2349
+      },
+      "answerCharacters": 3291,
+      "review": {
+        "conclusionScore": 1,
+        "conclusionMax": 16,
+        "proofScore": 0,
+        "proofMax": 24,
+        "answerSha256": "f31014d6bb3b17973b05a01cb9c4765a85938fc6d4bb4b56f24fd93b9fb0518f",
+        "notes": "一般总数、类数、类大小、提升条件和无限提升条件均错误。仅重复给出每个可提升解有 2^20 个下一层提升这一正确子结论。证明内部先算出正确轨道大小 2^[17(k-1)]，随后又无依据改成错误的 2^[6k+5]，不能作为一般证明。"
+      },
+      "rawPath": "J:\\AI\\zxbench-webui\\reports\\ultra-deepseek-screen-20260914\\UMX-02-P4\\raw.json",
+      "rawSha256": "094f23b8269c940d39db6728f3e818bb402050a1385d5c07ca25d6696c64e301",
+      "requestSha256": "34f86f0f83814f93b213d02641f2ecbac9b6814ceeef45f257fe71320a7293dc"
+    }
+  ]
+}

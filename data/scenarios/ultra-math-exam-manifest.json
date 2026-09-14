@@ -1,0 +1,67 @@
+{
+  "version": "ultra-math-exam-2026-09-14-v1",
+  "questionVersion": "ultra-math-2026-09-14-v2",
+  "contractHash": "6c481c8eea5b83d7a45d8001f10b4d368d4c312f3fad4501146d95927bcdc2b5",
+  "dimension": "reasoning_math",
+  "mode": "explicit_progressive_exam",
+  "status": "approved",
+  "defaultAtomicBank": false,
+  "groups": [
+    {
+      "id": "UMX-01",
+      "points": 100,
+      "parts": [
+        {"id": "UMX-01-P1", "points": 10, "hardSeconds": 360, "questionHash": "c4833d5f14050ddf689ad3d7f010867bff9ff81f2d9b8b7049e7beb0541067e8"},
+        {"id": "UMX-01-P2", "points": 20, "hardSeconds": 360, "questionHash": "24d49b171cefa191ca8a8a56878620ac4632415f1ca6f72c3e4c5a896bbdba62"},
+        {"id": "UMX-01-P3", "points": 30, "hardSeconds": 1200, "questionHash": "b84adadda3a0ecd8fb395490417278261de40a62835c79fb45293019d42ba155"},
+        {"id": "UMX-01-P4", "points": 40, "hardSeconds": 1200, "questionHash": "ff8f164f281a2d81fb13bf98ae0675de0f7a128164fbaa3562d2b9f8aa1c5463"}
+      ]
+    },
+    {
+      "id": "UMX-02",
+      "points": 100,
+      "parts": [
+        {"id": "UMX-02-P1", "points": 10, "hardSeconds": 360, "questionHash": "cf0e7a298a1e0ca724464875d82b88cb76fdcab6ec553678ca8b41f4115b8f20"},
+        {"id": "UMX-02-P2", "points": 20, "hardSeconds": 360, "questionHash": "56afe5edd12d87f73bbcd7856f9ad388b247b0c8f94eaac6afda0d3613cd3aa0"},
+        {"id": "UMX-02-P3", "points": 30, "hardSeconds": 1200, "questionHash": "7d8f3183429e5cabeeb07b50c3d364b7c053bf9337d66e714c4a377f3cbad1c6"},
+        {"id": "UMX-02-P4", "points": 40, "hardSeconds": 1200, "questionHash": "9667009a70e5dc352ca2fce2eb074b1e02c8c24a4a821ce4bca38da047ef47e8"}
+      ]
+    }
+  ],
+  "execution": {
+    "requestsPerModel": 8,
+    "automaticRetries": 0,
+    "tools": false,
+    "carryOnlyPriorSubmittedAnswers": true,
+    "freshContextPerGroup": true,
+    "futurePartsHidden": true,
+    "answerFeedback": false,
+    "partialCredit": true
+  },
+  "scoring": {
+    "rubricVersion": "ultra-math-rubric-2026-09-14-v1",
+    "axes": ["conclusion", "proof"],
+    "completionIsMeasured": true,
+    "completionAddsBonusPoints": false,
+    "emptySubmissionScore": 0,
+    "semanticCaps": true,
+    "officialProofScoreRequiresIndependentReview": true,
+    "provisionalReviewMayBeReported": true
+  },
+  "screening": {
+    "attemptsPerPart": 1,
+    "qwen3.8-27b-nvfp4": {"UMX-01": 10, "UMX-02": 56, "score": 33.0, "submittedParts": 4},
+    "deepseek-v4-flash": {"UMX-01": 38, "UMX-02": 39, "score": 38.5, "submittedParts": 7},
+    "observedScoreGap": 5.5,
+    "separatingParts": 4,
+    "crossoverByGroup": true,
+    "ceilingObserved": false,
+    "stablePopulationRankingClaim": false
+  },
+  "sources": {
+    "questions": "docs/ultra-math-2026-09-14-questions.md",
+    "rubricImplementation": "packages/core/src/evaluationLab/ultraMathRubric.ts",
+    "qwenEvidence": "docs/ultra-qwen-screen-2026-09-14-evidence.json",
+    "deepseekEvidence": "docs/ultra-deepseek-screen-2026-09-14-evidence.json"
+  }
+}

@@ -1,0 +1,1305 @@
+{
+  "productionEligible": false,
+  "difficultyCalibrated": false,
+  "budget": {
+    "requestedMaxOutputTokens": 90000,
+    "hardSecondsPerQuestion": 600
+  },
+  "limitations": [
+    "Two model families, one attempt per instance.",
+    "Qwen server did not return usage; actual token consumption is unknown.",
+    "The maps probe is an exploratory follow-up, not a held-out confirmation."
+  ],
+  "experiments": [
+    {
+      "name": "frontier-challenge-2026-09-14-v1",
+      "contractHash": "188c6ac03b39e9f6d3c71ef95a96396169caa365cf30c9dff4826868399866b4",
+      "frozenPackSha256": "c2e2c8f535b4e3e7b8ea8a59e4599f84c80a0353729b30479e3b50d3bc8e1cfe",
+      "codeHashesVerified": true,
+      "runs": [
+        {
+          "modelId": "deepseek-v4-flash",
+          "modelFamily": "DeepSeek",
+          "runId": "J:\\AI\\zxbench-webui\\reports\\frontier-challenge-2026-09-14-v1\\deepseek",
+          "plan": "J:\\AI\\zxbench-runtime\\reports\\frontier-challenge-2026-09-14-v1\\deepseek\\plan.json",
+          "submissionSha256": "24744b447d7aed62b9407106d2da152ea96978aad5f249e2ae339fe7602a1111",
+          "rows": [
+            {
+              "id": "FC-d8360a48303c4cef",
+              "tier": 1,
+              "dimension": "data_extraction",
+              "family": "natural_archive_transaction_reconstruction",
+              "state": "completed",
+              "measured": true,
+              "contentScore": 100,
+              "contentPass": true,
+              "diagnostics": {
+                "matched": 30,
+                "predicted": 30,
+                "required": 30,
+                "recordCountCorrect": true,
+                "wrongOrMissing": []
+              },
+              "formatCompliant": true,
+              "finishReason": "stop",
+              "latencyMs": 111134,
+              "usage": {
+                "prompt_tokens": 4320,
+                "completion_tokens": 25620,
+                "total_tokens": 29940,
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 25424
+                },
+                "prompt_cache_hit_tokens": 0,
+                "prompt_cache_miss_tokens": 4320
+              },
+              "returnedModels": [
+                "deepseek-flash"
+              ],
+              "finalContentCharacters": 528,
+              "rawPath": "J:\\AI\\zxbench-runtime\\reports\\frontier-challenge-2026-09-14-v1\\deepseek\\FC-d8360a48303c4cef\\raw.json",
+              "rawSha256": "93411134c444699fdc79d5b42c18380727356d58c31384f299a4ea40a3e9ebc9",
+              "gradeSha256": "9eed66cba59a53202815a0e5dd0a725ec48503178516ccdc13b44a15d014ad25"
+            },
+            {
+              "id": "FC-be817987ffd52a61",
+              "tier": 1,
+              "dimension": "hallucination_resistance",
+              "family": "aggregate_evidence_entailment",
+              "state": "completed",
+              "measured": true,
+              "contentScore": 100,
+              "contentPass": true,
+              "diagnostics": {
+                "statusAccuracy": 100,
+                "groundedClaimAccuracy": 100,
+                "checks": [
+                  {
+                    "id": "Q7618-0",
+                    "status": true,
+                    "trueWitness": true,
+                    "falseWitness": true,
+                    "pass": true
+                  },
+                  {
+                    "id": "Q5201-5",
+                    "status": true,
+                    "trueWitness": true,
+                    "falseWitness": true,
+                    "pass": true
+                  },
+                  {
+                    "id": "Q3630-4",
+                    "status": true,
+                    "trueWitness": true,
+                    "falseWitness": true,
+                    "pass": true
+                  },
+                  {
+                    "id": "Q7004-3",
+                    "status": true,
+                    "trueWitness": true,
+                    "falseWitness": true,
+                    "pass": true
+                  },
+                  {
+                    "id": "Q8367-1",
+                    "status": true,
+                    "trueWitness": true,
+                    "falseWitness": true,
+                    "pass": true
+                  },
+                  {
+                    "id": "Q1088-2",
+                    "status": true,
+                    "trueWitness": true,
+                    "falseWitness": true,
+                    "pass": true
+                  }
+                ]
+              },
+              "formatCompliant": true,
+              "finishReason": "stop",
+              "latencyMs": 39004,
+              "usage": {
+                "prompt_tokens": 866,
+                "completion_tokens": 9853,
+                "total_tokens": 10719,
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 9519
+                },
+                "prompt_cache_hit_tokens": 0,
+                "prompt_cache_miss_tokens": 866
+              },
+              "returnedModels": [
+                "deepseek-flash"
+              ],
+              "finalContentCharacters": 632,
+              "rawPath": "J:\\AI\\zxbench-runtime\\reports\\frontier-challenge-2026-09-14-v1\\deepseek\\FC-be817987ffd52a61\\raw.json",
+              "rawSha256": "25608593c9daf514b156e7b3a239402bc6362835fa376762d9fe17d7aa7b2165",
+              "gradeSha256": "0aa772dabcf10f4f76c00a7b3eb6a5c5c89546e5453b5f2e49db3153ebcf05f1"
+            },
+            {
+              "id": "FC-b6f8cde98cb7e776",
+              "tier": 1,
+              "dimension": "reasoning_math",
+              "family": "constrained_quadratic_global_optimum",
+              "state": "truncated",
+              "measured": false,
+              "contentScore": null,
+              "contentPass": null,
+              "diagnostics": null,
+              "formatCompliant": null,
+              "finishReason": "length",
+              "latencyMs": 344770,
+              "usage": {
+                "prompt_tokens": 695,
+                "completion_tokens": 89999,
+                "total_tokens": 90694,
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 89999
+                },
+                "prompt_cache_hit_tokens": 0,
+                "prompt_cache_miss_tokens": 695
+              },
+              "returnedModels": [
+                "deepseek-flash"
+              ],
+              "finalContentCharacters": 0,
+              "rawPath": "J:\\AI\\zxbench-runtime\\reports\\frontier-challenge-2026-09-14-v1\\deepseek\\FC-b6f8cde98cb7e776\\raw.json",
+              "rawSha256": "8fb75d329caeb26f0c17299464ab6a33b9a077233da87e5f49fd7b750a535a6e",
+              "gradeSha256": "30598dc664d403ac5cc4376e1312b2742c60bb7733709d54eea3add67c94f773"
+            },
+            {
+              "id": "FC-d44b5ba1c42e6ba6",
+              "tier": 2,
+              "dimension": "data_extraction",
+              "family": "natural_archive_transaction_reconstruction",
+              "state": "completed",
+              "measured": true,
+              "contentScore": 100,
+              "contentPass": true,
+              "diagnostics": {
+                "matched": 60,
+                "predicted": 60,
+                "required": 60,
+                "recordCountCorrect": true,
+                "wrongOrMissing": []
+              },
+              "formatCompliant": true,
+              "finishReason": "stop",
+              "latencyMs": 140243,
+              "usage": {
+                "prompt_tokens": 7968,
+                "completion_tokens": 36229,
+                "total_tokens": 44197,
+                "prompt_tokens_details": {
+                  "cached_tokens": 128
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 35839
+                },
+                "prompt_cache_hit_tokens": 128,
+                "prompt_cache_miss_tokens": 7840
+              },
+              "returnedModels": [
+                "deepseek-flash"
+              ],
+              "finalContentCharacters": 1057,
+              "rawPath": "J:\\AI\\zxbench-runtime\\reports\\frontier-challenge-2026-09-14-v1\\deepseek\\FC-d44b5ba1c42e6ba6\\raw.json",
+              "rawSha256": "7b96ca1576e02f54da23e4c57464f550cc7920e53babc3ee10aca3d2bfac945d",
+              "gradeSha256": "446df06f7146c36f7e9ad6c9dfa55b0163a69f44c6c0ed4ec441eaa2760ec27f"
+            },
+            {
+              "id": "FC-a663bc8aac7021dd",
+              "tier": 2,
+              "dimension": "hallucination_resistance",
+              "family": "aggregate_evidence_entailment",
+              "state": "completed",
+              "measured": true,
+              "contentScore": 100,
+              "contentPass": true,
+              "diagnostics": {
+                "statusAccuracy": 100,
+                "groundedClaimAccuracy": 100,
+                "checks": [
+                  {
+                    "id": "Q4886-1",
+                    "status": true,
+                    "trueWitness": true,
+                    "falseWitness": true,
+                    "pass": true
+                  },
+                  {
+                    "id": "Q7928-5",
+                    "status": true,
+                    "trueWitness": true,
+                    "falseWitness": true,
+                    "pass": true
+                  },
+                  {
+                    "id": "Q4825-3",
+                    "status": true,
+                    "trueWitness": true,
+                    "falseWitness": true,
+                    "pass": true
+                  },
+                  {
+                    "id": "Q1332-0",
+                    "status": true,
+                    "trueWitness": true,
+                    "falseWitness": true,
+                    "pass": true
+                  },
+                  {
+                    "id": "Q8065-4",
+                    "status": true,
+                    "trueWitness": true,
+                    "falseWitness": true,
+                    "pass": true
+                  },
+                  {
+                    "id": "Q6116-2",
+                    "status": true,
+                    "trueWitness": true,
+                    "falseWitness": true,
+                    "pass": true
+                  }
+                ]
+              },
+              "formatCompliant": true,
+              "finishReason": "stop",
+              "latencyMs": 46152,
+              "usage": {
+                "prompt_tokens": 909,
+                "completion_tokens": 11756,
+                "total_tokens": 12665,
+                "prompt_tokens_details": {
+                  "cached_tokens": 128
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 11358
+                },
+                "prompt_cache_hit_tokens": 128,
+                "prompt_cache_miss_tokens": 781
+              },
+              "returnedModels": [
+                "deepseek-flash"
+              ],
+              "finalContentCharacters": 696,
+              "rawPath": "J:\\AI\\zxbench-runtime\\reports\\frontier-challenge-2026-09-14-v1\\deepseek\\FC-a663bc8aac7021dd\\raw.json",
+              "rawSha256": "9a7dbe0a37d85c2f1d07e799cdcbe663e96d4db36ca8f2fcb6609d929e752b73",
+              "gradeSha256": "f3f02b031ce9f8bf9a1610a4d2b2df0554b25d38854deb0a819343a31300190f"
+            },
+            {
+              "id": "FC-d1361842b661be77",
+              "tier": 2,
+              "dimension": "reasoning_math",
+              "family": "constrained_quadratic_global_optimum",
+              "state": "truncated",
+              "measured": false,
+              "contentScore": null,
+              "contentPass": null,
+              "diagnostics": null,
+              "formatCompliant": null,
+              "finishReason": "length",
+              "latencyMs": 397063,
+              "usage": {
+                "prompt_tokens": 956,
+                "completion_tokens": 90000,
+                "total_tokens": 90956,
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 90000
+                },
+                "prompt_cache_hit_tokens": 0,
+                "prompt_cache_miss_tokens": 956
+              },
+              "returnedModels": [
+                "deepseek-flash"
+              ],
+              "finalContentCharacters": 0,
+              "rawPath": "J:\\AI\\zxbench-runtime\\reports\\frontier-challenge-2026-09-14-v1\\deepseek\\FC-d1361842b661be77\\raw.json",
+              "rawSha256": "b54b7c34c694ed095189bbf7d1e73d8542ab57215e6ee0c791b0ec8cf83e77df",
+              "gradeSha256": "a1d5909d3b3335c1dd5bb94c9aeea59523a85a25575ab51436a9ee90f00f4ce4"
+            },
+            {
+              "id": "FC-e912ac029e44f4c8",
+              "tier": 3,
+              "dimension": "data_extraction",
+              "family": "natural_archive_transaction_reconstruction",
+              "state": "completed",
+              "measured": true,
+              "contentScore": 100,
+              "contentPass": true,
+              "diagnostics": {
+                "matched": 90,
+                "predicted": 90,
+                "required": 90,
+                "recordCountCorrect": true,
+                "wrongOrMissing": []
+              },
+              "formatCompliant": true,
+              "finishReason": "stop",
+              "latencyMs": 132593,
+              "usage": {
+                "prompt_tokens": 11521,
+                "completion_tokens": 37431,
+                "total_tokens": 48952,
+                "prompt_tokens_details": {
+                  "cached_tokens": 128
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 36849
+                },
+                "prompt_cache_hit_tokens": 128,
+                "prompt_cache_miss_tokens": 11393
+              },
+              "returnedModels": [
+                "deepseek-flash"
+              ],
+              "finalContentCharacters": 1596,
+              "rawPath": "J:\\AI\\zxbench-runtime\\reports\\frontier-challenge-2026-09-14-v1\\deepseek\\FC-e912ac029e44f4c8\\raw.json",
+              "rawSha256": "3ad6ea93d8c17f9626baf4dc66fa742e3c9be526e0dc8f57484f25dd8610bcd5",
+              "gradeSha256": "cf8018d4a5851195e82671b815bcb5a44111f5e68bd8000bb31283c3532acded"
+            },
+            {
+              "id": "FC-74116c2f45e61094",
+              "tier": 3,
+              "dimension": "hallucination_resistance",
+              "family": "aggregate_evidence_entailment",
+              "state": "completed",
+              "measured": true,
+              "contentScore": 100,
+              "contentPass": true,
+              "diagnostics": {
+                "statusAccuracy": 100,
+                "groundedClaimAccuracy": 100,
+                "checks": [
+                  {
+                    "id": "Q4366-4",
+                    "status": true,
+                    "trueWitness": true,
+                    "falseWitness": true,
+                    "pass": true
+                  },
+                  {
+                    "id": "Q6042-5",
+                    "status": true,
+                    "trueWitness": true,
+                    "falseWitness": true,
+                    "pass": true
+                  },
+                  {
+                    "id": "Q2329-1",
+                    "status": true,
+                    "trueWitness": true,
+                    "falseWitness": true,
+                    "pass": true
+                  },
+                  {
+                    "id": "Q6082-0",
+                    "status": true,
+                    "trueWitness": true,
+                    "falseWitness": true,
+                    "pass": true
+                  },
+                  {
+                    "id": "Q4006-3",
+                    "status": true,
+                    "trueWitness": true,
+                    "falseWitness": true,
+                    "pass": true
+                  },
+                  {
+                    "id": "Q2244-2",
+                    "status": true,
+                    "trueWitness": true,
+                    "falseWitness": true,
+                    "pass": true
+                  }
+                ]
+              },
+              "formatCompliant": true,
+              "finishReason": "stop",
+              "latencyMs": 20278,
+              "usage": {
+                "prompt_tokens": 830,
+                "completion_tokens": 5129,
+                "total_tokens": 5959,
+                "prompt_tokens_details": {
+                  "cached_tokens": 128
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 4667
+                },
+                "prompt_cache_hit_tokens": 128,
+                "prompt_cache_miss_tokens": 702
+              },
+              "returnedModels": [
+                "deepseek-flash"
+              ],
+              "finalContentCharacters": 760,
+              "rawPath": "J:\\AI\\zxbench-runtime\\reports\\frontier-challenge-2026-09-14-v1\\deepseek\\FC-74116c2f45e61094\\raw.json",
+              "rawSha256": "a3605eb1ae56c93bdcdb3a751aca224e77eb98462f4408396ce9ba4a084869f4",
+              "gradeSha256": "c2ac0694a3187a73bd757ec81a65db8bef34da069141b0c64d3c34a7cf920c22"
+            },
+            {
+              "id": "FC-c8a260361cbae480",
+              "tier": 3,
+              "dimension": "reasoning_math",
+              "family": "constrained_quadratic_global_optimum",
+              "state": "truncated",
+              "measured": false,
+              "contentScore": null,
+              "contentPass": null,
+              "diagnostics": null,
+              "formatCompliant": null,
+              "finishReason": "length",
+              "latencyMs": 229836,
+              "usage": {
+                "prompt_tokens": 1264,
+                "completion_tokens": 90000,
+                "total_tokens": 91264,
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 90000
+                },
+                "prompt_cache_hit_tokens": 0,
+                "prompt_cache_miss_tokens": 1264
+              },
+              "returnedModels": [
+                "deepseek-flash"
+              ],
+              "finalContentCharacters": 0,
+              "rawPath": "J:\\AI\\zxbench-runtime\\reports\\frontier-challenge-2026-09-14-v1\\deepseek\\FC-c8a260361cbae480\\raw.json",
+              "rawSha256": "bb65f99437dec398b2184086500c70fbbdb95601deeb281fb135c146bcaa62dc",
+              "gradeSha256": "ee18c4eea72a1912bc8655be03883cfaad1bfabba0d0e7a34c0a0030a45ab3ed"
+            }
+          ]
+        },
+        {
+          "modelId": "qwen3.8-27b-nvfp4",
+          "modelFamily": "Qwen3.8",
+          "runId": "J:\\AI\\zxbench-webui\\reports\\frontier-challenge-2026-09-14-v1\\qwen",
+          "plan": "J:\\AI\\zxbench-runtime\\reports\\frontier-challenge-2026-09-14-v1\\qwen\\plan.json",
+          "submissionSha256": "73cddd5ac27148c5fc99353ccbd2617264740450db53138ee5419a7648e1704f",
+          "rows": [
+            {
+              "id": "FC-d8360a48303c4cef",
+              "tier": 1,
+              "dimension": "data_extraction",
+              "family": "natural_archive_transaction_reconstruction",
+              "state": "completed",
+              "measured": true,
+              "contentScore": 100,
+              "contentPass": true,
+              "diagnostics": {
+                "matched": 30,
+                "predicted": 30,
+                "required": 30,
+                "recordCountCorrect": true,
+                "wrongOrMissing": []
+              },
+              "formatCompliant": true,
+              "finishReason": "stop",
+              "latencyMs": 181456,
+              "usage": null,
+              "returnedModels": [
+                "qwen3.8-27b-nvfp4"
+              ],
+              "finalContentCharacters": 836,
+              "rawPath": "J:\\AI\\zxbench-runtime\\reports\\frontier-challenge-2026-09-14-v1\\qwen\\FC-d8360a48303c4cef\\raw.json",
+              "rawSha256": "48f670b45e1f9d12d639267d890e054df50cb53ba5d13af4b60f0e0d1209df8a",
+              "gradeSha256": "9eed66cba59a53202815a0e5dd0a725ec48503178516ccdc13b44a15d014ad25"
+            },
+            {
+              "id": "FC-be817987ffd52a61",
+              "tier": 1,
+              "dimension": "hallucination_resistance",
+              "family": "aggregate_evidence_entailment",
+              "state": "completed",
+              "measured": true,
+              "contentScore": 100,
+              "contentPass": true,
+              "diagnostics": {
+                "statusAccuracy": 100,
+                "groundedClaimAccuracy": 100,
+                "checks": [
+                  {
+                    "id": "Q7618-0",
+                    "status": true,
+                    "trueWitness": true,
+                    "falseWitness": true,
+                    "pass": true
+                  },
+                  {
+                    "id": "Q5201-5",
+                    "status": true,
+                    "trueWitness": true,
+                    "falseWitness": true,
+                    "pass": true
+                  },
+                  {
+                    "id": "Q3630-4",
+                    "status": true,
+                    "trueWitness": true,
+                    "falseWitness": true,
+                    "pass": true
+                  },
+                  {
+                    "id": "Q7004-3",
+                    "status": true,
+                    "trueWitness": true,
+                    "falseWitness": true,
+                    "pass": true
+                  },
+                  {
+                    "id": "Q8367-1",
+                    "status": true,
+                    "trueWitness": true,
+                    "falseWitness": true,
+                    "pass": true
+                  },
+                  {
+                    "id": "Q1088-2",
+                    "status": true,
+                    "trueWitness": true,
+                    "falseWitness": true,
+                    "pass": true
+                  }
+                ]
+              },
+              "formatCompliant": true,
+              "finishReason": "stop",
+              "latencyMs": 82324,
+              "usage": null,
+              "returnedModels": [
+                "qwen3.8-27b-nvfp4"
+              ],
+              "finalContentCharacters": 992,
+              "rawPath": "J:\\AI\\zxbench-runtime\\reports\\frontier-challenge-2026-09-14-v1\\qwen\\FC-be817987ffd52a61\\raw.json",
+              "rawSha256": "1e5fd525e339f21c9adae858ffbd822c5497ca1d8e44f530b3459311ab56ff29",
+              "gradeSha256": "0aa772dabcf10f4f76c00a7b3eb6a5c5c89546e5453b5f2e49db3153ebcf05f1"
+            },
+            {
+              "id": "FC-b6f8cde98cb7e776",
+              "tier": 1,
+              "dimension": "reasoning_math",
+              "family": "constrained_quadratic_global_optimum",
+              "state": "truncated",
+              "measured": false,
+              "contentScore": null,
+              "contentPass": null,
+              "diagnostics": null,
+              "formatCompliant": null,
+              "finishReason": "length",
+              "latencyMs": 471251,
+              "usage": null,
+              "returnedModels": [
+                "qwen3.8-27b-nvfp4"
+              ],
+              "finalContentCharacters": 0,
+              "rawPath": "J:\\AI\\zxbench-runtime\\reports\\frontier-challenge-2026-09-14-v1\\qwen\\FC-b6f8cde98cb7e776\\raw.json",
+              "rawSha256": "d5af8173880358e16b003e848efb5495d9d50ce0f9556d081455063cb4888053",
+              "gradeSha256": "30598dc664d403ac5cc4376e1312b2742c60bb7733709d54eea3add67c94f773"
+            },
+            {
+              "id": "FC-d44b5ba1c42e6ba6",
+              "tier": 2,
+              "dimension": "data_extraction",
+              "family": "natural_archive_transaction_reconstruction",
+              "state": "completed",
+              "measured": true,
+              "contentScore": 100,
+              "contentPass": true,
+              "diagnostics": {
+                "matched": 60,
+                "predicted": 60,
+                "required": 60,
+                "recordCountCorrect": true,
+                "wrongOrMissing": []
+              },
+              "formatCompliant": true,
+              "finishReason": "stop",
+              "latencyMs": 262931,
+              "usage": null,
+              "returnedModels": [
+                "qwen3.8-27b-nvfp4"
+              ],
+              "finalContentCharacters": 1245,
+              "rawPath": "J:\\AI\\zxbench-runtime\\reports\\frontier-challenge-2026-09-14-v1\\qwen\\FC-d44b5ba1c42e6ba6\\raw.json",
+              "rawSha256": "4da2380c8b5f351c35046fd9570491eee0924c308620be6b209be0256f400f9e",
+              "gradeSha256": "446df06f7146c36f7e9ad6c9dfa55b0163a69f44c6c0ed4ec441eaa2760ec27f"
+            },
+            {
+              "id": "FC-a663bc8aac7021dd",
+              "tier": 2,
+              "dimension": "hallucination_resistance",
+              "family": "aggregate_evidence_entailment",
+              "state": "completed",
+              "measured": true,
+              "contentScore": 100,
+              "contentPass": true,
+              "diagnostics": {
+                "statusAccuracy": 100,
+                "groundedClaimAccuracy": 100,
+                "checks": [
+                  {
+                    "id": "Q4886-1",
+                    "status": true,
+                    "trueWitness": true,
+                    "falseWitness": true,
+                    "pass": true
+                  },
+                  {
+                    "id": "Q7928-5",
+                    "status": true,
+                    "trueWitness": true,
+                    "falseWitness": true,
+                    "pass": true
+                  },
+                  {
+                    "id": "Q4825-3",
+                    "status": true,
+                    "trueWitness": true,
+                    "falseWitness": true,
+                    "pass": true
+                  },
+                  {
+                    "id": "Q1332-0",
+                    "status": true,
+                    "trueWitness": true,
+                    "falseWitness": true,
+                    "pass": true
+                  },
+                  {
+                    "id": "Q8065-4",
+                    "status": true,
+                    "trueWitness": true,
+                    "falseWitness": true,
+                    "pass": true
+                  },
+                  {
+                    "id": "Q6116-2",
+                    "status": true,
+                    "trueWitness": true,
+                    "falseWitness": true,
+                    "pass": true
+                  }
+                ]
+              },
+              "formatCompliant": true,
+              "finishReason": "stop",
+              "latencyMs": 51009,
+              "usage": null,
+              "returnedModels": [
+                "qwen3.8-27b-nvfp4"
+              ],
+              "finalContentCharacters": 1076,
+              "rawPath": "J:\\AI\\zxbench-runtime\\reports\\frontier-challenge-2026-09-14-v1\\qwen\\FC-a663bc8aac7021dd\\raw.json",
+              "rawSha256": "7841eb7e8e351a51c97aa5ae386e2e323d589951a38fdb5655c435dc1f5b027d",
+              "gradeSha256": "f3f02b031ce9f8bf9a1610a4d2b2df0554b25d38854deb0a819343a31300190f"
+            },
+            {
+              "id": "FC-d1361842b661be77",
+              "tier": 2,
+              "dimension": "reasoning_math",
+              "family": "constrained_quadratic_global_optimum",
+              "state": "truncated",
+              "measured": false,
+              "contentScore": null,
+              "contentPass": null,
+              "diagnostics": null,
+              "formatCompliant": null,
+              "finishReason": "length",
+              "latencyMs": 577181,
+              "usage": null,
+              "returnedModels": [
+                "qwen3.8-27b-nvfp4"
+              ],
+              "finalContentCharacters": 0,
+              "rawPath": "J:\\AI\\zxbench-runtime\\reports\\frontier-challenge-2026-09-14-v1\\qwen\\FC-d1361842b661be77\\raw.json",
+              "rawSha256": "d65556db96db732eed287d314c5958026dff507b134aa4acbb2c1fcbbb6fac03",
+              "gradeSha256": "a1d5909d3b3335c1dd5bb94c9aeea59523a85a25575ab51436a9ee90f00f4ce4"
+            },
+            {
+              "id": "FC-e912ac029e44f4c8",
+              "tier": 3,
+              "dimension": "data_extraction",
+              "family": "natural_archive_transaction_reconstruction",
+              "state": "completed",
+              "measured": true,
+              "contentScore": 100,
+              "contentPass": true,
+              "diagnostics": {
+                "matched": 90,
+                "predicted": 90,
+                "required": 90,
+                "recordCountCorrect": true,
+                "wrongOrMissing": []
+              },
+              "formatCompliant": true,
+              "finishReason": "stop",
+              "latencyMs": 306699,
+              "usage": null,
+              "returnedModels": [
+                "qwen3.8-27b-nvfp4"
+              ],
+              "finalContentCharacters": 1856,
+              "rawPath": "J:\\AI\\zxbench-runtime\\reports\\frontier-challenge-2026-09-14-v1\\qwen\\FC-e912ac029e44f4c8\\raw.json",
+              "rawSha256": "d13d42af47db19d8ec73783d25f78797f8c1b9a36125aa37d077b7f76c3241cb",
+              "gradeSha256": "cf8018d4a5851195e82671b815bcb5a44111f5e68bd8000bb31283c3532acded"
+            },
+            {
+              "id": "FC-74116c2f45e61094",
+              "tier": 3,
+              "dimension": "hallucination_resistance",
+              "family": "aggregate_evidence_entailment",
+              "state": "completed",
+              "measured": true,
+              "contentScore": 100,
+              "contentPass": true,
+              "diagnostics": {
+                "statusAccuracy": 100,
+                "groundedClaimAccuracy": 100,
+                "checks": [
+                  {
+                    "id": "Q4366-4",
+                    "status": true,
+                    "trueWitness": true,
+                    "falseWitness": true,
+                    "pass": true
+                  },
+                  {
+                    "id": "Q6042-5",
+                    "status": true,
+                    "trueWitness": true,
+                    "falseWitness": true,
+                    "pass": true
+                  },
+                  {
+                    "id": "Q2329-1",
+                    "status": true,
+                    "trueWitness": true,
+                    "falseWitness": true,
+                    "pass": true
+                  },
+                  {
+                    "id": "Q6082-0",
+                    "status": true,
+                    "trueWitness": true,
+                    "falseWitness": true,
+                    "pass": true
+                  },
+                  {
+                    "id": "Q4006-3",
+                    "status": true,
+                    "trueWitness": true,
+                    "falseWitness": true,
+                    "pass": true
+                  },
+                  {
+                    "id": "Q2244-2",
+                    "status": true,
+                    "trueWitness": true,
+                    "falseWitness": true,
+                    "pass": true
+                  }
+                ]
+              },
+              "formatCompliant": true,
+              "finishReason": "stop",
+              "latencyMs": 32982,
+              "usage": null,
+              "returnedModels": [
+                "qwen3.8-27b-nvfp4"
+              ],
+              "finalContentCharacters": 1172,
+              "rawPath": "J:\\AI\\zxbench-runtime\\reports\\frontier-challenge-2026-09-14-v1\\qwen\\FC-74116c2f45e61094\\raw.json",
+              "rawSha256": "e42cff41b41aae88131601cf605babef57492a67620b08087a8ed03a7b1f10d4",
+              "gradeSha256": "c2ac0694a3187a73bd757ec81a65db8bef34da069141b0c64d3c34a7cf920c22"
+            },
+            {
+              "id": "FC-c8a260361cbae480",
+              "tier": 3,
+              "dimension": "reasoning_math",
+              "family": "constrained_quadratic_global_optimum",
+              "state": "truncated",
+              "measured": false,
+              "contentScore": null,
+              "contentPass": null,
+              "diagnostics": null,
+              "formatCompliant": null,
+              "finishReason": "length",
+              "latencyMs": 574667,
+              "usage": null,
+              "returnedModels": [
+                "qwen3.8-27b-nvfp4"
+              ],
+              "finalContentCharacters": 0,
+              "rawPath": "J:\\AI\\zxbench-runtime\\reports\\frontier-challenge-2026-09-14-v1\\qwen\\FC-c8a260361cbae480\\raw.json",
+              "rawSha256": "306e4e58b7d820c40f6cbb6f094262cce4631d9a9a0f39d1966e053520ea2db6",
+              "gradeSha256": "ee18c4eea72a1912bc8655be03883cfaad1bfabba0d0e7a34c0a0030a45ab3ed"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "annihilating-maps-2026-09-14-v1",
+      "contractHash": "e929735b63056257d5bacb2c55d8a77905fc1d886c682c3aef77cd474883381f",
+      "frozenPackSha256": "3c1feafa23737d79259d0ced81f681501b3cc731f8eb89a1602729d844bebc9f",
+      "codeHashesVerified": true,
+      "runs": [
+        {
+          "modelId": "deepseek-v4-flash",
+          "modelFamily": "DeepSeek",
+          "runId": "J:\\AI\\zxbench-webui\\reports\\annihilating-maps-2026-09-14-v1\\deepseek",
+          "plan": "J:\\AI\\zxbench-runtime\\reports\\annihilating-maps-2026-09-14-v1\\deepseek\\plan.json",
+          "submissionSha256": "9ebf62ed3addaba6c2b78ddf362c23a786098ec1eaff5e64184206a5c0b989b8",
+          "rows": [
+            {
+              "id": "AM-e01692cea914bda0",
+              "tier": null,
+              "dimension": "reasoning_math",
+              "family": "annihilating_maps",
+              "state": "completed",
+              "measured": true,
+              "contentScore": 100,
+              "contentPass": true,
+              "diagnostics": null,
+              "formatCompliant": true,
+              "finishReason": "stop",
+              "latencyMs": 54069,
+              "usage": {
+                "prompt_tokens": 210,
+                "completion_tokens": 12140,
+                "total_tokens": 12350,
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 12127
+                },
+                "prompt_cache_hit_tokens": 0,
+                "prompt_cache_miss_tokens": 210
+              },
+              "returnedModels": [
+                "deepseek-flash"
+              ],
+              "finalContentCharacters": 36,
+              "rawPath": "J:\\AI\\zxbench-runtime\\reports\\annihilating-maps-2026-09-14-v1\\deepseek\\AM-e01692cea914bda0\\raw.json",
+              "rawSha256": "aa43dbfd9e2ffb1813a5099b8da76dd3d4bf2502fb0d826e9a809d3183c0f8c8",
+              "gradeSha256": "13819cf00f358afebd2d97b8a5ceacc40590563eff592ae6595ed99937311bba"
+            },
+            {
+              "id": "AM-0c972c75d4f9972c",
+              "tier": null,
+              "dimension": "reasoning_math",
+              "family": "annihilating_maps",
+              "state": "completed",
+              "measured": true,
+              "contentScore": 100,
+              "contentPass": true,
+              "diagnostics": null,
+              "formatCompliant": true,
+              "finishReason": "stop",
+              "latencyMs": 33339,
+              "usage": {
+                "prompt_tokens": 202,
+                "completion_tokens": 7279,
+                "total_tokens": 7481,
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 7266
+                },
+                "prompt_cache_hit_tokens": 0,
+                "prompt_cache_miss_tokens": 202
+              },
+              "returnedModels": [
+                "deepseek-flash"
+              ],
+              "finalContentCharacters": 35,
+              "rawPath": "J:\\AI\\zxbench-runtime\\reports\\annihilating-maps-2026-09-14-v1\\deepseek\\AM-0c972c75d4f9972c\\raw.json",
+              "rawSha256": "70fbef802120d22c607041b8522f5251125105ba27c3a25d35fb2133e6511b90",
+              "gradeSha256": "21d08b5e1376d11fa6c36b2f3256b1e5e9e0c0e2784dcf173ce8084b22e5697f"
+            },
+            {
+              "id": "AM-1f7cb7db78a65246",
+              "tier": null,
+              "dimension": "reasoning_math",
+              "family": "annihilating_maps",
+              "state": "completed",
+              "measured": true,
+              "contentScore": 100,
+              "contentPass": true,
+              "diagnostics": null,
+              "formatCompliant": true,
+              "finishReason": "stop",
+              "latencyMs": 100029,
+              "usage": {
+                "prompt_tokens": 218,
+                "completion_tokens": 21110,
+                "total_tokens": 21328,
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 21097
+                },
+                "prompt_cache_hit_tokens": 0,
+                "prompt_cache_miss_tokens": 218
+              },
+              "returnedModels": [
+                "deepseek-flash"
+              ],
+              "finalContentCharacters": 35,
+              "rawPath": "J:\\AI\\zxbench-runtime\\reports\\annihilating-maps-2026-09-14-v1\\deepseek\\AM-1f7cb7db78a65246\\raw.json",
+              "rawSha256": "f98ee856b7db9073477a2f3a98bc0a6efa2456d60d99efcc4c312ec0d01434e6",
+              "gradeSha256": "f3f5dc3fdf33b56ba6eb7893da655df1911ce08c36089c744b4a3627bca7c065"
+            }
+          ]
+        },
+        {
+          "modelId": "qwen3.8-27b-nvfp4",
+          "modelFamily": "Qwen3.8",
+          "runId": "J:\\AI\\zxbench-webui\\reports\\annihilating-maps-2026-09-14-v1\\qwen",
+          "plan": "J:\\AI\\zxbench-runtime\\reports\\annihilating-maps-2026-09-14-v1\\qwen\\plan.json",
+          "submissionSha256": "cc86ff8123c0563c2f0b53f4f1bbe1bf0c090b5c8bb9317c91d777eaefd2d7c4",
+          "rows": [
+            {
+              "id": "AM-e01692cea914bda0",
+              "tier": null,
+              "dimension": "reasoning_math",
+              "family": "annihilating_maps",
+              "state": "completed",
+              "measured": true,
+              "contentScore": 0,
+              "contentPass": false,
+              "diagnostics": null,
+              "formatCompliant": true,
+              "finishReason": "stop",
+              "latencyMs": 34725,
+              "usage": null,
+              "returnedModels": [
+                "qwen3.8-27b-nvfp4"
+              ],
+              "finalContentCharacters": 35,
+              "rawPath": "J:\\AI\\zxbench-runtime\\reports\\annihilating-maps-2026-09-14-v1\\qwen\\AM-e01692cea914bda0\\raw.json",
+              "rawSha256": "6d1a61358b3f87a3aee4626918cdf56c0a24c4142bfd133667b2558cb7c2210a",
+              "gradeSha256": "58206b9a4a7d4ec56a08b23b0a929a9a3cc6942336de191417936bb730057360"
+            },
+            {
+              "id": "AM-0c972c75d4f9972c",
+              "tier": null,
+              "dimension": "reasoning_math",
+              "family": "annihilating_maps",
+              "state": "completed",
+              "measured": true,
+              "contentScore": 100,
+              "contentPass": true,
+              "diagnostics": null,
+              "formatCompliant": true,
+              "finishReason": "stop",
+              "latencyMs": 41373,
+              "usage": null,
+              "returnedModels": [
+                "qwen3.8-27b-nvfp4"
+              ],
+              "finalContentCharacters": 36,
+              "rawPath": "J:\\AI\\zxbench-runtime\\reports\\annihilating-maps-2026-09-14-v1\\qwen\\AM-0c972c75d4f9972c\\raw.json",
+              "rawSha256": "426d6cceadd9073545309d6ec560c65704145b887fe34090dca466533306fafe",
+              "gradeSha256": "21d08b5e1376d11fa6c36b2f3256b1e5e9e0c0e2784dcf173ce8084b22e5697f"
+            },
+            {
+              "id": "AM-1f7cb7db78a65246",
+              "tier": null,
+              "dimension": "reasoning_math",
+              "family": "annihilating_maps",
+              "state": "completed",
+              "measured": true,
+              "contentScore": 100,
+              "contentPass": true,
+              "diagnostics": null,
+              "formatCompliant": true,
+              "finishReason": "stop",
+              "latencyMs": 212673,
+              "usage": null,
+              "returnedModels": [
+                "qwen3.8-27b-nvfp4"
+              ],
+              "finalContentCharacters": 35,
+              "rawPath": "J:\\AI\\zxbench-runtime\\reports\\annihilating-maps-2026-09-14-v1\\qwen\\AM-1f7cb7db78a65246\\raw.json",
+              "rawSha256": "c4714a9c752474ffe3094414be2910dc769ac68c8c09c3fe1d16a26e1e52ce93",
+              "gradeSha256": "f3f5dc3fdf33b56ba6eb7893da655df1911ce08c36089c744b4a3627bca7c065"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "structureAudit": {
+    "source": "J:\\AI\\zxbench-runtime\\reports\\frontier-challenge-2026-09-14-v1\\development\\coordinator\\frozen-pack.json",
+    "rows": [
+      {
+        "id": "FC-d8360a48303c4cef",
+        "tier": 1,
+        "dimension": "data_extraction",
+        "counts": {
+          "replayed": 31,
+          "excludedAfterVersionSelection": 13,
+          "conditionalTransferNoOp": 3,
+          "executedTransfers": 7
+        },
+        "inputEntries": 53,
+        "selectedVersions": 44,
+        "referenceMatches": true
+      },
+      {
+        "id": "FC-be817987ffd52a61",
+        "tier": 1,
+        "dimension": "hallucination_resistance",
+        "variables": 12,
+        "reports": 6,
+        "possibleWorlds": 16,
+        "distinctClaimGroups": 4,
+        "fixedVariables": 1,
+        "claims": [
+          {
+            "id": "Q7618-0",
+            "status": "supported",
+            "minimumDecidingReports": 2,
+            "exampleSufficientReports": [
+              "R1981-4",
+              "R9396-5"
+            ]
+          },
+          {
+            "id": "Q5201-5",
+            "status": "refuted",
+            "minimumDecidingReports": 3,
+            "exampleSufficientReports": [
+              "R5416-0",
+              "R8418-1",
+              "R8700-2"
+            ]
+          },
+          {
+            "id": "Q3630-4",
+            "status": "refuted",
+            "minimumDecidingReports": 3,
+            "exampleSufficientReports": [
+              "R5416-0",
+              "R8418-1",
+              "R1981-4"
+            ]
+          },
+          {
+            "id": "Q7004-3",
+            "status": "insufficient",
+            "minimumDecidingReports": null,
+            "exampleSufficientReports": []
+          },
+          {
+            "id": "Q8367-1",
+            "status": "insufficient",
+            "minimumDecidingReports": null,
+            "exampleSufficientReports": []
+          },
+          {
+            "id": "Q1088-2",
+            "status": "supported",
+            "minimumDecidingReports": 2,
+            "exampleSufficientReports": [
+              "R1981-4",
+              "R9396-5"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "FC-d44b5ba1c42e6ba6",
+        "tier": 2,
+        "dimension": "data_extraction",
+        "counts": {
+          "replayed": 61,
+          "excludedAfterVersionSelection": 26,
+          "conditionalTransferNoOp": 3,
+          "executedTransfers": 17
+        },
+        "inputEntries": 103,
+        "selectedVersions": 87,
+        "referenceMatches": true
+      },
+      {
+        "id": "FC-a663bc8aac7021dd",
+        "tier": 2,
+        "dimension": "hallucination_resistance",
+        "variables": 16,
+        "reports": 7,
+        "possibleWorlds": 10,
+        "distinctClaimGroups": 4,
+        "fixedVariables": 5,
+        "claims": [
+          {
+            "id": "Q4886-1",
+            "status": "insufficient",
+            "minimumDecidingReports": null,
+            "exampleSufficientReports": []
+          },
+          {
+            "id": "Q7928-5",
+            "status": "refuted",
+            "minimumDecidingReports": 4,
+            "exampleSufficientReports": [
+              "R2843-2",
+              "R3705-3",
+              "R1018-4",
+              "R1062-5"
+            ]
+          },
+          {
+            "id": "Q4825-3",
+            "status": "refuted",
+            "minimumDecidingReports": 4,
+            "exampleSufficientReports": [
+              "R2843-2",
+              "R3705-3",
+              "R1018-4",
+              "R1062-5"
+            ]
+          },
+          {
+            "id": "Q1332-0",
+            "status": "supported",
+            "minimumDecidingReports": 4,
+            "exampleSufficientReports": [
+              "R3122-0",
+              "R2744-1",
+              "R1018-4",
+              "R2356-6"
+            ]
+          },
+          {
+            "id": "Q8065-4",
+            "status": "supported",
+            "minimumDecidingReports": 7,
+            "exampleSufficientReports": [
+              "R3122-0",
+              "R2744-1",
+              "R2843-2",
+              "R3705-3",
+              "R1018-4",
+              "R1062-5",
+              "R2356-6"
+            ]
+          },
+          {
+            "id": "Q6116-2",
+            "status": "insufficient",
+            "minimumDecidingReports": null,
+            "exampleSufficientReports": []
+          }
+        ]
+      },
+      {
+        "id": "FC-e912ac029e44f4c8",
+        "tier": 3,
+        "dimension": "data_extraction",
+        "counts": {
+          "replayed": 96,
+          "excludedAfterVersionSelection": 34,
+          "conditionalTransferNoOp": 5,
+          "executedTransfers": 27
+        },
+        "inputEntries": 151,
+        "selectedVersions": 130,
+        "referenceMatches": true
+      },
+      {
+        "id": "FC-74116c2f45e61094",
+        "tier": 3,
+        "dimension": "hallucination_resistance",
+        "variables": 20,
+        "reports": 5,
+        "possibleWorlds": 16,
+        "distinctClaimGroups": 3,
+        "fixedVariables": 16,
+        "claims": [
+          {
+            "id": "Q4366-4",
+            "status": "insufficient",
+            "minimumDecidingReports": null,
+            "exampleSufficientReports": []
+          },
+          {
+            "id": "Q6042-5",
+            "status": "refuted",
+            "minimumDecidingReports": 3,
+            "exampleSufficientReports": [
+              "R4473-0",
+              "R8344-3",
+              "R9496-4"
+            ]
+          },
+          {
+            "id": "Q2329-1",
+            "status": "insufficient",
+            "minimumDecidingReports": null,
+            "exampleSufficientReports": []
+          },
+          {
+            "id": "Q6082-0",
+            "status": "supported",
+            "minimumDecidingReports": 2,
+            "exampleSufficientReports": [
+              "R8344-3",
+              "R9496-4"
+            ]
+          },
+          {
+            "id": "Q4006-3",
+            "status": "refuted",
+            "minimumDecidingReports": 4,
+            "exampleSufficientReports": [
+              "R4473-0",
+              "R5620-1",
+              "R8344-3",
+              "R9496-4"
+            ]
+          },
+          {
+            "id": "Q2244-2",
+            "status": "supported",
+            "minimumDecidingReports": 2,
+            "exampleSufficientReports": [
+              "R4473-0",
+              "R8344-3"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "tests": {
+    "passed": 1520,
+    "skipped": 213,
+    "failed": 0
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "reviewType": "authoring_decision_not_production_bank",
+  "evidence": "exam-expansion-screen-2026-09-14-evidence.json",
+  "modelRequestsUsed": 16,
+  "additionalRequestsAuthorizedByThisFile": 0,
+  "decisions": [
+    { "id": "MX3-06", "status": "rejected_as_capstone", "retainAs": "foundation_or_mechanism_example", "reason": "Both screened models scored 100; no observed score separation." },
+    { "id": "MX3-12", "status": "rejected_as_capstone", "retainAs": "foundation_or_mechanism_example", "reason": "Both screened models scored 100 including certificates; no observed score separation." }
+  ],
+  "unmeasured": ["MX3-01", "MX3-02", "MX3-03", "MX3-04", "MX3-05", "MX3-07", "MX3-08", "MX3-09", "MX3-10", "MX3-11"],
+  "mechanismExamplesOnly": ["DX3-05", "HX3-11"],
+  "productionEligible": false
+}

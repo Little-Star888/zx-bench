@@ -1,0 +1,218 @@
+{
+  "model": "qwen3.8-27b-nvfp4",
+  "contractHash": "6c481c8eea5b83d7a45d8001f10b4d368d4c312f3fad4501146d95927bcdc2b5",
+  "calls": 8,
+  "retries": 0,
+  "runPath": "J:\\AI\\zxbench-webui\\reports\\ultra-qwen-screen-20260914",
+  "proofReview": "assistant_preliminary_review",
+  "independentProofReview": false,
+  "sourceHashesVerified": true,
+  "promptIsolationVerified": true,
+  "productionEligible": false,
+  "groups": {
+    "UMX-01": {
+      "conclusionScore": 6,
+      "conclusionMax": 40,
+      "proofScore": 4,
+      "proofMax": 60,
+      "score": 10
+    },
+    "UMX-02": {
+      "conclusionScore": 23,
+      "conclusionMax": 43,
+      "proofScore": 33,
+      "proofMax": 57,
+      "score": 56
+    }
+  },
+  "normalizedScore": 33.0,
+  "latencyMsTotal": 3513937,
+  "questions": [
+    {
+      "id": "UMX-01-P1",
+      "groupId": "UMX-01",
+      "points": 10,
+      "hardSeconds": 360,
+      "maxTokens": 110000,
+      "outcome": "completed",
+      "finishReason": "stop",
+      "latencyMs": 49417,
+      "usage": null,
+      "answerCharacters": 3425,
+      "review": {
+        "conclusionScore": 6,
+        "conclusionMax": 6,
+        "proofScore": 4,
+        "proofMax": 4,
+        "notes": "两个计数均正确；Hom(V/S,S) 双射和按有序基除重论证正确。中间文字把一维/二维张成空间误称二维/三维，并有 2^3=4 式的笔误，但最终使用的因子、公式及除重依据正确；按冻结细则不以这些笔误制造实质性失分。",
+        "answerSha256": "2a7e0afdb173889a72ed3c08c46f80c0dc495de77d595eedba83465f37f8243e"
+      },
+      "rawPath": "J:\\AI\\zxbench-webui\\reports\\ultra-qwen-screen-20260914\\UMX-01-P1\\raw.json",
+      "rawSha256": "fdce679deae4c6ae980930b2935d5daa890bb8c5725ac8f50d14c46abb51e775",
+      "requestSha256": "442358418d660cbb62a38e0c453192b4e2a3bf441287a413105d2decacc54369"
+    },
+    {
+      "id": "UMX-01-P2",
+      "groupId": "UMX-01",
+      "points": 20,
+      "hardSeconds": 360,
+      "maxTokens": 103456,
+      "outcome": "timeout",
+      "finishReason": "unknown",
+      "latencyMs": 360002,
+      "usage": null,
+      "answerCharacters": 0,
+      "review": {
+        "conclusionScore": 0,
+        "conclusionMax": 6,
+        "proofScore": 0,
+        "proofMax": 14,
+        "notes": "360 秒超时，最终提交内容为空；未提交的 reasoning 不作为答卷计分。",
+        "answerSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "rawPath": "J:\\AI\\zxbench-webui\\reports\\ultra-qwen-screen-20260914\\UMX-01-P2\\raw.json",
+      "rawSha256": "bde18d7665525c345f9a1e97f5fcfb73c90a87beacb2507c1d03226b6d404b8b",
+      "requestSha256": "d43b9426496413a546dfced1b0435b80bf6acd5f0f4f2a8b2c8970711e376b71"
+    },
+    {
+      "id": "UMX-01-P3",
+      "groupId": "UMX-01",
+      "points": 30,
+      "hardSeconds": 1200,
+      "maxTokens": 101912,
+      "outcome": "truncated",
+      "finishReason": "length",
+      "latencyMs": 778369,
+      "usage": null,
+      "answerCharacters": 0,
+      "review": {
+        "conclusionScore": 0,
+        "conclusionMax": 12,
+        "proofScore": 0,
+        "proofMax": 18,
+        "notes": "778.369 秒返回 finishReason=length，最终提交为空。1200 秒尚未用满，属于输出截断，不表述为 20 分钟超时。",
+        "answerSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "rawPath": "J:\\AI\\zxbench-webui\\reports\\ultra-qwen-screen-20260914\\UMX-01-P3\\raw.json",
+      "rawSha256": "5c9677f1e4b216ff0284f7cf7eee145399893413e788b99b204f9fb5482501cc",
+      "requestSha256": "2e0174f3a5b19094f523d844a10fbea66193fa25e384b036da1f7f64c3d73808"
+    },
+    {
+      "id": "UMX-01-P4",
+      "groupId": "UMX-01",
+      "points": 40,
+      "hardSeconds": 1200,
+      "maxTokens": 100096,
+      "outcome": "truncated",
+      "finishReason": "length",
+      "latencyMs": 749040,
+      "usage": null,
+      "answerCharacters": 0,
+      "review": {
+        "conclusionScore": 0,
+        "conclusionMax": 16,
+        "proofScore": 0,
+        "proofMax": 24,
+        "notes": "749.040 秒返回 finishReason=length，最终提交为空；保留先前小问得分。",
+        "answerSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "rawPath": "J:\\AI\\zxbench-webui\\reports\\ultra-qwen-screen-20260914\\UMX-01-P4\\raw.json",
+      "rawSha256": "133a8246222b3e77b386932fd4481b9ee065e5474a8e369a76d34aa45453a1a0",
+      "requestSha256": "cbd94828f380555ff118ff0510023ddc17930aca14ba939a5b95b8c26fc68f85"
+    },
+    {
+      "id": "UMX-02-P1",
+      "groupId": "UMX-02",
+      "points": 10,
+      "hardSeconds": 360,
+      "maxTokens": 110000,
+      "outcome": "completed",
+      "finishReason": "stop",
+      "latencyMs": 312109,
+      "usage": null,
+      "answerCharacters": 5718,
+      "review": {
+        "conclusionScore": 3,
+        "conclusionMax": 3,
+        "proofScore": 7,
+        "proofMax": 7,
+        "notes": "2^20 正确。正确证明单位二阶子式加行列式为零的充要判据、七个点值约束独立，并从 27 个变量减去 7 个独立约束计数。",
+        "answerSha256": "c701d94024708f643594a89e82704126d1ba5002681db1a5c7ff98383a610bbd"
+      },
+      "rawPath": "J:\\AI\\zxbench-webui\\reports\\ultra-qwen-screen-20260914\\UMX-02-P1\\raw.json",
+      "rawSha256": "1e0d0b77d90ffac1479dd7ea79449d136ffbd9587434255ca0870f3b3455a49f",
+      "requestSha256": "953e8518d650835b87b550db18e26d65127224ca8ea60f9b74b1219c016b224b"
+    },
+    {
+      "id": "UMX-02-P2",
+      "groupId": "UMX-02",
+      "points": 20,
+      "hardSeconds": 360,
+      "maxTokens": 100839,
+      "outcome": "completed",
+      "finishReason": "stop",
+      "latencyMs": 284988,
+      "usage": null,
+      "answerCharacters": 8685,
+      "review": {
+        "conclusionScore": 6,
+        "conclusionMax": 6,
+        "proofScore": 14,
+        "proofMax": 14,
+        "notes": "8 类、每类 2^17 正确。显式线性作用核为共同标量，像维数 17；三个不变量是形式行列式除以 2 后的交叉系数，给出满射代表元且核等于作用像，完备性证明成立。",
+        "answerSha256": "d329bf99df0f4f58775499090acfd88e68f26367ad326005e2020db34c11f00e"
+      },
+      "rawPath": "J:\\AI\\zxbench-webui\\reports\\ultra-qwen-screen-20260914\\UMX-02-P2\\raw.json",
+      "rawSha256": "cace1fc37e3b75af25938e748b03ec173b7b51ee14f653ee8c6fc6ad3a20c885",
+      "requestSha256": "3e144ee5fa0c739b7be6093348632e9e099994e5e1bf28efa6891a0ff18c3c4b"
+    },
+    {
+      "id": "UMX-02-P3",
+      "groupId": "UMX-02",
+      "points": 30,
+      "hardSeconds": 1200,
+      "maxTokens": 87381,
+      "outcome": "completed",
+      "finishReason": "stop",
+      "latencyMs": 425823,
+      "usage": null,
+      "answerCharacters": 8606,
+      "review": {
+        "conclusionScore": 14,
+        "conclusionMax": 18,
+        "proofScore": 12,
+        "proofMax": 12,
+        "notes": "紧凑判据 (C) 正确，给 10 分；可提升解总数误写为 2^12（正确 2^17），该项 0/4；每解提升数 2^20 正确，给 4 分。第 2、3、5 节对紧凑判据的必要性、充分性及七点仿射提升计数论证成立，按冻结细则给证明 12 分。第 4 节声称等价的 15 个方程和 12 参数形式错误，不作为正确证明采纳；它们不推翻前面另行成立的紧凑判据证明。保留正确部分，不能事后加重错误计数项的权重。",
+        "errorWitness": "令 P=I+2E12，M_i=P J_i（模 4），则取同一公式模 8 即为合法提升。对应 B1=E13，B2=0，B3=E11；模型所列 b33^(1)+b13^(1)=0 却被违反。因此它的显式 15 方程不是必要条件。紧凑判据 (C) 对此例成立。",
+        "criterionAudit": "令 f(u)=u^T(Σu_i B_i)u 为形式齐次三次多项式，则 ∇f=q+(S+S^T)u。齐次二次多项式在 F2^3 上的求值是单射；奇数次齐次多项式若各偏导为零则多项式为零。因此 (C) 等价于 f 形式恒零，亦即 det(Σu_i M_i) 模 4 形式恒零，与金标一致。",
+        "answerSha256": "137beacb93ff69a1c0023cae7cbc48d53f7089fd2d2a1451fb97aed56b949ac6"
+      },
+      "rawPath": "J:\\AI\\zxbench-webui\\reports\\ultra-qwen-screen-20260914\\UMX-02-P3\\raw.json",
+      "rawSha256": "56f12aff1fabb4214d4183901ee07537ee118105ccc902bc26bb21dbb46d3756",
+      "requestSha256": "d0a7eada267123d81f1684fb80d5de26983e34f0fd887358e5b5a4833d63b086"
+    },
+    {
+      "id": "UMX-02-P4",
+      "groupId": "UMX-02",
+      "points": 40,
+      "hardSeconds": 1200,
+      "maxTokens": 73332,
+      "outcome": "truncated",
+      "finishReason": "length",
+      "latencyMs": 554189,
+      "usage": null,
+      "answerCharacters": 0,
+      "review": {
+        "conclusionScore": 0,
+        "conclusionMax": 16,
+        "proofScore": 0,
+        "proofMax": 24,
+        "notes": "554.189 秒返回 finishReason=length，最终提交为空；未满足一般公式和无限提升问题的提交要求。",
+        "answerSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "rawPath": "J:\\AI\\zxbench-webui\\reports\\ultra-qwen-screen-20260914\\UMX-02-P4\\raw.json",
+      "rawSha256": "da222386fc33922473cae8d218db5a37013a737cba16f8e569b6bbbeb6bb364d",
+      "requestSha256": "3d8fc50d65ae6c407fa4bbca1a395cf5ef9cee21d63379719130c469e68bb16f"
+    }
+  ]
+}

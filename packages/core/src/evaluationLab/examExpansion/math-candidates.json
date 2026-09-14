@@ -1,0 +1,1477 @@
+{
+  "version": "math-exam-expansion-2026-09-14-v3",
+  "status": "candidate-unmeasured",
+  "modelCalls": 0,
+  "hardSeconds": [
+    180,
+    360,
+    1200,
+    1200
+  ],
+  "points": [
+    10,
+    20,
+    30,
+    40
+  ],
+  "groups": [
+    {
+      "id": "MX3-01",
+      "family": "linear-duality",
+      "title": "有理线性规划与不可行证书",
+      "stem": "所有变量非负。最大化 c·x，约束 A x≤b。数据：{\"a\": [[3, 1, 2, 0, 1], [1, 4, 0, 2, 1], [0, 1, 3, 1, 2], [2, 0, 1, 4, 1], [1, 2, 1, 1, 3]], \"b\": [9, 17, 12, 17, 15], \"c\": [12, 11, 16, 14, 14]}。optimal证书为{status:\"optimal\",x:[...],y:[...],value:...}，其中y≥0、Aᵀy≥c且b·y=c·x。infeasible证书为{status:\"infeasible\",y:[...]}，要求y≥0、Aᵀy≥0、b·y<0。",
+      "parts": [
+        {
+          "task": "提交 origin_value=零向量的目标值，origin_feasible=零向量是否可行。",
+          "items": [
+            {
+              "key": "origin_value",
+              "points": 5,
+              "kind": "exact",
+              "expected": "0"
+            },
+            {
+              "key": "origin_feasible",
+              "points": 5,
+              "kind": "exact",
+              "expected": true
+            }
+          ]
+        },
+        {
+          "task": "求全部五个不等式同时取等号时的向量，按变量顺序提交 intersection。",
+          "items": [
+            {
+              "key": "intersection",
+              "points": 20,
+              "kind": "exact",
+              "expected": [
+                "1",
+                "2",
+                "1",
+                "3",
+                "2"
+              ]
+            }
+          ]
+        },
+        {
+          "task": "求最大值 value，并提交证明该最大值的 certificate。",
+          "items": [
+            {
+              "key": "value",
+              "points": 10,
+              "kind": "exact",
+              "expected": "120"
+            },
+            {
+              "key": "certificate",
+              "points": 20,
+              "kind": "lp",
+              "problem": {
+                "a": [
+                  [
+                    3,
+                    1,
+                    2,
+                    0,
+                    1
+                  ],
+                  [
+                    1,
+                    4,
+                    0,
+                    2,
+                    1
+                  ],
+                  [
+                    0,
+                    1,
+                    3,
+                    1,
+                    2
+                  ],
+                  [
+                    2,
+                    0,
+                    1,
+                    4,
+                    1
+                  ],
+                  [
+                    1,
+                    2,
+                    1,
+                    1,
+                    3
+                  ]
+                ],
+                "b": [
+                  9,
+                  17,
+                  12,
+                  17,
+                  15
+                ],
+                "c": [
+                  12,
+                  11,
+                  16,
+                  14,
+                  14
+                ]
+              },
+              "reference": {
+                "status": "optimal",
+                "x": [
+                  "1",
+                  "2",
+                  "1",
+                  "3",
+                  "2"
+                ],
+                "y": [
+                  "2",
+                  "1",
+                  "3",
+                  "2",
+                  "1"
+                ],
+                "value": "120"
+              }
+            }
+          ]
+        },
+        {
+          "task": "现在额外加入 [7, 8, 7, 8, 8]·x≥71。判断 status（optimal/infeasible/unbounded），并提交针对新系统的 certificate。",
+          "items": [
+            {
+              "key": "status",
+              "points": 10,
+              "kind": "exact",
+              "expected": "infeasible"
+            },
+            {
+              "key": "certificate",
+              "points": 30,
+              "kind": "lp",
+              "problem": {
+                "a": [
+                  [
+                    3,
+                    1,
+                    2,
+                    0,
+                    1
+                  ],
+                  [
+                    1,
+                    4,
+                    0,
+                    2,
+                    1
+                  ],
+                  [
+                    0,
+                    1,
+                    3,
+                    1,
+                    2
+                  ],
+                  [
+                    2,
+                    0,
+                    1,
+                    4,
+                    1
+                  ],
+                  [
+                    1,
+                    2,
+                    1,
+                    1,
+                    3
+                  ],
+                  [
+                    -7,
+                    -8,
+                    -7,
+                    -8,
+                    -8
+                  ]
+                ],
+                "b": [
+                  9,
+                  17,
+                  12,
+                  17,
+                  15,
+                  -71
+                ],
+                "c": [
+                  12,
+                  11,
+                  16,
+                  14,
+                  14
+                ]
+              },
+              "reference": {
+                "status": "infeasible",
+                "y": [
+                  "1",
+                  "1",
+                  "1",
+                  "1",
+                  "1",
+                  "1"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "capstoneChange": "新增约束使可行性改变，原最优解不能直接复用。",
+      "difficultyRisk": "第五问式证书任务仍可能被熟悉对偶的强模型直接解出；未校准。"
+    },
+    {
+      "id": "MX3-02",
+      "family": "network-flow",
+      "title": "流量与割的双向证明",
+      "stem": "有向网络顶点0..7，源0汇7；每条边[u,v,capacity]，流量必须为整数。边按输入顺序编号。数据：[[0, 1, 11], [0, 2, 8], [0, 3, 6], [1, 2, 3], [1, 4, 7], [1, 5, 5], [2, 4, 6], [2, 5, 5], [3, 2, 2], [3, 5, 7], [4, 5, 2], [4, 6, 8], [5, 6, 4], [5, 7, 9], [6, 7, 13]]。证书为{flow:[每条边流量],cut:[含源不含汇的顶点集合],value:流值}；需满足容量、流守恒，且流值等于割容量。",
+      "parts": [
+        {
+          "task": "提交 source_capacity=源点出边容量和。",
+          "items": [
+            {
+              "key": "source_capacity",
+              "points": 10,
+              "kind": "exact",
+              "expected": "25"
+            }
+          ]
+        },
+        {
+          "task": "求最大流值 value。",
+          "items": [
+            {
+              "key": "value",
+              "points": 20,
+              "kind": "exact",
+              "expected": "21"
+            }
+          ]
+        },
+        {
+          "task": "提交 certificate，证明最大流与最小割相等。",
+          "items": [
+            {
+              "key": "certificate",
+              "points": 30,
+              "kind": "flow",
+              "problem": {
+                "n": 8,
+                "edges": [
+                  [
+                    0,
+                    1,
+                    11
+                  ],
+                  [
+                    0,
+                    2,
+                    8
+                  ],
+                  [
+                    0,
+                    3,
+                    6
+                  ],
+                  [
+                    1,
+                    2,
+                    3
+                  ],
+                  [
+                    1,
+                    4,
+                    7
+                  ],
+                  [
+                    1,
+                    5,
+                    5
+                  ],
+                  [
+                    2,
+                    4,
+                    6
+                  ],
+                  [
+                    2,
+                    5,
+                    5
+                  ],
+                  [
+                    3,
+                    2,
+                    2
+                  ],
+                  [
+                    3,
+                    5,
+                    7
+                  ],
+                  [
+                    4,
+                    5,
+                    2
+                  ],
+                  [
+                    4,
+                    6,
+                    8
+                  ],
+                  [
+                    5,
+                    6,
+                    4
+                  ],
+                  [
+                    5,
+                    7,
+                    9
+                  ],
+                  [
+                    6,
+                    7,
+                    13
+                  ]
+                ]
+              },
+              "reference": {
+                "flow": [
+                  "11",
+                  "7",
+                  "3",
+                  "0",
+                  "6",
+                  "5",
+                  "2",
+                  "5",
+                  "0",
+                  "3",
+                  "0",
+                  "8",
+                  "4",
+                  "9",
+                  "12"
+                ],
+                "cut": [
+                  "0",
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5"
+                ],
+                "value": "21"
+              }
+            }
+          ]
+        },
+        {
+          "task": "改为边4→6容量3、5→7容量4，并新增3→6容量5（追加在边序列末尾）。求新 value，并提交新 certificate。",
+          "items": [
+            {
+              "key": "value",
+              "points": 10,
+              "kind": "exact",
+              "expected": "16"
+            },
+            {
+              "key": "certificate",
+              "points": 30,
+              "kind": "flow",
+              "problem": {
+                "n": 8,
+                "edges": [
+                  [
+                    0,
+                    1,
+                    11
+                  ],
+                  [
+                    0,
+                    2,
+                    8
+                  ],
+                  [
+                    0,
+                    3,
+                    6
+                  ],
+                  [
+                    1,
+                    2,
+                    3
+                  ],
+                  [
+                    1,
+                    4,
+                    7
+                  ],
+                  [
+                    1,
+                    5,
+                    5
+                  ],
+                  [
+                    2,
+                    4,
+                    6
+                  ],
+                  [
+                    2,
+                    5,
+                    5
+                  ],
+                  [
+                    3,
+                    2,
+                    2
+                  ],
+                  [
+                    3,
+                    5,
+                    7
+                  ],
+                  [
+                    4,
+                    5,
+                    2
+                  ],
+                  [
+                    4,
+                    6,
+                    3
+                  ],
+                  [
+                    5,
+                    6,
+                    4
+                  ],
+                  [
+                    5,
+                    7,
+                    4
+                  ],
+                  [
+                    6,
+                    7,
+                    13
+                  ],
+                  [
+                    3,
+                    6,
+                    5
+                  ]
+                ]
+              },
+              "reference": {
+                "flow": [
+                  "8",
+                  "3",
+                  "5",
+                  "0",
+                  "3",
+                  "5",
+                  "0",
+                  "3",
+                  "0",
+                  "0",
+                  "0",
+                  "3",
+                  "4",
+                  "4",
+                  "12",
+                  "5"
+                ],
+                "cut": [
+                  "0",
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5"
+                ],
+                "value": "16"
+              }
+            }
+          ]
+        }
+      ],
+      "capstoneChange": "同时收紧两边并增加跨层边，必须重新给出流和割。",
+      "difficultyRisk": "小网络存在算法化捷径；用于证书能力，不宣称研究级。"
+    },
+    {
+      "id": "MX3-03",
+      "family": "assignment-duality",
+      "title": "受限指派与势函数",
+      "stem": "6名工人到6项工作的一一指派，编号0..5，成本矩阵：[[8, 9, 23, 14, 8, 19], [7, 21, 7, 18, 16, 10], [6, 12, 18, 6, 22, 13], [8, 16, 11, 24, 9, 17], [7, 7, 19, 10, 15, 21], [8, 14, 9, 17, 12, 8]]。最小化总成本。certificate={permutation:[工人对应工作],u:[...],v:[...],value:...}；所有允许边应有u[i]+v[j]≤cost[i][j]，且总成本=Σu+Σv。",
+      "parts": [
+        {
+          "task": "计算恒等指派i→i的成本 identity。",
+          "items": [
+            {
+              "key": "identity",
+              "points": 10,
+              "kind": "exact",
+              "expected": "94"
+            }
+          ]
+        },
+        {
+          "task": "求最小成本 value。",
+          "items": [
+            {
+              "key": "value",
+              "points": 20,
+              "kind": "exact",
+              "expected": "44"
+            }
+          ]
+        },
+        {
+          "task": "提交达到最优值的指派及对偶势函数 certificate。",
+          "items": [
+            {
+              "key": "certificate",
+              "points": 30,
+              "kind": "assignment",
+              "problem": {
+                "cost": [
+                  [
+                    8,
+                    9,
+                    23,
+                    14,
+                    8,
+                    19
+                  ],
+                  [
+                    7,
+                    21,
+                    7,
+                    18,
+                    16,
+                    10
+                  ],
+                  [
+                    6,
+                    12,
+                    18,
+                    6,
+                    22,
+                    13
+                  ],
+                  [
+                    8,
+                    16,
+                    11,
+                    24,
+                    9,
+                    17
+                  ],
+                  [
+                    7,
+                    7,
+                    19,
+                    10,
+                    15,
+                    21
+                  ],
+                  [
+                    8,
+                    14,
+                    9,
+                    17,
+                    12,
+                    8
+                  ]
+                ],
+                "banned": []
+              },
+              "reference": {
+                "permutation": [
+                  "4",
+                  "2",
+                  "3",
+                  "0",
+                  "1",
+                  "5"
+                ],
+                "u": [
+                  "8",
+                  "7",
+                  "6",
+                  "8",
+                  "7",
+                  "8"
+                ],
+                "v": [
+                  "0",
+                  "0",
+                  "0",
+                  "0",
+                  "0",
+                  "0"
+                ],
+                "value": "44"
+              }
+            }
+          ]
+        },
+        {
+          "task": "现在禁止边 [[0, 4], [2, 3]]。求新 value，并提交只对允许边要求对偶可行的新 certificate。",
+          "items": [
+            {
+              "key": "value",
+              "points": 10,
+              "kind": "exact",
+              "expected": "49"
+            },
+            {
+              "key": "certificate",
+              "points": 30,
+              "kind": "assignment",
+              "problem": {
+                "cost": [
+                  [
+                    8,
+                    9,
+                    23,
+                    14,
+                    8,
+                    19
+                  ],
+                  [
+                    7,
+                    21,
+                    7,
+                    18,
+                    16,
+                    10
+                  ],
+                  [
+                    6,
+                    12,
+                    18,
+                    6,
+                    22,
+                    13
+                  ],
+                  [
+                    8,
+                    16,
+                    11,
+                    24,
+                    9,
+                    17
+                  ],
+                  [
+                    7,
+                    7,
+                    19,
+                    10,
+                    15,
+                    21
+                  ],
+                  [
+                    8,
+                    14,
+                    9,
+                    17,
+                    12,
+                    8
+                  ]
+                ],
+                "banned": [
+                  [
+                    0,
+                    4
+                  ],
+                  [
+                    2,
+                    3
+                  ]
+                ]
+              },
+              "reference": {
+                "permutation": [
+                  "1",
+                  "2",
+                  "0",
+                  "4",
+                  "3",
+                  "5"
+                ],
+                "u": [
+                  "12",
+                  "7",
+                  "10",
+                  "9",
+                  "10",
+                  "8"
+                ],
+                "v": [
+                  "-4",
+                  "-3",
+                  "0",
+                  "0",
+                  "0",
+                  "0"
+                ],
+                "value": "49"
+              }
+            }
+          ]
+        }
+      ],
+      "capstoneChange": "禁止原最优解中的两条边，需重建指派和对偶。",
+      "difficultyRisk": "与网络流相关，报告题族时保留该关联，不能当完全独立能力轴。"
+    },
+    {
+      "id": "MX3-04",
+      "family": "nonreduced-polynomial-ring",
+      "title": "非约化商环中的逆与解空间",
+      "stem": "在F₇[x]/((x²+1)³)中计算。系数数组按常数项到最高次项排列，所有系数用0..6代表；余式数组固定长度6。",
+      "parts": [
+        {
+          "task": "提交 modulus=(x²+1)³的系数数组（长度7）。",
+          "items": [
+            {
+              "key": "modulus",
+              "points": 10,
+              "kind": "exact",
+              "expected": [
+                "1",
+                "0",
+                "3",
+                "0",
+                "3",
+                "0",
+                "1"
+              ]
+            }
+          ]
+        },
+        {
+          "task": "令g=x³+2x+3。提交 multiplication_rank=乘g在六维商环上的线性映射秩。",
+          "items": [
+            {
+              "key": "multiplication_rank",
+              "points": 20,
+              "kind": "exact",
+              "expected": "6"
+            }
+          ]
+        },
+        {
+          "task": "提交 inverse=g的逆元余式。",
+          "items": [
+            {
+              "key": "inverse",
+              "points": 30,
+              "kind": "exact",
+              "expected": [
+                "5",
+                "2",
+                "6",
+                "1",
+                "2",
+                "1"
+              ]
+            }
+          ]
+        },
+        {
+          "task": "改解 (x²+1)(x+2)h=(x²+1)²。提交 count=不同余式解总数，以及 canonical=按系数变量顺序做RREF并把自由变量置0所得的解。",
+          "items": [
+            {
+              "key": "count",
+              "points": 15,
+              "kind": "exact",
+              "expected": "49"
+            },
+            {
+              "key": "canonical",
+              "points": 25,
+              "kind": "exact",
+              "expected": [
+                "6",
+                "4",
+                "6",
+                "4",
+                "0",
+                "0"
+              ]
+            }
+          ]
+        }
+      ],
+      "capstoneChange": "从可逆元切换为零因子方程，不能继续套求逆。",
+      "difficultyRisk": "自由变量约定为唯一答案服务，不把格式难度算数学难度。"
+    },
+    {
+      "id": "MX3-05",
+      "family": "conditioned-markov-moments",
+      "title": "吸收链的条件矩与转移干预",
+      "stem": "状态为0,1,2,S,F；S与F吸收。从0开始，T为首次吸收所需步数。每行按0,1,2,S,F给转移概率：[[\"0\", \"1/2\", \"1/3\", \"1/6\", \"0\"], [\"1/4\", \"0\", \"1/4\", \"1/4\", \"1/4\"], [\"1/5\", \"2/5\", \"0\", \"1/5\", \"1/5\"]].",
+      "parts": [
+        {
+          "task": "提交 one_step_success=一步到S的概率。",
+          "items": [
+            {
+              "key": "one_step_success",
+              "points": 10,
+              "kind": "exact",
+              "expected": "1/6"
+            }
+          ]
+        },
+        {
+          "task": "提交 success=最终在S吸收的概率。",
+          "items": [
+            {
+              "key": "success",
+              "points": 20,
+              "kind": "exact",
+              "expected": "8/13"
+            }
+          ]
+        },
+        {
+          "task": "提交 conditional_mean=E[T|最终到S]。",
+          "items": [
+            {
+              "key": "conditional_mean",
+              "points": 30,
+              "kind": "exact",
+              "expected": "137/48"
+            }
+          ]
+        },
+        {
+          "task": "仅把状态1的转移行改为[1/3,0,1/6,1/6,1/3]。提交 success，以及 conditional_variance=Var(T|最终到S)。",
+          "items": [
+            {
+              "key": "success",
+              "points": 10,
+              "kind": "exact",
+              "expected": "62/115"
+            },
+            {
+              "key": "conditional_variance",
+              "points": 30,
+              "kind": "exact",
+              "expected": "236104089/50836900"
+            }
+          ]
+        }
+      ],
+      "capstoneChange": "转移干预后重算条件二阶矩，旧成功概率和期望不能代入。",
+      "difficultyRisk": "需区分条件矩和无条件矩；精确分数判分。"
+    },
+    {
+      "id": "MX3-06",
+      "family": "overlapping-pattern-stopping",
+      "title": "重叠模式的停时竞争",
+      "stem": "独立抛偏硬币，P(H)=2/5。出现HHTH或HTHH中任一连续模式时立刻停止；T为总抛掷次数，A表示HHTH先出现。",
+      "parts": [
+        {
+          "task": "提交 first_four_A=前四次恰为HHTH的概率。",
+          "items": [
+            {
+              "key": "first_four_A",
+              "points": 10,
+              "kind": "exact",
+              "expected": "24/625"
+            }
+          ]
+        },
+        {
+          "task": "提交 win=P(A)。",
+          "items": [
+            {
+              "key": "win",
+              "points": 20,
+              "kind": "exact",
+              "expected": "19/34"
+            }
+          ]
+        },
+        {
+          "task": "提交 conditional_mean=E[T|A]。模式可以重叠。",
+          "items": [
+            {
+              "key": "conditional_mean",
+              "points": 30,
+              "kind": "exact",
+              "expected": "307375/15504"
+            }
+          ]
+        },
+        {
+          "task": "硬币改为P(H)=3/5，其他规则不变。提交 win，以及 conditional_second=E[T²|A]（不是方差）。",
+          "items": [
+            {
+              "key": "win",
+              "points": 10,
+              "kind": "exact",
+              "expected": "19/29"
+            },
+            {
+              "key": "conditional_second",
+              "points": 30,
+              "kind": "exact",
+              "expected": "1875095375/11648691"
+            }
+          ]
+        }
+      ],
+      "capstoneChange": "改变偏置并考查条件二阶矩；需正确处理模式重叠。",
+      "difficultyRisk": "与吸收链共享计算工具，但问题建模不同；统计不假定独立。"
+    },
+    {
+      "id": "MX3-07",
+      "family": "burnside-orbits",
+      "title": "循环约束与扩张对称群",
+      "stem": "长度14的二进制循环串，位置有编号，首尾相邻。前三问恰有5个1且没有相邻的1。",
+      "parts": [
+        {
+          "task": "求有编号串总数 labelled。",
+          "items": [
+            {
+              "key": "labelled",
+              "points": 10,
+              "kind": "exact",
+              "expected": "196"
+            }
+          ]
+        },
+        {
+          "task": "只把旋转视为相同，求 orbits。",
+          "items": [
+            {
+              "key": "orbits",
+              "points": 20,
+              "kind": "exact",
+              "expected": "14"
+            }
+          ]
+        },
+        {
+          "task": "把旋转与反射都视为相同，求 bracelets。",
+          "items": [
+            {
+              "key": "bracelets",
+              "points": 30,
+              "kind": "exact",
+              "expected": "10"
+            }
+          ]
+        },
+        {
+          "task": "条件改为恰有7个1且循环中没有000或111。旋转、反射、全体位取反都视为等价。提交 orbits，以及 histogram=[[轨道大小,该大小的轨道数],...]，只列非零项并按大小升序。",
+          "items": [
+            {
+              "key": "orbits",
+              "points": 10,
+              "kind": "exact",
+              "expected": "15"
+            },
+            {
+              "key": "histogram",
+              "points": 30,
+              "kind": "exact",
+              "expected": [
+                [
+                  "2",
+                  "1"
+                ],
+                [
+                  "14",
+                  "2"
+                ],
+                [
+                  "28",
+                  "10"
+                ],
+                [
+                  "56",
+                  "2"
+                ]
+              ]
+            }
+          ]
+        }
+      ],
+      "capstoneChange": "更换局部约束并扩张群，不能沿用前三问轨道数。",
+      "difficultyRisk": "禁止把大整数本身当作难度证据。"
+    },
+    {
+      "id": "MX3-08",
+      "family": "weighted-tree-correlations",
+      "title": "加权生成树与边相关性",
+      "stem": "无向简单图顶点0..6，边按0起编号，每条[u,v,w]：[[0, 1, 2], [0, 2, 3], [0, 3, 1], [1, 2, 1], [1, 4, 4], [2, 3, 2], [2, 4, 1], [2, 5, 3], [3, 5, 2], [3, 6, 1], [4, 5, 2], [4, 6, 3], [5, 6, 4]]。生成树的权重为边权之积，随机树的概率与权重成正比。",
+      "parts": [
+        {
+          "task": "提交 degree0=顶点0的加权度。",
+          "items": [
+            {
+              "key": "degree0",
+              "points": 10,
+              "kind": "exact",
+              "expected": "6"
+            }
+          ]
+        },
+        {
+          "task": "求所有生成树的总权重 partition。",
+          "items": [
+            {
+              "key": "partition",
+              "points": 20,
+              "kind": "exact",
+              "expected": "61541"
+            }
+          ]
+        },
+        {
+          "task": "提交 joint=边1与边4同时在随机生成树中的概率。",
+          "items": [
+            {
+              "key": "joint",
+              "points": 30,
+              "kind": "exact",
+              "expected": "1452/3239"
+            }
+          ]
+        },
+        {
+          "task": "把边[1, 4, 7, 9, 11]标红，K为树中红边数。提交 polynomial=Σ树权重·z^K的系数数组（固定长度7，从常数项开始），以及 variance=Var(K)。",
+          "items": [
+            {
+              "key": "polynomial",
+              "points": 25,
+              "kind": "exact",
+              "expected": [
+                "464",
+                "5048",
+                "17968",
+                "24813",
+                "11628",
+                "1620",
+                "0"
+              ]
+            },
+            {
+              "key": "variance",
+              "points": 15,
+              "kind": "exact",
+              "expected": "3506974460/3787294681"
+            }
+          ]
+        }
+      ],
+      "capstoneChange": "从单一相关事件扩展到整组边的联合计数和方差。",
+      "difficultyRisk": "可用行列式或枚举；证据是精确系数，不声称验证自然语言证明。"
+    },
+    {
+      "id": "MX3-09",
+      "family": "linear-code-operations",
+      "title": "线性码与缩短穿孔的顺序",
+      "stem": "F₂上的线性码由下列六行生成；字符串左端为位置0，右端为位置11：[\"100000110101\", \"010000101011\", \"001000111000\", \"000100011110\", \"000010100111\", \"000001010101\"].",
+      "parts": [
+        {
+          "task": "提交 dimension=码维数。",
+          "items": [
+            {
+              "key": "dimension",
+              "points": 10,
+              "kind": "exact",
+              "expected": "6"
+            }
+          ]
+        },
+        {
+          "task": "提交 distance=最小非零汉明重量。",
+          "items": [
+            {
+              "key": "distance",
+              "points": 20,
+              "kind": "exact",
+              "expected": "3"
+            }
+          ]
+        },
+        {
+          "task": "提交 enumerator=完整重量分布，长度13，第i项为重量i的码字数。",
+          "items": [
+            {
+              "key": "enumerator",
+              "points": 30,
+              "kind": "exact",
+              "expected": [
+                "1",
+                "0",
+                "0",
+                "2",
+                "6",
+                "15",
+                "18",
+                "13",
+                "5",
+                "1",
+                "2",
+                "1",
+                "0"
+              ]
+            }
+          ]
+        },
+        {
+          "task": "先只保留位置0和1都为0的码字并删除这两位（缩短），再删除原位置7（穿孔）。重复得到的码字只计一次。提交 size=新码大小、enumerator=长度10的重量分布。",
+          "items": [
+            {
+              "key": "size",
+              "points": 10,
+              "kind": "exact",
+              "expected": "16"
+            },
+            {
+              "key": "enumerator",
+              "points": 30,
+              "kind": "exact",
+              "expected": [
+                "1",
+                "0",
+                "0",
+                "2",
+                "3",
+                "6",
+                "4",
+                "0",
+                "0",
+                "0"
+              ]
+            }
+          ]
+        }
+      ],
+      "capstoneChange": "条件筛选后再投影并去重，原重量分布不足以推出新答案。",
+      "difficultyRisk": "64个码字可穷举；该题为组合线代覆盖，不单靠此题抬上限。"
+    },
+    {
+      "id": "MX3-10",
+      "family": "poset-conditioned-counting",
+      "title": "偏序线性扩张与位置统计",
+      "stem": "12个不同元素0..11。每条[u,v]要求u在v前，除此之外仅含传递闭包的约束：[[0, 3], [0, 4], [1, 4], [1, 5], [2, 5], [2, 6], [3, 7], [4, 7], [4, 8], [5, 8], [5, 9], [6, 9], [7, 10], [8, 10], [8, 11], [9, 11]]。每个合法排列等概率，位置从1计。",
+      "parts": [
+        {
+          "task": "提交 minimal=全部极小元按升序列出。",
+          "items": [
+            {
+              "key": "minimal",
+              "points": 10,
+              "kind": "exact",
+              "expected": [
+                "0",
+                "1",
+                "2"
+              ]
+            }
+          ]
+        },
+        {
+          "task": "求合法排列总数 count。",
+          "items": [
+            {
+              "key": "count",
+              "points": 20,
+              "kind": "exact",
+              "expected": "8580"
+            }
+          ]
+        },
+        {
+          "task": "额外要求4在5前，求合法排列数 count。",
+          "items": [
+            {
+              "key": "count",
+              "points": 30,
+              "kind": "exact",
+              "expected": "4290"
+            }
+          ]
+        },
+        {
+          "task": "在额外要求4在5前的条件下，提交 joint_position=E[pos(4)·pos(5)]，以及 first_four=P(pos(4)=4)。",
+          "items": [
+            {
+              "key": "joint_position",
+              "points": 25,
+              "kind": "exact",
+              "expected": "20919/715"
+            },
+            {
+              "key": "first_four",
+              "points": 15,
+              "kind": "exact",
+              "expected": "258/715"
+            }
+          ]
+        }
+      ],
+      "capstoneChange": "计数升级为条件位置联合矩，单一总数不能复用作答案。",
+      "difficultyRisk": "子集动态规划可精确求解；不同小问不是独立样本。"
+    },
+    {
+      "id": "MX3-11",
+      "family": "singular-adic-lifting",
+      "title": "共享因子的奇异提升",
+      "stem": "研究整数同余 (x²−1)(x²−10)≡0 mod 3^k。不同x按模3^k计。不能假定两因子之一单独被3^k整除。",
+      "parts": [
+        {
+          "task": "k=2，按升序提交 roots。",
+          "items": [
+            {
+              "key": "roots",
+              "points": 10,
+              "kind": "exact",
+              "expected": [
+                "1",
+                "2",
+                "4",
+                "5",
+                "7",
+                "8"
+              ]
+            }
+          ]
+        },
+        {
+          "task": "k=5，提交 count=解数。",
+          "items": [
+            {
+              "key": "count",
+              "points": 20,
+              "kind": "exact",
+              "expected": "36"
+            }
+          ]
+        },
+        {
+          "task": "k=8，提交 count，并提交 split_count=满足x²≡1或10 mod3^8的解数。",
+          "items": [
+            {
+              "key": "count",
+              "points": 15,
+              "kind": "exact",
+              "expected": "36"
+            },
+            {
+              "key": "split_count",
+              "points": 15,
+              "kind": "exact",
+              "expected": "4"
+            }
+          ]
+        },
+        {
+          "task": "k=12，提交 count，以及 histogram=[[min(v₃(x²−1),12),该类解数],...]。v₃(0)=∞，只列非零类别，按第一列升序。",
+          "items": [
+            {
+              "key": "count",
+              "points": 10,
+              "kind": "exact",
+              "expected": "36"
+            },
+            {
+              "key": "histogram",
+              "points": 30,
+              "kind": "exact",
+              "expected": [
+                [
+                  "2",
+                  "18"
+                ],
+                [
+                  "10",
+                  "12"
+                ],
+                [
+                  "11",
+                  "4"
+                ],
+                [
+                  "12",
+                  "2"
+                ]
+              ]
+            }
+          ]
+        }
+      ],
+      "capstoneChange": "要求区分因子间分担赋值的根，给出完整赋值分布。",
+      "difficultyRisk": "前问会提示错误捷径；需实测后再认定压轴难度。"
+    },
+    {
+      "id": "MX3-12",
+      "family": "finite-moment-extrema",
+      "title": "有限矩约束下的概率上界",
+      "stem": "X取值于{0,1,...,6}，E[X]=3、E[X²]=11，不作其他分布假设。certificate={weights:[各点概率],dual:[多项式常数项起系数],value:...}；概率须满足所有给定矩，且多项式在每个支持点上≥1{x≥5}，其期望与事件概率都等于value。",
+      "parts": [
+        {
+          "task": "提交 variance=Var(X)。",
+          "items": [
+            {
+              "key": "variance",
+              "points": 10,
+              "kind": "exact",
+              "expected": "2"
+            }
+          ]
+        },
+        {
+          "task": "求P(X≥5)的最大可能值 bound。",
+          "items": [
+            {
+              "key": "bound",
+              "points": 20,
+              "kind": "exact",
+              "expected": "1/3"
+            }
+          ]
+        },
+        {
+          "task": "提交达到上界的分布及二次多项式 certificate。",
+          "items": [
+            {
+              "key": "certificate",
+              "points": 30,
+              "kind": "moment",
+              "problem": {
+                "support": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6
+                ],
+                "moments": [
+                  1,
+                  3,
+                  11
+                ],
+                "objective": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  1
+                ]
+              },
+              "reference": {
+                "weights": [
+                  "0",
+                  "0",
+                  "2/3",
+                  "0",
+                  "0",
+                  "1/3",
+                  "0"
+                ],
+                "dual": [
+                  "1/6",
+                  "-1/4",
+                  "1/12"
+                ],
+                "value": "1/3"
+              }
+            }
+          ]
+        },
+        {
+          "task": "新增E[X³]=45。求新的最大值 bound，并提交满足全部矩的分布及至多三次多项式 certificate（系数数组固定长度4）。",
+          "items": [
+            {
+              "key": "bound",
+              "points": 10,
+              "kind": "exact",
+              "expected": "4/15"
+            },
+            {
+              "key": "certificate",
+              "points": 30,
+              "kind": "moment",
+              "problem": {
+                "support": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6
+                ],
+                "moments": [
+                  1,
+                  3,
+                  11,
+                  45
+                ],
+                "objective": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  1
+                ]
+              },
+              "reference": {
+                "weights": [
+                  "1/15",
+                  "0",
+                  "1/3",
+                  "1/3",
+                  "0",
+                  "4/15",
+                  "0"
+                ],
+                "dual": [
+                  "0",
+                  "1/5",
+                  "-1/6",
+                  "1/30"
+                ],
+                "value": "4/15"
+              }
+            }
+          ]
+        }
+      ],
+      "capstoneChange": "增加三阶矩改变可行分布集合，旧证书不能直接证明新最优值。",
+      "difficultyRisk": "与对偶题共享证书思想；完整覆盖需要保留数学领域标签。"
+    }
+  ],
+  "difficultyCalibrated": false,
+  "productionEligible": false
+}

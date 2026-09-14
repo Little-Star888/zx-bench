@@ -63,12 +63,17 @@ export { attachEvaluationAudit, summarizeCriteria } from './audit.js';
 export { calibrationSplit, normalizeReviewer, validateCalibrationReview, summarizeCalibration, validateReviewTransition, sampleCalibrationCandidates } from './calibration.js';
 export { analyzeRubricQuality } from './rubricQA.js';
 // Read-only, opt-in capability lab inspection; does not alter production grading.
+export { buildFrontierPack, assertFrontierPack, gradeFrontierCase, scoreFrontier } from './evaluationLab/frontierChallenge/index.js';
+export { STRUCTURAL_VERSION, buildStructuralChallenge, assertStructuralPack, gradeStructuralCase, scoreStructuralSubmission } from './evaluationLab/structuralChallenge/index.js';
+export type { StructuralPack, StructuralOptions, StructuralCase, StructuralAnswer, StructuralSubmission } from './evaluationLab/structuralChallenge/index.js';
 export { inspectCapabilitySubmission } from './evaluationLab/capabilityInspection.js';
 export type { InspectionKind, ClaimReviewAttachment } from './evaluationLab/capabilityInspection.js';
 export { confirmProbabilityComparison } from './evaluationLab/probabilityConfirmation.js';
 export type { ProbabilityTrial } from './evaluationLab/probabilityConfirmation.js';
 export { observedDiscrimination, lightweightDiscriminationGate } from './evaluationLab/observedDiscrimination.js';
 export type { ObservedDimensionModel, LightweightDiscriminationOptions } from './evaluationLab/observedDiscrimination.js';
+export { ULTRA_MATH_RUBRIC_VERSION, ULTRA_MATH_RUBRICS, ULTRA_MATH_RELEASE, scoreUltraMathRubric, compareUltraMathScores } from './evaluationLab/ultraMathRubric.js';
+export type { UltraOutcome, UltraAxis, UltraFinding, UltraCriterion, UltraPartRubric, UltraAnswer, UltraCriterionReview, UltraPartReview } from './evaluationLab/ultraMathRubric.js';
 export { CHALLENGE_SUPPLEMENT_VERSION, CHALLENGE_SUPPLEMENT_GRADER_VERSION, CHALLENGE_SUPPLEMENT_SOURCE_VERSION, CHALLENGE_SUPPLEMENT_SOURCE_HASH, CHALLENGE_SUPPLEMENT_IDS } from './evaluationLab/challengeRelease.js';
 export { MC2_004_REVISION_VERSION, buildMc2004Revision, mc2004RevisionReference, gradeMc2004Revision } from './evaluationLab/challengeMathRevision.js';
 export { judgeRoleEvidence } from './evaluationLab/judgeRoleEvidence.js';

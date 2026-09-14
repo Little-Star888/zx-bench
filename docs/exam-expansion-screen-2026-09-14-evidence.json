@@ -1,0 +1,949 @@
+{
+  "contractHash": "14ea766e239ea80d787de4f741d66a0011884c6a5f935b4467b1cbc9ee6f75d9",
+  "selectedGroups": [
+    "MX3-06",
+    "MX3-12"
+  ],
+  "frozenSourcesVerified": true,
+  "modelRequestsReserved": 16,
+  "requestLimit": 16,
+  "automaticRetries": 0,
+  "runs": [
+    {
+      "provider": "deepseek",
+      "modelId": "deepseek-v4-flash",
+      "score": 100,
+      "earned": 200,
+      "points": 200,
+      "comparable": true,
+      "groups": [
+        {
+          "groupId": "MX3-06",
+          "earned": 100,
+          "points": 100,
+          "comparable": true,
+          "score": 100
+        },
+        {
+          "groupId": "MX3-12",
+          "earned": 100,
+          "points": 100,
+          "comparable": true,
+          "score": 100
+        }
+      ],
+      "rows": [
+        {
+          "id": "MX3-06-P1",
+          "groupId": "MX3-06",
+          "number": 1,
+          "hardSeconds": 180,
+          "state": "completed",
+          "items": [
+            {
+              "key": "first_four_A",
+              "points": 10,
+              "submitted": true,
+              "correct": true,
+              "earned": 10
+            }
+          ],
+          "points": 10,
+          "earned": 10,
+          "acceptedRecords": 1,
+          "rejectedRecords": 0,
+          "incompleteTail": false,
+          "overflow": false,
+          "content": "{\"item\":\"first_four_A\",\"answer\":\"24/625\"}",
+          "finishReason": "stop",
+          "latencyMs": 2087,
+          "usage": {
+            "prompt_tokens": 207,
+            "completion_tokens": 303,
+            "total_tokens": 510,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 288
+            },
+            "prompt_cache_hit_tokens": 0,
+            "prompt_cache_miss_tokens": 207
+          },
+          "returnedModels": [
+            "deepseek-flash"
+          ],
+          "maxTokens": 393216,
+          "rawPath": "J:\\AI\\zxbench-runtime\\reports\\exam-expansion-screen-deepseek-20260914\\MX3-06-P1\\raw.json",
+          "rawSha256": "680985cf8880fdbfc9871813d12b7f9f7921baba7515ea2aba540669d1e92c10"
+        },
+        {
+          "id": "MX3-06-P2",
+          "groupId": "MX3-06",
+          "number": 2,
+          "hardSeconds": 360,
+          "state": "completed",
+          "items": [
+            {
+              "key": "win",
+              "points": 20,
+              "submitted": true,
+              "correct": true,
+              "earned": 20
+            }
+          ],
+          "points": 20,
+          "earned": 20,
+          "acceptedRecords": 1,
+          "rejectedRecords": 0,
+          "incompleteTail": false,
+          "overflow": false,
+          "content": "{\"item\":\"win\",\"answer\":\"19/34\"}",
+          "finishReason": "stop",
+          "latencyMs": 21248,
+          "usage": {
+            "prompt_tokens": 390,
+            "completion_tokens": 4745,
+            "total_tokens": 5135,
+            "prompt_tokens_details": {
+              "cached_tokens": 128
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 4733
+            },
+            "prompt_cache_hit_tokens": 128,
+            "prompt_cache_miss_tokens": 262
+          },
+          "returnedModels": [
+            "deepseek-flash"
+          ],
+          "maxTokens": 393216,
+          "rawPath": "J:\\AI\\zxbench-runtime\\reports\\exam-expansion-screen-deepseek-20260914\\MX3-06-P2\\raw.json",
+          "rawSha256": "2166f481037970227c326d7466484ed3b986cc5b407cc0f8dcbc86fa9bc288a4"
+        },
+        {
+          "id": "MX3-06-P3",
+          "groupId": "MX3-06",
+          "number": 3,
+          "hardSeconds": 1200,
+          "state": "completed",
+          "items": [
+            {
+              "key": "conditional_mean",
+              "points": 30,
+              "submitted": true,
+              "correct": true,
+              "earned": 30
+            }
+          ],
+          "points": 30,
+          "earned": 30,
+          "acceptedRecords": 1,
+          "rejectedRecords": 0,
+          "incompleteTail": false,
+          "overflow": false,
+          "content": "{\"item\":\"conditional_mean\",\"answer\":\"307375/15504\"}",
+          "finishReason": "stop",
+          "latencyMs": 54024,
+          "usage": {
+            "prompt_tokens": 579,
+            "completion_tokens": 13188,
+            "total_tokens": 13767,
+            "prompt_tokens_details": {
+              "cached_tokens": 384
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 13173
+            },
+            "prompt_cache_hit_tokens": 384,
+            "prompt_cache_miss_tokens": 195
+          },
+          "returnedModels": [
+            "deepseek-flash"
+          ],
+          "maxTokens": 393216,
+          "rawPath": "J:\\AI\\zxbench-runtime\\reports\\exam-expansion-screen-deepseek-20260914\\MX3-06-P3\\raw.json",
+          "rawSha256": "8f7e28c9d42a26385139798e35602c92a7ad2d5da84357b7c4691abee1bf23e7"
+        },
+        {
+          "id": "MX3-06-P4",
+          "groupId": "MX3-06",
+          "number": 4,
+          "hardSeconds": 1200,
+          "state": "completed",
+          "items": [
+            {
+              "key": "win",
+              "points": 10,
+              "submitted": true,
+              "correct": true,
+              "earned": 10
+            },
+            {
+              "key": "conditional_second",
+              "points": 30,
+              "submitted": true,
+              "correct": true,
+              "earned": 30
+            }
+          ],
+          "points": 40,
+          "earned": 40,
+          "acceptedRecords": 2,
+          "rejectedRecords": 0,
+          "incompleteTail": false,
+          "overflow": false,
+          "content": "{\"item\":\"win\",\"answer\":\"19/29\"}\n{\"item\":\"conditional_second\",\"answer\":\"1875095375/11648691\"}",
+          "finishReason": "stop",
+          "latencyMs": 147925,
+          "usage": {
+            "prompt_tokens": 795,
+            "completion_tokens": 41022,
+            "total_tokens": 41817,
+            "prompt_tokens_details": {
+              "cached_tokens": 512
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 40992
+            },
+            "prompt_cache_hit_tokens": 512,
+            "prompt_cache_miss_tokens": 283
+          },
+          "returnedModels": [
+            "deepseek-flash"
+          ],
+          "maxTokens": 393216,
+          "rawPath": "J:\\AI\\zxbench-runtime\\reports\\exam-expansion-screen-deepseek-20260914\\MX3-06-P4\\raw.json",
+          "rawSha256": "0bc526b6fc84236a5b3fd9cc6234579de995b562a42a04aedf2f2ff874b406b9"
+        },
+        {
+          "id": "MX3-12-P1",
+          "groupId": "MX3-12",
+          "number": 1,
+          "hardSeconds": 180,
+          "state": "completed",
+          "items": [
+            {
+              "key": "variance",
+              "points": 10,
+              "submitted": true,
+              "correct": true,
+              "earned": 10
+            }
+          ],
+          "points": 10,
+          "earned": 10,
+          "acceptedRecords": 1,
+          "rejectedRecords": 0,
+          "incompleteTail": false,
+          "overflow": false,
+          "content": "{\"item\":\"variance\",\"answer\":2}",
+          "finishReason": "stop",
+          "latencyMs": 2035,
+          "usage": {
+            "prompt_tokens": 235,
+            "completion_tokens": 197,
+            "total_tokens": 432,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 186
+            },
+            "prompt_cache_hit_tokens": 0,
+            "prompt_cache_miss_tokens": 235
+          },
+          "returnedModels": [
+            "deepseek-flash"
+          ],
+          "maxTokens": 393216,
+          "rawPath": "J:\\AI\\zxbench-runtime\\reports\\exam-expansion-screen-deepseek-20260914\\MX3-12-P1\\raw.json",
+          "rawSha256": "1b30136750591e7f918396c0417d37cd5a98898d1ed65932e134c3495882737b"
+        },
+        {
+          "id": "MX3-12-P2",
+          "groupId": "MX3-12",
+          "number": 2,
+          "hardSeconds": 360,
+          "state": "completed",
+          "items": [
+            {
+              "key": "bound",
+              "points": 20,
+              "submitted": true,
+              "correct": true,
+              "earned": 20
+            }
+          ],
+          "points": 20,
+          "earned": 20,
+          "acceptedRecords": 1,
+          "rejectedRecords": 0,
+          "incompleteTail": false,
+          "overflow": false,
+          "content": "{\"item\":\"bound\",\"answer\":\"1/3\"}",
+          "finishReason": "stop",
+          "latencyMs": 40465,
+          "usage": {
+            "prompt_tokens": 458,
+            "completion_tokens": 11000,
+            "total_tokens": 11458,
+            "prompt_tokens_details": {
+              "cached_tokens": 128
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 10988
+            },
+            "prompt_cache_hit_tokens": 128,
+            "prompt_cache_miss_tokens": 330
+          },
+          "returnedModels": [
+            "deepseek-flash"
+          ],
+          "maxTokens": 393216,
+          "rawPath": "J:\\AI\\zxbench-runtime\\reports\\exam-expansion-screen-deepseek-20260914\\MX3-12-P2\\raw.json",
+          "rawSha256": "59364bdd8b7aeb774d0ab7d671deb37d631534a37c4cc85c989b5187420c60b7"
+        },
+        {
+          "id": "MX3-12-P3",
+          "groupId": "MX3-12",
+          "number": 3,
+          "hardSeconds": 1200,
+          "state": "completed",
+          "items": [
+            {
+              "key": "certificate",
+              "points": 30,
+              "submitted": true,
+              "correct": true,
+              "earned": 30
+            }
+          ],
+          "points": 30,
+          "earned": 30,
+          "acceptedRecords": 1,
+          "rejectedRecords": 0,
+          "incompleteTail": false,
+          "overflow": false,
+          "content": "{\"item\":\"certificate\",\"answer\":{\"weights\":[0,0,\"2/3\",0,0,\"1/3\",0],\"dual\":[\"4/9\",\"-4/9\",\"1/9\"],\"value\":\"1/3\"}}",
+          "finishReason": "stop",
+          "latencyMs": 32479,
+          "usage": {
+            "prompt_tokens": 683,
+            "completion_tokens": 8005,
+            "total_tokens": 8688,
+            "prompt_tokens_details": {
+              "cached_tokens": 384
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 7952
+            },
+            "prompt_cache_hit_tokens": 384,
+            "prompt_cache_miss_tokens": 299
+          },
+          "returnedModels": [
+            "deepseek-flash"
+          ],
+          "maxTokens": 393216,
+          "rawPath": "J:\\AI\\zxbench-runtime\\reports\\exam-expansion-screen-deepseek-20260914\\MX3-12-P3\\raw.json",
+          "rawSha256": "c7d7d776ac6ab66270f2c60db779a89aa3dc084ffdb5f9ed240fbe6c79588418"
+        },
+        {
+          "id": "MX3-12-P4",
+          "groupId": "MX3-12",
+          "number": 4,
+          "hardSeconds": 1200,
+          "state": "completed",
+          "items": [
+            {
+              "key": "bound",
+              "points": 10,
+              "submitted": true,
+              "correct": true,
+              "earned": 10
+            },
+            {
+              "key": "certificate",
+              "points": 30,
+              "submitted": true,
+              "correct": true,
+              "earned": 30
+            }
+          ],
+          "points": 40,
+          "earned": 40,
+          "acceptedRecords": 2,
+          "rejectedRecords": 0,
+          "incompleteTail": false,
+          "overflow": false,
+          "content": "{\"item\":\"bound\",\"answer\":\"4/15\"}\n{\"item\":\"certificate\",\"answer\":{\"weights\":[\"1/15\",0,\"1/3\",\"1/3\",0,\"4/15\",0],\"dual\":[0,\"1/5\",\"-1/6\",\"1/30\"],\"value\":\"4/15\"}}",
+          "finishReason": "stop",
+          "latencyMs": 48722,
+          "usage": {
+            "prompt_tokens": 976,
+            "completion_tokens": 13072,
+            "total_tokens": 14048,
+            "prompt_tokens_details": {
+              "cached_tokens": 640
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 13002
+            },
+            "prompt_cache_hit_tokens": 640,
+            "prompt_cache_miss_tokens": 336
+          },
+          "returnedModels": [
+            "deepseek-flash"
+          ],
+          "maxTokens": 393216,
+          "rawPath": "J:\\AI\\zxbench-runtime\\reports\\exam-expansion-screen-deepseek-20260914\\MX3-12-P4\\raw.json",
+          "rawSha256": "460520a1c799a46a20d4a6bff1ca9e2d52726e14b386498dd1b9013012d27d9f"
+        }
+      ],
+      "status": "completed",
+      "submissionSha256": "4b508ca6b468b75fd03bcda5d924994b10110856c8b0c119f75a6b53b5a8d811",
+      "plan": {
+        "sharedBudgetDirectory": "J:\\AI\\zxbench-webui\\reports\\progressive-exam-expansion-v3-call-budget",
+        "maxModelCallsAcrossAllExports": 16,
+        "packDir": "J:\\AI\\zxbench-webui\\reports\\exam-expansion-screen-20260914",
+        "contractHash": "14ea766e239ea80d787de4f741d66a0011884c6a5f935b4467b1cbc9ee6f75d9",
+        "provider": {
+          "key": "deepseek-v4-flash",
+          "configId": "e32d8a5d-b6ed-45ac-8bb1-a60859ab419e",
+          "requestedModel": "deepseek-v4-flash",
+          "family": "DeepSeek",
+          "endpoint": "https://api.deepseek.com/chat/completions",
+          "parameters": {
+            "thinking": {
+              "type": "enabled"
+            },
+            "reasoning_effort": "max",
+            "top_p": 0.95
+          },
+          "aliasNote": "Official 2026-09-10 notice: requested v4-flash alias routes to V4.1-Flash; preserve returned model identifiers."
+        },
+        "maxTokens": 393216,
+        "hardSecondsByPart": {
+          "MX3-06-P1": 180,
+          "MX3-06-P2": 360,
+          "MX3-06-P3": 1200,
+          "MX3-06-P4": 1200,
+          "MX3-12-P1": 180,
+          "MX3-12-P2": 360,
+          "MX3-12-P3": 1200,
+          "MX3-12-P4": 1200
+        },
+        "concurrency": 1,
+        "automaticRetries": 0,
+        "budgetVersion": "provider-capacity-2026-09-14-v2",
+        "outputLimitBasis": "Official API maximum 393216",
+        "wireBytesLimit": 268435456,
+        "requestedQuestions": 8,
+        "freshContextPerGroup": true,
+        "carryOnlySubmittedAnswersWithinGroup": true,
+        "answerFeedback": false,
+        "tools": false,
+        "judgeCalls": 0,
+        "productionWrites": false,
+        "budgetScope": "provider-specific thinking; same token/time caps do not imply equal compute",
+        "codeHash": "b7d59e0170664d329fc5560377fd29b3cc3f4504e769e74cb9d0213e834de6ee"
+      }
+    },
+    {
+      "provider": "qwen",
+      "modelId": "qwen3.8-27b-nvfp4",
+      "score": 100,
+      "earned": 200,
+      "points": 200,
+      "comparable": true,
+      "groups": [
+        {
+          "groupId": "MX3-06",
+          "earned": 100,
+          "points": 100,
+          "comparable": true,
+          "score": 100
+        },
+        {
+          "groupId": "MX3-12",
+          "earned": 100,
+          "points": 100,
+          "comparable": true,
+          "score": 100
+        }
+      ],
+      "rows": [
+        {
+          "id": "MX3-06-P1",
+          "groupId": "MX3-06",
+          "number": 1,
+          "hardSeconds": 180,
+          "state": "completed",
+          "items": [
+            {
+              "key": "first_four_A",
+              "points": 10,
+              "submitted": true,
+              "correct": true,
+              "earned": 10
+            }
+          ],
+          "points": 10,
+          "earned": 10,
+          "acceptedRecords": 1,
+          "rejectedRecords": 0,
+          "incompleteTail": false,
+          "overflow": false,
+          "content": "{\"item\":\"first_four_A\",\"answer\":\"24/625\"}",
+          "finishReason": "stop",
+          "latencyMs": 2047,
+          "usage": null,
+          "returnedModels": [
+            "qwen3.8-27b-nvfp4"
+          ],
+          "maxTokens": 110000,
+          "rawPath": "J:\\AI\\zxbench-runtime\\reports\\exam-expansion-screen-qwen-20260914\\MX3-06-P1\\raw.json",
+          "rawSha256": "ad61374869d2726b4294fe094a072dd6e8e2320929f5a9e07b80769ef139d797"
+        },
+        {
+          "id": "MX3-06-P2",
+          "groupId": "MX3-06",
+          "number": 2,
+          "hardSeconds": 360,
+          "state": "completed",
+          "items": [
+            {
+              "key": "win",
+              "points": 20,
+              "submitted": true,
+              "correct": true,
+              "earned": 20
+            }
+          ],
+          "points": 20,
+          "earned": 20,
+          "acceptedRecords": 1,
+          "rejectedRecords": 0,
+          "incompleteTail": false,
+          "overflow": false,
+          "content": "{\"item\":\"win\",\"answer\":\"19/34\"}",
+          "finishReason": "stop",
+          "latencyMs": 71898,
+          "usage": null,
+          "returnedModels": [
+            "qwen3.8-27b-nvfp4"
+          ],
+          "maxTokens": 110000,
+          "rawPath": "J:\\AI\\zxbench-runtime\\reports\\exam-expansion-screen-qwen-20260914\\MX3-06-P2\\raw.json",
+          "rawSha256": "4a2b56c8d092641c6704ec0530f72db7268b0aac7171ec5ba93642df89355ba4"
+        },
+        {
+          "id": "MX3-06-P3",
+          "groupId": "MX3-06",
+          "number": 3,
+          "hardSeconds": 1200,
+          "state": "completed",
+          "items": [
+            {
+              "key": "conditional_mean",
+              "points": 30,
+              "submitted": true,
+              "correct": true,
+              "earned": 30
+            }
+          ],
+          "points": 30,
+          "earned": 30,
+          "acceptedRecords": 1,
+          "rejectedRecords": 0,
+          "incompleteTail": false,
+          "overflow": false,
+          "content": "{\"item\":\"conditional_mean\",\"answer\":\"307375/15504\"}",
+          "finishReason": "stop",
+          "latencyMs": 121323,
+          "usage": null,
+          "returnedModels": [
+            "qwen3.8-27b-nvfp4"
+          ],
+          "maxTokens": 110000,
+          "rawPath": "J:\\AI\\zxbench-runtime\\reports\\exam-expansion-screen-qwen-20260914\\MX3-06-P3\\raw.json",
+          "rawSha256": "1a9b304bd29698fa28105b206ffa940a3d47870b9d3fca2118eac5ae839bb36c"
+        },
+        {
+          "id": "MX3-06-P4",
+          "groupId": "MX3-06",
+          "number": 4,
+          "hardSeconds": 1200,
+          "state": "completed",
+          "items": [
+            {
+              "key": "win",
+              "points": 10,
+              "submitted": true,
+              "correct": true,
+              "earned": 10
+            },
+            {
+              "key": "conditional_second",
+              "points": 30,
+              "submitted": true,
+              "correct": true,
+              "earned": 30
+            }
+          ],
+          "points": 40,
+          "earned": 40,
+          "acceptedRecords": 2,
+          "rejectedRecords": 0,
+          "incompleteTail": false,
+          "overflow": false,
+          "content": "{\"item\":\"win\",\"answer\":\"19/29\"}\n{\"item\":\"conditional_second\",\"answer\":\"1875095375/11648691\"}",
+          "finishReason": "stop",
+          "latencyMs": 382217,
+          "usage": null,
+          "returnedModels": [
+            "qwen3.8-27b-nvfp4"
+          ],
+          "maxTokens": 110000,
+          "rawPath": "J:\\AI\\zxbench-runtime\\reports\\exam-expansion-screen-qwen-20260914\\MX3-06-P4\\raw.json",
+          "rawSha256": "b12c1626a557d1bfaf808272d555c7a57b297b168886930abdb616c56acb9672"
+        },
+        {
+          "id": "MX3-12-P1",
+          "groupId": "MX3-12",
+          "number": 1,
+          "hardSeconds": 180,
+          "state": "completed",
+          "items": [
+            {
+              "key": "variance",
+              "points": 10,
+              "submitted": true,
+              "correct": true,
+              "earned": 10
+            }
+          ],
+          "points": 10,
+          "earned": 10,
+          "acceptedRecords": 1,
+          "rejectedRecords": 0,
+          "incompleteTail": false,
+          "overflow": false,
+          "content": "{\"item\":\"variance\",\"answer\":2}",
+          "finishReason": "stop",
+          "latencyMs": 3912,
+          "usage": null,
+          "returnedModels": [
+            "qwen3.8-27b-nvfp4"
+          ],
+          "maxTokens": 110000,
+          "rawPath": "J:\\AI\\zxbench-runtime\\reports\\exam-expansion-screen-qwen-20260914\\MX3-12-P1\\raw.json",
+          "rawSha256": "6b121345daff6f84371bb6d3faf2eda8ed275393f48ac49c0b12f1849121824c"
+        },
+        {
+          "id": "MX3-12-P2",
+          "groupId": "MX3-12",
+          "number": 2,
+          "hardSeconds": 360,
+          "state": "completed",
+          "items": [
+            {
+              "key": "bound",
+              "points": 20,
+              "submitted": true,
+              "correct": true,
+              "earned": 20
+            }
+          ],
+          "points": 20,
+          "earned": 20,
+          "acceptedRecords": 1,
+          "rejectedRecords": 0,
+          "incompleteTail": false,
+          "overflow": false,
+          "content": "{\"item\":\"bound\",\"answer\":\"1/3\"}",
+          "finishReason": "stop",
+          "latencyMs": 38771,
+          "usage": null,
+          "returnedModels": [
+            "qwen3.8-27b-nvfp4"
+          ],
+          "maxTokens": 110000,
+          "rawPath": "J:\\AI\\zxbench-runtime\\reports\\exam-expansion-screen-qwen-20260914\\MX3-12-P2\\raw.json",
+          "rawSha256": "4737d0ccecded2f7876fab9cdb37ae34f1d09e9dd616e46de1a0821d95c0f0ea"
+        },
+        {
+          "id": "MX3-12-P3",
+          "groupId": "MX3-12",
+          "number": 3,
+          "hardSeconds": 1200,
+          "state": "completed",
+          "items": [
+            {
+              "key": "certificate",
+              "points": 30,
+              "submitted": true,
+              "correct": true,
+              "earned": 30
+            }
+          ],
+          "points": 30,
+          "earned": 30,
+          "acceptedRecords": 1,
+          "rejectedRecords": 0,
+          "incompleteTail": false,
+          "overflow": false,
+          "content": "{\"item\":\"certificate\",\"answer\":{\"weights\":[0,0,\"2/3\",0,0,\"1/3\",0],\"dual\":[\"1/6\",\"-1/4\",\"1/12\"],\"value\":\"1/3\"}}",
+          "finishReason": "stop",
+          "latencyMs": 54530,
+          "usage": null,
+          "returnedModels": [
+            "qwen3.8-27b-nvfp4"
+          ],
+          "maxTokens": 110000,
+          "rawPath": "J:\\AI\\zxbench-runtime\\reports\\exam-expansion-screen-qwen-20260914\\MX3-12-P3\\raw.json",
+          "rawSha256": "e4f7a01a5f717e38fe90bef194d08901488844a0369a27f174e69a4f6f51d474"
+        },
+        {
+          "id": "MX3-12-P4",
+          "groupId": "MX3-12",
+          "number": 4,
+          "hardSeconds": 1200,
+          "state": "completed",
+          "items": [
+            {
+              "key": "bound",
+              "points": 10,
+              "submitted": true,
+              "correct": true,
+              "earned": 10
+            },
+            {
+              "key": "certificate",
+              "points": 30,
+              "submitted": true,
+              "correct": true,
+              "earned": 30
+            }
+          ],
+          "points": 40,
+          "earned": 40,
+          "acceptedRecords": 2,
+          "rejectedRecords": 0,
+          "incompleteTail": false,
+          "overflow": false,
+          "content": "{\"item\":\"bound\",\"answer\":\"4/15\"}\n{\"item\":\"certificate\",\"answer\":{\"weights\":[\"1/15\",\"0\",\"1/3\",\"1/3\",\"0\",\"4/15\",\"0\"],\"dual\":[\"0\",\"1/5\",\"-1/6\",\"1/30\"],\"value\":\"4/15\"}}",
+          "finishReason": "stop",
+          "latencyMs": 84576,
+          "usage": null,
+          "returnedModels": [
+            "qwen3.8-27b-nvfp4"
+          ],
+          "maxTokens": 110000,
+          "rawPath": "J:\\AI\\zxbench-runtime\\reports\\exam-expansion-screen-qwen-20260914\\MX3-12-P4\\raw.json",
+          "rawSha256": "d04e2588f2102faa1ee797f5da5eedc2c02357c7bfebe7c231f53ae240fb9865"
+        }
+      ],
+      "status": "completed",
+      "submissionSha256": "d06735ab2934bf1831505afaab11967f8e87125d4e4a3852b26cdde7afbe7f45",
+      "plan": {
+        "sharedBudgetDirectory": "J:\\AI\\zxbench-webui\\reports\\progressive-exam-expansion-v3-call-budget",
+        "maxModelCallsAcrossAllExports": 16,
+        "packDir": "J:\\AI\\zxbench-webui\\reports\\exam-expansion-screen-20260914",
+        "contractHash": "14ea766e239ea80d787de4f741d66a0011884c6a5f935b4467b1cbc9ee6f75d9",
+        "provider": {
+          "key": "qwen-nvfp4",
+          "configId": "086461bc-49c6-4bd6-b4b8-f8260be0f71f",
+          "requestedModel": "qwen3.8-27b-nvfp4",
+          "family": "Qwen3.8",
+          "endpoint": "http://127.0.0.1:8081/v1/chat/completions",
+          "parameters": {
+            "temperature": 0.6,
+            "top_p": 0.95
+          }
+        },
+        "maxTokens": 110000,
+        "hardSecondsByPart": {
+          "MX3-06-P1": 180,
+          "MX3-06-P2": 360,
+          "MX3-06-P3": 1200,
+          "MX3-06-P4": 1200,
+          "MX3-12-P1": 180,
+          "MX3-12-P2": 360,
+          "MX3-12-P3": 1200,
+          "MX3-12-P4": 1200
+        },
+        "concurrency": 1,
+        "automaticRetries": 0,
+        "budgetVersion": "provider-capacity-2026-09-14-v2",
+        "outputLimitBasis": "Observed local context 120000, reserve 10000 for prompt",
+        "wireBytesLimit": 268435456,
+        "requestedQuestions": 8,
+        "freshContextPerGroup": true,
+        "carryOnlySubmittedAnswersWithinGroup": true,
+        "answerFeedback": false,
+        "tools": false,
+        "judgeCalls": 0,
+        "productionWrites": false,
+        "budgetScope": "provider-specific thinking; same token/time caps do not imply equal compute",
+        "codeHash": "b7d59e0170664d329fc5560377fd29b3cc3f4504e769e74cb9d0213e834de6ee"
+      }
+    }
+  ],
+  "ledger": [
+    {
+      "run": "J:\\AI\\zxbench-webui\\reports\\exam-expansion-screen-deepseek-20260914",
+      "provider": "deepseek-v4-flash",
+      "question": "MX3-06-P1",
+      "questionHash": "01190dc1f90cefb5b31bd19c9506c61797e23841ae58bce1d992db767625d138",
+      "requestHash": "a57980aa413d04d952ad2c8cbe161803e244ab182afbb9913003cd22799c0ce7",
+      "reservedAt": "2026-09-14T06:23:09.764Z"
+    },
+    {
+      "run": "J:\\AI\\zxbench-webui\\reports\\exam-expansion-screen-deepseek-20260914",
+      "provider": "deepseek-v4-flash",
+      "question": "MX3-06-P2",
+      "questionHash": "abe98482341fb4dad404ee1acacd09e60dbaaac68711c96692a89ea9ccd0c6f9",
+      "requestHash": "2c04e9a2dbcf8e143fc14e7d79f417af9c5707d995604d6ee2850d24c1d67504",
+      "reservedAt": "2026-09-14T06:23:11.860Z"
+    },
+    {
+      "run": "J:\\AI\\zxbench-webui\\reports\\exam-expansion-screen-qwen-20260914",
+      "provider": "qwen-nvfp4",
+      "question": "MX3-06-P1",
+      "questionHash": "01190dc1f90cefb5b31bd19c9506c61797e23841ae58bce1d992db767625d138",
+      "requestHash": "fbf7413ad833781070337fe2c85f3576ea0812bfe0e2f7d29dbdf698ec1273b4",
+      "reservedAt": "2026-09-14T06:23:19.938Z"
+    },
+    {
+      "run": "J:\\AI\\zxbench-webui\\reports\\exam-expansion-screen-qwen-20260914",
+      "provider": "qwen-nvfp4",
+      "question": "MX3-06-P2",
+      "questionHash": "abe98482341fb4dad404ee1acacd09e60dbaaac68711c96692a89ea9ccd0c6f9",
+      "requestHash": "91e737abe6b7b8a3ab26b1f34890c5c82b975216745efe65770c5f1f14ee9e11",
+      "reservedAt": "2026-09-14T06:23:21.996Z"
+    },
+    {
+      "run": "J:\\AI\\zxbench-webui\\reports\\exam-expansion-screen-deepseek-20260914",
+      "provider": "deepseek-v4-flash",
+      "question": "MX3-06-P3",
+      "questionHash": "8d9a16a28ec83bb17265b7ea56c49d36b56a8db37633bb2721aec383b281f091",
+      "requestHash": "96fb761ce5c386f3ec1fa9b1ae3d095aedda3b97c2650e2bd28c1fb9e2890430",
+      "reservedAt": "2026-09-14T06:23:33.121Z"
+    },
+    {
+      "run": "J:\\AI\\zxbench-webui\\reports\\exam-expansion-screen-deepseek-20260914",
+      "provider": "deepseek-v4-flash",
+      "question": "MX3-06-P4",
+      "questionHash": "7ebd2a10928750abd51f3879f0cf4bc422409974e3aff97f0f0a7f62f445e02c",
+      "requestHash": "94454f3a403b3a82abe7354a2320b5f9539bd859639594424fb8c5143a64640b",
+      "reservedAt": "2026-09-14T06:24:27.158Z"
+    },
+    {
+      "run": "J:\\AI\\zxbench-webui\\reports\\exam-expansion-screen-qwen-20260914",
+      "provider": "qwen-nvfp4",
+      "question": "MX3-06-P3",
+      "questionHash": "8d9a16a28ec83bb17265b7ea56c49d36b56a8db37633bb2721aec383b281f091",
+      "requestHash": "d0f44ec68e305d64d2f54b66bbdac14b3ff686ec95c5e64aa722c6892b99e6b9",
+      "reservedAt": "2026-09-14T06:24:33.916Z"
+    },
+    {
+      "run": "J:\\AI\\zxbench-webui\\reports\\exam-expansion-screen-qwen-20260914",
+      "provider": "qwen-nvfp4",
+      "question": "MX3-06-P4",
+      "questionHash": "7ebd2a10928750abd51f3879f0cf4bc422409974e3aff97f0f0a7f62f445e02c",
+      "requestHash": "987442ce6fb493c2ea631ab1f1b8f966e15e8b4440fdf8f20f7bab7f700854d3",
+      "reservedAt": "2026-09-14T06:26:35.259Z"
+    },
+    {
+      "run": "J:\\AI\\zxbench-webui\\reports\\exam-expansion-screen-deepseek-20260914",
+      "provider": "deepseek-v4-flash",
+      "question": "MX3-12-P1",
+      "questionHash": "b5e7641ead219365b3efedec54f8c7681593edc8bbc6a0bc517cc7436b4f8d26",
+      "requestHash": "ebc14bc793f844332a1feda0242db8417af477fba382751855e6eef51381f946",
+      "reservedAt": "2026-09-14T06:26:55.092Z"
+    },
+    {
+      "run": "J:\\AI\\zxbench-webui\\reports\\exam-expansion-screen-deepseek-20260914",
+      "provider": "deepseek-v4-flash",
+      "question": "MX3-12-P2",
+      "questionHash": "51c8cc2e442bcd64b8482954c6853ef2e728a87551726b46186b98ccafcae852",
+      "requestHash": "6395dd51cce68a21e2eecce4f6b961646d2cdb7da9150385f69a78d2bbdf31f6",
+      "reservedAt": "2026-09-14T06:26:57.140Z"
+    },
+    {
+      "run": "J:\\AI\\zxbench-webui\\reports\\exam-expansion-screen-deepseek-20260914",
+      "provider": "deepseek-v4-flash",
+      "question": "MX3-12-P3",
+      "questionHash": "42aaf17759cf1fc328d7cf3b67255d8860ba76eae5317d9cd995334af7a94b7c",
+      "requestHash": "ddfe9b827d732888733c4b34e84c34ba77f899da2861e21e613848a580ccda84",
+      "reservedAt": "2026-09-14T06:27:37.616Z"
+    },
+    {
+      "run": "J:\\AI\\zxbench-webui\\reports\\exam-expansion-screen-deepseek-20260914",
+      "provider": "deepseek-v4-flash",
+      "question": "MX3-12-P4",
+      "questionHash": "6d3c28639d519ea2b601c582ffd648e672e20aac58f92a726152c4c65c848a9c",
+      "requestHash": "92f55abbfe12a3a9b2bb6467f5a98d2d8e1ebb311fd551d0be76bca02c542f6f",
+      "reservedAt": "2026-09-14T06:28:10.104Z"
+    },
+    {
+      "run": "J:\\AI\\zxbench-webui\\reports\\exam-expansion-screen-qwen-20260914",
+      "provider": "qwen-nvfp4",
+      "question": "MX3-12-P1",
+      "questionHash": "b5e7641ead219365b3efedec54f8c7681593edc8bbc6a0bc517cc7436b4f8d26",
+      "requestHash": "ec0a26bc22efba452d23dc8324b89e7a6e26b5128cd90ea3de0914ceb0c32db0",
+      "reservedAt": "2026-09-14T06:32:57.495Z"
+    },
+    {
+      "run": "J:\\AI\\zxbench-webui\\reports\\exam-expansion-screen-qwen-20260914",
+      "provider": "qwen-nvfp4",
+      "question": "MX3-12-P2",
+      "questionHash": "51c8cc2e442bcd64b8482954c6853ef2e728a87551726b46186b98ccafcae852",
+      "requestHash": "d5ffb3aa3588491e19fcb0dc574c2cca9083ce3935efd327791abcc1ef9171a2",
+      "reservedAt": "2026-09-14T06:33:01.425Z"
+    },
+    {
+      "run": "J:\\AI\\zxbench-webui\\reports\\exam-expansion-screen-qwen-20260914",
+      "provider": "qwen-nvfp4",
+      "question": "MX3-12-P3",
+      "questionHash": "42aaf17759cf1fc328d7cf3b67255d8860ba76eae5317d9cd995334af7a94b7c",
+      "requestHash": "161a43b9123a2db749d258a68097de44fbc7a5d1ab55c3341ea0a151b0d0d044",
+      "reservedAt": "2026-09-14T06:33:40.209Z"
+    },
+    {
+      "run": "J:\\AI\\zxbench-webui\\reports\\exam-expansion-screen-qwen-20260914",
+      "provider": "qwen-nvfp4",
+      "question": "MX3-12-P4",
+      "questionHash": "6d3c28639d519ea2b601c582ffd648e672e20aac58f92a726152c4c65c848a9c",
+      "requestHash": "5d38f2d6c4f84159039f5d84915445ef6e7179e6e088e951ea9432db8b3ef7a3",
+      "reservedAt": "2026-09-14T06:34:34.763Z"
+    }
+  ],
+  "productionEligible": false,
+  "scope": "Two preselected mathematical groups; one attempt per part per model; not a 12-group calibration.",
+  "groupReview": [
+    {
+      "groupId": "MX3-06",
+      "scores": {
+        "deepseek-v4-flash": 100,
+        "qwen3.8-27b-nvfp4": 100
+      },
+      "observedSpread": 0,
+      "allMeasuredModelsFullCredit": true,
+      "strongModelCeilingUnresolved": true,
+      "productionEligible": false
+    },
+    {
+      "groupId": "MX3-12",
+      "scores": {
+        "deepseek-v4-flash": 100,
+        "qwen3.8-27b-nvfp4": 100
+      },
+      "observedSpread": 0,
+      "allMeasuredModelsFullCredit": true,
+      "strongModelCeilingUnresolved": true,
+      "productionEligible": false
+    }
+  ]
+}
