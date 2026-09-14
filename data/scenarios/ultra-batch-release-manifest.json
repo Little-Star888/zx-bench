@@ -1,0 +1,82 @@
+{
+  "version": "ultra-three-dimension-batch-2026-09-14-v1",
+  "status": "active_explicit_progressive_track",
+  "defaultAtomicBank": false,
+  "historicalScoresChanged": false,
+  "structure": {
+    "dimensions": 3,
+    "groupsPerDimension": 12,
+    "partsPerGroup": 4,
+    "groups": 36,
+    "parts": 144,
+    "pointsPerGroup": 100,
+    "partPoints": [10, 20, 30, 40],
+    "highDifficultyPartSeconds": 1200
+  },
+  "execution": {
+    "futurePartsHidden": true,
+    "carryOnlyPriorSubmittedAnswers": true,
+    "freshContextPerGroup": true,
+    "answerFeedback": false,
+    "automaticRetries": 0,
+    "tools": false,
+    "timeout": "keep_committed_points",
+    "automaticModelExecution": false
+  },
+  "dimensions": {
+    "reasoning_math": {
+      "groups": [
+        {"id": "UMX-01", "source": "ultra-math-exam-2026-09-14-v1", "status": "screened_no_ceiling"},
+        {"id": "UMX-02", "source": "ultra-math-exam-2026-09-14-v1", "status": "screened_no_ceiling"},
+        {"id": "MX3-01", "source": "math-exam-expansion-2026-09-14-v3", "status": "frozen_unmeasured"},
+        {"id": "MX3-02", "source": "math-exam-expansion-2026-09-14-v3", "status": "frozen_unmeasured"},
+        {"id": "MX3-03", "source": "math-exam-expansion-2026-09-14-v3", "status": "frozen_unmeasured"},
+        {"id": "MX3-04", "source": "math-exam-expansion-2026-09-14-v3", "status": "frozen_unmeasured"},
+        {"id": "MX3-05", "source": "math-exam-expansion-2026-09-14-v3", "status": "frozen_unmeasured"},
+        {"id": "MX3-07", "source": "math-exam-expansion-2026-09-14-v3", "status": "frozen_unmeasured"},
+        {"id": "MX3-08", "source": "math-exam-expansion-2026-09-14-v3", "status": "frozen_unmeasured"},
+        {"id": "MX3-09", "source": "math-exam-expansion-2026-09-14-v3", "status": "frozen_unmeasured"},
+        {"id": "MX3-10", "source": "math-exam-expansion-2026-09-14-v3", "status": "frozen_unmeasured"},
+        {"id": "MX3-11", "source": "math-exam-expansion-2026-09-14-v3", "status": "frozen_unmeasured"}
+      ],
+      "scoring": "exact_or_certificate_for_MX3; conclusion_proof_completion_rubric_for_UMX",
+      "proofReview": "independent_review_required_for_official_UMX_scores",
+      "excluded": [
+        {"id": "MX3-06", "reason": "two-model all-pass screen"},
+        {"id": "MX3-12", "reason": "two-model all-pass screen"}
+      ]
+    },
+    "data_extraction": {
+      "groups": ["DX3-01", "DX3-02", "DX3-03", "DX3-04", "DX3-05", "DX3-06", "DX3-07", "DX3-08", "DX3-09", "DX3-10", "DX3-11", "DX3-12"],
+      "source": "ultra-evidence-exam-2026-09-14-v2",
+      "status": "frozen_prospective",
+      "scoring": "content_leaf_micro_f1_with_extra_guess_penalty_and_semantic_caps; formal_bitemporal_grading_for_DX3-05",
+      "coverage": ["refund_lineage", "repair_lineage", "sample_lineage", "inventory_replay", "bitemporal_snapshot", "contract_revision", "aggregation_basis", "meeting_resolution", "tiered_billing", "batch_recall", "permission_snapshot", "entity_resolution"]
+    },
+    "hallucination_resistance": {
+      "groups": ["HX3-01", "HX3-02", "HX3-03", "HX3-04", "HX3-05", "HX3-06", "HX3-07", "HX3-08", "HX3-09", "HX3-10", "HX3-11", "HX3-12"],
+      "source": "ultra-evidence-exam-2026-09-14-v2",
+      "status": "frozen_prospective",
+      "scoring": "determination_value_evidence_field_scoring_with_status_caps; formal_minimal_support_or_countermodels_for_HX3-11",
+      "coverage": ["retroactive_correction", "independent_conflict", "incomplete_roster", "conditional_exception", "statistical_scope", "causal_identification", "modal_plan", "entity_ambiguity", "citation_break", "temporal_validity", "incomplete_rules", "local_contradiction"]
+    }
+  },
+  "qualityGates": {
+    "referenceReplayRequired": true,
+    "questionHashRequired": true,
+    "goldNotSentToModel": true,
+    "explicitAnswerHintsForbidden": true,
+    "difficultyCalibrated": false,
+    "newModelCallsUsedForAuthoring": 0,
+    "officialLeaderboardRequiresProspectiveScreen": true
+  },
+  "sources": {
+    "mathQuestions": "docs/ultra-math-2026-09-14-questions.md",
+    "mathExpansion": "packages/core/src/evaluationLab/examExpansion/math-candidates.json",
+    "evidenceCatalog": "packages/core/src/evaluationLab/evidenceExam/catalog.ts",
+    "evidenceEngine": "packages/core/src/evaluationLab/evidenceExam/index.ts",
+    "rubric": "packages/core/src/evaluationLab/ultraMathRubric.ts",
+    "federatedExporter": "packages/core/src/scripts/ultra-batch.ts",
+    "releaseNotes": "docs/ultra-three-dimension-batch-release-2026-09-14.md"
+  }
+}

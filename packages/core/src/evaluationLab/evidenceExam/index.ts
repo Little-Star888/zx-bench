@@ -3,12 +3,14 @@ import { committedItems, type ExamSubmission } from '../examPaper/index.js';
 import { exactKeys } from '../challengeTypes.js';
 import { temporalStem, snapshot, gradeSnapshot, type Slot } from './temporal.js';
 import { rules, updatedRules, ruleStem, referenceRule, gradeRule, names, type Rule } from './rules.js';
+import { evidenceCatalogGroups, type ExactEvidenceItem, type JsonValue } from './catalog.js';
 
-type Item={key:string;points:number;kind:'snapshot';slot:Slot}|{key:string;points:number;kind:'rule';rules:Rule[];variable:number};
+type Item={key:string;points:number;kind:'snapshot';slot:Slot}|{key:string;points:number;kind:'rule';rules:Rule[];variable:number}|ExactEvidenceItem;
+type Group={id:string;dimension:'data_extraction'|'hallucination_resistance';title:string;stem:string;parts:{material?:string;task:string;items:Item[]}[]};
 function temporalItems(valid:number,known:number,fields:[string,string,number][]):Item[]{return fields.map(([entity,field,points])=>({key:`${entity}.${field}`,points,kind:'snapshot',slot:{entity,field,valid,known}}));}
 function ruleItems(rs:Rule[],variables:number[],points:number):Item[]{return variables.map(variable=>({key:names[variable-1],points,kind:'rule',rules:rs,variable}));}
 export function buildEvidenceExam(){
-  const groups=[
+  const groups:Group[]=[
     {id:'DX3-05',dimension:'data_extraction',title:'双时态工单快照',stem:temporalStem,parts:[
       {task:'查询(V=1,K=1)：A.status、A.owner。',items:temporalItems(1,1,[['A','status',5],['A','owner',5]])},
       {task:'查询(V=5,K=5)：A.status、A.owner、B.status、B.owner。',items:temporalItems(5,5,[['A','status',5],['A','owner',5],['B','status',5],['B','owner',5]])},
@@ -21,27 +23,42 @@ export function buildEvidenceExam(){
       {task:'分别判断I、L；若不能确定，提供完整正反赋值。',items:ruleItems(rules,[9,12],15)},
       {task:'撤回S02；新增S15:[-9]、S16:[13,-8]、S17:[8,-13]。旧S02不能再作为依据。分别判断K、N、M、G，并基于更新后的全部有效材料提供依据。',items:ruleItems(updatedRules,[11,14,13,7],10)},
     ]},
+    ...evidenceCatalogGroups,
   ];
-  const policy={version:'evidence-exam-2026-09-14-v1',modelCalls:0,productionEligible:false,difficultyCalibrated:false,
+  const policy={version:'ultra-evidence-exam-2026-09-14-v2',modelCalls:0,productionEligible:true,officialRankingEligible:false,difficultyCalibrated:false,
     hardSeconds:[180,360,1200,1200],partPoints:[10,20,30,40],carrySubmittedAnswers:true,answerFeedback:false,
     timeout:'keep_committed_points',unknownSlots:'ignored_no_credit',automaticModelExecution:false};
   const parts=groups.flatMap(g=>g.parts.map((part,i)=>{
     const id=`${g.id}-P${i+1}`,points=part.items.reduce((s,x)=>s+x.points,0),hardSeconds=policy.hardSeconds[i];
     const question={id,dimension:g.dimension,messages:[{role:'user' as const,content:
-      `${g.title}，第${i+1}/4问，${points}分，时限${hardSeconds}秒。\n${g.stem}\n本问：${part.task}\n评分项：${part.items.map(x=>`${x.key}(${x.points}分)`).join('、')}。\n`+
+      `${g.title}，第${i+1}/4问，${points}分，时限${hardSeconds}秒。\n${g.stem}${part.material?`\n本问新增材料：\n${part.material}`:''}\n本问：${part.task}\n评分项：${part.items.map(x=>`${x.key}(${x.points}分)`).join('、')}。\n`+
       '每项单独提交完整JSON：{"item":"评分项ID","answer":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。'}]};
     return {id,groupId:g.id,dimension:g.dimension,number:i+1,points,hardSeconds,items:part.items,question:{...question,questionHash:snapshotHash(question)}};
   }));
   return {policy,parts,questions:parts.map(p=>p.question),contractHash:snapshotHash({policy,parts})};
 }
 export type EvidenceExam=ReturnType<typeof buildEvidenceExam>;
-export function referenceOutput(part:EvidenceExam['parts'][number]){return part.items.map(i=>JSON.stringify({item:i.key,answer:i.kind==='snapshot'?snapshot(i.slot):referenceRule(i.rules,i.variable)})).join('\n');}
+export function referenceOutput(part:EvidenceExam['parts'][number]){return part.items.map(i=>JSON.stringify({item:i.key,answer:i.kind==='snapshot'?snapshot(i.slot):i.kind==='rule'?referenceRule(i.rules,i.variable):i.expected})).join('\n');}
 const round=(n:number)=>Math.round(n*1000000)/1000000;
+const leaves=(value:unknown,path='$',out=new Map<string,unknown>())=>{
+  if(Array.isArray(value)){if(value.length===0)out.set(path,[]);else value.forEach((v,i)=>leaves(v,`${path}[${i}]`,out));return out;}
+  if(value!==null&&typeof value==='object'){const entries=Object.entries(value as Record<string,unknown>);if(entries.length===0)out.set(path,{});else entries.forEach(([k,v])=>leaves(v,`${path}.${k}`,out));return out;}
+  out.set(path,value);return out;
+};
+function gradeExact(expected:JsonValue,answer:unknown,points:number){
+  const gold=leaves(expected),submitted=leaves(answer),same=(a:unknown,b:unknown)=>Object.is(a,b)||JSON.stringify(a)===JSON.stringify(b);
+  const correct=[...gold].filter(([k,v])=>submitted.has(k)&&same(submitted.get(k),v)).length;
+  const denominator=gold.size+submitted.size,fieldF1=denominator?2*correct/denominator:1;
+  const wrong=(suffix:string)=>[...gold].filter(([k,v])=>k.endsWith(suffix)&&(!submitted.has(k)||!same(submitted.get(k),v))).length;
+  const statusErrors=wrong('.status'),contentErrors=[...gold].filter(([k,v])=>!k.includes('.sources')&&!k.endsWith('.status')&&(!submitted.has(k)||!same(submitted.get(k),v))).length;
+  const semanticCap=statusErrors?0.5:contentErrors?0.8:1;
+  return {earned:points*Math.min(fieldF1,semanticCap),fieldF1,semanticCap,statusErrors,contentErrors,correctLeaves:correct,expectedLeaves:gold.size,submittedLeaves:submitted.size};
+}
 export function gradePart(part:EvidenceExam['parts'][number],output:string){
   const parsed=committedItems(output,part.items.map(i=>i.key));
   const items=part.items.map(i=>{
     const submitted=parsed.items.has(i.key),answer=parsed.items.get(i.key);
-    const result=i.kind==='snapshot'?gradeSnapshot(i.slot,answer,i.points):gradeRule(i.rules,i.variable,answer,i.points);
+    const result=i.kind==='snapshot'?gradeSnapshot(i.slot,answer,i.points):i.kind==='rule'?gradeRule(i.rules,i.variable,answer,i.points):gradeExact(i.expected,answer,i.points);
     return {key:i.key,points:i.points,submitted,...result,earned:round(result.earned)};
   });
   return {items,points:part.points,earned:round(items.reduce((s,x)=>s+x.earned,0)),incompleteTail:parsed.incompleteTail,rejectedRecords:parsed.rejected,overflow:parsed.overflow};
@@ -58,7 +75,7 @@ export function scoreExam(paper:EvidenceExam,input:ExamSubmission){
     const r=rows.filter(r=>r.dimension===d),earned=round(r.reduce((s,x)=>s+x.earned,0)),points=r.reduce((s,x)=>s+x.points,0),comparable=r.every(x=>!['environment_error','not_attempted'].includes(x.state));
     return {dimension:d,earned,points,comparable,score:comparable?round(100*earned/points):null};
   });
-  return {contractHash:paper.contractHash,modelId:input.modelId,rows,dimensions,productionEligible:false,difficultyCalibrated:false};
+  return {contractHash:paper.contractHash,modelId:input.modelId,rows,dimensions,productionEligible:paper.policy.productionEligible,officialRankingEligible:paper.policy.officialRankingEligible,difficultyCalibrated:paper.policy.difficultyCalibrated};
 }
 export function examMessages(paper:EvidenceExam,part:EvidenceExam['parts'][number],input:ExamSubmission['answers']){
   const messages:{role:'user'|'assistant';content:string}[]=[];

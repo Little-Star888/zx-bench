@@ -26,11 +26,29 @@ describe('targeted evidence semantics',()=>{
     expect(gradeRule(updatedRules,13,bad,10).earned).toBe(3);
     expect(gradeRule(rules,1,{status:'insufficient',value:null,witnessTrue:Array(14).fill(true),witnessFalse:Array(14).fill(false)},10).earned).toBe(0);
   });
-  it('assembles eight questions and retains committed points when a final part is cut off',()=>{
-    const p=buildEvidenceExam();expect(p.parts).toHaveLength(8);
+  it('assembles twelve progressive papers per dimension and retains committed points when a part is cut off',()=>{
+    const p=buildEvidenceExam();expect(p.parts).toHaveLength(96);
+    expect(p.parts.filter(x=>x.dimension==='data_extraction')).toHaveLength(48);
+    expect(p.parts.filter(x=>x.dimension==='hallucination_resistance')).toHaveLength(48);
+    expect(new Set(p.parts.map(x=>x.groupId))).toHaveLength(24);
+    for(const groupId of new Set(p.parts.map(x=>x.groupId))){
+      const group=p.parts.filter(x=>x.groupId===groupId);
+      expect(group.map(x=>x.points)).toEqual([10,20,30,40]);
+      expect(group.map(x=>x.hardSeconds)).toEqual([180,360,1200,1200]);
+    }
     const input={contractHash:p.contractHash,runId:'synthetic',modelId:'synthetic',modelFamily:'synthetic',answers:p.parts.map(part=>({id:part.id,questionHash:part.question.questionHash,outcome:'completed' as const,output:referenceOutput(part)}))};
     expect(scoreExam(p,input).dimensions.map(x=>x.score)).toEqual([100,100]);
     const cut={...input,answers:input.answers.map((a,i)=>i===3?{...a,outcome:'truncated' as const,output:a.output.split('\n')[0]+'\n{"item":"A.owner","answer":'}:a)};
-    expect(scoreExam(p,cut).dimensions.map(x=>x.score)).toEqual([68,100]);
+    const scored=scoreExam(p,cut);
+    expect(scored.rows[3].earned).toBe(8);
+    expect(scored.dimensions[0].score).toBeLessThan(100);
+    expect(scored.dimensions[1].score).toBe(100);
+  });
+  it('scores structured leaves without giving free points for extra guesses',()=>{
+    const p=buildEvidenceExam(),part=p.parts.find(x=>x.id==='DX3-01-P1')!;
+    expect(scoreExam(p,{contractHash:p.contractHash,runId:'x',modelId:'x',modelFamily:'x',answers:[{id:part.id,questionHash:part.question.questionHash,outcome:'completed',output:referenceOutput(part)}]}).rows.find(x=>x.id===part.id)?.earned).toBe(10);
+    const noisy='{"item":"result","answer":{"order_id":"O-42","line_id":"wrong","sku":"K7","ordered_qty":4,"unit_price":125,"currency":"CNY","sources":["O01"],"guess":"free"}}';
+    const row=scoreExam(p,{contractHash:p.contractHash,runId:'x',modelId:'x',modelFamily:'x',answers:[{id:part.id,questionHash:part.question.questionHash,outcome:'completed',output:noisy}]}).rows.find(x=>x.id===part.id)!;
+    expect(row.earned).toBeGreaterThan(0);expect(row.earned).toBeLessThanOrEqual(8);
   });
 });

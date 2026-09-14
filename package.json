@@ -43,6 +43,8 @@
     "eval:exam:next": "pnpm --filter server exec tsx ../../packages/core/src/scripts/progressive-exam-expansion.ts",
     "eval:exam:next:test": "vitest run packages/core/src/evaluationLab/examExpansion/expansion.test.ts",
     "eval:exam:evidence": "pnpm --filter server exec tsx ../../packages/core/src/scripts/evidence-exam.ts",
+    "eval:ultra:batch:test": "vitest run packages/core/src/evaluationLab/evidenceExam packages/core/src/evaluationLab/examExpansion/expansion.test.ts packages/core/src/evaluationLab/ultraMathRubric.test.ts packages/core/src/evaluationLab/ultraMathQuestions.test.ts packages/core/src/evaluationLab/ultraBatchRelease.test.ts",
+    "eval:ultra:batch": "pnpm --filter server exec tsx ../../packages/core/src/scripts/ultra-batch.ts",
     "eval:ultra:test": "vitest run packages/core/src/evaluationLab/ultraMathRubric.test.ts",
     "eval:inspect": "pnpm --filter server exec tsx ../../packages/core/src/scripts/inspect-capability.ts",
     "db:generate": "pnpm --filter server prisma:generate",

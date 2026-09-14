@@ -61,4 +61,4 @@ pnpm eval:exam:next export reports/exam-expansion-screen 'MX3-06,MX3-12'
 
 导出的 `题面.md` 和 `candidate-questions.json` 仅含题面；参考答案单独保存在 `coordinator/`。只有显式运行 `prepare-run` 后再执行 `run` 才会请求模型。每次导出/运行使用新目录，原始题包与代码摘要固定。
 
-数据提取和幻觉抵抗的后续设计见 [另外两个维度的大题蓝图](exam-extraction-hall-blueprint-2026-09-14.md)。目前为设计稿，不计入已完成题量。
+数据提取和幻觉抵抗在本次数学筛查发生时仍只有设计稿；现已在后续的[三维批量发布](ultra-three-dimension-batch-release-2026-09-14.md)中各落实 12 道递进式大题。该后续发布不改变这里记录的数学筛查结果。
