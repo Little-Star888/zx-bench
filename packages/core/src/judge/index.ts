@@ -28,7 +28,7 @@ export interface JudgeOptions {
  * Judge 需要等待推理模型完成较长的思考，但不应无限占住整个评测 worker。
  * 供应商可通过模型 defaultParams.timeout 覆盖；未设置时收敛到 5 分钟。
  */
-const DEFAULT_JUDGE_TIMEOUT_MS = 300_000;
+const DEFAULT_JUDGE_TIMEOUT_MS = 600_000;
 const DEFAULT_JUDGE_MAX_TOKENS = 16_000;
 const MAX_COMPACT_RETRY_TOKENS = 32_000;
 

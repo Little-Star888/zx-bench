@@ -3485,7 +3485,7 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
     if ([...judgeRescoreJobs.values()].some((job) => job.status === 'running')) {
       return reply.status(409).send({ success: false, error: 'a Judge recovery job is already running' });
     }
-    const timeoutCandidate = typeof body.judgeTimeoutMs === 'number' ? body.judgeTimeoutMs : 120_000;
+    const timeoutCandidate = typeof body.judgeTimeoutMs === 'number' ? body.judgeTimeoutMs : 600_000;
     const timeoutMs = Math.max(30_000, Math.min(1_200_000, Math.round(timeoutCandidate)));
     // Recovery concurrency remains capped at four. The caller controls the
     // endpoint split through ordered Judge configuration IDs.

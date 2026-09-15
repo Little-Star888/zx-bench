@@ -53,7 +53,7 @@ const ENCRYPTION_KEY = process.env.ZXBENCH_ENCRYPTION_KEY || 'zxbench-default-ke
 const dryRun = process.env.DRY_RUN === '1';
 const limit = Number.parseInt(process.env.LIMIT || '', 10);
 const concurrency = Math.max(1, Math.min(2, Number.parseInt(process.env.CONCURRENCY || '1', 10) || 1));
-const judgeTimeoutMs = Math.max(30_000, Number.parseInt(process.env.JUDGE_TIMEOUT_MS || '120000', 10) || 120_000);
+const judgeTimeoutMs = Math.max(30_000, Number.parseInt(process.env.JUDGE_TIMEOUT_MS || '600000', 10) || 600_000);
 
 for (const evaluator of [
   bugFindingEvaluator, codeRepairEvaluator, projectRepairEvaluator, structuredOutputEvaluator,

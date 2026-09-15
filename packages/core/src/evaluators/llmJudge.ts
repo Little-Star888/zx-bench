@@ -150,7 +150,7 @@ async function judgeActionableWithLLM(
     ].join('\n');
     const resp = await callModel({
       config: judgeModel,
-      params: { temperature: judgeModel.reasoningModel ? 1 : 0, maxTokens: 1024, timeout: 30000 },
+      params: { temperature: judgeModel.reasoningModel ? 1 : 0, maxTokens: 1024, timeout: 600_000 },
       systemPrompt,
       userPrompt,
     });
