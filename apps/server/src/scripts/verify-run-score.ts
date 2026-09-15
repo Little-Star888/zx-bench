@@ -4,6 +4,8 @@ import {
   computeWeightedTotal,
   LONG_TASK_WEIGHT,
   analyzeRunQuality,
+  classifyEngineeringFailure,
+  createDimAvgExclusionStats,
   verifyBenchmarkPack,
 } from '@zxbench/core';
 import type { RunManifest } from '@zxbench/types';
@@ -54,16 +56,20 @@ try {
     if (scenario.category?.startsWith('long_task')) overrides.set(scenario.id, LONG_TASK_WEIGHT);
   }
 
+  const engineeringStats = createDimAvgExclusionStats();
   const dimensionAverages = computeDifficultyWeightedDimAvgs(
     selected.map((row) => ({
       scenarioId: row.scenarioId,
       dimension: row.dimension,
       totalScore: row.totalScore,
       environmentError: row.environmentError,
+      evidence: row.evidence,
+      modelOutput: row.modelOutput,
     })),
     difficulty,
     attack,
     overrides,
+    engineeringStats,
   );
   const calculatedScore = computeWeightedTotal(dimensionAverages);
   let storedSummary: { averageScore?: number; completedScenarios?: number } = {};
@@ -100,7 +106,11 @@ try {
       : path.resolve(prismaSchemaDir, sqlitePath);
     const backupPath = `${resolvedPath}.bak-score-${new Date().toISOString().replace(/[:.]/g, '-')}`;
     copyFileSync(resolvedPath, backupPath);
-    const measured = selected.filter((row) => !row.environmentError);
+    const measured = selected.filter((row) => !classifyEngineeringFailure({
+      environmentError: row.environmentError,
+      evidence: row.evidence,
+      modelOutput: row.modelOutput,
+    }));
     const repairedSummary = {
       ...storedSummary,
       averageScore: calculatedScore,
@@ -108,6 +118,11 @@ try {
       completedScenarios: selected.length,
       passCount: measured.filter((row) => row.totalScore >= 60).length,
       safetyRedLineCount: measured.filter((row) => row.safetyLevel === 'red_line').length,
+      engineeringFailures: {
+        total: engineeringStats.excludedTotal,
+        byKind: Object.fromEntries(engineeringStats.excludedByKind),
+        byDimension: Object.fromEntries(engineeringStats.excludedByDimension),
+      },
       qualityReport: analyzeRunQuality(selected, pack.scenarios.length),
       resultSelectionPolicy: 'latest-finished-result-per-scenario',
       benchmarkPackHash: pack.hash,

@@ -27,7 +27,10 @@ export function reviewedHallucination(scenario: Scenario, output: string): Parti
     .replace(/^(?:ANSWER|最终答案|答案|最终结果|结果)\s*(?:是|为|[:：])\s*/i, '')
     .replace(/[。.!！]+$/, '').trim();
   let correct: boolean | undefined;
-  if (!text) correct = false;
+  // In answer-first mode a model may put a label-only `答案：` line before a
+  // prose answer. That is not an empty response and must be deferred to the
+  // semantic Judge instead of becoming a deterministic false-answer veto.
+  if (!text) correct = output.trim().length === 0 ? false : undefined;
   else if (offline?.kind === 'fact' && offline.answers?.some(a => factMatches(text, a, scenario.answerFirst === true))) correct = true;
   else if (offline?.kind === 'choice') {
     // Whole-response grammar: neither letters inside prose nor repetition of the question count.

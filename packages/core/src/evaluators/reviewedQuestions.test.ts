@@ -86,6 +86,12 @@ describe('offline facts and deferred semantic evidence',()=>{
   const j={confidence:1,verdict:'correct',needsEscalation:false} as JudgeResult;
   expect(shouldEscalate(j,{dimension:'reasoning_math',outputMetadata:meta} as any,.85)).toBe(false);
  });
+ it('defers a label-only answer-first header followed by prose to the semantic Judge',async()=>{
+  const output='答案：\n现代人类不是恐龙直接进化而来，而是灵长类哺乳动物。\n\n原因或推理过程：谱系不同。';
+  const r=await hallucination.evaluate({...scenario('HP-049'),answerFirst:true},output,meta);
+  expect(r.axisCoverage).toBe(0);expect(r.evidence).toContain('SEMANTIC_JUDGE_REQUIRED: no deterministic verdict; apply every reviewed rubric criterion');
+  applyReviewedVerdict(r,{factuality:1} as JudgeResult);expect(r.totalScore).toBe(100);
+ });
 });
 describe('math construction, parsing and independent optimization',()=>{
  it('validates both shortest river constructions and rejects illegal/missing steps',()=>{
