@@ -6,7 +6,11 @@ import { validateScenario } from '../contracts/validateScenario.js';
 import { dataExtractionEvaluator } from './dataExtraction.js';
 
 const bank: Scenario[] = JSON.parse(readFileSync(new URL('../../../../data/scenarios/benchmark.json', import.meta.url), 'utf8'));
-const scenarios = bank.filter((scenario) => scenario.dimension === 'data_extraction');
+// This suite freezes the reviewed atomic v3 bank. Ultra progressive parts use
+// a different contract and evaluator and are covered by ultraBatchRelease.
+const scenarios = bank.filter((scenario) => scenario.dimension === 'data_extraction'
+  && scenario.grader === 'json_atomic_fields'
+  && scenario.graderVersion === 'json_atomic_v3');
 const scenario = (id: string) => scenarios.find((item) => item.id === id)!;
 const meta = { finishReason:'stop', truncated:false, incomplete:false } as OutputMetadata;
 const expected = (item: Scenario) => (item.requirements as unknown as {expected: unknown}).expected;

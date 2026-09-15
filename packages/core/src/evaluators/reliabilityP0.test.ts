@@ -18,6 +18,7 @@ import { sandboxEvaluator } from './sandbox.js';
 import { prExecutableEvidenceEvaluator } from './prExecutableEvidence.js';
 import { challengeSupplementEvaluator } from './challengeSupplement.js';
 import { challengeExtensionEvaluator } from './challengeExtension.js';
+import { ultraBatchPartEvaluator, ultraProofPartEvaluator } from './ultraBatchPart.js';
 import { getEvaluator, registerEvaluator, type Evaluator } from './index.js';
 import { hashScenario } from '../contracts/canonicalize.js';
 import { checkSafetyRedLines } from '../safety/index.js';
@@ -106,6 +107,7 @@ describe('P0: scenario identity and evaluator version are fail-closed', () => {
       canaryAuthorityEvaluator, toolCallTraceEvaluator, agentTraceEvaluator, cliCommandEvaluator,
       hallucinationResistanceEvaluator, sandboxEvaluator, llmJudgeEvaluator, prExecutableEvidenceEvaluator,
       challengeSupplementEvaluator,
+      ultraBatchPartEvaluator, ultraProofPartEvaluator,
     ].forEach(registerEvaluator);
     const scenarios = JSON.parse(readFileSync('data/scenarios/benchmark.json', 'utf8')) as Array<{ grader: string; graderVersion: string; id: string }>;
     registerEvaluator(challengeExtensionEvaluator);
