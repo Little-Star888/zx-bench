@@ -31,6 +31,11 @@ describe('September scenario defects', () => {
     expect(good.axisScores?.answer_accuracy).toBe(100);
     expect(bad.axisScores?.answer_accuracy).toBe(0);
   });
+  it('accepts values placed in the literal brackets required by the answer template', async () => {
+    const s = scenarios.find(s => s.id === 'RM-CN-009')!;
+    const result = await exactAnswerLineEvaluator.evaluate(s, 'ANSWER: 安全库存[315]件，再订货点[665]件，可支撑[4]天', meta);
+    expect(result.axisScores?.answer_accuracy).toBe(100);
+  });
   it('scores the advertised object with nested items and detects missing product data', async () => {
     const s = scenarios.find(s => s.id === 'DE-CN-004')!;
     expect(s.promptTemplate).toContain('输出一个 JSON 对象');

@@ -152,6 +152,9 @@ export function extractFirstAnswer(text: string): string | null {
 
 function normalizeAnswer(text: string): string {
   return text.normalize('NFKC').replace(/\*\*/g, '').replace(/\s+/g, '')
+    // Some versioned prompts use [X] as literal field delimiters while their
+    // stored reference contains the resolved value without brackets.
+    .replace(/[\[\]]/g, '')
     .replace(/，/g, ',').replace(/[;；]/g, ',').replace(/[。.,]+$/, '')
     // Only remove syntactically valid thousands separators, never field delimiters.
     .replace(/(?<![\d.,])\d{1,3}(?:,\d{3})+(?:\.\d+)?(?![\d.,])/g, m => m.replace(/,/g, ''))

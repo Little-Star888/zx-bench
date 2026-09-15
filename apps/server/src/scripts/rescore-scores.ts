@@ -155,9 +155,10 @@ async function main() {
       const weights = getJudgeWeights(scenario.dimension, scenario.grader);
       // judge 合并：覆盖率感知（与 orchestrator 一致）——未测量轴由 judge 补判 / 无 judge 时打折
       const coverage = det.axisCoverage ?? 1;
-      const semanticJudgeLed = scenario.dimension === 'hallucination_resistance'
-        || scenario.grader === 'cli_command';
-      const mixed = mixDeterministicJudge(weights.deterministic, weights.judge, coverage, semanticJudgeLed ? .7 : undefined);
+      const judgeWeightCap = scenario.grader === 'ultra_proof_part'
+        ? 1
+        : (scenario.dimension === 'hallucination_resistance' || scenario.grader === 'cli_command' ? .7 : undefined);
+      const mixed = mixDeterministicJudge(weights.deterministic, weights.judge, coverage, judgeWeightCap);
       let finalTotal = (r.judgeScore != null && weights.judge > 0)
         ? Math.round(newDet * mixed.detW + r.judgeScore * mixed.judgeW)
         : (coverage >= 0.5 ? newDet : Math.round(newDet * 0.3));
@@ -187,7 +188,13 @@ async function main() {
 
       if (!dryRun) {
         const oldEvidence = r.evidence ? JSON.parse(r.evidence) as string[] : [];
-        const preservedEvidence = oldEvidence.filter(item => item.startsWith('SANDBOX_EXECUTED:'));
+        let storedMetadata: { incompleteReasons?: unknown } = {};
+        try { storedMetadata = JSON.parse(r.outputMetadata || '{}'); } catch { /* retain ordinary evidence */ }
+        const incompleteReasons = Array.isArray(storedMetadata.incompleteReasons)
+          ? storedMetadata.incompleteReasons.filter((item): item is string => typeof item === 'string') : [];
+        const preservedEvidence = [...oldEvidence, ...incompleteReasons].filter((item, index, all) =>
+          (item.startsWith('SANDBOX_EXECUTED:') || item.startsWith('HARD_TIME_LIMIT:') || item.startsWith('REASONING_TOKEN_BUDGET:'))
+          && all.indexOf(item) === index);
         await prisma.scenarioResult.update({
           where: { id: r.id },
           data: {

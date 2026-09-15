@@ -146,7 +146,8 @@ function resolveJudgeMaxTokens(model: ModelConfig, compactRetry: boolean): numbe
 
 function isRetryableJudgeOutputFailure(error: unknown): boolean {
   const message = error instanceof Error ? error.message : String(error);
-  return message.includes('JUDGE_OUTPUT_TRUNCATED') || message.includes('JUDGE_INVALID_JSON') || message.includes('JUDGE_INVALID_SCHEMA');
+  return message.includes('JUDGE_OUTPUT_TRUNCATED') || message.includes('JUDGE_INVALID_JSON') || message.includes('JUDGE_INVALID_SCHEMA')
+    || /timed out|timeout|fetch failed/i.test(message);
 }
 
 /** 调用 Judge 模型 */
@@ -156,7 +157,8 @@ async function callJudgeModel(
   options: JudgeCallOptions = {},
 ): Promise<JudgeResult> {
   const userPrompt = buildJudgeUserPrompt(input);
-  const systemPrompt = getJudgeSystemPrompt(input.dimension, { compactRetry: options.compactRetry, evidenceContract: input.judgeEvidenceContract === 'criterion_evidence_v1' });
+  const reviewedRubric = Boolean((input.requirements as unknown as Record<string, unknown> | undefined)?.reviewedRubric);
+  const systemPrompt = getJudgeSystemPrompt(input.dimension, { compactRetry: options.compactRetry, evidenceContract: input.judgeEvidenceContract === 'criterion_evidence_v1', reviewedRubric });
   const startTime = Date.now();
 
   const response = await callModel({

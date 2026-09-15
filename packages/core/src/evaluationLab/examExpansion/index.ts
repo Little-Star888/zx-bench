@@ -1,5 +1,5 @@
 /** Opt-in development paper. Frozen pilot and production scores stay separate. */
-import source from './math-candidates.json';
+import source from './math-candidates.json' with { type: 'json' };
 import { snapshotHash } from '../../contracts/pack.js';
 import { committedItems, type ExamSubmission, type ExamAnswer } from '../examPaper/index.js';
 import { parseExactExpression } from '../frontierChallenge/annihilatingMaps.js';

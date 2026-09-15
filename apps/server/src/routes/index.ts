@@ -663,6 +663,10 @@ async function rejudgeSavedResult(
   const frozenScenario = pack?.scenarios.find(s => s.id === saved.scenarioId);
   if (!frozenScenario && (pack || !scenarioRow)) throw new Error('scenario definition not found in frozen pack');
   const scenario = frozenScenario ?? decodeScenario(scenarioRow!);
+  const evalConfig = parseStoredJson<EvalRunConfig>(saved.evalRun.config, {} as EvalRunConfig);
+  if (scenario.answerFirst == null && evalConfig.constraints?.answerFirst != null) {
+    scenario.answerFirst = evalConfig.constraints.answerFirst;
+  }
   const outputMetadata = parseStoredJson<OutputMetadata>(saved.outputMetadata, {} as OutputMetadata);
   if (outputMetadata.evaluationAudit?.attempts?.length) throw new Error('Multi-attempt results require per-attempt recovery; aggregated output cannot be rejudged safely');
   const savedAxisEvidence = parseStoredJson<Record<string, string>>(saved.axisEvidence, {});
@@ -709,7 +713,6 @@ async function rejudgeSavedResult(
     || ((deterministicScore < 25 && saved.modelOutput.trim().length > 20) && !hasVerifiedExecution)
     || (saved.dimension === 'structured_output' && !saved.formatParseSuccess));
 
-  const evalConfig = parseStoredJson<EvalRunConfig>(saved.evalRun.config, {} as EvalRunConfig);
   if (!evalConfig.judgeEnabled || !evalConfig.judgeModelConfigId) {
     throw new Error('run has no frozen Judge configuration');
   }
@@ -769,8 +772,10 @@ async function rejudgeSavedResult(
     ? Math.round(finalJudge.factuality * 100)
     : computeJudgeScore(finalJudge);
   const coverage = deterministic?.axisCoverage ?? 1;
-  const semanticJudgeLed = saved.dimension === 'hallucination_resistance' || scenario.grader === 'cli_command';
-  const mixed = mixDeterministicJudge(weights.deterministic, weights.judge, coverage, semanticJudgeLed ? .7 : undefined);
+  const judgeWeightCap = scenario.grader === 'ultra_proof_part'
+    ? 1
+    : (saved.dimension === 'hallucination_resistance' || scenario.grader === 'cli_command' ? .7 : undefined);
+  const mixed = mixDeterministicJudge(weights.deterministic, weights.judge, coverage, judgeWeightCap);
   const reviewed = { totalScore: Math.round(saved.deterministicScore * mixed.detW + judgeScore * mixed.judgeW), deterministicScore: saved.deterministicScore, evidence: savedEvidence, humanReviewRequired: saved.humanReviewRequired, environmentError: saved.environmentError, axisScores: savedAxisScores, axisEvidence: savedAxisEvidence as any };
   applyReviewedVerdict(reviewed, finalJudge);
   const totalScore = reviewed.totalScore;

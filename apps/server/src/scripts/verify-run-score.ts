@@ -91,7 +91,13 @@ try {
 
   if (repairSummary) {
     const sqlitePath = databaseUrl.slice('file:'.length).split('?')[0];
-    const resolvedPath = path.resolve(sqlitePath);
+    // Prisma resolves relative SQLite URLs from the schema directory, not the
+    // process working directory. Match that behavior so backups cover the DB
+    // that the Prisma client is actually about to repair.
+    const prismaSchemaDir = path.resolve(fileURLToPath(new URL('../../prisma/', import.meta.url)));
+    const resolvedPath = path.isAbsolute(sqlitePath)
+      ? path.resolve(sqlitePath)
+      : path.resolve(prismaSchemaDir, sqlitePath);
     const backupPath = `${resolvedPath}.bak-score-${new Date().toISOString().replace(/[:.]/g, '-')}`;
     copyFileSync(resolvedPath, backupPath);
     const measured = selected.filter((row) => !row.environmentError);

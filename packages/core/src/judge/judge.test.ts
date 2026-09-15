@@ -58,6 +58,11 @@ describe('Judge integrity', () => {
     expect(computeJudgeScore(r.finalJudge)).toBe(80);
     expect(getJudgeSystemPrompt('reasoning_math')).not.toContain('bug_detection');
   });
+  it('adds the reviewed rubric response contract to mathematical judgments', () => {
+    const reviewed={...input,dimension:'reasoning_math',requirements:{reviewedRubric:{criteria:[{id:'proof',weight:1}]}}} as unknown as JudgeInput;
+    expect(getJudgeSystemPrompt('reasoning_math',{reviewedRubric:true})).toContain('Return rubric_scores');
+    expect(buildJudgeUserPrompt(reviewed)).toContain('reviewedRubric');
+  });
   it('requires all reviewed rubric points and computes the total instead of trusting a supplied 100', async () => {
     const req={reviewedRubric:{criteria:[{id:'correction',weight:.6},{id:'completion',weight:.4}]}};
     const reviewed={...input,dimension:'hallucination_resistance',requirements:req} as unknown as JudgeInput;
