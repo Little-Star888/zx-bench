@@ -43789,7 +43789,7 @@
   "functionName": null,
   "expectedVerdict": null,
   "grader": "schema_compliance",
-  "graderVersion": "schema_compliance_v4",
+  "graderVersion": "schema_compliance_v5",
   "scoring": {
    "type": "schema_compliance"
   },
@@ -43809,7 +43809,7 @@
    "nested-object"
   ],
   "scenarioVersion": "2.1.0",
-  "scenarioHash": "70b21fa5bb68edd6",
+  "scenarioHash": "909260d14e839c6c",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -43834,7 +43834,7 @@
   "functionName": null,
   "expectedVerdict": null,
   "grader": "schema_compliance",
-  "graderVersion": "schema_compliance_v4",
+  "graderVersion": "schema_compliance_v5",
   "scoring": {
    "type": "schema_compliance"
   },
@@ -43862,7 +43862,31 @@
     ],
     "properties": {
      "data": {
-      "type": "array"
+      "type": "array",
+      "minItems": 5,
+      "items": {
+       "type": "object",
+       "required": [
+        "id",
+        "name",
+        "email",
+        "role",
+        "createdAt"
+       ],
+       "properties": {
+        "role": {
+         "enum": [
+          "admin",
+          "user",
+          "moderator"
+         ]
+        },
+        "createdAt": {
+         "type": "string",
+         "format": "date-time"
+        }
+       }
+      }
      }
     }
    }
@@ -43873,8 +43897,8 @@
    "pagination",
    "api-response"
   ],
-  "scenarioVersion": "2.1.0",
-  "scenarioHash": "da13c1209e8396c1",
+  "scenarioVersion": "2.3.0",
+  "scenarioHash": "e8e22e9f7a9ec260",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -43899,7 +43923,7 @@
   "functionName": null,
   "expectedVerdict": null,
   "grader": "schema_compliance",
-  "graderVersion": "schema_compliance_v4",
+  "graderVersion": "schema_compliance_v5",
   "scoring": {
    "type": "schema_compliance"
   },
@@ -43911,15 +43935,15 @@
     "status",
     "created_at",
     "items",
-    "amounts.items_total||items_total",
-    "amounts.grand_total||grand_total",
+    "**.items_total",
+    "**.grand_total",
     "payment",
     "payment.method",
     "payment.paid_at",
     "buyer"
    ],
    "crossFieldRules": [
-    "equals-sum:amounts.grand_total||grand_total=amounts.items_total||items_total+amounts.shipping_fee||shipping_fee-amounts.discount||discount+amounts.tax||tax"
+    "equals-sum:**.grand_total=**.items_total+**.shipping_fee-**.discount+**.tax"
    ]
   },
   "tags": [
@@ -43929,7 +43953,7 @@
    "order"
   ],
   "scenarioVersion": "2.1.0",
-  "scenarioHash": "9ab7cf73eb3a7ad6",
+  "scenarioHash": "08a8f49b03e2f5d7",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -43954,7 +43978,7 @@
   "functionName": null,
   "expectedVerdict": null,
   "grader": "schema_compliance",
-  "graderVersion": "schema_compliance_v4",
+  "graderVersion": "schema_compliance_v5",
   "scoring": {
    "type": "schema_compliance"
   },
@@ -43977,7 +44001,7 @@
    "validation"
   ],
   "scenarioVersion": "2.0.0",
-  "scenarioHash": "a056637ceeb88218",
+  "scenarioHash": "4affd2c1b8f23dfb",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -44002,7 +44026,7 @@
   "functionName": null,
   "expectedVerdict": null,
   "grader": "schema_compliance",
-  "graderVersion": "schema_compliance_v4",
+  "graderVersion": "schema_compliance_v5",
   "scoring": {
    "type": "schema_compliance"
   },
@@ -44029,7 +44053,7 @@
    "escaping"
   ],
   "scenarioVersion": "2.1.0",
-  "scenarioHash": "073ce09cf61a7381",
+  "scenarioHash": "bc887575a010570c",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -44054,7 +44078,7 @@
   "functionName": null,
   "expectedVerdict": null,
   "grader": "schema_compliance",
-  "graderVersion": "schema_compliance_v4",
+  "graderVersion": "schema_compliance_v5",
   "scoring": {
    "type": "schema_compliance"
   },
@@ -44076,7 +44100,7 @@
    "api-response"
   ],
   "scenarioVersion": "2.0.0",
-  "scenarioHash": "9114022929f070be",
+  "scenarioHash": "2d4de54f6a16738d",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -44101,7 +44125,7 @@
   "functionName": null,
   "expectedVerdict": null,
   "grader": "schema_compliance",
-  "graderVersion": "schema_compliance_v4",
+  "graderVersion": "schema_compliance_v5",
   "scoring": {
    "type": "schema_compliance"
   },
@@ -44122,7 +44146,7 @@
    "sales-data"
   ],
   "scenarioVersion": "2.0.0",
-  "scenarioHash": "f818d0c8a352a2f5",
+  "scenarioHash": "01d76bfd8c671e53",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -44147,7 +44171,7 @@
   "functionName": null,
   "expectedVerdict": null,
   "grader": "schema_compliance",
-  "graderVersion": "schema_compliance_v4",
+  "graderVersion": "schema_compliance_v5",
   "scoring": {
    "type": "schema_compliance"
   },
@@ -44167,7 +44191,7 @@
    "configuration"
   ],
   "scenarioVersion": "2.0.0",
-  "scenarioHash": "3cd7af4972afcac1",
+  "scenarioHash": "7f52d5ce955a5c06",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -44192,7 +44216,7 @@
   "functionName": null,
   "expectedVerdict": null,
   "grader": "schema_compliance",
-  "graderVersion": "schema_compliance_v4",
+  "graderVersion": "schema_compliance_v5",
   "scoring": {
    "type": "schema_compliance"
   },
@@ -44215,7 +44239,7 @@
    "employee-data"
   ],
   "scenarioVersion": "2.0.0",
-  "scenarioHash": "717aeb7e4d6030fd",
+  "scenarioHash": "6dad0bebb9d47d61",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -44240,7 +44264,7 @@
   "functionName": null,
   "expectedVerdict": null,
   "grader": "schema_compliance",
-  "graderVersion": "schema_compliance_v4",
+  "graderVersion": "schema_compliance_v5",
   "scoring": {
    "type": "schema_compliance"
   },
@@ -44265,7 +44289,7 @@
    "devops"
   ],
   "scenarioVersion": "2.0.0",
-  "scenarioHash": "3cf279a41fc3b3f8",
+  "scenarioHash": "3962618482cfb623",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -44290,7 +44314,7 @@
   "functionName": null,
   "expectedVerdict": null,
   "grader": "schema_compliance",
-  "graderVersion": "schema_compliance_v4",
+  "graderVersion": "schema_compliance_v5",
   "scoring": {
    "type": "schema_compliance"
   },
@@ -44311,7 +44335,7 @@
    "rfc4180"
   ],
   "scenarioVersion": "2.0.0",
-  "scenarioHash": "e552c92795054f16",
+  "scenarioHash": "59a401806ebae578",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -44336,7 +44360,7 @@
   "functionName": null,
   "expectedVerdict": null,
   "grader": "schema_compliance",
-  "graderVersion": "schema_compliance_v4",
+  "graderVersion": "schema_compliance_v5",
   "scoring": {
    "type": "schema_compliance"
   },
@@ -44361,7 +44385,7 @@
    "gitlab"
   ],
   "scenarioVersion": "2.0.0",
-  "scenarioHash": "525da9607f4e1c4c",
+  "scenarioHash": "738a010fba88afe6",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -44386,7 +44410,7 @@
   "functionName": null,
   "expectedVerdict": null,
   "grader": "schema_compliance",
-  "graderVersion": "schema_compliance_v4",
+  "graderVersion": "schema_compliance_v5",
   "scoring": {
    "type": "schema_compliance"
   },
@@ -44410,7 +44434,7 @@
    "complex-query"
   ],
   "scenarioVersion": "2.0.0",
-  "scenarioHash": "eeba7ba0374d7289",
+  "scenarioHash": "82fae8854f07c7fa",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -44435,7 +44459,7 @@
   "functionName": null,
   "expectedVerdict": null,
   "grader": "schema_compliance",
-  "graderVersion": "schema_compliance_v4",
+  "graderVersion": "schema_compliance_v5",
   "scoring": {
    "type": "schema_compliance"
   },
@@ -44456,7 +44480,7 @@
    "web-service"
   ],
   "scenarioVersion": "2.0.0",
-  "scenarioHash": "0d9d22cb8ff1701b",
+  "scenarioHash": "61b2e17fe9583f2a",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -44481,7 +44505,7 @@
   "functionName": null,
   "expectedVerdict": null,
   "grader": "schema_compliance",
-  "graderVersion": "schema_compliance_v4",
+  "graderVersion": "schema_compliance_v5",
   "scoring": {
    "type": "schema_compliance"
   },
@@ -44504,7 +44528,7 @@
    "database-design"
   ],
   "scenarioVersion": "2.1.0",
-  "scenarioHash": "d4858fefe5eda46d",
+  "scenarioHash": "75a483e72938bbb0",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -44529,7 +44553,7 @@
   "functionName": null,
   "expectedVerdict": null,
   "grader": "schema_compliance",
-  "graderVersion": "schema_compliance_v4",
+  "graderVersion": "schema_compliance_v5",
   "scoring": {
    "type": "schema_compliance"
   },
@@ -44554,7 +44578,7 @@
    "feed"
   ],
   "scenarioVersion": "2.0.0",
-  "scenarioHash": "c90e524da71fc7e3",
+  "scenarioHash": "ccb4fe9abac04116",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -44579,7 +44603,7 @@
   "functionName": null,
   "expectedVerdict": null,
   "grader": "schema_compliance",
-  "graderVersion": "schema_compliance_v4",
+  "graderVersion": "schema_compliance_v5",
   "scoring": {
    "type": "schema_compliance"
   },
@@ -44603,7 +44627,7 @@
    "transaction"
   ],
   "scenarioVersion": "2.0.0",
-  "scenarioHash": "493a4f48883f80c6",
+  "scenarioHash": "2367b4aac038ea15",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -44628,7 +44652,7 @@
   "functionName": null,
   "expectedVerdict": null,
   "grader": "schema_compliance",
-  "graderVersion": "schema_compliance_v4",
+  "graderVersion": "schema_compliance_v5",
   "scoring": {
    "type": "schema_compliance"
   },
@@ -44652,7 +44676,7 @@
    "graphics"
   ],
   "scenarioVersion": "2.0.0",
-  "scenarioHash": "7f7121fcec045089",
+  "scenarioHash": "3c1d313bde78b0e6",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -44677,7 +44701,7 @@
   "functionName": null,
   "expectedVerdict": null,
   "grader": "schema_compliance",
-  "graderVersion": "schema_compliance_v4",
+  "graderVersion": "schema_compliance_v5",
   "scoring": {
    "type": "schema_compliance"
   },
@@ -44689,7 +44713,7 @@
     "table",
     "style",
     "img",
-    "div"
+    "body"
    ]
   },
   "tags": [
@@ -44699,7 +44723,7 @@
    "responsive"
   ],
   "scenarioVersion": "2.1.0",
-  "scenarioHash": "6f6f414682c1b506",
+  "scenarioHash": "37d6ac39ae808a45",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -44724,7 +44748,7 @@
   "functionName": null,
   "expectedVerdict": null,
   "grader": "schema_compliance",
-  "graderVersion": "schema_compliance_v4",
+  "graderVersion": "schema_compliance_v5",
   "scoring": {
    "type": "schema_compliance"
   },
@@ -44750,7 +44774,7 @@
    "business-process"
   ],
   "scenarioVersion": "2.1.0",
-  "scenarioHash": "837babc8d579ee57",
+  "scenarioHash": "061cb641e1dbf5f6",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -44775,7 +44799,7 @@
   "functionName": null,
   "expectedVerdict": null,
   "grader": "schema_compliance",
-  "graderVersion": "schema_compliance_v4",
+  "graderVersion": "schema_compliance_v5",
   "scoring": {
    "type": "schema_compliance"
   },
@@ -44799,7 +44823,7 @@
    "semantic"
   ],
   "scenarioVersion": "2.1.0",
-  "scenarioHash": "67ee85017888040c",
+  "scenarioHash": "224cddcaa5ebe918",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -44824,7 +44848,7 @@
   "functionName": null,
   "expectedVerdict": null,
   "grader": "schema_compliance",
-  "graderVersion": "schema_compliance_v4",
+  "graderVersion": "schema_compliance_v5",
   "scoring": {
    "type": "schema_compliance"
   },
@@ -44849,7 +44873,7 @@
    "authentication"
   ],
   "scenarioVersion": "2.0.0",
-  "scenarioHash": "939910553a301763",
+  "scenarioHash": "9f569205420fcf5f",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -44874,7 +44898,7 @@
   "functionName": null,
   "expectedVerdict": null,
   "grader": "schema_compliance",
-  "graderVersion": "schema_compliance_v4",
+  "graderVersion": "schema_compliance_v5",
   "scoring": {
    "type": "schema_compliance"
   },
@@ -44898,7 +44922,7 @@
    "css-chart"
   ],
   "scenarioVersion": "2.1.0",
-  "scenarioHash": "bef1c107144654e8",
+  "scenarioHash": "9319fcab39e80f51",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -44918,12 +44942,12 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "请用 Mermaid erDiagram 语法画一个在线教育平台的数据库关系图。\n\n实体：\n1. User（用户）：id, username, email, role\n2. Course（课程）：id, title, instructor_id, price, category\n3. Enrollment（选课）：id, user_id, course_id, enrolled_at, progress\n4. Lesson（课时）：id, course_id, title, duration, order_num\n5. Payment（支付）：id, user_id, course_id, amount, method, status\n6. Review（评价）：id, user_id, course_id, rating, content\n\n关系：\n- User 1--N Enrollment\n- Course 1--N Enrollment\n- User 1--N Payment\n- Course 1--N Lesson\n- User 1--N Review\n- Course 1--N Review\n- User 1--N Course（instructor）\n\n要求使用 erDiagram 类型，标注关系类型。",
+  "promptTemplate": "请用 Mermaid erDiagram 语法画一个在线教育平台的数据库关系图。\n\n实体：\n1. User（用户）：id, username, email, role\n2. Course（课程）：id, title, instructor_id, price, category\n3. Enrollment（选课）：id, user_id, course_id, enrolled_at, progress\n4. Lesson（课时）：id, course_id, title, duration, order_num\n5. Payment（支付）：id, user_id, course_id, amount, method, status\n6. Review（评价）：id, user_id, course_id, rating, content\n\n关系：\n- User 1--N Enrollment\n- Course 1--N Enrollment\n- User 1--N Payment\n- Course 1--N Lesson\n- User 1--N Review\n- Course 1--N Review\n- User 1--N Course（instructor）\n\n要求使用 erDiagram 类型，标注关系类型。\n\n命名要求：图中出现的实体名 / 类名 / 状态名必须与上文题面完全一致（含大小写），不要自行改变大小写或翻译。",
   "sourceCode": null,
   "functionName": null,
   "expectedVerdict": null,
   "grader": "schema_compliance",
-  "graderVersion": "schema_compliance_v4",
+  "graderVersion": "schema_compliance_v5",
   "scoring": {
    "type": "schema_compliance"
   },
@@ -44949,8 +44973,8 @@
    "er-diagram",
    "database"
   ],
-  "scenarioVersion": "2.0.0",
-  "scenarioHash": "d658b1590988b83c",
+  "scenarioVersion": "2.2.0",
+  "scenarioHash": "5570c71ba1344853",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -44975,7 +44999,7 @@
   "functionName": null,
   "expectedVerdict": null,
   "grader": "schema_compliance",
-  "graderVersion": "schema_compliance_v4",
+  "graderVersion": "schema_compliance_v5",
   "scoring": {
    "type": "schema_compliance"
   },
@@ -44986,10 +45010,10 @@
     "sql"
    ],
    "requiredFields": [
-    "#",
-    "|",
+    "re:^#\\s",
+    "re:^\\|.*\\|",
     "SELECT",
-    "1."
+    "re:^\\d+\\.\\s"
    ]
   },
   "tags": [
@@ -44998,8 +45022,8 @@
    "report",
    "complex"
   ],
-  "scenarioVersion": "2.1.0",
-  "scenarioHash": "40327f9330522bcc",
+  "scenarioVersion": "2.4.0",
+  "scenarioHash": "9faad7c68cde0890",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -45024,7 +45048,7 @@
   "functionName": null,
   "expectedVerdict": null,
   "grader": "schema_compliance",
-  "graderVersion": "schema_compliance_v4",
+  "graderVersion": "schema_compliance_v5",
   "scoring": {
    "type": "schema_compliance"
   },
@@ -45046,7 +45070,7 @@
    "project-config"
   ],
   "scenarioVersion": "2.0.0",
-  "scenarioHash": "3287a9994a4f17ee",
+  "scenarioHash": "e5df55796cb096d3",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -45071,7 +45095,7 @@
   "functionName": null,
   "expectedVerdict": null,
   "grader": "schema_compliance",
-  "graderVersion": "schema_compliance_v4",
+  "graderVersion": "schema_compliance_v5",
   "scoring": {
    "type": "schema_compliance"
   },
@@ -45086,10 +45110,11 @@
     "text"
    ],
    "requiredFields": [
-    "#",
-    "|",
-    "```json",
-    "1."
+    "re:^#\\s",
+    "re:^##\\s",
+    "re:^\\|.*\\|",
+    "re:\\]\\(#",
+    "```json"
    ]
   },
   "tags": [
@@ -45098,8 +45123,8 @@
    "api-docs",
    "technical-writing"
   ],
-  "scenarioVersion": "2.1.0",
-  "scenarioHash": "a26c9f8d9b31c21e",
+  "scenarioVersion": "2.5.0",
+  "scenarioHash": "a7bd9fd746eb6bec",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -45124,7 +45149,7 @@
   "functionName": null,
   "expectedVerdict": null,
   "grader": "schema_compliance",
-  "graderVersion": "schema_compliance_v4",
+  "graderVersion": "schema_compliance_v5",
   "scoring": {
    "type": "schema_compliance"
   },
@@ -45145,7 +45170,7 @@
    "validation"
   ],
   "scenarioVersion": "2.0.0",
-  "scenarioHash": "cf1b81d3d249f7d8",
+  "scenarioHash": "55ce66731b066154",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -55896,12 +55921,12 @@
   "functionName": null,
   "expectedVerdict": null,
   "grader": "schema_compliance",
-  "graderVersion": "schema_compliance_v4",
+  "graderVersion": "schema_compliance_v5",
   "scoring": {
    "type": "schema_compliance"
   },
-  "scenarioVersion": "2.1.0",
-  "scenarioHash": "36f12533a3eeeb14",
+  "scenarioVersion": "2.3.0",
+  "scenarioHash": "320d84c5e5b57bed",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -55941,13 +55966,25 @@
     ],
     "properties": {
      "scripts": {
-      "type": "object"
+      "type": "object",
+      "required": [
+       "dev",
+       "build",
+       "test"
+      ]
      },
      "dependencies": {
       "type": "object"
      },
+     "devDependencies": {
+      "type": "object"
+     },
      "keywords": {
-      "type": "array"
+      "type": "array",
+      "minItems": 3
+     },
+     "license": {
+      "type": "string"
      }
     }
    }
@@ -55968,12 +56005,12 @@
   "functionName": null,
   "expectedVerdict": null,
   "grader": "schema_compliance",
-  "graderVersion": "schema_compliance_v4",
+  "graderVersion": "schema_compliance_v5",
   "scoring": {
    "type": "schema_compliance"
   },
-  "scenarioVersion": "2.1.0",
-  "scenarioHash": "5cf939018eb086f6",
+  "scenarioVersion": "2.3.0",
+  "scenarioHash": "a453ad02ecbfbee1",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -56019,10 +56056,20 @@
     ],
     "properties": {
      "environments": {
-      "type": "object"
+      "type": "object",
+      "required": [
+       "development",
+       "staging",
+       "production"
+      ]
      },
      "defaultEnvironment": {
-      "type": "string"
+      "type": "string",
+      "enum": [
+       "development",
+       "staging",
+       "production"
+      ]
      }
     }
    }
@@ -56043,12 +56090,12 @@
   "functionName": null,
   "expectedVerdict": null,
   "grader": "schema_compliance",
-  "graderVersion": "schema_compliance_v4",
+  "graderVersion": "schema_compliance_v5",
   "scoring": {
    "type": "schema_compliance"
   },
-  "scenarioVersion": "2.1.0",
-  "scenarioHash": "33dcdc6427832ff2",
+  "scenarioVersion": "2.3.0",
+  "scenarioHash": "3fe495ba6475ccd9",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -56078,7 +56125,10 @@
     "properties.priority",
     "properties.tags",
     "properties.createdAt",
-    "properties.ticketNumber"
+    "properties.ticketNumber",
+    "**.oneOf",
+    "**.pattern",
+    "**.minItems"
    ],
    "schema": {
     "type": "object",
@@ -56094,6 +56144,10 @@
      },
      "$defs": {
       "type": "object"
+     },
+     "required": {
+      "type": "array",
+      "minItems": 4
      }
     }
    }
@@ -56115,12 +56169,12 @@
   "functionName": null,
   "expectedVerdict": null,
   "grader": "schema_compliance",
-  "graderVersion": "schema_compliance_v4",
+  "graderVersion": "schema_compliance_v5",
   "scoring": {
    "type": "schema_compliance"
   },
   "scenarioVersion": "2.1.0",
-  "scenarioHash": "d65639d964f32663",
+  "scenarioHash": "9b0ddb7e6922835f",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -56165,12 +56219,12 @@
   "functionName": null,
   "expectedVerdict": null,
   "grader": "schema_compliance",
-  "graderVersion": "schema_compliance_v4",
+  "graderVersion": "schema_compliance_v5",
   "scoring": {
    "type": "schema_compliance"
   },
   "scenarioVersion": "2.1.0",
-  "scenarioHash": "cf8d67c3b13c79e7",
+  "scenarioHash": "f611844c6d763b5c",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -56219,12 +56273,12 @@
   "functionName": null,
   "expectedVerdict": null,
   "grader": "schema_compliance",
-  "graderVersion": "schema_compliance_v4",
+  "graderVersion": "schema_compliance_v5",
   "scoring": {
    "type": "schema_compliance"
   },
   "scenarioVersion": "2.1.0",
-  "scenarioHash": "3764d75b70b24a5c",
+  "scenarioHash": "f8194eac03633f31",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -56271,12 +56325,12 @@
   "functionName": null,
   "expectedVerdict": null,
   "grader": "schema_compliance",
-  "graderVersion": "schema_compliance_v4",
+  "graderVersion": "schema_compliance_v5",
   "scoring": {
    "type": "schema_compliance"
   },
   "scenarioVersion": "2.1.0",
-  "scenarioHash": "aaad44dd00f6ca10",
+  "scenarioHash": "b23c67c5c262de11",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -56320,12 +56374,12 @@
   "functionName": null,
   "expectedVerdict": null,
   "grader": "schema_compliance",
-  "graderVersion": "schema_compliance_v4",
+  "graderVersion": "schema_compliance_v5",
   "scoring": {
    "type": "schema_compliance"
   },
-  "scenarioVersion": "2.1.0",
-  "scenarioHash": "23d6d14a7d9378be",
+  "scenarioVersion": "2.2.0",
+  "scenarioHash": "5fd26bcf79c467ad",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -56339,7 +56393,7 @@
   "category": "html_mermaid",
   "difficulty": "easy",
   "language": "mermaid",
-  "promptTemplate": "请用 Mermaid classDiagram 描述一个博客系统的领域模型。\n\n类：User、Post、Comment、Tag\n要求：\n1. 使用 classDiagram 类型\n2. User 有 id、username、email，方法 publish()\n3. Post 有 id、title、content、createdAt，方法 addComment()\n4. Comment 有 id、content、createdAt\n5. Tag 有 id、name\n6. 关系：User 一对多 Post，Post 一对多 Comment，Post 多对多 Tag\n7. 至少使用两种关系箭头（如 --> 与 -->）并标注关系文字\n8. 允许用 ```mermaid 围栏包裹图表",
+  "promptTemplate": "请用 Mermaid classDiagram 描述一个博客系统的领域模型。\n\n类：User、Post、Comment、Tag\n要求：\n1. 使用 classDiagram 类型\n2. User 有 id、username、email，方法 publish()\n3. Post 有 id、title、content、createdAt，方法 addComment()\n4. Comment 有 id、content、createdAt\n5. Tag 有 id、name\n6. 关系：User 一对多 Post，Post 一对多 Comment，Post 多对多 Tag\n7. 至少使用两种关系箭头（如 --> 与 -->）并标注关系文字\n8. 允许用 ```mermaid 围栏包裹图表\n\n命名要求：图中出现的实体名 / 类名 / 状态名必须与上文题面完全一致（含大小写），不要自行改变大小写或翻译。",
   "requirements": {
    "format": "mermaid",
    "output_policy": "fenced_allowed",
@@ -56371,12 +56425,12 @@
   "functionName": null,
   "expectedVerdict": null,
   "grader": "schema_compliance",
-  "graderVersion": "schema_compliance_v4",
+  "graderVersion": "schema_compliance_v5",
   "scoring": {
    "type": "schema_compliance"
   },
-  "scenarioVersion": "2.1.0",
-  "scenarioHash": "b28ed7d6959edc29",
+  "scenarioVersion": "2.2.0",
+  "scenarioHash": "1eddcb8d646d1740",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -56390,7 +56444,7 @@
   "category": "html_mermaid",
   "difficulty": "medium",
   "language": "mermaid",
-  "promptTemplate": "请用 Mermaid stateDiagram-v2 描述一个「设备固件升级」的状态机。\n\n要求：\n1. 使用 stateDiagram-v2 类型\n2. 用 [*] 标注初始状态与终止状态\n3. 状态至少包括：Idle、Downloading、Verifying、Installing、Rollback、Success、Failed\n4. 包含一个复合状态（用 state ... { } 语法），例如 Installing 内部再分两步\n5. 用 --% 之外的标准转移语法，并在每条转移上写中文条件说明\n6. 校验失败必须能回到 Idle 或进入 Failed\n7. 允许用 ```mermaid 围栏包裹图表",
+  "promptTemplate": "请用 Mermaid stateDiagram-v2 描述一个「设备固件升级」的状态机。\n\n要求：\n1. 使用 stateDiagram-v2 类型\n2. 用 [*] 标注初始状态与终止状态\n3. 状态至少包括：Idle、Downloading、Verifying、Installing、Rollback、Success、Failed\n4. 包含一个复合状态（用 state ... { } 语法），例如 Installing 内部再分两步\n5. 用 --% 之外的标准转移语法，并在每条转移上写中文条件说明\n6. 校验失败必须能回到 Idle 或进入 Failed\n7. 允许用 ```mermaid 围栏包裹图表\n\n命名要求：图中出现的实体名 / 类名 / 状态名必须与上文题面完全一致（含大小写），不要自行改变大小写或翻译。",
   "requirements": {
    "format": "mermaid",
    "output_policy": "fenced_allowed",
@@ -56423,12 +56477,12 @@
   "functionName": null,
   "expectedVerdict": null,
   "grader": "schema_compliance",
-  "graderVersion": "schema_compliance_v4",
+  "graderVersion": "schema_compliance_v5",
   "scoring": {
    "type": "schema_compliance"
   },
   "scenarioVersion": "2.1.0",
-  "scenarioHash": "1ab1f883c927afa9",
+  "scenarioHash": "a47b32293df2e120",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -56477,12 +56531,12 @@
   "functionName": null,
   "expectedVerdict": null,
   "grader": "schema_compliance",
-  "graderVersion": "schema_compliance_v4",
+  "graderVersion": "schema_compliance_v5",
   "scoring": {
    "type": "schema_compliance"
   },
   "scenarioVersion": "2.1.0",
-  "scenarioHash": "30d6e19bf3c6770f",
+  "scenarioHash": "efddad0003a84c9a",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -56501,13 +56555,13 @@
    "format": "toml",
    "output_policy": "raw_only",
    "requiredFields": [
-    "[workspace]",
-    "[workspace.package]",
-    "[workspace.dependencies]",
-    "[package]",
-    "[[bin]]",
-    "[features]",
-    "[profile.release]",
+    "workspace",
+    "workspace.package",
+    "workspace.dependencies",
+    "package",
+    "bin",
+    "features",
+    "profile.release",
     "members"
    ]
   },
@@ -56527,12 +56581,12 @@
   "functionName": null,
   "expectedVerdict": null,
   "grader": "schema_compliance",
-  "graderVersion": "schema_compliance_v4",
+  "graderVersion": "schema_compliance_v5",
   "scoring": {
    "type": "schema_compliance"
   },
-  "scenarioVersion": "2.1.0",
-  "scenarioHash": "faade9481f1f89b7",
+  "scenarioVersion": "2.3.0",
+  "scenarioHash": "49f5cebc52d3a1f7",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -56579,13 +56633,33 @@
     ],
     "properties": {
      "jobs": {
-      "type": "array"
+      "type": "array",
+      "minItems": 3,
+      "items": {
+       "type": "object",
+       "required": [
+        "name",
+        "status",
+        "durationSeconds"
+       ],
+       "properties": {
+        "status": {
+         "enum": [
+          "success",
+          "failed",
+          "skipped",
+          "running"
+         ]
+        }
+       }
+      }
      },
      "overallStatus": {
-      "type": "string"
+      "const": "failed"
      },
      "aiSummary": {
-      "type": "string"
+      "type": "string",
+      "minLength": 4
      }
     }
    }
@@ -56606,12 +56680,12 @@
   "functionName": null,
   "expectedVerdict": null,
   "grader": "schema_compliance",
-  "graderVersion": "schema_compliance_v4",
+  "graderVersion": "schema_compliance_v5",
   "scoring": {
    "type": "schema_compliance"
   },
-  "scenarioVersion": "2.1.0",
-  "scenarioHash": "7de8d7690b4cf5e5",
+  "scenarioVersion": "2.4.0",
+  "scenarioHash": "430142e659d8ac95",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -56635,13 +56709,13 @@
     "yaml"
    ],
    "requiredFields": [
-    "#",
-    "|",
+    "re:^#\\s",
+    "re:^\\|.*\\|",
     "```sql",
     "```bash",
     "```yaml",
-    "1.",
-    ">"
+    "re:^\\d+\\.\\s",
+    "re:^>\\s"
    ]
   },
   "tags": [

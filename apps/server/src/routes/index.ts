@@ -4463,6 +4463,10 @@ async function runEvaluation(
             graderVersion: 'n/a',
             evidence: JSON.stringify([`Evaluation failed: ${errMsg}`]),
             humanReviewRequired: true,
+            // 生成阶段失败的样本属于基础设施故障（后端不可达/超时/鉴权失败），不是能力信号。
+            // 必须显式置位，否则 qualityReport.environmentErrorCount 会报告 0，
+            // 而 summary.engineeringFailures 却已按证据隔离 —— 两处口径自相矛盾。
+            environmentError: true,
             startedAt: new Date(questionStartTime),
             finishedAt: new Date(),
           },
@@ -4580,7 +4584,12 @@ async function runEvaluation(
   // canary_authority_v4 → v5），这是有意的向后兼容；但若不落审计，报告读者无法知道
   // 「这批评分用的是哪一版口径」——实测 09-15 run 有 104/309 题漂移却毫无记录。
   const scorerVersionDrift = computeScorerVersionDrift(
-    results.map((r) => ({ scenarioId: r.scenarioId, graderVersion: (r as { graderVersion?: string | null }).graderVersion })),
+    results.map((r) => ({
+      scenarioId: r.scenarioId,
+      graderVersion: (r as { graderVersion?: string | null }).graderVersion,
+      environmentError: (r as { environmentError?: boolean | null }).environmentError,
+      evidence: (r as { evidence?: string[] | string | null }).evidence,
+    })),
     manifest.benchmarkPack?.scenarios ?? [],
   );
 

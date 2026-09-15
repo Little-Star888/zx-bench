@@ -341,12 +341,13 @@ describe('computeScorerVersionDrift', () => {
     });
   });
 
-  it('ignores results without an executed version and ids missing from the pack', () => {
+  it('audits only samples that have both a declared and an executed version', () => {
     const drift = computeScorerVersionDrift([
       { scenarioId: 'A', graderVersion: null },
       { scenarioId: 'ZZZ', graderVersion: 'whatever@9' },
     ], pack);
-    expect(drift.samples).toBe(2);
+    // A 没有执行版本、ZZZ 不在清单内 → 两者都无法构成可比对，故分母为 0
+    expect(drift.samples).toBe(0);
     expect(drift.total).toBe(0);
   });
 });

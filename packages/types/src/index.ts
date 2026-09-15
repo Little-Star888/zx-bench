@@ -851,6 +851,8 @@ export interface FormatParseResult {
   success: boolean;
   parsed?: unknown;
   violations: FormatViolation[];
+  /** 实际执行到的 schema 约束断言数（用于把 schema 轴按覆盖率折算计分，而非一刀切扣分） */
+  schemaChecks?: number;
   // 兼容旧字段
   parseable?: boolean;
   schemaValid?: boolean;

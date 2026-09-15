@@ -251,6 +251,17 @@ export interface EngineeringFailureInput {
 const NO_EVALUATOR_RE = /No evaluator found/i;
 const EMPTY_OUTPUT_EVIDENCE_RE = /^(Empty model output|Model returned empty response)/i;
 /**
+ * 生成阶段整体失败（P0，2026-09-16）。
+ * `multi-run` 在候选调用抛异常时兜底产出一条空结果，证据形如
+ * `Evaluation failed: Model request failed: fetch failed (ECONNREFUSED ...)`。
+ * 这类样本此前既不匹配空输出正则、`environmentError` 也未置位，于是被当成
+ * 0 分能力样本计入维度均分 —— 实测一次「后端不可达」run：11/11 题全部漏隔离，
+ * 维度均分被算成 0，而 `environmentErrorCount` 却报告 0。
+ * 该正则让所有只传 evidence 的聚合调用点（routes 共 10 处）都能正确隔离，
+ * 同时可追溯修正数据库中已有的历史行。
+ */
+const EVALUATION_FAILED_RE = /^Evaluation failed:/i;
+/**
  * 硬约束提前终止（P0，2026-09-16）。
  * 背景：开启运行级 constraints（hardTimeLimitMs / maxTotalTokens）后，模型超时或把预算
  * 全耗在思考上时，orchestrator 走 `buildLimitExceededResult` 提前返回，evidence 前缀是
@@ -278,6 +289,8 @@ export function classifyEngineeringFailure(r: EngineeringFailureInput): Engineer
   const ev = normalizeEvidence(r.evidence);
   if (ev.some((e) => NO_EVALUATOR_RE.test(e))) return 'no_evaluator';
   if (ev.some((e) => EMPTY_OUTPUT_EVIDENCE_RE.test(e))) return 'empty_output';
+  // 生成阶段抛异常（后端不可达/超时/鉴权失败）优先按环境故障隔离
+  if (ev.some((e) => EVALUATION_FAILED_RE.test(e))) return 'environment_error';
   // 硬约束提前终止：比 modelOutput 空白更具体的归因（预算耗尽 vs 硬超时），优先归类。
   if (ev.some((e) => LIMIT_EXCEEDED_EVIDENCE_RE.test(e))) return 'limit_exceeded';
   // 仅当调用方显式提供 modelOutput 且为空白时才据此判定（聚合映射常省略该字段，不可臆断）
@@ -411,23 +424,39 @@ export interface ScorerVersionDrift {
  * 「这批评分用的是哪一版口径」——实测 09-15 run 有 104/309 题漂移却毫无记录。
  * 纯函数，便于单测与复用（run 汇总、报告、重算脚本）。
  */
+/** 评分器版本从未执行时的哨兵值（生成阶段失败落库时写入）。 */
+const SCORER_NEVER_RAN = 'n/a';
+
 export function computeScorerVersionDrift(
-  results: Array<{ scenarioId: string; graderVersion?: string | null }>,
+  results: Array<{
+    scenarioId: string;
+    graderVersion?: string | null;
+    environmentError?: boolean | null;
+    evidence?: string[] | string | null;
+  }>,
   packScenarios: Array<{ id: string; grader: string; graderVersion: string }>,
 ): ScorerVersionDrift {
   const declared = new Map(packScenarios.map((s) => [s.id, `${s.grader}@${s.graderVersion}`]));
   const pairs = new Map<string, number>();
   const scenarioIds: string[] = [];
+  let samples = 0;
   for (const r of results) {
+    // 工程失败样本（后端不可达/超时/评分器缺失）根本没执行评分器，
+    // 其 graderVersion 是 'n/a' 哨兵；若纳入比对会产生「声明 v4 -> 实际 n/a」的假漂移。
+    if (classifyEngineeringFailure({ environmentError: r.environmentError, evidence: r.evidence })) continue;
     const want = declared.get(r.scenarioId);
     const got = r.graderVersion ?? null;
-    if (want == null || got == null || want === got) continue;
+    // 只有「既有清单声明版本、又有实际执行版本」的样本才可能发生漂移，
+    // 才纳入审计分母；否则会出现 total/samples 分子分母口径不一致。
+    if (want == null || got == null || got === SCORER_NEVER_RAN) continue;
+    samples++;
+    if (want === got) continue;
     scenarioIds.push(r.scenarioId);
     const key = `${want} -> ${got}`;
     pairs.set(key, (pairs.get(key) ?? 0) + 1);
   }
   return {
-    samples: results.length,
+    samples,
     total: scenarioIds.length,
     byPair: Object.fromEntries([...pairs].sort((a, b) => b[1] - a[1])),
     scenarioIds,

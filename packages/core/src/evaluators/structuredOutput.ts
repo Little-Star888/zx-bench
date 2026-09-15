@@ -1,7 +1,16 @@
 // ============================================================
-// Structured Output 评分器 v4
+// Structured Output 评分器 v5
 // 只对实际可解析、且满足场景声明字段/约束的内容给分。格式正确不等于内容正确；
 // 没有明确可验证的轴一律标记为 unmeasured，绝不以默认 100 填充。
+//
+// v5 新增（09-16 续修）：
+//  * JSON Schema 校验从 MVP（type/required/properties）扩展到
+//    oneOf/anyOf/allOf、enum/const、pattern、format(date|time|date-time|uuid|email)、
+//    minLength/maxLength、minimum/maximum、minItems/maxItems、items、$ref→$defs，
+//    未实现的关键字一律跳过（不臆断）；
+//  * schema 轴改为按覆盖率折算计分（违规数 / 实际执行的约束数），
+//    避免约束多的题被一刀切扣成 0；证据里回显约束总数以便审计覆盖率。
+//  行为变更，故版本号从 v4 提升到 v5，v2/v3/v4 作为兼容版本保留。
 //
 // v4 修复（09-13 结构化输出维度评审）：
 //  1. 字段检查不再依赖 parsed 的 JS 类型。旧实现用 `typeof parsed === 'string'`
@@ -11,8 +20,9 @@
 //     最外层 JSON 值，尾部解释句只按「输出纪律」扣分。
 //  3. 语法轴只统计语法/结构错误；schema_mismatch / missing_required
 //     归 schema 轴，不再让内容缺失双重扣语法分。
-//  4. requiredFields 支持 `a||b` 备选路径，解决题面未规定字段名时口径过窄的问题。
-//     分隔符用 `||`，保证单个 `|`（markdown 表格）仍可作为字面声明字段。
+//  4. requiredFields 支持 `a||b` 备选路径与 `**.key` 任意深度匹配，解决题面未规定
+//     字段名/容器名时口径过窄的问题。分隔符用 `||`，保证单个 `|`（markdown 表格）
+//     仍可作为字面声明字段；非标识符开头的字段（`---`、`&anchor`、`*alias`）按字面 token 匹配。
 //  5. schema / constraints 支持从 requirements 回退读取
 //     （ScenarioDefinition 没有 schema / constraints 列，只能经由 requirements 承载）。
 //  6. 输出纪律分级：围栏语言白名单 + 尾部冗余文本，不再一律 0/100。
@@ -48,8 +58,8 @@ const OBJECT_FORMATS = new Set<SupportedFormat>(['json', 'csv']);
 
 export const structuredOutputEvaluator: Evaluator = {
   name: 'schema_compliance',
-  version: 'schema_compliance_v4',
-  compatibleVersions: ['schema_compliance_v3', 'schema_compliance_v2'],
+  version: 'schema_compliance_v5',
+  compatibleVersions: ['schema_compliance_v4', 'schema_compliance_v3', 'schema_compliance_v2'],
   aliases: ['structured_output_v2'],
 
   async evaluate(
@@ -85,20 +95,27 @@ export const structuredOutputEvaluator: Evaluator = {
       ? `Format "${format}" parsed successfully`
       : `Format "${format}" structural errors: ${syntaxErrors.length}`);
     for (const violation of syntaxErrors.slice(0, 3)) evidence.push(`  - ${violation.message}`);
+    // 警告类违规（尾部散文被截断、围栏包裹等）不进语法轴，但必须可见，否则无法审计「为什么扣了纪律分」
+    const warnings = parsed.violations.filter((v) => v.severity === 'warning');
+    for (const warning of warnings.slice(0, 3)) evidence.push(`  ! ${warning.message}`);
 
     // -------- schema 轴 --------
     if (declaredSchema) {
       const schemaViolations = parsed.violations.filter(
         (v) => v.type === 'schema_mismatch' || v.type === 'missing_required',
       );
+      const schemaChecks = parsed.schemaChecks ?? 0;
+      // 按覆盖率折算计分：约束多的题不应因命中 4 条就被一刀切到 0 分。
       axisScores.schema_compliance = schemaViolations.length === 0
         ? 100
-        : Math.max(0, 100 - schemaViolations.length * 25);
+        : schemaChecks > 0
+          ? Math.max(0, Math.round((1 - schemaViolations.length / schemaChecks) * 100))
+          : Math.max(0, 100 - schemaViolations.length * 25);
       axisEvidence.schema_compliance = 'rule';
       evidence.push(schemaViolations.length === 0
-        ? 'Schema validation passed'
-        : `Schema violations: ${schemaViolations.length}`);
-      for (const violation of schemaViolations.slice(0, 3)) evidence.push(`  - ${violation.message}`);
+        ? `Schema validation passed (${schemaChecks} constraints)`
+        : `Schema violations: ${schemaViolations.length}/${schemaChecks} constraints`);
+      for (const violation of schemaViolations.slice(0, 5)) evidence.push(`  - ${violation.message}`);
     } else {
       axisEvidence.schema_compliance = 'unmeasured';
     }
@@ -145,7 +162,9 @@ export const structuredOutputEvaluator: Evaluator = {
     axisEvidence.executable = 'unmeasured';
 
     // -------- 输出纪律轴 --------
-    const wrappedOrTrailing = payload.fenced
+    // 注意：payload.fenced 表示「正文取自围栏内部」，本身不是违规；
+    // 真正违规的是**围栏之外还有内容**（payload.trailing）或解析器报出的尾部冗余。
+    const wrappedOrTrailing = payload.trailing
       || parsed.violations.some((v) => v.type === 'trailing_content');
     axisScores.output_discipline = checkOutputDiscipline(
       modelOutput,
@@ -240,12 +259,24 @@ function checkSingleField(
 
   const text = textCorpus;
   if (!text) return false;
+  // `re:<正则>`：结构化断言（如 markdown 的「一级标题」「表格行」「有序列表项」）。
+  // 单字符字面量（#、|、1.）只能证明「该字符出现过」，区分度极弱且容易被正文偶然命中。
+  if (field.startsWith('re:')) {
+    try {
+      return new RegExp(field.slice(3), 'm').test(text);
+    } catch {
+      return false;
+    }
+  }
   const escaped = escapeRegExp(field);
   switch (format) {
     case 'yaml':
+      // `---` / `&anchor` / `*alias` 这类结构性 token 无法用 `key:` 形式表达
+      if (isLiteralToken(field)) return text.includes(field);
       return new RegExp(`^\\s*${escaped}\\s*:`, 'mi').test(text);
     case 'toml':
-      // 支持 [section] 与数组表 [[section]]（Cargo.toml 的 [[bin]]）
+      if (isLiteralToken(field)) return text.includes(field);
+      // 支持 [section] 与数组表 [[section]]（字段名写裸段名，如 bin 匹配 [[bin]]）
       return new RegExp(`(?:^\\s*\\[\\[?${escaped}\\]\\]?\\s*$|^\\s*${escaped}\\s*=)`, 'mi').test(text);
     case 'xml':
       // `xml` 字段对 XML 题指的是 XML 声明 `<?xml ... ?>`，不是同名标签
@@ -268,15 +299,46 @@ function checkSingleField(
   }
 }
 
+/** 以非标识符字符开头的声明字段视为字面 token（`---`、`&anchor`、`*alias`、`#`、`|` …）。 */
+function isLiteralToken(field: string): boolean {
+  return /^[^\w\u4e00-\u9fff]/.test(field);
+}
+
 function getPath(value: unknown, path: string): unknown {
   const parts = path.replace(/\[(\d+)\]/g, '.$1').split('.').filter(Boolean);
-  let current = value;
-  for (const part of parts) {
-    if (Array.isArray(current)) current = current[Number(part)];
-    else if (current && typeof current === 'object') current = (current as Record<string, unknown>)[part];
-    else return undefined;
+  return resolvePath(value, parts, 0);
+}
+
+/**
+ * 解析 JSON 路径。
+ * `**` 表示「任意深度」：用于题面只规定字段名、未规定外层容器名的场景
+ * （例如金额字段既可能平铺在顶层，也可能收在 amounts / amount / totals 之下）。
+ */
+function resolvePath(current: unknown, parts: string[], depth: number): unknown {
+  if (parts.length === 0) return current;
+  if (depth > 24) return undefined;
+
+  const [head, ...rest] = parts;
+  if (head === '**') {
+    const queue: unknown[] = [current];
+    const seen = new Set<unknown>();
+    while (queue.length > 0) {
+      const node = queue.shift();
+      if (node === null || typeof node !== 'object' || seen.has(node)) continue;
+      seen.add(node);
+      const hit = resolvePath(node, rest, depth + 1);
+      if (hit !== undefined) return hit;
+      if (Array.isArray(node)) queue.push(...node);
+      else queue.push(...Object.values(node as Record<string, unknown>));
+    }
+    return undefined;
   }
-  return current;
+
+  if (Array.isArray(current)) return resolvePath(current[Number(head)], rest, depth + 1);
+  if (current && typeof current === 'object') {
+    return resolvePath((current as Record<string, unknown>)[head], rest, depth + 1);
+  }
+  return undefined;
 }
 
 /** 与 getPath 相同，但支持 `a||b` 备选路径。 */

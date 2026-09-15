@@ -256,6 +256,9 @@ export async function batchMultiRunEvaluation(
       results.push(result);
     } catch (err) {
       console.error(`Scenario ${scenario.id} failed after all runs:`, err);
+      // 生成阶段的异常（连接被拒、超时、DNS 失败、鉴权失败、提供方 5xx）属基础设施故障，
+      // 不是模型能力信号。必须置 environmentError，否则该样本会以 0 分计入维度均分，
+      // 把「后端不可达」误读成「模型不会做」（实测 11/11 空输出 run 被全额计入）。
       results.push({
         scenarioId: scenario.id,
         scenarioVersion: scenario.scenarioVersion,
@@ -286,6 +289,7 @@ export async function batchMultiRunEvaluation(
         evidence: [`Evaluation failed: ${err instanceof Error ? err.message : String(err)}`],
         humanReviewRequired: true,
         escalated: false,
+        environmentError: true,
         startedAt: new Date().toISOString(),
         finishedAt: new Date().toISOString(),
       });
