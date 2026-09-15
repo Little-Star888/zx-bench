@@ -44,13 +44,22 @@ export const GRADER_CONTRACTS: Record<string, GraderContract> = {
   },
 
   // ---- 结构化输出：schema_compliance ----
+  // v4：字段检查改用「格式正文」语料（不再依赖 parsed 的运行时类型）、
+  // JSON 尾部散文容错、requiredFields 支持 `a||b` 备选、schema/constraints 可从
+  // requirements 回退读取（ScenarioDefinition 无对应列）、输出纪律分级。
   schema_compliance: {
     grader: 'schema_compliance',
-    version: 'schema_compliance_v3',
-    compatibleVersions: ['schema_compliance_v2'],
+    version: 'schema_compliance_v4',
+    compatibleVersions: ['schema_compliance_v3', 'schema_compliance_v2'],
     dimension: 'structured_output',
-    consumedFields: ['format', 'output_policy', 'requiredFields', 'crossFieldRules'],
-    declaredFields: ['format', 'output_policy', 'requiredFields', 'crossFieldRules'],
+    consumedFields: [
+      'format', 'output_policy', 'requiredFields', 'crossFieldRules',
+      'schema', 'constraints', 'allowed_fence_languages',
+    ],
+    declaredFields: [
+      'format', 'output_policy', 'requiredFields', 'crossFieldRules',
+      'schema', 'constraints', 'allowed_fence_languages',
+    ],
     requiredFields: ['format'],
     capabilities: {
       supportedFormats: ['json', 'csv', 'yaml', 'sql', 'xml', 'html', 'mermaid', 'markdown', 'toml', 'regex'],

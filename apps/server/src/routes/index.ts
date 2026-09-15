@@ -109,10 +109,16 @@ function assertExecutionIdentity(manifest: RunManifest | undefined, model: Model
 }
 
 function manifestForPack(runId: string, model: { id: string; name: string; provider: string; baseUrl: string; defaultParams: string }, config: EvalRunConfig, pack: BenchmarkPack, judge?: import('@zxbench/core').JudgeOptions): RunManifest {
-  return { ...generateManifest(runId, { ...model, defaultParams: JSON.parse(model.defaultParams) },
+  const manifest = { ...generateManifest(runId, { ...model, defaultParams: JSON.parse(model.defaultParams) },
     { ...JSON.parse(model.defaultParams), maxTokens: config.maxTokens, temperature: config.temperature }, config, pack.hash),
     executionIdentityHash: config.auditVersion === 1 ? modelIdentity(model) : undefined,
     judgeIdentityHash: judge ? modelIdentity(judge.localModel) : undefined, benchmarkPack: pack };
+  // P1（2026-09-16）：judgeModels 此前恒为空（evalConfig.judgeLocalModel 从未赋值），
+  // judge 模型无法追溯。此处用实际生效的 judgeOptions 回填。
+  if (judge) {
+    manifest.judgeModels = { local: `${judge.localModel.name} (${judge.localModel.id}) @ ${judge.localModel.baseUrl}` };
+  }
+  return manifest;
 }
 
 /** Use the immutable question definitions captured before inference whenever available. */
@@ -844,6 +850,7 @@ async function refreshRunSummaryAfterJudgeRescore(runId: string): Promise<void> 
       totalScore: item.totalScore,
       environmentError: item.environmentError,
       evidence: item.evidence,
+      modelOutput: item.modelOutput,
     })),
     run.manifest ? (JSON.parse(run.manifest) as RunManifest).benchmarkPack?.scenarios : undefined,
     engStats,
@@ -4565,7 +4572,7 @@ async function runEvaluation(
   const results = selectLatestScenarioResults(allResultRows);
   const summaryEngStats = createDimAvgExclusionStats();
   const summaryDimAvgs = await computeDifficultyWeightedDimAvgs(
-    results.map((r) => ({ scenarioId: r.scenarioId, dimension: (r as { dimension?: string }).dimension || 'unknown', totalScore: r.totalScore, environmentError: (r as { environmentError?: boolean | null }).environmentError ?? undefined, evidence: (r as { evidence?: string | null }).evidence })),
+    results.map((r) => ({ scenarioId: r.scenarioId, dimension: (r as { dimension?: string }).dimension || 'unknown', totalScore: r.totalScore, environmentError: (r as { environmentError?: boolean | null }).environmentError ?? undefined, evidence: (r as { evidence?: string | null }).evidence, modelOutput: (r as { modelOutput?: string | null }).modelOutput })),
     manifest.benchmarkPack!.scenarios,
     summaryEngStats,
   );
@@ -4575,7 +4582,36 @@ async function runEvaluation(
   const qualityReport = analyzeRunQuality(results, total);
 
   const finishedAt = Date.now();
-  const durationMs = finishedAt - startTime;
+  // ===== P1 修复：resume 后 startedAt/durationMs 失真（2026-09-16）=====
+  // durationMs 原为 finishedAt - startTime，而 startTime 在每次 resume 时被重置为续跑时刻，
+  // 导致 3 小时真实跨度被报成最后一段的 29 分钟。现从全量结果还原真实时间轴：
+  //   firstStartedAt = 最早一题开始时间（无结果时退回 startTime）
+  //   executionMs    = 去重后各题执行跨度之和（真实执行占用，并行时含重叠）
+  //   pausedMs       = 墙钟 - executionMs（中断/暂停空档，非负截断）
+  //   resumeCount    = 按题间空档 >60s 聚类的执行段数（1 = 从未中断）
+  const spanRows = results
+    .map((r) => ({ start: +new Date(r.startedAt), end: +new Date(r.finishedAt) }))
+    .filter((s) => Number.isFinite(s.start) && Number.isFinite(s.end) && s.end >= s.start);
+  const firstStartedAt = spanRows.length > 0
+    ? Math.min(...spanRows.map((s) => s.start))
+    : startTime;
+  const executionMs = spanRows.length > 0
+    ? spanRows.reduce((acc, s) => acc + (s.end - s.start), 0)
+    : finishedAt - startTime;
+  const wallClockMs = finishedAt - firstStartedAt;
+  const pausedMs = Math.max(0, wallClockMs - executionMs);
+  let resumeCount = 1;
+  {
+    const ivs = spanRows
+      .map((s) => [s.start, s.end] as [number, number])
+      .sort((a, b) => a[0] - b[0]);
+    let cursor: number | null = null;
+    for (const [s, e] of ivs) {
+      if (cursor !== null && s - cursor > 60_000) resumeCount++;
+      cursor = cursor === null ? e : Math.max(cursor, e);
+    }
+  }
+  const durationMs = wallClockMs;
   // 计算每题独立 token 速度中位数
   const perQuestionSpeeds2: number[] = [];
   let summaryInputTokens = 0;
@@ -4606,10 +4642,20 @@ async function runEvaluation(
     if (classifyEngineeringFailure({ environmentError: (r as { environmentError?: boolean | null }).environmentError, evidence: (r as { evidence?: string | null }).evidence })) continue;
     if (r.totalScore >= 60) passCount++;
   }
+  // P1（2026-09-16）：manifest.metrics 回填实际 token/耗时（此前恒为 0，成本无法追溯）
+  if (manifest) {
+    manifest.metrics = {
+      ...manifest.metrics,
+      totalInputTokens: summaryInputTokens,
+      totalOutputTokens: summaryOutputTokens,
+      totalLatencyMs: wallClockMs,
+    };
+  }
   await prisma.evalRun.update({
     where: { id: runId },
     data: {
       status: 'completed',
+      ...(manifest ? { manifest: JSON.stringify(manifest) } : {}),
       summary: JSON.stringify({
         totalScenarios: total,
         completedScenarios: results.length,
@@ -4627,10 +4673,13 @@ async function runEvaluation(
           byDimension: Object.fromEntries(summaryEngStats.excludedByDimension),
         },
         qualityReport,
-        // ===== 耗时（多模型并行汇总用）=====
-        startedAt: new Date(startTime).toISOString(),
+        // ===== 耗时（多模型并行汇总用；resume 后从全量结果还原，见上方 P1 修复）=====
+        startedAt: new Date(firstStartedAt).toISOString(),
         finishedAt: new Date(finishedAt).toISOString(),
         durationMs,
+        executionMs,
+        pausedMs,
+        resumeCount,
       }),
     },
   });

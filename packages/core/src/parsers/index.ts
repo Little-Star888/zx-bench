@@ -2,11 +2,116 @@
 // 格式专用解析器（GPT5.6 结构化输出 P1-2）
 // JSON / YAML / CSV / XML / SQL / HTML / Mermaid / Regex
 // 每种解析器返回统一的 FormatParseResult
+//
+// v4 修复（结构化输出维度评审）：
+//  1. 围栏剥离改为「整份输出就是一个围栏块」才生效；否则取第一个围栏体并标记 fenced，
+//     markdown 例外（文档本身可以合法包含多个围栏）。
+//  2. JSON 支持「平衡扫描提取最外层值」，模型在 JSON 后附解释句不再导致整段不可解析。
+//  3. CSV 尾部散文（空行/单列行）截断为 trailing_content 警告，不再被当成数据行报列数错误。
+//  4. XML 标签配对支持命名空间前缀（<soap:Body>）并正确排除自闭合标签。
+//  5. Mermaid erDiagram 的基数记法（||--o{）不再被误判为未闭合括号。
+//
+// 违规类型约定：schema_mismatch / missing_required 属于「内容」违规，
+// 不参与语法轴扣分（见 CONTENT_VIOLATION_TYPES）。
 // ============================================================
 
 import type { FormatParseResult, FormatViolation } from '@zxbench/types';
 
+/** 内容类违规：由 schema / 字段轴消费，不计入语法轴。 */
+export const CONTENT_VIOLATION_TYPES = new Set(['schema_mismatch', 'missing_required']);
+
+/** 尾部/外部冗余文本（围栏、解释句）标记，由输出纪律轴消费。 */
+export const TRAILING_CONTENT_VIOLATION = 'trailing_content';
+
+/** 该违规是否属于「语法/结构」错误（即应当扣 syntax_parse 的错误）。 */
+export function isSyntaxViolation(violation: FormatViolation): boolean {
+  return violation.severity === 'error' && !CONTENT_VIOLATION_TYPES.has(violation.type);
+}
+
+// ===== 通用：围栏与载荷提取 =====
+
+export interface FormatPayload {
+  /** 用于内容校验的正文（已按格式规则剥离围栏） */
+  text: string;
+  /** 正文来自围栏内部 */
+  fenced: boolean;
+  /** 围栏之外还存在非正文内容 */
+  trailing: boolean;
+}
+
+const WHOLE_FENCE_RE = /^```([\w-]*)[ \t]*\r?\n([\s\S]*?)\r?\n?```$/;
+const ANY_FENCE_RE = /```([\w-]*)[ \t]*\r?\n([\s\S]*?)```/;
+
+/**
+ * 提取某格式的正文载荷。
+ * - 整份输出恰好是一个围栏块 → 取围栏内容，fenced=true，trailing=false
+ * - 否则若存在围栏 → 取第一个围栏内容，fenced=true，trailing=true
+ * - 无围栏 → 取全文，fenced=false，trailing=false
+ * markdown 例外：只有「整份输出就是一个围栏块」才剥离，因为文档内可以合法包含围栏。
+ */
+export function extractFormatPayload(format: string, content: string): FormatPayload {
+  const trimmed = content.trim();
+  const whole = trimmed.match(WHOLE_FENCE_RE);
+  if (whole) return { text: whole[2].trim(), fenced: true, trailing: false };
+  if (format === 'markdown') return { text: trimmed, fenced: false, trailing: false };
+
+  const any = trimmed.match(ANY_FENCE_RE);
+  if (any) {
+    const covered = any[0].length;
+    return { text: any[2].trim(), fenced: true, trailing: covered < trimmed.length };
+  }
+  return { text: trimmed, fenced: false, trailing: false };
+}
+
 // ===== JSON 解析器 =====
+
+/**
+ * 定位文本中第一个语法平衡、可被 JSON.parse 接受的 JSON 值。
+ * 用于容忍模型在 JSON 前后附加自然语言解释。
+ */
+export function extractFirstJsonValue(content: string): { value: string; start: number; end: number } | null {
+  for (let i = 0; i < content.length; i++) {
+    const first = content[i];
+    if (first !== '{' && first !== '[') continue;
+
+    let depth = 0;
+    let inString = false;
+    let escaped = false;
+
+    for (let j = i; j < content.length; j++) {
+      const ch = content[j];
+      if (inString) {
+        if (escaped) escaped = false;
+        else if (ch === '\\') escaped = true;
+        else if (ch === '"') inString = false;
+        continue;
+      }
+      if (ch === '"') { inString = true; continue; }
+      if (ch === '{' || ch === '[') depth++;
+      else if (ch === '}' || ch === ']') {
+        depth--;
+        if (depth === 0) {
+          const slice = content.slice(i, j + 1);
+          try {
+            JSON.parse(slice);
+            return { value: slice, start: i, end: j + 1 };
+          } catch {
+            break; // 这个起点不成立，换下一个 { / [ 起点
+          }
+        }
+      }
+    }
+  }
+  return null;
+}
+
+function tryParseJson(text: string): { ok: true; value: unknown } | { ok: false; error: string } {
+  try {
+    return { ok: true, value: JSON.parse(text) };
+  } catch (err) {
+    return { ok: false, error: err instanceof Error ? err.message : 'Invalid JSON' };
+  }
+}
 
 export function parseJSON(
   content: string,
@@ -14,36 +119,50 @@ export function parseJSON(
 ): FormatParseResult {
   const violations: FormatViolation[] = [];
 
-  // 尝试提取 JSON（从 markdown code block 或纯文本）
-  let jsonStr = content.trim();
-  const codeBlockMatch = jsonStr.match(/```(?:json)?\s*([\s\S]*?)```/);
-  if (codeBlockMatch) {
-    jsonStr = codeBlockMatch[1].trim();
-  }
-
-  try {
-    const parsed = JSON.parse(jsonStr);
-
-    // JSON Schema 基础校验
-    if (schema) {
-      const schemaViolations = validateJsonSchema(parsed, schema);
-      violations.push(...schemaViolations);
-    }
-
+  const strict = tryParseJson(content.trim());
+  if (strict.ok) {
+    if (schema) violations.push(...validateJsonSchema(strict.value, schema));
     return {
       format: 'json',
-      success: violations.length === 0,
-      parsed,
+      success: !violations.some(isSyntaxViolation),
+      parsed: strict.value,
       violations,
     };
-  } catch (err) {
-    violations.push({
-      type: 'parse_error',
-      message: err instanceof Error ? err.message : 'Invalid JSON',
-      severity: 'error',
-    });
-    return { format: 'json', success: false, violations };
   }
+
+  // 兜底 1：整份输出被 markdown 围栏包裹
+  const fenced = content.trim().match(WHOLE_FENCE_RE);
+  if (fenced) {
+    const inner = tryParseJson(fenced[2].trim());
+    if (inner.ok) {
+      violations.push({
+        type: TRAILING_CONTENT_VIOLATION,
+        message: 'JSON value is wrapped in a markdown fence',
+        severity: 'warning',
+      });
+      if (schema) violations.push(...validateJsonSchema(inner.value, schema));
+      return { format: 'json', success: true, parsed: inner.value, violations };
+    }
+  }
+
+  // 兜底 2：从文本中平衡扫描出最外层 JSON 值（容忍前后解释句）
+  const found = extractFirstJsonValue(content.trim());
+  if (found) {
+    const extracted = tryParseJson(found.value);
+    if (extracted.ok) {
+      const outside = `${content.trim().slice(0, found.start)}${content.trim().slice(found.end)}`.trim();
+      violations.push({
+        type: TRAILING_CONTENT_VIOLATION,
+        message: `Non-JSON text surrounds the JSON value (${outside.length} chars outside)`,
+        severity: 'warning',
+      });
+      if (schema) violations.push(...validateJsonSchema(extracted.value, schema));
+      return { format: 'json', success: true, parsed: extracted.value, violations };
+    }
+  }
+
+  violations.push({ type: 'parse_error', message: strict.error, severity: 'error' });
+  return { format: 'json', success: false, violations };
 }
 
 /** 基础 JSON Schema 校验（MVP 实现） */
@@ -99,21 +218,86 @@ function validateJsonSchema(data: unknown, schema: Record<string, unknown>): For
 
 // ===== CSV 解析器（RFC 4180） =====
 
+/** 统计一行包含的字段数（考虑引号转义），并返回该行结束时是否仍处于引号内。 */
+function scanCsvLine(line: string, startInQuotes: boolean): { fields: number; endsInQuotes: boolean } {
+  let fields = 1;
+  let inQuotes = startInQuotes;
+  for (let i = 0; i < line.length; i++) {
+    const ch = line[i];
+    if (inQuotes) {
+      if (ch === '"') {
+        if (line[i + 1] === '"') i++;
+        else inQuotes = false;
+      }
+    } else if (ch === '"') {
+      inQuotes = true;
+    } else if (ch === ',') {
+      fields++;
+    }
+  }
+  if (startInQuotes) fields = 0; // 引号内的续行不单独计字段
+  return { fields, endsInQuotes: inQuotes };
+}
+
+/**
+ * 切分 CSV 主体与尾部散文。
+ * 模型常见行为：先给完整 CSV，空一行后追加「推理过程：...」。
+ * 这些行只有 1 个字段，若当作数据行会产生大量列数不匹配的假错误。
+ */
+function splitCsvBodyAndTrailing(csv: string): { body: string; trailing: string | null } {
+  const lines = csv.split(/\r?\n/);
+  if (lines.length < 2) return { body: csv, trailing: null };
+
+  const headerScan = scanCsvLine(lines[0], false);
+  const expected = headerScan.fields;
+  let inQuotes = headerScan.endsInQuotes;
+
+  for (let i = 1; i < lines.length; i++) {
+    const line = lines[i];
+    const scan = scanCsvLine(line, inQuotes);
+    const wasInsideQuotes = inQuotes;
+    inQuotes = scan.endsInQuotes;
+
+    if (wasInsideQuotes) continue; // 多行字段内部
+    if (inQuotes) continue;        // 进入多行字段
+
+    if (line.trim() === '') {
+      return { body: lines.slice(0, i).join('\n'), trailing: lines.slice(i).join('\n') };
+    }
+    if (expected > 1 && scan.fields === 1) {
+      return { body: lines.slice(0, i).join('\n'), trailing: lines.slice(i).join('\n') };
+    }
+  }
+  return { body: csv, trailing: null };
+}
+
 export function parseCSV(
   content: string,
   options?: { expectedColumns?: string[]; minRows?: number; maxRows?: number },
 ): FormatParseResult {
   const violations: FormatViolation[] = [];
 
-  // 提取 CSV 内容（从 code block 或纯文本）
-  let csvStr = content.trim();
-  const codeBlockMatch = csvStr.match(/```(?:csv)?\s*([\s\S]*?)```/);
-  if (codeBlockMatch) {
-    csvStr = codeBlockMatch[1].trim();
+  const payload = extractFormatPayload('csv', content);
+  if (payload.fenced) {
+    violations.push({
+      type: TRAILING_CONTENT_VIOLATION,
+      message: 'CSV is wrapped in a markdown fence',
+      severity: 'warning',
+    });
+  }
+
+  const { body, trailing } = splitCsvBodyAndTrailing(payload.text);
+  if (trailing) {
+    const count = trailing.split(/\r?\n/).filter((l) => l.trim() !== '').length;
+    violations.push({
+      type: TRAILING_CONTENT_VIOLATION,
+      message: `Discarded ${count} trailing non-CSV line(s)`,
+      severity: 'warning',
+    });
   }
 
   try {
-    const rows = parseCSVRows(csvStr);
+    const rows = parseCSVRows(body);
 
     if (rows.length === 0) {
       violations.push({ type: 'empty_content', message: 'CSV is empty', severity: 'error' });
@@ -164,7 +348,7 @@ export function parseCSV(
 
     return {
       format: 'csv',
-      success: violations.filter((v) => v.severity === 'error').length === 0,
+      success: violations.filter(isSyntaxViolation).length === 0,
       parsed: { headers, rows: rows.slice(1) },
       violations,
     };
@@ -225,13 +409,19 @@ function parseCSVRows(input: string): string[][] {
 
 // ===== XML 解析器 =====
 
+const XML_TAG_RE = /<(\/?)([A-Za-z_][\w.:-]*)((?:"[^"]*"|'[^']*'|[^>"'])*)>/g;
+
 export function parseXML(content: string): FormatParseResult {
   const violations: FormatViolation[] = [];
 
-  let xmlStr = content.trim();
-  const codeBlockMatch = xmlStr.match(/```(?:xml)?\s*([\s\S]*?)```/);
-  if (codeBlockMatch) {
-    xmlStr = codeBlockMatch[1].trim();
+  const payload = extractFormatPayload('xml', content);
+  const xmlStr = payload.text;
+  if (payload.fenced) {
+    violations.push({
+      type: TRAILING_CONTENT_VIOLATION,
+      message: 'XML is wrapped in a markdown fence',
+      severity: 'warning',
+    });
   }
 
   // 基础 XML 格式检查
@@ -244,32 +434,39 @@ export function parseXML(content: string): FormatParseResult {
     return { format: 'xml', success: false, violations };
   }
 
-  // 标签闭合检查
-  const openTags = xmlStr.match(/<([a-zA-Z][a-zA-Z0-9]*)[^>]*[^/]?>/g) || [];
-  const closeTags = xmlStr.match(/<\/([a-zA-Z][a-zA-Z0-9]*)>/g) || [];
-  const selfClosing = xmlStr.match(/<[a-zA-Z][a-zA-Z0-9]*[^>]*\/>/g) || [];
-
+  // 标签配对检查：支持命名空间前缀（<soap:Body>），排除自闭合（<rect ... />）
   const openCount: Record<string, number> = {};
-  for (const tag of openTags) {
-    const name = tag.match(/<([a-zA-Z][a-zA-Z0-9]*)/)?.[1] || '';
-    openCount[name] = (openCount[name] || 0) + 1;
-  }
-  for (const tag of closeTags) {
-    const name = tag.match(/<\/([a-zA-Z][a-zA-Z0-9]*)>/)?.[1] || '';
-    openCount[name] = (openCount[name] || 0) - 1;
+  const closeCount: Record<string, number> = {};
+  XML_TAG_RE.lastIndex = 0;
+  let match: RegExpExecArray | null;
+  while ((match = XML_TAG_RE.exec(xmlStr)) !== null) {
+    const closing = match[1] === '/';
+    const name = match[2];
+    const attrs = match[3] ?? '';
+    if (closing) {
+      closeCount[name] = (closeCount[name] ?? 0) + 1;
+      continue;
+    }
+    const selfClosing = /\/\s*$/.test(attrs);
+    if (!selfClosing) openCount[name] = (openCount[name] ?? 0) + 1;
   }
 
   for (const [name, count] of Object.entries(openCount)) {
-    if (count > 0) {
+    const balance = count - (closeCount[name] ?? 0);
+    if (balance > 0) {
       violations.push({
         type: 'unclosed_tag',
-        message: `Tag "${name}" is not properly closed (${count} unclosed)`,
+        message: `Tag "${name}" is not properly closed (${balance} unclosed)`,
         severity: 'error',
       });
-    } else if (count < 0) {
+    }
+  }
+  for (const [name, count] of Object.entries(closeCount)) {
+    const balance = (openCount[name] ?? 0) - count;
+    if (balance < 0) {
       violations.push({
         type: 'extra_close_tag',
-        message: `Tag "${name}" has ${-count} extra closing tags`,
+        message: `Tag "${name}" has ${-balance} extra closing tags`,
         severity: 'error',
       });
     }
@@ -277,7 +474,7 @@ export function parseXML(content: string): FormatParseResult {
 
   return {
     format: 'xml',
-    success: violations.filter((v) => v.severity === 'error').length === 0,
+    success: violations.filter(isSyntaxViolation).length === 0,
     parsed: xmlStr,
     violations,
   };
@@ -288,10 +485,14 @@ export function parseXML(content: string): FormatParseResult {
 export function parseSQL(content: string): FormatParseResult {
   const violations: FormatViolation[] = [];
 
-  let sqlStr = content.trim();
-  const codeBlockMatch = sqlStr.match(/```(?:sql)?\s*([\s\S]*?)```/);
-  if (codeBlockMatch) {
-    sqlStr = codeBlockMatch[1].trim();
+  const payload = extractFormatPayload('sql', content);
+  const sqlStr = payload.text;
+  if (payload.fenced) {
+    violations.push({
+      type: TRAILING_CONTENT_VIOLATION,
+      message: 'SQL is wrapped in a markdown fence',
+      severity: 'warning',
+    });
   }
 
   // 基础 SQL 语法检查
@@ -304,10 +505,10 @@ export function parseSQL(content: string): FormatParseResult {
 
   for (let i = 0; i < statements.length; i++) {
     const stmt = statements[i];
-    const firstWord = stmt.split(/\s+/)[0]?.toUpperCase();
+    const firstWord = stmt.replace(/^(?:\s*--[^\n]*\n)+/, '').split(/\s+/)[0]?.toUpperCase();
 
-    const validKeywords = ['SELECT', 'INSERT', 'UPDATE', 'DELETE', 'CREATE', 'ALTER', 'DROP', 'WITH', 'EXPLAIN', 'SHOW', 'DESCRIBE'];
-    if (!validKeywords.includes(firstWord)) {
+    const validKeywords = ['SELECT', 'INSERT', 'UPDATE', 'DELETE', 'CREATE', 'ALTER', 'DROP', 'WITH', 'EXPLAIN', 'SHOW', 'DESCRIBE', 'SET', 'USE', 'BEGIN', 'COMMIT', 'ROLLBACK', 'DECLARE', 'DELIMITER', 'GRANT', 'REVOKE', 'TRUNCATE', 'CALL'];
+    if (firstWord && !validKeywords.includes(firstWord)) {
       violations.push({
         type: 'invalid_syntax',
         message: `Statement ${i + 1}: unexpected keyword "${firstWord}"`,
@@ -340,7 +541,7 @@ export function parseSQL(content: string): FormatParseResult {
 
   return {
     format: 'sql',
-    success: violations.filter((v) => v.severity === 'error').length === 0,
+    success: violations.filter(isSyntaxViolation).length === 0,
     parsed: statements,
     violations,
   };
@@ -351,10 +552,14 @@ export function parseSQL(content: string): FormatParseResult {
 export function parseHTML(content: string): FormatParseResult {
   const violations: FormatViolation[] = [];
 
-  let htmlStr = content.trim();
-  const codeBlockMatch = htmlStr.match(/```(?:html)?\s*([\s\S]*?)```/);
-  if (codeBlockMatch) {
-    htmlStr = codeBlockMatch[1].trim();
+  const payload = extractFormatPayload('html', content);
+  const htmlStr = payload.text;
+  if (payload.fenced) {
+    violations.push({
+      type: TRAILING_CONTENT_VIOLATION,
+      message: 'HTML is wrapped in a markdown fence',
+      severity: 'warning',
+    });
   }
 
   // 基础 HTML 结构检查
@@ -396,7 +601,7 @@ export function parseHTML(content: string): FormatParseResult {
 
   return {
     format: 'html',
-    success: violations.filter((v) => v.severity === 'error').length === 0,
+    success: violations.filter(isSyntaxViolation).length === 0,
     parsed: htmlStr,
     violations,
   };
@@ -407,10 +612,14 @@ export function parseHTML(content: string): FormatParseResult {
 export function parseYAML(content: string): FormatParseResult {
   const violations: FormatViolation[] = [];
 
-  let yamlStr = content.trim();
-  const codeBlockMatch = yamlStr.match(/```(?:yaml|yml)?\s*([\s\S]*?)```/);
-  if (codeBlockMatch) {
-    yamlStr = codeBlockMatch[1].trim();
+  const payload = extractFormatPayload('yaml', content);
+  const yamlStr = payload.text;
+  if (payload.fenced) {
+    violations.push({
+      type: TRAILING_CONTENT_VIOLATION,
+      message: 'YAML is wrapped in a markdown fence',
+      severity: 'warning',
+    });
   }
 
   // 基础 YAML 格式检查（不依赖外部库）
@@ -420,6 +629,7 @@ export function parseYAML(content: string): FormatParseResult {
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
     if (line.trim() === '' || line.trim().startsWith('#')) continue;
+    if (line.trim() === '---' || line.trim() === '...') continue;
 
     // 检查缩进一致性
     const indent = line.match(/^(\s*)/)?.[1] || '';
@@ -432,7 +642,7 @@ export function parseYAML(content: string): FormatParseResult {
     }
 
     // 检查 key: value 格式
-    if (/^[a-zA-Z_][\w-]*\s*:/.test(line.trim())) {
+    if (/^[a-zA-Z_"'&*][\w\-."'&* ]*\s*:/.test(line.trim())) {
       hasKey = true;
     } else if (!line.trim().startsWith('-') && !line.trim().startsWith(':') && !line.includes(':')) {
       violations.push({
@@ -449,7 +659,7 @@ export function parseYAML(content: string): FormatParseResult {
 
   return {
     format: 'yaml',
-    success: violations.filter((v) => v.severity === 'error').length === 0,
+    success: violations.filter(isSyntaxViolation).length === 0,
     parsed: yamlStr,
     violations,
   };
@@ -463,11 +673,8 @@ export function parseRegex(
 ): FormatParseResult {
   const violations: FormatViolation[] = [];
 
-  let regexStr = content.trim();
-  const codeBlockMatch = regexStr.match(/```(?:regex)?\s*([\s\S]*?)```/);
-  if (codeBlockMatch) {
-    regexStr = codeBlockMatch[1].trim();
-  }
+  const payload = extractFormatPayload('regex', content);
+  const regexStr = payload.text;
 
   // 尝试解析正则
   let regex: RegExp;
@@ -514,7 +721,7 @@ export function parseRegex(
 
   return {
     format: 'regex',
-    success: violations.filter((v) => v.severity === 'error').length === 0,
+    success: violations.filter(isSyntaxViolation).length === 0,
     parsed: regex,
     violations,
   };
@@ -525,10 +732,14 @@ export function parseRegex(
 export function parseMermaid(content: string): FormatParseResult {
   const violations: FormatViolation[] = [];
 
-  let mdStr = content.trim();
-  const codeBlockMatch = mdStr.match(/```(?:mermaid)?\s*([\s\S]*?)```/);
-  if (codeBlockMatch) {
-    mdStr = codeBlockMatch[1].trim();
+  const payload = extractFormatPayload('mermaid', content);
+  const mdStr = payload.text;
+  if (payload.fenced) {
+    violations.push({
+      type: TRAILING_CONTENT_VIOLATION,
+      message: 'Mermaid diagram is wrapped in a markdown fence',
+      severity: 'warning',
+    });
   }
 
   // 检查是否包含有效的 Mermaid 图表类型
@@ -536,6 +747,7 @@ export function parseMermaid(content: string): FormatParseResult {
     'graph', 'flowchart', 'sequenceDiagram', 'classDiagram',
     'stateDiagram', 'erDiagram', 'gantt', 'pie', 'gitGraph',
     'journey', 'mindmap', 'timeline', 'sankey', 'xychart',
+    'block-beta', 'requirementDiagram', 'quadrantChart',
   ];
 
   const firstLine = mdStr.split('\n')[0]?.trim() || '';
@@ -549,23 +761,32 @@ export function parseMermaid(content: string): FormatParseResult {
     });
   }
 
-  // 基础语法检查：括号平衡
+  // 括号平衡检查。
+  // erDiagram 的关系线使用基数记法（||--o{ / }o--|| / |o--o{），
+  // 其中的 { } | o 不是分组符号，必须从平衡检查里排除，否则恒定误报「未闭合括号」。
+  const isEntityRelationship = /^\s*erDiagram/i.test(firstLine);
+  const balanceSource = isEntityRelationship
+    ? mdStr.split('\n').filter((line) => !line.includes('--') && !line.includes('..')).join('\n')
+    : mdStr;
+
   let bracketDepth = 0;
-  for (const char of mdStr) {
+  let unbalanced = false;
+  for (const char of balanceSource) {
     if (char === '[' || char === '{' || char === '(') bracketDepth++;
     if (char === ']' || char === '}' || char === ')') bracketDepth--;
     if (bracketDepth < 0) {
       violations.push({ type: 'unmatched_bracket', message: 'Unmatched closing bracket', severity: 'error' });
+      unbalanced = true;
       break;
     }
   }
-  if (bracketDepth > 0) {
+  if (!unbalanced && bracketDepth > 0) {
     violations.push({ type: 'unmatched_bracket', message: `${bracketDepth} unclosed brackets`, severity: 'error' });
   }
 
   return {
     format: 'mermaid',
-    success: violations.filter((v) => v.severity === 'error').length === 0,
+    success: violations.filter(isSyntaxViolation).length === 0,
     parsed: mdStr,
     violations,
   };
@@ -576,18 +797,17 @@ export function parseMermaid(content: string): FormatParseResult {
 export function parseMarkdown(content: string): FormatParseResult {
   const violations: FormatViolation[] = [];
 
-  let mdStr = content.trim();
-  // 如果内容在代码块中，提取出来
-  const codeBlockMatch = mdStr.match(/```(?:markdown|md)?\s*([\s\S]*?)```/);
-  if (codeBlockMatch) {
-    mdStr = codeBlockMatch[1].trim();
-  }
+  // Markdown 文档本身可以合法包含多个围栏代码块，
+  // 因此只有在「整份输出恰好是一个围栏块」时才把它当作围栏剥离，
+  // 否则一律按整篇文档解析（旧实现无条件取第一个围栏，
+  // 会把 ```http / ```sql 之外的全部内容丢掉，导致字段检查在错误文本上执行）。
+  const payload = extractFormatPayload('markdown', content);
+  const mdStr = payload.text;
 
   // 检查基本 Markdown 结构
   const hasHeading = /^#{1,6}\s/m.test(mdStr);
   const hasList = /^[-*+]\s/m.test(mdStr) || /^\d+\.\s/m.test(mdStr);
   const hasParagraph = mdStr.split('\n\n').length > 1;
-  const hasCodeBlock = /```/.test(mdStr);
 
   if (!hasHeading && !hasList && !hasParagraph) {
     violations.push({
@@ -609,7 +829,7 @@ export function parseMarkdown(content: string): FormatParseResult {
 
   return {
     format: 'markdown',
-    success: violations.filter((v) => v.severity === 'error').length === 0,
+    success: violations.filter(isSyntaxViolation).length === 0,
     parsed: mdStr,
     violations,
   };
@@ -620,36 +840,31 @@ export function parseMarkdown(content: string): FormatParseResult {
 export function parseTOML(content: string): FormatParseResult {
   const violations: FormatViolation[] = [];
 
-  let tomlStr = content.trim();
-  const codeBlockMatch = tomlStr.match(/```(?:toml)?\s*([\s\S]*?)```/);
-  if (codeBlockMatch) {
-    tomlStr = codeBlockMatch[1].trim();
+  const payload = extractFormatPayload('toml', content);
+  const tomlStr = payload.text;
+  if (payload.fenced) {
+    violations.push({
+      type: TRAILING_CONTENT_VIOLATION,
+      message: 'TOML is wrapped in a markdown fence',
+      severity: 'warning',
+    });
   }
 
   const lines = tomlStr.split('\n');
   let hasKey = false;
-  let inTable = false;
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i].trim();
     if (line === '' || line.startsWith('#')) continue;
 
     // Table header [section]
-    if (/^\[[\w.-]+\]$/.test(line)) {
-      inTable = true;
-      continue;
-    }
-
+    if (/^\[[\w.-]+\]$/.test(line)) continue;
     // Array of tables [[section]]
-    if (/^\[\[[\w.-]+\]\]$/.test(line)) {
-      inTable = true;
-      continue;
-    }
+    if (/^\[\[[\w.-]+\]\]$/.test(line)) continue;
 
     // Key = value
     if (/^[\w.-]+\s*=/.test(line)) {
       hasKey = true;
-      // 检查值格式（基础检查）
       const value = line.split('=').slice(1).join('=').trim();
       if (value === '') {
         violations.push({
@@ -674,7 +889,7 @@ export function parseTOML(content: string): FormatParseResult {
 
   return {
     format: 'toml',
-    success: violations.filter((v) => v.severity === 'error').length === 0,
+    success: violations.filter(isSyntaxViolation).length === 0,
     parsed: tomlStr,
     violations,
   };

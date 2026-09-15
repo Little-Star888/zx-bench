@@ -168,7 +168,14 @@ export interface ModelParams {
   temperature?: number | null;
   topP?: number | null;
   maxTokens?: number;
-  timeout?: number;          // 毫秒
+  timeout?: number;          // 毫秒；模型/运行默认超时
+  /**
+   * 题级硬超时（毫秒）。优先级高于 `timeout` 与运行级 `constraints.hardTimeLimitMs`：
+   * 有效超时 = min(hardTimeLimitMs ?? timeout ?? 600000, hardTimeoutMs)。
+   * 来源是题目 `requirements.hardSeconds`（与题面「时限N秒」一致），
+   * 避免运行级硬止损把单题预算放大（实测 360 秒题被跑到 1200 秒）。
+   */
+  hardTimeoutMs?: number;
   retryCount?: number;
   stop?: string[];
   extra?: Record<string, unknown>;
@@ -507,6 +514,18 @@ export interface RunManifest {
     runsPerQuestion: number;
     judgeEnabled: boolean;
     escalationEnabled: boolean;
+    /**
+     * 运行级约束必须随清单冻结（2026-09-16 补）：answerFirst 会让评分器改判答案位置
+     * （实测使 reasoning_math 均分相差 8.97 分），hardTimeLimitMs 决定哪些题会被中断判 0。
+     * 此前清单只存 5 个键，复现口径不完整。
+     */
+    constraints?: EvalConstraints;
+    /** 影响评分的其余开关，一并冻结以便完整复现 */
+    safetyCheckEnabled?: boolean;
+    hiddenTestsEnabled?: boolean;
+    structuredOutputEnabled?: boolean;
+    escalationThreshold?: number;
+    judgeModelConfigId?: string | null;
   };
 }
 

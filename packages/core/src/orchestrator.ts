@@ -106,7 +106,7 @@ function buildLimitExceededResult(
   startedAt: string,
   finishedAt: string,
   onLimit?: 'fail' | 'degrade' | 'flag',
-  detail?: { inputTokens?: number; outputTokens?: number; reasoningContent?: string },
+  detail?: { inputTokens?: number; outputTokens?: number; reasoningContent?: string; maxTokens?: number },
 ): ScenarioResult {
   const evidence = [reason];
   const humanReviewRequired = onLimit === 'flag';
@@ -115,7 +115,10 @@ function buildLimitExceededResult(
     scenarioVersion: scenario.scenarioVersion,
     scenarioHash: scenario.scenarioHash,
     dimension: scenario.dimension,
-    graderVersion: scenario.graderVersion,
+    // 与代码修复早退路径（`${grader}@${version}`）及正常路径的 evaluator 命名保持一致：
+    // 此前这里只写裸版本号（"1.0.0"），使 evaluationAudit.graderVersion 与落库的
+    // graderVersion 列在早退样本上格式不一致（实测 09-15 run 15/309 行）。
+    graderVersion: `${scenario.grader}@${scenario.graderVersion}`,
     modelOutput: '',
     reasoningContent: detail?.reasoningContent,
     outputMetadata: {
@@ -126,7 +129,9 @@ function buildLimitExceededResult(
       outputLength: 0,
       outputTokens: detail?.outputTokens ?? 0,
       inputTokens: detail?.inputTokens ?? 0,
-      maxTokens: 0,
+      // 预算必须回传真实值：此前恒为 0，与同一行 evidence 里自述的 maxTokens=98192 自相矛盾，
+      // 也让"预算耗尽"无法与"请求预算本身为 0"区分，成本/预算追溯失真。
+      maxTokens: detail?.maxTokens ?? 0,
       incomplete: true,
       incompleteReasons: [reason],
       reasoningLimitExceeded: true,
@@ -226,9 +231,12 @@ async function evaluateCandidate(options: OrchestrateOptions): Promise<ScenarioR
   let sandboxSummary: string | null = null;
   const scenarioRequirements = (scenario.requirements ?? {}) as Record<string, unknown>;
   const partHardSeconds = Number(scenarioRequirements.hardSeconds);
-  const scenarioTimeout = Number.isFinite(partHardSeconds) && partHardSeconds > 0
+  // 题级预算单独走 `hardTimeoutMs`，不再借 `timeout` 覆盖模型默认值：
+  // caller 侧按 min(hardTimeLimitMs ?? timeout ?? 600s, hardTimeoutMs) 取小，
+  // 让「题面时限N秒」与运行级硬止损同时生效（此前运行级会把题级预算整个顶掉）。
+  const scenarioHardTimeoutMs = Number.isFinite(partHardSeconds) && partHardSeconds > 0
     ? partHardSeconds * 1000
-    : modelParams.timeout;
+    : undefined;
 
   // ===== Stage 1.55: 多文件仓库题（project_repair）——注入仓库文件内容 =====
   // P4 事故修复：AG 系列新题的 promptTemplate 是通用英文模板（不内嵌源码），而
@@ -272,7 +280,7 @@ async function evaluateCandidate(options: OrchestrateOptions): Promise<ScenarioR
   try {
     modelResponse = options.savedCandidate ? options.savedCandidate.response : await callModelWithRetry({
       config: modelConfig,
-      params: { ...modelParams, maxTokens: effectiveMaxTokens, timeout: scenarioTimeout },
+      params: { ...modelParams, maxTokens: effectiveMaxTokens, hardTimeoutMs: scenarioHardTimeoutMs },
       systemPrompt,
       userPrompt,
       signal: options.signal,
@@ -294,6 +302,7 @@ async function evaluateCandidate(options: OrchestrateOptions): Promise<ScenarioR
         startedAt,
         new Date().toISOString(),
         onLimit,
+        { maxTokens: effectiveMaxTokens },
       );
     }
     throw err; // 其他错误照常抛出
@@ -321,6 +330,7 @@ async function evaluateCandidate(options: OrchestrateOptions): Promise<ScenarioR
           inputTokens: modelResponse.usage.inputTokens,
           outputTokens: modelResponse.usage.outputTokens,
           reasoningContent: modelResponse.reasoningContent,
+          maxTokens: effectiveMaxTokens,
         },
       );
     }
@@ -340,7 +350,7 @@ async function evaluateCandidate(options: OrchestrateOptions): Promise<ScenarioR
       );
       modelResponse = await callModelWithRetry({
         config: modelConfig,
-        params: { ...modelParams, maxTokens: effectiveMaxTokens, timeout: scenarioTimeout },
+        params: { ...modelParams, maxTokens: effectiveMaxTokens, hardTimeoutMs: scenarioHardTimeoutMs },
         systemPrompt,
         userPrompt,
         signal: options.signal,
@@ -437,7 +447,9 @@ async function evaluateCandidate(options: OrchestrateOptions): Promise<ScenarioR
   onProgress?.('parsing_output');
   let structuredAnswer: unknown;
   let formatParseSuccess = true;
-  if (evalConfig.structuredOutputEnabled && scenario.schema) {
+  const declaredSchema = scenario.schema
+    ?? (scenario.requirements as Record<string, unknown> | undefined)?.schema;
+  if (evalConfig.structuredOutputEnabled && declaredSchema) {
     try {
       const jsonMatch = modelResponse.content.match(/```(?:json)?\s*([\s\S]*?)```/);
       const jsonStr = jsonMatch ? jsonMatch[1].trim() : modelResponse.content.trim();
@@ -690,6 +702,14 @@ async function evaluateCandidate(options: OrchestrateOptions): Promise<ScenarioR
     result.deterministicScore = detScore;
   }
   applyReviewedVerdict(result, finalJudge);
+  // P1（2026-09-16）：满分可疑审计——幻觉维度 judge 给满分（≥98）但输出含引用形态
+  // （DOI/URL/ISBN）时标记人工复核。纯 judge 口径下满分最容易被"格式正确但内容编造"骗过，
+  // 引用形态是可机械检测的疑点。只标记不改分，避免引入第二个 judge 依赖。
+  if (scenario.dimension === 'hallucination_resistance' && (result.totalScore ?? 0) >= 98 &&
+      /\b10\.\d{4,9}\/\S+|https?:\/\/\S+|isbn[\s:：-]*[\d-]{9,}/i.test(modelResponse.content)) {
+    result.humanReviewRequired = true;
+    result.evidence = [...(result.evidence ?? []), 'FULL_MARK_AUDIT: judge full mark with citation-form output; flagged for review'];
+  }
   if (scenario.dimension === 'reasoning_math' && finalJudge && result.axisScores?.answer_accuracy != null &&
       ((result.axisScores.answer_accuracy === 100) !== (finalJudge.patchCorrectness >= .5))) {
     result.humanReviewRequired = true;
@@ -828,6 +848,14 @@ export function generateManifest(
       runsPerQuestion: evalConfig.runsPerQuestion,
       judgeEnabled: evalConfig.judgeEnabled,
       escalationEnabled: evalConfig.escalationEnabled,
+      // 冻结运行级约束与其余影响分数的开关：answerFirst 会改变评分器的答案位置口径
+      // （实测 reasoning_math 相差 8.97 分），hardTimeLimitMs 决定哪些题被中断判 0。
+      constraints: evalConfig.constraints,
+      safetyCheckEnabled: evalConfig.safetyCheckEnabled,
+      hiddenTestsEnabled: evalConfig.hiddenTestsEnabled,
+      structuredOutputEnabled: evalConfig.structuredOutputEnabled,
+      escalationThreshold: evalConfig.escalationThreshold,
+      judgeModelConfigId: evalConfig.judgeModelConfigId ?? null,
     },
   };
 }

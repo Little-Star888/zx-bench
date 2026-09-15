@@ -197,10 +197,35 @@ export function canonicalDecimal(text: string, decimalShift = 0): string | null 
 }
 
 /**
+ * 分隔符等价类归一（仅用于骨架比较阶段）。
+ *
+ * 多字段 / 多值答案里，「字段分隔符」与「列表分隔符」的书写方式不构成语义差异：
+ *   `顺序=J3-J1-J4-J2-J5` 与 `顺序=J3,J1,J4,J2,J5` 是同一个答案。
+ * 实测（2026-09-15 run）RM-CN-012 因分隔符写成逗号被判 0.9 轴 0 分总分 15，
+ * 而 AI Judge 独立给 100 —— 属确定性判分假阴性，不是模型错误。
+ *
+ * 只在骨架（数字 token 已被 `#` 取代）上归一，因此不会吃掉负号 / 小数点：
+ * `-13.3%` 的负号属于数字 token，早已被 `#%` 覆盖，不会被误当作分隔符。
+ *
+ * 边界：只归一「分隔符选择」，不改变字段顺序、不改变任何非分隔字符，
+ * 因此 `J1-J3-…` 与 `J3-J1-…` 依旧判为不同答案。
+ */
+export function normalizeSkeletonSeparators(skeleton: string): string {
+  return skeleton
+    // 字段 / 列表分隔符统一为半角逗号
+    .replace(/[，,、;；|/\\~～—–]+/g, ',')
+    // 连字符类分隔符（Johnson 序列、区间、路径等）统一为半角逗号
+    .replace(/-+/g, ',');
+}
+
+/**
  * Compare the requested labelled format and every numeric component independently.
  * All components must pass. Text similarity is never evidence of arithmetic correctness.
  * Numeric values must be identical. Precision/rounding belongs in the prompt
  * and gold, not in a scoring tolerance; alternative wording is an explicit gold variant.
+ * Separator choice is not semantics: skeletons are compared after separator
+ * normalization, so `J3-J1-…` and `J3,J1,…` are the same answer (see
+ * normalizeSkeletonSeparators).
  */
 function compareStrictAnswer(extracted: string | number, expected: unknown, unit?: unknown): number {
   const actual = normalizeAnswer(String(extracted));
@@ -216,8 +241,9 @@ function compareStrictAnswer(extracted: string | number, expected: unknown, unit
   const target = normalizeAnswer(expected);
   const numberPattern = /(?<![A-Za-z\d.])[-+]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][-+]?\d+)?/g;
   const values = (s: string) => [...s.matchAll(numberPattern)].map(m => canonicalDecimal(m[0]));
+  const skeleton = (s: string) => normalizeSkeletonSeparators(s.replace(numberPattern, '#'));
   const actualValues = values(actual), expectedValues = values(target);
-  if (actual.replace(numberPattern, '#') !== target.replace(numberPattern, '#')
+  if (skeleton(actual) !== skeleton(target)
     || actualValues.length !== expectedValues.length) return 0;
   return actualValues.every((v, i) => v !== null && v === expectedValues[i]) ? 100 : 0;
 }

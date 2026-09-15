@@ -1,8 +1,8 @@
 {
- "version": "1.32.0",
- "count": 765,
+ "version": "1.33.0",
+ "count": 778,
  "retiredCount": 78,
- "totalCount": 843,
+ "totalCount": 856,
  "dimensions": {
   "agent_workflow": 45,
   "cli_deep_tasks": 56,
@@ -12,14 +12,14 @@
   "program": 150,
   "reasoning_math": 100,
   "safety_authority": 50,
-  "structured_output": 28,
+  "structured_output": 41,
   "tool_cli_workflow": 56
  },
  "retiredDimensions": {
   "hallucination_resistance": 78
  },
- "generatedAt": "2026-09-14T00:00:00.000Z",
- "validCount": 765,
+ "generatedAt": "2026-09-16T00:00:00.000Z",
+ "validCount": 778,
  "ambiguousCount": 0,
  "reviewCount": 0,
  "questionReview": "math-3.2-hallucination-5.0",
@@ -280,7 +280,7 @@
   "sourcePackHash": "42929b253e9e2f4d32568c5e164ab4fcb651cca3712b6472950c7907c2ed10e3",
   "prospectiveOnly": true
  },
- "defaultRunCount": 764,
+ "defaultRunCount": 777,
  "challengeExtension": {
   "version": "challenge-extension-2026-09-13-v1",
   "bankVersion": "1.31.1",
@@ -335,5 +335,55 @@
   "groups": 36,
   "partsPerGroup": 4,
   "defaultRunEligible": true
+ },
+ "structuredOutputReview": {
+  "version": "schema-compliance-2026-09-16-v4",
+  "grader": "schema_compliance@schema_compliance_v4",
+  "previousVersions": [
+   "schema_compliance_v3",
+   "schema_compliance_v2"
+  ],
+  "count": 41,
+  "addedIds": [
+   "SO-CN-029",
+   "SO-CN-030",
+   "SO-CN-031",
+   "SO-CN-032",
+   "SO-CN-033",
+   "SO-CN-034",
+   "SO-CN-035",
+   "SO-CN-036",
+   "SO-CN-037",
+   "SO-CN-038",
+   "SO-CN-039",
+   "SO-CN-040",
+   "SO-CN-041"
+  ],
+  "difficulty": {
+   "easy": 7,
+   "medium": 23,
+   "hard": 10,
+   "adversarial": 1
+  },
+  "category": {
+   "json": 9,
+   "csv_yaml": 8,
+   "sql_xml": 8,
+   "html_mermaid": 9,
+   "mixed_special": 7
+  },
+  "fixes": [
+   "requiredFields 判定改用格式正文语料，修复 sql/regex 因 parsed 非字符串导致字段轴恒为 0",
+   "JSON 尾部散文容错（平衡扫描提取最外层 JSON 值），不再连带清零字段轴",
+   "CSV 尾部散文截断；XML 支持命名空间前缀与自闭合标签；Mermaid erDiagram 基数记法容错",
+   "markdown 仅在整份输出为单一围栏时剥离，避免丢弃正文",
+   "语法轴只统计语法/结构错误，schema_mismatch/missing_required 归 schema 轴",
+   "schema / constraints 经 requirements 承载（ScenarioDefinition 无对应列）",
+   "输出纪律分级：围栏语言白名单 + 尾部冗余文本"
+  ],
+  "limitations": [
+   "schema 轴仅做 MVP 校验（type/required/properties），未实现 oneOf/pattern 等关键字。",
+   "markdown 题的单字符声明字段（#、|、1.）区分度弱，仅作为格式存在性检查。"
+  ]
  }
 }

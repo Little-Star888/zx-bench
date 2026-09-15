@@ -331,8 +331,15 @@ function buildTimeout(
   params: ModelParams,
   signal: AbortSignal | undefined,
 ): { controller: AbortController; timeoutId: ReturnType<typeof setTimeout>; timeoutMs: number } {
-  // 默认 10 分钟：含本地模型队列排队时间，避免并发下排队挤占推理预算导致误判超时
-  const timeoutMs = constraints?.hardTimeLimitMs ?? params.timeout ?? 600_000;
+  // 两级预算语义（2026-09-16 修）：
+  //   题级硬超时（requirements.hardSeconds，与题面「时限N秒」一致）比模型默认超时更具体 → 覆盖它；
+  //   运行级 hardTimeLimitMs 是全局反拖尾止损 → 只做上限，永远封顶两者。
+  // 此前题级预算被塞进 `params.timeout`，而 `hardTimeLimitMs ?? params.timeout` 让运行级
+  // 无条件胜出，使题面写明的时限形同虚设——实测 09-15 run：UMX-01-P2 题面时限 360 秒实跑
+  // 780 秒、UMX-02-P1/P2 时限 360 秒各实跑 1200 秒，6 道证明题合计白烧 7200 秒后仍判 0 分。
+  const runCapMs = constraints?.hardTimeLimitMs;
+  const baseMs = params.hardTimeoutMs ?? runCapMs ?? params.timeout ?? 600_000;
+  const timeoutMs = runCapMs != null ? Math.min(baseMs, runCapMs) : baseMs;
   const controller = new AbortController();
   const timeoutId = setTimeout(
     () => controller.abort(new Error(`Model call timed out after ${timeoutMs}ms`)),

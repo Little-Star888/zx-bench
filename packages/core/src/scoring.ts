@@ -233,8 +233,12 @@ export function computeConsistencyScore(scores: number[]): number {
  *
  * 注意边界：截断但已有内容的样本**不**在此剔除（保留部分信号，与 multi-run
  * "include truncated attempts" 设计一致）；只有完全没有可评估内容的样本才剔除。
+ *
+ * 2026-09-16 补充 `limit_exceeded`：硬约束（运行级 hardTimeLimitMs / maxTotalTokens）
+ * 触发的中断走 `buildLimitExceededResult`，它与普通的"模型空响应"证据前缀不同，
+ * 此前完全漏判。若下游只做「能力对比」，这类样本必须与 empty_output 同等剔除。
  */
-export type EngineeringFailureKind = 'environment_error' | 'no_evaluator' | 'empty_output';
+export type EngineeringFailureKind = 'environment_error' | 'no_evaluator' | 'empty_output' | 'limit_exceeded';
 
 export interface EngineeringFailureInput {
   environmentError?: boolean | null;
@@ -246,6 +250,16 @@ export interface EngineeringFailureInput {
 
 const NO_EVALUATOR_RE = /No evaluator found/i;
 const EMPTY_OUTPUT_EVIDENCE_RE = /^(Empty model output|Model returned empty response)/i;
+/**
+ * 硬约束提前终止（P0，2026-09-16）。
+ * 背景：开启运行级 constraints（hardTimeLimitMs / maxTotalTokens）后，模型超时或把预算
+ * 全耗在思考上时，orchestrator 走 `buildLimitExceededResult` 提前返回，evidence 前缀是
+ * `HARD_TIME_LIMIT:` / `REASONING_TOKEN_BUDGET:`——既不匹配上面的空输出正则，聚合调用点
+ * 又普遍不传 modelOutput，于是这些「没有作答、无法测量」的样本被当成 0 分能力样本计入
+ * 维度均分。实测 09-15 run：15 条此类样本（8 math + 7 data_extraction）全部漏隔离，
+ * 使 reasoning_math 均分被低估 8.87 分（83.65 → 92.52）、全维度加权总分低估 3.98 分。
+ */
+const LIMIT_EXCEEDED_EVIDENCE_RE = /^(REASONING_TOKEN_BUDGET|HARD_TIME_LIMIT):/i;
 
 function normalizeEvidence(evidence: string[] | string | null | undefined): string[] {
   if (!evidence) return [];
@@ -264,6 +278,8 @@ export function classifyEngineeringFailure(r: EngineeringFailureInput): Engineer
   const ev = normalizeEvidence(r.evidence);
   if (ev.some((e) => NO_EVALUATOR_RE.test(e))) return 'no_evaluator';
   if (ev.some((e) => EMPTY_OUTPUT_EVIDENCE_RE.test(e))) return 'empty_output';
+  // 硬约束提前终止：比 modelOutput 空白更具体的归因（预算耗尽 vs 硬超时），优先归类。
+  if (ev.some((e) => LIMIT_EXCEEDED_EVIDENCE_RE.test(e))) return 'limit_exceeded';
   // 仅当调用方显式提供 modelOutput 且为空白时才据此判定（聚合映射常省略该字段，不可臆断）
   if (r.modelOutput !== undefined && r.modelOutput !== null && !r.modelOutput.trim()) return 'empty_output';
   return null;
@@ -359,5 +375,13 @@ export function applyReviewedVerdict(result: Partial<ScenarioResult>, judge?: Ju
   } else if (has('DETERMINISTIC_VETO:') || has('DETERMINISTIC_FACT:')) {
     result.totalScore = has('DETERMINISTIC_VETO:') ? 0 : 100;
     if (judge?.factuality != null && Math.abs(judge.factuality * 100 - result.totalScore) > 1) result.humanReviewRequired = true;
+  } else if (has('PROOF_REQUIRES_RUBRIC_JUDGE') && result.judgeScore == null) {
+    // ultra_proof_part 的确定性分恒为 0、权重 det=0 / judge=1（judgeWeightCap=1），
+    // 评分器只产 `PROOF_REQUIRES_RUBRIC_JUDGE` 占位。Judge 未跑成时该题必然 0 分，
+    // 这是「无法评分」而不是「模型答错」——复用 GRADING_UNAVAILABLE 语义隔离出聚合，
+    // 避免 Judge 不可用（judgeEnabled=false / API 故障）时整个证明题组静默归零。
+    result.environmentError = true;
+    result.humanReviewRequired = true;
+    result.evidence = [...(result.evidence ?? []), 'GRADING_UNAVAILABLE: proof rubric requires a successful Judge; excluded from aggregates'];
   }
 }

@@ -34,6 +34,7 @@ server-*.out
 server-*.err
 
 # ===== 临时/scratch 文件 =====
+tmp/
 tmp-*
 .tmp-*
 *.tmp

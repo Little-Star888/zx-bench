@@ -9,7 +9,9 @@ import {
   LONG_TASK_WEIGHT,
   classifyEngineeringFailure,
   createDimAvgExclusionStats,
+  applyReviewedVerdict,
 } from './scoring.js';
+import type { JudgeResult, ScenarioResult } from '@zxbench/types';
 
 describe('computeWeightedTotal', () => {
   it('returns 0 for empty input', () => {
@@ -212,6 +214,37 @@ describe('classifyEngineeringFailure (P0 noise exclusion, 2026-09-14)', () => {
   it('does not infer empty output when modelOutput is undefined (aggregation mappings omit it)', () => {
     expect(classifyEngineeringFailure({ evidence: [] })).toBeNull();
   });
+
+  // P0（2026-09-16）：运行级 constraints 触发的中断走 buildLimitExceededResult，
+  // 证据前缀是 HARD_TIME_LIMIT / REASONING_TOKEN_BUDGET，与「模型空响应」不同，
+  // 此前完全漏判，导致 09-15 run 15 条无作答样本被当成 0 分能力样本计入维度均分。
+  it('flags hard-time-limit termination as limit_exceeded', () => {
+    expect(classifyEngineeringFailure({
+      evidence: ['HARD_TIME_LIMIT: Model call timed out after 1200000ms — hard time limit reached', 'NO_ANSWER_SUBMITTED'],
+    })).toBe('limit_exceeded');
+  });
+
+  it('flags reasoning-budget exhaustion as limit_exceeded', () => {
+    expect(classifyEngineeringFailure({
+      evidence: ['REASONING_TOKEN_BUDGET: reasoning exhausted maxTokens=98192, output tokens=98192 (empty output, thinking consumed the budget)'],
+    })).toBe('limit_exceeded');
+  });
+
+  it('does not let the limit prefix leak onto ordinary evidence', () => {
+    // 前缀必须锚定行首，避免把正文里提到该词条的样本误判为工程失败
+    expect(classifyEngineeringFailure({ evidence: ['Answer incorrect (accuracy: 0); see HARD_TIME_LIMIT handling'] })).toBeNull();
+    expect(classifyEngineeringFailure({ evidence: ['Extracted answer: "REASONING_TOKEN_BUDGET: 1"'] })).toBeNull();
+  });
+
+  it('keeps environment_error and no_evaluator precedence over limit_exceeded', () => {
+    expect(classifyEngineeringFailure({
+      environmentError: true,
+      evidence: ['HARD_TIME_LIMIT: timed out'],
+    })).toBe('environment_error');
+    expect(classifyEngineeringFailure({
+      evidence: ['No evaluator found for ultra_proof_part@1.0.0', 'HARD_TIME_LIMIT: timed out'],
+    })).toBe('no_evaluator');
+  });
 });
 
 describe('computeDifficultyWeightedDimAvgs — engineering failure exclusion (P0)', () => {
@@ -252,5 +285,42 @@ describe('computeDifficultyWeightedDimAvgs — engineering failure exclusion (P0
     ];
     const avgs = computeDifficultyWeightedDimAvgs(results, lookup);
     expect(avgs.get('program')).toBe(100);
+  });
+
+  // ultra_proof_part：det=0 / judge=1，评分器只产占位证据。Judge 未跑成时必须判为
+  // 「无法评分」而非「答错 0 分」，否则 Judge 不可用时整个证明题组静默归零并入均分。
+  it('marks an unjudged proof rubric part as ungradable instead of a zero', () => {
+    const unjudged: Partial<ScenarioResult> = { totalScore: 0, evidence: ['PROOF_REQUIRES_RUBRIC_JUDGE'] };
+    applyReviewedVerdict(unjudged);
+    expect(unjudged.environmentError).toBe(true);
+    expect(unjudged.humanReviewRequired).toBe(true);
+    expect(unjudged.evidence?.some(e => e.startsWith('GRADING_UNAVAILABLE'))).toBe(true);
+    expect(classifyEngineeringFailure({ environmentError: unjudged.environmentError, evidence: unjudged.evidence }))
+      .toBe('environment_error');
+  });
+
+  it('leaves a successfully judged proof part alone', () => {
+    const judged: Partial<ScenarioResult> = {
+      totalScore: 100, evidence: ['PROOF_REQUIRES_RUBRIC_JUDGE'], judgeScore: 100,
+    };
+    applyReviewedVerdict(judged, { factuality: 1 } as JudgeResult);
+    expect(judged.environmentError).toBeUndefined();
+    expect(judged.totalScore).toBe(100);
+  });
+
+  // P0（2026-09-16）：硬约束中断样本必须与空输出同等隔离，否则维度均分被测量伪影压低。
+  it('excludes hard-limit terminations from the dimension average', () => {
+    const results = [
+      { scenarioId: 'a', dimension: 'reasoning_math', totalScore: 100 },
+      { scenarioId: 'b', dimension: 'reasoning_math', totalScore: 0, evidence: ['HARD_TIME_LIMIT: Model call timed out after 1200000ms'] },
+      { scenarioId: 'c', dimension: 'reasoning_math', totalScore: 0, evidence: ['REASONING_TOKEN_BUDGET: reasoning exhausted maxTokens=98192'] },
+      { scenarioId: 'd', dimension: 'reasoning_math', totalScore: 80 },
+    ];
+    const stats = createDimAvgExclusionStats();
+    const avgs = computeDifficultyWeightedDimAvgs(results, lookup, undefined, undefined, stats);
+    // 剔除 b、c（均为 medium，权重相同）后 = (100+80)/2 = 90
+    expect(avgs.get('reasoning_math')).toBe(90);
+    expect(stats.excludedByKind.get('limit_exceeded')).toBe(2);
+    expect(stats.excludedByDimension.get('reasoning_math')).toBe(2);
   });
 });

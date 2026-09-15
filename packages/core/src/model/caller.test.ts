@@ -22,6 +22,35 @@ describe('OpenAI-compatible usage and reasoning streams', () => {
     await vi.advanceTimersByTimeAsync(600000);
     expect(await pending).toContain('1200000ms');
   });
+  // 2026-09-16：题级预算（requirements.hardSeconds）必须封顶运行级硬止损。
+  // 实测 09-15 run 中题面写「时限360秒」的题被跑到 1200 秒才中断，6 题白烧 7200 秒后判 0。
+  it('caps the run-level hard limit by the question budget', async () => {
+    vi.useFakeTimers();
+    vi.stubGlobal('fetch', vi.fn((_url, init) => new Promise((_resolve, reject) => {
+      init.signal.addEventListener('abort', () => reject(init.signal.reason));
+    })));
+    let settled = false;
+    const pending = callModel({ ...options, params: { hardTimeoutMs: 360000 }, constraints: { hardTimeLimitMs: 1200000 } })
+      .then(() => { settled = true; return ''; }, error => { settled = true; return error.message; });
+    await vi.advanceTimersByTimeAsync(360000);
+    expect(settled).toBe(true);
+    expect(await pending).toContain('360000ms');
+  });
+
+  it('raises the question budget above the model default instead of being capped by it', async () => {
+    vi.useFakeTimers();
+    vi.stubGlobal('fetch', vi.fn((_url, init) => new Promise((_resolve, reject) => {
+      init.signal.addEventListener('abort', () => reject(init.signal.reason));
+    })));
+    let settled = false;
+    const pending = callModel({ ...options, params: { timeout: 600000, hardTimeoutMs: 1200000 } })
+      .then(() => { settled = true; return ''; }, error => { settled = true; return error.message; });
+    await vi.advanceTimersByTimeAsync(600000);
+    expect(settled).toBe(false);
+    await vi.advanceTimersByTimeAsync(600000);
+    expect(await pending).toContain('1200000ms');
+  });
+
   it('does not retry a request cancelled by its owning evaluation', async () => {
     const controller = new AbortController();
     const fetchMock = vi.fn((_url, init) => new Promise((_resolve, reject) => {

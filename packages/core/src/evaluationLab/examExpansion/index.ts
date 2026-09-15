@@ -1,5 +1,5 @@
 /** Opt-in development paper. Frozen pilot and production scores stay separate. */
-import source from './math-candidates.json' with { type: 'json' };
+import { readFileSync } from 'node:fs';
 import { snapshotHash } from '../../contracts/pack.js';
 import { committedItems, type ExamSubmission, type ExamAnswer } from '../examPaper/index.js';
 import { parseExactExpression } from '../frontierChallenge/annihilatingMaps.js';
@@ -16,7 +16,16 @@ export type Item = { key: string; points: number; kind: 'exact'; expected: unkno
   | { key: string; points: number; kind: 'moment'; problem: MomentProblem; reference: unknown };
 type Group = { id: string; family: string; title: string; stem: string; capstoneChange: string; difficultyRisk: string; parts: { task: string; items: Item[] }[] };
 export type Submission = ExamSubmission;
-const groups = source.groups as Group[];
+// 用 readFileSync 而非 `import ... with { type: 'json' }`（2026-09-16）：
+// Node 26 对 JSON 模块强制要求 import attribute，若产物（dist）由不会输出该 attribute 的
+// 构建/旧 tsc 生成，会在启动时抛 ERR_IMPORT_ATTRIBUTE_MISSING——实测曾导致 watchdog 连续
+// 3 次启动失败后放弃重启，整个 run 转由非托管进程执行且日志全丢（R2）。
+// 显式读文件与 Node 版本、构建产物、模块系统解耦；路径基于 import.meta.url，
+// 在 src（vitest）与 dist（node）下都成立。
+const source = JSON.parse(
+  readFileSync(new URL('./math-candidates.json', import.meta.url), 'utf8'),
+) as { groups: Group[] };
+const groups = source.groups;
 const eq = (a: Rational, b: Rational) => a[0] === b[0] && a[1] === b[1];
 const le = (a: Rational, b: Rational) => a[0] * b[1] <= b[0] * a[1];
 const q = (n: number) => rational(BigInt(n));
