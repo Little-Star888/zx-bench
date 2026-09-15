@@ -10,6 +10,7 @@ import {
   classifyEngineeringFailure,
   createDimAvgExclusionStats,
   applyReviewedVerdict,
+  computeScorerVersionDrift,
 } from './scoring.js';
 import type { JudgeResult, ScenarioResult } from '@zxbench/types';
 
@@ -308,7 +309,49 @@ describe('computeDifficultyWeightedDimAvgs — engineering failure exclusion (P0
     expect(judged.totalScore).toBe(100);
   });
 
-  // P0（2026-09-16）：硬约束中断样本必须与空输出同等隔离，否则维度均分被测量伪影压低。
+  // P1（2026-09-16）：清单声明版本 vs 实际执行版本的漂移必须可审计。
+// 09-15 run 有 104/309 题漂移（exact_answer_line v4→v5 34 题、cli_command v1→v5 50 题等）
+// 却完全没有记录，导致历史分数不可比却看不出来。
+describe('computeScorerVersionDrift', () => {
+  const pack = [
+    { id: 'A', grader: 'exact_answer_line', graderVersion: 'exact_answer_v4' },
+    { id: 'B', grader: 'ultra_batch_part', graderVersion: '1.0.0' },
+    { id: 'C', grader: 'canary_authority', graderVersion: 'canary_authority_v4' },
+  ];
+
+  it('reports nothing when every executed version matches the frozen pack', () => {
+    const drift = computeScorerVersionDrift([
+      { scenarioId: 'A', graderVersion: 'exact_answer_line@exact_answer_v4' },
+      { scenarioId: 'B', graderVersion: 'ultra_batch_part@1.0.0' },
+    ], pack);
+    expect(drift).toEqual({ samples: 2, total: 0, byPair: {}, scenarioIds: [] });
+  });
+
+  it('groups drift by declared -> executed pair, sorted by sample count', () => {
+    const drift = computeScorerVersionDrift([
+      { scenarioId: 'A', graderVersion: 'exact_answer_line@exact_answer_v5' },
+      { scenarioId: 'C', graderVersion: 'canary_authority@canary_authority_v5' },
+      { scenarioId: 'B', graderVersion: 'ultra_batch_part@1.0.0' },
+    ], pack);
+    expect(drift.total).toBe(2);
+    expect(drift.scenarioIds).toEqual(['A', 'C']);
+    expect(drift.byPair).toEqual({
+      'exact_answer_line@exact_answer_v4 -> exact_answer_line@exact_answer_v5': 1,
+      'canary_authority@canary_authority_v4 -> canary_authority@canary_authority_v5': 1,
+    });
+  });
+
+  it('ignores results without an executed version and ids missing from the pack', () => {
+    const drift = computeScorerVersionDrift([
+      { scenarioId: 'A', graderVersion: null },
+      { scenarioId: 'ZZZ', graderVersion: 'whatever@9' },
+    ], pack);
+    expect(drift.samples).toBe(2);
+    expect(drift.total).toBe(0);
+  });
+});
+
+// P0（2026-09-16）：硬约束中断样本必须与空输出同等隔离，否则维度均分被测量伪影压低。
   it('excludes hard-limit terminations from the dimension average', () => {
     const results = [
       { scenarioId: 'a', dimension: 'reasoning_math', totalScore: 100 },

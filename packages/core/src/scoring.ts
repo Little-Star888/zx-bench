@@ -356,6 +356,84 @@ export function computeDifficultyWeightedDimAvgs(
   return dimAvgs;
 }
 
+/** 维度均分所需的三个查表（难度 / 攻击等级 / 显式权重覆盖）。 */
+export interface DimAvgLookups {
+  difficultyLookup: Map<string, string>;
+  attackLookup: Map<string, string>;
+  weightOverrideLookup: Map<string, number>;
+}
+
+/**
+ * 由题目定义构建维度均分查表（P1，2026-09-16 抽出）。
+ * 此前 routes 与 `scripts/recalc-scores.ts` 各写一份聚合实现：后者只做 environmentError 隔离，
+ * 缺工程失败隔离、缺 long_task 权重覆盖、缺 attackLevel 乘子，且本地 computeWeightedTotal
+ * 用 `?? 0` 静默丢弃未知维度（core 版会抛错）→ 两个「重算分数」入口口径不一致。
+ * 现统一由本函数提供查表语义，聚合交给 computeDifficultyWeightedDimAvgs。
+ */
+export function buildDimAvgWeightLookups(
+  scenarios: Array<{ id: string; difficulty?: string | null; category?: string | null; requirements?: unknown }>,
+): DimAvgLookups {
+  const lookups: DimAvgLookups = {
+    difficultyLookup: new Map(),
+    attackLookup: new Map(),
+    weightOverrideLookup: new Map(),
+  };
+  for (const s of scenarios) {
+    if (s.difficulty) lookups.difficultyLookup.set(s.id, s.difficulty);
+    if (s.category?.startsWith('long_task')) lookups.weightOverrideLookup.set(s.id, LONG_TASK_WEIGHT);
+    const raw = s.requirements;
+    const requirements = typeof raw === 'string'
+      ? (() => { try { return JSON.parse(raw) as Record<string, unknown>; } catch { return null; } })()
+      : (raw as Record<string, unknown> | null | undefined);
+    const attackLevel = requirements?.attackLevel;
+    if (typeof attackLevel === 'string' && /^L[1-4]$/.test(attackLevel)) {
+      lookups.attackLookup.set(s.id, attackLevel);
+    }
+  }
+  return lookups;
+}
+
+/** 评分器版本漂移审计结果（清单声明版本 vs 实际执行版本）。 */
+export interface ScorerVersionDrift {
+  /** 参与比对的结果样本数 */
+  samples: number;
+  /** 漂移样本数 */
+  total: number;
+  /** `声明版本 -> 实际版本` → 样本数（按样本数降序） */
+  byPair: Record<string, number>;
+  scenarioIds: string[];
+}
+
+/**
+ * 计算评分器版本漂移（P1，2026-09-16）。
+ * `getEvaluator` 允许经 `compatibleVersions` 显式复用新版实现（exact_answer_line v4 → v5、
+ * canary_authority v4 → v5 等），这是有意的向后兼容；但若不落审计，报告读者无法知道
+ * 「这批评分用的是哪一版口径」——实测 09-15 run 有 104/309 题漂移却毫无记录。
+ * 纯函数，便于单测与复用（run 汇总、报告、重算脚本）。
+ */
+export function computeScorerVersionDrift(
+  results: Array<{ scenarioId: string; graderVersion?: string | null }>,
+  packScenarios: Array<{ id: string; grader: string; graderVersion: string }>,
+): ScorerVersionDrift {
+  const declared = new Map(packScenarios.map((s) => [s.id, `${s.grader}@${s.graderVersion}`]));
+  const pairs = new Map<string, number>();
+  const scenarioIds: string[] = [];
+  for (const r of results) {
+    const want = declared.get(r.scenarioId);
+    const got = r.graderVersion ?? null;
+    if (want == null || got == null || want === got) continue;
+    scenarioIds.push(r.scenarioId);
+    const key = `${want} -> ${got}`;
+    pairs.set(key, (pairs.get(key) ?? 0) + 1);
+  }
+  return {
+    samples: results.length,
+    total: scenarioIds.length,
+    byPair: Object.fromEntries([...pairs].sort((a, b) => b[1] - a[1])),
+    scenarioIds,
+  };
+}
+
 /** Shared final authority for reviewed contracts, after mixing and during rescoring. */
 export function applyReviewedVerdict(result: Partial<ScenarioResult>, judge?: JudgeResult): void {
   const has = (prefix: string) => result.evidence?.some(e => e.startsWith(prefix));

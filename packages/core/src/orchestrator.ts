@@ -26,6 +26,7 @@ import type {
   EvalConstraints,
   ModelResponse,
   RuntimeEvaluation,
+  CriterionResult,
 } from '@zxbench/types';
 import { callModelWithRetry } from './model/caller.js';
 import { buildOutputMetadata } from '@zxbench/utils';
@@ -159,6 +160,66 @@ function buildLimitExceededResult(
 
 import { isolatedCodeRepairUnavailable } from './evaluators/codeRepair.js';
 
+/**
+ * 运行级约束的可机械核验部分 → criterionResults（F4，2026-09-16）。
+ * 背景：`quality.ts` 的 constraintMetrics 完全由 `evaluationAudit.criterionResults` 驱动，
+ * 而只有 instruction_checklist 评分器会写该字段 → 实测 09-15 run
+ * `{samples:309, scoredSamples:0, unscoredSamples:309, strictPassRate:null}`，
+ * 「先答模式」「硬止损」这类已下发并影响分数的约束**从未被校验**，报表合规率恒为空。
+ * 这里只记录可确定性判定的部分；无法机械判定的不写 'unmeasured' 占位以免虚增未测量计数。
+ */
+export function buildConstraintCriteria(
+  constraints: EvalConstraints,
+  result: Pick<ScenarioResult, 'modelOutput' | 'outputMetadata'>,
+): CriterionResult[] {
+  const criteria: CriterionResult[] = [];
+  const hasAnswer = result.modelOutput.trim().length > 0;
+
+  if (constraints.answerFirst === true) {
+    const lines = result.modelOutput.split('\n');
+    const firstIdx = lines.findIndex((line) => line.trim().length > 0);
+    const firstLine = firstIdx >= 0 ? lines[firstIdx] : '';
+    const labelled = /^\s*(?:ANSWER|答案|最终答案)\s*[:：]/i.test(firstLine);
+    criteria.push({
+      id: 'answer_first',
+      description: '先答模式：第一个非空行即给出答案行',
+      status: !hasAnswer ? 'unmeasured' : labelled ? 'pass' : 'fail',
+      critical: false,
+      source: 'rule',
+      evidence: !hasAnswer ? 'No candidate output'
+        : labelled ? `First non-empty line: ${firstLine.slice(0, 80)}`
+        : `First non-empty line carries no ANSWER label: ${firstLine.slice(0, 80)}`,
+    });
+  }
+
+  if (constraints.hardTimeLimitMs != null) {
+    const exceeded = (result.outputMetadata.incompleteReasons ?? [])
+      .some((reason) => reason.startsWith('HARD_TIME_LIMIT'));
+    criteria.push({
+      id: 'hard_time_limit',
+      description: `在 ${constraints.hardTimeLimitMs}ms 硬止损内产出作答`,
+      status: exceeded ? 'fail' : 'pass',
+      critical: true,
+      source: 'rule',
+      evidence: exceeded ? 'HARD_TIME_LIMIT reached — no scorable answer' : 'completed within the hard time limit',
+    });
+  }
+
+  if (constraints.maxTotalTokens != null) {
+    const used = (result.outputMetadata.outputTokens ?? 0) + (result.outputMetadata.inputTokens ?? 0);
+    criteria.push({
+      id: 'token_budget',
+      description: `总 token 不超过 ${constraints.maxTotalTokens}`,
+      status: used === 0 ? 'unmeasured' : used <= constraints.maxTotalTokens ? 'pass' : 'fail',
+      critical: false,
+      source: 'rule',
+      evidence: `used=${used}`,
+    });
+  }
+
+  return criteria;
+}
+
 /** 执行单题评测完整流程 */
 export async function orchestrateEvaluation(options: OrchestrateOptions): Promise<ScenarioResult> {
   const result = await evaluateCandidate(options);
@@ -167,6 +228,11 @@ export async function orchestrateEvaluation(options: OrchestrateOptions): Promis
     const constraints = (options.scenario.requirements as unknown as { constraints?: Array<{ id: string; description: string; critical?: boolean }> })?.constraints;
     result.criterionResults = constraints?.map(c => ({ id: c.id, description: c.description,
       status: 'fail', critical: c.critical === true, source: 'rule', evidence: 'No candidate answer' }));
+  }
+  // F4：评分器自带严格检查项时不覆盖；否则补记运行级约束的机械核验结果。
+  if (!result.criterionResults) {
+    const criteria = buildConstraintCriteria(resolveConstraints(options.scenario, options.constraints), result);
+    if (criteria.length > 0) result.criterionResults = criteria;
   }
   return attachEvaluationAudit(result);
 }

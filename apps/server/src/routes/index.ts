@@ -16,9 +16,10 @@ import { generateId, generateRunId } from '@zxbench/utils';
 import { orchestrateEvaluation, generateManifest, callModel, runTieredJudge, runJudgeEnsemble, computeJudgeScore, applyReviewedVerdict, getJudgeWeights, mixDeterministicJudge, getEvaluator } from '@zxbench/core';
 import { generateReport, generateCompareReport, analyzeRunQuality, referenceAnswerWarnings, partitionReferenceAnswerRuns } from '@zxbench/core';
 import type { ReportUserPromptData, CompareReportUserPromptData } from '@zxbench/core';
-import { computeWeightedTotal, computeDifficultyWeightedDimAvgs as computeDifficultyWeightedDimAvgsPure, LONG_TASK_WEIGHT, validateScenario, classifyEngineeringFailure, createDimAvgExclusionStats } from '@zxbench/core';
+import { computeWeightedTotal, computeDifficultyWeightedDimAvgs as computeDifficultyWeightedDimAvgsPure, buildDimAvgWeightLookups, validateScenario, classifyEngineeringFailure, createDimAvgExclusionStats, computeScorerVersionDrift } from '@zxbench/core';
 import type { DimAvgExclusionStats } from '@zxbench/core';
 import { broadcastProgress, getLatestProgress, clearProgressCache } from '../ws/index.js';
+import { getExecutionLogPath } from '../logging.js';
 import { registerRunDeletion } from './runDeletion.js';
 import fs from 'node:fs';
 import fsp from 'node:fs/promises';
@@ -191,20 +192,8 @@ async function computeDifficultyWeightedDimAvgs(
     where: { id: { in: scenarioIds } },
     select: { id: true, difficulty: true, category: true, requirements: true },
   });
-  const difficultyLookup = new Map<string, string>();
-  const attackLookup = new Map<string, string>();
-  const weightOverrideLookup = new Map<string, number>();
-  for (const s of scenarios) {
-    difficultyLookup.set(s.id, s.difficulty);
-    if (s.category && s.category.startsWith('long_task')) {
-      weightOverrideLookup.set(s.id, LONG_TASK_WEIGHT);
-    }
-    const requirements = typeof s.requirements === 'string' ? parseStoredJson<Record<string, unknown>>(s.requirements, {}) : s.requirements;
-    const attackLevel = (requirements as Record<string, unknown> | null | undefined)?.attackLevel;
-    if (typeof attackLevel === 'string' && /^L[1-4]$/.test(attackLevel)) {
-      attackLookup.set(s.id, attackLevel);
-    }
-  }
+  // 查表语义统一由 core 提供，避免与 scripts/recalc-scores.ts 各写一份导致口径漂移
+  const { difficultyLookup, attackLookup, weightOverrideLookup } = buildDimAvgWeightLookups(scenarios);
   // 沙箱执行已实现（工作区物化 + 探查转录）：requiresSandbox 调查题结果可参与维度均分
   return computeDifficultyWeightedDimAvgsPure(results, difficultyLookup, attackLookup, weightOverrideLookup, statsOut);
 }
@@ -996,7 +985,12 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
   });
   // ===== 健康检查 =====
   app.get('/api/health', async () => {
-    return { status: 'ok', version: '0.2.1', buildTime: process.env.BUILD_TIME || 'dev' };
+    // executionLog：进程级执行日志路径（R1）。部署与排障时先看这里，
+    // 避免再次出现「跑分异常但日志全丢、无法归因」。
+    return {
+      status: 'ok', version: '0.2.1', buildTime: process.env.BUILD_TIME || 'dev',
+      executionLog: getExecutionLogPath(),
+    };
   });
 
   // ===== 版本信息（部署验证用） =====
@@ -4581,6 +4575,15 @@ async function runEvaluation(
   // ===== 运行质量自动诊断 =====
   const qualityReport = analyzeRunQuality(results, total);
 
+  // P1（2026-09-16）：评分器版本漂移审计——清单声明版本 vs 实际执行版本。
+  // getEvaluator 允许经 `compatibleVersions` 显式复用新版实现（如 exact_answer_v4 → v5、
+  // canary_authority_v4 → v5），这是有意的向后兼容；但若不落审计，报告读者无法知道
+  // 「这批评分用的是哪一版口径」——实测 09-15 run 有 104/309 题漂移却毫无记录。
+  const scorerVersionDrift = computeScorerVersionDrift(
+    results.map((r) => ({ scenarioId: r.scenarioId, graderVersion: (r as { graderVersion?: string | null }).graderVersion })),
+    manifest.benchmarkPack?.scenarios ?? [],
+  );
+
   const finishedAt = Date.now();
   // ===== P1 修复：resume 后 startedAt/durationMs 失真（2026-09-16）=====
   // durationMs 原为 finishedAt - startTime，而 startTime 在每次 resume 时被重置为续跑时刻，
@@ -4673,6 +4676,8 @@ async function runEvaluation(
           byDimension: Object.fromEntries(summaryEngStats.excludedByDimension),
         },
         qualityReport,
+        // P1：清单声明评分器版本 vs 实际执行版本的差异（空对象 = 无漂移，可安全比对历史）
+        scorerVersionDrift,
         // ===== 耗时（多模型并行汇总用；resume 后从全量结果还原，见上方 P1 修复）=====
         startedAt: new Date(firstStartedAt).toISOString(),
         finishedAt: new Date(finishedAt).toISOString(),

@@ -15,6 +15,7 @@ import { registerEvaluator, bugFindingEvaluator, codeRepairEvaluator, projectRep
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { existsSync, readFileSync } from 'node:fs';
+import { installFileLogging, getExecutionLogPath } from './logging.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PORT = parseInt(process.env.PORT || '3000', 10);
@@ -39,6 +40,10 @@ function loadEnv() {
   }
 }
 loadEnv();
+
+// R1：进程级执行日志兜底。必须在任何业务日志之前安装——
+// watchdog 死亡后评测常由非托管进程执行，此时 stdout 无人接管，日志全部丢失。
+installFileLogging();
 
 export const prisma = new PrismaClient();
 

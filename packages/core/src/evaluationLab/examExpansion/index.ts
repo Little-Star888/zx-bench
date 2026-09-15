@@ -24,7 +24,7 @@ export type Submission = ExamSubmission;
 // 在 src（vitest）与 dist（node）下都成立。
 const source = JSON.parse(
   readFileSync(new URL('./math-candidates.json', import.meta.url), 'utf8'),
-) as { groups: Group[] };
+) as { version: string; points: number[]; hardSeconds: number[]; groups: Group[] };
 const groups = source.groups;
 const eq = (a: Rational, b: Rational) => a[0] === b[0] && a[1] === b[1];
 const le = (a: Rational, b: Rational) => a[0] * b[1] <= b[0] * a[1];
