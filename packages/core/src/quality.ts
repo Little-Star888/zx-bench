@@ -56,7 +56,10 @@ export function analyzeRunQuality(results: QualityRow[], totalScenarios: number)
     try { const m = JSON.parse(r.outputMetadata || '{}'); return m.finishReason === 'length' || m.truncated || m.incomplete; }
     catch { return false; }
   });
-  const zeroDet = valid.filter(r => r.deterministicScore === 0 && r.judgeScore === null);
+  // Progressive batch parts are intentionally deterministic-only; a zero is a
+  // measured wrong answer, not evidence that grading failed to participate.
+  const zeroDet = valid.filter(r => r.deterministicScore === 0 && r.judgeScore === null
+    && !r.graderVersion?.startsWith('ultra_batch_part@'));
   const partialRepeats = valid.filter(r => {
     try { return (JSON.parse(r.evidence || '[]') as string[]).some(e => e.startsWith('CANDIDATE_REPEATS_PARTIAL:')); }
     catch { return false; }

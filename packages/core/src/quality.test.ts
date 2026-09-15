@@ -8,6 +8,10 @@ describe('saved run quality diagnostics', () => {
   it('does not mistake Judge-disabled evaluations for Judge failure', () => {
     expect(analyzeRunQuality([row], 1)).toMatchObject({ grade: 'good', judgeFailedCount: 0 });
   });
+  it('does not flag measured progressive zero scores as missing Judge participation', () => {
+    const q = analyzeRunQuality([{ ...row, totalScore: 0, deterministicScore: 0, graderVersion: 'ultra_batch_part@1.0.0', evidence: '["PROGRESSIVE_PART: earned=0/20"]' }], 1);
+    expect(q).toMatchObject({ grade: 'good', zeroDeterministCount: 0, scoringComplete: true });
+  });
   it('uses actual scenario IDs for model-output truncation', () => {
     const q = analyzeRunQuality([{ ...row, outputMetadata: '{"finishReason":"length"}' }], 1);
     expect(q.issues.join()).toContain('CP-L4-001');
