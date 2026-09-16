@@ -195,6 +195,12 @@ export interface ModelResponse {
   /** 生成速度（tokens/s）= outputTokens / (generationMs / 1000)，仅流式调用时有值 */
   tokensPerSecond?: number;
   raw?: unknown;               // 原始 API 响应
+  /**
+   * 多轮 Agent 闭环轨迹（由 packages/core 的 agentLoop 驱动器写入）。
+   * 类型定义在 core 侧（依赖领域的工具运行时），此处只做透传，
+   * 避免 types 包反向依赖 core。
+   */
+  agentLoop?: unknown;
 }
 
 export interface TokenUsage {

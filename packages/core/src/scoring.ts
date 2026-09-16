@@ -8,16 +8,18 @@
 import type { ScenarioResult, JudgeResult } from '@zxbench/types';
 
 export const DIMENSION_WEIGHTS: Record<string, number> = {
-  program: 0.20,           // 编程能力：最高频落地场景，保持最高权重
+  program: 0.17,           // 编程能力：最高频落地场景，保持最高权重（原 0.20，让 0.03 给新增的 agent_loop）
   reasoning_math: 0.12,    // 推理数学：通用智能底座
   hallucination_resistance: 0.12, // 幻觉抵抗：生产可用性核心
   instruction_following: 0.12,    // 指令遵循：任务型应用基本盘
   safety_authority: 0.10,  // 安全权限：部署门槛项
-  agent_workflow: 0.08,    // 智能体工作流
+  agent_workflow: 0.08,    // 智能体工作流（单轮声明式）
   tool_cli_workflow: 0.07, // 工具CLI
   data_extraction: 0.07,   // 数据抽取
   cli_deep_tasks: 0.07,    // CLI 深度任务
   structured_output: 0.05, // 结构化输出
+  // 多轮工具闭环：A 档试点维度（5 题），先给 3% 观察区分度，稳定后再议权重
+  agent_loop: 0.03,
 };
 
 /** 难度权重配置（温和递增，跨度 2.5x）：easy=1, medium=1.5, hard=2, adversarial=2.5 */
@@ -152,6 +154,9 @@ export function getJudgeWeights(dimension: string, grader: string): { determinis
   // Tool/agent traces have structured evidence, so deterministic checks lead.
   if (dimension === 'agent_workflow' || grader === 'agent_trace') return { deterministic: 0.85, judge: 0.15 };
   if (dimension === 'tool_cli_workflow' || grader === 'tool_call_trace') return { deterministic: 0.85, judge: 0.15 };
+  // 多轮闭环：轨迹本身（真实执行结果 + 策略违规）已是确定性的强证据，
+  // 语义 Judge 只用于最终答复的表达质量，因此确定性主导。
+  if (dimension === 'agent_loop' || grader === 'agent_loop_trace') return { deterministic: 0.9, judge: 0.1 };
   // Non-sandbox CLI rules validate syntax and tool hints, but cannot reject a
   // semantically equivalent implementation merely because it uses awk instead
   // of grep or Python instead of jq. Semantic judgment therefore leads.

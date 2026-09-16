@@ -27,6 +27,16 @@ export { instructionChecklistEvaluator } from './evaluators/instructionChecklist
 export { canaryAuthorityEvaluator } from './evaluators/canaryAuthority.js';
 export { toolCallTraceEvaluator } from './evaluators/toolCallTrace.js';
 export { agentTraceEvaluator } from './evaluators/agentTrace.js';
+export { agentLoopTraceEvaluator } from './evaluators/agentLoopTrace.js';
+export type { AgentLoopAssert } from './evaluators/agentLoopTrace.js';
+export { runAgentLoop, buildAgentSystemPrompt, parseToolCalls, extractFinalMessage } from './agentLoop/loop.js';
+export type { AgentLoopConfig, AgentLoopTrace, AgentLoopResult, AgentTurnRecord, AgentCallRecord } from './agentLoop/loop.js';
+export {
+  RETAIL_TOOLS, RETAIL_POLICY, executeRetailTool, cloneState,
+} from './agentLoop/retailRuntime.js';
+export type {
+  RetailState, RetailOrder, RetailUser, RetailProduct, ToolSpec as AgentToolSpec, ToolInvocation, PolicyViolation, ToolExecution,
+} from './agentLoop/retailRuntime.js';
 export { cliCommandEvaluator, registerCLISandboxRunner, getRegisteredCLISandboxRunner, extractPrimaryCommand, canonicalizeCliFlags } from './evaluators/cliCommand.js';
 export type { CLISandboxRunner, CLISandboxResult } from './evaluators/cliCommand.js';
 export { LocalCLISandboxRunner } from './evaluators/cliSandbox.js';

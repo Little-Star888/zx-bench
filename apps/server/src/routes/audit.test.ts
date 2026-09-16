@@ -45,10 +45,13 @@ beforeEach(async () => {
 afterEach(async () => { await app.close(); });
 
 describe('audited run API without network or real database', () => {
-  it('includes all 20 default extension questions through the official create-run API', async () => {
+  it('includes all 10 default extension questions through the official create-run API', async () => {
     const { readFileSync } = await import('node:fs');
     const bank = JSON.parse(readFileSync('data/scenarios/benchmark.json', 'utf8'));
-    const additions = bank.filter((s: any) => s.grader === 'challenge_extension' && !s.requirements?.developmentShadow);
+    // 2026-09-16: ten coverage items were retired for cross-run saturation, so only the
+    // remaining ten still-valid default extension questions are eligible for an official run.
+    const additions = bank.filter((s: any) => s.grader === 'challenge_extension'
+      && !s.requirements?.developmentShadow && s.status === 'valid');
     db.scenarioDefinition.findMany.mockResolvedValue(additions.map((s: any) => ({ ...s,
       scoring: JSON.stringify(s.scoring), requirements: JSON.stringify(s.requirements),
       hiddenTests: JSON.stringify(s.hiddenTests), tags: JSON.stringify(s.tags),
@@ -62,8 +65,8 @@ describe('audited run API without network or real database', () => {
     await vi.waitFor(() => expect(saved.get(id)?.status).toBe('completed'));
     const calledIds = vi.mocked(runMultipleEvaluations).mock.calls.map(call => call[0].id);
     expect(calledIds.sort()).toEqual(additions.map((s: any) => s.id).sort());
-    expect(calledIds).toHaveLength(20);
-    expect(JSON.parse(saved.get(id)!.manifest).benchmarkPack.scenarios).toHaveLength(20);
+    expect(calledIds).toHaveLength(10);
+    expect(JSON.parse(saved.get(id)!.manifest).benchmarkPack.scenarios).toHaveLength(10);
   });
   it('keeps all 20 pre-existing project repair questions in official scope', async () => {
     const { readFileSync } = await import('node:fs');

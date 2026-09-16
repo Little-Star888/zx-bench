@@ -1,16 +1,17 @@
 {
- "version": "1.36.0",
- "count": 782,
+ "version": "1.37.0",
+ "count": 807,
  "retiredCount": 92,
- "totalCount": 874,
+ "totalCount": 899,
  "dimensions": {
+  "agent_loop": 5,
   "agent_workflow": 45,
   "cli_deep_tasks": 56,
   "data_extraction": 104,
   "hallucination_resistance": 134,
   "instruction_following": 42,
   "program": 150,
-  "reasoning_math": 87,
+  "reasoning_math": 107,
   "safety_authority": 50,
   "structured_output": 58,
   "tool_cli_workflow": 56
@@ -19,7 +20,7 @@
   "hallucination_resistance": 78
  },
  "generatedAt": "2026-09-16T00:00:00.000Z",
- "validCount": 782,
+ "validCount": 807,
  "ambiguousCount": 0,
  "reviewCount": 0,
  "questionReview": "math-3.2-hallucination-5.0",
@@ -280,7 +281,7 @@
   "sourcePackHash": "42929b253e9e2f4d32568c5e164ab4fcb651cca3712b6472950c7907c2ed10e3",
   "prospectiveOnly": true
  },
- "defaultRunCount": 781,
+ "defaultRunCount": 806,
  "challengeExtension": {
   "version": "challenge-extension-2026-09-13-v1",
   "bankVersion": "1.31.1",
@@ -372,5 +373,17 @@
    "JSON 数字不保留尾随零，因此小数位只能断言「不超过 n」而非「恰好 n」。",
    "order: 规则比较的是全文首次出现位置，对 buyer 等先出现的同名元素需谨慎选择锚点。"
   ]
+ },
+ "examHardGroups": {
+  "version": "math-exam-expansion-2026-09-16-v6",
+  "groups": [
+   "MX3-13",
+   "MX3-14",
+   "MX3-15",
+   "MX3-16",
+   "MX3-17"
+  ],
+  "parts": 8,
+  "note": "brute force infeasible by design; gold computed and independently cross-checked"
  }
 }

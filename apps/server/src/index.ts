@@ -11,7 +11,7 @@ import { PrismaClient } from '@prisma/client';
 import { registerRoutes } from './routes/index.js';
 import { registerWebSocket } from './ws/index.js';
 import { challengeExtensionEvaluator, ultraBatchPartEvaluator, ultraProofPartEvaluator } from '@zxbench/core';
-import { registerEvaluator, bugFindingEvaluator, codeRepairEvaluator, projectRepairEvaluator, structuredOutputEvaluator, dataExtractionEvaluator, exactAnswerLineEvaluator, instructionChecklistEvaluator, canaryAuthorityEvaluator, toolCallTraceEvaluator, agentTraceEvaluator, cliCommandEvaluator, hallucinationResistanceEvaluator, sandboxEvaluator, llmJudgeEvaluator, prExecutableEvidenceEvaluator, challengeSupplementEvaluator } from '@zxbench/core';
+import { registerEvaluator, bugFindingEvaluator, codeRepairEvaluator, projectRepairEvaluator, structuredOutputEvaluator, dataExtractionEvaluator, exactAnswerLineEvaluator, instructionChecklistEvaluator, canaryAuthorityEvaluator, toolCallTraceEvaluator, agentTraceEvaluator, agentLoopTraceEvaluator, cliCommandEvaluator, hallucinationResistanceEvaluator, sandboxEvaluator, llmJudgeEvaluator, prExecutableEvidenceEvaluator, challengeSupplementEvaluator } from '@zxbench/core';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { existsSync, readFileSync } from 'node:fs';
@@ -107,6 +107,7 @@ async function main() {
   registerEvaluator(prExecutableEvidenceEvaluator);
   registerEvaluator(challengeSupplementEvaluator);
   registerEvaluator(challengeExtensionEvaluator);
+  registerEvaluator(agentLoopTraceEvaluator);
   registerEvaluator(ultraBatchPartEvaluator);
   registerEvaluator(ultraProofPartEvaluator);
 

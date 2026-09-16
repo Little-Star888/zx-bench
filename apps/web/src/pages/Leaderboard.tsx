@@ -16,6 +16,7 @@ const DIMENSION_LABELS: Record<string, string> = {
   agent_workflow: '智能体工作流',
   instruction_following: '指令遵循',
   tool_cli_workflow: '工具/CLI/工作流',
+  agent_loop: '多轮工具闭环',
   hallucination_resistance: '幻觉抵抗',
   structured_output: '结构化输出',
 };

@@ -36,7 +36,10 @@ describe('computeWeightedTotal', () => {
 
   it('computes the weighted-total formula exactly', () => {
     const m = new Map([['program', 80], ['reasoning_math', 50]]);
-    expect(computeWeightedTotal(m)).toBeCloseTo(68.75, 2);
+    // 期望值从权重表推导：本用例考的是**公式**，不应在每次调权重时失效
+    const w = DIMENSION_WEIGHTS;
+    const expected = (80 * w.program + 50 * w.reasoning_math) / (w.program + w.reasoning_math);
+    expect(computeWeightedTotal(m)).toBeCloseTo(expected, 2);
   });
 });
 

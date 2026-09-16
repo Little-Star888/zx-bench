@@ -29,6 +29,7 @@ import type {
   CriterionResult,
 } from '@zxbench/types';
 import { callModelWithRetry } from './model/caller.js';
+import { runAgentLoop, type AgentLoopConfig } from './agentLoop/loop.js';
 import { buildOutputMetadata } from '@zxbench/utils';
 import { runTieredJudge, runJudgeEnsemble, computeJudgeScore, type JudgeOptions } from './judge/index.js';
 import { getEvaluator } from './evaluators/index.js';
@@ -343,35 +344,59 @@ async function evaluateCandidate(options: OrchestrateOptions): Promise<ScenarioR
     }
   }
 
-  try {
-    modelResponse = options.savedCandidate ? options.savedCandidate.response : await callModelWithRetry({
-      config: modelConfig,
-      params: { ...modelParams, maxTokens: effectiveMaxTokens, hardTimeoutMs: scenarioHardTimeoutMs },
-      systemPrompt,
-      userPrompt,
+  // ===== Stage 1.56: 多轮 Agent 闭环（agent_loop 维度）=====
+  // 与其余所有维度的根本区别：一个场景会发起**多次**模型调用，模型发出的工具调用会被
+  // 真实执行并把结果（含策略拒绝）回灌，模型必须据此调整后续行为。
+  // 评分对象是完整轨迹 + 终态，见 evaluators/agentLoopTrace.ts。
+  const agentLoopConfig = scenarioRequirements.agentLoop as AgentLoopConfig | undefined;
+  if (agentLoopConfig && !options.savedCandidate) {
+    onProgress?.('agent_loop');
+    const loopResult = await runAgentLoop({
+      config: agentLoopConfig,
+      task: scenario.promptTemplate,
+      modelConfig,
+      maxTokens: effectiveMaxTokens,
+      hardTimeoutMs: scenarioHardTimeoutMs ?? 600000,
       signal: options.signal,
-      constraints: effectiveConstraints,
-      stream: true, // 流式调用以获取精确 TTFT 和生成速度
     });
-  } catch (err) {
-    // A run-level cancellation is not a model timeout or a scoreable candidate.
-    // Let the run controller discard this in-flight attempt without writing a 0.
-    if (options.signal?.aborted) throw err;
-    // 思考/时间超限 → 中断并判分（不抛异常，快速推进队列）
-    const msg = err instanceof Error ? err.message : String(err);
-    const isTimeout = (err as Error)?.name === 'AbortError' || /timed out|timeout/i.test(msg);
-    if (isTimeout) {
-      console.warn(`[orchestrator] ${msg} for scenario ${scenario.id} — marking reasoning limit exceeded`);
-      return buildLimitExceededResult(
-        scenario,
-        `HARD_TIME_LIMIT: ${msg} — hard time limit reached`,
-        startedAt,
-        new Date().toISOString(),
-        onLimit,
-        { maxTokens: effectiveMaxTokens },
-      );
+    // 直接续走既有评分/落库流程：模型响应上挂着完整轨迹，evaluator 从 modelResponse.agentLoop 读取
+    modelResponse = loopResult.response;
+    console.log(
+      `[orchestrator] agent_loop ${scenario.id}: ${loopResult.trace.turnsUsed} 轮, `
+      + `工具调用 ${loopResult.trace.turns.flatMap((t) => t.calls).length} 次, `
+      + `违规 ${loopResult.trace.turns.flatMap((t) => t.calls.flatMap((c) => c.violations)).length} 次`,
+    );
+  } else {
+    try {
+      modelResponse = options.savedCandidate ? options.savedCandidate.response : await callModelWithRetry({
+        config: modelConfig,
+        params: { ...modelParams, maxTokens: effectiveMaxTokens, hardTimeoutMs: scenarioHardTimeoutMs },
+        systemPrompt,
+        userPrompt,
+        signal: options.signal,
+        constraints: effectiveConstraints,
+        stream: true, // 流式调用以获取精确 TTFT 和生成速度
+      });
+    } catch (err) {
+      // A run-level cancellation is not a model timeout or a scoreable candidate.
+      // Let the run controller discard this in-flight attempt without writing a 0.
+      if (options.signal?.aborted) throw err;
+      // 思考/时间超限 → 中断并判分（不抛异常，快速推进队列）
+      const msg = err instanceof Error ? err.message : String(err);
+      const isTimeout = (err as Error)?.name === 'AbortError' || /timed out|timeout/i.test(msg);
+      if (isTimeout) {
+        console.warn(`[orchestrator] ${msg} for scenario ${scenario.id} — marking reasoning limit exceeded`);
+        return buildLimitExceededResult(
+          scenario,
+          `HARD_TIME_LIMIT: ${msg} — hard time limit reached`,
+          startedAt,
+          new Date().toISOString(),
+          onLimit,
+          { maxTokens: effectiveMaxTokens },
+        );
+      }
+      throw err; // 其他错误照常抛出
     }
-    throw err; // 其他错误照常抛出
   }
 
   // I3（2026-08-31）：caller 层 reasoning 硬截断已生效的场景——

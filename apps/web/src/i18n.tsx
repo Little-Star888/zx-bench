@@ -132,6 +132,7 @@ export const DIMENSION_LABELS: Record<string, { zh: string; en: string }> = {
   safety_authority: { zh: '安全权限', en: 'Safety & Authority' },
   agent_workflow: { zh: '智能体工作流', en: 'Agent Workflow' },
   tool_cli_workflow: { zh: '工具/CLI', en: 'Tool/CLI Workflow' },
+  agent_loop: { zh: '多轮工具闭环', en: 'Multi-turn Tool Loop' },
   data_extraction: { zh: '数据抽取', en: 'Data Extraction' },
   cli_deep_tasks: { zh: '深度命令行', en: 'Deep CLI Tasks' },
   structured_output: { zh: '结构化输出', en: 'Structured Output' },

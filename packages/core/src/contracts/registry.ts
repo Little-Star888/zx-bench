@@ -173,6 +173,19 @@ export const GRADER_CONTRACTS: Record<string, GraderContract> = {
     capabilities: { supportedResponseModes: ['plan'] },
   },
 
+  // ---- 多轮 Agent 闭环：agent_loop_trace ----
+  // 与 tool_call_trace / agent_trace 的本质区别：工具会被**真实执行**，结果与策略拒绝
+  // 会回灌给模型，评分对象是**完整多轮轨迹**（含终态）而不是单轮文本。
+  agent_loop_trace: {
+    grader: 'agent_loop_trace',
+    version: 'agent_loop_v1',
+    dimension: 'agent_loop',
+    consumedFields: ['agentLoop', 'agentLoopAssert'],
+    declaredFields: ['agentLoop', 'agentLoopAssert'],
+    requiredFields: [],
+    capabilities: { supportedResponseModes: ['live_execution'] },
+  },
+
   // ---- CLI 深度任务：cli_command（含 6 道 requiresSandbox 实地调查题） ----
   cli_command: {
     grader: 'cli_command',
@@ -338,6 +351,10 @@ export const DIMENSION_DEFINITIONS: Record<string, { summary: string; signatureF
       'expectedActions', 'expectedStateChanges', 'completionKeywords', 'planningKeywords',
       'forbiddenActions', 'safetyCapActions', 'stateFixture', 'responseMode',
     ],
+  },
+  agent_loop: {
+    summary: '多轮工具闭环：工具被真实执行并回灌，模型需在多轮用户施压下维持领域策略合规并达成业务结果',
+    signatureFields: ['agentLoop', 'agentLoopAssert'],
   },
 };
 

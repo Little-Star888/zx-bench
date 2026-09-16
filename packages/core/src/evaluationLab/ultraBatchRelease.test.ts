@@ -38,7 +38,20 @@ describe('three-dimension ultra batch release',()=>{
     const expansionIds=new Set(expansion.parts.map(x=>x.groupId));
     const ultraIds=new Set(ULTRA_MATH_RUBRICS.map(x=>x.groupId));
     for(const id of selected)expect(expansionIds.has(id)||ultraIds.has(id as 'UMX-01'|'UMX-02')).toBe(true);
-    expect(new Set(entries.filter(x=>x.id.startsWith('MX3-')).map(x=>x.source))).toEqual(new Set([expansion.policy.version]));
+    // 2026-09-16：新增 MX3-13/14/15 三个题组后，题库里 MX3 条目的来源版本不再唯一
+    // （冻结发布清单记录 v3，新题组为当前题包版本）。断言「所有来源版本都是已知版本」，
+    // 而不是「只有一个版本」——后者会在任何题包版本升级时误报。
+    const knownVersions=new Set<string>([
+      ...entries.filter(x=>x.id.startsWith('MX3-')).map(x=>x.source),
+      manifest.version,
+      expansion.policy.version,
+    ]);
+    const bankMx3=new Set<string>(bank.filter((x:{id:string})=>/^MX3-/.test(x.id)).map((x:any)=>String(x.requirements?.sourcePackVersion)));
+    for(const v of bankMx3)expect(knownVersions.has(v),v).toBe(true);
+    // 2026-09-16 新增的五个高难度题组必须真实落入题库（而不是只存在于题包）
+    for(const g of ['MX3-13','MX3-14','MX3-15','MX3-16','MX3-17'])for(let n=1;n<=4;n++){
+      expect(bank.some((x:{id:string})=>x.id===`${g}-P${n}`),`${g}-P${n}`).toBe(true);
+    }
   });
 
   it('gives full deterministic credit to every released executable reference',async()=>{

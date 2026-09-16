@@ -15,6 +15,7 @@ const DIMENSION_OPTIONS: Array<{ value: string; label: string }> = [
   { value: 'agent_workflow', label: '智能体工作流' },
   { value: 'instruction_following', label: '指令遵循' },
   { value: 'tool_cli_workflow', label: '工具/CLI/工作流' },
+  { value: 'agent_loop', label: '多轮工具闭环' },
   { value: 'hallucination_resistance', label: '幻觉抵抗' },
   { value: 'structured_output', label: '结构化输出' },
 ];

@@ -50,6 +50,7 @@ const PACK_DIMENSION_MAP: Record<string, string> = {
   tc: 'tool_cli_workflow',
   sa: 'safety_authority',
   aw: 'agent_workflow',
+  al: 'agent_loop',
   cli: 'cli_deep_tasks',
   pr: 'program',
   all: '',
@@ -145,6 +146,7 @@ function dimensionLabel(dim: string): string {
     tool_cli_workflow: '工具CLI',
     safety_authority: '安全权限',
     agent_workflow: '智能体工作流',
+    agent_loop: '多轮工具闭环',
     cli_deep_tasks: '深度CLI任务',
     program: '编程能力',
     hallucination_resistance: '幻觉抵抗',
@@ -161,6 +163,7 @@ const DIMENSION_LABELS_EN: Record<string, string> = {
   tool_cli_workflow: 'Tool/CLI Workflow',
   safety_authority: 'Safety & Authority',
   agent_workflow: 'Agent Workflow',
+  agent_loop: 'Multi-turn Tool Loop',
   cli_deep_tasks: 'Deep CLI Tasks',
   program: 'Programming',
   hallucination_resistance: 'Hallucination Resistance',
@@ -1679,7 +1682,7 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
     if (parentRun.dimensionFilter) {
       try { existingFilter = JSON.parse(parentRun.dimensionFilter); } catch { /* ignore */ }
     }
-    const allDimensions = ['program', 'safety_authority', 'agent_workflow', 'tool_cli_workflow', 'cli_deep_tasks', 'data_extraction', 'instruction_following', 'reasoning_math', 'structured_output', 'hallucination_resistance'];
+    const allDimensions = ['program', 'safety_authority', 'agent_workflow', 'agent_loop', 'tool_cli_workflow', 'cli_deep_tasks', 'data_extraction', 'instruction_following', 'reasoning_math', 'structured_output', 'hallucination_resistance'];
     // 父运行若是全量（dimensionFilter 为空），fork 不应把范围收窄到所选子集，必须保持全量 404 题
     const newDimensionFilter = existingFilter.length === 0
       ? null
@@ -4574,7 +4577,23 @@ async function runEvaluation(
     manifest.benchmarkPack!.scenarios,
     summaryEngStats,
   );
-  const avgScore = computeWeightedTotal(summaryDimAvgs);
+  // 未知维度会让 computeWeightedTotal 抛错。此前这个抛错会一路逃出 run 收尾链路：
+  // 收尾不在任何请求处理器里，没有 Fastify 兜底，异常直接把 node 进程带走
+  // （2026-09-16 排查「服务器进程意外退出」，stderr 栈定位到本行；触发源是新维度
+  //  agent_loop 未登记到 DIMENSION_WEIGHTS）。收尾的职责是「记录结果」而不是
+  //  「判定正确性」，因此这里降级为维度等权均值并记录告警，绝不让一次配置缺失
+  //  终止整个服务进程。
+  let avgScore: number;
+  try {
+    avgScore = computeWeightedTotal(summaryDimAvgs);
+  } catch (err) {
+    const values = [...summaryDimAvgs.values()].filter((v): v is number => typeof v === 'number' && Number.isFinite(v));
+    avgScore = values.length ? values.reduce((a, b) => a + b, 0) / values.length : 0;
+    console.error(
+      `[Eval ${runId}] computeWeightedTotal 失败（疑似有维度未在 DIMENSION_WEIGHTS 登记），` +
+      `已降级为维度等权均值 ${avgScore.toFixed(2)}，本次 run 的加权总分不可信：`, err,
+    );
+  }
 
   // ===== 运行质量自动诊断 =====
   const qualityReport = analyzeRunQuality(results, total);

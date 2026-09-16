@@ -85,6 +85,7 @@ const DIM_COLORS: Record<string, string> = {
   agent_workflow: '#52c41a',
   instruction_following: '#1890ff',
   tool_cli_workflow: '#13c2c2',
+  agent_loop: '#eb2f96',
   data_extraction: '#2f54eb',
   structured_output: '#722ed1',
   program: '#eb2f96',

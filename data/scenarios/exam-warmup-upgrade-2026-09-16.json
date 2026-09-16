@@ -1,0 +1,110 @@
+{
+ "date": "2026-09-16T00:00:00.000Z",
+ "dimension": "reasoning_math",
+ "grader": "ultra_batch_part",
+ "reason": "warm-up parts previously required no computation (e.g. \"value of the zero vector\", \"sum of one column\")",
+ "policy": "every part still totals its original points; gold recomputed and independently cross-checked",
+ "timeBudgetPolicy": "P1 raised from the pack default 180s to the project reference default 600s (caller.ts 600_000); P2-P4 unchanged",
+ "fromScenarioVersion": [
+  "1.0.0",
+  "1.1.0"
+ ],
+ "toScenarioVersion": "1.2.0",
+ "changed": [
+  {
+   "id": "MX3-01-P1",
+   "points": 10,
+   "hardSeconds": 600,
+   "hardSecondsBefore": 180,
+   "promptChanged": true,
+   "oldTask": "提交 row_slack=把 x=[1,1,1,1,1] 代入后各约束的松弛量 b−Ax（按约束顺序，长度5）。",
+   "newTask": "提交 row_slack=把 x=[1,1,1,1,1] 代入后各约束的松弛量 b−Ax（按约束顺序，长度5）。"
+  },
+  {
+   "id": "MX3-02-P1",
+   "points": 10,
+   "hardSeconds": 600,
+   "hardSecondsBefore": 180,
+   "promptChanged": true,
+   "oldTask": "提交 path_edges=[位于至少一条 0→7 有向路径上的边的编号]（升序）。",
+   "newTask": "提交 path_edges=[位于至少一条 0→7 有向路径上的边的编号]（升序）。"
+  },
+  {
+   "id": "MX3-03-P1",
+   "points": 10,
+   "hardSeconds": 600,
+   "hardSecondsBefore": 180,
+   "promptChanged": true,
+   "oldTask": "提交 row_min=[成本矩阵每行的最小值]（按行顺序，长度6），以及 row_min_sum=各行最小值之和。",
+   "newTask": "提交 row_min=[成本矩阵每行的最小值]（按行顺序，长度6），以及 row_min_sum=各行最小值之和。"
+  },
+  {
+   "id": "MX3-04-P1",
+   "points": 10,
+   "hardSeconds": 600,
+   "hardSecondsBefore": 180,
+   "promptChanged": true,
+   "oldTask": "提交 x6_reduced=x⁶ 在商环 F₇[x]/((x²+1)³) 中的余式（长度6，常数项起）。",
+   "newTask": "提交 x6_reduced=x⁶ 在商环 F₇[x]/((x²+1)³) 中的余式（长度6，常数项起）。"
+  },
+  {
+   "id": "MX3-05-P1",
+   "points": 10,
+   "hardSeconds": 600,
+   "hardSecondsBefore": 180,
+   "promptChanged": true,
+   "oldTask": "提交 one_step_absorb=[从状态0、1、2 各自一步进入吸收态(S或F)的概率]（按状态顺序，长度3，精确分数）。",
+   "newTask": "提交 one_step_absorb=[从状态0、1、2 各自一步进入吸收态(S或F)的概率]（按状态顺序，长度3，精确分数）。"
+  },
+  {
+   "id": "MX3-07-P1",
+   "points": 10,
+   "hardSeconds": 600,
+   "hardSecondsBefore": 180,
+   "promptChanged": true,
+   "oldTask": "提交 with_pos0_one=位置0为1、且满足恰有5个1与全部相邻约束的有编号串数。",
+   "newTask": "提交 with_pos0_one=位置0为1、且满足恰有5个1与全部相邻约束的有编号串数。"
+  },
+  {
+   "id": "MX3-08-P1",
+   "points": 10,
+   "hardSeconds": 600,
+   "hardSecondsBefore": 180,
+   "promptChanged": true,
+   "oldTask": "提交 tree_count=不同生成树的个数（不计权重）。",
+   "newTask": "提交 tree_count=不同生成树的个数（不计权重）。"
+  },
+  {
+   "id": "MX3-09-P1",
+   "points": 10,
+   "hardSeconds": 600,
+   "hardSecondsBefore": 180,
+   "promptChanged": true,
+   "oldTask": "提交 first_four_rank=前四行生成子空间在 F₂ 上的维数。",
+   "newTask": "提交 first_four_rank=前四行生成子空间在 F₂ 上的维数。"
+  },
+  {
+   "id": "MX3-10-P1",
+   "points": 10,
+   "hardSeconds": 600,
+   "hardSecondsBefore": 180,
+   "promptChanged": true,
+   "oldTask": "提交 greedy_prefix=按“每步取当前最小可用元素”得到的合法排列的前4个元素。",
+   "newTask": "提交 greedy_prefix=按“每步取当前最小可用元素”得到的合法排列的前4个元素。"
+  },
+  {
+   "id": "MX3-11-P1",
+   "points": 10,
+   "hardSeconds": 600,
+   "hardSecondsBefore": 180,
+   "promptChanged": true,
+   "oldTask": "k=3，提交 count=解数，以及 parity=[解中偶数的个数,解中奇数的个数]。",
+   "newTask": "k=3，提交 count=解数，以及 parity=[解中偶数的个数,解中奇数的个数]。"
+  }
+ ],
+ "alreadyUpgraded": [],
+ "notInBank": [
+  "MX3-06-P1",
+  "MX3-12-P1"
+ ]
+}

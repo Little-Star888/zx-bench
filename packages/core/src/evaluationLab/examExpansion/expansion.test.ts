@@ -6,9 +6,10 @@ import { buildExamPaper, referenceOutput, gradePart, scoreExam, validCertificate
 import { reserveModelCall, remainingModelCalls } from './callBudget.js';
 
 describe('candidate expansion: targeted scoring and budget checks only', () => {
-  it('keeps all 12 authoring groups well-formed and verifies reference certificates', () => {
+  it('keeps all 17 authoring groups well-formed and verifies reference certificates', () => {
     const p = buildExamPaper();
-    expect(p.groups).toHaveLength(12); expect(p.parts).toHaveLength(48);
+    // 2026-09-16：新增 MX3-13~17 五个高难度题组（20 小问），12 -> 17 组、48 -> 68 小问。
+    expect(p.groups).toHaveLength(17); expect(p.parts).toHaveLength(68);
     for (const part of p.parts) {
       expect(part.points).toBe([10, 20, 30, 40][part.number - 1]);
       expect(gradePart(part, referenceOutput(part)).earned, part.id).toBe(part.points);

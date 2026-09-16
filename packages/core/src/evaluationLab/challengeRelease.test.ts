@@ -2,6 +2,7 @@ import {describe,expect,it} from 'vitest';
 import {readFileSync} from 'node:fs';
 import {buildChallengePack,gradeChallenge,referenceAnswer} from './challengePack.js';
 import {CHALLENGE_SUPPLEMENT_IDS,CHALLENGE_SUPPLEMENT_SOURCE_HASH,CHALLENGE_SUPPLEMENT_SOURCE_VERSION,CHALLENGE_SUPPLEMENT_VERSION} from './challengeRelease.js';
+import {CHALLENGE_SUPPLEMENT_RETIRED_IDS} from './challengeRetirement.js';
 import type {Scenario} from '@zxbench/types';
 import {checkScenarioEligibility} from '../contracts/eligibility.js';
 import {hashScenarioShort} from '../contracts/canonicalize.js';
@@ -28,9 +29,11 @@ describe('lightweight challenge supplement freeze',()=>{
     const promoted=bank.filter(item=>item.grader==='challenge_supplement');
     expect(promoted.map(item=>item.id)).toEqual([...CHALLENGE_SUPPLEMENT_IDS]);
     for(const item of promoted){
-      expect(item).toMatchObject({status:'valid',reviewStatus:'verified',graderVersion:'1.0.0',maxReasoningTokens:90000});
+      const retired=CHALLENGE_SUPPLEMENT_RETIRED_IDS.includes(item.id as typeof CHALLENGE_SUPPLEMENT_RETIRED_IDS[number]);
+      expect(item).toMatchObject({status:retired?'retired':'valid',reviewStatus:'verified',graderVersion:'1.0.0',maxReasoningTokens:90000});
       expect(item.scenarioHash).toBe(hashScenarioShort(item));
-      expect(checkScenarioEligibility(item)).toEqual({eligible:true,reasons:[]});
+      if(retired) expect(checkScenarioEligibility(item).eligible).toBe(false);
+      else expect(checkScenarioEligibility(item)).toEqual({eligible:true,reasons:[]});
     }
   });
 });

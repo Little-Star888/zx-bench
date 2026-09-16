@@ -5,6 +5,7 @@ import { structuredOutputEvaluator } from './structuredOutput.js';
 import { dataExtractionEvaluator } from './dataExtraction.js';
 import { canaryAuthorityEvaluator } from './canaryAuthority.js';
 import { agentTraceEvaluator } from './agentTrace.js';
+import { agentLoopTraceEvaluator } from './agentLoopTrace.js';
 import { toolCallTraceEvaluator } from './toolCallTrace.js';
 import { cliCommandEvaluator } from './cliCommand.js';
 import { instructionChecklistEvaluator } from './instructionChecklist.js';
@@ -107,6 +108,7 @@ describe('P0: scenario identity and evaluator version are fail-closed', () => {
       canaryAuthorityEvaluator, toolCallTraceEvaluator, agentTraceEvaluator, cliCommandEvaluator,
       hallucinationResistanceEvaluator, sandboxEvaluator, llmJudgeEvaluator, prExecutableEvidenceEvaluator,
       challengeSupplementEvaluator,
+      agentLoopTraceEvaluator,
       ultraBatchPartEvaluator, ultraProofPartEvaluator,
     ].forEach(registerEvaluator);
     const scenarios = JSON.parse(readFileSync('data/scenarios/benchmark.json', 'utf8')) as Array<{ grader: string; graderVersion: string; id: string }>;

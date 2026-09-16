@@ -6,6 +6,7 @@ The existing frozen pilot and production bank are never modified.
 from fractions import Fraction as F
 from itertools import product, combinations, permutations
 from collections import deque, Counter
+from math import comb, factorial
 from pathlib import Path
 import json
 
@@ -79,6 +80,299 @@ def event_bound(moment, predicate):
     return best
 
 support_ref = list(range(7))
+
+# --- helpers added 2026-09-16 for the hard replacement groups ----------------
+def int_det(m):
+    """Exact integer determinant, fraction-free Bareiss elimination.
+
+    Requires exact divisibility at every step, which holds for integer matrices.
+    Kept separate from the Fraction-based solver so the two can cross-check.
+    """
+    a = [row[:] for row in m]
+    n = len(a)
+    if n == 0:
+        return 1
+    sign = 1
+    prev = 1
+    for k in range(n - 1):
+        if a[k][k] == 0:
+            piv = next((r for r in range(k + 1, n) if a[r][k]), None)
+            if piv is None:
+                return 0
+            a[k], a[piv] = a[piv], a[k]
+            sign = -sign
+        for i in range(k + 1, n):
+            for j in range(k + 1, n):
+                a[i][j] = (a[i][j] * a[k][k] - a[i][k] * a[k][j]) // prev
+        prev = a[k][k]
+        for i in range(k + 1, n):
+            a[i][k] = 0
+    return sign * a[n - 1][n - 1]
+
+def det_fraction(m):
+    """Exact rational determinant (Fraction Gaussian elimination).
+
+    Deliberately a different algorithm from int_det so the two can cross-check.
+    """
+    a = [[F(x) for x in row] for row in m]
+    n = len(a)
+    d = F(1)
+    for c in range(n):
+        piv = next((r for r in range(c, n) if a[r][c] != 0), None)
+        if piv is None:
+            return F(0)
+        if piv != c:
+            a[c], a[piv] = a[piv], a[c]
+            d = -d
+        d *= a[c][c]
+        for r in range(c + 1, n):
+            f = a[r][c] / a[c][c]
+            if f:
+                for k in range(c, n):
+                    a[r][k] -= f * a[c][k]
+    return d
+
+def circulant_laplacian(n, offsets):
+    """Symmetric Laplacian of the undirected circulant graph.
+
+    Each undirected edge must contribute +1 to BOTH endpoint diagonal entries;
+    only advancing by the positive offsets undercounts degrees (a bug that two
+    otherwise-different determinant implementations shared undetected — the
+    brute-force enumeration in the verifier is what caught it).
+    """
+    L = [[0] * n for _ in range(n)]
+    seen = set()
+    for i in range(n):
+        for s in offsets:
+            j = (i + s) % n
+            if j == i:
+                continue
+            e = (min(i, j), max(i, j))
+            if e in seen:
+                continue
+            seen.add(e)
+            L[i][i] += 1
+            L[j][j] += 1
+            L[i][j] -= 1
+            L[j][i] -= 1
+    return L
+
+def spanning_trees(n, offsets):
+    """Kirchhoff: any cofactor of the Laplacian. Brute-force enumeration of
+    C(|E|, n-1) edge subsets is infeasible at n=40 (C(120,39) ~ 1e31)."""
+    return abs(int_det([row[:n - 1] for row in circulant_laplacian(n, offsets)[:n - 1]]))
+
+def spanning_trees_containing(n, offsets, edge):
+    """Trees containing `edge` == spanning trees of the contracted graph.
+
+    Both endpoints of the contracted edge are merged; the merged vertex absorbs
+    every incident edge, so degrees must be accumulated per surviving endpoint.
+    """
+    u, v = edge
+    if (v - u) % n > (u - v) % n:
+        u, v = v, u
+    keep = [x for x in range(n) if x != v]
+    idx = {x: i for i, x in enumerate(keep)}
+    m = len(keep)
+    L = [[0] * m for _ in range(m)]
+    seen = set()
+    for x in range(n):
+        for s in offsets:
+            y = (x + s) % n
+            if y == x:
+                continue
+            e = (min(x, y), max(x, y))
+            if e in seen:
+                continue
+            seen.add(e)
+            if e == (min(u, v), max(u, v)):
+                continue  # 这条边已收缩
+            a = idx.get(x, idx[u])   # 被收缩的 v 归并到 u
+            b = idx.get(y, idx[u])
+            if a == b:
+                continue
+            L[a][a] += 1
+            L[b][b] += 1
+            L[a][b] -= 1
+            L[b][a] -= 1
+    return abs(int_det([row[:m - 1] for row in L[:m - 1]]))
+
+MOD14 = 1000000007
+MOD14B = 998244353
+REC = (3, -1, 2)          # a_n = 3a_{n-1} - a_{n-2} + 2a_{n-3}
+INIT = (1, 2, 5)
+
+def rec_terms(seed, coeffs, terms, mod):
+    a = list(seed)
+    out = list(seed)
+    if terms <= len(seed):
+        return out[:terms]
+    for _ in range(terms - len(seed)):
+        nxt = sum(coeffs[i] * a[-1 - i] for i in range(len(coeffs))) % mod
+        a.append(nxt)
+        out.append(nxt)
+    return out
+
+def mat_mul(A, B, mod):
+    n, m, p = len(A), len(B), len(B[0])
+    return [[sum(A[i][k] * B[k][j] for k in range(m)) % mod for j in range(p)] for i in range(n)]
+
+def mat_pow(M, e, mod):
+    n = len(M)
+    R = [[1 if i == j else 0 for j in range(n)] for i in range(n)]
+    B = [row[:] for row in M]
+    while e:
+        if e & 1:
+            R = mat_mul(R, B, mod)
+        B = mat_mul(B, B, mod)
+        e >>= 1
+    return R
+
+def rec_index(seed, coeffs, index, mod):
+    """a_index by companion-matrix power. index can be astronomically large."""
+    d = len(coeffs)
+    if index < d:
+        return seed[index] % mod
+    C = [[0] * d for _ in range(d)]
+    for j in range(d):
+        C[0][j] = coeffs[j] % mod
+    for i in range(1, d):
+        C[i][i - 1] = 1
+    P = mat_pow(C, index - d + 1, mod)
+    return sum(P[0][j] * seed[d - 1 - j] for j in range(d)) % mod
+
+def rec_index_poly(seed, coeffs, index, mod):
+    """Independent route: x^index mod characteristic polynomial, then dot with seed."""
+    d = len(coeffs)
+    if index < d:
+        return seed[index] % mod
+    # 以 (x^index mod f) 的系数组合初值；f(x) = x^d - c1 x^{d-1} - ... - cd
+    def mul(u, v):
+        t = [0] * (2 * d - 1)
+        for i, ui in enumerate(u):
+            if ui:
+                for j, vj in enumerate(v):
+                    t[i + j] = (t[i + j] + ui * vj) % mod
+        for k in range(2 * d - 2, d - 1, -1):
+            if t[k]:
+                c = t[k]
+                for j in range(d):
+                    t[k - 1 - j] = (t[k - 1 - j] + c * coeffs[j]) % mod
+        return t[:d]
+    res = [1] + [0] * (d - 1)
+    base = [0, 1] + [0] * (d - 2)
+    e = index
+    while e:
+        if e & 1:
+            res = mul(res, base)
+        base = mul(base, base)
+        e >>= 1
+    return sum(res[j] * seed[j] for j in range(d)) % mod
+
+def paths_dp(target, bound=None, blocked=()):
+    """Brute-force DP: monotone paths (0,0)->target, y <= x + bound, avoiding blocked."""
+    tx, ty = target
+    if bound is None or bound >= tx:
+        bound = tx + 2
+    blocked = set(blocked)
+    dp = {(0, 0): 1}
+    for s in range(1, tx + ty + 1):
+        for x in range(max(0, s - ty), min(tx, s) + 1):
+            y = s - x
+            if x > tx or y > ty or (x, y) in blocked:
+                continue
+            if y > x + bound:
+                continue
+            dp[(x, y)] = dp.get((x - 1, y), 0) + dp.get((x, y - 1), 0)
+    return dp.get(target, 0)
+
+def lgv(ends, starts):
+    """Lindström–Gessel–Viennot: pairwise vertex-disjoint monotone path families.
+
+    Uses unconstrained binomial counts so the translation trick stays valid;
+    applying a per-path offset constraint would change the bound in original
+    coordinates and invalidate the determinant.
+    """
+    n = len(starts)
+    M = []
+    for i in range(n):
+        row = []
+        for j in range(n):
+            sx, sy = starts[i]
+            ex, ey = ends[j]
+            dx, dy = ex - sx, ey - sy
+            row.append(0 if dx < 0 or dy < 0 else comb(dx + dy, dx))
+        M.append(row)
+    return int_det(M)
+
+# --- helpers added 2026-09-16 (second hard batch) ----------------------------
+def penta_partitions(N, mod=None):
+    """p(0..N) by Euler's pentagonal-number recurrence (O(N sqrt N))."""
+    p = [0] * (N + 1)
+    p[0] = 1
+    for n in range(1, N + 1):
+        tot = 0
+        k = 1
+        while True:
+            g1 = k * (3 * k - 1) // 2
+            g2 = k * (3 * k + 1) // 2
+            if g1 > n and g2 > n:
+                break
+            sgn = 1 if k % 2 else -1
+            if g1 <= n:
+                tot += sgn * p[n - g1]
+            if g2 <= n:
+                tot += sgn * p[n - g2]
+            k += 1
+        p[n] = tot if mod is None else tot % mod
+    return p
+
+def coin_partitions(N, parts, mod=None):
+    """Independent route: unrestricted coin-change DP over the allowed part sizes."""
+    dp = [0] * (N + 1)
+    dp[0] = 1
+    for c in parts:
+        for n in range(c, N + 1):
+            dp[n] = (dp[n] + dp[n - c]) % mod if mod else dp[n] + dp[n - c]
+    return dp
+
+def distinct_partitions(N):
+    """Partitions into pairwise distinct parts.
+
+    Must be a 0/1 knapsack (descending inner loop so each part is used at most
+    once). Reusing coin_partitions(N, range(1, N+1)) silently returns p(N) —
+    the unrestricted count — which Euler's theorem catches immediately, since
+    distinct-part partitions must equal odd-part partitions for every n.
+    """
+    dp = [0] * (N + 1)
+    dp[0] = 1
+    for c in range(1, N + 1):
+        for n in range(N, c - 1, -1):
+            dp[n] += dp[n - c]
+    return dp
+
+def hook_length_factorial(n, shape):
+    """Number of standard Young tableaux of shape `shape` (hook length formula)."""
+    prod = 1
+    for i, row in enumerate(shape):
+        for j in range(row):
+            below = sum(1 for r in shape[i + 1:] if r > j)
+            prod *= (row - j) + below
+    return factorial(n) // prod
+
+def skew_syt(lam, mu):
+    """Skew SYT count via the Aitken determinant f^(lam/mu) = n! det(1/(li-mj-i+j)!)."""
+    k = len(lam)
+    mu = list(mu) + [0] * (k - len(mu))
+    n = sum(lam) - sum(mu)
+    M = []
+    for i in range(k):
+        row = []
+        for j in range(k):
+            d = lam[i] - mu[j] - i + j
+            row.append(F(1, factorial(d)) if d >= 0 else F(0))
+        M.append(row)
+    return factorial(n) * det_fraction(M)
 def cert(key, points, kind, problem, reference):
     return {'key': key, 'points': points, 'kind': kind, 'problem': problem, 'reference': clean(reference)}
 def part(task, *items): return {'task': task, 'items': list(items)}
@@ -378,8 +672,114 @@ group('12','finite-moment-extrema','有限矩约束下的概率上界','X取值�
     part('新增E[X³]=45。求新的最大值 bound，并提交满足全部矩的分布及至多三次多项式 certificate（系数数组固定长度4）。',exact('bound',10,mo4['value']),cert('certificate',30,'moment',{'support':support,'moments':moments3,'objective':objective},mo4))],
     '增加三阶矩改变可行分布集合，旧证书不能直接证明新最优值。','与对偶题共享证书思想；完整覆盖需要保留数学领域标签。')
 
-pack={'version':'math-exam-expansion-2026-09-14-v3','status':'candidate-unmeasured',
-      'modelCalls':0,'hardSeconds':[180,360,1200,1200],'points':[10,20,30,40],
+# 13. Circulant graph: cycle+chord structure makes brute force impossible; the
+# matrix-tree theorem plus edge contraction is the only tractable route.
+circ_small = spanning_trees(8, [1, 2])
+circ_main = spanning_trees(40, [1, 10, 15])
+circ_edge = spanning_trees_containing(40, [1, 10, 15], (0, 1))
+circ_wide = spanning_trees(40, [1, 10, 15, 20])
+circ_wide_edge = spanning_trees_containing(40, [1, 10, 15, 20], (0, 20))
+group('13','circulant-spanning-trees','循环图的生成树计数','40 个顶点 0..39 的循环图：对每个 i，与 i±1、i±10、i±15 (mod 40) 相连。生成树 = 取 39 条边使全图连通无环。顶点数很大，逐一枚举边子集不可行。',[
+    part('先看同构的小图：8 个顶点 0..7，对每个 i 与 i±1、i±2 (mod 8) 相连。提交 tree_count=生成树个数。',
+         exact('tree_count',10,circ_small)),
+    part('回到 40 顶点图（i±1、i±10、i±15）。提交 tree_count=生成树个数。',
+         exact('tree_count',20,circ_main)),
+    part('仍为 40 顶点图。提交 with_edge=包含边 (0,1) 的生成树个数。',
+         exact('with_edge',30,circ_edge)),
+    part('改为对每个 i 与 i±1、i±10、i±15、i±20 (mod 40) 相连。提交 tree_count=生成树个数，以及 with_edge=包含边 (0,20) 的生成树个数。',
+         exact('tree_count',20,circ_wide),exact('with_edge',20,circ_wide_edge))],
+    '再加一条跨半圈的弦，同时改变总数与单边计数。','暴力枚举不可行；需自行选择矩阵树定理或谱方法，答案唯一。')
+
+# 14. 线性递推的四层推理：递推求值 → 特征根解析 → 模结构性质 → 逆向反推。
+# 递推式 a_{n+2} = 5a_{n+1} - 6a_n，特征根 2 与 3，通项 a_n = 2*3^n - 2^n（便于 P2 要求通项系数）。
+REC14 = (5, -6)
+INIT14 = (1, 4)
+m14_10 = rec_index(INIT14, REC14, 10, MOD14)
+m14_1e6 = rec_index(INIT14, REC14, 10**6, MOD14)
+
+def rec14_structure(mod, limit=400):
+    """最小 n>=1 使 a_n ≡ 0，以及最小正周期（2 阶线性递推：a_T=a_0 且 a_{T+1}=a_1 即为周期）"""
+    seq = rec_terms(INIT14, REC14, limit + 2, mod)
+    zero = next((n for n in range(1, limit) if seq[n] == 0), None)
+    period = next((T for T in range(1, limit) if all(seq[n + T] == seq[n] for n in range(200))), None)
+    return zero, period
+
+m14_nzero, m14_period = rec14_structure(11)
+# 逆向题：真值 (a0,a1)=(3,7) → a2=17, a3=43, a4=113；由 a3,a4 反解唯一（6 在模 1e9+7 下可逆）
+m14_inv_a3, m14_inv_a4, m14_inv_a0, m14_inv_a1 = 43, 113, 3, 7
+group('14','linear-recurrence-four-actions','线性递推的四层推理','序列满足 aₙ₊₂ = 5aₙ₊₁ − 6aₙ（模 p），a₀ = 1、a₁ = 4。所有下标从 0 开始，答案取模 p 后落在 [0,p)。四问依次考察四种不同的推理动作：递推求值 → 解析求解 → 模结构性质 → 逆向反推。',[
+    part('p=1000000007。提交 a_10。',exact('a_10',10,m14_10)),
+    part('p=1000000007。用特征根法把通项写成 a_n = alpha·3^n + beta·2^n（alpha、beta 为整数，允许为负）。提交 alpha、beta、a_1000000。',
+         exact('alpha',5,2),exact('beta',5,-1),exact('a_1000000',10,m14_1e6)),
+    part('改模数 p=11。提交 n_zero、period：n_zero 是最小的 n ≥ 1 使 a_n ≡ 0 (mod 11)；period 是序列 (a_n mod 11) 的最小正周期。',
+         exact('n_zero',15,m14_nzero),exact('period',15,m14_period)),
+    part('回到 p=1000000007。递推式不变，但初值 (a₀, a₁) 未知；已知 a_3 = 43、a_4 = 113。提交 a0、a1。',
+         exact('a0',20,m14_inv_a0),exact('a1',20,m14_inv_a1))],
+    '由正向求值转为逆向反推：需先由 a_3、a_4 解出 a_2，再逐步回代得到初值。','四问分别需要迭代、特征根解析、模周期分析与线性反解四种不同推理动作；答案唯一且可精确校验。')
+
+# 15. Constrained lattice enumeration; the disjoint-family part is exactly the
+# Lindstrom-Gessel-Viennot determinant that frontier benchmarks like to use.
+lp_small = paths_dp((12, 12), bound=2)
+lp_mid = paths_dp((20, 20), bound=3)
+lp_blocked = paths_dp((20, 20), bound=3, blocked=[(7, 7), (13, 11)])
+lp_lgv = lgv([(12, 12), (12, 13), (12, 14)], [(0, 0), (0, 1), (0, 2)])
+group('15','constrained-lattice-families','受限格路与非交叉路径族','网格上每步只能向右 (1,0) 或向上 (0,1)。坐标(x,y)以纵轴为 y。要求路径全程满足 y ≤ x + k（k 见各问）；「避开」指不经过该点。非交叉指两条路径不含公共顶点。',[
+    part('k=2，从 (0,0) 到 (12,12)。提交 path_count=合法路径数。',exact('path_count',10,lp_small)),
+    part('k=3，从 (0,0) 到 (20,20)。提交 path_count=合法路径数。',exact('path_count',20,lp_mid)),
+    part('k=3，从 (0,0) 到 (20,20)，且不得经过 (7,7) 与 (13,11)。提交 path_count=合法路径数。',
+         exact('path_count',30,lp_blocked)),
+    part('从 A1=(0,0)、A2=(0,1)、A3=(0,2) 出发，分别到达 B1=(12,12)、B2=(12,13)、B3=(12,14)，三条路径两两不共享顶点，每步只向右或向上（本问不加 y 上界）。提交 families=这样的有序三元组个数。',
+         exact('families',40,lp_lgv))],
+    '从单条受限路径升级为两两不相交的三元组，需要行列式级的方法。','答案均为精确整数；非交叉计数可独立用行列式与穷举互验。')
+
+# 16. Integer partitions: closed-form generator functions, not enumeration.
+pt = penta_partitions(2000)
+pt20, pt200, pt2000 = pt[20], pt[200], pt[2000]
+odd2000 = coin_partitions(2000, list(range(1, 2001, 2)))[2000]
+distinct2000 = distinct_partitions(2000)[2000]
+atmost5 = coin_partitions(2000, list(range(1, 6)))[2000]
+assert odd2000 == distinct2000, 'Euler 定理：奇数部分分拆数必须等于互异部分分拆数'
+group('16','partition-generating-functions','整数分拆的生成函数','分拆把 n 写成正整数之和，顺序不计。A(n) 记 n 的分拆数。q 进制分拆指各部分均为奇数；互异分拆指各部分互不相同。',[
+    part('提交 A(20)。',exact('A_20',10,pt20)),
+    part('提交 A(200)。',exact('A_200',20,pt200)),
+    part('提交 A(2000) 的精确值。',exact('A_2000',30,pt2000)),
+    part('n=2000。提交 odd_parts=各部分均为奇数的分拆数，distinct_parts=各部分互不相同的分拆数，at_most_5=部分数不超过 5 的分拆数。三个数分别提交。',
+         exact('odd_parts',15,odd2000),exact('distinct_parts',15,distinct2000),exact('at_most_5',10,atmost5))],
+    '限制部分性质后递推式改变；直接用生成函数可以同时得到三个量。','答案为大整数，可精确校验；奇数部分与互异部分两式互为独立验证。')
+
+# 17. Standard Young tableaux: hook-length formula and Aitken's determinant.
+def partitions_of(n, maxpart=None):
+    if maxpart is None or maxpart > n:
+        maxpart = n
+    if n == 0:
+        yield ()
+        return
+    for first in range(min(n, maxpart), 0, -1):
+        for rest in partitions_of(n - first, first):
+            yield (first,) + rest
+
+# n 必须是 |λ|：(4,3,1) 共 8 格，(6,5,4,2) 共 17 格，传错 n 会得到非整数后再整除的错误结果
+assert sum([4, 3, 1]) == 8 and sum([6, 5, 4, 2]) == 17
+syt_431 = hook_length_factorial(sum([4, 3, 1]), [4, 3, 1])
+syt_6542 = hook_length_factorial(sum([6, 5, 4, 2]), [6, 5, 4, 2])
+sum_sq_10 = sum(hook_length_factorial(10, lam) ** 2 for lam in partitions_of(10, 3))
+skew_val = skew_syt([7, 5, 3, 1], [3, 2, 1])
+group('17','young-tableaux-hook-length','标准杨表与斜杨表','形状 λ=(λ₁≥λ₂≥…) 的标准杨表：把 1..n 填入 λ 的方格，每行每列都严格递增，n=|λ|。斜形状 λ/μ 指去掉子分拆 μ 后剩余的方格。',[
+    part('提交 λ=(4,3,1) 的标准杨表个数。',exact('syt_count',10,syt_431)),
+    part('提交 λ=(6,5,4,2) 的标准杨表个数。',exact('syt_count',20,syt_6542)),
+    part('λ 取遍 10 的所有分拆且要求 λ₁≤3，提交 sum_squares=Σ f^λ 的平方。',
+         exact('sum_squares',30,sum_sq_10)),
+    part('提交斜形状 λ/μ 的标准杨表个数，其中 λ=(7,5,3,1)、μ=(3,2,1)。',
+         exact('skew_count',40,skew_val))],
+    '从单形状升级到斜形状，hook length 公式不再直接适用。','答案均为精确整数；行列式公式与穷举可互验。')
+
+pack={'version':'math-exam-expansion-2026-09-16-v6','status':'candidate-unmeasured',
+      # 时限遵循项目参考值：题级默认 600 秒、上限 1200 秒
+      # （packages/core/src/model/caller.ts 的 600_000 默认 + apiControlStream 的 1_200_000 上限）。
+      # 原为 [180,360,1200,1200]，是给"不需要计算的"旧 P1 白送分题调的；
+      # 2026-09-16 把 P1 换成仍需真实求解的问法后，180 秒成了实际作答的瓶颈，
+      # 故 P1 回到项目默认 600 秒。
+      'modelCalls':0,'hardSeconds':[300,600,900,1200],'points':[10,20,30,40],
       'groups':GROUPS,'difficultyCalibrated':False,'productionEligible':False}
 dest=ROOT/'packages/core/src/evaluationLab/examExpansion/math-candidates.json'
 dest.parent.mkdir(parents=True,exist_ok=True)

@@ -81,6 +81,17 @@ export type ExamPaper = ReturnType<typeof buildExamPaper>;
 export function assertExamPaper(p: ExamPaper) { if (snapshotHash(p) !== snapshotHash(buildExamPaper(p.options))) throw new Error('Frozen exam paper mismatch'); }
 
 /** Commit complete top-level JSON records; never close or guess a cut-off object. */
+/**
+ * 题面把评分项印成 `key(points分)`（见 examExpansion 的 `评分项：A_20(10分)、…`），
+ * 而提交格式只说明 item 填「评分项编号」——模型照抄带分值后缀的标签是对该指令的
+ * 合理理解。分值后缀属于题面排版、不属于答案内容，因此在匹配前剥掉，否则
+ * 答案正确却因为标签多了「(10分)」被判 rejected（实测 MX3-16-P1：answer=627 正确，
+ * item 写作 `A_20(10分)` → 0 分；同一题写 `A_20` → 100 分）。
+ */
+function normalizeItemKey(value: string): string {
+  return value.trim().replace(/[（(]\s*\d+\s*分\s*[)）]\s*$/, '').trim();
+}
+
 export function committedItems(content: string, allowed: string[]) {
   const items = new Map<string, unknown>(); let start = -1, depth = 0, quoted = false, escape = false, accepted = 0, rejected = 0;
   const overflow = content.length > 2_000_000;
@@ -92,7 +103,9 @@ export function committedItems(content: string, allowed: string[]) {
     if (ch === '"') quoted = true; else if (ch === '{') depth++; else if (ch === '}' && --depth === 0) {
       try {
         const record = parseAnswer(content.slice(start, i + 1));
-        if (exactKeys(record, ['item', 'answer']) && typeof record.item === 'string' && allowed.includes(record.item)) { items.set(record.item, record.answer); accepted++; }
+        const key = typeof (record as { item?: unknown }).item === 'string'
+          ? normalizeItemKey((record as { item: string }).item) : '';
+        if (exactKeys(record, ['item', 'answer']) && key && allowed.includes(key)) { items.set(key, record.answer); accepted++; }
         else rejected++;
       } catch { rejected++; }
       start = -1;

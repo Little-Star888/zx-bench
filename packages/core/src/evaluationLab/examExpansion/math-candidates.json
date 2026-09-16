@@ -1,11 +1,11 @@
 {
-  "version": "math-exam-expansion-2026-09-14-v3",
+  "version": "math-exam-expansion-2026-09-16-v7-mx314-rewrite",
   "status": "candidate-unmeasured",
   "modelCalls": 0,
   "hardSeconds": [
-    180,
-    360,
-    1200,
+    300,
+    600,
+    900,
     1200
   ],
   "points": [
@@ -1505,6 +1505,318 @@
       ],
       "capstoneChange": "增加三阶矩改变可行分布集合，旧证书不能直接证明新最优值。",
       "difficultyRisk": "与对偶题共享证书思想；完整覆盖需要保留数学领域标签。"
+    },
+    {
+      "id": "MX3-13",
+      "family": "circulant-spanning-trees",
+      "title": "循环图的生成树计数",
+      "stem": "40 个顶点 0..39 的循环图：对每个 i，与 i±1、i±10、i±15 (mod 40) 相连。生成树 = 取 39 条边使全图连通无环。顶点数很大，逐一枚举边子集不可行。",
+      "parts": [
+        {
+          "task": "先看同构的小图：8 个顶点 0..7，对每个 i 与 i±1、i±2 (mod 8) 相连。提交 tree_count=生成树个数。",
+          "items": [
+            {
+              "key": "tree_count",
+              "points": 10,
+              "kind": "exact",
+              "expected": "3528"
+            }
+          ]
+        },
+        {
+          "task": "回到 40 顶点图（i±1、i±10、i±15）。提交 tree_count=生成树个数。",
+          "items": [
+            {
+              "key": "tree_count",
+              "points": 20,
+              "kind": "exact",
+              "expected": "3948107216150432269610439680"
+            }
+          ]
+        },
+        {
+          "task": "仍为 40 顶点图。提交 with_edge=包含边 (0,1) 的生成树个数。",
+          "items": [
+            {
+              "key": "with_edge",
+              "points": 30,
+              "kind": "exact",
+              "expected": "1369503520999145588117898368"
+            }
+          ]
+        },
+        {
+          "task": "改为对每个 i 与 i±1、i±10、i±15、i±20 (mod 40) 相连。提交 tree_count=生成树个数，以及 with_edge=包含边 (0,20) 的生成树个数。",
+          "items": [
+            {
+              "key": "tree_count",
+              "points": 20,
+              "kind": "exact",
+              "expected": "2267432290723979054529725419520"
+            },
+            {
+              "key": "with_edge",
+              "points": 20,
+              "kind": "exact",
+              "expected": "607794611814468521412287324160"
+            }
+          ]
+        }
+      ],
+      "capstoneChange": "再加一条跨半圈的弦，同时改变总数与单边计数。",
+      "difficultyRisk": "暴力枚举不可行；需自行选择矩阵树定理或谱方法，答案唯一。"
+    },
+    {
+      "id": "MX3-14",
+      "family": "linear-recurrence-four-actions",
+      "title": "线性递推的四层推理",
+      "stem": "序列满足 aₙ₊₂ = 5aₙ₊₁ − 6aₙ（模 p），a₀ = 1、a₁ = 4。所有下标从 0 开始，答案取模 p 后落在 [0,p)。四问依次考察四种不同的推理动作：递推求值 → 解析求解 → 模结构性质 → 逆向反推。",
+      "parts": [
+        {
+          "task": "p=1000000007。提交 a_10。",
+          "items": [
+            {
+              "key": "a_10",
+              "points": 10,
+              "kind": "exact",
+              "expected": "117074"
+            }
+          ]
+        },
+        {
+          "task": "p=1000000007。用特征根法把通项写成 a_n = alpha·3^n + beta·2^n（alpha、beta 为整数，允许为负）。提交 alpha、beta、a_1000000。",
+          "items": [
+            {
+              "key": "alpha",
+              "points": 5,
+              "kind": "exact",
+              "expected": "2"
+            },
+            {
+              "key": "beta",
+              "points": 5,
+              "kind": "exact",
+              "expected": "-1"
+            },
+            {
+              "key": "a_1000000",
+              "points": 10,
+              "kind": "exact",
+              "expected": "894828776"
+            }
+          ]
+        },
+        {
+          "task": "改模数 p=11。提交 n_zero、period：n_zero 是最小的 n ≥ 1 使 a_n ≡ 0 (mod 11)；period 是序列 (a_n mod 11) 的最小正周期。",
+          "items": [
+            {
+              "key": "n_zero",
+              "points": 15,
+              "kind": "exact",
+              "expected": "7"
+            },
+            {
+              "key": "period",
+              "points": 15,
+              "kind": "exact",
+              "expected": "10"
+            }
+          ]
+        },
+        {
+          "task": "回到 p=1000000007。递推式不变，但初值 (a₀, a₁) 未知；已知 a_3 = 43、a_4 = 113。提交 a0、a1。",
+          "items": [
+            {
+              "key": "a0",
+              "points": 20,
+              "kind": "exact",
+              "expected": "3"
+            },
+            {
+              "key": "a1",
+              "points": 20,
+              "kind": "exact",
+              "expected": "7"
+            }
+          ]
+        }
+      ],
+      "capstoneChange": "由正向求值转为逆向反推：需先由 a_3、a_4 解出 a_2，再逐步回代得到初值。",
+      "difficultyRisk": "四问分别需要迭代、特征根解析、模周期分析与线性反解四种不同推理动作；答案唯一且可精确校验。"
+    },
+    {
+      "id": "MX3-15",
+      "family": "constrained-lattice-families",
+      "title": "受限格路与非交叉路径族",
+      "stem": "网格上每步只能向右 (1,0) 或向上 (0,1)。坐标(x,y)以纵轴为 y。要求路径全程满足 y ≤ x + k（k 见各问）；「避开」指不经过该点。非交叉指两条路径不含公共顶点。",
+      "parts": [
+        {
+          "task": "k=2，从 (0,0) 到 (12,12)。提交 path_count=合法路径数。",
+          "items": [
+            {
+              "key": "path_count",
+              "points": 10,
+              "kind": "exact",
+              "expected": "1396652"
+            }
+          ]
+        },
+        {
+          "task": "k=3，从 (0,0) 到 (20,20)。提交 path_count=合法路径数。",
+          "items": [
+            {
+              "key": "path_count",
+              "points": 20,
+              "kind": "exact",
+              "expected": "74994427170"
+            }
+          ]
+        },
+        {
+          "task": "k=3，从 (0,0) 到 (20,20)，且不得经过 (7,7) 与 (13,11)。提交 path_count=合法路径数。",
+          "items": [
+            {
+              "key": "path_count",
+              "points": 30,
+              "kind": "exact",
+              "expected": "36255457130"
+            }
+          ]
+        },
+        {
+          "task": "从 A1=(0,0)、A2=(0,1)、A3=(0,2) 出发，分别到达 B1=(12,12)、B2=(12,13)、B3=(12,14)，三条路径两两不共享顶点，每步只向右或向上（本问不加 y 上界）。提交 families=这样的有序三元组个数。",
+          "items": [
+            {
+              "key": "families",
+              "points": 40,
+              "kind": "exact",
+              "expected": "1998551478139216"
+            }
+          ]
+        }
+      ],
+      "capstoneChange": "从单条受限路径升级为两两不相交的三元组，需要行列式级的方法。",
+      "difficultyRisk": "答案均为精确整数；非交叉计数可独立用行列式与穷举互验。"
+    },
+    {
+      "id": "MX3-16",
+      "family": "partition-generating-functions",
+      "title": "整数分拆的生成函数",
+      "stem": "分拆把 n 写成正整数之和，顺序不计。A(n) 记 n 的分拆数。q 进制分拆指各部分均为奇数；互异分拆指各部分互不相同。",
+      "parts": [
+        {
+          "task": "提交 A(20)。",
+          "items": [
+            {
+              "key": "A_20",
+              "points": 10,
+              "kind": "exact",
+              "expected": "627"
+            }
+          ]
+        },
+        {
+          "task": "提交 A(200)。",
+          "items": [
+            {
+              "key": "A_200",
+              "points": 20,
+              "kind": "exact",
+              "expected": "3972999029388"
+            }
+          ]
+        },
+        {
+          "task": "提交 A(2000) 的精确值。",
+          "items": [
+            {
+              "key": "A_2000",
+              "points": 30,
+              "kind": "exact",
+              "expected": "4720819175619413888601432406799959512200344166"
+            }
+          ]
+        },
+        {
+          "task": "n=2000。提交 odd_parts=各部分均为奇数的分拆数，distinct_parts=各部分互不相同的分拆数，at_most_5=部分数不超过 5 的分拆数。三个数分别提交。",
+          "items": [
+            {
+              "key": "odd_parts",
+              "points": 15,
+              "kind": "exact",
+              "expected": "106972734349914451123354464808960"
+            },
+            {
+              "key": "distinct_parts",
+              "points": 15,
+              "kind": "exact",
+              "expected": "106972734349914451123354464808960"
+            },
+            {
+              "key": "at_most_5",
+              "points": 10,
+              "kind": "exact",
+              "expected": "5639320362"
+            }
+          ]
+        }
+      ],
+      "capstoneChange": "限制部分性质后递推式改变；直接用生成函数可以同时得到三个量。",
+      "difficultyRisk": "答案为大整数，可精确校验；奇数部分与互异部分两式互为独立验证。"
+    },
+    {
+      "id": "MX3-17",
+      "family": "young-tableaux-hook-length",
+      "title": "标准杨表与斜杨表",
+      "stem": "形状 λ=(λ₁≥λ₂≥…) 的标准杨表：把 1..n 填入 λ 的方格，每行每列都严格递增，n=|λ|。斜形状 λ/μ 指去掉子分拆 μ 后剩余的方格。",
+      "parts": [
+        {
+          "task": "提交 λ=(4,3,1) 的标准杨表个数。",
+          "items": [
+            {
+              "key": "syt_count",
+              "points": 10,
+              "kind": "exact",
+              "expected": "70"
+            }
+          ]
+        },
+        {
+          "task": "提交 λ=(6,5,4,2) 的标准杨表个数。",
+          "items": [
+            {
+              "key": "syt_count",
+              "points": 20,
+              "kind": "exact",
+              "expected": "1361360"
+            }
+          ]
+        },
+        {
+          "task": "λ 取遍 10 的所有分拆且要求 λ₁≤3，提交 sum_squares=Σ f^λ 的平方。",
+          "items": [
+            {
+              "key": "sum_squares",
+              "points": 30,
+              "kind": "exact",
+              "expected": "586590"
+            }
+          ]
+        },
+        {
+          "task": "提交斜形状 λ/μ 的标准杨表个数，其中 λ=(7,5,3,1)、μ=(3,2,1)。",
+          "items": [
+            {
+              "key": "skew_count",
+              "points": 40,
+              "kind": "exact",
+              "expected": "8910"
+            }
+          ]
+        }
+      ],
+      "capstoneChange": "从单形状升级到斜形状，hook length 公式不再直接适用。",
+      "difficultyRisk": "答案均为精确整数；行列式公式与穷举可互验。"
     }
   ],
   "difficultyCalibrated": false,
