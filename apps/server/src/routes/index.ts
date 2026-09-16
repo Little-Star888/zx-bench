@@ -17,6 +17,7 @@ import { orchestrateEvaluation, generateManifest, callModel, runTieredJudge, run
 import { generateReport, generateCompareReport, analyzeRunQuality, referenceAnswerWarnings, partitionReferenceAnswerRuns } from '@zxbench/core';
 import type { ReportUserPromptData, CompareReportUserPromptData } from '@zxbench/core';
 import { computeWeightedTotal, computeDifficultyWeightedDimAvgs as computeDifficultyWeightedDimAvgsPure, buildDimAvgWeightLookups, validateScenario, classifyEngineeringFailure, createDimAvgExclusionStats, computeScorerVersionDrift } from '@zxbench/core';
+import { buildExamPaper, paperSourceIdentity, paperSourceVersion } from '@zxbench/core';
 import type { DimAvgExclusionStats } from '@zxbench/core';
 import { broadcastProgress, getLatestProgress, clearProgressCache } from '../ws/index.js';
 import { getExecutionLogPath } from '../logging.js';
@@ -990,9 +991,21 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
   app.get('/api/health', async () => {
     // executionLog：进程级执行日志路径（R1）。部署与排障时先看这里，
     // 避免再次出现「跑分异常但日志全丢、无法归因」。
+    // graderPaper：当前已加载评卷表的内容指纹（R3）。评卷表按文件 sha256 自动重载，
+    // 所以这里读到的一定是磁盘上最新的那一份。排查「题面是新的、评分项却是旧的」时，
+    // 把它与 math-candidates.json 实际 sha256 前 16 位对照即可定位；判分守卫
+    // （ultraBatchPartEvaluator）也会用同一指纹做一致性校验，不一致时按环境错误隔离。
+    let graderPaper: { identity: string; version: string; parts: number } | { error: string };
+    try {
+      const paper = buildExamPaper();
+      graderPaper = { identity: paperSourceIdentity(), version: paperSourceVersion(), parts: paper.parts.length };
+    } catch (err) {
+      graderPaper = { error: err instanceof Error ? err.message : String(err) };
+    }
     return {
       status: 'ok', version: '0.2.1', buildTime: process.env.BUILD_TIME || 'dev',
       executionLog: getExecutionLogPath(),
+      graderPaper,
     };
   });
 

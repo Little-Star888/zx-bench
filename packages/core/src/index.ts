@@ -88,6 +88,7 @@ export type { UltraOutcome, UltraAxis, UltraFinding, UltraCriterion, UltraPartRu
 export { buildUltraMathQuestions } from './evaluationLab/ultraMathQuestions.js';
 export { buildEvidenceExam as buildUltraEvidenceExam, referenceOutput as ultraEvidenceReferenceOutput, gradePart as gradeUltraEvidencePart, scoreExam as scoreUltraEvidenceExam, examMessages as ultraEvidenceExamMessages } from './evaluationLab/evidenceExam/index.js';
 export { evidenceCatalogGroups } from './evaluationLab/evidenceExam/catalog.js';
+export { buildExamPaper, loadPaperSource, paperSourceIdentity, paperSourceVersion } from './evaluationLab/examExpansion/index.js';
 export type { EvidenceCatalogGroup, EvidenceCatalogPart, ExactEvidenceItem } from './evaluationLab/evidenceExam/catalog.js';
 export { CHALLENGE_SUPPLEMENT_VERSION, CHALLENGE_SUPPLEMENT_GRADER_VERSION, CHALLENGE_SUPPLEMENT_SOURCE_VERSION, CHALLENGE_SUPPLEMENT_SOURCE_HASH, CHALLENGE_SUPPLEMENT_IDS } from './evaluationLab/challengeRelease.js';
 export { MC2_004_REVISION_VERSION, buildMc2004Revision, mc2004RevisionReference, gradeMc2004Revision } from './evaluationLab/challengeMathRevision.js';

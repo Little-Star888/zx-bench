@@ -1,19 +1,54 @@
 import type { OutputMetadata, Scenario, ScenarioResult } from '@zxbench/types';
 import type { Evaluator } from './index.js';
 import { buildEvidenceExam, gradePart as gradeEvidencePart } from '../evaluationLab/evidenceExam/index.js';
-import { buildExamPaper, gradePart as gradeMathPart } from '../evaluationLab/examExpansion/index.js';
+import { buildExamPaper, gradePart as gradeMathPart, paperSourceIdentity, paperSourceVersion } from '../evaluationLab/examExpansion/index.js';
 
-const evidenceParts = new Map(buildEvidenceExam().parts.map(part => [part.id, part]));
-const mathParts = new Map(buildExamPaper().parts.map(part => [part.id, part]));
+// 2026-09-16（R3）：**不再在模块加载时固化评卷表**。
+// 旧实现 `const mathParts = new Map(buildExamPaper().parts...)` 会把进程启动那一刻的
+// 评卷表钉死；一旦题库（题面/评分项 key）更新而进程没重启，提交就会以「未知评分项」
+// 被静默丢弃并判 0 —— 实测一次回归因此得出「5/12 题 0 分」的假结论。
+// 现在每次评分解析一次（buildExamPaper 内部按文件 sha256 自动重载），并加一道
+// fail-closed 一致性守卫：题库记录的 questionHash 与已加载评卷表不一致时，
+// **判为环境错误（不计分、不静默判 0）**，并在证据里直接写明要重启服务。
+function resolvePart(id: string): { part: ReturnType<typeof buildExamPaper>['parts'][number] | ReturnType<typeof buildEvidenceExam>['parts'][number]; kind: 'math' | 'evidence' } | null {
+  const math = buildExamPaper().parts.find((p) => p.id === id);
+  if (math) return { part: math, kind: 'math' };
+  const evidence = buildEvidenceExam().parts.find((p) => p.id === id);
+  if (evidence) return { part: evidence, kind: 'evidence' };
+  return null;
+}
 
 export const ultraBatchPartEvaluator: Evaluator = {
   name: 'ultra_batch_part',
   version: '1.0.0',
   async evaluate(scenario: Scenario, modelOutput: string, _metadata: OutputMetadata): Promise<Partial<ScenarioResult>> {
-    const evidencePart = evidenceParts.get(scenario.id);
-    const mathPart = mathParts.get(scenario.id);
-    if (!evidencePart && !mathPart) throw new Error(`Unknown ultra-batch part: ${scenario.id}`);
-    const result = evidencePart ? gradeEvidencePart(evidencePart, modelOutput) : gradeMathPart(mathPart!, modelOutput);
+    const resolved = resolvePart(scenario.id);
+    if (!resolved) throw new Error(`Unknown ultra-batch part: ${scenario.id}`);
+    const { part, kind } = resolved;
+
+    // ---- 评卷表一致性守卫（fail-closed）----
+    const recorded = (scenario.requirements as { questionHash?: unknown } | undefined)?.questionHash;
+    if (typeof recorded === 'string' && recorded.length > 0 && recorded !== part.question.questionHash) {
+      return {
+        axisScores: {},
+        axisEvidence: {},
+        axisCoverage: 0,
+        totalScore: 0,
+        environmentError: true,
+        humanReviewRequired: true,
+        safetyLevel: 'safe',
+        evidence: [
+          `STALE_GRADER_PAPER: 题库记录的 questionHash=${recorded.slice(0, 12)}… 与已加载评卷表 `
+          + `${part.question.questionHash.slice(0, 12)}…（${paperSourceVersion()} / ${paperSourceIdentity()}）不一致。`,
+          `题面与评分项可能已更新但进程仍持有旧评卷表 —— 判分不可信，已按环境错误隔离（不计入均分）。`
+          + `请重启服务后重跑；若重启后仍报此错，说明题库未按当前评卷表重新播种。`,
+        ],
+      };
+    }
+
+    const result = kind === 'evidence'
+      ? gradeEvidencePart(part as ReturnType<typeof buildEvidenceExam>['parts'][number], modelOutput)
+      : gradeMathPart(part as ReturnType<typeof buildExamPaper>['parts'][number], modelOutput);
     const score = Math.round(100 * result.earned / result.points);
     return {
       totalScore: score,

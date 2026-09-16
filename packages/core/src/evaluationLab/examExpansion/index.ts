@@ -1,5 +1,6 @@
 /** Opt-in development paper. Frozen pilot and production scores stay separate. */
 import { readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 import { snapshotHash } from '../../contracts/pack.js';
 import { committedItems, type ExamSubmission, type ExamAnswer } from '../examPaper/index.js';
 import { parseExactExpression } from '../frontierChallenge/annihilatingMaps.js';
@@ -22,10 +23,36 @@ export type Submission = ExamSubmission;
 // 3 次启动失败后放弃重启，整个 run 转由非托管进程执行且日志全丢（R2）。
 // 显式读文件与 Node 版本、构建产物、模块系统解耦；路径基于 import.meta.url，
 // 在 src（vitest）与 dist（node）下都成立。
-const source = JSON.parse(
-  readFileSync(new URL('./math-candidates.json', import.meta.url), 'utf8'),
-) as { version: string; points: number[]; hardSeconds: number[]; groups: Group[] };
-const groups = source.groups;
+const PAPER_SOURCE_URL = new URL('./math-candidates.json', import.meta.url);
+type PaperSource = { version: string; points: number[]; hardSeconds: number[]; groups: Group[] };
+
+// 2026-09-16（R3）：**按文件内容自动重载**，不再在模块加载时固化一份快照。
+// 事故背景：改完 math-candidates.json 只重新播种、没重启服务时，题面来自题库（新）、
+// 评分项 key 来自内存里的旧评卷表（旧）→ 模型提交新 key 被判「未知评分项」→
+// **静默 0 分且不报错**，实测一次回归因此得出「5/12 题 0 分」的假结论。
+// 现在每次读取都校验 sha256：内容一变就重读，进程内不再可能持有过期评卷表。
+let cachedSource: PaperSource | null = null;
+let cachedIdentity = '';
+
+export function loadPaperSource(): { source: PaperSource; identity: string } {
+  const raw = readFileSync(PAPER_SOURCE_URL, 'utf8');
+  const identity = createHash('sha256').update(raw).digest('hex').slice(0, 16);
+  if (cachedSource === null || identity !== cachedIdentity) {
+    cachedSource = JSON.parse(raw) as PaperSource;
+    cachedIdentity = identity;
+  }
+  return { source: cachedSource, identity };
+}
+
+/** 当前已加载评卷表的内容指纹（供 /api/health 与判分守卫核对）。 */
+export function paperSourceIdentity(): string {
+  return loadPaperSource().identity;
+}
+
+/** 当前已加载评卷表声明的版本号（math-candidates.json 的 version 字段）。 */
+export function paperSourceVersion(): string {
+  return loadPaperSource().source.version;
+}
 const eq = (a: Rational, b: Rational) => a[0] === b[0] && a[1] === b[1];
 const le = (a: Rational, b: Rational) => a[0] * b[1] <= b[0] * a[1];
 const q = (n: number) => rational(BigInt(n));
@@ -97,9 +124,12 @@ export function validCertificate(item: Exclude<Item, { kind: 'exact' }>, answer:
   } catch { return false; }
 }
 
-export function buildExamPaper(options = { groupIds: groups.map(g => g.id) }) {
-  if (!Array.isArray(options.groupIds) || !options.groupIds.length || new Set(options.groupIds).size !== options.groupIds.length || options.groupIds.some(id => !groups.some(g => g.id === id))) throw new Error('Unknown/duplicate/empty group selection');
-  const selected = groups.filter(g => options.groupIds.includes(g.id)); // canonical order
+export function buildExamPaper(options?: { groupIds?: string[] }) {
+  const { source, identity } = loadPaperSource();
+  const groups = source.groups;
+  const groupIds = options?.groupIds ?? groups.map(g => g.id);
+  if (!Array.isArray(groupIds) || !groupIds.length || new Set(groupIds).size !== groupIds.length || groupIds.some(id => !groups.some(g => g.id === id))) throw new Error('Unknown/duplicate/empty group selection');
+  const selected = groups.filter(g => groupIds.includes(g.id)); // canonical order
   const policy = { version: source.version, primary: 'timed_exam_points', pointsPerGroup: 100, partPoints: source.points,
     hardSecondsPerPart: source.hardSeconds, partsSubmittedSeparately: true, carryPreviousSubmittedContent: true,
     answerFeedback: false, tools: false, judgeCalls: 0, automaticRetries: 0, maxModelCallsAcrossAllExports: 16,
@@ -115,7 +145,7 @@ export function buildExamPaper(options = { groupIds: groups.map(g => g.id) }) {
       question: { ...question, questionHash: snapshotHash(question) } };
   }));
   const canonicalOptions = { groupIds: selected.map(g => g.id) };
-  return { options: canonicalOptions, policy, groups: selected.map(({ parts: _, stem: __, ...g }) => g), parts,
+  return { options: canonicalOptions, policy, sourceIdentity: identity, groups: selected.map(({ parts: _, stem: __, ...g }) => g), parts,
     questions: parts.map(p => p.question), contractHash: snapshotHash({ options: canonicalOptions, policy, parts }) };
 }
 export type ExamPaper = ReturnType<typeof buildExamPaper>;
