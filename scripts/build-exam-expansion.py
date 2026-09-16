@@ -321,7 +321,8 @@ def extensions(extra=None, event=None):
 ext=extensions()[0];ext3=extensions((4,5))[0];n4,s4,t4=extensions((4,5))
 group('10','poset-conditioned-counting','偏序线性扩张与位置统计','12个不同元素0..11。每条[u,v]要求u在v前，除此之外仅含传递闭包的约束：'+json.dumps(dag)+
       '。每个合法排列等概率，位置从1计。',[
-    part('提交 minimal=全部极小元按升序列出。',exact('minimal',10,[0,1,2])),
+    part('提交 greedy_prefix=按“每步取当前最小可用元素”得到的合法排列的前4个元素。',
+         exact('greedy_prefix',10,greedy_topological_prefix(12,pred,4))),
     part('求合法排列总数 count。',exact('count',20,ext)),
     part('额外要求4在5前，求合法排列数 count。',exact('count',30,ext3)),
     part('在额外要求4在5前的条件下，提交 joint_position=E[pos(4)·pos(5)]，以及 first_four=P(pos(4)=4)。',exact('joint_position',25,F(t4,n4)),exact('first_four',15,F(extensions((4,5),(4,4))[0],n4)))],
@@ -331,7 +332,7 @@ group('10','poset-conditioned-counting','偏序线性扩张与位置统计','12�
 def roots(power):
     m=3**power
     return [x for x in range(m) if ((x*x-1)*(x*x-10))%m==0]
-rs2,rs5,rs8,rs12=roots(2),roots(5),roots(8),roots(12)
+rs2,rs3,rs5,rs8,rs12=roots(2),roots(3),roots(5),roots(8),roots(12)
 def valuation(v):
     if v==0:return 99
     n=0
@@ -339,7 +340,8 @@ def valuation(v):
     return n
 vh=Counter(min(valuation(x*x-1),12) for x in rs12)
 group('11','singular-adic-lifting','共享因子的奇异提升','研究整数同余 (x²−1)(x²−10)≡0 mod 3^k。不同x按模3^k计。不能假定两因子之一单独被3^k整除。',[
-    part('k=2，按升序提交 roots。',exact('roots',10,rs2)),
+    part('k=3，提交 count=解数，以及 parity=[解中偶数的个数,解中奇数的个数]。',
+         exact('count',5,len(rs3)),exact('parity',5,[sum(1 for x in rs3 if x%2==0),sum(1 for x in rs3 if x%2==1)])),
     part('k=5，提交 count=解数。',exact('count',20,len(rs5))),
     part('k=8，提交 count，并提交 split_count=满足x²≡1或10 mod3^8的解数。',exact('count',15,len(rs8)),exact('split_count',15,sum((x*x-1)%3**8==0 or (x*x-10)%3**8==0 for x in rs8))),
     part('k=12，提交 count，以及 histogram=[[min(v₃(x²−1),12),该类解数],...]。v₃(0)=∞，只列非零类别，按第一列升序。',exact('count',10,len(rs12)),exact('histogram',30,sorted(vh.items())))],
@@ -369,7 +371,8 @@ def moment_opt(moment):
     return {'weights':full,'dual':dual,'value':value}
 mo=moment_opt(moments2);mo4=moment_opt(moments3)
 group('12','finite-moment-extrema','有限矩约束下的概率上界','X取值于{0,1,...,6}，E[X]=3、E[X²]=11，不作其他分布假设。certificate={weights:[各点概率],dual:[多项式常数项起系数],value:...}；概率须满足所有给定矩，且多项式在每个支持点上≥1{x≥5}，其期望与事件概率都等于value。',[
-    part('提交 variance=Var(X)。',exact('variance',10,2)),
+    part('在仅给定 E[X]=3、E[X²]=11 的条件下，提交 bound_at_6=P(X=6) 的最大可能值。',
+         exact('bound_at_6',10,event_bound(moments2,lambda x:x==6))),
     part('求P(X≥5)的最大可能值 bound。',exact('bound',20,mo['value'])),
     part('提交达到上界的分布及二次多项式 certificate。',cert('certificate',30,'moment',{'support':support,'moments':moments2,'objective':objective},mo)),
     part('新增E[X³]=45。求新的最大值 bound，并提交满足全部矩的分布及至多三次多项式 certificate（系数数组固定长度4）。',exact('bound',10,mo4['value']),cert('certificate',30,'moment',{'support':support,'moments':moments3,'objective':objective},mo4))],
