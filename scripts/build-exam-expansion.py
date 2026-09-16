@@ -6,7 +6,7 @@ The existing frozen pilot and production bank are never modified.
 from fractions import Fraction as F
 from itertools import product, combinations, permutations
 from collections import deque, Counter
-from math import comb, factorial
+from math import comb, factorial, isqrt, cos, gcd, pi
 from pathlib import Path
 import json
 
@@ -691,23 +691,80 @@ group('12','finite-moment-extrema','有限矩约束下的概率上界','X取值�
     part('新增E[X³]=45。求新的最大值 bound，并提交满足全部矩的分布及至多三次多项式 certificate（系数数组固定长度4）。',exact('bound',10,mo4['value']),cert('certificate',30,'moment',{'support':support,'moments':moments3,'objective':objective},mo4))],
     '增加三阶矩改变可行分布集合，旧证书不能直接证明新最优值。','与对偶题共享证书思想；完整覆盖需要保留数学领域标签。')
 
-# 13. Circulant graph: cycle+chord structure makes brute force impossible; the
-# matrix-tree theorem plus edge contraction is the only tractable route.
-circ_small = spanning_trees(8, [1, 2])
-circ_main = spanning_trees(40, [1, 10, 15])
-circ_edge = spanning_trees_containing(40, [1, 10, 15], (0, 1))
-circ_wide = spanning_trees(40, [1, 10, 15, 20])
-circ_wide_edge = spanning_trees_containing(40, [1, 10, 15, 20], (0, 20))
-group('13','circulant-spanning-trees','循环图的生成树计数','40 个顶点 0..39 的循环图：对每个 i，与 i±1、i±10、i±15 (mod 40) 相连。生成树 = 取 39 条边使全图连通无环。顶点数很大，逐一枚举边子集不可行。',[
-    part('先看同构的小图：8 个顶点 0..7，对每个 i 与 i±1、i±2 (mod 8) 相连。提交 tree_count=生成树个数。',
+# 13. 循环图的生成树计数：四问 = 四种不同动作（正算 / 条件算 / 谱结构 / 同构分类）。
+#
+# 2026-09-16 重写。旧版四问本质都是「算一个精确行列式」，差异只在规模与是否加边约束
+# → 测的是耐力而非能力。更严重的是**旧 P2/P3 在无工具考试下不可达**：策略里
+# tools=false（见 buildExamPaper 的 policy），而答案分别是 31 位整数
+# 3948107216150432269610439680 / 1369503520999145588117898368；纯推理只能走
+# 谱公式 tau=(1/40)prod(lambda_j)，而 lambda_j 涉及 cos(pi*j/20)——8 次代数数的
+# 39 因子乘积。实证吻合：MX3-13-P2 曾 HARD_TIME_LIMIT 360s 且输出 0 字符。
+# 即：那两问对任何模型都是 0，只产生噪声。
+#
+# 设计原则：每一问的最短可算路径必须落在纯推理预算之内 —— 难度只能来自「洞察」，
+# 不能来自「规模」。四问依次为：
+#   P1 正算（矩阵树基本应用，8 顶点）
+#   P2 条件算（边收缩恒等式 tau(G含e)=tau(G/e)，10 顶点；18225/40500=9/20 可自检）
+#   P3 谱结构（DFT 对角化 + 诚实去重；大图但只需比较，不需精确大整数）
+#   P4 同构分类（乘子判据下的轨道计数，capstone）
+# P3 是刻意设计的陷阱：朴素推理「lambda_j=lambda_{40-j} ⇒ 20 个不同值」会答 20/2，
+# 但存在精确碰撞 lambda_10=lambda_20=lambda_30=8（三项只含 cos ∈ {0,±1}）→ 19/3。
+def circ_eig_struct(n, offsets):
+    """循环图拉普拉斯特征值的去重结构：不同取值个数 + 最大重数。
+
+    闭式：lambda_j = sum_{s in offsets}(2 - 2cos(2*pi*j*s/n))，j=1..n-1。
+    每个 offset 已代表 ±s 这一对（与 circulant_laplacian 的语义一致）。
+    """
+    vals = []
+    for j in range(1, n):
+        v = sum(2 - 2 * cos(2 * pi * j * s / n) for s in offsets)
+        for i, (rep, cnt) in enumerate(vals):
+            if abs(v - rep) < 1e-9:
+                vals[i] = (rep, cnt + 1)
+                break
+        else:
+            vals.append((v, 1))
+    return len(vals), max(c for _, c in vals)
+
+def circ_iso_classes(n, dmax):
+    """乘子判据：C_n(1,d) 的同构类。
+
+    循环图 C_n(S) 与 C_n(S') 同构 <= 存在单位 m (mod n) 使 m*S = S'。
+    返回 {归一化连接集: [d, ...]}；d 与 40-d 视为同一图（±d 生成同一连接集）。
+    """
+    units = [m for m in range(1, n) if gcd(m, n) == 1]
+
+    def key(d):
+        S = {1 % n, (-1) % n, d % n, (-d) % n}
+        return min(tuple(sorted((m * s) % n for s in S)) for m in units)
+
+    cls = {}
+    for d in range(1, dmax + 1):
+        cls.setdefault(key(d), []).append(d)
+    return cls
+
+circ_small = spanning_trees(8, [1, 2])                        # 3528
+circ_mid = spanning_trees(10, [1, 3])                         # 40500
+circ_mid_edge = spanning_trees_containing(10, [1, 3], (0, 1))  # 18225
+circ_eigs, circ_mult = circ_eig_struct(40, [1, 10, 15])       # 19, 3
+circ_cls = circ_iso_classes(40, 20)                           # 18 类
+circ_class_count = len(circ_cls)
+circ_iso_of_3 = next(d for d in next(v for v in circ_cls.values() if 3 in v) if d != 3)  # 13
+circ_iso_of_7 = next(d for d in next(v for v in circ_cls.values() if 7 in v) if d != 7)  # 17
+# 自检：3<->13 与 7<->17 必须互为对方的唯一同构伙伴，否则 stop
+assert circ_class_count == 18 and circ_iso_of_3 == 13 and circ_iso_of_7 == 17, 'circulant isomorphism census drifted'
+assert circ_mid_edge * 20 == circ_mid * 9, 'contraction/inclusion-exclusion disagree'
+
+group('13','circulant-spanning-trees','循环图的生成树计数','循环图 C_n(S)：顶点 0..n-1，每个 i 与 i±s (mod n) 相连（s ∈ S；n 为偶数且 s=n/2 时 i±s 重合，该边只算一次）。生成树 = 取 n-1 条边使全图连通无环。四问依次考察四种不同的推理动作：精确计数 → 条件计数 → 谱结构 → 同构分类。',[
+    part('C_8(S)，其中 S={1,2}。提交 tree_count=生成树个数。',
          exact('tree_count',10,circ_small)),
-    part('回到 40 顶点图（i±1、i±10、i±15）。提交 tree_count=生成树个数。',
-         exact('tree_count',20,circ_main)),
-    part('仍为 40 顶点图。提交 with_edge=包含边 (0,1) 的生成树个数。',
-         exact('with_edge',30,circ_edge)),
-    part('改为对每个 i 与 i±1、i±10、i±15、i±20 (mod 40) 相连。提交 tree_count=生成树个数，以及 with_edge=包含边 (0,20) 的生成树个数。',
-         exact('tree_count',20,circ_wide),exact('with_edge',20,circ_wide_edge))],
-    '再加一条跨半圈的弦，同时改变总数与单边计数。','暴力枚举不可行；需自行选择矩阵树定理或谱方法，答案唯一。')
+    part('C_10(S)，其中 S={1,3}。提交 tree_count=生成树个数，以及 with_edge=同时包含边 (0,1) 的生成树个数。',
+         exact('tree_count',10,circ_mid),exact('with_edge',10,circ_mid_edge)),
+    part('回到 40 顶点、S={1,10,15}。该图拉普拉斯矩阵 L 的特征值有闭式 lambda_j=sum_{s in S}(2-2cos(2*pi*j*s/40))，j=1..39。提交 distinct_eigs=lambda_1..lambda_39 中不同取值的个数，以及 max_mult=其中出现的最大重数。',
+         exact('distinct_eigs',15,circ_eigs),exact('max_mult',15,circ_mult)),
+    part('对 d ∈ {1,2,...,20}，记 G_d 为 C_40(S)，其中 S={1,d}。提交 class_count=这 20 个图两两不同构的类数；以及 iso_of_3=在 d≠3 中与 G_3 同构的那个 d，iso_of_7=在 d≠7 中与 G_7 同构的那个 d。',
+         exact('class_count',20,circ_class_count),exact('iso_of_3',10,circ_iso_of_3),exact('iso_of_7',10,circ_iso_of_7))],
+    '从「算一个数」升级为「对一个图族做等价分类」：前两问是计算，后两问要求识别结构（谱闭式）与等价判据（乘子群），且 P3 存在精确碰撞 lambda_10=lambda_20=8，朴素配对推理会答错。','四问的最短可算路径都在纯推理预算内（无工具考试）；P3/P4 规模大但只需结构、不需精确大整数；答案唯一且可精确校验。')
 
 # 14. 线性递推的四层推理：递推求值 → 特征根解析 → 模结构性质 → 逆向反推。
 # 递推式 a_{n+2} = 5a_{n+1} - 6a_n，特征根 2 与 3，通项 a_n = 2*3^n - 2^n（便于 P2 要求通项系数）。
@@ -803,7 +860,266 @@ group('17','young-tableaux-hook-length','标准杨表与斜杨表','形状 λ=(�
          exact('skew_count',40,skew_val))],
     '从单形状 hook 公式升级到全形状极值搜索，再进入斜形状（hook 公式不再直接适用）。','答案均为精确整数；极值需枚举 42 个形状逐一算 f^λ，斜表需行列式方法。')
 
-pack={'version':'math-exam-expansion-2026-09-16-v7','status':'candidate-unmeasured',
+# 18. Restricted permutations: a CONCEPTUAL ladder, not a scale ladder.
+#
+# 设计约束（2026-09-16 用户指出）：同一大题的小问必须「难度递增」而非「计算量递增」。
+# 本组规模恒定在 n=6..7（每步只需秒级运算），难度全部来自「这一步需要哪个概念」：
+#   P1 直接套容斥        -> P2 要自己算棋盘多项式（题形与工具不匹配）
+#   P3 跳到群作用/共轭类  -> P4 条件变更，使 P2 的方法直接失效
+# 自查判据：把任一实例缩小十倍，难度不下降。答案互不相同，堵掉「猜前问答案」的捷径。
+def _perm_valid(n, forbidden):
+    f = set(forbidden)
+    return [q for q in permutations(range(1, n + 1)) if all((i + 1, q[i]) not in f for i in range(n))]
+
+def _cycle_type(q):
+    n = len(q); seen = [False] * n; lens = []
+    for i in range(n):
+        if seen[i]:
+            continue
+        j = i; c = 0
+        while not seen[j]:
+            seen[j] = True; j = q[j] - 1; c += 1
+        lens.append(c)
+    return tuple(sorted(lens, reverse=True))
+
+def _rook_numbers(n, forbidden):
+    by_row = {}
+    for (r, c) in forbidden:
+        by_row.setdefault(r, []).append(c)
+    dp = {frozenset(): 1}
+    for r in range(1, n + 1):
+        nd = dict(dp)
+        for used, cnt in list(dp.items()):
+            for c in by_row.get(r, []):
+                if c in used:
+                    continue
+                nd[used | {c}] = nd.get(used | {c}, 0) + cnt
+        dp = nd
+    rk = Counter()
+    for used, cnt in dp.items():
+        rk[len(used)] += cnt
+    return [rk[k] for k in range(max(rk) + 1)]
+
+def _count_by_ie(n, forbidden):
+    r = _rook_numbers(n, forbidden)
+    return sum((-1) ** k * r[k] * factorial(n - k) for k in range(len(r)))
+
+def _adjacent_ok_count(n):
+    """|σ(i+1) − σ(i)| ≠ 1。禁位成链而非独立格，棋盘多项式的容斥无法直接套用，
+    需要按「取值是否相邻」做位掩码 DP。"""
+    from functools import lru_cache
+    @lru_cache(maxsize=None)
+    def go(mask, last):
+        if mask == (1 << n) - 1:
+            return 1
+        tot = 0
+        for v in range(1, n + 1):
+            if mask >> (v - 1) & 1 or (last and abs(v - last) == 1):
+                continue
+            tot += go(mask | 1 << (v - 1), v)
+        return tot
+    return go(0, None)
+
+_rp_f1 = [(1, 1), (1, 2), (2, 1), (2, 2)]
+_rp_f2 = [(1, 1), (2, 1), (2, 2), (3, 2), (3, 3), (4, 3), (4, 4)]
+_rp_v1 = _perm_valid(6, _rp_f1)
+_rp_v2 = _perm_valid(7, _rp_f2)
+_rp_types = {_cycle_type(q) for q in _rp_v2}
+# 生成器与复核必须走不同路径：这里 gold 取容斥/DP 的解析结果，复核侧用暴力枚举 + 另一套算法。
+_rp_p1 = _count_by_ie(6, _rp_f1)
+_rp_p2 = _count_by_ie(7, _rp_f2)
+_rp_p4 = _adjacent_ok_count(7)
+assert _rp_p1 == len(_rp_v1) and _rp_p2 == len(_rp_v2), '容斥与暴力枚举不一致'
+group('18','restricted-permutations','受限排列：容斥、棋盘多项式与群作用','n×n 棋盘的行代表位置、列代表取值，禁位 (i,j) 表示不允许 σ(i)=j。合法排列指避开全部禁位的双射 σ:{1..n}→{1..n}。本组四问规模都只有 6~7 阶，计算量很小；难点在于每一问要用不同的方法。',[
+    part('n=6，禁位为 2×2 方块 {(1,1),(1,2),(2,1),(2,2)}。提交 valid=合法排列数。',
+         exact('valid',10,_rp_p1)),
+    part('n=7，禁位改为阶梯带 {(1,1),(2,1),(2,2),(3,2),(3,3),(4,3),(4,4)}——它既不是对角也不是方块，禁位之间会互相攻击。提交 valid=合法排列数。',
+         exact('valid',20,_rp_p2)),
+    part('仍用第 2 问的禁位。提交 cycle_types=合法排列**按循环结构（即共轭类）分组后**出现的不同循环结构个数，以及 odd_only=只由奇数长度循环构成的合法排列个数。',
+         exact('cycle_types',15,len(_rp_types)),
+         exact('odd_only',15,sum(1 for q in _rp_v2 if all(p % 2 == 1 for p in _cycle_type(q))))),
+    part('条件变更：不再给单位置禁位，而是要求相邻两个位置不得映射到相邻的两个取值，即对所有 i 都有 |σ(i+1)−σ(i)| ≠ 1（n=7）。提交 valid=满足该条件的排列数。',
+         exact('valid',40,_rp_p4))],
+    '从「独立禁位」换成「相邻关系约束」，棋盘多项式的容斥无法直接套用，必须换工具。',
+    '规模刻意保持不变（6~7 阶），难度靠概念递进而非计算量；答案互不相同以避免猜前问。')
+
+# 19. Generating functions: another CONCEPTUAL ladder (same rule as group 18).
+#
+# 规模恒定、计算量小，四级各换一个概念：
+#   P1 直接展开系数 -> P2 先做部分分式/特征根才能求系数
+#   -> P3 把求和认成卷积（组合恒等式） -> P4 条件变更：只取下标为 3 的倍数的项（单位根过滤）
+def _series_coeff(num, den, n):
+    """由 num/den 的幂级数长除法求 [x^n]（要求 den[0] == 1）。"""
+    a = [0] * (n + 1)
+    for i, c in enumerate(num):
+        if i <= n:
+            a[i] += c
+    out = [0] * (n + 1)
+    for k in range(n + 1):
+        s = a[k]
+        for j in range(1, min(k, len(den) - 1) + 1):
+            s -= den[j] * out[k - j]
+        assert s % den[0] == 0, '分母首项必须整除'
+        out[k] = s // den[0]
+    return out
+
+def _partial_fraction_coeff(roots, n):
+    """1/Π(1 - r x) 的 [x^n]：A_i = 1/Π_{j≠i}(1 - r_j/r_i)，系数 = Σ A_i r_i^n。"""
+    As = []
+    for i, ri in enumerate(roots):
+        prod = F(1)
+        for j, rj in enumerate(roots):
+            if j != i:
+                prod *= (1 - F(rj, ri))
+        As.append(1 / prod)
+    assert all(a.denominator == 1 for a in As), '留数应为整数，否则题目不适配'
+    return sum(int(a) * r ** n for a, r in zip(As, roots))
+
+_gf_p1 = _series_coeff([1, 2], [1, -3, 1], 12)[12]
+_gf_p2 = _partial_fraction_coeff([2, 3, 4], 30)
+_gf_p2_cross = _series_coeff([1], [1, -9, 26, -24], 30)[30]
+assert _gf_p1 == 214129 and _gf_p2 == _gf_p2_cross, '生成函数组 gold 自检失败'
+_gf_p3 = 20 * comb(2 * 20 - 1, 20 - 1)          # Σ_{k} k·C(n,k)² = n·C(2n-1, n-1)
+_gf_p3_cross = sum(k * comb(20, k) ** 2 for k in range(21))
+assert _gf_p3 == _gf_p3_cross, '组合恒等式与逐项求和不一致'
+_gf_p4 = sum(comb(33, k) for k in range(0, 34, 3))
+assert 3 * _gf_p4 + 2 == 2 ** 33, '单位根过滤结构校验失败'
+group('19','generating-functions-ladder','生成函数：展开、部分分式、卷积与单位根过滤','以下各问都围绕一个幂级数 f(x)=Σ aₙxⁿ，aₙ 为整数系数。[xⁿ]f(x) 表示取 xⁿ 的系数。各问规模都很小，但需要的方法不同。',[
+    part('f(x) = (1+2x)/(1−3x+x²)。提交 c12=[x¹²]f(x)。',
+         exact('c12',10,_gf_p1)),
+    part('f(x) = 1/((1−2x)(1−3x)(1−4x))。提交 c30=[x³⁰]f(x)。',
+         exact('c30',20,_gf_p2)),
+    part('提交 S = Σ_{k=0}^{20} k·C(20,k)²。',
+         exact('S',30,_gf_p3)),
+    part('条件变更：不再取单个系数，而是把下标是 3 的倍数的项全部相加。提交 T = Σ_{k≡0 (mod 3), 0≤k≤33} C(33,k)。',
+         exact('T',40,_gf_p4))],
+    '从「取一个系数」变为「按同余类求和」，逐项展开的思路不再适用。',
+    '规模保持不变（n≤33），难度靠概念递进：部分分式 → 卷积恒等式 → 单位根过滤。答案互不相同。')
+
+# 20. Finite fields: a third CONCEPTUAL ladder (same rule as groups 18/19).
+#
+#   P1 单元素求逆 -> P2 幂与阶的判定（要先分解 p-1）
+#   -> P3 原根/离散对数（乘法结构变加法结构） -> P4 条件变更：模合数，域变环，需 CRT
+# 规模恒定在 p≈1e4；答案互不相同以避免猜前问。
+_FP_P, _FP_Q = 10007, 10009
+_FP_G = 5                      # 10007 的最小原根（阶 = p-1）
+_FP_ELEM = 2                   # 阶 = (p-1)/2，非原根
+_FP_DLOG_TARGET = 5000
+_FP_A = 200                    # 在 P 与 Q 下都是二次剩余
+
+def _fp_inv(a, m):
+    old_r, r = a % m, m; old_s, s = 1, 0
+    while r:
+        q = old_r // r
+        old_r, r = r, old_r - q * r
+        old_s, s = s, old_s - q * s
+    return old_s % m
+
+def _fp_order(g, p):
+    """按 p-1 的素因子降幂求阶（p-1 = 10006 = 2 × 5003）。"""
+    o = p - 1
+    for q in (2, (p - 1) // 2):
+        while o % q == 0 and pow(g, o // q, p) == 1:
+            o //= q
+    return o
+
+def _fp_dlog_bsgs(g, h, p):
+    """Baby-step giant-step：返回最小非负 k 使 g^k ≡ h。"""
+    m = isqrt(p - 1) + 1
+    table = {}; e = 1
+    for j in range(m):
+        table.setdefault(e, j); e = e * g % p
+    factor = pow(_fp_inv(g, p), m, p)
+    gamma = h
+    for i in range(m + 1):
+        if gamma in table:
+            return i * m + table[gamma]
+        gamma = gamma * factor % p
+    raise AssertionError('离散对数不存在')
+
+def _fp_sols_mod_prime(a, q):
+    return sorted(x for x in range(q) if x * x % q == a % q)
+
+def _fp_crt(r1, m1, r2, m2):
+    t = (r2 - r1) * _fp_inv(m1 % m2, m2) % m2
+    return (r1 + m1 * t) % (m1 * m2)
+
+_fp_inv_p1 = pow(4043, _FP_P - 2, _FP_P)                     # Fermat
+assert _fp_inv_p1 == _fp_inv(4043, _FP_P), 'Fermat 与扩展欧几里得不一致'
+_fp_order = _fp_order(_FP_ELEM, _FP_P)
+_fp_dlog = _fp_dlog_bsgs(_FP_G, _FP_DLOG_TARGET, _FP_P)
+assert pow(_FP_G, _fp_dlog, _FP_P) == _FP_DLOG_TARGET, 'BSGS 结果校验失败'
+_fp_sols = sorted({_fp_crt(x, _FP_P, y, _FP_Q)
+                   for x in _fp_sols_mod_prime(_FP_A, _FP_P)
+                   for y in _fp_sols_mod_prime(_FP_A, _FP_Q)})
+assert all(x * x % (_FP_P * _FP_Q) == _FP_A for x in _fp_sols) and len(_fp_sols) == 4
+# 答案互不相同（堵掉「猜前问答案」）
+assert len({_fp_inv_p1, _fp_order, _fp_dlog, _fp_sols[0], sum(_fp_sols)}) == 5, '答案出现重复'
+group('20','finite-field-ladder','有限域算术：求逆、阶、离散对数与模合数','p=10007 与 q=10009 均为素数，p−1 = 10006 = 2×5003。所有结果取 [0,模数) 内的整数。各问规模都很小，但需要的方法不同。',[
+    part('在 F_p 中求 4043 的乘法逆元。提交 inverse。',
+         exact('inverse',10,_fp_inv_p1)),
+    part('在 F_p^* 中求元素 2 的阶（即使 2^k ≡ 1 (mod p) 的最小正整数 k）。提交 order_2。',
+         exact('order_2',20,_fp_order)),
+    part('5 是 F_p^* 的一个原根。求最小的非负整数 k 使 5^k ≡ 5000 (mod p)。提交 k。',
+         exact('k',30,_fp_dlog)),
+    part('条件变更：改为模合数 n = p·q = 100160063，求 x² ≡ 200 (mod n) 的最小非负解与全部解之和。提交 smallest 与 total（两者都按 [0,n) 内的整数提交）。',
+         exact('smallest',15,_fp_sols[0]),exact('total',25,sum(_fp_sols)))],
+    '模数从素数换成合数后，F_p^* 的乘法群结构不再适用，必须分解到两个素数再用中国剩余定理。',
+    '规模恒定（p≈1e4），难度靠概念递进：求逆 → 阶 → 离散对数 → 环上的二次同余。答案互不相同。')
+
+# 21. Sidon-type sets: a ladder where RECALL DOES NOT HELP.
+#
+# 依据实测教训（MX3-18/19/20）：标准命名恒等式会被强模型直接回忆出来（4~6 秒秒过），
+# 不能当难档；而"想当然的默认假设是错的"这类反直觉结构有效（MX3-20-P2 让模型答错）。
+# 本组的主角是 Z_31 上的 Sidon 集：**计数上界 k(k+1)/2 ≤ 31 给出 k ≤ 7，但实际最大只有 6**
+# （Z_31^* 的乘法版更弱：上界 7，实际 5）。没有标准答案可背，必须真的搜。
+def _sidon_ok(A, m):
+    """所有 i≤j 的 (a_i+a_j) mod m 互不相同。"""
+    sums = [(A[i] + A[j]) % m for i in range(len(A)) for j in range(i, len(A))]
+    return len(set(sums)) == len(sums)
+
+def _sidon_search(m, k_cap):
+    """剪枝回溯：返回 (最大规模, 字典序最小的达到者, 该规模的个数)。"""
+    best, best_set, count = 0, None, 0
+    def extend(cur):
+        nonlocal best, best_set, count
+        if len(cur) > best:
+            best, best_set, count = len(cur), tuple(cur), 1
+        elif len(cur) == best:
+            count += 1
+            if best_set is not None and tuple(cur) < best_set:
+                best_set = tuple(cur)
+        if len(cur) == k_cap:
+            return
+        for v in range((cur[-1] + 1) if cur else 0, m):
+            cand = cur + [v]
+            if _sidon_ok(cand, m):
+                extend(cand)
+    extend([])
+    return best, best_set, count
+
+_sidon_cap31 = max(k for k in range(1, 40) if k * (k + 1) // 2 <= 31)
+_sidon_cap30 = max(k for k in range(1, 40) if k * (k + 1) // 2 <= 30)
+assert (_sidon_cap31, _sidon_cap30) == (7, 7), '计数界与预期不符'
+_sidon_sumset = len({(a + b) % 31 for a in (0, 1, 3, 7) for b in (0, 1, 3, 7)})
+_sidon_k31, _sidon_lex31, _sidon_cnt31 = _sidon_search(31, _sidon_cap31)
+_sidon_k30, _sidon_lex30, _sidon_cnt30 = _sidon_search(30, _sidon_cap30)
+assert _sidon_k31 == 6 and _sidon_k30 == 5, '实际最大值与枚举结果不符'
+assert _sidon_lex31 == (0, 1, 3, 8, 12, 18), '字典序最小集与枚举结果不符'
+assert (_sidon_k31, _sidon_k30) != (_sidon_cap31, _sidon_cap30), '反直觉性不成立'
+group('21','sidon-sets-countersearch','Sidon 集：计数上界与真实极值的差距','在模 p 的循环群 Z_p 中，称子集 A 为 Sidon 集，若所有 i≤j 的 aᵢ+aⱼ (mod p) 互不相同（等价的表述：所有有序差 aᵢ−aⱼ (i≠j) 互不相同）。若 A 有 k 个元素，则 i≤j 的数对和共有 k(k+1)/2 个，它们必须全部落在 Z_p 中的 p 个值里。Z_31^* 表示模 31 的乘法群。',[
+    part('取 p=31，A={0,1,3,7}。提交 sumset=|A+A|=|{(a+b) mod 31 : a,b∈A}|（a、b 可相同）。',
+         exact('sumset',10,_sidon_sumset)),
+    part('在 Z_31 中，提交 max_size=满足 Sidon 条件的子集的最大元素个数。仅凭 k(k+1)/2 ≤ 31 得到的界不一定可达。',
+         exact('max_size',20,_sidon_k31)),
+    part('仍为 Z_31。提交 lexmin_set=**在所有达到最大规模的 Sidon 集中，按元素升序比较所得字典序最小**的那个集合（提交升序数组）。',
+         exact('lexmin_set',30,list(_sidon_lex31))),
+    part('条件变更：改为在**乘法群 Z_31^*** 中取子集 B，要求所有 i≤j 的 bᵢ·bⱼ (mod 31) 互不相同。提交 max_size=这样的 B 的最大规模，以及 count_at_max=恰好达到该规模的子集个数。',
+         exact('max_size',15,_sidon_k30),exact('count_at_max',25,_sidon_cnt30))],
+    '从加法群换到乘法群：Z_31^* 是 30 阶循环群，取生成元后与 Z_30 同构，问题迁移过去后极值会进一步下降。',
+    '计数上界与实际极值不等（Z_31 为 7 对 6，Z_31^* 为 7 对 5），因此靠背结论得不到答案；答案互不相同。')
+
+pack={'version':'math-exam-expansion-2026-09-16-v12','status':'candidate-unmeasured',
       # 时限遵循项目参考值：题级默认 600 秒、上限 1200 秒
       # （packages/core/src/model/caller.ts 的 600_000 默认 + apiControlStream 的 1_200_000 上限）。
       # 原为 [180,360,1200,1200]，是给"不需要计算的"旧 P1 白送分题调的；

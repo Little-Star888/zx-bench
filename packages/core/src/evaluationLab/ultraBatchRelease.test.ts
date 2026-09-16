@@ -49,7 +49,7 @@ describe('three-dimension ultra batch release',()=>{
     const bankMx3=new Set<string>(bank.filter((x:{id:string})=>/^MX3-/.test(x.id)).map((x:any)=>String(x.requirements?.sourcePackVersion)));
     for(const v of bankMx3)expect(knownVersions.has(v),v).toBe(true);
     // 2026-09-16 新增的五个高难度题组必须真实落入题库（而不是只存在于题包）
-    for(const g of ['MX3-13','MX3-14','MX3-15','MX3-16','MX3-17'])for(let n=1;n<=4;n++){
+    for(const g of ['MX3-13','MX3-14','MX3-15','MX3-16','MX3-17','MX3-18','MX3-19','MX3-20','MX3-21'])for(let n=1;n<=4;n++){
       expect(bank.some((x:{id:string})=>x.id===`${g}-P${n}`),`${g}-P${n}`).toBe(true);
     }
   });

@@ -13,7 +13,7 @@ import { hashScenarioShort } from '../packages/core/dist/contracts/canonicalize.
 const DRY = process.argv.includes('--dry-run');
 const APPLY_API = process.argv.includes('--apply-api');
 const BASE = process.env.BASE_URL || 'http://localhost:3001';
-const NEW_GROUPS = ['MX3-13', 'MX3-14', 'MX3-15', 'MX3-16', 'MX3-17'];
+const NEW_GROUPS = ['MX3-13', 'MX3-14', 'MX3-15', 'MX3-16', 'MX3-17', 'MX3-18', 'MX3-19', 'MX3-20', 'MX3-21'];
 const GOLD_AT = '2026-09-16T00:00:00.000Z';
 
 const root = new URL('../data/scenarios/', import.meta.url);

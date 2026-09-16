@@ -57,9 +57,12 @@ if ($logFiles.Count -gt 5) {
     Write-Host "🔄 已清理 $($logFiles.Count - 5) 个旧日志"
 }
 
-$timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
-$STDOUT_LOG = Join-Path $LogDir "server-$timestamp-out.log"
-$STDERR_LOG = Join-Path $LogDir "server-$timestamp-err.log"
+# stdout/stderr 日志路径改为「每次启动独立文件」，在 Start-Server 内部生成。
+# 复用同一路径会让上一次崩溃的 stderr 在下一次启动时被覆盖 —— 2026-09-16 排查
+# 「服务器进程意外退出」时，正是因为这一点丢掉了异常消息本身（只剩 watchdog 里
+# -Tail 5 截出的栈尾，没有异常类型和 message）。
+$STDOUT_LOG = $null
+$STDERR_LOG = $null
 
 Write-Host "============================================================"
 Write-Host "  智秀大模型评测 - 可靠启动模式"
@@ -89,14 +92,20 @@ function Write-Log {
 
 function Start-Server {
     Write-Log "正在启动 智秀大模型评测 Server..."
-    
+
+    # 每次启动一份独立日志，避免覆盖上一次崩溃的 stderr（见文件顶部说明）
+    $stamp = Get-Date -Format "yyyyMMdd-HHmmss"
+    $script:STDOUT_LOG = Join-Path $LogDir "server-$stamp-out.log"
+    $script:STDERR_LOG = Join-Path $LogDir "server-$stamp-err.log"
+    $script:LAST_STDERR_LOG = $script:STDERR_LOG
+
     $proc = Start-Process -FilePath $NODE_BIN `
         -ArgumentList $SERVER_SCRIPT `
         -WorkingDirectory $SERVER_DIR `
         -PassThru `
         -NoNewWindow `
-        -RedirectStandardOutput $STDOUT_LOG `
-        -RedirectStandardError $STDERR_LOG
+        -RedirectStandardOutput $script:STDOUT_LOG `
+        -RedirectStandardError $script:STDERR_LOG
     
     # 记录 node 子进程 PID，供 stop.bat 优雅停止使用
     Set-Content -Path $SERVER_PID_FILE -Value $proc.Id -Encoding ASCII -Force
@@ -181,8 +190,8 @@ while ($true) {
     if (-not $ready) {
         Write-Log "❌ 服务器启动超时 (15s)，可能有问题" "ERROR"
         # 输出最近的错误日志
-        if (Test-Path $STDERR_LOG) {
-            $errs = Get-Content $STDERR_LOG -Tail 10
+        if ($script:STDERR_LOG -and (Test-Path $script:STDERR_LOG)) {
+            $errs = Get-Content $script:STDERR_LOG -Tail 80
             foreach ($e in $errs) { Write-Log "STDERR: $e" "ERROR" }
         }
         Stop-Server $serverProc
@@ -208,13 +217,15 @@ while ($true) {
         Start-Sleep -Seconds $HealthCheckInterval
         
         if ($serverProc.HasExited) {
-            $exitCode = $serverProc.ExitCode
+            $exitCode = try { $serverProc.ExitCode } catch { 'unavailable' }
             Write-Log "⚠️ 服务器进程意外退出 (ExitCode: $exitCode)" "WARN"
-            
-            # 检查 stderr 最后几行错误
-            if (Test-Path $STDERR_LOG) {
-                $errs = Get-Content $STDERR_LOG -Tail 5
+
+            # 转储完整 stderr（此前只取 Tail 5，异常类型与 message 正好落在被截掉的部分）
+            if ($script:STDERR_LOG -and (Test-Path $script:STDERR_LOG)) {
+                Write-Log "---- stderr 全文: $script:STDERR_LOG ----" "ERROR"
+                $errs = Get-Content $script:STDERR_LOG -Tail 80
                 foreach ($e in $errs) { Write-Log "STDERR: $e" "ERROR" }
+                Write-Log "---- stderr 结束 ----" "ERROR"
             }
             
             $restartCount++

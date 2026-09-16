@@ -7,8 +7,8 @@ import { loadBenchmarkImportScope } from '../../../scripts/benchmark-import-scop
 describe('released benchmark import scope', () => {
   it('imports only the canonical bank and identifies accidental bundled history', () => {
     const scope = loadBenchmarkImportScope(path.resolve('data/scenarios'));
-    // 2026-09-16：新增 MX3-13~17 五个高难度题组（20 小问）后，正式题集共 821 条。
-    expect(scope.scenarios).toHaveLength(821);
+    // 2026-09-16：新增 MX3-13~21 九个高难度题组（36 小问）后，正式题集共 837 条。
+    expect(scope.scenarios).toHaveLength(837);
     expect(scope.scenarios.filter((scenario: any) => scenario.dimension === 'program')).toHaveLength(150);
     expect([...scope.accidentalBundledIds].length).toBeGreaterThan(0);
     expect([...scope.accidentalBundledIds].some((id) => String(id).startsWith('CR2-'))).toBe(true);

@@ -45583,7 +45583,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「循环图的生成树计数」，第1/4问，10分，时限300秒。\n共同题干：40 个顶点 0..39 的循环图：对每个 i，与 i±1、i±10、i±15 (mod 40) 相连。生成树 = 取 39 条边使全图连通无环。顶点数很大，逐一枚举边子集不可行。\n本问：先看同构的小图：8 个顶点 0..7，对每个 i 与 i±1、i±2 (mod 8) 相连。提交 tree_count=生成树个数。\n评分项：tree_count(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「循环图的生成树计数」，第1/4问，10分，时限300秒。\n共同题干：循环图 C_n(S)：顶点 0..n-1，每个 i 与 i±s (mod n) 相连（s ∈ S；n 为偶数且 s=n/2 时 i±s 重合，该边只算一次）。生成树 = 取 n-1 条边使全图连通无环。四问依次考察四种不同的推理动作：精确计数 → 条件计数 → 谱结构 → 同构分类。\n本问：C_8(S)，其中 S={1,2}。提交 tree_count=生成树个数。\n评分项：tree_count(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -45595,7 +45595,7 @@
    "partNumber": 1,
    "points": 10,
    "hardSeconds": 300,
-   "questionHash": "e59a1b1be0ccf4cedabf5a309996fc707ae028aa052ae2795508c1b5802d676e",
+   "questionHash": "25da615a09da371ff42d0f5250138e2a9941d774047e38ea8d9e44e5c179e3f4",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -45604,10 +45604,10 @@
    "group_MX3-13",
    "part_1",
    "points_10",
-   "timeout_600s"
+   "timeout_300s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "f1d06f506a78e4dd",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "08df6f50820066d9",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -45625,7 +45625,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「循环图的生成树计数」，第2/4问，20分，时限600秒。\n共同题干：40 个顶点 0..39 的循环图：对每个 i，与 i±1、i±10、i±15 (mod 40) 相连。生成树 = 取 39 条边使全图连通无环。顶点数很大，逐一枚举边子集不可行。\n本问：回到 40 顶点图（i±1、i±10、i±15）。提交 tree_count=生成树个数。\n评分项：tree_count(20分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「循环图的生成树计数」，第2/4问，20分，时限600秒。\n共同题干：循环图 C_n(S)：顶点 0..n-1，每个 i 与 i±s (mod n) 相连（s ∈ S；n 为偶数且 s=n/2 时 i±s 重合，该边只算一次）。生成树 = 取 n-1 条边使全图连通无环。四问依次考察四种不同的推理动作：精确计数 → 条件计数 → 谱结构 → 同构分类。\n本问：C_10(S)，其中 S={1,3}。提交 tree_count=生成树个数，以及 with_edge=同时包含边 (0,1) 的生成树个数。\n评分项：tree_count(10分)、with_edge(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -45637,7 +45637,7 @@
    "partNumber": 2,
    "points": 20,
    "hardSeconds": 600,
-   "questionHash": "60285cc3ab025b24824ca01fb1404e8e2a27b037b28967acfac1edc55111320d",
+   "questionHash": "14a6ddb8502a07ac7350dfcb379565c25c10be62ce0aa9c8136e697bf2adb2ca",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -45646,10 +45646,10 @@
    "group_MX3-13",
    "part_2",
    "points_20",
-   "timeout_360s"
+   "timeout_600s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "a9101d6c2a17a7ef",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "6cb649b221af6aa8",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -45667,7 +45667,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「循环图的生成树计数」，第3/4问，30分，时限900秒。\n共同题干：40 个顶点 0..39 的循环图：对每个 i，与 i±1、i±10、i±15 (mod 40) 相连。生成树 = 取 39 条边使全图连通无环。顶点数很大，逐一枚举边子集不可行。\n本问：仍为 40 顶点图。提交 with_edge=包含边 (0,1) 的生成树个数。\n评分项：with_edge(30分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「循环图的生成树计数」，第3/4问，30分，时限900秒。\n共同题干：循环图 C_n(S)：顶点 0..n-1，每个 i 与 i±s (mod n) 相连（s ∈ S；n 为偶数且 s=n/2 时 i±s 重合，该边只算一次）。生成树 = 取 n-1 条边使全图连通无环。四问依次考察四种不同的推理动作：精确计数 → 条件计数 → 谱结构 → 同构分类。\n本问：回到 40 顶点、S={1,10,15}。该图拉普拉斯矩阵 L 的特征值有闭式 lambda_j=sum_{s in S}(2-2cos(2*pi*j*s/40))，j=1..39。提交 distinct_eigs=lambda_1..lambda_39 中不同取值的个数，以及 max_mult=其中出现的最大重数。\n评分项：distinct_eigs(15分)、max_mult(15分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -45679,7 +45679,7 @@
    "partNumber": 3,
    "points": 30,
    "hardSeconds": 900,
-   "questionHash": "5f2e2550e03b0638aa49fbc200138419eb7258d30d1b62fd9b67495c9379ea50",
+   "questionHash": "655d5588c7d75cb26c233d615e1b8ffb91d1e380f9575f699b6cdfe4223cee99",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -45688,10 +45688,10 @@
    "group_MX3-13",
    "part_3",
    "points_30",
-   "timeout_1200s"
+   "timeout_900s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "652b3289c5ab9eab",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "78398f862be96ba7",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -45709,7 +45709,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「循环图的生成树计数」，第4/4问，40分，时限1200秒。\n共同题干：40 个顶点 0..39 的循环图：对每个 i，与 i±1、i±10、i±15 (mod 40) 相连。生成树 = 取 39 条边使全图连通无环。顶点数很大，逐一枚举边子集不可行。\n本问：改为对每个 i 与 i±1、i±10、i±15、i±20 (mod 40) 相连。提交 tree_count=生成树个数，以及 with_edge=包含边 (0,20) 的生成树个数。\n评分项：tree_count(20分)、with_edge(20分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「循环图的生成树计数」，第4/4问，40分，时限1200秒。\n共同题干：循环图 C_n(S)：顶点 0..n-1，每个 i 与 i±s (mod n) 相连（s ∈ S；n 为偶数且 s=n/2 时 i±s 重合，该边只算一次）。生成树 = 取 n-1 条边使全图连通无环。四问依次考察四种不同的推理动作：精确计数 → 条件计数 → 谱结构 → 同构分类。\n本问：对 d ∈ {1,2,...,20}，记 G_d 为 C_40(S)，其中 S={1,d}。提交 class_count=这 20 个图两两不同构的类数；以及 iso_of_3=在 d≠3 中与 G_3 同构的那个 d，iso_of_7=在 d≠7 中与 G_7 同构的那个 d。\n评分项：class_count(20分)、iso_of_3(10分)、iso_of_7(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -45721,7 +45721,7 @@
    "partNumber": 4,
    "points": 40,
    "hardSeconds": 1200,
-   "questionHash": "bef9eb502557c5138cd1b4a9215c255612ba9c658d3b376904daa631475a9d1a",
+   "questionHash": "7cb970e6335109aaa1925eb4abd7d3b056c64cdcea9e91bd24cb2e73e60f6e9a",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -45732,8 +45732,8 @@
    "points_40",
    "timeout_1200s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "7120e49a4ddaf317",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "99cda3bf07a2360e",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -46406,6 +46406,678 @@
   ],
   "scenarioVersion": "1.0.0",
   "scenarioHash": "260084628be36d3b",
+  "responseMode": "raw_output",
+  "outputPolicy": "fenced_allowed",
+  "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
+  "goldVerifiedAt": "2026-09-16T00:00:00.000Z",
+  "reviewStatus": "verified",
+  "maxAnswerTokens": 393216,
+  "maxReasoningTokens": 393216
+ },
+ {
+  "id": "MX3-18-P1",
+  "dimension": "reasoning_math",
+  "category": "ultra_progressive_exam",
+  "difficulty": "hard",
+  "language": "json",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "public_dev",
+  "promptTemplate": "数学大题「受限排列：容斥、棋盘多项式与群作用」，第1/4问，10分，时限300秒。\n共同题干：n×n 棋盘的行代表位置、列代表取值，禁位 (i,j) 表示不允许 σ(i)=j。合法排列指避开全部禁位的双射 σ:{1..n}→{1..n}。本组四问规模都只有 6~7 阶，计算量很小；难点在于每一问要用不同的方法。\n本问：n=6，禁位为 2×2 方块 {(1,1),(1,2),(2,1),(2,2)}。提交 valid=合法排列数。\n评分项：valid(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "grader": "ultra_batch_part",
+  "graderVersion": "1.0.0",
+  "scoring": {
+   "type": "weighted_axes"
+  },
+  "hiddenTests": [],
+  "requirements": {
+   "groupId": "MX3-18",
+   "partNumber": 1,
+   "points": 10,
+   "hardSeconds": 300,
+   "questionHash": "a5e8a7efae2f7417574532e3e38598e8f7659a6e4e6a9e33b1983e24bd9ba651",
+   "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
+  },
+  "tags": [
+   "ultra_difficulty",
+   "progressive_exam",
+   "group_MX3-18",
+   "part_1",
+   "points_10",
+   "timeout_300s"
+  ],
+  "scenarioVersion": "1.0.0",
+  "scenarioHash": "aadb8975cfe278c3",
+  "responseMode": "raw_output",
+  "outputPolicy": "fenced_allowed",
+  "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
+  "goldVerifiedAt": "2026-09-16T00:00:00.000Z",
+  "reviewStatus": "verified",
+  "maxAnswerTokens": 393216,
+  "maxReasoningTokens": 393216
+ },
+ {
+  "id": "MX3-18-P2",
+  "dimension": "reasoning_math",
+  "category": "ultra_progressive_exam",
+  "difficulty": "adversarial",
+  "language": "json",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "public_dev",
+  "promptTemplate": "数学大题「受限排列：容斥、棋盘多项式与群作用」，第2/4问，20分，时限600秒。\n共同题干：n×n 棋盘的行代表位置、列代表取值，禁位 (i,j) 表示不允许 σ(i)=j。合法排列指避开全部禁位的双射 σ:{1..n}→{1..n}。本组四问规模都只有 6~7 阶，计算量很小；难点在于每一问要用不同的方法。\n本问：n=7，禁位改为阶梯带 {(1,1),(2,1),(2,2),(3,2),(3,3),(4,3),(4,4)}——它既不是对角也不是方块，禁位之间会互相攻击。提交 valid=合法排列数。\n评分项：valid(20分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "grader": "ultra_batch_part",
+  "graderVersion": "1.0.0",
+  "scoring": {
+   "type": "weighted_axes"
+  },
+  "hiddenTests": [],
+  "requirements": {
+   "groupId": "MX3-18",
+   "partNumber": 2,
+   "points": 20,
+   "hardSeconds": 600,
+   "questionHash": "91954cdfe49809c4c7198a1c07a79b9a484fce641a69cd596d18f94249ba251d",
+   "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
+  },
+  "tags": [
+   "ultra_difficulty",
+   "progressive_exam",
+   "group_MX3-18",
+   "part_2",
+   "points_20",
+   "timeout_600s"
+  ],
+  "scenarioVersion": "1.0.0",
+  "scenarioHash": "25f37f3aeb040b8d",
+  "responseMode": "raw_output",
+  "outputPolicy": "fenced_allowed",
+  "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
+  "goldVerifiedAt": "2026-09-16T00:00:00.000Z",
+  "reviewStatus": "verified",
+  "maxAnswerTokens": 393216,
+  "maxReasoningTokens": 393216
+ },
+ {
+  "id": "MX3-18-P3",
+  "dimension": "reasoning_math",
+  "category": "ultra_progressive_exam",
+  "difficulty": "adversarial",
+  "language": "json",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "public_dev",
+  "promptTemplate": "数学大题「受限排列：容斥、棋盘多项式与群作用」，第3/4问，30分，时限900秒。\n共同题干：n×n 棋盘的行代表位置、列代表取值，禁位 (i,j) 表示不允许 σ(i)=j。合法排列指避开全部禁位的双射 σ:{1..n}→{1..n}。本组四问规模都只有 6~7 阶，计算量很小；难点在于每一问要用不同的方法。\n本问：仍用第 2 问的禁位。提交 cycle_types=合法排列**按循环结构（即共轭类）分组后**出现的不同循环结构个数，以及 odd_only=只由奇数长度循环构成的合法排列个数。\n评分项：cycle_types(15分)、odd_only(15分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "grader": "ultra_batch_part",
+  "graderVersion": "1.0.0",
+  "scoring": {
+   "type": "weighted_axes"
+  },
+  "hiddenTests": [],
+  "requirements": {
+   "groupId": "MX3-18",
+   "partNumber": 3,
+   "points": 30,
+   "hardSeconds": 900,
+   "questionHash": "e5b2f193f998c3800162a222c059df799d77f1d2346ddfdfb173f437221619fe",
+   "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
+  },
+  "tags": [
+   "ultra_difficulty",
+   "progressive_exam",
+   "group_MX3-18",
+   "part_3",
+   "points_30",
+   "timeout_900s"
+  ],
+  "scenarioVersion": "1.0.0",
+  "scenarioHash": "dd4f5ef5b4e4b65e",
+  "responseMode": "raw_output",
+  "outputPolicy": "fenced_allowed",
+  "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
+  "goldVerifiedAt": "2026-09-16T00:00:00.000Z",
+  "reviewStatus": "verified",
+  "maxAnswerTokens": 393216,
+  "maxReasoningTokens": 393216
+ },
+ {
+  "id": "MX3-18-P4",
+  "dimension": "reasoning_math",
+  "category": "ultra_progressive_exam",
+  "difficulty": "adversarial",
+  "language": "json",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "public_dev",
+  "promptTemplate": "数学大题「受限排列：容斥、棋盘多项式与群作用」，第4/4问，40分，时限1200秒。\n共同题干：n×n 棋盘的行代表位置、列代表取值，禁位 (i,j) 表示不允许 σ(i)=j。合法排列指避开全部禁位的双射 σ:{1..n}→{1..n}。本组四问规模都只有 6~7 阶，计算量很小；难点在于每一问要用不同的方法。\n本问：条件变更：不再给单位置禁位，而是要求相邻两个位置不得映射到相邻的两个取值，即对所有 i 都有 |σ(i+1)−σ(i)| ≠ 1（n=7）。提交 valid=满足该条件的排列数。\n评分项：valid(40分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "grader": "ultra_batch_part",
+  "graderVersion": "1.0.0",
+  "scoring": {
+   "type": "weighted_axes"
+  },
+  "hiddenTests": [],
+  "requirements": {
+   "groupId": "MX3-18",
+   "partNumber": 4,
+   "points": 40,
+   "hardSeconds": 1200,
+   "questionHash": "17396e352d0122fe6c301bc9627e148038eb003c2073a01e17f8ca78aef55bc0",
+   "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
+  },
+  "tags": [
+   "ultra_difficulty",
+   "progressive_exam",
+   "group_MX3-18",
+   "part_4",
+   "points_40",
+   "timeout_1200s"
+  ],
+  "scenarioVersion": "1.0.0",
+  "scenarioHash": "3e8f8e09458099bb",
+  "responseMode": "raw_output",
+  "outputPolicy": "fenced_allowed",
+  "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
+  "goldVerifiedAt": "2026-09-16T00:00:00.000Z",
+  "reviewStatus": "verified",
+  "maxAnswerTokens": 393216,
+  "maxReasoningTokens": 393216
+ },
+ {
+  "id": "MX3-19-P1",
+  "dimension": "reasoning_math",
+  "category": "ultra_progressive_exam",
+  "difficulty": "hard",
+  "language": "json",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "public_dev",
+  "promptTemplate": "数学大题「生成函数：展开、部分分式、卷积与单位根过滤」，第1/4问，10分，时限300秒。\n共同题干：以下各问都围绕一个幂级数 f(x)=Σ aₙxⁿ，aₙ 为整数系数。[xⁿ]f(x) 表示取 xⁿ 的系数。各问规模都很小，但需要的方法不同。\n本问：f(x) = (1+2x)/(1−3x+x²)。提交 c12=[x¹²]f(x)。\n评分项：c12(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "grader": "ultra_batch_part",
+  "graderVersion": "1.0.0",
+  "scoring": {
+   "type": "weighted_axes"
+  },
+  "hiddenTests": [],
+  "requirements": {
+   "groupId": "MX3-19",
+   "partNumber": 1,
+   "points": 10,
+   "hardSeconds": 300,
+   "questionHash": "8c835c224bdffb8e97fa880889d9a900f307cd3fd9f163a84435b756882f938d",
+   "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
+  },
+  "tags": [
+   "ultra_difficulty",
+   "progressive_exam",
+   "group_MX3-19",
+   "part_1",
+   "points_10",
+   "timeout_300s"
+  ],
+  "scenarioVersion": "1.0.0",
+  "scenarioHash": "b9b9b00c06a910ec",
+  "responseMode": "raw_output",
+  "outputPolicy": "fenced_allowed",
+  "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
+  "goldVerifiedAt": "2026-09-16T00:00:00.000Z",
+  "reviewStatus": "verified",
+  "maxAnswerTokens": 393216,
+  "maxReasoningTokens": 393216
+ },
+ {
+  "id": "MX3-19-P2",
+  "dimension": "reasoning_math",
+  "category": "ultra_progressive_exam",
+  "difficulty": "adversarial",
+  "language": "json",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "public_dev",
+  "promptTemplate": "数学大题「生成函数：展开、部分分式、卷积与单位根过滤」，第2/4问，20分，时限600秒。\n共同题干：以下各问都围绕一个幂级数 f(x)=Σ aₙxⁿ，aₙ 为整数系数。[xⁿ]f(x) 表示取 xⁿ 的系数。各问规模都很小，但需要的方法不同。\n本问：f(x) = 1/((1−2x)(1−3x)(1−4x))。提交 c30=[x³⁰]f(x)。\n评分项：c30(20分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "grader": "ultra_batch_part",
+  "graderVersion": "1.0.0",
+  "scoring": {
+   "type": "weighted_axes"
+  },
+  "hiddenTests": [],
+  "requirements": {
+   "groupId": "MX3-19",
+   "partNumber": 2,
+   "points": 20,
+   "hardSeconds": 600,
+   "questionHash": "fffd874c79e13d3f7d9dd29f8a9373d0f93fc4ca86090ff56018618b226d9405",
+   "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
+  },
+  "tags": [
+   "ultra_difficulty",
+   "progressive_exam",
+   "group_MX3-19",
+   "part_2",
+   "points_20",
+   "timeout_600s"
+  ],
+  "scenarioVersion": "1.0.0",
+  "scenarioHash": "6cbe68700981266d",
+  "responseMode": "raw_output",
+  "outputPolicy": "fenced_allowed",
+  "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
+  "goldVerifiedAt": "2026-09-16T00:00:00.000Z",
+  "reviewStatus": "verified",
+  "maxAnswerTokens": 393216,
+  "maxReasoningTokens": 393216
+ },
+ {
+  "id": "MX3-19-P3",
+  "dimension": "reasoning_math",
+  "category": "ultra_progressive_exam",
+  "difficulty": "adversarial",
+  "language": "json",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "public_dev",
+  "promptTemplate": "数学大题「生成函数：展开、部分分式、卷积与单位根过滤」，第3/4问，30分，时限900秒。\n共同题干：以下各问都围绕一个幂级数 f(x)=Σ aₙxⁿ，aₙ 为整数系数。[xⁿ]f(x) 表示取 xⁿ 的系数。各问规模都很小，但需要的方法不同。\n本问：提交 S = Σ_{k=0}^{20} k·C(20,k)²。\n评分项：S(30分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "grader": "ultra_batch_part",
+  "graderVersion": "1.0.0",
+  "scoring": {
+   "type": "weighted_axes"
+  },
+  "hiddenTests": [],
+  "requirements": {
+   "groupId": "MX3-19",
+   "partNumber": 3,
+   "points": 30,
+   "hardSeconds": 900,
+   "questionHash": "352f0b16337ad6a05f0c587f08564cc2088d8b286f11c0678f8b6da78b2ce484",
+   "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
+  },
+  "tags": [
+   "ultra_difficulty",
+   "progressive_exam",
+   "group_MX3-19",
+   "part_3",
+   "points_30",
+   "timeout_900s"
+  ],
+  "scenarioVersion": "1.0.0",
+  "scenarioHash": "0c88fe049b2313cb",
+  "responseMode": "raw_output",
+  "outputPolicy": "fenced_allowed",
+  "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
+  "goldVerifiedAt": "2026-09-16T00:00:00.000Z",
+  "reviewStatus": "verified",
+  "maxAnswerTokens": 393216,
+  "maxReasoningTokens": 393216
+ },
+ {
+  "id": "MX3-19-P4",
+  "dimension": "reasoning_math",
+  "category": "ultra_progressive_exam",
+  "difficulty": "adversarial",
+  "language": "json",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "public_dev",
+  "promptTemplate": "数学大题「生成函数：展开、部分分式、卷积与单位根过滤」，第4/4问，40分，时限1200秒。\n共同题干：以下各问都围绕一个幂级数 f(x)=Σ aₙxⁿ，aₙ 为整数系数。[xⁿ]f(x) 表示取 xⁿ 的系数。各问规模都很小，但需要的方法不同。\n本问：条件变更：不再取单个系数，而是把下标是 3 的倍数的项全部相加。提交 T = Σ_{k≡0 (mod 3), 0≤k≤33} C(33,k)。\n评分项：T(40分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "grader": "ultra_batch_part",
+  "graderVersion": "1.0.0",
+  "scoring": {
+   "type": "weighted_axes"
+  },
+  "hiddenTests": [],
+  "requirements": {
+   "groupId": "MX3-19",
+   "partNumber": 4,
+   "points": 40,
+   "hardSeconds": 1200,
+   "questionHash": "93c4ebf50b23527218e66f7afa9f8ee7d193c27d7b7d47d8de10577bd84070ab",
+   "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
+  },
+  "tags": [
+   "ultra_difficulty",
+   "progressive_exam",
+   "group_MX3-19",
+   "part_4",
+   "points_40",
+   "timeout_1200s"
+  ],
+  "scenarioVersion": "1.0.0",
+  "scenarioHash": "a5cb554c4fd2ad26",
+  "responseMode": "raw_output",
+  "outputPolicy": "fenced_allowed",
+  "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
+  "goldVerifiedAt": "2026-09-16T00:00:00.000Z",
+  "reviewStatus": "verified",
+  "maxAnswerTokens": 393216,
+  "maxReasoningTokens": 393216
+ },
+ {
+  "id": "MX3-20-P1",
+  "dimension": "reasoning_math",
+  "category": "ultra_progressive_exam",
+  "difficulty": "hard",
+  "language": "json",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "public_dev",
+  "promptTemplate": "数学大题「有限域算术：求逆、阶、离散对数与模合数」，第1/4问，10分，时限300秒。\n共同题干：p=10007 与 q=10009 均为素数，p−1 = 10006 = 2×5003。所有结果取 [0,模数) 内的整数。各问规模都很小，但需要的方法不同。\n本问：在 F_p 中求 4043 的乘法逆元。提交 inverse。\n评分项：inverse(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "grader": "ultra_batch_part",
+  "graderVersion": "1.0.0",
+  "scoring": {
+   "type": "weighted_axes"
+  },
+  "hiddenTests": [],
+  "requirements": {
+   "groupId": "MX3-20",
+   "partNumber": 1,
+   "points": 10,
+   "hardSeconds": 300,
+   "questionHash": "a5d42db225a4a398482b1fc429f0494e5c603596a19f4b6f66413df36c6d46e3",
+   "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
+  },
+  "tags": [
+   "ultra_difficulty",
+   "progressive_exam",
+   "group_MX3-20",
+   "part_1",
+   "points_10",
+   "timeout_300s"
+  ],
+  "scenarioVersion": "1.0.0",
+  "scenarioHash": "a7dd3c5f3abc84a7",
+  "responseMode": "raw_output",
+  "outputPolicy": "fenced_allowed",
+  "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
+  "goldVerifiedAt": "2026-09-16T00:00:00.000Z",
+  "reviewStatus": "verified",
+  "maxAnswerTokens": 393216,
+  "maxReasoningTokens": 393216
+ },
+ {
+  "id": "MX3-20-P2",
+  "dimension": "reasoning_math",
+  "category": "ultra_progressive_exam",
+  "difficulty": "adversarial",
+  "language": "json",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "public_dev",
+  "promptTemplate": "数学大题「有限域算术：求逆、阶、离散对数与模合数」，第2/4问，20分，时限600秒。\n共同题干：p=10007 与 q=10009 均为素数，p−1 = 10006 = 2×5003。所有结果取 [0,模数) 内的整数。各问规模都很小，但需要的方法不同。\n本问：在 F_p^* 中求元素 2 的阶（即使 2^k ≡ 1 (mod p) 的最小正整数 k）。提交 order_2。\n评分项：order_2(20分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "grader": "ultra_batch_part",
+  "graderVersion": "1.0.0",
+  "scoring": {
+   "type": "weighted_axes"
+  },
+  "hiddenTests": [],
+  "requirements": {
+   "groupId": "MX3-20",
+   "partNumber": 2,
+   "points": 20,
+   "hardSeconds": 600,
+   "questionHash": "80c3f82c9e52c37d1193838c6b6db499fc5c74555b08584fc011e7cd8e2afa97",
+   "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
+  },
+  "tags": [
+   "ultra_difficulty",
+   "progressive_exam",
+   "group_MX3-20",
+   "part_2",
+   "points_20",
+   "timeout_600s"
+  ],
+  "scenarioVersion": "1.0.0",
+  "scenarioHash": "b3715be901670498",
+  "responseMode": "raw_output",
+  "outputPolicy": "fenced_allowed",
+  "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
+  "goldVerifiedAt": "2026-09-16T00:00:00.000Z",
+  "reviewStatus": "verified",
+  "maxAnswerTokens": 393216,
+  "maxReasoningTokens": 393216
+ },
+ {
+  "id": "MX3-20-P3",
+  "dimension": "reasoning_math",
+  "category": "ultra_progressive_exam",
+  "difficulty": "adversarial",
+  "language": "json",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "public_dev",
+  "promptTemplate": "数学大题「有限域算术：求逆、阶、离散对数与模合数」，第3/4问，30分，时限900秒。\n共同题干：p=10007 与 q=10009 均为素数，p−1 = 10006 = 2×5003。所有结果取 [0,模数) 内的整数。各问规模都很小，但需要的方法不同。\n本问：5 是 F_p^* 的一个原根。求最小的非负整数 k 使 5^k ≡ 5000 (mod p)。提交 k。\n评分项：k(30分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "grader": "ultra_batch_part",
+  "graderVersion": "1.0.0",
+  "scoring": {
+   "type": "weighted_axes"
+  },
+  "hiddenTests": [],
+  "requirements": {
+   "groupId": "MX3-20",
+   "partNumber": 3,
+   "points": 30,
+   "hardSeconds": 900,
+   "questionHash": "582dd5792a8cab4814bb1da30a095882442a9b9d99567d2d54d270378b7ed2b3",
+   "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
+  },
+  "tags": [
+   "ultra_difficulty",
+   "progressive_exam",
+   "group_MX3-20",
+   "part_3",
+   "points_30",
+   "timeout_900s"
+  ],
+  "scenarioVersion": "1.0.0",
+  "scenarioHash": "83d086f5319d79da",
+  "responseMode": "raw_output",
+  "outputPolicy": "fenced_allowed",
+  "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
+  "goldVerifiedAt": "2026-09-16T00:00:00.000Z",
+  "reviewStatus": "verified",
+  "maxAnswerTokens": 393216,
+  "maxReasoningTokens": 393216
+ },
+ {
+  "id": "MX3-20-P4",
+  "dimension": "reasoning_math",
+  "category": "ultra_progressive_exam",
+  "difficulty": "adversarial",
+  "language": "json",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "public_dev",
+  "promptTemplate": "数学大题「有限域算术：求逆、阶、离散对数与模合数」，第4/4问，40分，时限1200秒。\n共同题干：p=10007 与 q=10009 均为素数，p−1 = 10006 = 2×5003。所有结果取 [0,模数) 内的整数。各问规模都很小，但需要的方法不同。\n本问：条件变更：改为模合数 n = p·q = 100160063，求 x² ≡ 200 (mod n) 的最小非负解与全部解之和。提交 smallest 与 total（两者都按 [0,n) 内的整数提交）。\n评分项：smallest(15分)、total(25分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "grader": "ultra_batch_part",
+  "graderVersion": "1.0.0",
+  "scoring": {
+   "type": "weighted_axes"
+  },
+  "hiddenTests": [],
+  "requirements": {
+   "groupId": "MX3-20",
+   "partNumber": 4,
+   "points": 40,
+   "hardSeconds": 1200,
+   "questionHash": "41ab27b38d8726877811b0bebe41feabc0a52d86361361393f3531ea5f760b61",
+   "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
+  },
+  "tags": [
+   "ultra_difficulty",
+   "progressive_exam",
+   "group_MX3-20",
+   "part_4",
+   "points_40",
+   "timeout_1200s"
+  ],
+  "scenarioVersion": "1.0.0",
+  "scenarioHash": "9f16c072b17425ba",
+  "responseMode": "raw_output",
+  "outputPolicy": "fenced_allowed",
+  "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
+  "goldVerifiedAt": "2026-09-16T00:00:00.000Z",
+  "reviewStatus": "verified",
+  "maxAnswerTokens": 393216,
+  "maxReasoningTokens": 393216
+ },
+ {
+  "id": "MX3-21-P1",
+  "dimension": "reasoning_math",
+  "category": "ultra_progressive_exam",
+  "difficulty": "hard",
+  "language": "json",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "public_dev",
+  "promptTemplate": "数学大题「Sidon 集：计数上界与真实极值的差距」，第1/4问，10分，时限300秒。\n共同题干：在模 p 的循环群 Z_p 中，称子集 A 为 Sidon 集，若所有 i≤j 的 aᵢ+aⱼ (mod p) 互不相同（等价的表述：所有有序差 aᵢ−aⱼ (i≠j) 互不相同）。若 A 有 k 个元素，则 i≤j 的数对和共有 k(k+1)/2 个，它们必须全部落在 Z_p 中的 p 个值里。Z_31^* 表示模 31 的乘法群。\n本问：取 p=31，A={0,1,3,7}。提交 sumset=|A+A|=|{(a+b) mod 31 : a,b∈A}|（a、b 可相同）。\n评分项：sumset(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "grader": "ultra_batch_part",
+  "graderVersion": "1.0.0",
+  "scoring": {
+   "type": "weighted_axes"
+  },
+  "hiddenTests": [],
+  "requirements": {
+   "groupId": "MX3-21",
+   "partNumber": 1,
+   "points": 10,
+   "hardSeconds": 300,
+   "questionHash": "a4272a25719d523dae43c700e4297fc6ea23a24034bee525f814ba1c2230a903",
+   "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
+  },
+  "tags": [
+   "ultra_difficulty",
+   "progressive_exam",
+   "group_MX3-21",
+   "part_1",
+   "points_10",
+   "timeout_300s"
+  ],
+  "scenarioVersion": "1.0.0",
+  "scenarioHash": "97f11e92131379d5",
+  "responseMode": "raw_output",
+  "outputPolicy": "fenced_allowed",
+  "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
+  "goldVerifiedAt": "2026-09-16T00:00:00.000Z",
+  "reviewStatus": "verified",
+  "maxAnswerTokens": 393216,
+  "maxReasoningTokens": 393216
+ },
+ {
+  "id": "MX3-21-P2",
+  "dimension": "reasoning_math",
+  "category": "ultra_progressive_exam",
+  "difficulty": "adversarial",
+  "language": "json",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "public_dev",
+  "promptTemplate": "数学大题「Sidon 集：计数上界与真实极值的差距」，第2/4问，20分，时限600秒。\n共同题干：在模 p 的循环群 Z_p 中，称子集 A 为 Sidon 集，若所有 i≤j 的 aᵢ+aⱼ (mod p) 互不相同（等价的表述：所有有序差 aᵢ−aⱼ (i≠j) 互不相同）。若 A 有 k 个元素，则 i≤j 的数对和共有 k(k+1)/2 个，它们必须全部落在 Z_p 中的 p 个值里。Z_31^* 表示模 31 的乘法群。\n本问：在 Z_31 中，提交 max_size=满足 Sidon 条件的子集的最大元素个数。仅凭 k(k+1)/2 ≤ 31 得到的界不一定可达。\n评分项：max_size(20分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "grader": "ultra_batch_part",
+  "graderVersion": "1.0.0",
+  "scoring": {
+   "type": "weighted_axes"
+  },
+  "hiddenTests": [],
+  "requirements": {
+   "groupId": "MX3-21",
+   "partNumber": 2,
+   "points": 20,
+   "hardSeconds": 600,
+   "questionHash": "8377ea030da96d2bca5d0fe6244fe47c415200898081edfc5b7c6b91d45f2c0e",
+   "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
+  },
+  "tags": [
+   "ultra_difficulty",
+   "progressive_exam",
+   "group_MX3-21",
+   "part_2",
+   "points_20",
+   "timeout_600s"
+  ],
+  "scenarioVersion": "1.0.0",
+  "scenarioHash": "d2cd5d1ef6bf5fc1",
+  "responseMode": "raw_output",
+  "outputPolicy": "fenced_allowed",
+  "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
+  "goldVerifiedAt": "2026-09-16T00:00:00.000Z",
+  "reviewStatus": "verified",
+  "maxAnswerTokens": 393216,
+  "maxReasoningTokens": 393216
+ },
+ {
+  "id": "MX3-21-P3",
+  "dimension": "reasoning_math",
+  "category": "ultra_progressive_exam",
+  "difficulty": "adversarial",
+  "language": "json",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "public_dev",
+  "promptTemplate": "数学大题「Sidon 集：计数上界与真实极值的差距」，第3/4问，30分，时限900秒。\n共同题干：在模 p 的循环群 Z_p 中，称子集 A 为 Sidon 集，若所有 i≤j 的 aᵢ+aⱼ (mod p) 互不相同（等价的表述：所有有序差 aᵢ−aⱼ (i≠j) 互不相同）。若 A 有 k 个元素，则 i≤j 的数对和共有 k(k+1)/2 个，它们必须全部落在 Z_p 中的 p 个值里。Z_31^* 表示模 31 的乘法群。\n本问：仍为 Z_31。提交 lexmin_set=**在所有达到最大规模的 Sidon 集中，按元素升序比较所得字典序最小**的那个集合（提交升序数组）。\n评分项：lexmin_set(30分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "grader": "ultra_batch_part",
+  "graderVersion": "1.0.0",
+  "scoring": {
+   "type": "weighted_axes"
+  },
+  "hiddenTests": [],
+  "requirements": {
+   "groupId": "MX3-21",
+   "partNumber": 3,
+   "points": 30,
+   "hardSeconds": 900,
+   "questionHash": "1a5883fa318d77ffec1066983f752733a86e2d5231d9ef0958a847dc3c1d6ed8",
+   "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
+  },
+  "tags": [
+   "ultra_difficulty",
+   "progressive_exam",
+   "group_MX3-21",
+   "part_3",
+   "points_30",
+   "timeout_900s"
+  ],
+  "scenarioVersion": "1.0.0",
+  "scenarioHash": "6f17a19add0721e4",
+  "responseMode": "raw_output",
+  "outputPolicy": "fenced_allowed",
+  "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
+  "goldVerifiedAt": "2026-09-16T00:00:00.000Z",
+  "reviewStatus": "verified",
+  "maxAnswerTokens": 393216,
+  "maxReasoningTokens": 393216
+ },
+ {
+  "id": "MX3-21-P4",
+  "dimension": "reasoning_math",
+  "category": "ultra_progressive_exam",
+  "difficulty": "adversarial",
+  "language": "json",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "public_dev",
+  "promptTemplate": "数学大题「Sidon 集：计数上界与真实极值的差距」，第4/4问，40分，时限1200秒。\n共同题干：在模 p 的循环群 Z_p 中，称子集 A 为 Sidon 集，若所有 i≤j 的 aᵢ+aⱼ (mod p) 互不相同（等价的表述：所有有序差 aᵢ−aⱼ (i≠j) 互不相同）。若 A 有 k 个元素，则 i≤j 的数对和共有 k(k+1)/2 个，它们必须全部落在 Z_p 中的 p 个值里。Z_31^* 表示模 31 的乘法群。\n本问：条件变更：改为在**乘法群 Z_31^*** 中取子集 B，要求所有 i≤j 的 bᵢ·bⱼ (mod 31) 互不相同。提交 max_size=这样的 B 的最大规模，以及 count_at_max=恰好达到该规模的子集个数。\n评分项：max_size(15分)、count_at_max(25分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "grader": "ultra_batch_part",
+  "graderVersion": "1.0.0",
+  "scoring": {
+   "type": "weighted_axes"
+  },
+  "hiddenTests": [],
+  "requirements": {
+   "groupId": "MX3-21",
+   "partNumber": 4,
+   "points": 40,
+   "hardSeconds": 1200,
+   "questionHash": "5a3cfcbe050460e0a1aa68c9650dd5ee725223b7097e2b7ef6a2d3276e7bd1ff",
+   "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
+  },
+  "tags": [
+   "ultra_difficulty",
+   "progressive_exam",
+   "group_MX3-21",
+   "part_4",
+   "points_40",
+   "timeout_1200s"
+  ],
+  "scenarioVersion": "1.0.0",
+  "scenarioHash": "b65c8cb535f95461",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",

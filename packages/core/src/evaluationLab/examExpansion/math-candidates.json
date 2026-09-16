@@ -1,5 +1,5 @@
 {
-  "version": "math-exam-expansion-2026-09-16-v7",
+  "version": "math-exam-expansion-2026-09-16-v12",
   "status": "candidate-unmeasured",
   "modelCalls": 0,
   "hardSeconds": [
@@ -1309,10 +1309,10 @@
       "id": "MX3-13",
       "family": "circulant-spanning-trees",
       "title": "循环图的生成树计数",
-      "stem": "40 个顶点 0..39 的循环图：对每个 i，与 i±1、i±10、i±15 (mod 40) 相连。生成树 = 取 39 条边使全图连通无环。顶点数很大，逐一枚举边子集不可行。",
+      "stem": "循环图 C_n(S)：顶点 0..n-1，每个 i 与 i±s (mod n) 相连（s ∈ S；n 为偶数且 s=n/2 时 i±s 重合，该边只算一次）。生成树 = 取 n-1 条边使全图连通无环。四问依次考察四种不同的推理动作：精确计数 → 条件计数 → 谱结构 → 同构分类。",
       "parts": [
         {
-          "task": "先看同构的小图：8 个顶点 0..7，对每个 i 与 i±1、i±2 (mod 8) 相连。提交 tree_count=生成树个数。",
+          "task": "C_8(S)，其中 S={1,2}。提交 tree_count=生成树个数。",
           "items": [
             {
               "key": "tree_count",
@@ -1323,47 +1323,65 @@
           ]
         },
         {
-          "task": "回到 40 顶点图（i±1、i±10、i±15）。提交 tree_count=生成树个数。",
+          "task": "C_10(S)，其中 S={1,3}。提交 tree_count=生成树个数，以及 with_edge=同时包含边 (0,1) 的生成树个数。",
           "items": [
             {
               "key": "tree_count",
-              "points": 20,
+              "points": 10,
               "kind": "exact",
-              "expected": "3948107216150432269610439680"
-            }
-          ]
-        },
-        {
-          "task": "仍为 40 顶点图。提交 with_edge=包含边 (0,1) 的生成树个数。",
-          "items": [
-            {
-              "key": "with_edge",
-              "points": 30,
-              "kind": "exact",
-              "expected": "1369503520999145588117898368"
-            }
-          ]
-        },
-        {
-          "task": "改为对每个 i 与 i±1、i±10、i±15、i±20 (mod 40) 相连。提交 tree_count=生成树个数，以及 with_edge=包含边 (0,20) 的生成树个数。",
-          "items": [
-            {
-              "key": "tree_count",
-              "points": 20,
-              "kind": "exact",
-              "expected": "2267432290723979054529725419520"
+              "expected": "40500"
             },
             {
               "key": "with_edge",
+              "points": 10,
+              "kind": "exact",
+              "expected": "18225"
+            }
+          ]
+        },
+        {
+          "task": "回到 40 顶点、S={1,10,15}。该图拉普拉斯矩阵 L 的特征值有闭式 lambda_j=sum_{s in S}(2-2cos(2*pi*j*s/40))，j=1..39。提交 distinct_eigs=lambda_1..lambda_39 中不同取值的个数，以及 max_mult=其中出现的最大重数。",
+          "items": [
+            {
+              "key": "distinct_eigs",
+              "points": 15,
+              "kind": "exact",
+              "expected": "19"
+            },
+            {
+              "key": "max_mult",
+              "points": 15,
+              "kind": "exact",
+              "expected": "3"
+            }
+          ]
+        },
+        {
+          "task": "对 d ∈ {1,2,...,20}，记 G_d 为 C_40(S)，其中 S={1,d}。提交 class_count=这 20 个图两两不同构的类数；以及 iso_of_3=在 d≠3 中与 G_3 同构的那个 d，iso_of_7=在 d≠7 中与 G_7 同构的那个 d。",
+          "items": [
+            {
+              "key": "class_count",
               "points": 20,
               "kind": "exact",
-              "expected": "607794611814468521412287324160"
+              "expected": "18"
+            },
+            {
+              "key": "iso_of_3",
+              "points": 10,
+              "kind": "exact",
+              "expected": "13"
+            },
+            {
+              "key": "iso_of_7",
+              "points": 10,
+              "kind": "exact",
+              "expected": "17"
             }
           ]
         }
       ],
-      "capstoneChange": "再加一条跨半圈的弦，同时改变总数与单边计数。",
-      "difficultyRisk": "暴力枚举不可行；需自行选择矩阵树定理或谱方法，答案唯一。"
+      "capstoneChange": "从「算一个数」升级为「对一个图族做等价分类」：前两问是计算，后两问要求识别结构（谱闭式）与等价判据（乘子群），且 P3 存在精确碰撞 lambda_10=lambda_20=8，朴素配对推理会答错。",
+      "difficultyRisk": "四问的最短可算路径都在纯推理预算内（无工具考试）；P3/P4 规模大但只需结构、不需精确大整数；答案唯一且可精确校验。"
     },
     {
       "id": "MX3-14",
@@ -1616,6 +1634,247 @@
       ],
       "capstoneChange": "从单形状 hook 公式升级到全形状极值搜索，再进入斜形状（hook 公式不再直接适用）。",
       "difficultyRisk": "答案均为精确整数；极值需枚举 42 个形状逐一算 f^λ，斜表需行列式方法。"
+    },
+    {
+      "id": "MX3-18",
+      "family": "restricted-permutations",
+      "title": "受限排列：容斥、棋盘多项式与群作用",
+      "stem": "n×n 棋盘的行代表位置、列代表取值，禁位 (i,j) 表示不允许 σ(i)=j。合法排列指避开全部禁位的双射 σ:{1..n}→{1..n}。本组四问规模都只有 6~7 阶，计算量很小；难点在于每一问要用不同的方法。",
+      "parts": [
+        {
+          "task": "n=6，禁位为 2×2 方块 {(1,1),(1,2),(2,1),(2,2)}。提交 valid=合法排列数。",
+          "items": [
+            {
+              "key": "valid",
+              "points": 10,
+              "kind": "exact",
+              "expected": "288"
+            }
+          ]
+        },
+        {
+          "task": "n=7，禁位改为阶梯带 {(1,1),(2,1),(2,2),(3,2),(3,3),(4,3),(4,4)}——它既不是对角也不是方块，禁位之间会互相攻击。提交 valid=合法排列数。",
+          "items": [
+            {
+              "key": "valid",
+              "points": 20,
+              "kind": "exact",
+              "expected": "1566"
+            }
+          ]
+        },
+        {
+          "task": "仍用第 2 问的禁位。提交 cycle_types=合法排列**按循环结构（即共轭类）分组后**出现的不同循环结构个数，以及 odd_only=只由奇数长度循环构成的合法排列个数。",
+          "items": [
+            {
+              "key": "cycle_types",
+              "points": 15,
+              "kind": "exact",
+              "expected": "12"
+            },
+            {
+              "key": "odd_only",
+              "points": 15,
+              "kind": "exact",
+              "expected": "525"
+            }
+          ]
+        },
+        {
+          "task": "条件变更：不再给单位置禁位，而是要求相邻两个位置不得映射到相邻的两个取值，即对所有 i 都有 |σ(i+1)−σ(i)| ≠ 1（n=7）。提交 valid=满足该条件的排列数。",
+          "items": [
+            {
+              "key": "valid",
+              "points": 40,
+              "kind": "exact",
+              "expected": "646"
+            }
+          ]
+        }
+      ],
+      "capstoneChange": "从「独立禁位」换成「相邻关系约束」，棋盘多项式的容斥无法直接套用，必须换工具。",
+      "difficultyRisk": "规模刻意保持不变（6~7 阶），难度靠概念递进而非计算量；答案互不相同以避免猜前问。"
+    },
+    {
+      "id": "MX3-19",
+      "family": "generating-functions-ladder",
+      "title": "生成函数：展开、部分分式、卷积与单位根过滤",
+      "stem": "以下各问都围绕一个幂级数 f(x)=Σ aₙxⁿ，aₙ 为整数系数。[xⁿ]f(x) 表示取 xⁿ 的系数。各问规模都很小，但需要的方法不同。",
+      "parts": [
+        {
+          "task": "f(x) = (1+2x)/(1−3x+x²)。提交 c12=[x¹²]f(x)。",
+          "items": [
+            {
+              "key": "c12",
+              "points": 10,
+              "kind": "exact",
+              "expected": "214129"
+            }
+          ]
+        },
+        {
+          "task": "f(x) = 1/((1−2x)(1−3x)(1−4x))。提交 c30=[x³⁰]f(x)。",
+          "items": [
+            {
+              "key": "c30",
+              "points": 20,
+              "kind": "exact",
+              "expected": "9221519018813407615"
+            }
+          ]
+        },
+        {
+          "task": "提交 S = Σ_{k=0}^{20} k·C(20,k)²。",
+          "items": [
+            {
+              "key": "S",
+              "points": 30,
+              "kind": "exact",
+              "expected": "1378465288200"
+            }
+          ]
+        },
+        {
+          "task": "条件变更：不再取单个系数，而是把下标是 3 的倍数的项全部相加。提交 T = Σ_{k≡0 (mod 3), 0≤k≤33} C(33,k)。",
+          "items": [
+            {
+              "key": "T",
+              "points": 40,
+              "kind": "exact",
+              "expected": "2863311530"
+            }
+          ]
+        }
+      ],
+      "capstoneChange": "从「取一个系数」变为「按同余类求和」，逐项展开的思路不再适用。",
+      "difficultyRisk": "规模保持不变（n≤33），难度靠概念递进：部分分式 → 卷积恒等式 → 单位根过滤。答案互不相同。"
+    },
+    {
+      "id": "MX3-20",
+      "family": "finite-field-ladder",
+      "title": "有限域算术：求逆、阶、离散对数与模合数",
+      "stem": "p=10007 与 q=10009 均为素数，p−1 = 10006 = 2×5003。所有结果取 [0,模数) 内的整数。各问规模都很小，但需要的方法不同。",
+      "parts": [
+        {
+          "task": "在 F_p 中求 4043 的乘法逆元。提交 inverse。",
+          "items": [
+            {
+              "key": "inverse",
+              "points": 10,
+              "kind": "exact",
+              "expected": "6522"
+            }
+          ]
+        },
+        {
+          "task": "在 F_p^* 中求元素 2 的阶（即使 2^k ≡ 1 (mod p) 的最小正整数 k）。提交 order_2。",
+          "items": [
+            {
+              "key": "order_2",
+              "points": 20,
+              "kind": "exact",
+              "expected": "5003"
+            }
+          ]
+        },
+        {
+          "task": "5 是 F_p^* 的一个原根。求最小的非负整数 k 使 5^k ≡ 5000 (mod p)。提交 k。",
+          "items": [
+            {
+              "key": "k",
+              "points": 30,
+              "kind": "exact",
+              "expected": "9732"
+            }
+          ]
+        },
+        {
+          "task": "条件变更：改为模合数 n = p·q = 100160063，求 x² ≡ 200 (mod n) 的最小非负解与全部解之和。提交 smallest 与 total（两者都按 [0,n) 内的整数提交）。",
+          "items": [
+            {
+              "key": "smallest",
+              "points": 15,
+              "kind": "exact",
+              "expected": "11224243"
+            },
+            {
+              "key": "total",
+              "points": 25,
+              "kind": "exact",
+              "expected": "200320126"
+            }
+          ]
+        }
+      ],
+      "capstoneChange": "模数从素数换成合数后，F_p^* 的乘法群结构不再适用，必须分解到两个素数再用中国剩余定理。",
+      "difficultyRisk": "规模恒定（p≈1e4），难度靠概念递进：求逆 → 阶 → 离散对数 → 环上的二次同余。答案互不相同。"
+    },
+    {
+      "id": "MX3-21",
+      "family": "sidon-sets-countersearch",
+      "title": "Sidon 集：计数上界与真实极值的差距",
+      "stem": "在模 p 的循环群 Z_p 中，称子集 A 为 Sidon 集，若所有 i≤j 的 aᵢ+aⱼ (mod p) 互不相同（等价的表述：所有有序差 aᵢ−aⱼ (i≠j) 互不相同）。若 A 有 k 个元素，则 i≤j 的数对和共有 k(k+1)/2 个，它们必须全部落在 Z_p 中的 p 个值里。Z_31^* 表示模 31 的乘法群。",
+      "parts": [
+        {
+          "task": "取 p=31，A={0,1,3,7}。提交 sumset=|A+A|=|{(a+b) mod 31 : a,b∈A}|（a、b 可相同）。",
+          "items": [
+            {
+              "key": "sumset",
+              "points": 10,
+              "kind": "exact",
+              "expected": "10"
+            }
+          ]
+        },
+        {
+          "task": "在 Z_31 中，提交 max_size=满足 Sidon 条件的子集的最大元素个数。仅凭 k(k+1)/2 ≤ 31 得到的界不一定可达。",
+          "items": [
+            {
+              "key": "max_size",
+              "points": 20,
+              "kind": "exact",
+              "expected": "6"
+            }
+          ]
+        },
+        {
+          "task": "仍为 Z_31。提交 lexmin_set=**在所有达到最大规模的 Sidon 集中，按元素升序比较所得字典序最小**的那个集合（提交升序数组）。",
+          "items": [
+            {
+              "key": "lexmin_set",
+              "points": 30,
+              "kind": "exact",
+              "expected": [
+                "0",
+                "1",
+                "3",
+                "8",
+                "12",
+                "18"
+              ]
+            }
+          ]
+        },
+        {
+          "task": "条件变更：改为在**乘法群 Z_31^*** 中取子集 B，要求所有 i≤j 的 bᵢ·bⱼ (mod 31) 互不相同。提交 max_size=这样的 B 的最大规模，以及 count_at_max=恰好达到该规模的子集个数。",
+          "items": [
+            {
+              "key": "max_size",
+              "points": 15,
+              "kind": "exact",
+              "expected": "5"
+            },
+            {
+              "key": "count_at_max",
+              "points": 25,
+              "kind": "exact",
+              "expected": "6540"
+            }
+          ]
+        }
+      ],
+      "capstoneChange": "从加法群换到乘法群：Z_31^* 是 30 阶循环群，取生成元后与 Z_30 同构，问题迁移过去后极值会进一步下降。",
+      "difficultyRisk": "计数上界与实际极值不等（Z_31 为 7 对 6，Z_31^* 为 7 对 5），因此靠背结论得不到答案；答案互不相同。"
     }
   ],
   "difficultyCalibrated": false,

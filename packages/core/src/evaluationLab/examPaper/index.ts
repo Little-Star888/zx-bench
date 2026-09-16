@@ -92,6 +92,43 @@ function normalizeItemKey(value: string): string {
   return value.trim().replace(/[（(]\s*\d+\s*分\s*[)）]\s*$/, '').trim();
 }
 
+/**
+ * 保护超过 2^53−1 的整数字面量。
+ *
+ * 题面明确允许「数字可用数值或精确等价数字字符串」提交，但 JSON.parse 会先把它
+ * 变成 double：实测模型提交 `{"item":"c30","answer":9221519018813407615}`，
+ * 与 gold 完全相同，却在解析后变成 ...616，被 parseExactExpression 判为不等 → 0 分。
+ * 这是评分器造成的假阴性（与能力无关），且会命中所有答案超过 16 位的题
+ * （如 MX3-13-P2 的 24 位生成树数、MX3-16-P3 的 p(2000)）。
+ *
+ * 修法：在 JSON.parse 之前，把「字符串字面量之外的、整数位 ≥16 且后面不是
+ * `.`/`e`」的整数用引号包起来，让它以字符串形态进入精确表达式解析。
+ */
+function quoteLongIntegerLiterals(text: string): string {
+  let out = '', inString = false, escaped = false;
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    if (inString) {
+      out += ch;
+      if (escaped) escaped = false;
+      else if (ch === '\\') escaped = true;
+      else if (ch === '"') inString = false;
+      continue;
+    }
+    if (ch === '"') { inString = true; out += ch; continue; }
+    if (ch === '-' || (ch >= '0' && ch <= '9')) {
+      const match = /^-?\d+/.exec(text.slice(i));
+      if (match && match[0].replace('-', '').length >= 16 && !/^[.eE]/.test(text.slice(i + match[0].length))) {
+        out += `"${match[0]}"`;
+        i += match[0].length - 1;
+        continue;
+      }
+    }
+    out += ch;
+  }
+  return out;
+}
+
 export function committedItems(content: string, allowed: string[]) {
   const items = new Map<string, unknown>(); let start = -1, depth = 0, quoted = false, escape = false, accepted = 0, rejected = 0;
   const overflow = content.length > 2_000_000;
@@ -102,7 +139,7 @@ export function committedItems(content: string, allowed: string[]) {
     if (quoted) { if (escape) escape = false; else if (ch === '\\') escape = true; else if (ch === '"') quoted = false; continue; }
     if (ch === '"') quoted = true; else if (ch === '{') depth++; else if (ch === '}' && --depth === 0) {
       try {
-        const record = parseAnswer(content.slice(start, i + 1));
+        const record = parseAnswer(quoteLongIntegerLiterals(content.slice(start, i + 1)));
         const key = typeof (record as { item?: unknown }).item === 'string'
           ? normalizeItemKey((record as { item: string }).item) : '';
         if (exactKeys(record, ['item', 'answer']) && key && allowed.includes(key)) { items.set(key, record.answer); accepted++; }
