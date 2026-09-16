@@ -57690,5 +57690,88 @@
    "36-containers",
    "rounding"
   ]
+ },
+ {
+  "id": "SO-CN-052",
+  "dimension": "structured_output",
+  "category": "json",
+  "difficulty": "adversarial",
+  "language": "json",
+  "locale": "zh-CN",
+  "status": "retired",
+  "tier": "public_dev",
+  "promptTemplate": "请生成一份交易明细批量导出 JSON，用于对账系统直接消费。\n\n顶层键**恰好**为 batchId、accounts、transactions、summary：\n1. batchId 为字符串；accounts **恰好 4 个**元素，每个元素**恰好**含 id、name 两个键，id 分别为 ACC-01 ~ ACC-04\n2. transactions：**恰好 300 个**元素，每个元素**恰好**含 txId、ts、account、amount、fee、net 六个键，键序与上述一致\n   - txId 形如 TX-0001 ~ TX-0300（TX- + 4 位零填充，与序号对应）\n   - ts 为 ISO 8601 日期时间字符串，且按时间严格递增（不得重复）\n   - account 必须取自 ACC-01 ~ ACC-04\n   - amount 为正数且保留 2 位以内小数；fee = amount × 0.01（保留到分）；net = amount − fee\n3. transactions 必须按 ts 升序排列；txId 不得重复\n4. summary **恰好**含 count、totalAmount、totalFee、totalNet 四个键，分别为笔数与三个合计（保留到分）\n5. 输出纯 JSON，不要 markdown 代码块，不要任何解释文字",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "schema_compliance",
+  "graderVersion": "schema_compliance_v5",
+  "scoring": {
+   "type": "schema_compliance"
+  },
+  "scenarioVersion": "3.4.1",
+  "scenarioHash": "6ab33b960a4df2de",
+  "responseMode": null,
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null,
+  "tags": [
+   "json",
+   "long-horizon",
+   "300-rows",
+   "capacity-probe",
+   "global-consistency"
+  ],
+  "requirements": {
+   "format": "json",
+   "output_policy": "raw_only",
+   "axis_weights": {
+    "syntax_parse": 0.05,
+    "schema_compliance": 0.1,
+    "field_constraints": 0.55,
+    "cross_field_consistency": 0.1,
+    "output_discipline": 0.15
+   },
+   "requiredFields": [
+    "batchId",
+    "accounts",
+    "transactions",
+    "summary",
+    "summary.totalAmount",
+    "summary.totalFee",
+    "summary.totalNet",
+    "transactions[0].net",
+    "transactions[299].net"
+   ],
+   "constraints": [
+    "keys:.=batchId,accounts,transactions,summary",
+    "keysAll:accounts[]=id,name",
+    "length:accounts=4",
+    "length:transactions=300",
+    "keysAll:transactions[]=txId,ts,account,amount,fee,net",
+    "keyOrder:transactions[0]=txId,ts,account,amount,fee,net",
+    "keyOrder:transactions[299]=txId,ts,account,amount,fee,net",
+    "unique:transactions[].txId",
+    "unique:transactions[].ts",
+    "sorted:transactions[]=ts:asc",
+    "reAll:transactions[].txId:^TX-\\d{4}$",
+    "reAll:transactions[].ts:^\\d{4}-\\d{2}-\\d{2}T",
+    "reAll:transactions[].account:^ACC-0[1-4]$",
+    "ref:transactions[].account in accounts[].id",
+    "maxDecimals:transactions[].amount=2",
+    "maxDecimals:transactions[].fee=2",
+    "maxDecimals:transactions[].net=2",
+    "ratioEq:transactions[].fee=amount*0.01:2",
+    "ratioEq:transactions[].net=amount*0.99:2",
+    "sumEq:transactions[].amount=summary.totalAmount",
+    "sumEq:transactions[].fee=summary.totalFee",
+    "sumEq:transactions[].net=summary.totalNet"
+   ]
+  }
  }
 ]
