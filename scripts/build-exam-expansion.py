@@ -33,6 +33,52 @@ def solve(a, b):
 
 def dot(a, b): return sum(x*y for x,y in zip(a,b))
 def exact(key, points, value): return {'key': key, 'points': points, 'kind': 'exact', 'expected': clean(value)}
+
+# --- helpers added 2026-09-16 for the de-trivialised warm-up parts -----------
+def gf2_rank(vals, bits=13):
+    basis = [0]*bits; r = 0
+    for v in vals:
+        x = v
+        for b in range(bits-1, -1, -1):
+            if not (x >> b) & 1: continue
+            if basis[b]: x ^= basis[b]
+            else: basis[b] = x; r += 1; break
+    return r
+
+def edges_on_some_path(edges, source, sink):
+    fwd, bwd = {}, {}
+    for u, v, _ in edges:
+        fwd.setdefault(u, set()).add(v); bwd.setdefault(v, set()).add(u)
+    def reach(adj, s):
+        seen = {s}; q = deque([s])
+        while q:
+            u = q.popleft()
+            for v in adj.get(u, ()):
+                if v not in seen: seen.add(v); q.append(v)
+        return seen
+    from_source = reach(fwd, source); to_sink = reach(bwd, sink)
+    return [i for i, (u, v, _) in enumerate(edges) if u in from_source and v in to_sink]
+
+def greedy_topological_prefix(n, pred, k):
+    used = 0; out = []
+    while len(out) < k:
+        for j in range(n):
+            if not (used >> j) & 1 and pred[j] & used == pred[j]:
+                out.append(j); used |= 1 << j; break
+        else:
+            raise AssertionError('precedence graph is cyclic')
+    return out
+
+def event_bound(moment, predicate):
+    """Primal-only max of P(predicate(X)) over distributions matching the moments."""
+    d = len(moment); best = F(0)
+    for basis in combinations(support_ref, d):
+        w = solve([[F(x**j) for x in basis] for j in range(d)], moment)
+        if min(w) < 0: continue
+        best = max(best, sum(wi for x, wi in zip(basis, w) if predicate(x)))
+    return best
+
+support_ref = list(range(7))
 def cert(key, points, kind, problem, reference):
     return {'key': key, 'points': points, 'kind': kind, 'problem': problem, 'reference': clean(reference)}
 def part(task, *items): return {'task': task, 'items': list(items)}
@@ -51,7 +97,7 @@ p4 = {'a':a+[[-v for v in lower]],'b':b+[-bound-1],'c':c}
 group('01','linear-duality','有理线性规划与不可行证书',
       '所有变量非负。最大化 c·x，约束 A x≤b。数据：'+json.dumps(p)+
       '。optimal证书为{status:"optimal",x:[...],y:[...],value:...}，其中y≥0、Aᵀy≥c且b·y=c·x。infeasible证书为{status:"infeasible",y:[...]}，要求y≥0、Aᵀy≥0、b·y<0。', [
-    part('提交 origin_value=零向量的目标值，origin_feasible=零向量是否可行。',exact('origin_value',5,0),exact('origin_feasible',5,True)),
+    part('提交 row_slack=把 x=[1,1,1,1,1] 代入后各约束的松弛量 b−Ax（按约束顺序，长度5）。',exact('row_slack',10,[b[i]-sum(a[i]) for i in range(5)])),
     part('求全部五个不等式同时取等号时的向量，按变量顺序提交 intersection。',exact('intersection',20,x)),
     part('求最大值 value，并提交证明该最大值的 certificate。',exact('value',10,dot(c,x)),cert('certificate',20,'lp',p,{'status':'optimal','x':x,'y':y,'value':dot(c,x)})),
     part('现在额外加入 '+json.dumps(lower)+'·x≥'+str(bound+1)+'。判断 status（optimal/infeasible/unbounded），并提交针对新系统的 certificate。',
@@ -80,7 +126,7 @@ e4=[r[:] for r in edges]; e4[11][2]=3;e4[13][2]=4;e4.append([3,6,5])
 f,f4=flow(edges),flow(e4)
 group('02','network-flow','流量与割的双向证明','有向网络顶点0..7，源0汇7；每条边[u,v,capacity]，流量必须为整数。边按输入顺序编号。数据：'+json.dumps(edges)+
       '。证书为{flow:[每条边流量],cut:[含源不含汇的顶点集合],value:流值}；需满足容量、流守恒，且流值等于割容量。',[
-    part('提交 source_capacity=源点出边容量和。',exact('source_capacity',10,25)),
+    part('提交 path_edges=[位于至少一条 0→7 有向路径上的边的编号]（升序）。',exact('path_edges',10,edges_on_some_path(edges,0,7))),
     part('求最大流值 value。',exact('value',20,f['value'])),
     part('提交 certificate，证明最大流与最小割相等。',cert('certificate',30,'flow',{'n':8,'edges':edges},f)),
     part('改为边4→6容量3、5→7容量4，并新增3→6容量5（追加在边序列末尾）。求新 value，并提交新 certificate。',exact('value',10,f4['value']),cert('certificate',30,'flow',{'n':8,'edges':e4},f4))],
@@ -100,7 +146,8 @@ def assignment(cost, banned):
 asg=assignment(cost,[]); ban=[[0,asg['permutation'][0]],[2,asg['permutation'][2]]];asg4=assignment(cost,ban)
 group('03','assignment-duality','受限指派与势函数', '6名工人到6项工作的一一指派，编号0..5，成本矩阵：'+json.dumps(cost)+
       '。最小化总成本。certificate={permutation:[工人对应工作],u:[...],v:[...],value:...}；所有允许边应有u[i]+v[j]≤cost[i][j]，且总成本=Σu+Σv。',[
-    part('计算恒等指派i→i的成本 identity。',exact('identity',10,sum(cost[i][i] for i in range(6)))),
+    part('提交 row_min=[成本矩阵每行的最小值]（按行顺序，长度6），以及 row_min_sum=各行最小值之和。',
+         exact('row_min',5,[min(r) for r in cost]),exact('row_min_sum',5,sum(min(r) for r in cost))),
     part('求最小成本 value。',exact('value',20,asg['value'])),
     part('提交达到最优值的指派及对偶势函数 certificate。',cert('certificate',30,'assignment',{'cost':cost,'banned':[]},asg)),
     part('现在禁止边 '+json.dumps(ban)+'。求新 value，并提交只对允许边要求对偶可行的新 certificate。',exact('value',10,asg4['value']),cert('certificate',30,'assignment',{'cost':cost,'banned':ban},asg4))],
@@ -138,7 +185,8 @@ fpoly=pmul(pmul([1,0,1],[1,0,1]),[1,0,1]);g=[3,2,0,1];g4=pmul([1,0,1],[2,1]);rhs
 def multmat(g): return list(map(list,zip(*[remainder([0]*i+g,fpoly) for i in range(6)])))
 inv,rank=modular_solve(multmat(g),[1,0,0,0,0,0],7);sol4,rank4=modular_solve(multmat(g4),rhs,7)
 group('04','nonreduced-polynomial-ring','非约化商环中的逆与解空间','在F₇[x]/((x²+1)³)中计算。系数数组按常数项到最高次项排列，所有系数用0..6代表；余式数组固定长度6。',[
-    part('提交 modulus=(x²+1)³的系数数组（长度7）。',exact('modulus',10,fpoly)),
+    part('提交 x6_reduced=x⁶ 在商环 F₇[x]/((x²+1)³) 中的余式（长度6，常数项起）。',
+         exact('x6_reduced',10,remainder([0,0,0,0,0,0,1],fpoly))),
     part('令g=x³+2x+3。提交 multiplication_rank=乘g在六维商环上的线性映射秩。',exact('multiplication_rank',20,rank)),
     part('提交 inverse=g的逆元余式。',exact('inverse',30,inv)),
     part('改解 (x²+1)(x+2)h=(x²+1)²。提交 count=不同余式解总数，以及 canonical=按系数变量顺序做RREF并把自由变量置0所得的解。',exact('count',15,7**(6-rank4)),exact('canonical',25,sol4))],
@@ -153,7 +201,8 @@ def moments(rows):
     return h,u,v
 h,u,v=moments(trans);t4=[r[:] for r in trans];t4[1]=[F(1,3),0,F(1,6),F(1,6),F(1,3)];h4,u4,v4=moments(t4)
 group('05','conditioned-markov-moments','吸收链的条件矩与转移干预','状态为0,1,2,S,F；S与F吸收。从0开始，T为首次吸收所需步数。每行按0,1,2,S,F给转移概率：'+json.dumps(clean(trans))+'.',[
-    part('提交 one_step_success=一步到S的概率。',exact('one_step_success',10,F(1,6))),
+    part('提交 one_step_absorb=[从状态0、1、2 各自一步进入吸收态(S或F)的概率]（按状态顺序，长度3，精确分数）。',
+         exact('one_step_absorb',10,[trans[i][3]+trans[i][4] for i in range(3)])),
     part('提交 success=最终在S吸收的概率。',exact('success',20,h[0])),
     part('提交 conditional_mean=E[T|最终到S]。',exact('conditional_mean',30,u[0]/h[0])),
     part('仅把状态1的转移行改为[1/3,0,1/6,1/6,1/3]。提交 success，以及 conditional_variance=Var(T|最终到S)。',exact('success',10,h4[0]),exact('conditional_variance',30,v4[0]/h4[0]-(u4[0]/h4[0])**2))],
@@ -174,7 +223,8 @@ def race(ph):
     return moments(rows)
 rh,ru,rv=race(F(2,5));sh,su,sv=race(F(3,5))
 group('06','overlapping-pattern-stopping','重叠模式的停时竞争','独立抛偏硬币，P(H)=2/5。出现HHTH或HTHH中任一连续模式时立刻停止；T为总抛掷次数，A表示HHTH先出现。',[
-    part('提交 first_four_A=前四次恰为HHTH的概率。',exact('first_four_A',10,F(2,5)**3*F(3,5))),
+    part('提交 first_four_any=前四次中出现 HHTH 或 HTHH 中任意一个的概率（两者在同一个四位窗口内互斥）。',
+         exact('first_four_any',10,F(2,5)**3*F(3,5)*2)),
     part('提交 win=P(A)。',exact('win',20,rh[0])),
     part('提交 conditional_mean=E[T|A]。模式可以重叠。',exact('conditional_mean',30,ru[0]/rh[0])),
     part('硬币改为P(H)=3/5，其他规则不变。提交 win，以及 conditional_second=E[T²|A]（不是方差）。',exact('win',10,sh[0]),exact('conditional_second',30,sv[0]/sh[0]))],
@@ -198,7 +248,8 @@ w=[''.join(x) for x in product('01',repeat=14) if x.count('1')==5 and all(not(x[
 w4=[''.join(x) for x in product('01',repeat=14) if x.count('1')==7 and all(len({x[i],x[(i+1)%14],x[(i+2)%14]})>1 for i in range(14))]
 hist=orbit_hist(w4,True,True)
 group('07','burnside-orbits','循环约束与扩张对称群','长度14的二进制循环串，位置有编号，首尾相邻。前三问恰有5个1且没有相邻的1。',[
-    part('求有编号串总数 labelled。',exact('labelled',10,len(w))),
+    part('提交 with_pos0_one=位置0为1、且满足恰有5个1与全部相邻约束的有编号串数。',
+         exact('with_pos0_one',10,sum(1 for s in w if s[0]=='1'))),
     part('只把旋转视为相同，求 orbits。',exact('orbits',20,sum(orbit_hist(w).values()))),
     part('把旋转与反射都视为相同，求 bracelets。',exact('bracelets',30,sum(orbit_hist(w,True).values()))),
     part('条件改为恰有7个1且循环中没有000或111。旋转、反射、全体位取反都视为等价。提交 orbits，以及 histogram=[[轨道大小,该大小的轨道数],...]，只列非零项并按大小升序。',exact('orbits',10,sum(hist.values())),exact('histogram',30,sorted(hist.items())))],
@@ -207,7 +258,7 @@ group('07','burnside-orbits','循环约束与扩张对称群','长度14的二进
 # 8. Weighted trees: enumeration produces a generating polynomial, not model evidence.
 tree_edges=[[0,1,2],[0,2,3],[0,3,1],[1,2,1],[1,4,4],[2,3,2],[2,4,1],[2,5,3],[3,5,2],[3,6,1],[4,5,2],[4,6,3],[5,6,4]]
 red={1,4,7,9,11}
-poly=[0]*7;joint=0;total=0
+poly=[0]*7;joint=0;total=0;tree_count=0
 for chosen in combinations(range(len(tree_edges)),6):
     parent=list(range(7));weight=1
     def find(v):
@@ -219,12 +270,12 @@ for chosen in combinations(range(len(tree_edges)),6):
         if aa==bb:valid=False;break
         parent[aa]=bb;weight*=ww
     if valid:
-        total+=weight;poly[len(set(chosen)&red)]+=weight
+        tree_count+=1;total+=weight;poly[len(set(chosen)&red)]+=weight
         if 1 in chosen and 4 in chosen:joint+=weight
 mean=F(sum(i*v for i,v in enumerate(poly)),total);variance=F(sum(i*i*v for i,v in enumerate(poly)),total)-mean*mean
 group('08','weighted-tree-correlations','加权生成树与边相关性','无向简单图顶点0..6，边按0起编号，每条[u,v,w]：'+json.dumps(tree_edges)+
       '。生成树的权重为边权之积，随机树的概率与权重成正比。',[
-    part('提交 degree0=顶点0的加权度。',exact('degree0',10,6)),
+    part('提交 tree_count=不同生成树的个数（不计权重）。',exact('tree_count',10,tree_count)),
     part('求所有生成树的总权重 partition。',exact('partition',20,total)),
     part('提交 joint=边1与边4同时在随机生成树中的概率。',exact('joint',30,F(joint,total))),
     part('把边'+json.dumps(sorted(red))+'标红，K为树中红边数。提交 polynomial=Σ树权重·z^K的系数数组（固定长度7，从常数项开始），以及 variance=Var(K)。',exact('polynomial',25,poly),exact('variance',15,variance))],
@@ -243,7 +294,7 @@ weights=[sum(v.bit_count()==i for v in code) for i in range(13)]
 shortened={tuple((v>>(11-j))&1 for j in range(12) if j not in [0,1,7]) for v in code if not(v>>11&1) and not(v>>10&1)}
 sw=[sum(sum(v)==i for v in shortened) for i in range(10)]
 group('09','linear-code-operations','线性码与缩短穿孔的顺序','F₂上的线性码由下列六行生成；字符串左端为位置0，右端为位置11：'+json.dumps([format(r,'012b') for r in rows])+'.',[
-    part('提交 dimension=码维数。',exact('dimension',10,6)),
+    part('提交 first_four_rank=前四行生成子空间在 F₂ 上的维数。',exact('first_four_rank',10,gf2_rank(rows[:4]))),
     part('提交 distance=最小非零汉明重量。',exact('distance',20,next(i for i in range(1,13) if weights[i]))),
     part('提交 enumerator=完整重量分布，长度13，第i项为重量i的码字数。',exact('enumerator',30,weights)),
     part('先只保留位置0和1都为0的码字并删除这两位（缩短），再删除原位置7（穿孔）。重复得到的码字只计一次。提交 size=新码大小、enumerator=长度10的重量分布。',exact('size',10,len(shortened)),exact('enumerator',30,sw))],

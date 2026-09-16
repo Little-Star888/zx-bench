@@ -358,6 +358,15 @@ function validateJsonSchema(
       }
     }
     if (schema.properties && typeof schema.properties === 'object') {
+      const declared = new Set(Object.keys(schema.properties as Record<string, unknown>));
+      // additionalProperties:false 时逐个暴露多余键——模型「顺手多加字段」是最常见的
+      // 结构违规之一，不检查等于放弃了这类区分度。
+      if (schema.additionalProperties === false) {
+        for (const key of Object.keys(node)) {
+          checks++;
+          if (!declared.has(key)) fail(`Unexpected property "${key}" (additionalProperties:false)`);
+        }
+      }
       for (const [key, propSchema] of Object.entries(schema.properties as Record<string, unknown>)) {
         if (!(key in node)) continue;
         const outcome = validateJsonSchema(node[key], propSchema as Record<string, unknown>, root, depth + 1);
@@ -368,6 +377,11 @@ function validateJsonSchema(
   }
 
   return { violations, checks };
+}
+
+/** 供结构化输出断言复用：统计实例相对给定 schema 的违规数（0 = 通过）。 */
+export function countSchemaViolations(instance: unknown, schema: Record<string, unknown>): number {
+  return validateJsonSchema(instance, schema).violations.length;
 }
 
 // ===== CSV 解析器（RFC 4180） =====

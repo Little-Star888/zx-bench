@@ -250,6 +250,165 @@ describe('P1-5 JSON Schema 关键字扩展', () => {
   });
 });
 
+describe('严格结构断言规则语言（恢复区分度用）', () => {
+  const run = async (constraints: string[], doc: unknown) =>
+    (await score({ format: 'json', output_policy: 'raw_only', constraints }, JSON.stringify(doc))).axisScores.field_constraints;
+
+  it('keys：对象键集必须精确相等（多余键也判失败）', async () => {
+    expect(await run(['keys:meta=a,b'], { meta: { a: 1, b: 2 } })).toBe(100);
+    expect(await run(['keys:meta=a,b'], { meta: { a: 1, b: 2, c: 3 } })).toBe(0);
+    expect(await run(['keys:meta=a,b'], { meta: { a: 1 } })).toBe(0);
+  });
+
+  it('keyOrder：键顺序必须完全一致', async () => {
+    expect(await run(['keyOrder:meta=b,a'], { meta: { b: 1, a: 2 } })).toBe(100);
+    expect(await run(['keyOrder:meta=b,a'], { meta: { a: 2, b: 1 } })).toBe(0);
+  });
+
+  it('reAll / maxDecimals / unique', async () => {
+    const rows = [{ id: 'A-1', amount: 21.5 }, { id: 'A-2', amount: 30.25 }];
+    expect(await run(['reAll:orders[].id:^A-\\d+$'], { orders: rows })).toBe(100);
+    expect(await run(['reAll:orders[].id:^A-\\d+$'], { orders: [{ id: 'X1' }] })).toBe(0);
+    expect(await run(['maxDecimals:orders[].amount=2'], { orders: rows })).toBe(100);
+    expect(await run(['maxDecimals:orders[].amount=2'], { orders: [{ amount: 21.004999999999995 }] })).toBe(0);
+    expect(await run(['unique:orders[].id'], { orders: rows })).toBe(100);
+    expect(await run(['unique:orders[].id'], { orders: [{ id: 'A-1' }, { id: 'A-1' }] })).toBe(0);
+  });
+
+  it('sorted：多键排序（含 tie-break）', async () => {
+    const good = [{ d: '2026-01-02', id: 'a' }, { d: '2026-01-02', id: 'b' }, { d: '2026-01-01', id: 'c' }];
+    const bad = [{ d: '2026-01-02', id: 'b' }, { d: '2026-01-02', id: 'a' }, { d: '2026-01-01', id: 'c' }];
+    expect(await run(['sorted:rows[]=d:desc,id:asc'], { rows: good })).toBe(100);
+    expect(await run(['sorted:rows[]=d:desc,id:asc'], { rows: bad })).toBe(0);
+  });
+
+  it('ref：引用完整性', async () => {
+    const users = [{ id: 'u1' }, { id: 'u2' }];
+    expect(await run(['ref:orders[].userId in users[].id'], { users, orders: [{ userId: 'u1' }] })).toBe(100);
+    expect(await run(['ref:orders[].userId in users[].id'], { users, orders: [{ userId: 'u9' }] })).toBe(0);
+  });
+
+  it('sumEq / productEq / runningTotal', async () => {
+    const orders = [{ qty: 2, unitPrice: 10.5, amount: 21 }, { qty: 3, unitPrice: 4, amount: 12 }];
+    expect(await run(['sumEq:orders[].amount=grandTotal'], { orders, grandTotal: 33 })).toBe(100);
+    expect(await run(['sumEq:orders[].amount=grandTotal'], { orders, grandTotal: 99 })).toBe(0);
+    expect(await run(['productEq:orders[].amount=qty*unitPrice:2'], { orders })).toBe(100);
+    expect(await run(['productEq:orders[].amount=qty*unitPrice:2'], { orders: [{ qty: 2, unitPrice: 10.5, amount: 21.004999999999995 }] })).toBe(0);
+    expect(await run(['runningTotal:ledger[].balance=delta:100'], { ledger: [{ delta: 10, balance: 110 }, { delta: -30, balance: 80 }] })).toBe(100);
+    expect(await run(['runningTotal:ledger[].balance=delta:100'], { ledger: [{ delta: 10, balance: 110 }, { delta: -30, balance: 90 }] })).toBe(0);
+  });
+
+  it('schemaValidates：文档内的 schema 必须接受同文档的实例', async () => {
+    const good = {
+      schema: { type: 'object', required: ['n'], properties: { n: { type: 'number' } } },
+      sample: { n: 1 },
+    };
+    const bad = {
+      schema: { type: 'object', required: ['n'], properties: { n: { type: 'number' } } },
+      sample: { n: 'not-a-number' },
+    };
+    expect(await run(['schemaValidates:schema:sample'], good)).toBe(100);
+    expect(await run(['schemaValidates:schema:sample'], bad)).toBe(0);
+  });
+
+  it('count：正文正则命中次数（markdown 计数型断言）', async () => {
+    const doc = '# 标题\n\n## A\n\n## B\n\n## C\n\n| a | b |\n| --- | --- |\n| 1 | 2 |\n';
+    const r = await score(
+      { format: 'markdown', output_policy: 'raw_only', constraints: ['count:^##\\s:>=3', 'count:^\\|:>=3'] },
+      doc,
+    );
+    expect(r.axisScores.field_constraints).toBe(100);
+    const r2 = await score(
+      { format: 'markdown', output_policy: 'raw_only', constraints: ['count:^##\\s:>=3'] },
+      '# 标题\n\n## A\n',
+    );
+    expect(r2.axisScores.field_constraints).toBe(0);
+  });
+
+  it('additionalProperties:false 会暴露多余键', async () => {
+    const schema = {
+      type: 'object',
+      required: ['a'],
+      properties: { a: { type: 'number' } },
+      additionalProperties: false,
+    };
+    const clean = await score({ format: 'json', output_policy: 'raw_only', schema }, '{"a":1}');
+    expect(clean.axisScores.schema_compliance).toBe(100);
+    const dirty = await score({ format: 'json', output_policy: 'raw_only', schema }, '{"a":1,"extra":2}');
+    expect(dirty.axisScores.schema_compliance).toBeLessThan(100);
+    expect(dirty.evidence.some((e) => e.includes('additionalProperties:false'))).toBe(true);
+  });
+
+  it('无法解析的规则不会误伤（返回失败但不抛错）', async () => {
+    expect(await run(['maxDecimals:orders[].amount=2'], { nothing: true })).toBe(0);
+    expect(await run(['reAll:orders[].id:([invalid'], { orders: [{ id: 'a' }] })).toBe(0);
+    expect(await run(['csvCell:9:9:x'], { rows: [] })).toBe(0);
+  });
+
+  it('length / keysAll / ratioEq / chainEq', async () => {
+    const rows = [{ a: 1, b: 2 }, { a: 3, b: 4 }];
+    expect(await run(['length:rows=2'], { rows })).toBe(100);
+    expect(await run(['length:rows=3'], { rows })).toBe(0);
+    expect(await run(['keysAll:rows=a,b'], { rows })).toBe(100);
+    expect(await run(['keysAll:rows=a,b'], { rows: [{ a: 1, b: 2 }, { a: 3, b: 4, c: 5 }] })).toBe(0);
+
+    const order = [{ amount: 100, tax: 6 }, { amount: 50, tax: 3 }];
+    expect(await run(['ratioEq:rows[].tax=amount*0.06:2'], { rows: order })).toBe(100);
+    expect(await run(['ratioEq:rows[].tax=amount*0.06:2'], { rows: [{ amount: 100, tax: 7 }] })).toBe(0);
+    expect(await run(['ratioEq:rows[].tax=amount*0.06:2'], { rows: [{ amount: 100, tax: 6.000000000000001 }] })).toBe(0);
+
+    const ledger = [
+      { opening: 100, delta: 10, closing: 110 },
+      { opening: 110, delta: -30, closing: 80 },
+    ];
+    expect(await run(['chainEq:ledger[].opening=closing:100'], { ledger })).toBe(100);
+    expect(await run(['chainEq:ledger[].opening=closing:100'], {
+      ledger: [{ opening: 100, delta: 10, closing: 110 }, { opening: 999, delta: -30, closing: 80 }],
+    })).toBe(0);
+  });
+
+  it('schemaRejects：反向自洽（实例必须被 schema 拒绝）', async () => {
+    const doc = {
+      schema: { type: 'object', required: ['n'], properties: { n: { type: 'number' } } },
+      broken: { n: 'str' },
+    };
+    expect(await run(['schemaRejects:schema:broken'], doc)).toBe(100);
+    expect(await run(['schemaRejects:schema:broken'], {
+      schema: { type: 'object', required: ['n'], properties: { n: { type: 'number' } } },
+      broken: { n: 1 },
+    })).toBe(0);
+  });
+
+  it('csvCell：解析后的 RFC4180 单元格内容', async () => {
+    const csv = 'sku,name,desc\nA-1,"鼠标, 无线","含""引号""说明"\nA-2,键盘,"第一行\n第二行"\n';
+    const r = await score(
+      {
+        format: 'csv',
+        output_policy: 'raw_only',
+        requiredFields: ['sku', 'name', 'desc'],
+        constraints: ['csvCell:0:1:鼠标, 无线', 'csvCell:0:2:含"引号"说明', 'csvCell:1:2:第一行\\n第二行'],
+      },
+      csv,
+    );
+    expect(r.axisScores.syntax_parse).toBe(100);
+    expect(r.axisScores.field_constraints).toBe(100);
+  });
+
+  it('order：文本类格式的相对顺序', async () => {
+    const xml = '<quote><buyer>张三</buyer><items><item>a</item></items></quote>';
+    const r = await score(
+      { format: 'xml', output_policy: 'raw_only', requiredFields: ['quote', 'buyer', 'items'], constraints: ['order:<buyer>|</buyer>', 'order:<items>|</items>'] },
+      xml,
+    );
+    expect(r.axisScores.field_constraints).toBe(100);
+    const r2 = await score(
+      { format: 'xml', output_policy: 'raw_only', constraints: ['order:</items>|<items>'] },
+      xml,
+    );
+    expect(r2.axisScores.field_constraints).toBe(0);
+  });
+});
+
 describe('P0-8 基础设施失败必须与能力信号隔离', () => {
   it('生成阶段失败证据归类为 environment_error', () => {
     expect(classifyEngineeringFailure({

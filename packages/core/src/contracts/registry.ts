@@ -57,11 +57,11 @@ export const GRADER_CONTRACTS: Record<string, GraderContract> = {
     dimension: 'structured_output',
     consumedFields: [
       'format', 'output_policy', 'requiredFields', 'crossFieldRules',
-      'schema', 'constraints', 'allowed_fence_languages',
+      'schema', 'constraints', 'allowed_fence_languages', 'axis_weights',
     ],
     declaredFields: [
       'format', 'output_policy', 'requiredFields', 'crossFieldRules',
-      'schema', 'constraints', 'allowed_fence_languages',
+      'schema', 'constraints', 'allowed_fence_languages', 'axis_weights',
     ],
     requiredFields: ['format'],
     capabilities: {

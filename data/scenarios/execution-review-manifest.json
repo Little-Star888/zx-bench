@@ -62,7 +62,7 @@
     "packages/core/package.json": "2776db5ce3c6c0b8c0f86ec65b3985760b261bd866fa533b935763b8398b9e7d",
     "pnpm-lock.yaml": "9fde2ddb791d115402ab8b92fa0453d753ed175d77b91baf1a31e1ee1f23ff8d",
     "docs/execution-all-single-file-v4.14.md": "bd1aa05cd3e544c6fb11cbf4a4282eb493814a60de19a9d7e4599b9d3b20b0eb",
-    "packages/core/src/contracts/registry.ts": "f09fad2e35af10fa61bc7f9169ce3eabdec291112f915bf4e781c8377c05553b",
+    "packages/core/src/contracts/registry.ts": "af1d1d583a1502022920228c68c8dbc1d128ddd2f5ca599782e862b6db4529dc",
     "packages/core/src/contracts/canonicalize.ts": "ccd64df33206ed620043981fc974e34313b60703d6b121080e571bd56359bdf6",
     "scripts/upgrade-execution-review-v2.mjs": "6db3b5cb82ed70f46944573cf49035a601f5e5063b110a406a8c19ba6c044248",
     "scripts/sync-reviewed-question-contracts.mjs": "e9c71b338afdf8a797f6d4db07209b053ecf3d26c70fe01ea789807dc86efea0",

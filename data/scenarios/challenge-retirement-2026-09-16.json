@@ -1,0 +1,48 @@
+{
+ "date": "2026-09-16T00:00:00.000Z",
+ "reason": "cross-run saturation: all observed models scored 100 (foundation items under the observed-discrimination policy)",
+ "dimension": "reasoning_math",
+ "policy": "observed-discrimination gate: foundation items (allPass) are capped at maxFoundationRate 20%",
+ "retired": [
+  "MC2-003",
+  "MC2-005",
+  "MC2-007",
+  "MC2-008",
+  "MC2-009",
+  "MC2-010",
+  "MC2-011",
+  "MC2-012",
+  "V2-595bf9608ca5bb",
+  "V2-fa3a76cee51533",
+  "MC2-001",
+  "MC2-002",
+  "MC2-006"
+ ],
+ "changed": [],
+ "alreadyRetired": [
+  "MC2-003",
+  "MC2-005",
+  "MC2-007",
+  "MC2-008",
+  "MC2-009",
+  "MC2-010",
+  "MC2-011",
+  "MC2-012",
+  "V2-595bf9608ca5bb",
+  "V2-fa3a76cee51533",
+  "MC2-001",
+  "MC2-002",
+  "MC2-006"
+ ],
+ "bankBefore": {
+  "total": 786,
+  "valid": 773,
+  "defaultRunCount": 772
+ },
+ "bankAfter": {
+  "total": 786,
+  "valid": 773,
+  "defaultRunCount": 772
+ },
+ "note": "status-only change; definitions, references and historical run rows are untouched"
+}
