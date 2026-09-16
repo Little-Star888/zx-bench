@@ -53803,7 +53803,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「有理线性规划与不可行证书」，第1/4问，10分，时限180秒。\n共同题干：所有变量非负。最大化 c·x，约束 A x≤b。数据：{\"a\": [[3, 1, 2, 0, 1], [1, 4, 0, 2, 1], [0, 1, 3, 1, 2], [2, 0, 1, 4, 1], [1, 2, 1, 1, 3]], \"b\": [9, 17, 12, 17, 15], \"c\": [12, 11, 16, 14, 14]}。optimal证书为{status:\"optimal\",x:[...],y:[...],value:...}，其中y≥0、Aᵀy≥c且b·y=c·x。infeasible证书为{status:\"infeasible\",y:[...]}，要求y≥0、Aᵀy≥0、b·y<0。\n本问：提交 row_slack=把 x=[1,1,1,1,1] 代入后各约束的松弛量 b−Ax（按约束顺序，长度5）。\n评分项：row_slack(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「有理线性规划与不可行证书」，第1/4问，10分，时限600秒。\n共同题干：所有变量非负。最大化 c·x，约束 A x≤b。数据：{\"a\": [[3, 1, 2, 0, 1], [1, 4, 0, 2, 1], [0, 1, 3, 1, 2], [2, 0, 1, 4, 1], [1, 2, 1, 1, 3]], \"b\": [9, 17, 12, 17, 15], \"c\": [12, 11, 16, 14, 14]}。optimal证书为{status:\"optimal\",x:[...],y:[...],value:...}，其中y≥0、Aᵀy≥c且b·y=c·x。infeasible证书为{status:\"infeasible\",y:[...]}，要求y≥0、Aᵀy≥0、b·y<0。\n本问：提交 row_slack=把 x=[1,1,1,1,1] 代入后各约束的松弛量 b−Ax（按约束顺序，长度5）。\n评分项：row_slack(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -53814,8 +53814,8 @@
    "groupId": "MX3-01",
    "partNumber": 1,
    "points": 10,
-   "hardSeconds": 180,
-   "questionHash": "dac9d24481a975f4f1208cda9e002b2d2d208d06ced1786bd04054816914371b",
+   "hardSeconds": 600,
+   "questionHash": "f5e834e2acbfb1d4348eb56d45fb444b17dfe276c6df1f7a514a84394cdcf5ab",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -53826,8 +53826,8 @@
    "points_10",
    "timeout_180s"
   ],
-  "scenarioVersion": "1.1.0",
-  "scenarioHash": "4c8529e985ae5b38",
+  "scenarioVersion": "1.2.0",
+  "scenarioHash": "b8219b73ba81b0a2",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -53971,7 +53971,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「流量与割的双向证明」，第1/4问，10分，时限180秒。\n共同题干：有向网络顶点0..7，源0汇7；每条边[u,v,capacity]，流量必须为整数。边按输入顺序编号。数据：[[0, 1, 11], [0, 2, 8], [0, 3, 6], [1, 2, 3], [1, 4, 7], [1, 5, 5], [2, 4, 6], [2, 5, 5], [3, 2, 2], [3, 5, 7], [4, 5, 2], [4, 6, 8], [5, 6, 4], [5, 7, 9], [6, 7, 13]]。证书为{flow:[每条边流量],cut:[含源不含汇的顶点集合],value:流值}；需满足容量、流守恒，且流值等于割容量。\n本问：提交 path_edges=[位于至少一条 0→7 有向路径上的边的编号]（升序）。\n评分项：path_edges(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「流量与割的双向证明」，第1/4问，10分，时限600秒。\n共同题干：有向网络顶点0..7，源0汇7；每条边[u,v,capacity]，流量必须为整数。边按输入顺序编号。数据：[[0, 1, 11], [0, 2, 8], [0, 3, 6], [1, 2, 3], [1, 4, 7], [1, 5, 5], [2, 4, 6], [2, 5, 5], [3, 2, 2], [3, 5, 7], [4, 5, 2], [4, 6, 8], [5, 6, 4], [5, 7, 9], [6, 7, 13]]。证书为{flow:[每条边流量],cut:[含源不含汇的顶点集合],value:流值}；需满足容量、流守恒，且流值等于割容量。\n本问：提交 path_edges=[位于至少一条 0→7 有向路径上的边的编号]（升序）。\n评分项：path_edges(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -53982,8 +53982,8 @@
    "groupId": "MX3-02",
    "partNumber": 1,
    "points": 10,
-   "hardSeconds": 180,
-   "questionHash": "89c2e827b539e274271fbd5ebb8d103a184a88ce8df1240e30e28db597183546",
+   "hardSeconds": 600,
+   "questionHash": "4ec0e2859094a26872a269b10decc146656bb4b460213bfd62b9b2fa50f14c18",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -53994,8 +53994,8 @@
    "points_10",
    "timeout_180s"
   ],
-  "scenarioVersion": "1.1.0",
-  "scenarioHash": "d243d37e93420670",
+  "scenarioVersion": "1.2.0",
+  "scenarioHash": "8f6c4b2a2cd6f6b0",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -54139,7 +54139,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「受限指派与势函数」，第1/4问，10分，时限180秒。\n共同题干：6名工人到6项工作的一一指派，编号0..5，成本矩阵：[[8, 9, 23, 14, 8, 19], [7, 21, 7, 18, 16, 10], [6, 12, 18, 6, 22, 13], [8, 16, 11, 24, 9, 17], [7, 7, 19, 10, 15, 21], [8, 14, 9, 17, 12, 8]]。最小化总成本。certificate={permutation:[工人对应工作],u:[...],v:[...],value:...}；所有允许边应有u[i]+v[j]≤cost[i][j]，且总成本=Σu+Σv。\n本问：提交 row_min=[成本矩阵每行的最小值]（按行顺序，长度6），以及 row_min_sum=各行最小值之和。\n评分项：row_min(5分)、row_min_sum(5分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「受限指派与势函数」，第1/4问，10分，时限600秒。\n共同题干：6名工人到6项工作的一一指派，编号0..5，成本矩阵：[[8, 9, 23, 14, 8, 19], [7, 21, 7, 18, 16, 10], [6, 12, 18, 6, 22, 13], [8, 16, 11, 24, 9, 17], [7, 7, 19, 10, 15, 21], [8, 14, 9, 17, 12, 8]]。最小化总成本。certificate={permutation:[工人对应工作],u:[...],v:[...],value:...}；所有允许边应有u[i]+v[j]≤cost[i][j]，且总成本=Σu+Σv。\n本问：提交 row_min=[成本矩阵每行的最小值]（按行顺序，长度6），以及 row_min_sum=各行最小值之和。\n评分项：row_min(5分)、row_min_sum(5分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -54150,8 +54150,8 @@
    "groupId": "MX3-03",
    "partNumber": 1,
    "points": 10,
-   "hardSeconds": 180,
-   "questionHash": "a5b7c39ac10df6140956beca58231835a7878eebb722080d021e45f6d3b17b8f",
+   "hardSeconds": 600,
+   "questionHash": "2186d4d2e3a7426f332371afd6f5ca2437ed54e6ea79a1eefacf4ebd02b757e2",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -54162,8 +54162,8 @@
    "points_10",
    "timeout_180s"
   ],
-  "scenarioVersion": "1.1.0",
-  "scenarioHash": "d234dbd7cb7b824b",
+  "scenarioVersion": "1.2.0",
+  "scenarioHash": "7a30725c312c8b63",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -54307,7 +54307,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「非约化商环中的逆与解空间」，第1/4问，10分，时限180秒。\n共同题干：在F₇[x]/((x²+1)³)中计算。系数数组按常数项到最高次项排列，所有系数用0..6代表；余式数组固定长度6。\n本问：提交 x6_reduced=x⁶ 在商环 F₇[x]/((x²+1)³) 中的余式（长度6，常数项起）。\n评分项：x6_reduced(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「非约化商环中的逆与解空间」，第1/4问，10分，时限600秒。\n共同题干：在F₇[x]/((x²+1)³)中计算。系数数组按常数项到最高次项排列，所有系数用0..6代表；余式数组固定长度6。\n本问：提交 x6_reduced=x⁶ 在商环 F₇[x]/((x²+1)³) 中的余式（长度6，常数项起）。\n评分项：x6_reduced(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -54318,8 +54318,8 @@
    "groupId": "MX3-04",
    "partNumber": 1,
    "points": 10,
-   "hardSeconds": 180,
-   "questionHash": "066de0662bce260cc5d3d0e7b70163cbbdbaf1cf4bb6dabf1f68bd098ff35f59",
+   "hardSeconds": 600,
+   "questionHash": "5a1584d3c0003349d4ec56a4aac022c0ab9cf287c783c1522dc3be6e4bb84164",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -54330,8 +54330,8 @@
    "points_10",
    "timeout_180s"
   ],
-  "scenarioVersion": "1.1.0",
-  "scenarioHash": "845f43e2b9033580",
+  "scenarioVersion": "1.2.0",
+  "scenarioHash": "9aec88ac8c6093c1",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -54475,7 +54475,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「吸收链的条件矩与转移干预」，第1/4问，10分，时限180秒。\n共同题干：状态为0,1,2,S,F；S与F吸收。从0开始，T为首次吸收所需步数。每行按0,1,2,S,F给转移概率：[[\"0\", \"1/2\", \"1/3\", \"1/6\", \"0\"], [\"1/4\", \"0\", \"1/4\", \"1/4\", \"1/4\"], [\"1/5\", \"2/5\", \"0\", \"1/5\", \"1/5\"]].\n本问：提交 one_step_absorb=[从状态0、1、2 各自一步进入吸收态(S或F)的概率]（按状态顺序，长度3，精确分数）。\n评分项：one_step_absorb(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「吸收链的条件矩与转移干预」，第1/4问，10分，时限600秒。\n共同题干：状态为0,1,2,S,F；S与F吸收。从0开始，T为首次吸收所需步数。每行按0,1,2,S,F给转移概率：[[\"0\", \"1/2\", \"1/3\", \"1/6\", \"0\"], [\"1/4\", \"0\", \"1/4\", \"1/4\", \"1/4\"], [\"1/5\", \"2/5\", \"0\", \"1/5\", \"1/5\"]].\n本问：提交 one_step_absorb=[从状态0、1、2 各自一步进入吸收态(S或F)的概率]（按状态顺序，长度3，精确分数）。\n评分项：one_step_absorb(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -54486,8 +54486,8 @@
    "groupId": "MX3-05",
    "partNumber": 1,
    "points": 10,
-   "hardSeconds": 180,
-   "questionHash": "4166796e656118dbb89cdae3d797e2ae043ced5f95d3fb82d5ee1a9becf2095c",
+   "hardSeconds": 600,
+   "questionHash": "e54845c68a889937954125d6ad423c9d37d0e32c7f426440f90c232840196c9d",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -54498,8 +54498,8 @@
    "points_10",
    "timeout_180s"
   ],
-  "scenarioVersion": "1.1.0",
-  "scenarioHash": "8a6aa46edcd07e1a",
+  "scenarioVersion": "1.2.0",
+  "scenarioHash": "07d61ac3e7664e5d",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -54643,7 +54643,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「循环约束与扩张对称群」，第1/4问，10分，时限180秒。\n共同题干：长度14的二进制循环串，位置有编号，首尾相邻。前三问恰有5个1且没有相邻的1。\n本问：提交 with_pos0_one=位置0为1、且满足恰有5个1与全部相邻约束的有编号串数。\n评分项：with_pos0_one(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「循环约束与扩张对称群」，第1/4问，10分，时限600秒。\n共同题干：长度14的二进制循环串，位置有编号，首尾相邻。前三问恰有5个1且没有相邻的1。\n本问：提交 with_pos0_one=位置0为1、且满足恰有5个1与全部相邻约束的有编号串数。\n评分项：with_pos0_one(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -54654,8 +54654,8 @@
    "groupId": "MX3-07",
    "partNumber": 1,
    "points": 10,
-   "hardSeconds": 180,
-   "questionHash": "5788ab916354edc29ac17bf24f84993a2dd891eaf4cc0409e950a427f02e6598",
+   "hardSeconds": 600,
+   "questionHash": "00f769f7dfb19270bbc08095670bce09d77a6cc9009380c45fd8830f0b65b23a",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -54666,8 +54666,8 @@
    "points_10",
    "timeout_180s"
   ],
-  "scenarioVersion": "1.1.0",
-  "scenarioHash": "4e6b63fcb4c72d3e",
+  "scenarioVersion": "1.2.0",
+  "scenarioHash": "1b743ffe6d8be24d",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -54811,7 +54811,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「加权生成树与边相关性」，第1/4问，10分，时限180秒。\n共同题干：无向简单图顶点0..6，边按0起编号，每条[u,v,w]：[[0, 1, 2], [0, 2, 3], [0, 3, 1], [1, 2, 1], [1, 4, 4], [2, 3, 2], [2, 4, 1], [2, 5, 3], [3, 5, 2], [3, 6, 1], [4, 5, 2], [4, 6, 3], [5, 6, 4]]。生成树的权重为边权之积，随机树的概率与权重成正比。\n本问：提交 tree_count=不同生成树的个数（不计权重）。\n评分项：tree_count(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「加权生成树与边相关性」，第1/4问，10分，时限600秒。\n共同题干：无向简单图顶点0..6，边按0起编号，每条[u,v,w]：[[0, 1, 2], [0, 2, 3], [0, 3, 1], [1, 2, 1], [1, 4, 4], [2, 3, 2], [2, 4, 1], [2, 5, 3], [3, 5, 2], [3, 6, 1], [4, 5, 2], [4, 6, 3], [5, 6, 4]]。生成树的权重为边权之积，随机树的概率与权重成正比。\n本问：提交 tree_count=不同生成树的个数（不计权重）。\n评分项：tree_count(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -54822,8 +54822,8 @@
    "groupId": "MX3-08",
    "partNumber": 1,
    "points": 10,
-   "hardSeconds": 180,
-   "questionHash": "8e93ff5efbdb2660576f2ba6e6bd4bce1a21035eb8ca2345f1b1277743726bc1",
+   "hardSeconds": 600,
+   "questionHash": "1734673fa1bbf612bedb5b6b4789dde6b08a1575de2706530ccc77f464e8a766",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -54834,8 +54834,8 @@
    "points_10",
    "timeout_180s"
   ],
-  "scenarioVersion": "1.1.0",
-  "scenarioHash": "9490d4f73e391ac9",
+  "scenarioVersion": "1.2.0",
+  "scenarioHash": "7812efcb77fbf0ea",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -54979,7 +54979,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「线性码与缩短穿孔的顺序」，第1/4问，10分，时限180秒。\n共同题干：F₂上的线性码由下列六行生成；字符串左端为位置0，右端为位置11：[\"100000110101\", \"010000101011\", \"001000111000\", \"000100011110\", \"000010100111\", \"000001010101\"].\n本问：提交 first_four_rank=前四行生成子空间在 F₂ 上的维数。\n评分项：first_four_rank(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「线性码与缩短穿孔的顺序」，第1/4问，10分，时限600秒。\n共同题干：F₂上的线性码由下列六行生成；字符串左端为位置0，右端为位置11：[\"100000110101\", \"010000101011\", \"001000111000\", \"000100011110\", \"000010100111\", \"000001010101\"].\n本问：提交 first_four_rank=前四行生成子空间在 F₂ 上的维数。\n评分项：first_four_rank(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -54990,8 +54990,8 @@
    "groupId": "MX3-09",
    "partNumber": 1,
    "points": 10,
-   "hardSeconds": 180,
-   "questionHash": "f4a555f55a94fc825c058467bd13436b2f6f3dc7f01b1bb3c37b66d3f9360cbe",
+   "hardSeconds": 600,
+   "questionHash": "6b1301cd3c592bc3a36775a7a6d15d975fb63aff98e02432e731f7a79f9f5f77",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -55002,8 +55002,8 @@
    "points_10",
    "timeout_180s"
   ],
-  "scenarioVersion": "1.1.0",
-  "scenarioHash": "3fd4ab53fadea761",
+  "scenarioVersion": "1.2.0",
+  "scenarioHash": "b0e5a3c4f648ed3a",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -55147,7 +55147,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「偏序线性扩张与位置统计」，第1/4问，10分，时限180秒。\n共同题干：12个不同元素0..11。每条[u,v]要求u在v前，除此之外仅含传递闭包的约束：[[0, 3], [0, 4], [1, 4], [1, 5], [2, 5], [2, 6], [3, 7], [4, 7], [4, 8], [5, 8], [5, 9], [6, 9], [7, 10], [8, 10], [8, 11], [9, 11]]。每个合法排列等概率，位置从1计。\n本问：提交 greedy_prefix=按“每步取当前最小可用元素”得到的合法排列的前4个元素。\n评分项：greedy_prefix(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「偏序线性扩张与位置统计」，第1/4问，10分，时限600秒。\n共同题干：12个不同元素0..11。每条[u,v]要求u在v前，除此之外仅含传递闭包的约束：[[0, 3], [0, 4], [1, 4], [1, 5], [2, 5], [2, 6], [3, 7], [4, 7], [4, 8], [5, 8], [5, 9], [6, 9], [7, 10], [8, 10], [8, 11], [9, 11]]。每个合法排列等概率，位置从1计。\n本问：提交 greedy_prefix=按“每步取当前最小可用元素”得到的合法排列的前4个元素。\n评分项：greedy_prefix(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -55158,8 +55158,8 @@
    "groupId": "MX3-10",
    "partNumber": 1,
    "points": 10,
-   "hardSeconds": 180,
-   "questionHash": "74d723236411e52a2deecc2a3adc855ce7832f942b16d3b43c8f50ba02da5c18",
+   "hardSeconds": 600,
+   "questionHash": "dd661dceb65e6211e6471e5ec236a05521f7d73c2b09dbf0b6130a69b61f8142",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -55170,8 +55170,8 @@
    "points_10",
    "timeout_180s"
   ],
-  "scenarioVersion": "1.1.0",
-  "scenarioHash": "572244671a504e75",
+  "scenarioVersion": "1.2.0",
+  "scenarioHash": "031c5701c73d360b",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -55315,7 +55315,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「共享因子的奇异提升」，第1/4问，10分，时限180秒。\n共同题干：研究整数同余 (x²−1)(x²−10)≡0 mod 3^k。不同x按模3^k计。不能假定两因子之一单独被3^k整除。\n本问：k=3，提交 count=解数，以及 parity=[解中偶数的个数,解中奇数的个数]。\n评分项：count(5分)、parity(5分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「共享因子的奇异提升」，第1/4问，10分，时限600秒。\n共同题干：研究整数同余 (x²−1)(x²−10)≡0 mod 3^k。不同x按模3^k计。不能假定两因子之一单独被3^k整除。\n本问：k=3，提交 count=解数，以及 parity=[解中偶数的个数,解中奇数的个数]。\n评分项：count(5分)、parity(5分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -55326,8 +55326,8 @@
    "groupId": "MX3-11",
    "partNumber": 1,
    "points": 10,
-   "hardSeconds": 180,
-   "questionHash": "d813f09cd018f14b2e59ddc2ec33d422e8fecae0301d56ba93ef90d953ea125c",
+   "hardSeconds": 600,
+   "questionHash": "929747e1e40a03574284222a8a5b900e712a23df5deb794b103626255774a10b",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -55338,8 +55338,8 @@
    "points_10",
    "timeout_180s"
   ],
-  "scenarioVersion": "1.1.0",
-  "scenarioHash": "3b2e4839b874358b",
+  "scenarioVersion": "1.2.0",
+  "scenarioHash": "f84b0fd62b79ae74",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -57771,6 +57771,647 @@
     "sumEq:transactions[].amount=summary.totalAmount",
     "sumEq:transactions[].fee=summary.totalFee",
     "sumEq:transactions[].net=summary.totalNet"
+   ]
+  }
+ },
+ {
+  "id": "SO-CN-053",
+  "dimension": "structured_output",
+  "category": "json",
+  "difficulty": "adversarial",
+  "language": "json",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "public_dev",
+  "promptTemplate": "下面给出 6 个**合法**样本与 5 个**非法**样本，它们都只有 sku 与 qty 两个字段。\n\n合法样本：\n1. {\"sku\": \"A-1\", \"qty\": 12}\n2. {\"sku\": \"A-9\", \"qty\": 30}\n3. {\"sku\": \"A-2\", \"qty\": 10}\n4. {\"sku\": \"A-104\", \"qty\": 25}\n5. {\"sku\": \"A-7\", \"qty\": 18}\n6. {\"sku\": \"A-3\", \"qty\": 44}\n\n非法样本：\n1. {\"sku\": \"B-1\", \"qty\": 20}\n2. {\"sku\": \"A-3\", \"qty\": 9}\n3. {\"sku\": \"A-4\", \"qty\": 12.5}\n4. {\"sku\": \"C-2\", \"qty\": 100}\n5. {\"sku\": \"A-5\", \"qty\": 0}\n\n请反推出**唯一一条判定规则**，并用 JSON Schema 表达出来。要求：\n1. 输出顶层键**恰好**为 schema、positives、negatives 三个\n2. schema 的键**恰好**为 type、properties、required、additionalProperties 四个：\n   - type 为 object；additionalProperties 必须为 false\n   - properties **恰好**含 sku、qty 两个键；required **恰好**含这两项\n   - schema 必须让上面 6 个合法样本全部通过、5 个非法样本全部被拒\n3. **禁止使用 anyOf / oneOf / allOf**：必须用属性级约束表达这条判定规则\n4. positives 与 negatives：按题面给出的**顺序原样回显**（键名、键值都必须一致）\n5. 输出纯 JSON，不要 markdown 代码块，不要任何解释文字\n\n提示：有且只有一条判定规则能同时解释全部 11 个样本。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "schema_compliance",
+  "graderVersion": "schema_compliance_v5",
+  "scoring": {
+   "type": "schema_compliance"
+  },
+  "scenarioVersion": "4.4.0",
+  "scenarioHash": "3f5797acb4eda94e",
+  "responseMode": null,
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null,
+  "tags": [
+   "json-schema",
+   "schema-induction",
+   "positive-negative",
+   "minimal-schema",
+   "ood"
+  ],
+  "requirements": {
+   "format": "json",
+   "output_policy": "raw_only",
+   "axis_weights": {
+    "syntax_parse": 0.05,
+    "schema_compliance": 0.05,
+    "field_constraints": 0.8,
+    "cross_field_consistency": 0.05,
+    "output_discipline": 0.05
+   },
+   "requiredFields": [
+    "schema",
+    "positives",
+    "negatives",
+    "schema.properties",
+    "positives[5].sku",
+    "negatives[4].qty"
+   ],
+   "constraints": [
+    "keys:.=schema,positives,negatives",
+    "keys:schema=type,properties,required,additionalProperties",
+    "valueEq:schema.type=object",
+    "keys:schema.properties=sku,qty",
+    "length:schema.required=2",
+    "valueEq:schema.additionalProperties=false",
+    "count:\"anyOf\":==0",
+    "count:\"oneOf\":==0",
+    "count:\"allOf\":==0",
+    "length:positives=6",
+    "length:negatives=5",
+    "setEquals:positives[].sku=A-1,A-9,A-2,A-104,A-7,A-3",
+    "setEquals:negatives[].sku=B-1,A-3,A-4,C-2,A-5",
+    "sumEq:positives[].qty=139",
+    "sumEq:negatives[].qty=141.5",
+    "deepEq:positives[2].qty=10",
+    "deepEq:negatives[1].qty=9",
+    "deepEq:negatives[2].qty=12.5",
+    "schemaValidates:schema:positives[0]",
+    "schemaValidates:schema:positives[1]",
+    "schemaValidates:schema:positives[2]",
+    "schemaValidates:schema:positives[3]",
+    "schemaValidates:schema:positives[4]",
+    "schemaValidates:schema:positives[5]",
+    "schemaRejects:schema:negatives[0]",
+    "schemaRejects:schema:negatives[1]",
+    "schemaRejects:schema:negatives[2]",
+    "schemaRejects:schema:negatives[3]",
+    "schemaRejects:schema:negatives[4]"
+   ]
+  }
+ },
+ {
+  "id": "SO-CN-054",
+  "dimension": "structured_output",
+  "category": "json",
+  "difficulty": "adversarial",
+  "language": "json",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "public_dev",
+  "promptTemplate": "请构造一个使用 **oneOf** 的 JSON Schema，并给出 5 个用例，用来证明你理解 oneOf 与 anyOf 的区别。\n\n输出顶层键**恰好**为 schema、cases 两个：\n1. schema：必须含 `oneOf`，且 `oneOf` **恰好 3 个分支**。三个分支分别描述三种形状：\n   - 分支一：含 `type` 且值为 \"shape\"，且含数值字段 `radius`\n   - 分支二：含 `type` 且值为 \"shape\"，且含数值字段 `side`\n   - 分支三：含 `type` 且值为 \"text\"，且含字符串字段 `value`\n   （分支可以互相重合，这正是本题要考的地方）\n2. cases：**恰好 5 个**元素，每个元素**恰好**含 expected、instance 两个键\n   - cases[0] / cases[1] / cases[2]：各是一个只匹配**恰好一个**分支的实例，expected 为 \"valid\"\n   - cases[3]：一个 **同时满足两个分支** 的实例，expected 为 \"invalid\"\n     （必须**恰好**是 {\"type\":\"shape\",\"radius\":5,\"side\":5}）\n   - cases[4]：一个 **一个分支都不满足** 的实例，expected 为 \"invalid\"\n     （必须**恰好**是 {\"type\":\"text\",\"value\":42}）\n3. 禁止使用 anyOf 代替 oneOf\n4. 输出纯 JSON，不要 markdown 代码块，不要任何解释文字",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "schema_compliance",
+  "graderVersion": "schema_compliance_v5",
+  "scoring": {
+   "type": "schema_compliance"
+  },
+  "scenarioVersion": "4.4.0",
+  "scenarioHash": "830f4529e5f6af91",
+  "responseMode": null,
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null,
+  "tags": [
+   "json-schema",
+   "oneof-exactly-one",
+   "counterexample",
+   "combinatorics",
+   "ood"
+  ],
+  "requirements": {
+   "format": "json",
+   "output_policy": "raw_only",
+   "axis_weights": {
+    "syntax_parse": 0.05,
+    "schema_compliance": 0.05,
+    "field_constraints": 0.8,
+    "cross_field_consistency": 0.05,
+    "output_discipline": 0.05
+   },
+   "requiredFields": [
+    "schema",
+    "cases",
+    "schema.oneOf",
+    "cases[0].instance",
+    "cases[3].instance",
+    "cases[4].instance"
+   ],
+   "constraints": [
+    "keys:.=schema,cases",
+    "length:cases=5",
+    "length:schema.oneOf=3",
+    "count:\"oneOf\":>=1",
+    "count:\"anyOf\":==0",
+    "valueEq:cases[0].expected=\"valid\"",
+    "valueEq:cases[1].expected=\"valid\"",
+    "valueEq:cases[2].expected=\"valid\"",
+    "valueEq:cases[3].expected=\"invalid\"",
+    "valueEq:cases[4].expected=\"invalid\"",
+    "schemaValidates:schema:cases[0].instance",
+    "schemaValidates:schema:cases[1].instance",
+    "schemaValidates:schema:cases[2].instance",
+    "schemaRejects:schema:cases[3].instance",
+    "schemaRejects:schema:cases[4].instance",
+    "deepEq:cases[3].instance.type=\"shape\"",
+    "deepEq:cases[3].instance.radius=5",
+    "deepEq:cases[3].instance.side=5",
+    "deepEq:cases[4].instance.type=\"text\"",
+    "deepEq:cases[4].instance.value=42"
+   ]
+  }
+ },
+ {
+  "id": "SO-CN-055",
+  "dimension": "structured_output",
+  "category": "json",
+  "difficulty": "hard",
+  "language": "json",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "public_dev",
+  "promptTemplate": "请输出一个**递归** JSON Schema 以及两棵树的实例，用来证明递归定义真的生效。\n\n输出顶层键**恰好**为 schema、tree、overfull 三个：\n1. schema 描述一个树节点，键**恰好**为 type、properties、required、additionalProperties 四个：\n   - type 为 object；additionalProperties 为 false\n   - properties **恰好**含 name、weight、children 三个键：\n     · name：string，minLength 1\n     · weight：integer，minimum 0\n     · children：array，**最多 4 个元素**，元素必须是**同一个节点定义本身**（必须用 `$ref` 指向根模式实现递归，不得展开成固定层数）\n   - required **恰好**含这三个键\n2. tree：一棵满足 schema 的树，且结构被完全钉死：\n   - **恰好 10 个节点**（把每个对象算一个节点，数组容器不计）\n   - 根节点的 children **恰好 2 个元素**\n   - 根的第 1 个子节点的 children **恰好 1 个元素**\n   - 再往下那个节点（根的第 1 个子节点的第 1 个子节点）的 children **恰好 3 个元素**\n   - 其余节点自行安排，但总数必须正好 10；所有节点都必须带 children 键（叶子写空数组）\n   - 根节点的 name 为 \"root\"，weight 为 0\n3. overfull：一个**违反 schema** 的实例（提示：让某个节点的 children 超过 4 个）\n4. 输出纯 JSON，不要 markdown 代码块，不要任何解释文字",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "schema_compliance",
+  "graderVersion": "schema_compliance_v5",
+  "scoring": {
+   "type": "schema_compliance"
+  },
+  "scenarioVersion": "4.4.0",
+  "scenarioHash": "2e734c18dceac56c",
+  "responseMode": null,
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null,
+  "tags": [
+   "json-schema",
+   "recursive-ref",
+   "tree-shape",
+   "node-count",
+   "ood"
+  ],
+  "requirements": {
+   "format": "json",
+   "output_policy": "raw_only",
+   "axis_weights": {
+    "syntax_parse": 0.05,
+    "schema_compliance": 0.05,
+    "field_constraints": 0.8,
+    "cross_field_consistency": 0.05,
+    "output_discipline": 0.05
+   },
+   "requiredFields": [
+    "schema",
+    "tree",
+    "overfull",
+    "schema.properties",
+    "tree.children",
+    "overfull.children"
+   ],
+   "constraints": [
+    "keys:.=schema,tree,overfull",
+    "keys:schema=type,properties,required,additionalProperties",
+    "keys:schema.properties=name,weight,children",
+    "length:schema.required=3",
+    "valueEq:schema.additionalProperties=false",
+    "count:\"\\$ref\":>=1",
+    "nodeCount:tree=10",
+    "length:tree.children=2",
+    "length:tree.children[0].children=1",
+    "length:tree.children[0].children[0].children=3",
+    "deepEq:tree.name=\"root\"",
+    "deepEq:tree.weight=0",
+    "schemaValidates:schema:tree",
+    "schemaRejects:schema:overfull",
+    "noNulls:tree"
+   ]
+  }
+ },
+ {
+  "id": "SO-CN-056",
+  "dimension": "structured_output",
+  "category": "json",
+  "difficulty": "adversarial",
+  "language": "json",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "public_dev",
+  "promptTemplate": "请输出一份 JSON，用来证明你能正确处理**特殊字符**与 **RFC 6901 JSON Pointer**。\n\n输出顶层键**恰好**为 records、pointers、csv 三个：\n1. records：**恰好 2 个**元素\n   - records[0] 的键**恰好**为 `a.b`、`c/d`、`e~f` 三个（注意键里分别有句点、斜杠、波浪号）：\n     · `a.b` 的值为两行文本：第一行 `line1`，第二行 `line2`（真的含换行符）\n     · `c/d` 的值为 `quote\"inside`（含一个双引号）\n     · `e~f` 的值为 `back\\\\slash`（含一个反斜杠）\n   - records[1] 的键**恰好**为 `emoji`、`spaced` 两个：\n     · `emoji` 的值为火箭 emoji 字符本身\n     · `spaced` 的值为 `ok`\n2. pointers：**恰好 3 个**字符串，依次是指向 records[0] 三个字段的 **RFC 6901 JSON Pointer**，\n   要求每个指针在本文件内真实可解析到上面的值（注意 `~` 必须写成 `~0`、`/` 必须写成 `~1`）\n3. csv：一份**恰好 3 行数据**的 RFC 4180 CSV，表头为 `id,value`，三行的 value 依次是上面三个特殊值，\n   含逗号/双引号/换行的单元格必须按 RFC 4180 加引号并转义（不得引入 BOM，不要多余空行；换行单元格会导致物理行数与逻辑行数不同，这是允许的）\n4. 不要用任何字符串转义以外的技巧（例如把换行写成两个字符 `\\n`）\n5. 输出纯 JSON，不要 markdown 代码块，不要任何解释文字",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "schema_compliance",
+  "graderVersion": "schema_compliance_v5",
+  "scoring": {
+   "type": "schema_compliance"
+  },
+  "scenarioVersion": "4.4.0",
+  "scenarioHash": "12eb59d518851382",
+  "responseMode": null,
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null,
+  "tags": [
+   "json",
+   "escaping",
+   "json-pointer",
+   "rfc6901",
+   "rfc4180",
+   "copy"
+  ],
+  "requirements": {
+   "format": "json",
+   "output_policy": "raw_only",
+   "axis_weights": {
+    "syntax_parse": 0.05,
+    "schema_compliance": 0.05,
+    "field_constraints": 0.8,
+    "cross_field_consistency": 0.05,
+    "output_discipline": 0.05
+   },
+   "requiredFields": [
+    "records",
+    "pointers",
+    "csv",
+    "records[1].emoji",
+    "pointers[0]"
+   ],
+   "constraints": [
+    "keys:.=records,pointers,csv",
+    "length:records=2",
+    "keys:records[0]=a.b,c/d,e~f",
+    "length:pointers=3",
+    "jsonPointer:pointers[0]=\"line1\\nline2\"",
+    "jsonPointer:pointers[1]=\"quote\\\"inside\"",
+    "jsonPointer:pointers[2]=\"back\\\\slash\"",
+    "deepEq:records[1].emoji=\"\\ud83d\\ude80\"",
+    "deepEq:records[1].spaced=\"ok\"",
+    "csvField:csv:0:1:line1\\nline2",
+    "csvField:csv:1:1:quote\"inside",
+    "csvField:csv:2:1:back\\\\slash"
+   ]
+  }
+ },
+ {
+  "id": "SO-CN-057",
+  "dimension": "structured_output",
+  "category": "json",
+  "difficulty": "adversarial",
+  "language": "json",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "public_dev",
+  "promptTemplate": "把 12 场演讲排进 3 个房间（A/B/C）× 4 个时段（1/2/3/4）的完整排期，每个格子恰好一场。\n\n输出顶层键**恰好**为 rooms、slots、talks 三个：\n1. rooms 恰为 [\"A\",\"B\",\"C\"]（顺序随意）；slots 恰为 [1,2,3,4]（顺序随意）\n2. talks：**恰好 12 个**元素，每个元素**恰好**含 slot、room、title、track、isKeynote 五个键，**键序必须与上述一致**\n3. 话题（track）恰好 4 类：AI、SEC、DATA、OPS，**每类恰好 3 场**\n4. 同一房间的同一时段只能有一场（不得双排）\n5. **同一房间不得出现两次同类话题**（即 (room, track) 组合不得重复）\n6. 每个房间恰好 4 场；每个时段恰好 3 场\n7. 恰好 2 场是主题演讲（isKeynote 为 true），且**主题演讲只能安排在房间 A**\n8. slot / room / title / track / isKeynote 的类型与取值范围：slot 为 1~4 的整数、room 为 \"A\"/\"B\"/\"C\"、track 为上述四类之一、isKeynote 为布尔\n9. talks 按 slot 升序排列；其中题为「开场演讲」的场次必须排在「闭幕演讲」之前\n10. 输出纯 JSON，不要 markdown 代码块，不要任何解释文字",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "schema_compliance",
+  "graderVersion": "schema_compliance_v5",
+  "scoring": {
+   "type": "schema_compliance"
+  },
+  "scenarioVersion": "4.4.0",
+  "scenarioHash": "0902d5a6591d6d23",
+  "responseMode": null,
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null,
+  "tags": [
+   "json",
+   "constraint-satisfaction",
+   "scheduling",
+   "unique-tuple",
+   "csp"
+  ],
+  "requirements": {
+   "format": "json",
+   "output_policy": "raw_only",
+   "axis_weights": {
+    "syntax_parse": 0.05,
+    "schema_compliance": 0.05,
+    "field_constraints": 0.8,
+    "cross_field_consistency": 0.05,
+    "output_discipline": 0.05
+   },
+   "requiredFields": [
+    "rooms",
+    "slots",
+    "talks",
+    "talks[0].title",
+    "talks[11].title"
+   ],
+   "schema": {
+    "type": "object",
+    "required": [
+     "rooms",
+     "slots",
+     "talks"
+    ],
+    "additionalProperties": false,
+    "properties": {
+     "rooms": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3
+     },
+     "slots": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4
+     },
+     "talks": {
+      "type": "array",
+      "minItems": 12,
+      "maxItems": 12,
+      "items": {
+       "type": "object",
+       "required": [
+        "slot",
+        "room",
+        "title",
+        "track",
+        "isKeynote"
+       ],
+       "additionalProperties": false,
+       "properties": {
+        "slot": {
+         "type": "integer",
+         "minimum": 1,
+         "maximum": 4
+        },
+        "room": {
+         "enum": [
+          "A",
+          "B",
+          "C"
+         ]
+        },
+        "title": {
+         "type": "string",
+         "minLength": 1
+        },
+        "track": {
+         "enum": [
+          "AI",
+          "SEC",
+          "DATA",
+          "OPS"
+         ]
+        },
+        "isKeynote": {
+         "type": "boolean"
+        }
+       },
+       "if": {
+        "properties": {
+         "isKeynote": {
+          "const": true
+         }
+        },
+        "required": [
+         "isKeynote"
+        ]
+       },
+       "then": {
+        "properties": {
+         "room": {
+          "const": "A"
+         }
+        },
+        "required": [
+         "room"
+        ]
+       }
+      }
+     }
+    }
+   },
+   "constraints": [
+    "keys:.=rooms,slots,talks",
+    "setEquals:rooms=A,B,C",
+    "setEquals:slots=1,2,3,4",
+    "length:talks=12",
+    "keysAll:talks[]=slot,room,title,track,isKeynote",
+    "unique:talks[].title",
+    "uniqueTuple:talks[]=room,slot",
+    "uniqueTuple:talks[]=room,track",
+    "sorted:talks[]=slot:asc",
+    "setEquals:talks[].track=AI,AI,AI,SEC,SEC,SEC,DATA,DATA,DATA,OPS,OPS,OPS",
+    "whereEq:talks[].room=A:==4",
+    "whereEq:talks[].room=B:==4",
+    "whereEq:talks[].room=C:==4",
+    "whereEq:talks[].slot=1:==3",
+    "whereEq:talks[].slot=4:==3",
+    "whereEq:talks[].isKeynote=true:==2",
+    "beforeInArray:talks[].title=开场演讲|闭幕演讲",
+    "whereEq:talks[].track=AI:==3",
+    "keyOrder:talks[0]=slot,room,title,track,isKeynote",
+    "keyOrder:talks[1]=slot,room,title,track,isKeynote",
+    "keyOrder:talks[2]=slot,room,title,track,isKeynote",
+    "keyOrder:talks[3]=slot,room,title,track,isKeynote",
+    "keyOrder:talks[4]=slot,room,title,track,isKeynote",
+    "keyOrder:talks[5]=slot,room,title,track,isKeynote",
+    "keyOrder:talks[6]=slot,room,title,track,isKeynote",
+    "keyOrder:talks[7]=slot,room,title,track,isKeynote",
+    "keyOrder:talks[8]=slot,room,title,track,isKeynote",
+    "keyOrder:talks[9]=slot,room,title,track,isKeynote",
+    "keyOrder:talks[10]=slot,room,title,track,isKeynote",
+    "keyOrder:talks[11]=slot,room,title,track,isKeynote"
+   ]
+  }
+ },
+ {
+  "id": "SO-CN-058",
+  "dimension": "structured_output",
+  "category": "json",
+  "difficulty": "adversarial",
+  "language": "json",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "public_dev",
+  "promptTemplate": "请生成一份小规模对账单 JSON，需要**同时**满足下列 10 条互不相关的约束。\n\n输出顶层键**恰好**为 meta、items、summary 三个，且顶层的键必须按**严格降序**排列（即字典序从大到小；这一条决定了你写键的顺序）。\n\n1. meta：键**恰好**为 cur、batch、code 三个，且**每个键名长度不超过 6**；cur 恰为 \"CNY\"\n2. items：**恰好 6 个**元素，每个元素**恰好**含 sku、amount、flag、status、note 五个键\n   - amount：整数且必须是 **25 的倍数**\n   - flag：布尔；其中恰好 **3 个**为 true\n   - status：取值只能是 \"ok\" 或 \"bad\"；恰好**一半**为 \"ok\"\n   - note：字符串，且**不得包含 e、E、v 这三个字符中的任何一个**\n3. summary 恰为 {\"total\": <items 的 amount 之和>}，total 为整数且必须是 25 的倍数\n4. 整份文档**不得出现 null**，且**嵌套深度恰好为 3**（根对象为第 1 层）\n5. 输出纯 JSON，不要 markdown 代码块，不要任何解释文字",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "schema_compliance",
+  "graderVersion": "schema_compliance_v5",
+  "scoring": {
+   "type": "schema_compliance"
+  },
+  "scenarioVersion": "4.4.0",
+  "scenarioHash": "64f8c08540143d5c",
+  "responseMode": null,
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null,
+  "tags": [
+   "json",
+   "ood-constraints",
+   "composed-constraints",
+   "key-order",
+   "ifbench-style"
+  ],
+  "requirements": {
+   "format": "json",
+   "output_policy": "raw_only",
+   "axis_weights": {
+    "syntax_parse": 0.05,
+    "schema_compliance": 0.05,
+    "field_constraints": 0.8,
+    "cross_field_consistency": 0.05,
+    "output_discipline": 0.05
+   },
+   "requiredFields": [
+    "meta",
+    "items",
+    "summary",
+    "meta.cur",
+    "summary.total",
+    "items[5].note",
+    "meta.batch"
+   ],
+   "schema": {
+    "type": "object",
+    "required": [
+     "meta",
+     "items",
+     "summary"
+    ],
+    "properties": {
+     "summary": {
+      "type": "object",
+      "required": [
+       "total"
+      ],
+      "additionalProperties": false,
+      "properties": {
+       "total": {
+        "type": "integer",
+        "multipleOf": 25
+       }
+      }
+     }
+    }
+   },
+   "constraints": [
+    "keys:.=meta,items,summary",
+    "keys:meta=cur,batch,code",
+    "keyOrderDesc:.",
+    "keyLengthMax:meta=6",
+    "noNulls:.",
+    "depthEquals:.=3",
+    "length:items=6",
+    "keysAll:items[]=sku,amount,flag,status,note",
+    "multipleOf:items[].amount=25",
+    "sumEq:items[].amount=summary.total",
+    "whereEq:items[].flag=true:==3",
+    "whereRatio:items[].status=ok:3/6",
+    "notMatchAll:items[].note:[eEv]",
+    "valueEq:meta.cur=CNY"
+   ]
+  }
+ },
+ {
+  "id": "SO-CN-059",
+  "dimension": "structured_output",
+  "category": "json",
+  "difficulty": "adversarial",
+  "language": "json",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "public_dev",
+  "promptTemplate": "请输出一份 JSON：{\"notes\": [...]}，其中 notes **恰好 6 个**元素，每个元素**恰好**含 id、text 两个键。\n\n对每个 text 字段，必须**同时**满足下列全部约束（少一条都不算完成）：\n1. 恰好 **20 个字符**，且**只能由汉字组成**（不得含空格、标点、字母、数字）\n2. 同一个 text 内**任何字符不得重复出现**（20 个字符两两不同）\n3. text 中**不得出现**「地」「得」「了」这三个字中的任何一个\n4. 6 个 text 必须两两不同\n5. 6 个 text 中，「甲」这个字**总共恰好出现 2 次**（可以出现在任意元素里）\n6. id 依次为 N1…N6\n7. 输出纯 JSON，不要 markdown 代码块，不要任何解释文字",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "schema_compliance",
+  "graderVersion": "schema_compliance_v5",
+  "scoring": {
+   "type": "schema_compliance"
+  },
+  "scenarioVersion": "5.0.0",
+  "scenarioHash": "3e7ab4e66436fb0c",
+  "responseMode": null,
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null,
+  "tags": [
+   "json",
+   "ood-constraints",
+   "lexical-constraints",
+   "ifbench-style",
+   "counting"
+  ],
+  "requirements": {
+   "format": "json",
+   "output_policy": "raw_only",
+   "axis_weights": {
+    "syntax_parse": 0.05,
+    "schema_compliance": 0.05,
+    "field_constraints": 0.8,
+    "cross_field_consistency": 0.05,
+    "output_discipline": 0.05
+   },
+   "requiredFields": [
+    "notes",
+    "notes[0].text",
+    "notes[5].text"
+   ],
+   "constraints": [
+    "keys:.=notes",
+    "length:notes=6",
+    "keysAll:notes[]=id,text",
+    "setEquals:notes[].id=N1,N2,N3,N4,N5,N6",
+    "unique:notes[].text",
+    "reAll:notes[].text:^[\\u4e00-\\u9fff]{20}$",
+    "uniqueCharsAll:notes[].text",
+    "notMatchAll:notes[].text:[地得了]",
+    "charCount:notes[].text=甲:==2"
    ]
   }
  }

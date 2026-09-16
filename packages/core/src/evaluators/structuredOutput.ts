@@ -410,6 +410,26 @@ function getPathAny(data: unknown, spec: string): unknown {
  *   chainEq:<path>.<a>=<b>:<initial>             a[i] 必须等于 b[i-1]，且 a[0]=<initial>
  *   csvCell:<rowIndex>:<colIndex>:<regex>        解析后的 CSV 单元格内容（RFC4180 往返）
  *   order:<tokenA>|<tokenB>                      A 必须出现在 B 之前（文本类格式的顺序）
+ *
+ * 新颖约束规则集（2026-09-16 加，对齐 IFBench「OOD 可验证约束」配方，
+ * 约束类别取自其分类法：count / ratio / words / format / custom / copy）：
+ *   whereEq:<path>.<field>=<value>:<op><n>       满足谓词的元素个数（count）
+ *   whereRatio:<path>.<field>=<value>:<a>/<b>    谓词命中的比例（ratio）
+ *   uniqueTuple:<path>=<f1>,<f2>                 复合键唯一（custom）
+ *   setEquals:<path>.<field>=<v1,v2,...>         多重集完全相等（custom）
+ *   beforeInArray:<path>.<field>=<vA>|<vB>       指定元素的前后顺序（custom）
+ *   keyOrderDesc:<path>                          键按严格降序排列（format）
+ *   keyLengthMax:<path>=<n>                      每个键长度不超过 n（format）
+ *   multipleOf:<path>.<field>=<n>                整倍约束（format）
+ *   noNulls:<path>                               子树内无 null（custom）
+ *   depthEquals:<path>=<n>                       嵌套深度精确值（custom）
+ *   nodeCount:<path>=<n> / leafCount:<path>=<n>  对象节点数 / 叶子数（custom，树形结构规模）
+ *   notMatchAll:<path>.<field>:<regex>           元素字符串不得匹配（words，负面约束）
+ *   uniqueCharsAll:<path>.<field>                每个元素的字符串内字符互不重复（words）
+ *   charCount:<path>.<field>=<c>:<op><n>         某字符在全部元素中的出现总次数（count）
+ *   deepEq:<path>=<jsonLiteral>                  与 JSON 字面量逐字节相等（copy）
+ *   jsonPointer:<pathToPointer>=<jsonLiteral>    文档内声明的 RFC6901 指针必须解析到该值（copy/format）
+ *   sumEq 的目标可以是路径，也可以是字面量数字（用于校验回显数据与题面一致）
  */
 function evaluateConstraint(constraint: string, data: unknown, corpus: string): boolean {
   if (constraint.startsWith('required:')) return getPathAny(data, constraint.slice(9).trim()) !== undefined;
@@ -466,7 +486,7 @@ function evaluateConstraint(constraint: string, data: unknown, corpus: string): 
       return false;
     }
     return rows.every((row) => {
-      const value = field ? (row as Record<string, unknown>)?.[field] : row;
+      const value = pick(row, field);
       return typeof value === 'string' && pattern.test(value);
     });
   }
@@ -480,7 +500,7 @@ function evaluateConstraint(constraint: string, data: unknown, corpus: string): 
     if (rows === null || rows.length === 0) return false;
     const limit = Number(maxDecimals[2]);
     return rows.every((row) => {
-      const value = field ? (row as Record<string, unknown>)?.[field] : row;
+      const value = pick(row, field);
       const places = typeof value === 'number' ? countDecimals(value) : -1;
       return places >= 0 && places <= limit;
     });
@@ -493,7 +513,7 @@ function evaluateConstraint(constraint: string, data: unknown, corpus: string): 
     if (rows === null || rows.length === 0) return false;
     const seen = new Set<string>();
     for (const row of rows) {
-      const value = field ? (row as Record<string, unknown>)?.[field] : row;
+      const value = pick(row, field);
       const key = JSON.stringify(value);
       if (seen.has(key)) return false;
       seen.add(key);
@@ -529,18 +549,20 @@ function evaluateConstraint(constraint: string, data: unknown, corpus: string): 
     const children = asArray(getPathAny(data, childPath));
     const parents = asArray(getPathAny(data, parentPath));
     if (children === null || parents === null) return false;
-    const allowed = new Set(parents.map((p) => JSON.stringify((p as Record<string, unknown>)?.[parentField])));
-    return children.every((c) => allowed.has(JSON.stringify((c as Record<string, unknown>)?.[childField])));
+    const allowed = new Set(parents.map((p) => JSON.stringify(pick(p, parentField))));
+    return children.every((c) => allowed.has(JSON.stringify(pick(c, childField))));
   }
 
   const sumEq = constraint.match(/^sumEq:([^=]+)=(.+?)(?::([\d.]+))?$/);
   if (sumEq) {
     const [arrayPath, field] = splitFieldPath(sumEq[1]);
     const rows = asArray(getPathAny(data, arrayPath));
-    const target = getPathAny(data, sumEq[2].trim());
+    // 目标既可以是文档内的路径，也可以是字面量数字（用于「回显的输入数据必须与题面一致」）
+    const literalTarget = /^-?\d+(\.\d+)?$/.test(sumEq[2].trim()) ? Number(sumEq[2].trim()) : undefined;
+    const target = literalTarget ?? getPathAny(data, sumEq[2].trim());
     if (rows === null || rows.length === 0 || typeof target !== 'number') return false;
     const total = rows.reduce<number>((acc, row) => {
-      const value = (row as Record<string, unknown>)?.[field];
+      const value = pick(row, field);
       return typeof value === 'number' ? acc + value : NaN;
     }, 0);
     if (!Number.isFinite(total)) return false;
@@ -559,9 +581,9 @@ function evaluateConstraint(constraint: string, data: unknown, corpus: string): 
     const tol = wanted === null ? 0.011 : 0.5 * Math.pow(10, -wanted) + 1e-6;
     return rows.every((row) => {
       const node = row as Record<string, unknown>;
-      const target = node?.[field];
-      const a = node?.[left];
-      const b = node?.[right];
+      const target = pick(node, field);
+      const a = pick(node, left);
+      const b = pick(node, right);
       if (typeof target !== 'number' || typeof a !== 'number' || typeof b !== 'number') return false;
       // 「小数位不超过 n」：JSON 不保留尾随零，只能抓未舍入的精度溢出
       if (wanted !== null && countDecimals(target) > wanted) return false;
@@ -579,8 +601,8 @@ function evaluateConstraint(constraint: string, data: unknown, corpus: string): 
     let previous = running0;
     for (const row of rows) {
       const node = row as Record<string, unknown>;
-      const value = node?.[field];
-      const delta = node?.[deltaField];
+      const value = pick(node, field);
+      const delta = pick(node, deltaField);
       if (typeof value !== 'number' || typeof delta !== 'number') return false;
       if (previous !== null && Math.abs(value - (previous + delta)) > 0.011) return false;
       previous = value;
@@ -639,8 +661,8 @@ function evaluateConstraint(constraint: string, data: unknown, corpus: string): 
     const tol = limit === null ? 0.011 : 0.5 * Math.pow(10, -limit) + 1e-6;
     return rows.every((row) => {
       const node = row as Record<string, unknown>;
-      const target = node?.[field];
-      const source = node?.[sourceField];
+      const target = pick(node, field);
+      const source = pick(node, sourceField);
       if (typeof target !== 'number' || typeof source !== 'number') return false;
       if (limit !== null && countDecimals(target) > limit) return false;
       return Math.abs(target - source * factor) <= tol;
@@ -658,8 +680,8 @@ function evaluateConstraint(constraint: string, data: unknown, corpus: string): 
     let previousRight: number | null = initial;
     for (const row of rows) {
       const node = row as Record<string, unknown>;
-      const left = node?.[leftField];
-      const right = node?.[rightField];
+      const left = pick(node, leftField);
+      const right = pick(node, rightField);
       if (typeof left !== 'number' || typeof right !== 'number') return false;
       if (previousRight !== null && Math.abs(left - previousRight) > 0.011) return false;
       previousRight = right;
@@ -671,13 +693,7 @@ function evaluateConstraint(constraint: string, data: unknown, corpus: string): 
   if (valueEq) {
     const actual = getPathAny(data, valueEq[1].trim());
     if (actual === undefined) return false;
-    const raw = valueEq[2].trim();
-    const expected: unknown = raw === 'true' ? true
-      : raw === 'false' ? false
-        : raw === 'null' ? null
-          : /^-?\d+(\.\d+)?$/.test(raw) ? Number(raw)
-            : raw;
-    return actual === expected;
+    return actual === parseConstraintLiteral(valueEq[2]);
   }
 
   // CSV 单元格断言：直接检视解析后的表格，验证 RFC4180 往返是否成立
@@ -704,6 +720,9 @@ function evaluateConstraint(constraint: string, data: unknown, corpus: string): 
     const second = corpus.indexOf(order[2]);
     return first >= 0 && second >= 0 && first < second;
   }
+
+  // 新颖约束规则集（count / ratio / words / format / custom / copy 六类）
+  if (evaluateNovelConstraint(constraint, data)) return true;
 
   return false;
 }
@@ -786,6 +805,370 @@ function evaluateCrossFieldRule(rule: string, data: unknown): boolean {
   if (kind === 'equal') return left === right;
   if (kind === 'different') return left !== right;
   return false;
+}
+
+/**
+ * 新颖约束规则集（对齐 IFBench arXiv:2507.02833 的「OOD 可验证约束」配方：
+ * 约束必须程序化可验证、且不在模型的既有模板分布里，否则会被背下来）。
+ * 类别取自其分类法：count / ratio / words / format / custom / copy。
+ */
+function evaluateNovelConstraint(constraint: string, data: unknown): boolean {
+  // count 类：带谓词的计数（例：恰好 7 条 status=failed）
+  const whereEq = constraint.match(/^whereEq:([^=]+)=([^:]+):(>=|<=|==|>|<)(\d+)$/);
+  if (whereEq) {
+    const [arrayPath, field] = splitFieldPath(whereEq[1]);
+    const rows = asArray(getPathAny(data, arrayPath));
+    if (rows === null) return false;
+    const target = parseConstraintLiteral(whereEq[2]);
+    const hits = rows.filter((row) => pick(row, field) === target).length;
+    const n = Number(whereEq[4]);
+    switch (whereEq[3]) {
+      case '>=': return hits >= n;
+      case '<=': return hits <= n;
+      case '>': return hits > n;
+      case '<': return hits < n;
+      default: return hits === n;
+    }
+  }
+
+  // ratio 类：某谓词命中数占全体的比例
+  const whereRatio = constraint.match(/^whereRatio:([^=]+)=([^:]+):(\d+)\/(\d+)(?::([\d.]+))?$/);
+  if (whereRatio) {
+    const [arrayPath, field] = splitFieldPath(whereRatio[1]);
+    const rows = asArray(getPathAny(data, arrayPath));
+    if (rows === null || rows.length === 0) return false;
+    const target = parseConstraintLiteral(whereRatio[2]);
+    const hits = rows.filter((row) => pick(row, field) === target).length;
+    const wanted = Number(whereRatio[3]) / Number(whereRatio[4]);
+    const tol = whereRatio[5] ? Number(whereRatio[5]) : 0.011;
+    return Math.abs(hits / rows.length - wanted) <= tol;
+  }
+
+  // custom 类：复合键唯一（排班/去重场景的基本约束）
+  const uniqueTuple = constraint.match(/^uniqueTuple:([^=]+)=(.+)$/);
+  if (uniqueTuple) {
+    const rows = asArray(getPathAny(data, uniqueTuple[1].trim()));
+    if (rows === null || rows.length === 0) return false;
+    const fields = uniqueTuple[2].split(',').map((f) => f.trim()).filter(Boolean);
+    const seen = new Set<string>();
+    for (const row of rows) {
+      const key = JSON.stringify(fields.map((f) => pick(row, f)));
+      if (seen.has(key)) return false;
+      seen.add(key);
+    }
+    return true;
+  }
+
+  // custom 类：多重集相等（值域必须与给定集合完全一致，不多不少）
+  const setEquals = constraint.match(/^setEquals:([^=]+)=(.+)$/);
+  if (setEquals) {
+    const [arrayPath, field] = splitFieldPath(setEquals[1]);
+    const rows = asArray(getPathAny(data, arrayPath));
+    if (rows === null) return false;
+    const actual = rows.map((row) => String(pick(row, field)));
+    const pool = setEquals[2].split(',').map((v) => v.trim()).filter(Boolean);
+    if (actual.length !== pool.length) return false;
+    for (const value of actual) {
+      const idx = pool.indexOf(value);
+      if (idx < 0) return false;
+      pool.splice(idx, 1);
+    }
+    return pool.length === 0;
+  }
+
+  // custom 类：数组中指定元素的前后顺序（约束满足题的关键判据）
+  const beforeInArray = constraint.match(/^beforeInArray:([^=]+)=(.+)\|(.+)$/);
+  if (beforeInArray) {
+    const [arrayPath, field] = splitFieldPath(beforeInArray[1]);
+    const rows = asArray(getPathAny(data, arrayPath));
+    if (rows === null) return false;
+    const values = rows.map((row) => String(pick(row, field)));
+    const first = values.indexOf(beforeInArray[2].trim());
+    const second = values.indexOf(beforeInArray[3].trim());
+    return first >= 0 && second >= 0 && first < second;
+  }
+
+  // format 类：键序严格降序 / 键长度上限
+  const keyOrderDesc = constraint.match(/^keyOrderDesc:(.+)$/);
+  if (keyOrderDesc) {
+    const node = getPathAny(data, keyOrderDesc[1].trim());
+    if (!node || typeof node !== 'object' || Array.isArray(node)) return false;
+    const keys = Object.keys(node as Record<string, unknown>);
+    if (keys.length < 2) return false;
+    for (let i = 1; i < keys.length; i++) if (keys[i - 1] <= keys[i]) return false;
+    return true;
+  }
+
+  const keyLengthMax = constraint.match(/^keyLengthMax:([^=]+)=(\d+)$/);
+  if (keyLengthMax) {
+    const container = getPathAny(data, keyLengthMax[1].trim());
+    const limit = Number(keyLengthMax[2]);
+    const objects = Array.isArray(container) ? container : [container];
+    if (objects.length === 0) return false;
+    return objects.every((item) => {
+      if (!item || typeof item !== 'object' || Array.isArray(item)) return false;
+      const keys = Object.keys(item as Record<string, unknown>);
+      return keys.length > 0 && keys.every((k) => k.length <= limit);
+    });
+  }
+
+  // 数值格式：整倍约束
+  const multipleOf = constraint.match(/^multipleOf:([^=]+)=([\d.]+)$/);
+  if (multipleOf) {
+    const [arrayPath, field] = splitFieldPath(multipleOf[1]);
+    const rows = asArray(getPathAny(data, arrayPath));
+    if (rows === null || rows.length === 0) return false;
+    const step = Number(multipleOf[2]);
+    if (!(step > 0)) return false;
+    return rows.every((row) => {
+      const value = pick(row, field);
+      if (typeof value !== 'number') return false;
+      const quotient = value / step;
+      return Math.abs(quotient - Math.round(quotient)) <= 1e-9;
+    });
+  }
+
+  // 结构完整性：子树内不得出现 null / 嵌套深度精确值 / 节点计数
+  const noNulls = constraint.match(/^noNulls:(.+)$/);
+  if (noNulls) {
+    const scope = noNulls[1].trim();
+    const target = scope === '.' || scope === '' ? data : getPathAny(data, scope);
+    if (target === undefined) return false;
+    return countNulls(target) === 0;
+  }
+
+  const depthEquals = constraint.match(/^depthEquals:([^=]+)=(\d+)$/);
+  if (depthEquals) {
+    const scope = depthEquals[1].trim();
+    const target = scope === '.' || scope === '' ? data : getPathAny(data, scope);
+    if (target === undefined) return false;
+    return measureDepth(target) === Number(depthEquals[2]);
+  }
+
+  // 树/图类结构：对象节点数与叶子数（递归 schema 题的规模判据）
+  const nodeCount = constraint.match(/^nodeCount:([^=]+)=(\d+)$/);
+  if (nodeCount) {
+    const scope = nodeCount[1].trim();
+    const target = scope === '.' || scope === '' ? data : getPathAny(data, scope);
+    if (target === undefined) return false;
+    const stats = countNodes(target);
+    return stats.nodes === Number(nodeCount[2]);
+  }
+
+  const leafCount = constraint.match(/^leafCount:([^=]+)=(\d+)$/);
+  if (leafCount) {
+    const scope = leafCount[1].trim();
+    const target = scope === '.' || scope === '' ? data : getPathAny(data, scope);
+    if (target === undefined) return false;
+    const stats = countNodes(target);
+    return stats.leaves === Number(leafCount[2]);
+  }
+
+  // words 类：数组元素的字符串字段**不得**匹配给定正则（负面约束，模型极易违反）
+  const notMatchAll = constraint.match(/^notMatchAll:([^:]+):(.+)$/);
+  if (notMatchAll) {
+    const [arrayPath, field] = splitFieldPath(notMatchAll[1]);
+    const rows = asArray(getPathAny(data, arrayPath));
+    if (rows === null || rows.length === 0) return false;
+    let pattern: RegExp;
+    try {
+      pattern = new RegExp(notMatchAll[2]);
+    } catch {
+      return false;
+    }
+    return rows.every((row) => {
+      const value = pick(row, field);
+      return typeof value !== 'string' || !pattern.test(value);
+    });
+  }
+
+  // words 类：每个元素的字符串**字符互不重复**（IFBench 的 "use only unique words" 同族约束）
+  const uniqueCharsAll = constraint.match(/^uniqueCharsAll:([^=]+)$/);
+  if (uniqueCharsAll) {
+    const [arrayPath, field] = splitFieldPath(uniqueCharsAll[1]);
+    const rows = asArray(getPathAny(data, arrayPath));
+    if (rows === null || rows.length === 0) return false;
+    return rows.every((row) => {
+      const value = pick(row, field);
+      if (typeof value !== 'string' || value.length === 0) return false;
+      return new Set([...value]).size === [...value].length;
+    });
+  }
+
+  // count 类：某个字符在所有元素里的出现总次数
+  const charCount = constraint.match(/^charCount:([^=]+)=(.):(>=|<=|==)(\d+)$/);
+  if (charCount) {
+    const [arrayPath, field] = splitFieldPath(charCount[1]);
+    const rows = asArray(getPathAny(data, arrayPath));
+    if (rows === null || rows.length === 0) return false;
+    const target = charCount[2];
+    let hits = 0;
+    for (const row of rows) {
+      const value = pick(row, field);
+      if (typeof value !== 'string') continue;
+      for (const ch of value) if (ch === target) hits++;
+    }
+    const n = Number(charCount[4]);
+    switch (charCount[3]) {
+      case '>=': return hits >= n;
+      case '<=': return hits <= n;
+      default: return hits === n;
+    }
+  }
+
+  // copy 类：值与 JSON 字面量逐字节相等（转义/特殊字符正确性的唯一可靠判据）
+  const deepEq = constraint.match(/^deepEq:([^=]+)=(.+)$/);
+  if (deepEq) {
+    const actual = getPathAny(data, deepEq[1].trim());
+    if (actual === undefined) return false;
+    return jsonEquivalent(actual, deepEq[2]);
+  }
+
+  // 嵌在 JSON 字段里的 CSV 字符串：解析该子串后再断言单元格（RFC4180 往返）
+  const csvField = constraint.match(/^csvField:([^:]+):(\d+):(\d+):(.+)$/);
+  if (csvField) {
+    const text = getPathAny(data, csvField[1].trim());
+    if (typeof text !== 'string' || text.length === 0) return false;
+    const parsedCsv = parseByFormat('csv', text);
+    const rows = (parsedCsv.parsed as { rows?: unknown[][] } | undefined)?.rows;
+    if (!Array.isArray(rows)) return false;
+    const row = rows[Number(csvField[2])];
+    if (!Array.isArray(row)) return false;
+    const cell = row[Number(csvField[3])];
+    if (typeof cell !== 'string') return false;
+    try {
+      return new RegExp(csvField[4], 's').test(cell);
+    } catch {
+      return false;
+    }
+  }
+
+  // RFC 6901：文档内声明的 JSON Pointer 必须真正解析到给定值。
+  // 这是唯一能同时考「指针转义（~0/~1）」与「文档结构自洽」的判据。
+  const pointer = constraint.match(/^jsonPointer:([^=]+)=(.+)$/);
+  if (pointer) {
+    const pointerText = getPathAny(data, pointer[1].trim());
+    if (typeof pointerText !== 'string') return false;
+    const resolved = resolveJsonPointer(data, pointerText);
+    if (resolved === undefined) return false;
+    return jsonEquivalent(resolved, pointer[2]);
+  }
+
+  return false;
+}
+
+/** 与 JSON 字面量比较（解析失败时退化为字符串比较）。 */
+function jsonEquivalent(actual: unknown, literal: string): boolean {
+  let expected: unknown;
+  try {
+    expected = JSON.parse(literal);
+  } catch {
+    expected = literal;
+  }
+  return JSON.stringify(actual) === JSON.stringify(expected);
+}
+
+/** RFC 6901 JSON Pointer 解析（`~1` → `/`，`~0` → `~`，空串指向根）。 */
+function resolveJsonPointer(document: unknown, pointer: string): unknown {
+  if (pointer === '') return document;
+  if (!pointer.startsWith('/')) return undefined;
+  let current: unknown = document;
+  for (const rawToken of pointer.slice(1).split('/')) {
+    const token = rawToken.replace(/~1/g, '/').replace(/~0/g, '~');
+    if (Array.isArray(current)) {
+      if (!/^\d+$/.test(token)) return undefined;
+      current = current[Number(token)];
+    } else if (current !== null && typeof current === 'object') {
+      current = (current as Record<string, unknown>)[token];
+    } else {
+      return undefined;
+    }
+    if (current === undefined) return undefined;
+  }
+  return current;
+}
+
+function coerceLiteral(raw: string): unknown {
+  const text = raw.trim();
+  if (text === 'true') return true;
+  if (text === 'false') return false;
+  if (text === 'null') return null;
+  if (/^-?\d+(\.\d+)?$/.test(text)) return Number(text);
+  return text;
+}
+
+/**
+ * 解析规则里的字面量：先尝试 JSON（支持带引号的字符串、对象、数组），失败再退化。
+ * 否则 `valueEq:x="valid"` 会把引号也当成值的一部分，永远匹配不上。
+ */
+function parseConstraintLiteral(raw: string): unknown {
+  const text = raw.trim();
+  if (text.startsWith('"') || text.startsWith('[') || text.startsWith('{')) {
+    try {
+      return JSON.parse(text);
+    } catch {
+      // 落到下面的宽松解析
+    }
+  }
+  return coerceLiteral(text);
+}
+
+/**
+ * 从数组元素上取值。`field` 为空表示「元素本身就是标量」（如 setEquals:rooms=A,B,C），
+ * 此时直接返回元素；否则取该字段。
+ */
+function pick(row: unknown, field: string): unknown {
+  if (!field) return row;
+  if (row === null || typeof row !== 'object') return undefined;
+  return (row as Record<string, unknown>)[field];
+}
+
+function countNulls(value: unknown, seen = new Set<unknown>()): number {
+  if (value === null) return 1;
+  if (typeof value !== 'object') return 0;
+  if (seen.has(value)) return 0;
+  seen.add(value);
+  let total = 0;
+  for (const child of Array.isArray(value) ? value : Object.values(value as Record<string, unknown>)) {
+    total += countNulls(child, seen);
+  }
+  return total;
+}
+
+/** 嵌套深度：标量记 0，空容器记 0，否则 1 + 子节点最大深度。 */
+function measureDepth(value: unknown): number {
+  if (value === null || typeof value !== 'object') return 0;
+  const children = Array.isArray(value) ? value : Object.values(value as Record<string, unknown>);
+  if (children.length === 0) return 0;
+  let best = 0;
+  for (const child of children) best = Math.max(best, measureDepth(child));
+  return best + 1;
+}
+
+/** 统计子树中的对象节点数与叶子数（数组不计为节点，只作为容器继续下探）。 */
+function countNodes(value: unknown, seen = new Set<unknown>()): { nodes: number; leaves: number } {
+  if (value === null || typeof value !== 'object') return { nodes: 0, leaves: 1 };
+  if (seen.has(value)) return { nodes: 0, leaves: 0 };
+  seen.add(value);
+  if (Array.isArray(value)) {
+    let nodes = 0;
+    let leaves = 0;
+    for (const child of value) {
+      const sub = countNodes(child, seen);
+      nodes += sub.nodes;
+      leaves += sub.leaves;
+    }
+    return { nodes, leaves };
+  }
+  const children = Object.values(value as Record<string, unknown>);
+  let nodes = 1;
+  let leaves = 0;
+  for (const child of children) {
+    const sub = countNodes(child, seen);
+    nodes += sub.nodes;
+    leaves += sub.leaves;
+  }
+  return { nodes, leaves };
 }
 
 /** 计算 `<term>+<term>-<term>` 形式的数值表达式；任一项不是数字则返回 null。 */

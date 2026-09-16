@@ -215,6 +215,8 @@ const JSON_SCHEMA_FORMAT_PATTERNS: Record<string, RegExp> = {
 };
 
 function resolveSchemaRef(root: Record<string, unknown>, ref: string): Record<string, unknown> | null {
+  // `#` 指向根模式：递归定义（树/链表）必须能自引用，否则递归题无法判定
+  if (ref === '#') return root;
   if (!ref.startsWith('#/')) return null;
   let current: unknown = root;
   for (const rawPart of ref.slice(2).split('/')) {
@@ -243,7 +245,10 @@ function validateJsonSchema(
   const fail = (message: string) => violations.push({ type: 'schema_mismatch', message, severity: 'error' });
   const missing = (message: string) => violations.push({ type: 'missing_required', message, severity: 'error' });
 
-  if (depth > 20) return { violations, checks };
+  // 递归 $ref 需要更深的配额：JSONSchemaBench 指出「递归定义」正是把多数引擎打崩的
+  // 特性之一，而树形结构题（节点→children）在 depth=20 时会被静默截断成**欠约束**，
+  // 即「接受非法数据却不报错」—— 比报错更危险，因此放宽到 64 并保持可判定。
+  if (depth > 64) return { violations, checks };
 
   if (typeof schema.$ref === 'string') {
     const resolved = resolveSchemaRef(root, schema.$ref);
@@ -269,6 +274,24 @@ function validateJsonSchema(
     checks++;
     if (!schema.enum.some((candidate) => candidate === data)) {
       fail(`Value ${JSON.stringify(data)} is not one of [${schema.enum.map((v) => JSON.stringify(v)).join(', ')}]`);
+    }
+  }
+
+  // `not`：子模式必须**不**匹配
+  if (schema.not && typeof schema.not === 'object') {
+    checks++;
+    const inner = validateJsonSchema(data, schema.not as Record<string, unknown>, root, depth + 1);
+    if (inner.violations.length === 0) fail('Value matches a schema that it must not match (not)');
+  }
+
+  // `if`/`then`/`else`：条件分支（JSONSchemaBench 列为高阶特性）
+  if (schema.if && typeof schema.if === 'object') {
+    const branch = validateJsonSchema(data, schema.if as Record<string, unknown>, root, depth + 1);
+    const selected = branch.violations.length === 0 ? schema.then : schema.else;
+    if (selected && typeof selected === 'object') {
+      const outcome = validateJsonSchema(data, selected as Record<string, unknown>, root, depth + 1);
+      violations.push(...outcome.violations);
+      checks += outcome.checks;
     }
   }
 
@@ -308,6 +331,19 @@ function validateJsonSchema(
       checks++;
       if (data > schema.maximum) fail(`Number ${data} exceeds maximum ${schema.maximum}`);
     }
+    if (typeof schema.exclusiveMinimum === 'number') {
+      checks++;
+      if (data <= schema.exclusiveMinimum) fail(`Number ${data} is not above exclusiveMinimum ${schema.exclusiveMinimum}`);
+    }
+    if (typeof schema.exclusiveMaximum === 'number') {
+      checks++;
+      if (data >= schema.exclusiveMaximum) fail(`Number ${data} is not below exclusiveMaximum ${schema.exclusiveMaximum}`);
+    }
+    if (typeof schema.multipleOf === 'number' && schema.multipleOf > 0) {
+      checks++;
+      const quotient = data / schema.multipleOf;
+      if (Math.abs(quotient - Math.round(quotient)) > 1e-9) fail(`Number ${data} is not a multiple of ${schema.multipleOf}`);
+    }
   }
 
   if (Array.isArray(data)) {
@@ -318,6 +354,23 @@ function validateJsonSchema(
     if (typeof schema.maxItems === 'number') {
       checks++;
       if (data.length > schema.maxItems) fail(`Array length ${data.length} exceeds maxItems ${schema.maxItems}`);
+    }
+    if (schema.uniqueItems === true) {
+      checks++;
+      const seen = new Set<string>();
+      for (const item of data) {
+        const key = JSON.stringify(item);
+        if (seen.has(key)) { fail('Array items are not unique (uniqueItems)'); break; }
+        seen.add(key);
+      }
+    }
+    if (schema.contains && typeof schema.contains === 'object') {
+      checks++;
+      const matched = data.filter((item) =>
+        validateJsonSchema(item, schema.contains as Record<string, unknown>, root, depth + 1).violations.length === 0).length;
+      const min = typeof schema.minContains === 'number' ? schema.minContains : 1;
+      const max = typeof schema.maxContains === 'number' ? schema.maxContains : Infinity;
+      if (matched < min || matched > max) fail(`contains matched ${matched} item(s), expected ${min}..${max}`);
     }
     if (schema.items && typeof schema.items === 'object' && !Array.isArray(schema.items)) {
       for (const item of data) {
@@ -351,22 +404,101 @@ function validateJsonSchema(
 
   if (data !== null && typeof data === 'object' && !Array.isArray(data)) {
     const node = data as Record<string, unknown>;
+    const keys = Object.keys(node);
+
+    if (typeof schema.minProperties === 'number') {
+      checks++;
+      if (keys.length < schema.minProperties) fail(`Object has ${keys.length} properties, below minProperties ${schema.minProperties}`);
+    }
+    if (typeof schema.maxProperties === 'number') {
+      checks++;
+      if (keys.length > schema.maxProperties) fail(`Object has ${keys.length} properties, above maxProperties ${schema.maxProperties}`);
+    }
     if (Array.isArray(schema.required)) {
       for (const key of schema.required as string[]) {
         checks++;
         if (!(key in node)) missing(`Missing required field: "${key}"`);
       }
     }
-    if (schema.properties && typeof schema.properties === 'object') {
-      const declared = new Set(Object.keys(schema.properties as Record<string, unknown>));
+
+    // patternProperties / propertyNames：JSONSchemaBench 把这两项列为「所有引擎都支持不佳」的高阶特性
+    if (schema.propertyNames && typeof schema.propertyNames === 'object') {
+      for (const key of keys) {
+        checks++;
+        if (validateJsonSchema(key, schema.propertyNames as Record<string, unknown>, root, depth + 1).violations.length > 0) {
+          fail(`Property name "${key}" violates propertyNames`);
+        }
+      }
+    }
+    const patternProperties = schema.patternProperties;
+    if (patternProperties && typeof patternProperties === 'object' && !Array.isArray(patternProperties)) {
+      for (const [pattern, subSchema] of Object.entries(patternProperties as Record<string, unknown>)) {
+        let regex: RegExp;
+        try {
+          regex = new RegExp(pattern);
+        } catch {
+          continue;
+        }
+        for (const key of keys) {
+          if (!regex.test(key)) continue;
+          const outcome = validateJsonSchema(node[key], subSchema as Record<string, unknown>, root, depth + 1);
+          violations.push(...outcome.violations.map((v) => ({ ...v, message: `[${key}] ${v.message}` })));
+          checks += outcome.checks;
+        }
+      }
+    }
+
+    // dependentRequired（draft 2019）与 dependencies（draft-07）：条件性必填
+    const dependentRequired = (schema.dependentRequired ?? schema.dependencies);
+    if (dependentRequired && typeof dependentRequired === 'object' && !Array.isArray(dependentRequired)) {
+      for (const [trigger, requirement] of Object.entries(dependentRequired as Record<string, unknown>)) {
+        if (!(trigger in node)) continue;
+        if (Array.isArray(requirement)) {
+          for (const key of requirement as string[]) {
+            checks++;
+            if (!(key in node)) missing(`Property "${key}" is required because "${trigger}" is present`);
+          }
+        } else if (requirement && typeof requirement === 'object') {
+          const outcome = validateJsonSchema(data, requirement as Record<string, unknown>, root, depth + 1);
+          violations.push(...outcome.violations);
+          checks += outcome.checks;
+        }
+      }
+    }
+
+    // additionalProperties 独立于 `properties` 存在：没有 properties 也要能判定
+    // （JSONSchemaBench 指出「静默接受非法数据」比报错更危险，因此不能漏检）
+    {
+      const declared = schema.properties && typeof schema.properties === 'object'
+        ? new Set(Object.keys(schema.properties as Record<string, unknown>))
+        : new Set<string>();
+      const matchedByPattern = (key: string) => {
+        if (!patternProperties || typeof patternProperties !== 'object') return false;
+        return Object.keys(patternProperties as Record<string, unknown>).some((pattern) => {
+          try { return new RegExp(pattern).test(key); } catch { return false; }
+        });
+      };
       // additionalProperties:false 时逐个暴露多余键——模型「顺手多加字段」是最常见的
       // 结构违规之一，不检查等于放弃了这类区分度。
       if (schema.additionalProperties === false) {
-        for (const key of Object.keys(node)) {
+        for (const key of keys) {
           checks++;
-          if (!declared.has(key)) fail(`Unexpected property "${key}" (additionalProperties:false)`);
+          if (!declared.has(key) && !matchedByPattern(key)) {
+            fail(`Unexpected property "${key}" (additionalProperties:false)`);
+          }
+        }
+      } else if (schema.additionalProperties && typeof schema.additionalProperties === 'object') {
+        // additionalProperties 作为子模式：未声明键必须满足它
+        for (const key of keys) {
+          if (declared.has(key) || matchedByPattern(key)) continue;
+          const outcome = validateJsonSchema(node[key], schema.additionalProperties as Record<string, unknown>, root, depth + 1);
+          violations.push(...outcome.violations.map((v) => ({ ...v, message: `[${key}] ${v.message}` })));
+          checks += outcome.checks;
         }
       }
+    }
+
+    if (schema.properties && typeof schema.properties === 'object') {
       for (const [key, propSchema] of Object.entries(schema.properties as Record<string, unknown>)) {
         if (!(key in node)) continue;
         const outcome = validateJsonSchema(node[key], propSchema as Record<string, unknown>, root, depth + 1);

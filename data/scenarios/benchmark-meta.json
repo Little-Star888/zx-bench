@@ -1,8 +1,8 @@
 {
- "version": "1.35.0",
- "count": 775,
+ "version": "1.36.0",
+ "count": 782,
  "retiredCount": 92,
- "totalCount": 867,
+ "totalCount": 874,
  "dimensions": {
   "agent_workflow": 45,
   "cli_deep_tasks": 56,
@@ -12,14 +12,14 @@
   "program": 150,
   "reasoning_math": 87,
   "safety_authority": 50,
-  "structured_output": 51,
+  "structured_output": 58,
   "tool_cli_workflow": 56
  },
  "retiredDimensions": {
   "hallucination_resistance": 78
  },
  "generatedAt": "2026-09-16T00:00:00.000Z",
- "validCount": 775,
+ "validCount": 782,
  "ambiguousCount": 0,
  "reviewCount": 0,
  "questionReview": "math-3.2-hallucination-5.0",
@@ -280,7 +280,7 @@
   "sourcePackHash": "42929b253e9e2f4d32568c5e164ab4fcb651cca3712b6472950c7907c2ed10e3",
   "prospectiveOnly": true
  },
- "defaultRunCount": 774,
+ "defaultRunCount": 781,
  "challengeExtension": {
   "version": "challenge-extension-2026-09-13-v1",
   "bankVersion": "1.31.1",

@@ -244,9 +244,20 @@ describe('P1-5 JSON Schema 关键字扩展', () => {
     expect(r.evidence.some((e) => e.includes('constraints'))).toBe(true);
   });
 
-  it('未实现的关键字被忽略而不是判错', async () => {
-    const r = await score(req({ type: 'object', additionalProperties: false, unevaluatedProperties: false }), '{"x":1}');
-    expect(r.axisScores.schema_compliance).toBe(100);
+  it('未实现的关键字被忽略（不臆断），已实现的严格关键字独立生效', async () => {
+    // unevaluatedProperties 仍未实现 → 必须被忽略而不是判错
+    const ignored = await score(
+      { format: 'json', output_policy: 'raw_only', schema: { type: 'object', unevaluatedProperties: false } },
+      '{"x":1}',
+    );
+    expect(ignored.axisScores.schema_compliance).toBe(100);
+    // additionalProperties:false 即使没有 properties 也必须拒绝多余键
+    // （JSON Schema 语义：未声明 properties 时任何键都属于 additional）
+    const strict = await score(
+      { format: 'json', output_policy: 'raw_only', schema: { type: 'object', additionalProperties: false } },
+      '{"x":1}',
+    );
+    expect(strict.axisScores.schema_compliance).toBeLessThan(100);
   });
 });
 
@@ -406,6 +417,144 @@ describe('严格结构断言规则语言（恢复区分度用）', () => {
       xml,
     );
     expect(r2.axisScores.field_constraints).toBe(0);
+  });
+});
+
+describe('新颖约束规则集（IFBench 配方：OOD + 可程序化验证）', () => {
+  const run = async (constraints: string[], doc: unknown) =>
+    (await score({ format: 'json', output_policy: 'raw_only', constraints }, JSON.stringify(doc))).axisScores.field_constraints;
+
+  it('count 类：whereEq 带谓词计数', async () => {
+    const rows = [{ s: 'failed' }, { s: 'passed' }, { s: 'failed' }];
+    expect(await run(['whereEq:rows[].s=failed:==2'], { rows })).toBe(100);
+    expect(await run(['whereEq:rows[].s=failed:>=3'], { rows })).toBe(0);
+    expect(await run(['whereEq:rows[].s=passed:<2'], { rows })).toBe(100);
+  });
+
+  it('ratio 类：whereRatio 命中比例', async () => {
+    const rows = [{ s: 'a' }, { s: 'a' }, { s: 'a' }, { s: 'b' }];
+    expect(await run(['whereRatio:rows[].s=a:3/4'], { rows })).toBe(100);
+    expect(await run(['whereRatio:rows[].s=a:1/2'], { rows })).toBe(0);
+  });
+
+  it('custom 类：uniqueTuple / setEquals / beforeInArray', async () => {
+    const slots = [{ room: 'A', t: 1 }, { room: 'A', t: 2 }, { room: 'B', t: 1 }];
+    expect(await run(['uniqueTuple:slots[]=room,t'], { slots })).toBe(100);
+    expect(await run(['uniqueTuple:slots[]=room,t'], { slots: [{ room: 'A', t: 1 }, { room: 'A', t: 1 }] })).toBe(0);
+    expect(await run(['setEquals:slots[].room=A,A,B'], { slots })).toBe(100);
+    expect(await run(['setEquals:slots[].room=A,A,C'], { slots })).toBe(0);
+    const order = [{ n: '开场' }, { n: '中段' }, { n: '闭幕' }];
+    expect(await run(['beforeInArray:rows[].n=开场|闭幕'], { rows: order })).toBe(100);
+    expect(await run(['beforeInArray:rows[].n=闭幕|开场'], { rows: order })).toBe(0);
+  });
+
+  it('format 类：keyOrderDesc / keyLengthMax / multipleOf', async () => {
+    expect(await run(['keyOrderDesc:meta'], { meta: { z: 1, m: 2, a: 3 } })).toBe(100);
+    expect(await run(['keyOrderDesc:meta'], { meta: { a: 1, m: 2, z: 3 } })).toBe(0);
+    expect(await run(['keyLengthMax:meta=4'], { meta: { abcd: 1, ef: 2 } })).toBe(100);
+    expect(await run(['keyLengthMax:meta=4'], { meta: { abcde: 1 } })).toBe(0);
+    expect(await run(['multipleOf:rows[].n=25'], { rows: [{ n: 50 }, { n: 75 }] })).toBe(100);
+    expect(await run(['multipleOf:rows[].n=25'], { rows: [{ n: 60 }] })).toBe(0);
+  });
+
+  it('custom 类：noNulls / depthEquals', async () => {
+    expect(await run(['noNulls:.'], { a: 1, b: { c: 2 } })).toBe(100);
+    expect(await run(['noNulls:.'], { a: 1, b: null })).toBe(0);
+    // 深度：{a:{b:{c:1}}} → 3 层容器
+    expect(await run(['depthEquals:.=3'], { a: { b: { c: 1 } } })).toBe(100);
+    expect(await run(['depthEquals:.=2'], { a: { b: { c: 1 } } })).toBe(0);
+  });
+
+  it('words 类：notMatchAll 负面约束', async () => {
+    const rows = [{ text: '天气不错' }, { text: '交通顺畅' }];
+    expect(await run(['notMatchAll:rows[].text:[eE]'], { rows })).toBe(100);
+    expect(await run(['notMatchAll:rows[].text:顺畅'], { rows })).toBe(0);
+  });
+
+  it('copy 类：deepEq 与字面量逐字节相等（含转义与特殊字符）', async () => {
+    const doc = { key: 'line1\nline2', p: 'a/b~c', q: '"quoted"' };
+    expect(await run(['deepEq:key="line1\\nline2"'], doc)).toBe(100);
+    expect(await run(['deepEq:key="line1line2"'], doc)).toBe(0);
+    expect(await run(['deepEq:p="a/b~c"'], doc)).toBe(100);
+    expect(await run(['deepEq:q="\\"quoted\\""'], doc)).toBe(100);
+  });
+});
+
+describe('JSON Schema 校验器扩展（对齐 JSONSchemaBench 的高阶特性）', () => {
+  const withSchema = async (schema: Record<string, unknown>, doc: unknown) => {
+    const r = await score({ format: 'json', output_policy: 'raw_only', schema }, JSON.stringify(doc));
+    return r.axisScores.schema_compliance ?? 0;
+  };
+
+  it('not / if-then-else', async () => {
+    expect(await withSchema({ type: 'object', not: { required: ['forbidden'] } }, { ok: 1 })).toBe(100);
+    expect(await withSchema({ type: 'object', not: { required: ['forbidden'] } }, { forbidden: 1 })).toBeLessThan(100);
+    const conditional = {
+      type: 'object',
+      if: { properties: { kind: { const: 'a' } }, required: ['kind'] },
+      then: { required: ['onlyForA'] },
+      else: { required: ['onlyForB'] },
+    };
+    expect(await withSchema(conditional, { kind: 'a', onlyForA: 1 })).toBe(100);
+    expect(await withSchema(conditional, { kind: 'a', onlyForB: 1 })).toBeLessThan(100);
+    expect(await withSchema(conditional, { kind: 'b', onlyForB: 1 })).toBe(100);
+  });
+
+  it('patternProperties / propertyNames / additionalProperties 子模式', async () => {
+    const schema = {
+      type: 'object',
+      propertyNames: { pattern: '^[a-z_]+$' },
+      patternProperties: { '^x_': { type: 'number' } },
+      additionalProperties: { type: 'string' },
+    };
+    expect(await withSchema(schema, { x_a: 1, other: 's' })).toBe(100);
+    expect(await withSchema(schema, { x_a: 'not-number' })).toBeLessThan(100);
+    expect(await withSchema(schema, { Bad: 's' })).toBeLessThan(100);
+    expect(await withSchema(schema, { other: 5 })).toBeLessThan(100);
+  });
+
+  it('dependentRequired / dependencies（schema 形式）', async () => {
+    const dependentRequired = { type: 'object', dependentRequired: { credit: ['billing'] } };
+    expect(await withSchema(dependentRequired, { credit: 'x', billing: 'y' })).toBe(100);
+    expect(await withSchema(dependentRequired, { credit: 'x' })).toBeLessThan(100);
+
+    const dependencies = { type: 'object', dependencies: { a: { required: ['b'] } } };
+    expect(await withSchema(dependencies, { a: 1, b: 2 })).toBe(100);
+    expect(await withSchema(dependencies, { a: 1 })).toBeLessThan(100);
+  });
+
+  it('contains / minContains / uniqueItems', async () => {
+    const contains = { type: 'array', contains: { type: 'integer', minimum: 10 }, minContains: 2 };
+    expect(await withSchema(contains, [1, 10, 20])).toBe(100);
+    expect(await withSchema(contains, [1, 10, 2])).toBeLessThan(100);
+    expect(await withSchema({ type: 'array', uniqueItems: true }, [1, 2, 3])).toBe(100);
+    expect(await withSchema({ type: 'array', uniqueItems: true }, [1, 1])).toBeLessThan(100);
+  });
+
+  it('multipleOf / exclusiveMinimum / exclusiveMaximum / minProperties / maxProperties', async () => {
+    expect(await withSchema({ type: 'number', multipleOf: 25 }, 75)).toBe(100);
+    expect(await withSchema({ type: 'number', multipleOf: 25 }, 60)).toBeLessThan(100);
+    expect(await withSchema({ type: 'number', exclusiveMinimum: 0 }, 0)).toBeLessThan(100);
+    expect(await withSchema({ type: 'number', exclusiveMaximum: 10 }, 10)).toBeLessThan(100);
+    expect(await withSchema({ type: 'object', minProperties: 2 }, { a: 1 })).toBeLessThan(100);
+    expect(await withSchema({ type: 'object', maxProperties: 1 }, { a: 1, b: 2 })).toBeLessThan(100);
+  });
+
+  it('递归 $ref（树形结构，深度 5 仍可判定且不误判）', async () => {
+    const treeSchema = {
+      type: 'object',
+      required: ['name'],
+      additionalProperties: false,
+      properties: {
+        name: { type: 'string' },
+        children: { type: 'array', items: { $ref: '#' } },
+      },
+    };
+    const valid = { name: 'root', children: [{ name: 'a', children: [{ name: 'b', children: [{ name: 'c' }] }] }] };
+    expect(await withSchema(treeSchema, valid)).toBe(100);
+    // 第 4 层多了一个未声明键 → 递归分支必须抓到
+    const invalid = { name: 'root', children: [{ name: 'a', children: [{ name: 'b', extra: 1 }] }] };
+    expect(await withSchema(treeSchema, invalid)).toBeLessThan(100);
   });
 });
 
