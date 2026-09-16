@@ -1,5 +1,5 @@
 {
-  "version": "math-exam-expansion-2026-09-16-v7-mx314-rewrite",
+  "version": "math-exam-expansion-2026-09-16-v7",
   "status": "candidate-unmeasured",
   "modelCalls": 0,
   "hardSeconds": [
@@ -1662,13 +1662,13 @@
           ]
         },
         {
-          "task": "k=3，从 (0,0) 到 (20,20)。提交 path_count=合法路径数。",
+          "task": "k=3，从 (0,0) 到 (20,20)。提交 through_count=恰好经过 (10,10) 的合法路径数。",
           "items": [
             {
-              "key": "path_count",
+              "key": "through_count",
               "points": 20,
               "kind": "exact",
-              "expected": "74994427170"
+              "expected": "21314832016"
             }
           ]
         },
@@ -1695,14 +1695,14 @@
           ]
         }
       ],
-      "capstoneChange": "从单条受限路径升级为两两不相交的三元组，需要行列式级的方法。",
-      "difficultyRisk": "答案均为精确整数；非交叉计数可独立用行列式与穷举互验。"
+      "capstoneChange": "从单条受限路径升级为两两不相交的三元组；中间一问考察「经定点可分解」这一结构性质。",
+      "difficultyRisk": "答案均为精确整数；经定点计数需先识别约束的平移不变性再分段相乘，非交叉计数可用行列式与穷举互验。"
     },
     {
       "id": "MX3-16",
       "family": "partition-generating-functions",
-      "title": "整数分拆的生成函数",
-      "stem": "分拆把 n 写成正整数之和，顺序不计。A(n) 记 n 的分拆数。q 进制分拆指各部分均为奇数；互异分拆指各部分互不相同。",
+      "title": "整数分拆的四层推理",
+      "stem": "分拆把 n 写成正整数之和，顺序不计。A(n) 记 n 的分拆数。奇数分拆指各部分均为奇数；互异分拆指各部分互不相同。四问依次考察：递推计数 → 阈值反查 → 受限分拆（生成函数）→ 模同余结构。",
       "parts": [
         {
           "task": "提交 A(20)。",
@@ -1716,53 +1716,53 @@
           ]
         },
         {
-          "task": "提交 A(200)。",
+          "task": "提交 min_n=最小的 n（n ≥ 1）使 A(n) ≥ 10^6。",
           "items": [
             {
-              "key": "A_200",
+              "key": "min_n",
               "points": 20,
               "kind": "exact",
-              "expected": "3972999029388"
+              "expected": "61"
             }
           ]
         },
         {
-          "task": "提交 A(2000) 的精确值。",
-          "items": [
-            {
-              "key": "A_2000",
-              "points": 30,
-              "kind": "exact",
-              "expected": "4720819175619413888601432406799959512200344166"
-            }
-          ]
-        },
-        {
-          "task": "n=2000。提交 odd_parts=各部分均为奇数的分拆数，distinct_parts=各部分互不相同的分拆数，at_most_5=部分数不超过 5 的分拆数。三个数分别提交。",
+          "task": "提交 odd_parts=20 的奇数分拆数，distinct_parts=20 的互异分拆数（两者应相等，可用欧拉定理互验）。",
           "items": [
             {
               "key": "odd_parts",
               "points": 15,
               "kind": "exact",
-              "expected": "106972734349914451123354464808960"
+              "expected": "64"
             },
             {
               "key": "distinct_parts",
               "points": 15,
               "kind": "exact",
-              "expected": "106972734349914451123354464808960"
+              "expected": "64"
+            }
+          ]
+        },
+        {
+          "task": "提交 p19_mod5=A(19) mod 5，以及 min_nonpattern=最小的 n ≥ 1 满足 n mod 5 ≠ 4 且 A(n) ≡ 0 (mod 5)。",
+          "items": [
+            {
+              "key": "p19_mod5",
+              "points": 20,
+              "kind": "exact",
+              "expected": "0"
             },
             {
-              "key": "at_most_5",
-              "points": 10,
+              "key": "min_nonpattern",
+              "points": 20,
               "kind": "exact",
-              "expected": "5639320362"
+              "expected": "7"
             }
           ]
         }
       ],
-      "capstoneChange": "限制部分性质后递推式改变；直接用生成函数可以同时得到三个量。",
-      "difficultyRisk": "答案为大整数，可精确校验；奇数部分与互异部分两式互为独立验证。"
+      "capstoneChange": "由精确求值转为模结构：A(n) ≡ 0 (mod 5) 在 n ≡ 4 (mod 5) 上成立（拉马努金型），需找出最小反例。",
+      "difficultyRisk": "四问分别需要 DP 计数、对序列做阈值搜索、受限分拆的生成函数、以及同余模式的反例搜索；答案均可精确校验。"
     },
     {
       "id": "MX3-17",
@@ -1782,13 +1782,13 @@
           ]
         },
         {
-          "task": "提交 λ=(6,5,4,2) 的标准杨表个数。",
+          "task": "在 n=10 的**所有**分拆 λ 中，提交 max_syt=最大的标准杨表个数（f^λ 的最大值）。",
           "items": [
             {
-              "key": "syt_count",
+              "key": "max_syt",
               "points": 20,
               "kind": "exact",
-              "expected": "1361360"
+              "expected": "768"
             }
           ]
         },
@@ -1815,8 +1815,8 @@
           ]
         }
       ],
-      "capstoneChange": "从单形状升级到斜形状，hook length 公式不再直接适用。",
-      "difficultyRisk": "答案均为精确整数；行列式公式与穷举可互验。"
+      "capstoneChange": "从单形状 hook 公式升级到全形状极值搜索，再进入斜形状（hook 公式不再直接适用）。",
+      "difficultyRisk": "答案均为精确整数；极值需枚举 42 个形状逐一算 f^λ，斜表需行列式方法。"
     }
   ],
   "difficultyCalibrated": false,

@@ -43903,7 +43903,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「有理线性规划与不可行证书」，第1/4问，10分，时限600秒。\n共同题干：所有变量非负。最大化 c·x，约束 A x≤b。数据：{\"a\": [[3, 1, 2, 0, 1], [1, 4, 0, 2, 1], [0, 1, 3, 1, 2], [2, 0, 1, 4, 1], [1, 2, 1, 1, 3]], \"b\": [9, 17, 12, 17, 15], \"c\": [12, 11, 16, 14, 14]}。optimal证书为{status:\"optimal\",x:[...],y:[...],value:...}，其中y≥0、Aᵀy≥c且b·y=c·x。infeasible证书为{status:\"infeasible\",y:[...]}，要求y≥0、Aᵀy≥0、b·y<0。\n本问：提交 row_slack=把 x=[1,1,1,1,1] 代入后各约束的松弛量 b−Ax（按约束顺序，长度5）。\n评分项：row_slack(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「有理线性规划与不可行证书」，第1/4问，10分，时限300秒。\n共同题干：所有变量非负。最大化 c·x，约束 A x≤b。数据：{\"a\": [[3, 1, 2, 0, 1], [1, 4, 0, 2, 1], [0, 1, 3, 1, 2], [2, 0, 1, 4, 1], [1, 2, 1, 1, 3]], \"b\": [9, 17, 12, 17, 15], \"c\": [12, 11, 16, 14, 14]}。optimal证书为{status:\"optimal\",x:[...],y:[...],value:...}，其中y≥0、Aᵀy≥c且b·y=c·x。infeasible证书为{status:\"infeasible\",y:[...]}，要求y≥0、Aᵀy≥0、b·y<0。\n本问：提交 row_slack=把 x=[1,1,1,1,1] 代入后各约束的松弛量 b−Ax（按约束顺序，长度5）。\n评分项：row_slack(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -43915,7 +43915,7 @@
    "partNumber": 1,
    "points": 10,
    "hardSeconds": 300,
-   "questionHash": "f5e834e2acbfb1d4348eb56d45fb444b17dfe276c6df1f7a514a84394cdcf5ab",
+   "questionHash": "8527d8e9ea6cc0fa50fe4a077df4ecd373f745a573067f364d40d8ee1fe157cb",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -43927,7 +43927,7 @@
    "timeout_180s"
   ],
   "scenarioVersion": "1.2.0",
-  "scenarioHash": "5fae03e704628a53",
+  "scenarioHash": "733dca46be5fc567",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -43945,7 +43945,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「有理线性规划与不可行证书」，第2/4问，20分，时限360秒。\n共同题干：所有变量非负。最大化 c·x，约束 A x≤b。数据：{\"a\": [[3, 1, 2, 0, 1], [1, 4, 0, 2, 1], [0, 1, 3, 1, 2], [2, 0, 1, 4, 1], [1, 2, 1, 1, 3]], \"b\": [9, 17, 12, 17, 15], \"c\": [12, 11, 16, 14, 14]}。optimal证书为{status:\"optimal\",x:[...],y:[...],value:...}，其中y≥0、Aᵀy≥c且b·y=c·x。infeasible证书为{status:\"infeasible\",y:[...]}，要求y≥0、Aᵀy≥0、b·y<0。\n本问：求全部五个不等式同时取等号时的向量，按变量顺序提交 intersection。\n评分项：intersection(20分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「有理线性规划与不可行证书」，第2/4问，20分，时限600秒。\n共同题干：所有变量非负。最大化 c·x，约束 A x≤b。数据：{\"a\": [[3, 1, 2, 0, 1], [1, 4, 0, 2, 1], [0, 1, 3, 1, 2], [2, 0, 1, 4, 1], [1, 2, 1, 1, 3]], \"b\": [9, 17, 12, 17, 15], \"c\": [12, 11, 16, 14, 14]}。optimal证书为{status:\"optimal\",x:[...],y:[...],value:...}，其中y≥0、Aᵀy≥c且b·y=c·x。infeasible证书为{status:\"infeasible\",y:[...]}，要求y≥0、Aᵀy≥0、b·y<0。\n本问：求全部五个不等式同时取等号时的向量，按变量顺序提交 intersection。\n评分项：intersection(20分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -43957,7 +43957,7 @@
    "partNumber": 2,
    "points": 20,
    "hardSeconds": 600,
-   "questionHash": "1cebb1bcd101dd0e009d63a616413ab261dfb0d75af01afac90a9faaa319b4e8",
+   "questionHash": "d02bba45192e5a0134394ccc8445bcd834043872a52740dcf8f3a2cf8186feee",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -43969,7 +43969,7 @@
    "timeout_360s"
   ],
   "scenarioVersion": "1.0.0",
-  "scenarioHash": "a6af85975fe4b43e",
+  "scenarioHash": "fe69a81718af0d80",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -43987,7 +43987,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「有理线性规划与不可行证书」，第3/4问，30分，时限1200秒。\n共同题干：所有变量非负。最大化 c·x，约束 A x≤b。数据：{\"a\": [[3, 1, 2, 0, 1], [1, 4, 0, 2, 1], [0, 1, 3, 1, 2], [2, 0, 1, 4, 1], [1, 2, 1, 1, 3]], \"b\": [9, 17, 12, 17, 15], \"c\": [12, 11, 16, 14, 14]}。optimal证书为{status:\"optimal\",x:[...],y:[...],value:...}，其中y≥0、Aᵀy≥c且b·y=c·x。infeasible证书为{status:\"infeasible\",y:[...]}，要求y≥0、Aᵀy≥0、b·y<0。\n本问：求最大值 value，并提交证明该最大值的 certificate。\n评分项：value(10分)、certificate(20分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「有理线性规划与不可行证书」，第3/4问，30分，时限900秒。\n共同题干：所有变量非负。最大化 c·x，约束 A x≤b。数据：{\"a\": [[3, 1, 2, 0, 1], [1, 4, 0, 2, 1], [0, 1, 3, 1, 2], [2, 0, 1, 4, 1], [1, 2, 1, 1, 3]], \"b\": [9, 17, 12, 17, 15], \"c\": [12, 11, 16, 14, 14]}。optimal证书为{status:\"optimal\",x:[...],y:[...],value:...}，其中y≥0、Aᵀy≥c且b·y=c·x。infeasible证书为{status:\"infeasible\",y:[...]}，要求y≥0、Aᵀy≥0、b·y<0。\n本问：求最大值 value，并提交证明该最大值的 certificate。\n评分项：value(10分)、certificate(20分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -43999,7 +43999,7 @@
    "partNumber": 3,
    "points": 30,
    "hardSeconds": 900,
-   "questionHash": "e61b3b4346b6d6a78949d6fbe314bc0580a9198062c919960a6248bc8c554ee4",
+   "questionHash": "91365d449b0afb39f58eb5044e570aa8792b28578a6e5f065afd7d8e41889509",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -44011,7 +44011,7 @@
    "timeout_1200s"
   ],
   "scenarioVersion": "1.0.0",
-  "scenarioHash": "74692112c91503ee",
+  "scenarioHash": "0cf836c5cd216fa3",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -44071,7 +44071,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「流量与割的双向证明」，第1/4问，10分，时限600秒。\n共同题干：有向网络顶点0..7，源0汇7；每条边[u,v,capacity]，流量必须为整数。边按输入顺序编号。数据：[[0, 1, 11], [0, 2, 8], [0, 3, 6], [1, 2, 3], [1, 4, 7], [1, 5, 5], [2, 4, 6], [2, 5, 5], [3, 2, 2], [3, 5, 7], [4, 5, 2], [4, 6, 8], [5, 6, 4], [5, 7, 9], [6, 7, 13]]。证书为{flow:[每条边流量],cut:[含源不含汇的顶点集合],value:流值}；需满足容量、流守恒，且流值等于割容量。\n本问：提交 path_edges=[位于至少一条 0→7 有向路径上的边的编号]（升序）。\n评分项：path_edges(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「流量与割的双向证明」，第1/4问，10分，时限300秒。\n共同题干：有向网络顶点0..7，源0汇7；每条边[u,v,capacity]，流量必须为整数。边按输入顺序编号。数据：[[0, 1, 11], [0, 2, 8], [0, 3, 6], [1, 2, 3], [1, 4, 7], [1, 5, 5], [2, 4, 6], [2, 5, 5], [3, 2, 2], [3, 5, 7], [4, 5, 2], [4, 6, 8], [5, 6, 4], [5, 7, 9], [6, 7, 13]]。证书为{flow:[每条边流量],cut:[含源不含汇的顶点集合],value:流值}；需满足容量、流守恒，且流值等于割容量。\n本问：提交 path_edges=[位于至少一条 0→7 有向路径上的边的编号]（升序）。\n评分项：path_edges(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -44083,7 +44083,7 @@
    "partNumber": 1,
    "points": 10,
    "hardSeconds": 300,
-   "questionHash": "4ec0e2859094a26872a269b10decc146656bb4b460213bfd62b9b2fa50f14c18",
+   "questionHash": "e0d24001ba1e5ac9dd7b0fe49fa5ad9a70321618a371f73708d02259f3f85ca2",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -44095,7 +44095,7 @@
    "timeout_180s"
   ],
   "scenarioVersion": "1.2.0",
-  "scenarioHash": "e1a605421ef61e27",
+  "scenarioHash": "69d09bdbe92c95a4",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -44113,7 +44113,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「流量与割的双向证明」，第2/4问，20分，时限360秒。\n共同题干：有向网络顶点0..7，源0汇7；每条边[u,v,capacity]，流量必须为整数。边按输入顺序编号。数据：[[0, 1, 11], [0, 2, 8], [0, 3, 6], [1, 2, 3], [1, 4, 7], [1, 5, 5], [2, 4, 6], [2, 5, 5], [3, 2, 2], [3, 5, 7], [4, 5, 2], [4, 6, 8], [5, 6, 4], [5, 7, 9], [6, 7, 13]]。证书为{flow:[每条边流量],cut:[含源不含汇的顶点集合],value:流值}；需满足容量、流守恒，且流值等于割容量。\n本问：求最大流值 value。\n评分项：value(20分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「流量与割的双向证明」，第2/4问，20分，时限600秒。\n共同题干：有向网络顶点0..7，源0汇7；每条边[u,v,capacity]，流量必须为整数。边按输入顺序编号。数据：[[0, 1, 11], [0, 2, 8], [0, 3, 6], [1, 2, 3], [1, 4, 7], [1, 5, 5], [2, 4, 6], [2, 5, 5], [3, 2, 2], [3, 5, 7], [4, 5, 2], [4, 6, 8], [5, 6, 4], [5, 7, 9], [6, 7, 13]]。证书为{flow:[每条边流量],cut:[含源不含汇的顶点集合],value:流值}；需满足容量、流守恒，且流值等于割容量。\n本问：求最大流值 value。\n评分项：value(20分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -44125,7 +44125,7 @@
    "partNumber": 2,
    "points": 20,
    "hardSeconds": 600,
-   "questionHash": "095e777ab60e106093bfdfae0da1b14e5ce50e553dc0990b249f6c612752f92b",
+   "questionHash": "1898297a68dc6d91d1160ac0390c9bce15a6944baa0288f6550ec29dfbad76e0",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -44137,7 +44137,7 @@
    "timeout_360s"
   ],
   "scenarioVersion": "1.0.0",
-  "scenarioHash": "a4b42cc48259ca6b",
+  "scenarioHash": "55c7850fb662610a",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -44155,7 +44155,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「流量与割的双向证明」，第3/4问，30分，时限1200秒。\n共同题干：有向网络顶点0..7，源0汇7；每条边[u,v,capacity]，流量必须为整数。边按输入顺序编号。数据：[[0, 1, 11], [0, 2, 8], [0, 3, 6], [1, 2, 3], [1, 4, 7], [1, 5, 5], [2, 4, 6], [2, 5, 5], [3, 2, 2], [3, 5, 7], [4, 5, 2], [4, 6, 8], [5, 6, 4], [5, 7, 9], [6, 7, 13]]。证书为{flow:[每条边流量],cut:[含源不含汇的顶点集合],value:流值}；需满足容量、流守恒，且流值等于割容量。\n本问：提交 certificate，证明最大流与最小割相等。\n评分项：certificate(30分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「流量与割的双向证明」，第3/4问，30分，时限900秒。\n共同题干：有向网络顶点0..7，源0汇7；每条边[u,v,capacity]，流量必须为整数。边按输入顺序编号。数据：[[0, 1, 11], [0, 2, 8], [0, 3, 6], [1, 2, 3], [1, 4, 7], [1, 5, 5], [2, 4, 6], [2, 5, 5], [3, 2, 2], [3, 5, 7], [4, 5, 2], [4, 6, 8], [5, 6, 4], [5, 7, 9], [6, 7, 13]]。证书为{flow:[每条边流量],cut:[含源不含汇的顶点集合],value:流值}；需满足容量、流守恒，且流值等于割容量。\n本问：提交 certificate，证明最大流与最小割相等。\n评分项：certificate(30分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -44167,7 +44167,7 @@
    "partNumber": 3,
    "points": 30,
    "hardSeconds": 900,
-   "questionHash": "5c7729e22e302495f309516cf15ea5dd896e0e7071aa57dbe9158feab3cc14c3",
+   "questionHash": "b075f364e619bd8adad23c2149e7af9eef1e2373cf936f59534a0823414bbac6",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -44179,7 +44179,7 @@
    "timeout_1200s"
   ],
   "scenarioVersion": "1.0.0",
-  "scenarioHash": "86af2669ada2e54c",
+  "scenarioHash": "f80fb551e5cb76b0",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -44239,7 +44239,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「受限指派与势函数」，第1/4问，10分，时限600秒。\n共同题干：6名工人到6项工作的一一指派，编号0..5，成本矩阵：[[8, 9, 23, 14, 8, 19], [7, 21, 7, 18, 16, 10], [6, 12, 18, 6, 22, 13], [8, 16, 11, 24, 9, 17], [7, 7, 19, 10, 15, 21], [8, 14, 9, 17, 12, 8]]。最小化总成本。certificate={permutation:[工人对应工作],u:[...],v:[...],value:...}；所有允许边应有u[i]+v[j]≤cost[i][j]，且总成本=Σu+Σv。\n本问：提交 row_min=[成本矩阵每行的最小值]（按行顺序，长度6），以及 row_min_sum=各行最小值之和。\n评分项：row_min(5分)、row_min_sum(5分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「受限指派与势函数」，第1/4问，10分，时限300秒。\n共同题干：6名工人到6项工作的一一指派，编号0..5，成本矩阵：[[8, 9, 23, 14, 8, 19], [7, 21, 7, 18, 16, 10], [6, 12, 18, 6, 22, 13], [8, 16, 11, 24, 9, 17], [7, 7, 19, 10, 15, 21], [8, 14, 9, 17, 12, 8]]。最小化总成本。certificate={permutation:[工人对应工作],u:[...],v:[...],value:...}；所有允许边应有u[i]+v[j]≤cost[i][j]，且总成本=Σu+Σv。\n本问：提交 row_min=[成本矩阵每行的最小值]（按行顺序，长度6），以及 row_min_sum=各行最小值之和。\n评分项：row_min(5分)、row_min_sum(5分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -44251,7 +44251,7 @@
    "partNumber": 1,
    "points": 10,
    "hardSeconds": 300,
-   "questionHash": "2186d4d2e3a7426f332371afd6f5ca2437ed54e6ea79a1eefacf4ebd02b757e2",
+   "questionHash": "3735eaa011a572b7680550065a013a89aa3a9e758054f264e69ad997ec840feb",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -44263,7 +44263,7 @@
    "timeout_180s"
   ],
   "scenarioVersion": "1.2.0",
-  "scenarioHash": "4bb9dcdcf03dd193",
+  "scenarioHash": "fc7d229294f2c219",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -44281,7 +44281,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「受限指派与势函数」，第2/4问，20分，时限360秒。\n共同题干：6名工人到6项工作的一一指派，编号0..5，成本矩阵：[[8, 9, 23, 14, 8, 19], [7, 21, 7, 18, 16, 10], [6, 12, 18, 6, 22, 13], [8, 16, 11, 24, 9, 17], [7, 7, 19, 10, 15, 21], [8, 14, 9, 17, 12, 8]]。最小化总成本。certificate={permutation:[工人对应工作],u:[...],v:[...],value:...}；所有允许边应有u[i]+v[j]≤cost[i][j]，且总成本=Σu+Σv。\n本问：求最小成本 value。\n评分项：value(20分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「受限指派与势函数」，第2/4问，20分，时限600秒。\n共同题干：6名工人到6项工作的一一指派，编号0..5，成本矩阵：[[8, 9, 23, 14, 8, 19], [7, 21, 7, 18, 16, 10], [6, 12, 18, 6, 22, 13], [8, 16, 11, 24, 9, 17], [7, 7, 19, 10, 15, 21], [8, 14, 9, 17, 12, 8]]。最小化总成本。certificate={permutation:[工人对应工作],u:[...],v:[...],value:...}；所有允许边应有u[i]+v[j]≤cost[i][j]，且总成本=Σu+Σv。\n本问：求最小成本 value。\n评分项：value(20分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -44293,7 +44293,7 @@
    "partNumber": 2,
    "points": 20,
    "hardSeconds": 600,
-   "questionHash": "ecf3d1100c9e6c80aad5ed4a62233fbf889e63fcfb84c01cda24181798610099",
+   "questionHash": "7f763201403f15e1fa735f16e8921c55e144b37820ae15eb3e5afff3f52de971",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -44305,7 +44305,7 @@
    "timeout_360s"
   ],
   "scenarioVersion": "1.0.0",
-  "scenarioHash": "dd25d18bb2f25efe",
+  "scenarioHash": "da109df9fbf42b14",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -44323,7 +44323,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「受限指派与势函数」，第3/4问，30分，时限1200秒。\n共同题干：6名工人到6项工作的一一指派，编号0..5，成本矩阵：[[8, 9, 23, 14, 8, 19], [7, 21, 7, 18, 16, 10], [6, 12, 18, 6, 22, 13], [8, 16, 11, 24, 9, 17], [7, 7, 19, 10, 15, 21], [8, 14, 9, 17, 12, 8]]。最小化总成本。certificate={permutation:[工人对应工作],u:[...],v:[...],value:...}；所有允许边应有u[i]+v[j]≤cost[i][j]，且总成本=Σu+Σv。\n本问：提交达到最优值的指派及对偶势函数 certificate。\n评分项：certificate(30分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「受限指派与势函数」，第3/4问，30分，时限900秒。\n共同题干：6名工人到6项工作的一一指派，编号0..5，成本矩阵：[[8, 9, 23, 14, 8, 19], [7, 21, 7, 18, 16, 10], [6, 12, 18, 6, 22, 13], [8, 16, 11, 24, 9, 17], [7, 7, 19, 10, 15, 21], [8, 14, 9, 17, 12, 8]]。最小化总成本。certificate={permutation:[工人对应工作],u:[...],v:[...],value:...}；所有允许边应有u[i]+v[j]≤cost[i][j]，且总成本=Σu+Σv。\n本问：提交达到最优值的指派及对偶势函数 certificate。\n评分项：certificate(30分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -44335,7 +44335,7 @@
    "partNumber": 3,
    "points": 30,
    "hardSeconds": 900,
-   "questionHash": "12f6f617561bce7b774fe594ad7305b8af9f71dab7ed2fc6757a97f345204e70",
+   "questionHash": "379bd40a69c07782dbed23662cc2b0cd93ffd4088899b475b203763656feabd6",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -44347,7 +44347,7 @@
    "timeout_1200s"
   ],
   "scenarioVersion": "1.0.0",
-  "scenarioHash": "d60525dd3404e2d0",
+  "scenarioHash": "145325dc18993d7e",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -44407,7 +44407,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「非约化商环中的逆与解空间」，第1/4问，10分，时限600秒。\n共同题干：在F₇[x]/((x²+1)³)中计算。系数数组按常数项到最高次项排列，所有系数用0..6代表；余式数组固定长度6。\n本问：提交 x6_reduced=x⁶ 在商环 F₇[x]/((x²+1)³) 中的余式（长度6，常数项起）。\n评分项：x6_reduced(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「非约化商环中的逆与解空间」，第1/4问，10分，时限300秒。\n共同题干：在F₇[x]/((x²+1)³)中计算。系数数组按常数项到最高次项排列，所有系数用0..6代表；余式数组固定长度6。\n本问：提交 x6_reduced=x⁶ 在商环 F₇[x]/((x²+1)³) 中的余式（长度6，常数项起）。\n评分项：x6_reduced(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -44419,7 +44419,7 @@
    "partNumber": 1,
    "points": 10,
    "hardSeconds": 300,
-   "questionHash": "5a1584d3c0003349d4ec56a4aac022c0ab9cf287c783c1522dc3be6e4bb84164",
+   "questionHash": "8ed3f8a0cabcb40b19f98e7c37ae21ad84413794b8d1c9b8ee6b147c5379bfbb",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -44431,7 +44431,7 @@
    "timeout_180s"
   ],
   "scenarioVersion": "1.2.0",
-  "scenarioHash": "8871718bcff9375e",
+  "scenarioHash": "d8f96c66f6d075e6",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -44449,7 +44449,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「非约化商环中的逆与解空间」，第2/4问，20分，时限360秒。\n共同题干：在F₇[x]/((x²+1)³)中计算。系数数组按常数项到最高次项排列，所有系数用0..6代表；余式数组固定长度6。\n本问：令g=x³+2x+3。提交 multiplication_rank=乘g在六维商环上的线性映射秩。\n评分项：multiplication_rank(20分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「非约化商环中的逆与解空间」，第2/4问，20分，时限600秒。\n共同题干：在F₇[x]/((x²+1)³)中计算。系数数组按常数项到最高次项排列，所有系数用0..6代表；余式数组固定长度6。\n本问：令g=x³+2x+3。提交 multiplication_rank=乘g在六维商环上的线性映射秩。\n评分项：multiplication_rank(20分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -44461,7 +44461,7 @@
    "partNumber": 2,
    "points": 20,
    "hardSeconds": 600,
-   "questionHash": "78cdc665b784fa492fbb347a81c2834ea9c743476cf7e5aef582fea5f26f9abe",
+   "questionHash": "10a97f762521c09fb48ecdd0f2fba9e6fec535555fcd118523b97ec8638fb1a9",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -44473,7 +44473,7 @@
    "timeout_360s"
   ],
   "scenarioVersion": "1.0.0",
-  "scenarioHash": "332e48b9bb554835",
+  "scenarioHash": "0875270a0c9e7520",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -44491,7 +44491,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「非约化商环中的逆与解空间」，第3/4问，30分，时限1200秒。\n共同题干：在F₇[x]/((x²+1)³)中计算。系数数组按常数项到最高次项排列，所有系数用0..6代表；余式数组固定长度6。\n本问：提交 inverse=g的逆元余式。\n评分项：inverse(30分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「非约化商环中的逆与解空间」，第3/4问，30分，时限900秒。\n共同题干：在F₇[x]/((x²+1)³)中计算。系数数组按常数项到最高次项排列，所有系数用0..6代表；余式数组固定长度6。\n本问：提交 inverse=g的逆元余式。\n评分项：inverse(30分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -44503,7 +44503,7 @@
    "partNumber": 3,
    "points": 30,
    "hardSeconds": 900,
-   "questionHash": "38ce10f07603f90e98e6cb5dd3224e3f14216828f8f8ccc27100b11a4898666a",
+   "questionHash": "af7204335cdd540e6f78a69f46f95ad9c1aff225a6fa06c1bf213069cef8e881",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -44515,7 +44515,7 @@
    "timeout_1200s"
   ],
   "scenarioVersion": "1.0.0",
-  "scenarioHash": "f1aa4a1f232c7c87",
+  "scenarioHash": "8386fe89d2e5337d",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -44575,7 +44575,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「吸收链的条件矩与转移干预」，第1/4问，10分，时限600秒。\n共同题干：状态为0,1,2,S,F；S与F吸收。从0开始，T为首次吸收所需步数。每行按0,1,2,S,F给转移概率：[[\"0\", \"1/2\", \"1/3\", \"1/6\", \"0\"], [\"1/4\", \"0\", \"1/4\", \"1/4\", \"1/4\"], [\"1/5\", \"2/5\", \"0\", \"1/5\", \"1/5\"]].\n本问：提交 one_step_absorb=[从状态0、1、2 各自一步进入吸收态(S或F)的概率]（按状态顺序，长度3，精确分数）。\n评分项：one_step_absorb(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「吸收链的条件矩与转移干预」，第1/4问，10分，时限300秒。\n共同题干：状态为0,1,2,S,F；S与F吸收。从0开始，T为首次吸收所需步数。每行按0,1,2,S,F给转移概率：[[\"0\", \"1/2\", \"1/3\", \"1/6\", \"0\"], [\"1/4\", \"0\", \"1/4\", \"1/4\", \"1/4\"], [\"1/5\", \"2/5\", \"0\", \"1/5\", \"1/5\"]].\n本问：提交 one_step_absorb=[从状态0、1、2 各自一步进入吸收态(S或F)的概率]（按状态顺序，长度3，精确分数）。\n评分项：one_step_absorb(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -44587,7 +44587,7 @@
    "partNumber": 1,
    "points": 10,
    "hardSeconds": 300,
-   "questionHash": "e54845c68a889937954125d6ad423c9d37d0e32c7f426440f90c232840196c9d",
+   "questionHash": "4e5f1c1d5720c329fdf063d4e1d30c99bf3309607ce477ed1eb183300c903a36",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -44599,7 +44599,7 @@
    "timeout_180s"
   ],
   "scenarioVersion": "1.2.0",
-  "scenarioHash": "64da8f746477340f",
+  "scenarioHash": "4069aacb11715a6d",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -44617,7 +44617,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「吸收链的条件矩与转移干预」，第2/4问，20分，时限360秒。\n共同题干：状态为0,1,2,S,F；S与F吸收。从0开始，T为首次吸收所需步数。每行按0,1,2,S,F给转移概率：[[\"0\", \"1/2\", \"1/3\", \"1/6\", \"0\"], [\"1/4\", \"0\", \"1/4\", \"1/4\", \"1/4\"], [\"1/5\", \"2/5\", \"0\", \"1/5\", \"1/5\"]].\n本问：提交 success=最终在S吸收的概率。\n评分项：success(20分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「吸收链的条件矩与转移干预」，第2/4问，20分，时限600秒。\n共同题干：状态为0,1,2,S,F；S与F吸收。从0开始，T为首次吸收所需步数。每行按0,1,2,S,F给转移概率：[[\"0\", \"1/2\", \"1/3\", \"1/6\", \"0\"], [\"1/4\", \"0\", \"1/4\", \"1/4\", \"1/4\"], [\"1/5\", \"2/5\", \"0\", \"1/5\", \"1/5\"]].\n本问：提交 success=最终在S吸收的概率。\n评分项：success(20分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -44629,7 +44629,7 @@
    "partNumber": 2,
    "points": 20,
    "hardSeconds": 600,
-   "questionHash": "bdde642e4f3c933d6b2e5500f1cafdaa8451b6778196c1bc91f891abe0081672",
+   "questionHash": "9926188e4bab46929f9066fa442797992431f25f2f1cd837568847da4abad383",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -44641,7 +44641,7 @@
    "timeout_360s"
   ],
   "scenarioVersion": "1.0.0",
-  "scenarioHash": "28780cd344c3a2ae",
+  "scenarioHash": "fc6ce7fa24962636",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -44659,7 +44659,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「吸收链的条件矩与转移干预」，第3/4问，30分，时限1200秒。\n共同题干：状态为0,1,2,S,F；S与F吸收。从0开始，T为首次吸收所需步数。每行按0,1,2,S,F给转移概率：[[\"0\", \"1/2\", \"1/3\", \"1/6\", \"0\"], [\"1/4\", \"0\", \"1/4\", \"1/4\", \"1/4\"], [\"1/5\", \"2/5\", \"0\", \"1/5\", \"1/5\"]].\n本问：提交 conditional_mean=E[T|最终到S]。\n评分项：conditional_mean(30分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「吸收链的条件矩与转移干预」，第3/4问，30分，时限900秒。\n共同题干：状态为0,1,2,S,F；S与F吸收。从0开始，T为首次吸收所需步数。每行按0,1,2,S,F给转移概率：[[\"0\", \"1/2\", \"1/3\", \"1/6\", \"0\"], [\"1/4\", \"0\", \"1/4\", \"1/4\", \"1/4\"], [\"1/5\", \"2/5\", \"0\", \"1/5\", \"1/5\"]].\n本问：提交 conditional_mean=E[T|最终到S]。\n评分项：conditional_mean(30分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -44671,7 +44671,7 @@
    "partNumber": 3,
    "points": 30,
    "hardSeconds": 900,
-   "questionHash": "3bf1496b2d1ff018e12db553fe69acef42c6be54ddf2d043dd732a86a7448564",
+   "questionHash": "1eb6e6fe35516f85b35b0f44f051ad7be7b467dec7c584b417c72754f97be86d",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -44683,7 +44683,7 @@
    "timeout_1200s"
   ],
   "scenarioVersion": "1.0.0",
-  "scenarioHash": "20e95008dd1b2a9f",
+  "scenarioHash": "34e458623c969218",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -44743,7 +44743,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「循环约束与扩张对称群」，第1/4问，10分，时限600秒。\n共同题干：长度14的二进制循环串，位置有编号，首尾相邻。前三问恰有5个1且没有相邻的1。\n本问：提交 with_pos0_one=位置0为1、且满足恰有5个1与全部相邻约束的有编号串数。\n评分项：with_pos0_one(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「循环约束与扩张对称群」，第1/4问，10分，时限300秒。\n共同题干：长度14的二进制循环串，位置有编号，首尾相邻。前三问恰有5个1且没有相邻的1。\n本问：提交 with_pos0_one=位置0为1、且满足恰有5个1与全部相邻约束的有编号串数。\n评分项：with_pos0_one(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -44755,7 +44755,7 @@
    "partNumber": 1,
    "points": 10,
    "hardSeconds": 300,
-   "questionHash": "00f769f7dfb19270bbc08095670bce09d77a6cc9009380c45fd8830f0b65b23a",
+   "questionHash": "c45058a934349163c6cdeca27ea88ec32688d1b366019223d96d858408e54a58",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -44767,7 +44767,7 @@
    "timeout_180s"
   ],
   "scenarioVersion": "1.2.0",
-  "scenarioHash": "6a96567758ec9dae",
+  "scenarioHash": "780946452c146d80",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -44785,7 +44785,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「循环约束与扩张对称群」，第2/4问，20分，时限360秒。\n共同题干：长度14的二进制循环串，位置有编号，首尾相邻。前三问恰有5个1且没有相邻的1。\n本问：只把旋转视为相同，求 orbits。\n评分项：orbits(20分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「循环约束与扩张对称群」，第2/4问，20分，时限600秒。\n共同题干：长度14的二进制循环串，位置有编号，首尾相邻。前三问恰有5个1且没有相邻的1。\n本问：只把旋转视为相同，求 orbits。\n评分项：orbits(20分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -44797,7 +44797,7 @@
    "partNumber": 2,
    "points": 20,
    "hardSeconds": 600,
-   "questionHash": "643d71b0aec32e743bc6b36e73cc1813e3876fab7f10365d75ff3126e418cb3d",
+   "questionHash": "39fa3ad0a0cbbf76f7cd172d013e024031a71aa80f331e79d99c47ee29fa0bae",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -44809,7 +44809,7 @@
    "timeout_360s"
   ],
   "scenarioVersion": "1.0.0",
-  "scenarioHash": "ba3609be6eb6c02f",
+  "scenarioHash": "98ca78d0fb9f2f31",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -44827,7 +44827,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「循环约束与扩张对称群」，第3/4问，30分，时限1200秒。\n共同题干：长度14的二进制循环串，位置有编号，首尾相邻。前三问恰有5个1且没有相邻的1。\n本问：把旋转与反射都视为相同，求 bracelets。\n评分项：bracelets(30分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「循环约束与扩张对称群」，第3/4问，30分，时限900秒。\n共同题干：长度14的二进制循环串，位置有编号，首尾相邻。前三问恰有5个1且没有相邻的1。\n本问：把旋转与反射都视为相同，求 bracelets。\n评分项：bracelets(30分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -44839,7 +44839,7 @@
    "partNumber": 3,
    "points": 30,
    "hardSeconds": 900,
-   "questionHash": "30a51588287737ecb3f1c848000496e55258939a3dc4eccfdd912a4e5db8f861",
+   "questionHash": "fd697f0ae237f96a206b347fce5d1efdd9935e100f7f1c275bab2dbd568d0910",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -44851,7 +44851,7 @@
    "timeout_1200s"
   ],
   "scenarioVersion": "1.0.0",
-  "scenarioHash": "9c275419553782ef",
+  "scenarioHash": "c21adc624e8026b3",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -44911,7 +44911,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「加权生成树与边相关性」，第1/4问，10分，时限600秒。\n共同题干：无向简单图顶点0..6，边按0起编号，每条[u,v,w]：[[0, 1, 2], [0, 2, 3], [0, 3, 1], [1, 2, 1], [1, 4, 4], [2, 3, 2], [2, 4, 1], [2, 5, 3], [3, 5, 2], [3, 6, 1], [4, 5, 2], [4, 6, 3], [5, 6, 4]]。生成树的权重为边权之积，随机树的概率与权重成正比。\n本问：提交 tree_count=不同生成树的个数（不计权重）。\n评分项：tree_count(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「加权生成树与边相关性」，第1/4问，10分，时限300秒。\n共同题干：无向简单图顶点0..6，边按0起编号，每条[u,v,w]：[[0, 1, 2], [0, 2, 3], [0, 3, 1], [1, 2, 1], [1, 4, 4], [2, 3, 2], [2, 4, 1], [2, 5, 3], [3, 5, 2], [3, 6, 1], [4, 5, 2], [4, 6, 3], [5, 6, 4]]。生成树的权重为边权之积，随机树的概率与权重成正比。\n本问：提交 tree_count=不同生成树的个数（不计权重）。\n评分项：tree_count(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -44923,7 +44923,7 @@
    "partNumber": 1,
    "points": 10,
    "hardSeconds": 300,
-   "questionHash": "1734673fa1bbf612bedb5b6b4789dde6b08a1575de2706530ccc77f464e8a766",
+   "questionHash": "20cc8a76ef0be6590a86aa65aca6049aafa29546cb39f0215884bdec225ec15f",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -44935,7 +44935,7 @@
    "timeout_180s"
   ],
   "scenarioVersion": "1.2.0",
-  "scenarioHash": "72d3c10235cd26ac",
+  "scenarioHash": "723f727a8664d470",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -44953,7 +44953,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「加权生成树与边相关性」，第2/4问，20分，时限360秒。\n共同题干：无向简单图顶点0..6，边按0起编号，每条[u,v,w]：[[0, 1, 2], [0, 2, 3], [0, 3, 1], [1, 2, 1], [1, 4, 4], [2, 3, 2], [2, 4, 1], [2, 5, 3], [3, 5, 2], [3, 6, 1], [4, 5, 2], [4, 6, 3], [5, 6, 4]]。生成树的权重为边权之积，随机树的概率与权重成正比。\n本问：求所有生成树的总权重 partition。\n评分项：partition(20分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「加权生成树与边相关性」，第2/4问，20分，时限600秒。\n共同题干：无向简单图顶点0..6，边按0起编号，每条[u,v,w]：[[0, 1, 2], [0, 2, 3], [0, 3, 1], [1, 2, 1], [1, 4, 4], [2, 3, 2], [2, 4, 1], [2, 5, 3], [3, 5, 2], [3, 6, 1], [4, 5, 2], [4, 6, 3], [5, 6, 4]]。生成树的权重为边权之积，随机树的概率与权重成正比。\n本问：求所有生成树的总权重 partition。\n评分项：partition(20分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -44965,7 +44965,7 @@
    "partNumber": 2,
    "points": 20,
    "hardSeconds": 600,
-   "questionHash": "6b6d67658989c36c9eecc23b9ce099f9a5fa38d63898d64addfc6074298bb19d",
+   "questionHash": "8d0a9c36ab466965148f7a6407b9032ffde29e01c73b38e5964081cbe36406f0",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -44977,7 +44977,7 @@
    "timeout_360s"
   ],
   "scenarioVersion": "1.0.0",
-  "scenarioHash": "d7d463f4a618f5a4",
+  "scenarioHash": "26dc4956d5028909",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -44995,7 +44995,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「加权生成树与边相关性」，第3/4问，30分，时限1200秒。\n共同题干：无向简单图顶点0..6，边按0起编号，每条[u,v,w]：[[0, 1, 2], [0, 2, 3], [0, 3, 1], [1, 2, 1], [1, 4, 4], [2, 3, 2], [2, 4, 1], [2, 5, 3], [3, 5, 2], [3, 6, 1], [4, 5, 2], [4, 6, 3], [5, 6, 4]]。生成树的权重为边权之积，随机树的概率与权重成正比。\n本问：提交 joint=边1与边4同时在随机生成树中的概率。\n评分项：joint(30分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「加权生成树与边相关性」，第3/4问，30分，时限900秒。\n共同题干：无向简单图顶点0..6，边按0起编号，每条[u,v,w]：[[0, 1, 2], [0, 2, 3], [0, 3, 1], [1, 2, 1], [1, 4, 4], [2, 3, 2], [2, 4, 1], [2, 5, 3], [3, 5, 2], [3, 6, 1], [4, 5, 2], [4, 6, 3], [5, 6, 4]]。生成树的权重为边权之积，随机树的概率与权重成正比。\n本问：提交 joint=边1与边4同时在随机生成树中的概率。\n评分项：joint(30分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -45007,7 +45007,7 @@
    "partNumber": 3,
    "points": 30,
    "hardSeconds": 900,
-   "questionHash": "a027b0af7e1a928ce0127dbe7b8e6780048b7c8d86ec4e5604235466a07c173d",
+   "questionHash": "3d883cf8039ba80d7cf6694bf9859b5c17060feb08f3dd662d5ef3e1cb3ecfd4",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -45019,7 +45019,7 @@
    "timeout_1200s"
   ],
   "scenarioVersion": "1.0.0",
-  "scenarioHash": "a5b9a1f3d01a142d",
+  "scenarioHash": "8c89882cbe1604a9",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -45079,7 +45079,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「线性码与缩短穿孔的顺序」，第1/4问，10分，时限600秒。\n共同题干：F₂上的线性码由下列六行生成；字符串左端为位置0，右端为位置11：[\"100000110101\", \"010000101011\", \"001000111000\", \"000100011110\", \"000010100111\", \"000001010101\"].\n本问：提交 first_four_rank=前四行生成子空间在 F₂ 上的维数。\n评分项：first_four_rank(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「线性码与缩短穿孔的顺序」，第1/4问，10分，时限300秒。\n共同题干：F₂上的线性码由下列六行生成；字符串左端为位置0，右端为位置11：[\"100000110101\", \"010000101011\", \"001000111000\", \"000100011110\", \"000010100111\", \"000001010101\"].\n本问：提交 first_four_rank=前四行生成子空间在 F₂ 上的维数。\n评分项：first_four_rank(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -45091,7 +45091,7 @@
    "partNumber": 1,
    "points": 10,
    "hardSeconds": 300,
-   "questionHash": "6b1301cd3c592bc3a36775a7a6d15d975fb63aff98e02432e731f7a79f9f5f77",
+   "questionHash": "33e56ac06d658267c203021ce5c2c8132b599ae886040db8ed51b6e4a3b24bbd",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -45103,7 +45103,7 @@
    "timeout_180s"
   ],
   "scenarioVersion": "1.2.0",
-  "scenarioHash": "f77c050910c90e66",
+  "scenarioHash": "ed1570986925f804",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -45121,7 +45121,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「线性码与缩短穿孔的顺序」，第2/4问，20分，时限360秒。\n共同题干：F₂上的线性码由下列六行生成；字符串左端为位置0，右端为位置11：[\"100000110101\", \"010000101011\", \"001000111000\", \"000100011110\", \"000010100111\", \"000001010101\"].\n本问：提交 distance=最小非零汉明重量。\n评分项：distance(20分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「线性码与缩短穿孔的顺序」，第2/4问，20分，时限600秒。\n共同题干：F₂上的线性码由下列六行生成；字符串左端为位置0，右端为位置11：[\"100000110101\", \"010000101011\", \"001000111000\", \"000100011110\", \"000010100111\", \"000001010101\"].\n本问：提交 distance=最小非零汉明重量。\n评分项：distance(20分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -45133,7 +45133,7 @@
    "partNumber": 2,
    "points": 20,
    "hardSeconds": 600,
-   "questionHash": "9197697db9c1d940b861a1e64ccd0f93cac0193cc705685c4572b6a34e2566c4",
+   "questionHash": "7f8f275c87f3c0c8630326b04b3780d8aba52018a602383e9ee97a6abc1c20e6",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -45145,7 +45145,7 @@
    "timeout_360s"
   ],
   "scenarioVersion": "1.0.0",
-  "scenarioHash": "ed0538d05f27a07b",
+  "scenarioHash": "f27140e61fabaa55",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -45163,7 +45163,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「线性码与缩短穿孔的顺序」，第3/4问，30分，时限1200秒。\n共同题干：F₂上的线性码由下列六行生成；字符串左端为位置0，右端为位置11：[\"100000110101\", \"010000101011\", \"001000111000\", \"000100011110\", \"000010100111\", \"000001010101\"].\n本问：提交 enumerator=完整重量分布，长度13，第i项为重量i的码字数。\n评分项：enumerator(30分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「线性码与缩短穿孔的顺序」，第3/4问，30分，时限900秒。\n共同题干：F₂上的线性码由下列六行生成；字符串左端为位置0，右端为位置11：[\"100000110101\", \"010000101011\", \"001000111000\", \"000100011110\", \"000010100111\", \"000001010101\"].\n本问：提交 enumerator=完整重量分布，长度13，第i项为重量i的码字数。\n评分项：enumerator(30分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -45175,7 +45175,7 @@
    "partNumber": 3,
    "points": 30,
    "hardSeconds": 900,
-   "questionHash": "c15a6bbe703a34adf5c5937f2d45d146c471b09d6a63745ad158597ab5ff4bf1",
+   "questionHash": "db916f0d8b8b39c924ffacd3d398f9681025489293dc5859c071ed419ec01e80",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -45187,7 +45187,7 @@
    "timeout_1200s"
   ],
   "scenarioVersion": "1.0.0",
-  "scenarioHash": "d13db6854e606715",
+  "scenarioHash": "ee5206b0483f1250",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -45247,7 +45247,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「偏序线性扩张与位置统计」，第1/4问，10分，时限600秒。\n共同题干：12个不同元素0..11。每条[u,v]要求u在v前，除此之外仅含传递闭包的约束：[[0, 3], [0, 4], [1, 4], [1, 5], [2, 5], [2, 6], [3, 7], [4, 7], [4, 8], [5, 8], [5, 9], [6, 9], [7, 10], [8, 10], [8, 11], [9, 11]]。每个合法排列等概率，位置从1计。\n本问：提交 greedy_prefix=按“每步取当前最小可用元素”得到的合法排列的前4个元素。\n评分项：greedy_prefix(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「偏序线性扩张与位置统计」，第1/4问，10分，时限300秒。\n共同题干：12个不同元素0..11。每条[u,v]要求u在v前，除此之外仅含传递闭包的约束：[[0, 3], [0, 4], [1, 4], [1, 5], [2, 5], [2, 6], [3, 7], [4, 7], [4, 8], [5, 8], [5, 9], [6, 9], [7, 10], [8, 10], [8, 11], [9, 11]]。每个合法排列等概率，位置从1计。\n本问：提交 greedy_prefix=按“每步取当前最小可用元素”得到的合法排列的前4个元素。\n评分项：greedy_prefix(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -45259,7 +45259,7 @@
    "partNumber": 1,
    "points": 10,
    "hardSeconds": 300,
-   "questionHash": "dd661dceb65e6211e6471e5ec236a05521f7d73c2b09dbf0b6130a69b61f8142",
+   "questionHash": "3c4b66c8b5bd42c4bcf1a1e681de1f88109515d9c5bd4560f296e68d4007fd80",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -45271,7 +45271,7 @@
    "timeout_180s"
   ],
   "scenarioVersion": "1.2.0",
-  "scenarioHash": "57249270b3e9a980",
+  "scenarioHash": "fc307e360ce4ba68",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -45289,7 +45289,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「偏序线性扩张与位置统计」，第2/4问，20分，时限360秒。\n共同题干：12个不同元素0..11。每条[u,v]要求u在v前，除此之外仅含传递闭包的约束：[[0, 3], [0, 4], [1, 4], [1, 5], [2, 5], [2, 6], [3, 7], [4, 7], [4, 8], [5, 8], [5, 9], [6, 9], [7, 10], [8, 10], [8, 11], [9, 11]]。每个合法排列等概率，位置从1计。\n本问：求合法排列总数 count。\n评分项：count(20分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「偏序线性扩张与位置统计」，第2/4问，20分，时限600秒。\n共同题干：12个不同元素0..11。每条[u,v]要求u在v前，除此之外仅含传递闭包的约束：[[0, 3], [0, 4], [1, 4], [1, 5], [2, 5], [2, 6], [3, 7], [4, 7], [4, 8], [5, 8], [5, 9], [6, 9], [7, 10], [8, 10], [8, 11], [9, 11]]。每个合法排列等概率，位置从1计。\n本问：求合法排列总数 count。\n评分项：count(20分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -45301,7 +45301,7 @@
    "partNumber": 2,
    "points": 20,
    "hardSeconds": 600,
-   "questionHash": "ecc3e26c5713b22cf11cdf0c400b1c5070a467d29afe90942ef5bee3891d45a0",
+   "questionHash": "7247f3ef911b1cbfb20ce07bc714f79686c00d5d4f33714dac0f1cb15347acbf",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -45313,7 +45313,7 @@
    "timeout_360s"
   ],
   "scenarioVersion": "1.0.0",
-  "scenarioHash": "4708157f1aa88e2f",
+  "scenarioHash": "c0af5ffbea5be4b1",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -45331,7 +45331,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「偏序线性扩张与位置统计」，第3/4问，30分，时限1200秒。\n共同题干：12个不同元素0..11。每条[u,v]要求u在v前，除此之外仅含传递闭包的约束：[[0, 3], [0, 4], [1, 4], [1, 5], [2, 5], [2, 6], [3, 7], [4, 7], [4, 8], [5, 8], [5, 9], [6, 9], [7, 10], [8, 10], [8, 11], [9, 11]]。每个合法排列等概率，位置从1计。\n本问：额外要求4在5前，求合法排列数 count。\n评分项：count(30分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「偏序线性扩张与位置统计」，第3/4问，30分，时限900秒。\n共同题干：12个不同元素0..11。每条[u,v]要求u在v前，除此之外仅含传递闭包的约束：[[0, 3], [0, 4], [1, 4], [1, 5], [2, 5], [2, 6], [3, 7], [4, 7], [4, 8], [5, 8], [5, 9], [6, 9], [7, 10], [8, 10], [8, 11], [9, 11]]。每个合法排列等概率，位置从1计。\n本问：额外要求4在5前，求合法排列数 count。\n评分项：count(30分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -45343,7 +45343,7 @@
    "partNumber": 3,
    "points": 30,
    "hardSeconds": 900,
-   "questionHash": "c367cd90a92004304bc3bd0e9d214a84b58a2f3e3aa56cf57ff88b0653292fc6",
+   "questionHash": "5f9e68f4fb024df6ee990922133bb7b800720751c434a8d3b34fce70f9988954",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -45355,7 +45355,7 @@
    "timeout_1200s"
   ],
   "scenarioVersion": "1.0.0",
-  "scenarioHash": "4207841659a42ad4",
+  "scenarioHash": "ceb21bf2c5b27b11",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -45415,7 +45415,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「共享因子的奇异提升」，第1/4问，10分，时限600秒。\n共同题干：研究整数同余 (x²−1)(x²−10)≡0 mod 3^k。不同x按模3^k计。不能假定两因子之一单独被3^k整除。\n本问：k=3，提交 count=解数，以及 parity=[解中偶数的个数,解中奇数的个数]。\n评分项：count(5分)、parity(5分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「共享因子的奇异提升」，第1/4问，10分，时限300秒。\n共同题干：研究整数同余 (x²−1)(x²−10)≡0 mod 3^k。不同x按模3^k计。不能假定两因子之一单独被3^k整除。\n本问：k=3，提交 count=解数，以及 parity=[解中偶数的个数,解中奇数的个数]。\n评分项：count(5分)、parity(5分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -45427,7 +45427,7 @@
    "partNumber": 1,
    "points": 10,
    "hardSeconds": 300,
-   "questionHash": "929747e1e40a03574284222a8a5b900e712a23df5deb794b103626255774a10b",
+   "questionHash": "c486a12cf98cbf528385148c1aa4e334c3d6e0c05ee12b6077b807d69ad25a94",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -45439,7 +45439,7 @@
    "timeout_180s"
   ],
   "scenarioVersion": "1.2.0",
-  "scenarioHash": "7a2687c469842425",
+  "scenarioHash": "ebd4582ecf5bd349",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -45457,7 +45457,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「共享因子的奇异提升」，第2/4问，20分，时限360秒。\n共同题干：研究整数同余 (x²−1)(x²−10)≡0 mod 3^k。不同x按模3^k计。不能假定两因子之一单独被3^k整除。\n本问：k=5，提交 count=解数。\n评分项：count(20分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「共享因子的奇异提升」，第2/4问，20分，时限600秒。\n共同题干：研究整数同余 (x²−1)(x²−10)≡0 mod 3^k。不同x按模3^k计。不能假定两因子之一单独被3^k整除。\n本问：k=5，提交 count=解数。\n评分项：count(20分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -45469,7 +45469,7 @@
    "partNumber": 2,
    "points": 20,
    "hardSeconds": 600,
-   "questionHash": "2d042da3df64e5faa307858b87287045baba68ee1026465cfd343dbcff707245",
+   "questionHash": "58b9f037d3d5247ca3e8d75f02ad78aa1814464af8a56d345b0132f833082278",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -45481,7 +45481,7 @@
    "timeout_360s"
   ],
   "scenarioVersion": "1.0.0",
-  "scenarioHash": "d61df06a3425695f",
+  "scenarioHash": "65cd9b572d4ac87b",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -45499,7 +45499,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「共享因子的奇异提升」，第3/4问，30分，时限1200秒。\n共同题干：研究整数同余 (x²−1)(x²−10)≡0 mod 3^k。不同x按模3^k计。不能假定两因子之一单独被3^k整除。\n本问：k=8，提交 count，并提交 split_count=满足x²≡1或10 mod3^8的解数。\n评分项：count(15分)、split_count(15分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「共享因子的奇异提升」，第3/4问，30分，时限900秒。\n共同题干：研究整数同余 (x²−1)(x²−10)≡0 mod 3^k。不同x按模3^k计。不能假定两因子之一单独被3^k整除。\n本问：k=8，提交 count，并提交 split_count=满足x²≡1或10 mod3^8的解数。\n评分项：count(15分)、split_count(15分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -45511,7 +45511,7 @@
    "partNumber": 3,
    "points": 30,
    "hardSeconds": 900,
-   "questionHash": "834efd803276c2da75e8d65d6ba90d6bc1e89b49a6cbdd9f4de445f650501e03",
+   "questionHash": "69d1395b515f90fd6f4ae3f11b61b2ccfcf899761703a33ebe6fc579ee9b19e7",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -45523,7 +45523,7 @@
    "timeout_1200s"
   ],
   "scenarioVersion": "1.0.0",
-  "scenarioHash": "5e0ad9aa456f68c9",
+  "scenarioHash": "37d31f61d8611919",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -45583,7 +45583,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「循环图的生成树计数」，第1/4问，10分，时限600秒。\n共同题干：40 个顶点 0..39 的循环图：对每个 i，与 i±1、i±10、i±15 (mod 40) 相连。生成树 = 取 39 条边使全图连通无环。顶点数很大，逐一枚举边子集不可行。\n本问：先看同构的小图：8 个顶点 0..7，对每个 i 与 i±1、i±2 (mod 8) 相连。提交 tree_count=生成树个数。\n评分项：tree_count(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「循环图的生成树计数」，第1/4问，10分，时限300秒。\n共同题干：40 个顶点 0..39 的循环图：对每个 i，与 i±1、i±10、i±15 (mod 40) 相连。生成树 = 取 39 条边使全图连通无环。顶点数很大，逐一枚举边子集不可行。\n本问：先看同构的小图：8 个顶点 0..7，对每个 i 与 i±1、i±2 (mod 8) 相连。提交 tree_count=生成树个数。\n评分项：tree_count(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -45595,7 +45595,7 @@
    "partNumber": 1,
    "points": 10,
    "hardSeconds": 300,
-   "questionHash": "e0d19f0ee174320de714d2e389def695dae69a62045ae7025ba9b688dc7d6e71",
+   "questionHash": "e59a1b1be0ccf4cedabf5a309996fc707ae028aa052ae2795508c1b5802d676e",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -45607,7 +45607,7 @@
    "timeout_600s"
   ],
   "scenarioVersion": "1.0.0",
-  "scenarioHash": "e648f8b2f9ca2ecf",
+  "scenarioHash": "f1d06f506a78e4dd",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -45625,7 +45625,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「循环图的生成树计数」，第2/4问，20分，时限360秒。\n共同题干：40 个顶点 0..39 的循环图：对每个 i，与 i±1、i±10、i±15 (mod 40) 相连。生成树 = 取 39 条边使全图连通无环。顶点数很大，逐一枚举边子集不可行。\n本问：回到 40 顶点图（i±1、i±10、i±15）。提交 tree_count=生成树个数。\n评分项：tree_count(20分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「循环图的生成树计数」，第2/4问，20分，时限600秒。\n共同题干：40 个顶点 0..39 的循环图：对每个 i，与 i±1、i±10、i±15 (mod 40) 相连。生成树 = 取 39 条边使全图连通无环。顶点数很大，逐一枚举边子集不可行。\n本问：回到 40 顶点图（i±1、i±10、i±15）。提交 tree_count=生成树个数。\n评分项：tree_count(20分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -45637,7 +45637,7 @@
    "partNumber": 2,
    "points": 20,
    "hardSeconds": 600,
-   "questionHash": "ef8707659e16252f521907c299ff06119d0dc22841af6848fec44b481f96805d",
+   "questionHash": "60285cc3ab025b24824ca01fb1404e8e2a27b037b28967acfac1edc55111320d",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -45649,7 +45649,7 @@
    "timeout_360s"
   ],
   "scenarioVersion": "1.0.0",
-  "scenarioHash": "f8be71b5a287a5cf",
+  "scenarioHash": "a9101d6c2a17a7ef",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -45667,7 +45667,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「循环图的生成树计数」，第3/4问，30分，时限1200秒。\n共同题干：40 个顶点 0..39 的循环图：对每个 i，与 i±1、i±10、i±15 (mod 40) 相连。生成树 = 取 39 条边使全图连通无环。顶点数很大，逐一枚举边子集不可行。\n本问：仍为 40 顶点图。提交 with_edge=包含边 (0,1) 的生成树个数。\n评分项：with_edge(30分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「循环图的生成树计数」，第3/4问，30分，时限900秒。\n共同题干：40 个顶点 0..39 的循环图：对每个 i，与 i±1、i±10、i±15 (mod 40) 相连。生成树 = 取 39 条边使全图连通无环。顶点数很大，逐一枚举边子集不可行。\n本问：仍为 40 顶点图。提交 with_edge=包含边 (0,1) 的生成树个数。\n评分项：with_edge(30分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -45679,7 +45679,7 @@
    "partNumber": 3,
    "points": 30,
    "hardSeconds": 900,
-   "questionHash": "cdf66a82bf84421a77dd57404f70b495dccab2136fa47048be179de8ad85b273",
+   "questionHash": "5f2e2550e03b0638aa49fbc200138419eb7258d30d1b62fd9b67495c9379ea50",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -45691,7 +45691,7 @@
    "timeout_1200s"
   ],
   "scenarioVersion": "1.0.0",
-  "scenarioHash": "55b5966240a83dac",
+  "scenarioHash": "652b3289c5ab9eab",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -45919,7 +45919,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「受限格路与非交叉路径族」，第1/4问，10分，时限600秒。\n共同题干：网格上每步只能向右 (1,0) 或向上 (0,1)。坐标(x,y)以纵轴为 y。要求路径全程满足 y ≤ x + k（k 见各问）；「避开」指不经过该点。非交叉指两条路径不含公共顶点。\n本问：k=2，从 (0,0) 到 (12,12)。提交 path_count=合法路径数。\n评分项：path_count(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「受限格路与非交叉路径族」，第1/4问，10分，时限300秒。\n共同题干：网格上每步只能向右 (1,0) 或向上 (0,1)。坐标(x,y)以纵轴为 y。要求路径全程满足 y ≤ x + k（k 见各问）；「避开」指不经过该点。非交叉指两条路径不含公共顶点。\n本问：k=2，从 (0,0) 到 (12,12)。提交 path_count=合法路径数。\n评分项：path_count(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -45931,7 +45931,7 @@
    "partNumber": 1,
    "points": 10,
    "hardSeconds": 300,
-   "questionHash": "4e737d0258737eba8714b4e4ebec3d18c00085b67d777a1aaf954db7e3f87920",
+   "questionHash": "c050030f9c72f9e574ae87393f70191efbb1161fee206f10f06a368b81b16cb2",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -45943,7 +45943,7 @@
    "timeout_600s"
   ],
   "scenarioVersion": "1.0.0",
-  "scenarioHash": "3b83d5292a74d284",
+  "scenarioHash": "e00bc25b30235b25",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -45961,7 +45961,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「受限格路与非交叉路径族」，第2/4问，20分，时限360秒。\n共同题干：网格上每步只能向右 (1,0) 或向上 (0,1)。坐标(x,y)以纵轴为 y。要求路径全程满足 y ≤ x + k（k 见各问）；「避开」指不经过该点。非交叉指两条路径不含公共顶点。\n本问：k=3，从 (0,0) 到 (20,20)。提交 path_count=合法路径数。\n评分项：path_count(20分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「受限格路与非交叉路径族」，第2/4问，20分，时限600秒。\n共同题干：网格上每步只能向右 (1,0) 或向上 (0,1)。坐标(x,y)以纵轴为 y。要求路径全程满足 y ≤ x + k（k 见各问）；「避开」指不经过该点。非交叉指两条路径不含公共顶点。\n本问：k=3，从 (0,0) 到 (20,20)。提交 through_count=恰好经过 (10,10) 的合法路径数。\n评分项：through_count(20分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -45973,7 +45973,7 @@
    "partNumber": 2,
    "points": 20,
    "hardSeconds": 600,
-   "questionHash": "a51e3b5383eba1216a11b65ff3e75d595c475933f62ac6a432d85cc7f6b423b6",
+   "questionHash": "5666bed93c6e8141e5e30f4e845db4250c13ec55a85d286185b58ccdccaf54ef",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -45985,7 +45985,7 @@
    "timeout_360s"
   ],
   "scenarioVersion": "1.0.0",
-  "scenarioHash": "a49776174e0ed3a3",
+  "scenarioHash": "7cd9f0ec0f08d289",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -46003,7 +46003,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「受限格路与非交叉路径族」，第3/4问，30分，时限1200秒。\n共同题干：网格上每步只能向右 (1,0) 或向上 (0,1)。坐标(x,y)以纵轴为 y。要求路径全程满足 y ≤ x + k（k 见各问）；「避开」指不经过该点。非交叉指两条路径不含公共顶点。\n本问：k=3，从 (0,0) 到 (20,20)，且不得经过 (7,7) 与 (13,11)。提交 path_count=合法路径数。\n评分项：path_count(30分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「受限格路与非交叉路径族」，第3/4问，30分，时限900秒。\n共同题干：网格上每步只能向右 (1,0) 或向上 (0,1)。坐标(x,y)以纵轴为 y。要求路径全程满足 y ≤ x + k（k 见各问）；「避开」指不经过该点。非交叉指两条路径不含公共顶点。\n本问：k=3，从 (0,0) 到 (20,20)，且不得经过 (7,7) 与 (13,11)。提交 path_count=合法路径数。\n评分项：path_count(30分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -46015,7 +46015,7 @@
    "partNumber": 3,
    "points": 30,
    "hardSeconds": 900,
-   "questionHash": "ba3fd06f2dffd9efedaf7bd0edce0833c7f52a5fae04fb519d2cbff7665ad2eb",
+   "questionHash": "d3b21b092c1130b86a3072dcc381f87a4eb22f1eecd9bd89fd2594da8846e94b",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -46027,7 +46027,7 @@
    "timeout_1200s"
   ],
   "scenarioVersion": "1.0.0",
-  "scenarioHash": "66d37d21900c1cee",
+  "scenarioHash": "e2e4cb124b9f1cba",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -46087,7 +46087,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「整数分拆的生成函数」，第1/4问，10分，时限600秒。\n共同题干：分拆把 n 写成正整数之和，顺序不计。A(n) 记 n 的分拆数。q 进制分拆指各部分均为奇数；互异分拆指各部分互不相同。\n本问：提交 A(20)。\n评分项：A_20(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「整数分拆的四层推理」，第1/4问，10分，时限300秒。\n共同题干：分拆把 n 写成正整数之和，顺序不计。A(n) 记 n 的分拆数。奇数分拆指各部分均为奇数；互异分拆指各部分互不相同。四问依次考察：递推计数 → 阈值反查 → 受限分拆（生成函数）→ 模同余结构。\n本问：提交 A(20)。\n评分项：A_20(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -46099,7 +46099,7 @@
    "partNumber": 1,
    "points": 10,
    "hardSeconds": 300,
-   "questionHash": "daecf4e74dfb4464fdb02c7fba70ea229787391bf7a432858646a97efce73c4a",
+   "questionHash": "d76ae21ac8b87ba57d1fd32fdeeffdcb249ad797b24ee3ca47a053cdde832f9c",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -46111,7 +46111,7 @@
    "timeout_600s"
   ],
   "scenarioVersion": "1.0.0",
-  "scenarioHash": "9eddc999ba14ba5e",
+  "scenarioHash": "9808a5ec0b44bb95",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -46129,7 +46129,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「整数分拆的生成函数」，第2/4问，20分，时限360秒。\n共同题干：分拆把 n 写成正整数之和，顺序不计。A(n) 记 n 的分拆数。q 进制分拆指各部分均为奇数；互异分拆指各部分互不相同。\n本问：提交 A(200)。\n评分项：A_200(20分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「整数分拆的四层推理」，第2/4问，20分，时限600秒。\n共同题干：分拆把 n 写成正整数之和，顺序不计。A(n) 记 n 的分拆数。奇数分拆指各部分均为奇数；互异分拆指各部分互不相同。四问依次考察：递推计数 → 阈值反查 → 受限分拆（生成函数）→ 模同余结构。\n本问：提交 min_n=最小的 n（n ≥ 1）使 A(n) ≥ 10^6。\n评分项：min_n(20分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -46141,7 +46141,7 @@
    "partNumber": 2,
    "points": 20,
    "hardSeconds": 600,
-   "questionHash": "b7ba4a378f09431738ea7c8e9d408bbb5c149f31f7780a2e45ece263f5242c40",
+   "questionHash": "9ed97ad82fee7e77e155ba57d061acd5e1927baf03bfb85f5b23015458740d20",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -46153,7 +46153,7 @@
    "timeout_360s"
   ],
   "scenarioVersion": "1.0.0",
-  "scenarioHash": "8a06c4cadf24275e",
+  "scenarioHash": "35dcf7ab73233ce6",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -46171,7 +46171,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「整数分拆的生成函数」，第3/4问，30分，时限1200秒。\n共同题干：分拆把 n 写成正整数之和，顺序不计。A(n) 记 n 的分拆数。q 进制分拆指各部分均为奇数；互异分拆指各部分互不相同。\n本问：提交 A(2000) 的精确值。\n评分项：A_2000(30分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「整数分拆的四层推理」，第3/4问，30分，时限900秒。\n共同题干：分拆把 n 写成正整数之和，顺序不计。A(n) 记 n 的分拆数。奇数分拆指各部分均为奇数；互异分拆指各部分互不相同。四问依次考察：递推计数 → 阈值反查 → 受限分拆（生成函数）→ 模同余结构。\n本问：提交 odd_parts=20 的奇数分拆数，distinct_parts=20 的互异分拆数（两者应相等，可用欧拉定理互验）。\n评分项：odd_parts(15分)、distinct_parts(15分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -46183,7 +46183,7 @@
    "partNumber": 3,
    "points": 30,
    "hardSeconds": 900,
-   "questionHash": "c7ff8dbbb70031ad200c281ac0561e58868dd818cb24c7ea0e1d09714289c36a",
+   "questionHash": "c9336c8a5b9b9dfb7d770e96d8b3e602b40607e51e51ae42359408ef97d5bc48",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -46195,7 +46195,7 @@
    "timeout_1200s"
   ],
   "scenarioVersion": "1.0.0",
-  "scenarioHash": "b8d464c57e0611a1",
+  "scenarioHash": "ff97b13de8ce405d",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -46213,7 +46213,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「整数分拆的生成函数」，第4/4问，40分，时限1200秒。\n共同题干：分拆把 n 写成正整数之和，顺序不计。A(n) 记 n 的分拆数。q 进制分拆指各部分均为奇数；互异分拆指各部分互不相同。\n本问：n=2000。提交 odd_parts=各部分均为奇数的分拆数，distinct_parts=各部分互不相同的分拆数，at_most_5=部分数不超过 5 的分拆数。三个数分别提交。\n评分项：odd_parts(15分)、distinct_parts(15分)、at_most_5(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「整数分拆的四层推理」，第4/4问，40分，时限1200秒。\n共同题干：分拆把 n 写成正整数之和，顺序不计。A(n) 记 n 的分拆数。奇数分拆指各部分均为奇数；互异分拆指各部分互不相同。四问依次考察：递推计数 → 阈值反查 → 受限分拆（生成函数）→ 模同余结构。\n本问：提交 p19_mod5=A(19) mod 5，以及 min_nonpattern=最小的 n ≥ 1 满足 n mod 5 ≠ 4 且 A(n) ≡ 0 (mod 5)。\n评分项：p19_mod5(20分)、min_nonpattern(20分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -46225,7 +46225,7 @@
    "partNumber": 4,
    "points": 40,
    "hardSeconds": 1200,
-   "questionHash": "bf188df1ce2c4ea5e3454ccd74dbb460ac8e96128e2d24f7cd6068f71566cc72",
+   "questionHash": "cc39a03b6f22f85cca81c013abaf89dfe6f5cf2a4877bf97141d0ac7fcffab5d",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -46237,7 +46237,7 @@
    "timeout_1200s"
   ],
   "scenarioVersion": "1.0.0",
-  "scenarioHash": "4e52c4070da6d550",
+  "scenarioHash": "0c525b4df8f8660f",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -46255,7 +46255,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「标准杨表与斜杨表」，第1/4问，10分，时限600秒。\n共同题干：形状 λ=(λ₁≥λ₂≥…) 的标准杨表：把 1..n 填入 λ 的方格，每行每列都严格递增，n=|λ|。斜形状 λ/μ 指去掉子分拆 μ 后剩余的方格。\n本问：提交 λ=(4,3,1) 的标准杨表个数。\n评分项：syt_count(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「标准杨表与斜杨表」，第1/4问，10分，时限300秒。\n共同题干：形状 λ=(λ₁≥λ₂≥…) 的标准杨表：把 1..n 填入 λ 的方格，每行每列都严格递增，n=|λ|。斜形状 λ/μ 指去掉子分拆 μ 后剩余的方格。\n本问：提交 λ=(4,3,1) 的标准杨表个数。\n评分项：syt_count(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -46267,7 +46267,7 @@
    "partNumber": 1,
    "points": 10,
    "hardSeconds": 300,
-   "questionHash": "d21da4ddbcc432edfe8ed80a3757e9d0c40908d3e270c0b87f0395170597a728",
+   "questionHash": "6a859cd8b8fd28de40124133b71b1aafe85eb5186d267901d929d0592aadcd25",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -46279,7 +46279,7 @@
    "timeout_600s"
   ],
   "scenarioVersion": "1.0.0",
-  "scenarioHash": "8320b5a4236a8c12",
+  "scenarioHash": "e940bfc1afc96818",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -46297,7 +46297,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「标准杨表与斜杨表」，第2/4问，20分，时限360秒。\n共同题干：形状 λ=(λ₁≥λ₂≥…) 的标准杨表：把 1..n 填入 λ 的方格，每行每列都严格递增，n=|λ|。斜形状 λ/μ 指去掉子分拆 μ 后剩余的方格。\n本问：提交 λ=(6,5,4,2) 的标准杨表个数。\n评分项：syt_count(20分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「标准杨表与斜杨表」，第2/4问，20分，时限600秒。\n共同题干：形状 λ=(λ₁≥λ₂≥…) 的标准杨表：把 1..n 填入 λ 的方格，每行每列都严格递增，n=|λ|。斜形状 λ/μ 指去掉子分拆 μ 后剩余的方格。\n本问：在 n=10 的**所有**分拆 λ 中，提交 max_syt=最大的标准杨表个数（f^λ 的最大值）。\n评分项：max_syt(20分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -46309,7 +46309,7 @@
    "partNumber": 2,
    "points": 20,
    "hardSeconds": 600,
-   "questionHash": "ab8d43df856373dd26bee20e949641a0dad30c95b695b50418a554eb45787f42",
+   "questionHash": "804453a97b17e6308ce4257ad7321faab844f11fc873f2de6e0386bc1427bb90",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -46321,7 +46321,7 @@
    "timeout_360s"
   ],
   "scenarioVersion": "1.0.0",
-  "scenarioHash": "c1d99c479bb765f2",
+  "scenarioHash": "d6ee18bb1cbc8ad0",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -46339,7 +46339,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「标准杨表与斜杨表」，第3/4问，30分，时限1200秒。\n共同题干：形状 λ=(λ₁≥λ₂≥…) 的标准杨表：把 1..n 填入 λ 的方格，每行每列都严格递增，n=|λ|。斜形状 λ/μ 指去掉子分拆 μ 后剩余的方格。\n本问：λ 取遍 10 的所有分拆且要求 λ₁≤3，提交 sum_squares=Σ f^λ 的平方。\n评分项：sum_squares(30分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「标准杨表与斜杨表」，第3/4问，30分，时限900秒。\n共同题干：形状 λ=(λ₁≥λ₂≥…) 的标准杨表：把 1..n 填入 λ 的方格，每行每列都严格递增，n=|λ|。斜形状 λ/μ 指去掉子分拆 μ 后剩余的方格。\n本问：λ 取遍 10 的所有分拆且要求 λ₁≤3，提交 sum_squares=Σ f^λ 的平方。\n评分项：sum_squares(30分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -46351,7 +46351,7 @@
    "partNumber": 3,
    "points": 30,
    "hardSeconds": 900,
-   "questionHash": "0e3115ce6f1b9eaed6807713f8a35ed6595b374eb9e301867ff196ad7fd3d6b2",
+   "questionHash": "3f4ff5240bef47c3f9d08d3b010d2fde1136242871ae30393891eebf93f6c425",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -46363,7 +46363,7 @@
    "timeout_1200s"
   ],
   "scenarioVersion": "1.0.0",
-  "scenarioHash": "75a93cf6ce2cacca",
+  "scenarioHash": "81fd6a42c35712a0",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",

@@ -721,31 +721,40 @@ group('14','linear-recurrence-four-actions','线性递推的四层推理','序�
 # Lindstrom-Gessel-Viennot determinant that frontier benchmarks like to use.
 lp_small = paths_dp((12, 12), bound=2)
 lp_mid = paths_dp((20, 20), bound=3)
+# 经定点计数：约束 y ≤ x+k 对平移不变，故经 (10,10) 的合法路径数 = 两段各自的合法路径数之积
+lp_through = paths_dp((10, 10), bound=3) ** 2
 lp_blocked = paths_dp((20, 20), bound=3, blocked=[(7, 7), (13, 11)])
 lp_lgv = lgv([(12, 12), (12, 13), (12, 14)], [(0, 0), (0, 1), (0, 2)])
 group('15','constrained-lattice-families','受限格路与非交叉路径族','网格上每步只能向右 (1,0) 或向上 (0,1)。坐标(x,y)以纵轴为 y。要求路径全程满足 y ≤ x + k（k 见各问）；「避开」指不经过该点。非交叉指两条路径不含公共顶点。',[
     part('k=2，从 (0,0) 到 (12,12)。提交 path_count=合法路径数。',exact('path_count',10,lp_small)),
-    part('k=3，从 (0,0) 到 (20,20)。提交 path_count=合法路径数。',exact('path_count',20,lp_mid)),
+    part('k=3，从 (0,0) 到 (20,20)。提交 through_count=恰好经过 (10,10) 的合法路径数。',exact('through_count',20,lp_through)),
     part('k=3，从 (0,0) 到 (20,20)，且不得经过 (7,7) 与 (13,11)。提交 path_count=合法路径数。',
          exact('path_count',30,lp_blocked)),
     part('从 A1=(0,0)、A2=(0,1)、A3=(0,2) 出发，分别到达 B1=(12,12)、B2=(12,13)、B3=(12,14)，三条路径两两不共享顶点，每步只向右或向上（本问不加 y 上界）。提交 families=这样的有序三元组个数。',
          exact('families',40,lp_lgv))],
-    '从单条受限路径升级为两两不相交的三元组，需要行列式级的方法。','答案均为精确整数；非交叉计数可独立用行列式与穷举互验。')
+    '从单条受限路径升级为两两不相交的三元组；中间一问考察「经定点可分解」这一结构性质。','答案均为精确整数；经定点计数需先识别约束的平移不变性再分段相乘，非交叉计数可用行列式与穷举互验。')
 
 # 16. Integer partitions: closed-form generator functions, not enumeration.
 pt = penta_partitions(2000)
+# 阈值反查 / 受限分拆 / 同余反例（均从同一条分拆数序列派生，避免各问重复同一动作）
+min_n_1e6 = next(n for n in range(1, 2001) if pt[n] >= 10**6)
+odd20 = coin_partitions(20, list(range(1, 21, 2)))[20]
+distinct20 = distinct_partitions(20)[20]
+assert odd20 == distinct20, 'Euler 定理：20 的奇数分拆数必须等于互异分拆数'
+min_nonpattern = next(n for n in range(1, 2001) if n % 5 != 4 and pt[n] % 5 == 0)
 pt20, pt200, pt2000 = pt[20], pt[200], pt[2000]
 odd2000 = coin_partitions(2000, list(range(1, 2001, 2)))[2000]
 distinct2000 = distinct_partitions(2000)[2000]
 atmost5 = coin_partitions(2000, list(range(1, 6)))[2000]
 assert odd2000 == distinct2000, 'Euler 定理：奇数部分分拆数必须等于互异部分分拆数'
-group('16','partition-generating-functions','整数分拆的生成函数','分拆把 n 写成正整数之和，顺序不计。A(n) 记 n 的分拆数。q 进制分拆指各部分均为奇数；互异分拆指各部分互不相同。',[
+group('16','partition-generating-functions','整数分拆的四层推理','分拆把 n 写成正整数之和，顺序不计。A(n) 记 n 的分拆数。奇数分拆指各部分均为奇数；互异分拆指各部分互不相同。四问依次考察：递推计数 → 阈值反查 → 受限分拆（生成函数）→ 模同余结构。',[
     part('提交 A(20)。',exact('A_20',10,pt20)),
-    part('提交 A(200)。',exact('A_200',20,pt200)),
-    part('提交 A(2000) 的精确值。',exact('A_2000',30,pt2000)),
-    part('n=2000。提交 odd_parts=各部分均为奇数的分拆数，distinct_parts=各部分互不相同的分拆数，at_most_5=部分数不超过 5 的分拆数。三个数分别提交。',
-         exact('odd_parts',15,odd2000),exact('distinct_parts',15,distinct2000),exact('at_most_5',10,atmost5))],
-    '限制部分性质后递推式改变；直接用生成函数可以同时得到三个量。','答案为大整数，可精确校验；奇数部分与互异部分两式互为独立验证。')
+    part('提交 min_n=最小的 n（n ≥ 1）使 A(n) ≥ 10^6。',exact('min_n',20,min_n_1e6)),
+    part('提交 odd_parts=20 的奇数分拆数，distinct_parts=20 的互异分拆数（两者应相等，可用欧拉定理互验）。',
+         exact('odd_parts',15,odd20),exact('distinct_parts',15,distinct20)),
+    part('提交 p19_mod5=A(19) mod 5，以及 min_nonpattern=最小的 n ≥ 1 满足 n mod 5 ≠ 4 且 A(n) ≡ 0 (mod 5)。',
+         exact('p19_mod5',20,pt[19] % 5),exact('min_nonpattern',20,min_nonpattern))],
+    '由精确求值转为模结构：A(n) ≡ 0 (mod 5) 在 n ≡ 4 (mod 5) 上成立（拉马努金型），需找出最小反例。','四问分别需要 DP 计数、对序列做阈值搜索、受限分拆的生成函数、以及同余模式的反例搜索；答案均可精确校验。')
 
 # 17. Standard Young tableaux: hook-length formula and Aitken's determinant.
 def partitions_of(n, maxpart=None):
@@ -764,16 +773,18 @@ syt_431 = hook_length_factorial(sum([4, 3, 1]), [4, 3, 1])
 syt_6542 = hook_length_factorial(sum([6, 5, 4, 2]), [6, 5, 4, 2])
 sum_sq_10 = sum(hook_length_factorial(10, lam) ** 2 for lam in partitions_of(10, 3))
 skew_val = skew_syt([7, 5, 3, 1], [3, 2, 1])
+# 全形状极值：n=10 的 42 个分拆中 f^λ 的最大值
+max_syt_10 = max(hook_length_factorial(10, lam) for lam in partitions_of(10))
 group('17','young-tableaux-hook-length','标准杨表与斜杨表','形状 λ=(λ₁≥λ₂≥…) 的标准杨表：把 1..n 填入 λ 的方格，每行每列都严格递增，n=|λ|。斜形状 λ/μ 指去掉子分拆 μ 后剩余的方格。',[
     part('提交 λ=(4,3,1) 的标准杨表个数。',exact('syt_count',10,syt_431)),
-    part('提交 λ=(6,5,4,2) 的标准杨表个数。',exact('syt_count',20,syt_6542)),
+    part('在 n=10 的**所有**分拆 λ 中，提交 max_syt=最大的标准杨表个数（f^λ 的最大值）。',exact('max_syt',20,max_syt_10)),
     part('λ 取遍 10 的所有分拆且要求 λ₁≤3，提交 sum_squares=Σ f^λ 的平方。',
          exact('sum_squares',30,sum_sq_10)),
     part('提交斜形状 λ/μ 的标准杨表个数，其中 λ=(7,5,3,1)、μ=(3,2,1)。',
          exact('skew_count',40,skew_val))],
-    '从单形状升级到斜形状，hook length 公式不再直接适用。','答案均为精确整数；行列式公式与穷举可互验。')
+    '从单形状 hook 公式升级到全形状极值搜索，再进入斜形状（hook 公式不再直接适用）。','答案均为精确整数；极值需枚举 42 个形状逐一算 f^λ，斜表需行列式方法。')
 
-pack={'version':'math-exam-expansion-2026-09-16-v6','status':'candidate-unmeasured',
+pack={'version':'math-exam-expansion-2026-09-16-v7','status':'candidate-unmeasured',
       # 时限遵循项目参考值：题级默认 600 秒、上限 1200 秒
       # （packages/core/src/model/caller.ts 的 600_000 默认 + apiControlStream 的 1_200_000 上限）。
       # 原为 [180,360,1200,1200]，是给"不需要计算的"旧 P1 白送分题调的；
