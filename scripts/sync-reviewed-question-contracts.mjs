@@ -10,14 +10,21 @@ const apply=process.argv.includes('--apply');
 const executionReview=process.argv.includes('--execution-review');
 const allDefinitions=process.argv.includes('--all-definitions');
 const bank=JSON.parse(readFileSync(new URL('../data/scenarios/benchmark.json',import.meta.url),'utf8'));
-const reviewed=allDefinitions?bank:bank.filter(s=>executionReview?['code_repair','instruction_checklist','llm_judge','pr_executable_evidence'].includes(s.grader):['reasoning_math','hallucination_resistance','data_extraction'].includes(s.dimension));
+const reviewed=allDefinitions?bank:bank.filter(s=>executionReview?['code_repair','instruction_checklist','llm_judge','pr_executable_evidence'].includes(s.grader):['reasoning_math','hallucination_resistance','data_extraction'].includes(s.dimension)).filter(s=>s.status==='valid');
 const meta=JSON.parse(readFileSync(new URL('../data/scenarios/benchmark-meta.json',import.meta.url),'utf8'));
-const expectedCount=allDefinitions?meta.count:executionReview?171:['reasoning_math','hallucination_resistance','data_extraction'].reduce((n,d)=>n+meta.dimensions[d],0);
+// meta.dimensions counts valid scenarios only, and retired entries deliberately stay in
+// benchmark.json for audit; the all-definitions scope therefore sizes against bank.length.
+const expectedCount=allDefinitions?bank.length:executionReview?171:['reasoning_math','hallucination_resistance','data_extraction'].reduce((n,d)=>n+meta.dimensions[d],0);
 if(reviewed.length!==expectedCount || reviewed.some(s=>s.scenarioHash!==hashScenarioShort(s)))throw Error('Invalid reviewed bank count/hash');
 const db=new DatabaseSync(path,{readOnly:!apply});
 const columns=new Set(db.prepare('PRAGMA table_info(ScenarioDefinition)').all().map(c=>c.name));
 const serialized=new Set(['requirements','scoring','hiddenTests','publicTests','tags']);
-const keep=['id','dimension','category','difficulty','language','locale','status','tier','promptTemplate','grader','graderVersion','scoring','requirements','scenarioVersion','scenarioHash','reviewStatus','goldSource','goldVerifiedAt','outputPolicy','maxAnswerTokens','createdAt','updatedAt'];
+// responseMode / maxReasoningTokens participate in the canonical content hash
+// (contracts/canonicalize.ts HASH_FIELDS). Omitting them here left the ultra
+// progressive-exam rows unable to pass checkScenarioEligibility: the bank hash was
+// computed with them set while the database row kept NULL, so every recomputation
+// from the stored row mismatched and official runs rejected the whole block.
+const keep=['id','dimension','category','difficulty','language','locale','status','tier','promptTemplate','grader','graderVersion','scoring','requirements','scenarioVersion','scenarioHash','reviewStatus','goldSource','goldVerifiedAt','outputPolicy','responseMode','maxAnswerTokens','maxReasoningTokens','createdAt','updatedAt'];
 const allKeep=['id','dimension','category','difficulty','language','locale','status','tier','promptTemplate','sourceCode','functionName','expectedVerdict','grader','graderVersion','scoring','hiddenTests','requirements','tags','scenarioVersion','scenarioHash','responseMode','outputPolicy','environmentImage','seed','goldSource','goldVerifiedAt','reviewStatus','answerFirst','maxAnswerTokens','maxReasoningTokens','createdAt','updatedAt'];
 const before={results:db.prepare('SELECT count(*) n FROM ScenarioResult').get().n,runs:db.prepare('SELECT count(*) n FROM EvalRun').get().n};
 const active=db.prepare("SELECT count(*) n FROM EvalRun WHERE status IN ('running','pending','queued')").get().n;

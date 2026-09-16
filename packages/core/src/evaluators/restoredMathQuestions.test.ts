@@ -102,8 +102,18 @@ describe('restored math independent oracles', () => {
       expect(referenceAnswerWarnings([{scenarioId:s.id,scenarioVersion:s.scenarioVersion,graderVersion:s.graderVersion}])).toEqual([]);
     }
     const metadata=JSON.parse(readFileSync(new URL('../../../../data/scenarios/benchmark-meta.json',import.meta.url),'utf8'));
-    expect(metadata.count).toBe(bank.filter(s=>s.status==='valid').length);
-    expect(metadata).toMatchObject({count:786,ambiguousCount:0,reviewCount:0,dimensions:{reasoning_math:100,data_extraction:104,hallucination_resistance:134}});
+    // 从题集推导，避免「加了题就要手改断言」造成元数据与题集漂移
+    // （可推导字段由 scripts/refresh-benchmark-meta.mjs 统一维护）
+    const validBank=bank.filter(s=>s.status==='valid');
+    const dimCounts:Record<string,number>={};
+    for(const s of validBank)dimCounts[s.dimension]=(dimCounts[s.dimension]??0)+1;
+    expect(metadata.count).toBe(validBank.length);
+    expect(metadata.validCount).toBe(validBank.length);
+    expect(metadata.totalCount).toBe(validBank.length+(metadata.retiredCount??0));
+    expect(metadata.ambiguousCount).toBe(0);
+    expect(metadata.reviewCount).toBe(0);
+    expect(metadata.dimensions).toEqual(dimCounts);
+    expect(metadata.dimensions.reasoning_math).toBeGreaterThan(0);
   });
 
   it('targeted sync previews only the requested four and rejects invalid subsets', () => {

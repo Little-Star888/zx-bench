@@ -10,6 +10,7 @@ import { orchestrateEvaluation } from '../orchestrator.js';
 import { checkScenarioEligibility } from '../contracts/eligibility.js';
 import { hashScenarioShort } from '../contracts/canonicalize.js';
 import { getJudgeWeights } from '../scoring.js';
+import { RETIRED_REASONING_MATH_CHALLENGE_ID_SET } from '../evaluationLab/challengeRetirement.js';
 import { runTieredJudge, runJudgeEnsemble } from '../judge/index.js';
 
 vi.mock('../judge/index.js', () => ({ runTieredJudge: vi.fn(), runJudgeEnsemble: vi.fn(), computeJudgeScore: vi.fn() }));
@@ -26,12 +27,13 @@ describe('bank 1.31.1 challenge integration and restored formal scope', () => {
   it('freezes the exact source, counts, hashes and default eligibility', () => {
     expect(pack.hash).toBe(manifest.sourceHash);
     expect(pack.cases).toHaveLength(21);
-    expect(bank).toHaveLength(786);
-    expect(bank.filter(s => !(s.requirements as any)?.developmentShadow)).toHaveLength(785);
+    expect(bank).toHaveLength(788);
+    expect(bank.filter(s => !(s.requirements as any)?.developmentShadow)).toHaveLength(787);
     for (const item of pack.cases) {
       const scenario = find(item.id);
       expect(scenario.scenarioHash, item.id).toBe(hashScenarioShort(scenario));
-      expect(checkScenarioEligibility(scenario).eligible, item.id).toBe(!item.developmentShadow);
+      expect(checkScenarioEligibility(scenario).eligible, item.id)
+        .toBe(!item.developmentShadow && !RETIRED_REASONING_MATH_CHALLENGE_ID_SET.has(item.id));
       expect(getJudgeWeights(scenario.dimension, scenario.grader).judge).toBe(0);
     }
     const projectRepairs = bank.filter(s => s.grader === 'project_repair');

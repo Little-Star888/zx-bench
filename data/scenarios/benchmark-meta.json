@@ -1,8 +1,8 @@
 {
  "version": "1.35.0",
- "count": 773,
+ "count": 775,
  "retiredCount": 91,
- "totalCount": 864,
+ "totalCount": 866,
  "dimensions": {
   "agent_workflow": 45,
   "cli_deep_tasks": 56,
@@ -12,14 +12,14 @@
   "program": 150,
   "reasoning_math": 87,
   "safety_authority": 50,
-  "structured_output": 49,
+  "structured_output": 51,
   "tool_cli_workflow": 56
  },
  "retiredDimensions": {
   "hallucination_resistance": 78
  },
  "generatedAt": "2026-09-16T00:00:00.000Z",
- "validCount": 773,
+ "validCount": 775,
  "ambiguousCount": 0,
  "reviewCount": 0,
  "questionReview": "math-3.2-hallucination-5.0",
@@ -280,7 +280,7 @@
   "sourcePackHash": "42929b253e9e2f4d32568c5e164ab4fcb651cca3712b6472950c7907c2ed10e3",
   "prospectiveOnly": true
  },
- "defaultRunCount": 772,
+ "defaultRunCount": 774,
  "challengeExtension": {
   "version": "challenge-extension-2026-09-13-v1",
   "bankVersion": "1.31.1",
@@ -339,7 +339,7 @@
  "structuredOutputReview": {
   "version": "schema-compliance-2026-09-16-v5.1",
   "grader": "schema_compliance@schema_compliance_v5",
-  "count": 49,
+  "count": 51,
   "discriminationBand": {
    "ids": [
     "SO-CN-042",
@@ -349,9 +349,11 @@
     "SO-CN-046",
     "SO-CN-047",
     "SO-CN-048",
-    "SO-CN-049"
+    "SO-CN-049",
+    "SO-CN-050",
+    "SO-CN-051"
    ],
-   "purpose": "恢复维度区分度：合成对照验证合规输出=100、典型偷懒输出=43~84（分差 16~57）",
+   "purpose": "恢复维度区分度：8 道结构严格题（显式规则，合成对照合规=100 / 偷懒=53~85）+ 2 道长时程容量题（SO-CN-050 合规输出约 17.5KB、SO-CN-051 双层累加 38 条断言）",
    "assertionsPerQuestion": "11~29 条机器可验证断言",
    "axisWeightsOverride": {
     "syntax_parse": 0.1,

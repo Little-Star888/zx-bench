@@ -43801,7 +43801,14 @@
     "departments",
     "departments[0].name",
     "departments[0].projects[0].name"
-   ]
+   ],
+   "axis_weights": {
+    "syntax_parse": 0.15,
+    "schema_compliance": 0.2,
+    "field_constraints": 0.45,
+    "cross_field_consistency": 0.05,
+    "output_discipline": 0.15
+   }
   },
   "tags": [
    "chinese",
@@ -43809,7 +43816,7 @@
    "nested-object"
   ],
   "scenarioVersion": "2.1.0",
-  "scenarioHash": "909260d14e839c6c",
+  "scenarioHash": "437e7eba32e9cac4",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -43889,6 +43896,13 @@
       }
      }
     }
+   },
+   "axis_weights": {
+    "syntax_parse": 0.15,
+    "schema_compliance": 0.2,
+    "field_constraints": 0.45,
+    "cross_field_consistency": 0.05,
+    "output_discipline": 0.15
    }
   },
   "tags": [
@@ -43898,7 +43912,7 @@
    "api-response"
   ],
   "scenarioVersion": "2.3.0",
-  "scenarioHash": "e8e22e9f7a9ec260",
+  "scenarioHash": "375e81fa31f39926",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -43944,7 +43958,14 @@
    ],
    "crossFieldRules": [
     "equals-sum:**.grand_total=**.items_total+**.shipping_fee-**.discount+**.tax"
-   ]
+   ],
+   "axis_weights": {
+    "syntax_parse": 0.15,
+    "schema_compliance": 0.2,
+    "field_constraints": 0.45,
+    "cross_field_consistency": 0.05,
+    "output_discipline": 0.15
+   }
   },
   "tags": [
    "chinese",
@@ -43953,7 +43974,7 @@
    "order"
   ],
   "scenarioVersion": "2.1.0",
-  "scenarioHash": "08a8f49b03e2f5d7",
+  "scenarioHash": "0a68da82fbfc5586",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -43992,7 +44013,14 @@
     "type",
     "properties",
     "required"
-   ]
+   ],
+   "axis_weights": {
+    "syntax_parse": 0.15,
+    "schema_compliance": 0.2,
+    "field_constraints": 0.45,
+    "cross_field_consistency": 0.05,
+    "output_discipline": 0.15
+   }
   },
   "tags": [
    "chinese",
@@ -44001,7 +44029,7 @@
    "validation"
   ],
   "scenarioVersion": "2.0.0",
-  "scenarioHash": "4affd2c1b8f23dfb",
+  "scenarioHash": "6753549434ff4826",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -44043,7 +44071,14 @@
     "code",
     "null_value",
     "empty_string"
-   ]
+   ],
+   "axis_weights": {
+    "syntax_parse": 0.15,
+    "schema_compliance": 0.2,
+    "field_constraints": 0.45,
+    "cross_field_consistency": 0.05,
+    "output_discipline": 0.15
+   }
   },
   "tags": [
    "chinese",
@@ -44053,7 +44088,7 @@
    "escaping"
   ],
   "scenarioVersion": "2.1.0",
-  "scenarioHash": "bc887575a010570c",
+  "scenarioHash": "266e2922edd2653c",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -44091,7 +44126,14 @@
     "data.user",
     "data.user.orders[0].id",
     "data.user.orders[0].total"
-   ]
+   ],
+   "axis_weights": {
+    "syntax_parse": 0.15,
+    "schema_compliance": 0.2,
+    "field_constraints": 0.45,
+    "cross_field_consistency": 0.05,
+    "output_discipline": 0.15
+   }
   },
   "tags": [
    "chinese",
@@ -44100,7 +44142,7 @@
    "api-response"
   ],
   "scenarioVersion": "2.0.0",
-  "scenarioHash": "2d4de54f6a16738d",
+  "scenarioHash": "5eb64ad1dd42f8be",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -44138,7 +44180,14 @@
     "数量",
     "单价",
     "小计"
-   ]
+   ],
+   "axis_weights": {
+    "syntax_parse": 0.15,
+    "schema_compliance": 0.2,
+    "field_constraints": 0.45,
+    "cross_field_consistency": 0.05,
+    "output_discipline": 0.15
+   }
   },
   "tags": [
    "chinese",
@@ -44146,7 +44195,7 @@
    "sales-data"
   ],
   "scenarioVersion": "2.0.0",
-  "scenarioHash": "01d76bfd8c671e53",
+  "scenarioHash": "a46f3b3db2ee70a5",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -44183,7 +44232,14 @@
     "database",
     "logging",
     "cache"
-   ]
+   ],
+   "axis_weights": {
+    "syntax_parse": 0.15,
+    "schema_compliance": 0.2,
+    "field_constraints": 0.45,
+    "cross_field_consistency": 0.05,
+    "output_discipline": 0.15
+   }
   },
   "tags": [
    "chinese",
@@ -44191,7 +44247,7 @@
    "configuration"
   ],
   "scenarioVersion": "2.0.0",
-  "scenarioHash": "7f52d5ce955a5c06",
+  "scenarioHash": "71c2e2bbb088b5be",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -44231,7 +44287,14 @@
     "入职日期",
     "月薪",
     "手机号"
-   ]
+   ],
+   "axis_weights": {
+    "syntax_parse": 0.15,
+    "schema_compliance": 0.2,
+    "field_constraints": 0.45,
+    "cross_field_consistency": 0.05,
+    "output_discipline": 0.15
+   }
   },
   "tags": [
    "chinese",
@@ -44239,7 +44302,7 @@
    "employee-data"
   ],
   "scenarioVersion": "2.0.0",
-  "scenarioHash": "6dad0bebb9d47d61",
+  "scenarioHash": "0c504001a9e5cb71",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -44280,7 +44343,14 @@
     "containers",
     "volumes",
     "matchLabels"
-   ]
+   ],
+   "axis_weights": {
+    "syntax_parse": 0.15,
+    "schema_compliance": 0.2,
+    "field_constraints": 0.45,
+    "cross_field_consistency": 0.05,
+    "output_discipline": 0.15
+   }
   },
   "tags": [
    "chinese",
@@ -44289,7 +44359,7 @@
    "devops"
   ],
   "scenarioVersion": "2.0.0",
-  "scenarioHash": "3962618482cfb623",
+  "scenarioHash": "5592b3c22358b27f",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -44326,7 +44396,14 @@
     "描述",
     "价格",
     "标签"
-   ]
+   ],
+   "axis_weights": {
+    "syntax_parse": 0.15,
+    "schema_compliance": 0.2,
+    "field_constraints": 0.45,
+    "cross_field_consistency": 0.05,
+    "output_discipline": 0.15
+   }
   },
   "tags": [
    "chinese",
@@ -44335,7 +44412,7 @@
    "rfc4180"
   ],
   "scenarioVersion": "2.0.0",
-  "scenarioHash": "59a401806ebae578",
+  "scenarioHash": "c65f980249e0a54c",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -44376,7 +44453,14 @@
     "test",
     "build",
     "deploy"
-   ]
+   ],
+   "axis_weights": {
+    "syntax_parse": 0.15,
+    "schema_compliance": 0.2,
+    "field_constraints": 0.45,
+    "cross_field_consistency": 0.05,
+    "output_discipline": 0.15
+   }
   },
   "tags": [
    "chinese",
@@ -44385,7 +44469,7 @@
    "gitlab"
   ],
   "scenarioVersion": "2.0.0",
-  "scenarioHash": "738a010fba88afe6",
+  "scenarioHash": "1c2b026c305d83fd",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -44425,7 +44509,14 @@
     "ROW_NUMBER",
     "WHERE",
     "ORDER BY"
-   ]
+   ],
+   "axis_weights": {
+    "syntax_parse": 0.15,
+    "schema_compliance": 0.2,
+    "field_constraints": 0.45,
+    "cross_field_consistency": 0.05,
+    "output_discipline": 0.15
+   }
   },
   "tags": [
    "chinese",
@@ -44434,7 +44525,7 @@
    "complex-query"
   ],
   "scenarioVersion": "2.0.0",
-  "scenarioHash": "82fae8854f07c7fa",
+  "scenarioHash": "57fc1710f890f75c",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -44471,7 +44562,14 @@
     "Body",
     "GetWeather",
     "xml"
-   ]
+   ],
+   "axis_weights": {
+    "syntax_parse": 0.15,
+    "schema_compliance": 0.2,
+    "field_constraints": 0.45,
+    "cross_field_consistency": 0.05,
+    "output_discipline": 0.15
+   }
   },
   "tags": [
    "chinese",
@@ -44480,7 +44578,7 @@
    "web-service"
   ],
   "scenarioVersion": "2.0.0",
-  "scenarioHash": "61b2e17fe9583f2a",
+  "scenarioHash": "db82bcd9c957953b",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -44519,7 +44617,14 @@
     "InnoDB",
     "COMMENT",
     "INDEX||KEY"
-   ]
+   ],
+   "axis_weights": {
+    "syntax_parse": 0.15,
+    "schema_compliance": 0.2,
+    "field_constraints": 0.45,
+    "cross_field_consistency": 0.05,
+    "output_discipline": 0.15
+   }
   },
   "tags": [
    "chinese",
@@ -44528,7 +44633,7 @@
    "database-design"
   ],
   "scenarioVersion": "2.1.0",
-  "scenarioHash": "75a483e72938bbb0",
+  "scenarioHash": "8fef9353ef507518",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -44569,7 +44674,14 @@
     "description",
     "pubDate",
     "guid"
-   ]
+   ],
+   "axis_weights": {
+    "syntax_parse": 0.15,
+    "schema_compliance": 0.2,
+    "field_constraints": 0.45,
+    "cross_field_consistency": 0.05,
+    "output_discipline": 0.15
+   }
   },
   "tags": [
    "chinese",
@@ -44578,7 +44690,7 @@
    "feed"
   ],
   "scenarioVersion": "2.0.0",
-  "scenarioHash": "ccb4fe9abac04116",
+  "scenarioHash": "0e408fa7e65e6f41",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -44618,7 +44730,14 @@
     "COMMIT",
     "BEGIN",
     "END"
-   ]
+   ],
+   "axis_weights": {
+    "syntax_parse": 0.15,
+    "schema_compliance": 0.2,
+    "field_constraints": 0.45,
+    "cross_field_consistency": 0.05,
+    "output_discipline": 0.15
+   }
   },
   "tags": [
    "chinese",
@@ -44627,7 +44746,7 @@
    "transaction"
   ],
   "scenarioVersion": "2.0.0",
-  "scenarioHash": "2367b4aac038ea15",
+  "scenarioHash": "3a47cf03d7b59395",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -44667,7 +44786,14 @@
     "polygon",
     "title",
     "desc"
-   ]
+   ],
+   "axis_weights": {
+    "syntax_parse": 0.15,
+    "schema_compliance": 0.2,
+    "field_constraints": 0.45,
+    "cross_field_consistency": 0.05,
+    "output_discipline": 0.15
+   }
   },
   "tags": [
    "chinese",
@@ -44676,7 +44802,7 @@
    "graphics"
   ],
   "scenarioVersion": "2.0.0",
-  "scenarioHash": "3c1d313bde78b0e6",
+  "scenarioHash": "5bb5fb12cd7a3f15",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -44714,7 +44840,14 @@
     "style",
     "img",
     "body"
-   ]
+   ],
+   "axis_weights": {
+    "syntax_parse": 0.15,
+    "schema_compliance": 0.2,
+    "field_constraints": 0.45,
+    "cross_field_consistency": 0.05,
+    "output_discipline": 0.15
+   }
   },
   "tags": [
    "chinese",
@@ -44723,7 +44856,7 @@
    "responsive"
   ],
   "scenarioVersion": "2.1.0",
-  "scenarioHash": "37d6ac39ae808a45",
+  "scenarioHash": "3e616cba42d9c4f4",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -44814,7 +44947,14 @@
     "section",
     "footer",
     "meta"
-   ]
+   ],
+   "axis_weights": {
+    "syntax_parse": 0.15,
+    "schema_compliance": 0.2,
+    "field_constraints": 0.45,
+    "cross_field_consistency": 0.05,
+    "output_discipline": 0.15
+   }
   },
   "tags": [
    "chinese",
@@ -44823,7 +44963,7 @@
    "semantic"
   ],
   "scenarioVersion": "2.1.0",
-  "scenarioHash": "224cddcaa5ebe918",
+  "scenarioHash": "941714bbbae7d6b4",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -44913,7 +45053,14 @@
     "table",
     "style",
     "div"
-   ]
+   ],
+   "axis_weights": {
+    "syntax_parse": 0.15,
+    "schema_compliance": 0.2,
+    "field_constraints": 0.45,
+    "cross_field_consistency": 0.05,
+    "output_discipline": 0.15
+   }
   },
   "tags": [
    "chinese",
@@ -44922,7 +45069,7 @@
    "css-chart"
   ],
   "scenarioVersion": "2.1.0",
-  "scenarioHash": "9319fcab39e80f51",
+  "scenarioHash": "8d5e4642fb04268d",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -45061,7 +45208,14 @@
     "dev-dependencies",
     "features",
     "bin"
-   ]
+   ],
+   "axis_weights": {
+    "syntax_parse": 0.15,
+    "schema_compliance": 0.2,
+    "field_constraints": 0.45,
+    "cross_field_consistency": 0.05,
+    "output_discipline": 0.15
+   }
   },
   "tags": [
    "chinese",
@@ -45070,7 +45224,7 @@
    "project-config"
   ],
   "scenarioVersion": "2.0.0",
-  "scenarioHash": "e5df55796cb096d3",
+  "scenarioHash": "8841e818c7b5bdb0",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -45161,7 +45315,14 @@
     "patterns[0].name",
     "patterns[0].regex",
     "patterns[0].examples"
-   ]
+   ],
+   "axis_weights": {
+    "syntax_parse": 0.15,
+    "schema_compliance": 0.2,
+    "field_constraints": 0.45,
+    "cross_field_consistency": 0.05,
+    "output_discipline": 0.15
+   }
   },
   "tags": [
    "chinese",
@@ -45170,7 +45331,7 @@
    "validation"
   ],
   "scenarioVersion": "2.0.0",
-  "scenarioHash": "55ce66731b066154",
+  "scenarioHash": "444e3e32d0fed739",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -53642,7 +53803,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「有理线性规划与不可行证书」，第1/4问，10分，时限180秒。\n共同题干：所有变量非负。最大化 c·x，约束 A x≤b。数据：{\"a\": [[3, 1, 2, 0, 1], [1, 4, 0, 2, 1], [0, 1, 3, 1, 2], [2, 0, 1, 4, 1], [1, 2, 1, 1, 3]], \"b\": [9, 17, 12, 17, 15], \"c\": [12, 11, 16, 14, 14]}。optimal证书为{status:\"optimal\",x:[...],y:[...],value:...}，其中y≥0、Aᵀy≥c且b·y=c·x。infeasible证书为{status:\"infeasible\",y:[...]}，要求y≥0、Aᵀy≥0、b·y<0。\n本问：提交 origin_value=零向量的目标值，origin_feasible=零向量是否可行。\n评分项：origin_value(5分)、origin_feasible(5分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「有理线性规划与不可行证书」，第1/4问，10分，时限180秒。\n共同题干：所有变量非负。最大化 c·x，约束 A x≤b。数据：{\"a\": [[3, 1, 2, 0, 1], [1, 4, 0, 2, 1], [0, 1, 3, 1, 2], [2, 0, 1, 4, 1], [1, 2, 1, 1, 3]], \"b\": [9, 17, 12, 17, 15], \"c\": [12, 11, 16, 14, 14]}。optimal证书为{status:\"optimal\",x:[...],y:[...],value:...}，其中y≥0、Aᵀy≥c且b·y=c·x。infeasible证书为{status:\"infeasible\",y:[...]}，要求y≥0、Aᵀy≥0、b·y<0。\n本问：提交 row_slack=把 x=[1,1,1,1,1] 代入后各约束的松弛量 b−Ax（按约束顺序，长度5）。\n评分项：row_slack(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -53654,7 +53815,7 @@
    "partNumber": 1,
    "points": 10,
    "hardSeconds": 180,
-   "questionHash": "4f6245e1c6e148d32429649fd2bd59b79d3f0b59e48ea85806643ad8a6b16a17",
+   "questionHash": "dac9d24481a975f4f1208cda9e002b2d2d208d06ced1786bd04054816914371b",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -53665,8 +53826,8 @@
    "points_10",
    "timeout_180s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "97d515a90d96c34e",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "4c8529e985ae5b38",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -53810,7 +53971,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「流量与割的双向证明」，第1/4问，10分，时限180秒。\n共同题干：有向网络顶点0..7，源0汇7；每条边[u,v,capacity]，流量必须为整数。边按输入顺序编号。数据：[[0, 1, 11], [0, 2, 8], [0, 3, 6], [1, 2, 3], [1, 4, 7], [1, 5, 5], [2, 4, 6], [2, 5, 5], [3, 2, 2], [3, 5, 7], [4, 5, 2], [4, 6, 8], [5, 6, 4], [5, 7, 9], [6, 7, 13]]。证书为{flow:[每条边流量],cut:[含源不含汇的顶点集合],value:流值}；需满足容量、流守恒，且流值等于割容量。\n本问：提交 source_capacity=源点出边容量和。\n评分项：source_capacity(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「流量与割的双向证明」，第1/4问，10分，时限180秒。\n共同题干：有向网络顶点0..7，源0汇7；每条边[u,v,capacity]，流量必须为整数。边按输入顺序编号。数据：[[0, 1, 11], [0, 2, 8], [0, 3, 6], [1, 2, 3], [1, 4, 7], [1, 5, 5], [2, 4, 6], [2, 5, 5], [3, 2, 2], [3, 5, 7], [4, 5, 2], [4, 6, 8], [5, 6, 4], [5, 7, 9], [6, 7, 13]]。证书为{flow:[每条边流量],cut:[含源不含汇的顶点集合],value:流值}；需满足容量、流守恒，且流值等于割容量。\n本问：提交 path_edges=[位于至少一条 0→7 有向路径上的边的编号]（升序）。\n评分项：path_edges(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -53822,7 +53983,7 @@
    "partNumber": 1,
    "points": 10,
    "hardSeconds": 180,
-   "questionHash": "38e2f63ee356130f9933e3fdb7cba46dbd46eb51c45c5522e195dfec2fab5313",
+   "questionHash": "89c2e827b539e274271fbd5ebb8d103a184a88ce8df1240e30e28db597183546",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -53833,8 +53994,8 @@
    "points_10",
    "timeout_180s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "45d92b2afc63f3e7",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "d243d37e93420670",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -53978,7 +54139,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「受限指派与势函数」，第1/4问，10分，时限180秒。\n共同题干：6名工人到6项工作的一一指派，编号0..5，成本矩阵：[[8, 9, 23, 14, 8, 19], [7, 21, 7, 18, 16, 10], [6, 12, 18, 6, 22, 13], [8, 16, 11, 24, 9, 17], [7, 7, 19, 10, 15, 21], [8, 14, 9, 17, 12, 8]]。最小化总成本。certificate={permutation:[工人对应工作],u:[...],v:[...],value:...}；所有允许边应有u[i]+v[j]≤cost[i][j]，且总成本=Σu+Σv。\n本问：计算恒等指派i→i的成本 identity。\n评分项：identity(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「受限指派与势函数」，第1/4问，10分，时限180秒。\n共同题干：6名工人到6项工作的一一指派，编号0..5，成本矩阵：[[8, 9, 23, 14, 8, 19], [7, 21, 7, 18, 16, 10], [6, 12, 18, 6, 22, 13], [8, 16, 11, 24, 9, 17], [7, 7, 19, 10, 15, 21], [8, 14, 9, 17, 12, 8]]。最小化总成本。certificate={permutation:[工人对应工作],u:[...],v:[...],value:...}；所有允许边应有u[i]+v[j]≤cost[i][j]，且总成本=Σu+Σv。\n本问：提交 row_min=[成本矩阵每行的最小值]（按行顺序，长度6），以及 row_min_sum=各行最小值之和。\n评分项：row_min(5分)、row_min_sum(5分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -53990,7 +54151,7 @@
    "partNumber": 1,
    "points": 10,
    "hardSeconds": 180,
-   "questionHash": "229385b235c8d860c07aa66fbcc2ff7d123692745776f928e1a21de268f700d2",
+   "questionHash": "a5b7c39ac10df6140956beca58231835a7878eebb722080d021e45f6d3b17b8f",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -54001,8 +54162,8 @@
    "points_10",
    "timeout_180s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "a6d41280a56549df",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "d234dbd7cb7b824b",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -54146,7 +54307,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「非约化商环中的逆与解空间」，第1/4问，10分，时限180秒。\n共同题干：在F₇[x]/((x²+1)³)中计算。系数数组按常数项到最高次项排列，所有系数用0..6代表；余式数组固定长度6。\n本问：提交 modulus=(x²+1)³的系数数组（长度7）。\n评分项：modulus(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「非约化商环中的逆与解空间」，第1/4问，10分，时限180秒。\n共同题干：在F₇[x]/((x²+1)³)中计算。系数数组按常数项到最高次项排列，所有系数用0..6代表；余式数组固定长度6。\n本问：提交 x6_reduced=x⁶ 在商环 F₇[x]/((x²+1)³) 中的余式（长度6，常数项起）。\n评分项：x6_reduced(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -54158,7 +54319,7 @@
    "partNumber": 1,
    "points": 10,
    "hardSeconds": 180,
-   "questionHash": "c63d190f18fd491caac820b8e09f4c2c9668657f31b0bae055bc66752e070080",
+   "questionHash": "066de0662bce260cc5d3d0e7b70163cbbdbaf1cf4bb6dabf1f68bd098ff35f59",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -54169,8 +54330,8 @@
    "points_10",
    "timeout_180s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "a2445a5b93faaaa4",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "845f43e2b9033580",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -54314,7 +54475,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「吸收链的条件矩与转移干预」，第1/4问，10分，时限180秒。\n共同题干：状态为0,1,2,S,F；S与F吸收。从0开始，T为首次吸收所需步数。每行按0,1,2,S,F给转移概率：[[\"0\", \"1/2\", \"1/3\", \"1/6\", \"0\"], [\"1/4\", \"0\", \"1/4\", \"1/4\", \"1/4\"], [\"1/5\", \"2/5\", \"0\", \"1/5\", \"1/5\"]].\n本问：提交 one_step_success=一步到S的概率。\n评分项：one_step_success(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「吸收链的条件矩与转移干预」，第1/4问，10分，时限180秒。\n共同题干：状态为0,1,2,S,F；S与F吸收。从0开始，T为首次吸收所需步数。每行按0,1,2,S,F给转移概率：[[\"0\", \"1/2\", \"1/3\", \"1/6\", \"0\"], [\"1/4\", \"0\", \"1/4\", \"1/4\", \"1/4\"], [\"1/5\", \"2/5\", \"0\", \"1/5\", \"1/5\"]].\n本问：提交 one_step_absorb=[从状态0、1、2 各自一步进入吸收态(S或F)的概率]（按状态顺序，长度3，精确分数）。\n评分项：one_step_absorb(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -54326,7 +54487,7 @@
    "partNumber": 1,
    "points": 10,
    "hardSeconds": 180,
-   "questionHash": "7c5e6750af50092c2d596e4ab219a00b19f4595d2e1fd4e884e770566673bf29",
+   "questionHash": "4166796e656118dbb89cdae3d797e2ae043ced5f95d3fb82d5ee1a9becf2095c",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -54337,8 +54498,8 @@
    "points_10",
    "timeout_180s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "29fc84cefa751d82",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "8a6aa46edcd07e1a",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -54482,7 +54643,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「循环约束与扩张对称群」，第1/4问，10分，时限180秒。\n共同题干：长度14的二进制循环串，位置有编号，首尾相邻。前三问恰有5个1且没有相邻的1。\n本问：求有编号串总数 labelled。\n评分项：labelled(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「循环约束与扩张对称群」，第1/4问，10分，时限180秒。\n共同题干：长度14的二进制循环串，位置有编号，首尾相邻。前三问恰有5个1且没有相邻的1。\n本问：提交 with_pos0_one=位置0为1、且满足恰有5个1与全部相邻约束的有编号串数。\n评分项：with_pos0_one(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -54494,7 +54655,7 @@
    "partNumber": 1,
    "points": 10,
    "hardSeconds": 180,
-   "questionHash": "8f6220198be86006613aec9e1ae40a9902ae2e5a69466f2d13b3b06fcaf27708",
+   "questionHash": "5788ab916354edc29ac17bf24f84993a2dd891eaf4cc0409e950a427f02e6598",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -54505,8 +54666,8 @@
    "points_10",
    "timeout_180s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "6173372ca052a43a",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "4e6b63fcb4c72d3e",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -54650,7 +54811,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「加权生成树与边相关性」，第1/4问，10分，时限180秒。\n共同题干：无向简单图顶点0..6，边按0起编号，每条[u,v,w]：[[0, 1, 2], [0, 2, 3], [0, 3, 1], [1, 2, 1], [1, 4, 4], [2, 3, 2], [2, 4, 1], [2, 5, 3], [3, 5, 2], [3, 6, 1], [4, 5, 2], [4, 6, 3], [5, 6, 4]]。生成树的权重为边权之积，随机树的概率与权重成正比。\n本问：提交 degree0=顶点0的加权度。\n评分项：degree0(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「加权生成树与边相关性」，第1/4问，10分，时限180秒。\n共同题干：无向简单图顶点0..6，边按0起编号，每条[u,v,w]：[[0, 1, 2], [0, 2, 3], [0, 3, 1], [1, 2, 1], [1, 4, 4], [2, 3, 2], [2, 4, 1], [2, 5, 3], [3, 5, 2], [3, 6, 1], [4, 5, 2], [4, 6, 3], [5, 6, 4]]。生成树的权重为边权之积，随机树的概率与权重成正比。\n本问：提交 tree_count=不同生成树的个数（不计权重）。\n评分项：tree_count(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -54662,7 +54823,7 @@
    "partNumber": 1,
    "points": 10,
    "hardSeconds": 180,
-   "questionHash": "45bc74879324496d37c89948c7aed777664615e1b56844de8fb015a38de34bff",
+   "questionHash": "8e93ff5efbdb2660576f2ba6e6bd4bce1a21035eb8ca2345f1b1277743726bc1",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -54673,8 +54834,8 @@
    "points_10",
    "timeout_180s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "748689aa5fd3599f",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "9490d4f73e391ac9",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -54818,7 +54979,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「线性码与缩短穿孔的顺序」，第1/4问，10分，时限180秒。\n共同题干：F₂上的线性码由下列六行生成；字符串左端为位置0，右端为位置11：[\"100000110101\", \"010000101011\", \"001000111000\", \"000100011110\", \"000010100111\", \"000001010101\"].\n本问：提交 dimension=码维数。\n评分项：dimension(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「线性码与缩短穿孔的顺序」，第1/4问，10分，时限180秒。\n共同题干：F₂上的线性码由下列六行生成；字符串左端为位置0，右端为位置11：[\"100000110101\", \"010000101011\", \"001000111000\", \"000100011110\", \"000010100111\", \"000001010101\"].\n本问：提交 first_four_rank=前四行生成子空间在 F₂ 上的维数。\n评分项：first_four_rank(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -54830,7 +54991,7 @@
    "partNumber": 1,
    "points": 10,
    "hardSeconds": 180,
-   "questionHash": "b042469b528565657f6b277462a6da657c98d21a1e4427bd3681656199f2e193",
+   "questionHash": "f4a555f55a94fc825c058467bd13436b2f6f3dc7f01b1bb3c37b66d3f9360cbe",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -54841,8 +55002,8 @@
    "points_10",
    "timeout_180s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "580cececadd620aa",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "3fd4ab53fadea761",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -54986,7 +55147,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「偏序线性扩张与位置统计」，第1/4问，10分，时限180秒。\n共同题干：12个不同元素0..11。每条[u,v]要求u在v前，除此之外仅含传递闭包的约束：[[0, 3], [0, 4], [1, 4], [1, 5], [2, 5], [2, 6], [3, 7], [4, 7], [4, 8], [5, 8], [5, 9], [6, 9], [7, 10], [8, 10], [8, 11], [9, 11]]。每个合法排列等概率，位置从1计。\n本问：提交 minimal=全部极小元按升序列出。\n评分项：minimal(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「偏序线性扩张与位置统计」，第1/4问，10分，时限180秒。\n共同题干：12个不同元素0..11。每条[u,v]要求u在v前，除此之外仅含传递闭包的约束：[[0, 3], [0, 4], [1, 4], [1, 5], [2, 5], [2, 6], [3, 7], [4, 7], [4, 8], [5, 8], [5, 9], [6, 9], [7, 10], [8, 10], [8, 11], [9, 11]]。每个合法排列等概率，位置从1计。\n本问：提交 greedy_prefix=按“每步取当前最小可用元素”得到的合法排列的前4个元素。\n评分项：greedy_prefix(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -54998,7 +55159,7 @@
    "partNumber": 1,
    "points": 10,
    "hardSeconds": 180,
-   "questionHash": "1b6ce95de40f5568fb6c1e3e49ea109f43a3d4f3f58bedd19f908fc9e7bcb495",
+   "questionHash": "74d723236411e52a2deecc2a3adc855ce7832f942b16d3b43c8f50ba02da5c18",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -55009,8 +55170,8 @@
    "points_10",
    "timeout_180s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "d1c756b19738956f",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "572244671a504e75",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -55154,7 +55315,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「共享因子的奇异提升」，第1/4问，10分，时限180秒。\n共同题干：研究整数同余 (x²−1)(x²−10)≡0 mod 3^k。不同x按模3^k计。不能假定两因子之一单独被3^k整除。\n本问：k=2，按升序提交 roots。\n评分项：roots(10分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「共享因子的奇异提升」，第1/4问，10分，时限180秒。\n共同题干：研究整数同余 (x²−1)(x²−10)≡0 mod 3^k。不同x按模3^k计。不能假定两因子之一单独被3^k整除。\n本问：k=3，提交 count=解数，以及 parity=[解中偶数的个数,解中奇数的个数]。\n评分项：count(5分)、parity(5分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -55166,7 +55327,7 @@
    "partNumber": 1,
    "points": 10,
    "hardSeconds": 180,
-   "questionHash": "565d69fb460a58b4bb08ff19662657d0677cb91f5f9fa63da973b828e5e1e5b4",
+   "questionHash": "d813f09cd018f14b2e59ddc2ec33d422e8fecae0301d56ba93ef90d953ea125c",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -55177,8 +55338,8 @@
    "points_10",
    "timeout_180s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "cc374c14e06a55a6",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "3b2e4839b874358b",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -55926,7 +56087,7 @@
    "type": "schema_compliance"
   },
   "scenarioVersion": "2.3.0",
-  "scenarioHash": "320d84c5e5b57bed",
+  "scenarioHash": "11f55d7f07be5939",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -55987,6 +56148,13 @@
       "type": "string"
      }
     }
+   },
+   "axis_weights": {
+    "syntax_parse": 0.15,
+    "schema_compliance": 0.2,
+    "field_constraints": 0.45,
+    "cross_field_consistency": 0.05,
+    "output_discipline": 0.15
    }
   },
   "tags": [
@@ -56010,7 +56178,7 @@
    "type": "schema_compliance"
   },
   "scenarioVersion": "2.3.0",
-  "scenarioHash": "a453ad02ecbfbee1",
+  "scenarioHash": "f336a222cb6d92f5",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -56072,6 +56240,13 @@
       ]
      }
     }
+   },
+   "axis_weights": {
+    "syntax_parse": 0.15,
+    "schema_compliance": 0.2,
+    "field_constraints": 0.45,
+    "cross_field_consistency": 0.05,
+    "output_discipline": 0.15
    }
   },
   "tags": [
@@ -56095,7 +56270,7 @@
    "type": "schema_compliance"
   },
   "scenarioVersion": "2.3.0",
-  "scenarioHash": "3fe495ba6475ccd9",
+  "scenarioHash": "f877c4d5dcaea5be",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -56150,6 +56325,13 @@
       "minItems": 4
      }
     }
+   },
+   "axis_weights": {
+    "syntax_parse": 0.15,
+    "schema_compliance": 0.2,
+    "field_constraints": 0.45,
+    "cross_field_consistency": 0.05,
+    "output_discipline": 0.15
    }
   },
   "tags": [
@@ -56174,7 +56356,7 @@
    "type": "schema_compliance"
   },
   "scenarioVersion": "2.1.0",
-  "scenarioHash": "9b0ddb7e6922835f",
+  "scenarioHash": "b8b23331a754911b",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -56201,7 +56383,14 @@
     "metadata",
     "spec",
     "containers"
-   ]
+   ],
+   "axis_weights": {
+    "syntax_parse": 0.15,
+    "schema_compliance": 0.2,
+    "field_constraints": 0.45,
+    "cross_field_consistency": 0.05,
+    "output_discipline": 0.15
+   }
   },
   "tags": [
    "yaml",
@@ -56224,7 +56413,7 @@
    "type": "schema_compliance"
   },
   "scenarioVersion": "2.1.0",
-  "scenarioHash": "f611844c6d763b5c",
+  "scenarioHash": "c06d9b8c568a9894",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -56255,7 +56444,14 @@
     "volumes",
     "networks",
     "restart"
-   ]
+   ],
+   "axis_weights": {
+    "syntax_parse": 0.15,
+    "schema_compliance": 0.2,
+    "field_constraints": 0.45,
+    "cross_field_consistency": 0.05,
+    "output_discipline": 0.15
+   }
   },
   "tags": [
    "yaml",
@@ -56278,7 +56474,7 @@
    "type": "schema_compliance"
   },
   "scenarioVersion": "2.1.0",
-  "scenarioHash": "f8194eac03633f31",
+  "scenarioHash": "ffa110d2c232236b",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -56306,7 +56502,14 @@
     "RETURNING",
     "UPDATE",
     "SET"
-   ]
+   ],
+   "axis_weights": {
+    "syntax_parse": 0.15,
+    "schema_compliance": 0.2,
+    "field_constraints": 0.45,
+    "cross_field_consistency": 0.05,
+    "output_discipline": 0.15
+   }
   },
   "tags": [
    "sql",
@@ -56330,7 +56533,7 @@
    "type": "schema_compliance"
   },
   "scenarioVersion": "2.1.0",
-  "scenarioHash": "b23c67c5c262de11",
+  "scenarioHash": "a10d8040609fe5d2",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -56356,7 +56559,14 @@
     "xs:attribute",
     "xs:positiveInteger",
     "xmlns:xs"
-   ]
+   ],
+   "axis_weights": {
+    "syntax_parse": 0.15,
+    "schema_compliance": 0.2,
+    "field_constraints": 0.45,
+    "cross_field_consistency": 0.05,
+    "output_discipline": 0.15
+   }
   },
   "tags": [
    "xml",
@@ -56482,7 +56692,7 @@
    "type": "schema_compliance"
   },
   "scenarioVersion": "2.1.0",
-  "scenarioHash": "a47b32293df2e120",
+  "scenarioHash": "8de3f85e262c93b5",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -56512,7 +56722,14 @@
     "rect",
     "title",
     "desc"
-   ]
+   ],
+   "axis_weights": {
+    "syntax_parse": 0.15,
+    "schema_compliance": 0.2,
+    "field_constraints": 0.45,
+    "cross_field_consistency": 0.05,
+    "output_discipline": 0.15
+   }
   },
   "tags": [
    "svg",
@@ -56536,7 +56753,7 @@
    "type": "schema_compliance"
   },
   "scenarioVersion": "2.1.0",
-  "scenarioHash": "efddad0003a84c9a",
+  "scenarioHash": "4d218632ae321c8f",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -56563,7 +56780,14 @@
     "features",
     "profile.release",
     "members"
-   ]
+   ],
+   "axis_weights": {
+    "syntax_parse": 0.15,
+    "schema_compliance": 0.2,
+    "field_constraints": 0.45,
+    "cross_field_consistency": 0.05,
+    "output_discipline": 0.15
+   }
   },
   "tags": [
    "toml",
@@ -56586,7 +56810,7 @@
    "type": "schema_compliance"
   },
   "scenarioVersion": "2.3.0",
-  "scenarioHash": "49f5cebc52d3a1f7",
+  "scenarioHash": "bb23e546882f1784",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -56662,6 +56886,13 @@
       "minLength": 4
      }
     }
+   },
+   "axis_weights": {
+    "syntax_parse": 0.15,
+    "schema_compliance": 0.2,
+    "field_constraints": 0.45,
+    "cross_field_consistency": 0.05,
+    "output_discipline": 0.15
    }
   },
   "tags": [
@@ -56740,7 +56971,7 @@
    "type": "schema_compliance"
   },
   "scenarioVersion": "3.1.0",
-  "scenarioHash": "a70f16673ed9b3bc",
+  "scenarioHash": "f6e436b434e4e2c7",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -56792,11 +57023,11 @@
     "sumEq:orders[].total=summary.grandTotal"
    ],
    "axis_weights": {
-    "syntax_parse": 0.1,
+    "syntax_parse": 0.05,
     "schema_compliance": 0.1,
-    "field_constraints": 0.6,
+    "field_constraints": 0.55,
     "cross_field_consistency": 0.1,
-    "output_discipline": 0.05
+    "output_discipline": 0.15
    }
   },
   "tags": [
@@ -56822,7 +57053,7 @@
    "type": "schema_compliance"
   },
   "scenarioVersion": "3.1.0",
-  "scenarioHash": "49f000199692a133",
+  "scenarioHash": "549ce1cc21077418",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -56856,11 +57087,11 @@
     "count:\":>=8"
    ],
    "axis_weights": {
-    "syntax_parse": 0.1,
+    "syntax_parse": 0.05,
     "schema_compliance": 0.1,
-    "field_constraints": 0.6,
+    "field_constraints": 0.55,
     "cross_field_consistency": 0.1,
-    "output_discipline": 0.05
+    "output_discipline": 0.15
    }
   },
   "tags": [
@@ -56885,7 +57116,7 @@
    "type": "schema_compliance"
   },
   "scenarioVersion": "3.1.0",
-  "scenarioHash": "16ca7a95ea0b7f77",
+  "scenarioHash": "ce24e38e02daa28d",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -56923,11 +57154,11 @@
     "schemaRejects:schema:invalidSample"
    ],
    "axis_weights": {
-    "syntax_parse": 0.1,
+    "syntax_parse": 0.05,
     "schema_compliance": 0.1,
-    "field_constraints": 0.6,
+    "field_constraints": 0.55,
     "cross_field_consistency": 0.1,
-    "output_discipline": 0.05
+    "output_discipline": 0.15
    }
   },
   "tags": [
@@ -56951,7 +57182,7 @@
    "type": "schema_compliance"
   },
   "scenarioVersion": "3.1.0",
-  "scenarioHash": "865d9018eb8337ec",
+  "scenarioHash": "d7a73e2ec9bd0d95",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -56995,11 +57226,11 @@
     "count:^\\d+\\.\\s:==5"
    ],
    "axis_weights": {
-    "syntax_parse": 0.1,
+    "syntax_parse": 0.05,
     "schema_compliance": 0.1,
-    "field_constraints": 0.6,
+    "field_constraints": 0.55,
     "cross_field_consistency": 0.1,
-    "output_discipline": 0.05
+    "output_discipline": 0.15
    }
   },
   "tags": [
@@ -57023,7 +57254,7 @@
    "type": "schema_compliance"
   },
   "scenarioVersion": "3.1.0",
-  "scenarioHash": "69e8e56d14c62765",
+  "scenarioHash": "8de9561aace42612",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -57063,11 +57294,11 @@
     "type:ledger[0].openingBalance=number"
    ],
    "axis_weights": {
-    "syntax_parse": 0.1,
+    "syntax_parse": 0.05,
     "schema_compliance": 0.1,
-    "field_constraints": 0.6,
+    "field_constraints": 0.55,
     "cross_field_consistency": 0.1,
-    "output_discipline": 0.05
+    "output_discipline": 0.15
    }
   },
   "tags": [
@@ -57092,7 +57323,7 @@
    "type": "schema_compliance"
   },
   "scenarioVersion": "3.1.0",
-  "scenarioHash": "130867c8457abfc9",
+  "scenarioHash": "65a7572eeba167e5",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -57134,11 +57365,11 @@
     "type:schema.additionalProperties=boolean"
    ],
    "axis_weights": {
-    "syntax_parse": 0.1,
+    "syntax_parse": 0.05,
     "schema_compliance": 0.1,
-    "field_constraints": 0.6,
+    "field_constraints": 0.55,
     "cross_field_consistency": 0.1,
-    "output_discipline": 0.05
+    "output_discipline": 0.15
    }
   },
   "tags": [
@@ -57163,7 +57394,7 @@
    "type": "schema_compliance"
   },
   "scenarioVersion": "3.1.0",
-  "scenarioHash": "a773a21ddefd7b0c",
+  "scenarioHash": "4833187c862b25a5",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -57206,11 +57437,11 @@
     "type:schema.additionalProperties=boolean"
    ],
    "axis_weights": {
-    "syntax_parse": 0.1,
+    "syntax_parse": 0.05,
     "schema_compliance": 0.1,
-    "field_constraints": 0.6,
+    "field_constraints": 0.55,
     "cross_field_consistency": 0.1,
-    "output_discipline": 0.05
+    "output_discipline": 0.15
    }
   },
   "tags": [
@@ -57235,7 +57466,7 @@
    "type": "schema_compliance"
   },
   "scenarioVersion": "3.1.0",
-  "scenarioHash": "c6eaa3373ad68c13",
+  "scenarioHash": "94af40d092ce8936",
   "responseMode": null,
   "outputPolicy": null,
   "environmentImage": null,
@@ -57273,11 +57504,11 @@
     "order:<sku>|<qty>"
    ],
    "axis_weights": {
-    "syntax_parse": 0.1,
+    "syntax_parse": 0.05,
     "schema_compliance": 0.1,
-    "field_constraints": 0.6,
+    "field_constraints": 0.55,
     "cross_field_consistency": 0.1,
-    "output_discipline": 0.05
+    "output_discipline": 0.15
    }
   },
   "tags": [
@@ -57286,6 +57517,178 @@
    "element-order",
    "escaping",
    "cdata"
+  ]
+ },
+ {
+  "dimension": "structured_output",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "public_dev",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "schema_compliance",
+  "graderVersion": "schema_compliance_v5",
+  "scoring": {
+   "type": "schema_compliance"
+  },
+  "scenarioVersion": "3.3.0",
+  "scenarioHash": "b8a5a80c4c7b9669",
+  "responseMode": null,
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null,
+  "id": "SO-CN-050",
+  "category": "json",
+  "difficulty": "adversarial",
+  "language": "json",
+  "promptTemplate": "请生成一份交易明细批量导出 JSON，用于对账系统直接消费。\n\n顶层键**恰好**为 batchId、accounts、transactions、summary：\n1. batchId 为字符串；accounts **恰好 4 个**元素，每个元素**恰好**含 id、name 两个键，id 分别为 ACC-01 ~ ACC-04\n2. transactions：**恰好 120 个**元素，每个元素**恰好**含 txId、ts、account、amount、fee、net 六个键，键序与上述一致\n   - txId 形如 TX-0001 ~ TX-0120（TX- + 4 位零填充，与序号对应）\n   - ts 为 ISO 8601 日期时间字符串，且按时间严格递增（不得重复）\n   - account 必须取自 ACC-01 ~ ACC-04\n   - amount 为正数且保留 2 位以内小数；fee = amount × 0.01（保留到分）；net = amount − fee\n3. transactions 必须按 ts 升序排列；txId 不得重复\n4. summary **恰好**含 count、totalAmount、totalFee、totalNet 四个键，分别为笔数与三个合计（保留到分）\n5. 输出纯 JSON，不要 markdown 代码块，不要任何解释文字",
+  "requirements": {
+   "format": "json",
+   "output_policy": "raw_only",
+   "axis_weights": {
+    "syntax_parse": 0.05,
+    "schema_compliance": 0.1,
+    "field_constraints": 0.55,
+    "cross_field_consistency": 0.1,
+    "output_discipline": 0.15
+   },
+   "requiredFields": [
+    "batchId",
+    "accounts",
+    "transactions",
+    "summary",
+    "summary.totalAmount",
+    "summary.totalFee",
+    "summary.totalNet",
+    "transactions[0].net",
+    "transactions[119].net"
+   ],
+   "constraints": [
+    "keys:.=batchId,accounts,transactions,summary",
+    "keysAll:accounts[]=id,name",
+    "length:accounts=4",
+    "length:transactions=120",
+    "keysAll:transactions[]=txId,ts,account,amount,fee,net",
+    "keyOrder:transactions[0]=txId,ts,account,amount,fee,net",
+    "unique:transactions[].txId",
+    "unique:transactions[].ts",
+    "sorted:transactions[]=ts:asc",
+    "reAll:transactions[].txId:^TX-\\d{4}$",
+    "reAll:transactions[].ts:^\\d{4}-\\d{2}-\\d{2}T",
+    "reAll:transactions[].account:^ACC-0[1-4]$",
+    "ref:transactions[].account in accounts[].id",
+    "maxDecimals:transactions[].amount=2",
+    "maxDecimals:transactions[].fee=2",
+    "maxDecimals:transactions[].net=2",
+    "ratioEq:transactions[].fee=amount*0.01:2",
+    "ratioEq:transactions[].net=amount*0.99:2",
+    "sumEq:transactions[].amount=summary.totalAmount",
+    "sumEq:transactions[].fee=summary.totalFee",
+    "sumEq:transactions[].net=summary.totalNet"
+   ]
+  },
+  "tags": [
+   "json",
+   "long-horizon",
+   "120-rows",
+   "global-consistency",
+   "rounding"
+  ]
+ },
+ {
+  "dimension": "structured_output",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "public_dev",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "schema_compliance",
+  "graderVersion": "schema_compliance_v5",
+  "scoring": {
+   "type": "schema_compliance"
+  },
+  "scenarioVersion": "3.3.0",
+  "scenarioHash": "c86fd6b6267b47ba",
+  "responseMode": null,
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null,
+  "id": "SO-CN-051",
+  "category": "json",
+  "difficulty": "adversarial",
+  "language": "json",
+  "promptTemplate": "请生成一份年度部门预算执行 JSON，覆盖 2026-01 至 2026-12。\n\n顶层键**恰好**为 fiscalYear、currency、months、annualTotal：\n1. fiscalYear = 2026；currency = \"CNY\"\n2. months：**恰好 12 个**元素，按 month 升序，month 形如 2026-01 且互不重复；每个元素**恰好**含 month、departments、budgetTotal、spentTotal 四个键\n3. departments：每个月**恰好 5 个**元素，名称依次为 研发、市场、销售、运营、财务；每个元素**恰好**含 name、budget、spent、remaining 四个键\n   - budget 与 spent 为正数且保留 2 位以内小数\n   - remaining = budget − spent（保留到分，可以为负）\n4. 每个月的 budgetTotal 必须等于该月 5 个部门 budget 之和（保留到分）\n5. 每个月的 spentTotal 必须等于该月 5 个部门 spent 之和（保留到分）\n6. annualTotal 必须等于 12 个月 budgetTotal 之和（保留到分）\n7. 输出纯 JSON，不要 markdown 代码块，不要任何解释文字",
+  "requirements": {
+   "format": "json",
+   "output_policy": "raw_only",
+   "axis_weights": {
+    "syntax_parse": 0.05,
+    "schema_compliance": 0.1,
+    "field_constraints": 0.55,
+    "cross_field_consistency": 0.1,
+    "output_discipline": 0.15
+   },
+   "requiredFields": [
+    "fiscalYear",
+    "currency",
+    "months",
+    "annualTotal",
+    "months[0].budgetTotal",
+    "months[11].spentTotal",
+    "months[0].departments[0].remaining"
+   ],
+   "constraints": [
+    "keys:.=fiscalYear,currency,months,annualTotal",
+    "valueEq:fiscalYear=2026",
+    "valueEq:currency=CNY",
+    "length:months=12",
+    "keysAll:months[]=month,departments,budgetTotal,spentTotal",
+    "keyOrder:months[0]=month,departments,budgetTotal,spentTotal",
+    "unique:months[].month",
+    "sorted:months[]=month:asc",
+    "reAll:months[].month:^2026-\\d{2}$",
+    "keysAll:months[0].departments[]=name,budget,spent,remaining",
+    "length:months[0].departments=5",
+    "length:months[6].departments=5",
+    "unique:months[0].departments[].name",
+    "maxDecimals:months[0].departments[].budget=2",
+    "maxDecimals:months[11].departments[].spent=2",
+    "sumEq:months[0].departments[].budget=months[0].budgetTotal",
+    "sumEq:months[1].departments[].budget=months[1].budgetTotal",
+    "sumEq:months[2].departments[].budget=months[2].budgetTotal",
+    "sumEq:months[3].departments[].budget=months[3].budgetTotal",
+    "sumEq:months[4].departments[].budget=months[4].budgetTotal",
+    "sumEq:months[5].departments[].budget=months[5].budgetTotal",
+    "sumEq:months[6].departments[].budget=months[6].budgetTotal",
+    "sumEq:months[7].departments[].budget=months[7].budgetTotal",
+    "sumEq:months[8].departments[].budget=months[8].budgetTotal",
+    "sumEq:months[9].departments[].budget=months[9].budgetTotal",
+    "sumEq:months[10].departments[].budget=months[10].budgetTotal",
+    "sumEq:months[11].departments[].budget=months[11].budgetTotal",
+    "sumEq:months[0].departments[].spent=months[0].spentTotal",
+    "sumEq:months[5].departments[].spent=months[5].spentTotal",
+    "sumEq:months[11].departments[].spent=months[11].spentTotal",
+    "sumEq:months[].budgetTotal=annualTotal"
+   ]
+  },
+  "tags": [
+   "json",
+   "long-horizon",
+   "nested-aggregation",
+   "36-containers",
+   "rounding"
   ]
  }
 ]

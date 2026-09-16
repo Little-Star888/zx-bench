@@ -12,7 +12,7 @@
     }
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && node ../../scripts/copy-core-assets.mjs",
     "dev": "tsc --watch",
     "type-check": "tsc --noEmit"
   },
