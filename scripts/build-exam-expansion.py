@@ -418,13 +418,22 @@ def flow(edges):
     return {'flow':f,'cut':sorted(parent),'value':value}
 e4=[r[:] for r in edges]; e4[11][2]=3;e4[13][2]=4;e4.append([3,6,5])
 f,f4=flow(edges),flow(e4)
+# 割结构：枚举全部「含源不含汇」顶点集并按容量排序（P4 用）
+_cut_caps = sorted(
+    sum(c for u, v, c in edges if (mask >> u) & 1 and not ((mask >> v) & 1))
+    for mask in range(1 << 8) if (mask & 1) and not ((mask >> 7) & 1))
+assert _cut_caps[0] == f['value'], f"最大流与最小割应相等：{_cut_caps[0]} vs {f['value']}"
+min_cut_count = _cut_caps.count(_cut_caps[0])
+second_min_cut = next(c for c in _cut_caps if c > _cut_caps[0])
+
 group('02','network-flow','流量与割的双向证明','有向网络顶点0..7，源0汇7；每条边[u,v,capacity]，流量必须为整数。边按输入顺序编号。数据：'+json.dumps(edges)+
       '。证书为{flow:[每条边流量],cut:[含源不含汇的顶点集合],value:流值}；需满足容量、流守恒，且流值等于割容量。',[
     part('提交 path_edges=[位于至少一条 0→7 有向路径上的边的编号]（升序）。',exact('path_edges',10,edges_on_some_path(edges,0,7))),
     part('求最大流值 value。',exact('value',20,f['value'])),
     part('提交 certificate，证明最大流与最小割相等。',cert('certificate',30,'flow',{'n':8,'edges':edges},f)),
-    part('改为边4→6容量3、5→7容量4，并新增3→6容量5（追加在边序列末尾）。求新 value，并提交新 certificate。',exact('value',10,f4['value']),cert('certificate',30,'flow',{'n':8,'edges':e4},f4))],
-    '同时收紧两边并增加跨层边，必须重新给出流和割。','小网络存在算法化捷径；用于证书能力，不宣称研究级。')
+    part('回到题面给出的原网络。提交 min_cut_count=容量恰等于最小割的顶点集个数（顶点集须含源 0、不含汇 7），以及 second_min_cut=严格大于最小割的最小割容量。',
+         exact('min_cut_count',20,min_cut_count),exact('second_min_cut',20,second_min_cut))],
+    '从求一个最值升级为割结构分析：最小割是否唯一、次小割是多少。','四问分别需要路径搜索、最大流求值、对偶证书构造、割的枚举与排序；答案均为精确值。')
 
 # 3. Assignment with a ban; a dual is found by difference constraints.
 cost=[[8,9,23,14,8,19],[7,21,7,18,16,10],[6,12,18,6,22,13],[8,16,11,24,9,17],[7,7,19,10,15,21],[8,14,9,17,12,8]]
@@ -438,14 +447,21 @@ def assignment(cost, banned):
     u=[cost[i][perm[i]]-v[perm[i]] for i in range(n)]
     return {'permutation':list(perm),'u':u,'v':v,'value':value}
 asg=assignment(cost,[]); ban=[[0,asg['permutation'][0]],[2,asg['permutation'][2]]];asg4=assignment(cost,ban)
+# 解空间结构：枚举全部 6! 指派并按总成本排序（P4 用）
+_all_totals = sorted(sum(cost[i][q[i]] for i in range(6)) for q in permutations(range(6)))
+assert _all_totals[0] == asg['value'], f"枚举最优值应与指派求解一致：{_all_totals[0]} vs {asg['value']}"
+optimal_count = _all_totals.count(_all_totals[0])
+second_best = next(v for v in _all_totals if v > _all_totals[0])
+
 group('03','assignment-duality','受限指派与势函数', '6名工人到6项工作的一一指派，编号0..5，成本矩阵：'+json.dumps(cost)+
       '。最小化总成本。certificate={permutation:[工人对应工作],u:[...],v:[...],value:...}；所有允许边应有u[i]+v[j]≤cost[i][j]，且总成本=Σu+Σv。',[
     part('提交 row_min=[成本矩阵每行的最小值]（按行顺序，长度6），以及 row_min_sum=各行最小值之和。',
          exact('row_min',5,[min(r) for r in cost]),exact('row_min_sum',5,sum(min(r) for r in cost))),
     part('求最小成本 value。',exact('value',20,asg['value'])),
     part('提交达到最优值的指派及对偶势函数 certificate。',cert('certificate',30,'assignment',{'cost':cost,'banned':[]},asg)),
-    part('现在禁止边 '+json.dumps(ban)+'。求新 value，并提交只对允许边要求对偶可行的新 certificate。',exact('value',10,asg4['value']),cert('certificate',30,'assignment',{'cost':cost,'banned':ban},asg4))],
-    '禁止原最优解中的两条边，需重建指派和对偶。','与网络流相关，报告题族时保留该关联，不能当完全独立能力轴。')
+    part('提交 optimal_count=达到最小总成本的指派方案数，以及 second_best=严格大于最小总成本的最小总成本。',
+         exact('optimal_count',20,optimal_count),exact('second_best',20,second_best))],
+    '从求最优值升级为解空间结构：最优解是否唯一、次优值是多少。','四问分别需要行最小值、指派最优化、对偶证书、解空间枚举与排序；答案均为精确值。')
 
 # 4. Modular polynomial quotient ring, solve multiplication as a linear map.
 def pmul(a,b,p=7):
@@ -633,13 +649,16 @@ def valuation(v):
     while v%3==0:n+=1;v//=3
     return n
 vh=Counter(min(valuation(x*x-1),12) for x in rs12)
+# 跨 k 反查：最小的 k 使解数达到 36（P2 用）
+min_k_full = next(k for k in range(1, 9) if len(roots(k)) == 36)
+
 group('11','singular-adic-lifting','共享因子的奇异提升','研究整数同余 (x²−1)(x²−10)≡0 mod 3^k。不同x按模3^k计。不能假定两因子之一单独被3^k整除。',[
     part('k=3，提交 count=解数，以及 parity=[解中偶数的个数,解中奇数的个数]。',
          exact('count',5,len(rs3)),exact('parity',5,[sum(1 for x in rs3 if x%2==0),sum(1 for x in rs3 if x%2==1)])),
-    part('k=5，提交 count=解数。',exact('count',20,len(rs5))),
+    part('提交 min_k_full=最小的 k（k ≥ 1）使解数 count(k) 达到 36。',exact('min_k_full',20,min_k_full)),
     part('k=8，提交 count，并提交 split_count=满足x²≡1或10 mod3^8的解数。',exact('count',15,len(rs8)),exact('split_count',15,sum((x*x-1)%3**8==0 or (x*x-10)%3**8==0 for x in rs8))),
     part('k=12，提交 count，以及 histogram=[[min(v₃(x²−1),12),该类解数],...]。v₃(0)=∞，只列非零类别，按第一列升序。',exact('count',10,len(rs12)),exact('histogram',30,sorted(vh.items())))],
-    '要求区分因子间分担赋值的根，给出完整赋值分布。','前问会提示错误捷径；需实测后再认定压轴难度。')
+    '由「给 k 求计数」升级为「跨 k 反查计数首次达到上限的 k」，再进入分解结构与赋值分布。','四问分别需要对给定 k 精确计数、跨 k 搜索、分解结构判定、赋值的 3-adic 分布统计；答案均为精确值。')
 
 # 12. Discrete moment problem; primal distribution and polynomial dual.
 support=list(range(7)); moments2=[1,3,11];moments3=[1,3,11,45]

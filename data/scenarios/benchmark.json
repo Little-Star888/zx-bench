@@ -44197,7 +44197,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「流量与割的双向证明」，第4/4问，40分，时限1200秒。\n共同题干：有向网络顶点0..7，源0汇7；每条边[u,v,capacity]，流量必须为整数。边按输入顺序编号。数据：[[0, 1, 11], [0, 2, 8], [0, 3, 6], [1, 2, 3], [1, 4, 7], [1, 5, 5], [2, 4, 6], [2, 5, 5], [3, 2, 2], [3, 5, 7], [4, 5, 2], [4, 6, 8], [5, 6, 4], [5, 7, 9], [6, 7, 13]]。证书为{flow:[每条边流量],cut:[含源不含汇的顶点集合],value:流值}；需满足容量、流守恒，且流值等于割容量。\n本问：改为边4→6容量3、5→7容量4，并新增3→6容量5（追加在边序列末尾）。求新 value，并提交新 certificate。\n评分项：value(10分)、certificate(30分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「流量与割的双向证明」，第4/4问，40分，时限1200秒。\n共同题干：有向网络顶点0..7，源0汇7；每条边[u,v,capacity]，流量必须为整数。边按输入顺序编号。数据：[[0, 1, 11], [0, 2, 8], [0, 3, 6], [1, 2, 3], [1, 4, 7], [1, 5, 5], [2, 4, 6], [2, 5, 5], [3, 2, 2], [3, 5, 7], [4, 5, 2], [4, 6, 8], [5, 6, 4], [5, 7, 9], [6, 7, 13]]。证书为{flow:[每条边流量],cut:[含源不含汇的顶点集合],value:流值}；需满足容量、流守恒，且流值等于割容量。\n本问：回到题面给出的原网络。提交 min_cut_count=容量恰等于最小割的顶点集个数（顶点集须含源 0、不含汇 7），以及 second_min_cut=严格大于最小割的最小割容量。\n评分项：min_cut_count(20分)、second_min_cut(20分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -44209,7 +44209,7 @@
    "partNumber": 4,
    "points": 40,
    "hardSeconds": 1200,
-   "questionHash": "9095bc10a4484e236f6336574a263f726acbae84b59e35248fdbf9cb2bc3206e",
+   "questionHash": "ea75378b57252f83ce5a5a579a89dc6c4100f2eb4b501517cfd45171edf073ef",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -44221,7 +44221,7 @@
    "timeout_1200s"
   ],
   "scenarioVersion": "1.0.0",
-  "scenarioHash": "bfca06075124effa",
+  "scenarioHash": "63fc04f8d10a4ba6",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -44365,7 +44365,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「受限指派与势函数」，第4/4问，40分，时限1200秒。\n共同题干：6名工人到6项工作的一一指派，编号0..5，成本矩阵：[[8, 9, 23, 14, 8, 19], [7, 21, 7, 18, 16, 10], [6, 12, 18, 6, 22, 13], [8, 16, 11, 24, 9, 17], [7, 7, 19, 10, 15, 21], [8, 14, 9, 17, 12, 8]]。最小化总成本。certificate={permutation:[工人对应工作],u:[...],v:[...],value:...}；所有允许边应有u[i]+v[j]≤cost[i][j]，且总成本=Σu+Σv。\n本问：现在禁止边 [[0, 4], [2, 3]]。求新 value，并提交只对允许边要求对偶可行的新 certificate。\n评分项：value(10分)、certificate(30分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「受限指派与势函数」，第4/4问，40分，时限1200秒。\n共同题干：6名工人到6项工作的一一指派，编号0..5，成本矩阵：[[8, 9, 23, 14, 8, 19], [7, 21, 7, 18, 16, 10], [6, 12, 18, 6, 22, 13], [8, 16, 11, 24, 9, 17], [7, 7, 19, 10, 15, 21], [8, 14, 9, 17, 12, 8]]。最小化总成本。certificate={permutation:[工人对应工作],u:[...],v:[...],value:...}；所有允许边应有u[i]+v[j]≤cost[i][j]，且总成本=Σu+Σv。\n本问：提交 optimal_count=达到最小总成本的指派方案数，以及 second_best=严格大于最小总成本的最小总成本。\n评分项：optimal_count(20分)、second_best(20分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -44377,7 +44377,7 @@
    "partNumber": 4,
    "points": 40,
    "hardSeconds": 1200,
-   "questionHash": "e3bba0b934b221744670bfc7fe3d59efa1fdb875c31894ebf885b45d271ca651",
+   "questionHash": "2f09fc2fc833bdaf47a204826b07e8cb3d5025c0e53fe10c7bf7b85be96729fb",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -44389,7 +44389,7 @@
    "timeout_1200s"
   ],
   "scenarioVersion": "1.0.0",
-  "scenarioHash": "e9dc3a63f3d5ed01",
+  "scenarioHash": "a18f9afabba4df4d",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -45457,7 +45457,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「共享因子的奇异提升」，第2/4问，20分，时限600秒。\n共同题干：研究整数同余 (x²−1)(x²−10)≡0 mod 3^k。不同x按模3^k计。不能假定两因子之一单独被3^k整除。\n本问：k=5，提交 count=解数。\n评分项：count(20分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「共享因子的奇异提升」，第2/4问，20分，时限600秒。\n共同题干：研究整数同余 (x²−1)(x²−10)≡0 mod 3^k。不同x按模3^k计。不能假定两因子之一单独被3^k整除。\n本问：提交 min_k_full=最小的 k（k ≥ 1）使解数 count(k) 达到 36。\n评分项：min_k_full(20分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -45469,7 +45469,7 @@
    "partNumber": 2,
    "points": 20,
    "hardSeconds": 600,
-   "questionHash": "58b9f037d3d5247ca3e8d75f02ad78aa1814464af8a56d345b0132f833082278",
+   "questionHash": "3cf333951356e667f1d15a9a2fd6266c90accec1402a9076c80db8245a34cbbd",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -45481,7 +45481,7 @@
    "timeout_360s"
   ],
   "scenarioVersion": "1.0.0",
-  "scenarioHash": "65cd9b572d4ac87b",
+  "scenarioHash": "b36e733340b3208a",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",

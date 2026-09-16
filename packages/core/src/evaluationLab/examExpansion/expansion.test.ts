@@ -20,13 +20,14 @@ describe('candidate expansion: targeted scoring and budget checks only', () => {
 
   it('accepts different valid certificates and rejects plausible but invalid witnesses', () => {
     const p = buildExamPaper();
-    const assignment = p.parts.find(x => x.id === 'MX3-03-P4')!.items.find(x => x.kind === 'assignment')!;
+    // 证书题的落点随设计调整：MX3-03 的对偶证书在 P3、MX3-02 的流/割证书在 P3（P4 已改为结构分析题）
+    const assignment = p.parts.find(x => x.id === 'MX3-03-P3')!.items.find(x => x.kind === 'assignment')!;
     if (assignment.kind !== 'assignment') throw Error();
     const a = structuredClone(assignment.reference) as { u: string[]; v: string[]; permutation: string[]; value: string };
     a.u = a.u.map(x => String(Number(x) + 7)); a.v = a.v.map(x => String(Number(x) - 7));
     expect(validCertificate(assignment, a)).toBe(true); // dual gauge, not exact reference match
     a.permutation[0] = a.permutation[1]; expect(validCertificate(assignment, a)).toBe(false);
-    const flow = p.parts.find(x => x.id === 'MX3-02-P4')!.items.find(x => x.kind === 'flow')!;
+    const flow = p.parts.find(x => x.id === 'MX3-02-P3')!.items.find(x => x.kind === 'flow')!;
     if (flow.kind !== 'flow') throw Error();
     const f = structuredClone(flow.reference) as { flow: string[]; cut: string[] };
     f.cut.reverse(); expect(validCertificate(flow, f)).toBe(true);
