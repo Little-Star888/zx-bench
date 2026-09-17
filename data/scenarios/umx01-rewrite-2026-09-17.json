@@ -1,0 +1,59 @@
+{
+ "date": "2026-09-17T00:00:00.000Z",
+ "dimension": "reasoning_math",
+ "grader": "ultra_proof_part",
+ "questionVersion": "ultra-math-2026-09-17-v3",
+ "rubricVersion": "ultra-math-rubric-2026-09-17-v2",
+ "reason": "原版 UMX-01 在 V=F₂⁶ 上要求完整共轭分类 + 中心化子阶分布 + 扩域 F₄ 秩分布，无工具下不可达：实测 8 问里 7 问恒为 0 分（HARD_TIME_LIMIT 1200s 或 token 耗尽），而 ultra_proof_part 的 judge 是唯一评分器，无输出即 0 且计入维度均分。",
+ "designPrinciple": "难度递增 = 判断难度递增，不是计算量递增；每问最短可算路径必须落在 10²~10³ 次基本运算内。",
+ "gold": {
+  "UMX-01-P1": [
+   4096,
+   35
+  ],
+  "UMX-01-P2": [
+   3906
+  ],
+  "UMX-01-P3": [
+   3780
+  ],
+  "UMX-01-P4": [
+   162,
+   144,
+   0
+  ]
+ },
+ "verification": "两套独立实现枚举复核（design_umx01b.py 位编码版 vs verify_umx01.py Fractions+显式列张成版）：7 项计数全部一致；闭式另做构造性验证（反例 3·4³−3+1=190；互异直线 3!·3³=162；反例 6·3=18）。",
+ "screeningArchive": "v2 的 Qwen 33.0 / DeepSeek 38.5 已标注为历史值（invalidForCurrentQuestions）。",
+ "changed": [
+  {
+   "id": "UMX-01-P1",
+   "version": "1.0.0 -> 1.1.0",
+   "promptLen": "786 -> 685",
+   "hash": "66209e4a3b14 -> cb68d3a5e9e6",
+   "firstTask": "固定 \\(S\\)。求满足 (i) 的有序三元组 \\(T\\) 的个数，并求 \\(V\\) 中二维子空间的个数。证明你的结论。"
+  },
+  {
+   "id": "UMX-01-P2",
+   "version": "1.0.0 -> 1.1.0",
+   "promptLen": "704 -> 676",
+   "hash": "d0903427ba80 -> 71e86aa504cc",
+   "firstTask": "仍固定 \\(S\\)。求满足 (i) 且 \\(S(T)=S\\) 的有序三元组个数。给出可核查的计数论证。"
+  },
+  {
+   "id": "UMX-01-P3",
+   "version": "1.0.0 -> 1.1.0",
+   "promptLen": "788 -> 711",
+   "hash": "123f217d3775 -> a239eeab08da",
+   "firstTask": "仍固定 \\(S\\)。求满足 (i) 且 \\(S(T)=K(T)=S\\) 的有序三元组个数。两条件需同时处理：说明它们各自排除了哪些三元组，以"
+  },
+  {
+   "id": "UMX-01-P4",
+   "version": "1.0.0 -> 1.1.0",
+   "promptLen": "995 -> 889",
+   "hash": "b2271a826347 -> 27d063c7f1a2",
+   "firstTask": "固定 \\(S\\)。"
+  }
+ ],
+ "alreadyUpgraded": []
+}

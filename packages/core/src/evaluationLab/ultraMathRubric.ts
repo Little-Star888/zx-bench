@@ -1,6 +1,6 @@
 import {createHash} from 'node:crypto';
 
-export const ULTRA_MATH_RUBRIC_VERSION='ultra-math-rubric-2026-09-14-v1';
+export const ULTRA_MATH_RUBRIC_VERSION='ultra-math-rubric-2026-09-17-v2';
 export type UltraOutcome='completed'|'timeout'|'truncated'|'environment_error';
 export type UltraAxis='conclusion'|'proof';
 export type UltraFinding='classification_incomplete'|'core_iff_wrong'|'general_formula_wrong'|'class_formula_wrong'|'infinite_lift_wrong'|'internal_contradiction';
@@ -12,10 +12,10 @@ export interface UltraPartReview {id:string;findings:UltraFinding[];criteria:Ult
 
 const c=(id:string,axis:UltraAxis,points:number,description:string,blockedBy?:UltraFinding[]):UltraCriterion=>({id,axis,points,description,...(blockedBy?{blockedBy}:{})});
 export const ULTRA_MATH_RUBRICS:readonly UltraPartRubric[]=[
- {id:'UMX-01-P1',groupId:'UMX-01',number:1,points:10,hardSeconds:360,criteria:[c('fixed_space_count','conclusion',3,'固定空间的三元组数'),c('grassmann_count','conclusion',3,'三维子空间数'),c('bijection_and_no_duplication','proof',4,'商空间双射及无重复计数')]},
- {id:'UMX-01-P2',groupId:'UMX-01',number:2,points:20,hardSeconds:360,criteria:[c('fixed_space_total','conclusion',6,'固定公共空间的精确总数'),c('classification_cover','proof',8,'分类覆盖且互不重叠',['classification_incomplete']),c('class_counts','proof',6,'各类计数及汇总',['classification_incomplete'])]},
- {id:'UMX-01-P3',groupId:'UMX-01',number:3,points:30,hardSeconds:1200,criteria:[c('global_total','conclusion',4,'全部三元组数'),c('conjugacy_classes','conclusion',4,'同时共轭类数'),c('centralizer_distribution','conclusion',4,'中心化子阶分布'),c('centralizer_proof','proof',8,'中心化子结构证明'),c('ordered_complete_classification','proof',10,'分类完备并正确处理有序性',['classification_incomplete'])]},
- {id:'UMX-01-P4',groupId:'UMX-01',number:4,points:40,hardSeconds:1200,criteria:[c('profile_table','conclusion',12,'全部秩分布、类数与原始三元组数'),c('stable_total','conclusion',4,'扩域后处处秩二的总数'),c('extension_analysis','proof',8,'对已列类型的扩域秩分析'),c('no_omissions','proof',8,'证明扩域分析没有遗漏',['classification_incomplete']),c('classification_consistency','proof',8,'与完整分类计数一致',['classification_incomplete'])]},
+ {id:'UMX-01-P1',groupId:'UMX-01',number:1,points:10,hardSeconds:360,criteria:[c('fixed_space_count','conclusion',4,'满足 (i) 的有序三元组个数（=4096）'),c('subspace_count','conclusion',3,'V 中二维子空间的个数（=35）'),c('factorization_proof','proof',3,'用 im A_i ⊆ S ⊆ ker A_i 把 A_i 因子化为 V/S → S 的线性映射（即一个 2×2 矩阵），并说明该对应是双射')]},
+ {id:'UMX-01-P2',groupId:'UMX-01',number:2,points:20,hardSeconds:360,criteria:[c('span_total','conclusion',7,'满足 (i) 且 S(T)=S 的三元组个数（=3906）'),c('span_complement','proof',7,'刻画反例：三个像不张满 S ⟺ 三个像全部落在 S 的同一条非零直线上'),c('span_inclusion_exclusion','proof',6,'对 S 的三条非零直线做容斥（每条 4³、两两交 1、三交 1），得反例 3·4³−3+1=190',['classification_incomplete'])]},
+ {id:'UMX-01-P3',groupId:'UMX-01',number:3,points:30,hardSeconds:1200,criteria:[c('span_kernel_total','conclusion',8,'满足 (i) 且 S(T)=K(T)=S 的三元组个数（=3780）'),c('kernel_complement','proof',6,'刻画反例：⋂ker ≠ 0 ⟺ 三个核共含同一条非零直线，容斥同样给出 190'),c('joint_failure','proof',8,'两条条件同时不成立的部分为 64，故 4096 − (190+190−64) = 3780',['classification_incomplete']),c('duality_note','proof',8,'说明像条件与核条件在 F₂² 上的对偶关系（像张满 S ↔ 核交为零）')]},
+ {id:'UMX-01-P4',groupId:'UMX-01',number:4,points:40,hardSeconds:1200,criteria:[c('distinct_line_total','conclusion',10,'三像恰为 S 的三条互不相同非零直线的三元组个数（=162）'),c('distinct_line_count_proof','proof',6,'按「先分配三条直线 3!，再各选一个满射到该直线的秩 1 矩阵（各 3 个）」得 6·3³=162'),c('distinct_line_kernel_total','conclusion',8,'再要求 K(T)=S 的个数（=144）'),c('kernel_functional_proof','proof',8,'把秩 1 矩阵写成线性泛函形式：⋂ker=0 ⟺ 三个泛函不全相同；反例恰为 6·3=18，故 162−18=144',['classification_incomplete']),c('exact_rank_impossible','conclusion',2,'加强为「对所有非零 λ 都有 rank(λ₁A₁+λ₂A₂+λ₃A₃)=1」时不存在这样的三元组（计数 0）'),c('isotropic_argument','proof',6,'给出理由：det 在 F₂³ 上恒为 0 ⇒ 张成的子空间全各向同性，而 M₂(F₂) 上行列式型的最大全各向同性子空间维数为 2，不存在 3 维全各向同性子空间')]},
  {id:'UMX-02-P1',groupId:'UMX-02',number:1,points:10,hardSeconds:360,criteria:[c('mod4_total','conclusion',3,'模四精确解数'),c('determinant_iff_and_count','proof',7,'等价判据及独立约束计数')]},
  {id:'UMX-02-P2',groupId:'UMX-02',number:2,points:20,hardSeconds:360,criteria:[c('class_count','conclusion',3,'等价类数'),c('class_size','conclusion',3,'各类大小'),c('invariant','proof',6,'不变量定义与不变性'),c('invariant_complete','proof',8,'不变量完备性')]},
  {id:'UMX-02-P3',groupId:'UMX-02',number:3,points:30,hardSeconds:1200,criteria:[c('lift_iff','conclusion',10,'可提升的充要条件',['core_iff_wrong']),c('liftable_count','conclusion',4,'可提升解数'),c('lifts_per_base','conclusion',4,'每个可提升解的提升数'),c('lift_fiber_proof','proof',4,'每解提升数的独立线性计数'),c('iff_proof','proof',8,'提升条件的必要性与充分性',['core_iff_wrong'])]},
@@ -28,12 +28,17 @@ for(const part of ULTRA_MATH_RUBRICS){
 }
 
 export const ULTRA_MATH_RELEASE={
- version:ULTRA_MATH_RUBRIC_VERSION,questionVersion:'ultra-math-2026-09-14-v2',groups:2,parts:8,points:200,
+ version:ULTRA_MATH_RUBRIC_VERSION,questionVersion:'ultra-math-2026-09-17-v3',groups:2,parts:8,points:200,
  timingSeconds:[360,360,1200,1200],carryOnlyPriorSubmittedAnswers:true,freshContextPerGroup:true,
  futurePartsHidden:true,answerFeedback:false,tools:false,automaticRetries:0,partialCredit:true,
  scoring:'criterion_points_with_semantic_caps',proofReview:'human_required_for_official_score',
  status:'approved_explicit_progressive_exam',defaultAtomicBank:false,
- rationale:'The default atomic scenario runner cannot preserve same-group submissions or per-part deadlines.',
+ rationale:'The default atomic scenario runner cannot preserve same-group submissions or per-part deadlines. '
+   +'v3 (2026-09-17) rewrote UMX-01: the v2 version asked for a full conjugacy classification with centralizer '
+   +'orders and an F_4 rank-distribution over V = F_2^6, which is unreachable without tools (measured: 7 of 8 '
+   +'parts forced to 0 by HARD_TIME_LIMIT 1200s or token exhaustion). v3 reduces the state space to V = F_2^4 '
+   +'with a 2-dimensional common subspace, keeping the same structural insight (the operators factor through '
+   +'V/S -> S) while bounding each part to 10^2..10^3 elementary operations.',
 } as const;
 
 const hash=(text:string)=>createHash('sha256').update(text).digest('hex');

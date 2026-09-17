@@ -1,5 +1,5 @@
 {
- "version": "1.41.0",
+ "version": "1.42.0",
  "count": 815,
  "retiredCount": 112,
  "totalCount": 927,
@@ -419,5 +419,10 @@
   ],
   "reason": "saturated against the local 27B model: every run scored 100, so the group no longer discriminates the model it was authored for (user decision, 2026-09-17)",
   "scope": "user-selected in two rounds on 2026-09-17: round 1 = MX3-21/22/23 (12 parts), round 2 = MX3-15/16 (8 parts) after the first live test of MX3-14/15/16/17; no replacement authored in this round. Groups with any discriminating part are kept (MX3-24, MX3-14, MX3-17, MX3-13, MX3-18, MX3-19, MX3-20)."
+ },
+ "ultraMath": {
+  "questionVersion": "ultra-math-2026-09-17-v3",
+  "rubricVersion": "ultra-math-rubric-2026-09-17-v2",
+  "note": "UMX-01 于 2026-09-17 重写为可达版本（V=F₂⁴ + 二维公共空间）；UMX-02 未改动。"
  }
 }

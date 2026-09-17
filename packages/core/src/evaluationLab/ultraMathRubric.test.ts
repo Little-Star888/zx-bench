@@ -25,13 +25,22 @@ describe('ultra math criterion rubric',()=>{
   expect(lift.criteria.find(x=>x.id==='iff_proof')).toMatchObject({awarded:0,blocked:true});
   expect(scored.official).toBe(false);
  });
- it('reports the frozen Qwen and DeepSeek preliminary profiles without changing their scores',()=>{
-  const qAnswers=answers();for(const i of [1,2,3,7])qAnswers[i].output='';
-  const qReviews=[fullReviews()[0],fullReviews()[4],fullReviews()[5],review('UMX-02-P3',{lift_iff:10,liftable_count:0,lifts_per_base:4,lift_fiber_proof:4,iff_proof:8})];
-  const q=scoreUltraMathRubric(qAnswers,qReviews);expect(q.score).toBe(33);expect(q.groups.map(x=>x.earned)).toEqual([10,56]);
-  const dAnswers=answers();dAnswers[1].output='';
-  const dReviews=[fullReviews()[0],review('UMX-01-P3',{centralizer_distribution:2,centralizer_proof:6},['classification_incomplete']),review('UMX-01-P4',{profile_table:8,stable_total:4,extension_analysis:8},['classification_incomplete']),fullReviews()[4],fullReviews()[5],review('UMX-02-P3',{lifts_per_base:4,lift_fiber_proof:4},['core_iff_wrong']),review('UMX-02-P4',{one_step_count:1},['general_formula_wrong','class_formula_wrong','core_iff_wrong','infinite_lift_wrong'])];
-  const d=scoreUltraMathRubric(dAnswers,dReviews);expect(d.score).toBe(38.5);expect(d.groups.map(x=>x.earned)).toEqual([38,39]);
-  expect(compareUltraMathScores(d,q)).toMatchObject({scoreGap:5.5,separatingParts:4,crossover:true});
+ it('archives the v2 screening profiles and keeps the comparison machinery sound',()=>{
+  const manifest=JSON.parse(readFileSync(new URL('../../../../data/scenarios/ultra-math-exam-manifest.json',import.meta.url),'utf8'));
+  // 33.0 / 38.5 是 2026-09-14 用 **v2 题面**（V=F₂⁶ 版 UMX-01）测出的历史值。
+  // v3 重写了 UMX-01，因此这些数字必须显式标注为「不代表当前题面」，只作留档。
+  expect(manifest.screening).toMatchObject({archivedVersion:'ultra-math-2026-09-14-v2',invalidForCurrentQuestions:true});
+  expect(manifest.screening['qwen3.8-27b-nvfp4'].score).toBe(33);
+  expect(manifest.screening['deepseek-v4-flash'].score).toBe(38.5);
+
+  // 比较机制本身：用**新** criteria id 造两份评分，验证 separatingParts / crossover / scoreGap
+  const partial:UltraPartReview[]=[fullReviews()[0],fullReviews()[1],
+    review('UMX-01-P3',{span_kernel_total:8,kernel_complement:6,joint_failure:8},['classification_incomplete']),
+    fullReviews()[3],...fullReviews().slice(4)];
+  const lower=scoreUltraMathRubric(answers(),partial),full=scoreUltraMathRubric(answers(),fullReviews());
+  expect(lower.rows.find(x=>x.id==='UMX-01-P3')!.earned).toBe(14);   // 8+6，joint_failure 被 classification_incomplete 归零
+  expect(lower.score).toBe(92);                                      // (10+20+14+40+100)/2
+  const cmp=compareUltraMathScores(lower,full);
+  expect(cmp).toMatchObject({separatingParts:1,crossover:false,scoreGap:-8,leftScore:92,rightScore:100});
  });
 });
