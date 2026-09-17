@@ -60996,7 +60996,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "局部环上的矩阵三元组，第1/4问，10分，时限360秒。\n共同题干：\n对整数 \\(k\\ge2\\)，令 \\(R_k=\\mathbb Z/2^k\\mathbb Z\\)。固定以下三个整数矩阵：\n\\[\nJ_1=\\begin{pmatrix}0&0&0\\\\0&0&-1\\\\0&1&0\\end{pmatrix},\\quad\nJ_2=\\begin{pmatrix}0&0&1\\\\0&0&0\\\\-1&0&0\\end{pmatrix},\\quad\nJ_3=\\begin{pmatrix}0&-1&0\\\\1&0&0\\\\0&0&0\\end{pmatrix}.\n\\]\n\n令 \\(\\mathcal L_k\\) 为所有有序三元组 \\(M=(M_1,M_2,M_3)\\in M_3(R_k)^3\\) 组成的集合，满足：\n\n1. \\(M_i\\equiv J_i\\pmod2\\)；\n2. 对每个本原向量 \\(\\lambda\\in R_k^3\\)（至少一个坐标为单位，即奇数），矩阵\n   \\[\n   M(\\lambda)=\\lambda_1M_1+\\lambda_2M_2+\\lambda_3M_3\n   \\]\n   都与 \\(\\operatorname{diag}(1,1,0)\\) 左右等价：存在可依赖于 \\(\\lambda\\) 的 \\(U,V\\in\\mathrm{GL}_3(R_k)\\)，使\n   \\[\n   U M(\\lambda)V=\\operatorname{diag}(1,1,0).\n   \\]\n\n另定义近恒等变换下的等价关系：\\(M\\sim_k N\\)，当且仅当存在 \\(P,Q\\in\\mathrm{GL}_3(R_k)\\)，满足 \\(P\\equiv Q\\equiv I\\pmod2\\)，且\n\\[\nN_i=P M_i Q\\qquad(i=1,2,3).\n\\]\n仍不允许重新组合三个矩阵。\n本问：\n求 \\(|\\mathcal L_2|\\)，并证明你的结论。\n只提交本问结论与可核查证明。不得使用网络或执行程序；前问未完成也可继续，未来小问不会提供。",
+  "promptTemplate": "模 \\(2^k\\) 上的奇异同余与逐层提升，第1/4问，10分，时限360秒。\n共同题干：\n对整数 \\(k\\ge1\\) 记\n\\[\nf(x)=x^2(x-1),\n\\qquad\nS_k=\\{x\\in\\mathbb Z/2^k\\mathbb Z:\\ f(x)\\equiv 0 \\pmod{2^k}\\},\n\\qquad\nN(k)=|S_k|.\n\\]\n所有同余都按最小非负剩余理解，元素按通常的整数顺序比较。\n\n**可提升性**：称 \\(x\\in S_k\\) 可提升，若存在 \\(y\\in S_{k+1}\\) 使\n\\[\ny\\equiv x \\pmod{2^k}.\n\\]\n称 \\(x\\in S_k\\) **可以无限提升**，若从它出发能逐层提升到 \\(S_{k+1},S_{k+2},S_{k+3},\\dots\\) 的每一层，\n即存在一列 \\(y_j\\in S_{k+j}\\) 使 \\(y_j\\equiv y_{j-1}\\pmod{2^{k+j-1}}\\)。\n\n记 \\(v_2(x)\\) 为 \\(x\\) 的 2-adic 赋值（\\(v_2(0)=+\\infty\\)）。\n本问：\n提交 \\(N(2)\\)，并提交 \\(S_3\\) 的**全部元素**（按升序数组提交）。证明你的结论。\n只提交本问结论与可核查证明。不得使用网络或执行程序；前问未完成也可继续，未来小问不会提供。",
   "grader": "ultra_proof_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -61008,7 +61008,7 @@
    "partNumber": 1,
    "points": 10,
    "hardSeconds": 360,
-   "questionHash": "f76b2434a1cda3c165429b27c816b5869263c7de55712312b43318ff16d02df7",
+   "questionHash": "5ab2e689b6f94d823eee0b8c6e62f4bd16b2ae9f5234fed2d2051601ddf72bb1",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1",
    "reviewedRubric": {
     "version": "ultra-math-rubric-2026-09-14-v1",
@@ -61044,8 +61044,8 @@
    "rubric_judge_required",
    "not_scoreable_by_atomic_runner"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "2147c95a246b6d20",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "1a4f1e1ff74e16ac",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -61063,7 +61063,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "局部环上的矩阵三元组，第2/4问，20分，时限360秒。\n共同题干：\n对整数 \\(k\\ge2\\)，令 \\(R_k=\\mathbb Z/2^k\\mathbb Z\\)。固定以下三个整数矩阵：\n\\[\nJ_1=\\begin{pmatrix}0&0&0\\\\0&0&-1\\\\0&1&0\\end{pmatrix},\\quad\nJ_2=\\begin{pmatrix}0&0&1\\\\0&0&0\\\\-1&0&0\\end{pmatrix},\\quad\nJ_3=\\begin{pmatrix}0&-1&0\\\\1&0&0\\\\0&0&0\\end{pmatrix}.\n\\]\n\n令 \\(\\mathcal L_k\\) 为所有有序三元组 \\(M=(M_1,M_2,M_3)\\in M_3(R_k)^3\\) 组成的集合，满足：\n\n1. \\(M_i\\equiv J_i\\pmod2\\)；\n2. 对每个本原向量 \\(\\lambda\\in R_k^3\\)（至少一个坐标为单位，即奇数），矩阵\n   \\[\n   M(\\lambda)=\\lambda_1M_1+\\lambda_2M_2+\\lambda_3M_3\n   \\]\n   都与 \\(\\operatorname{diag}(1,1,0)\\) 左右等价：存在可依赖于 \\(\\lambda\\) 的 \\(U,V\\in\\mathrm{GL}_3(R_k)\\)，使\n   \\[\n   U M(\\lambda)V=\\operatorname{diag}(1,1,0).\n   \\]\n\n另定义近恒等变换下的等价关系：\\(M\\sim_k N\\)，当且仅当存在 \\(P,Q\\in\\mathrm{GL}_3(R_k)\\)，满足 \\(P\\equiv Q\\equiv I\\pmod2\\)，且\n\\[\nN_i=P M_i Q\\qquad(i=1,2,3).\n\\]\n仍不允许重新组合三个矩阵。\n本问：\n求 \\(\\mathcal L_2/\\!\\sim_2\\) 的等价类数、各类大小，并构造一组完备不变量：两个解当且仅当不变量相同时等价。\n只提交本问结论与可核查证明。不得使用网络或执行程序；前问未完成也可继续，未来小问不会提供。",
+  "promptTemplate": "模 \\(2^k\\) 上的奇异同余与逐层提升，第2/4问，20分，时限360秒。\n共同题干：\n对整数 \\(k\\ge1\\) 记\n\\[\nf(x)=x^2(x-1),\n\\qquad\nS_k=\\{x\\in\\mathbb Z/2^k\\mathbb Z:\\ f(x)\\equiv 0 \\pmod{2^k}\\},\n\\qquad\nN(k)=|S_k|.\n\\]\n所有同余都按最小非负剩余理解，元素按通常的整数顺序比较。\n\n**可提升性**：称 \\(x\\in S_k\\) 可提升，若存在 \\(y\\in S_{k+1}\\) 使\n\\[\ny\\equiv x \\pmod{2^k}.\n\\]\n称 \\(x\\in S_k\\) **可以无限提升**，若从它出发能逐层提升到 \\(S_{k+1},S_{k+2},S_{k+3},\\dots\\) 的每一层，\n即存在一列 \\(y_j\\in S_{k+j}\\) 使 \\(y_j\\equiv y_{j-1}\\pmod{2^{k+j-1}}\\)。\n\n记 \\(v_2(x)\\) 为 \\(x\\) 的 2-adic 赋值（\\(v_2(0)=+\\infty\\)）。\n本问：\n给出 \\(S_k\\) 的**完整刻画**（即刻画出 \\(x\\in S_k\\) 的充要条件），并据此提交 \\(N(5)\\) 与 \\(N(100)\\)。\n只提交本问结论与可核查证明。不得使用网络或执行程序；前问未完成也可继续，未来小问不会提供。",
   "grader": "ultra_proof_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -61075,7 +61075,7 @@
    "partNumber": 2,
    "points": 20,
    "hardSeconds": 360,
-   "questionHash": "d19571fccdc79fa5e7fbb2a5bb7eac23cac980f486fa43e02390b7b6fe094897",
+   "questionHash": "54f4c7e60fda133b0707cf2482545087f92875d3317e0b442e65c8d08d9bdf5c",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1",
    "reviewedRubric": {
     "version": "ultra-math-rubric-2026-09-14-v1",
@@ -61121,8 +61121,8 @@
    "rubric_judge_required",
    "not_scoreable_by_atomic_runner"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "b024f369f5072f36",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "5f0059f18b6dda8e",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -61140,7 +61140,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "局部环上的矩阵三元组，第3/4问，30分，时限1200秒。\n共同题干：\n对整数 \\(k\\ge2\\)，令 \\(R_k=\\mathbb Z/2^k\\mathbb Z\\)。固定以下三个整数矩阵：\n\\[\nJ_1=\\begin{pmatrix}0&0&0\\\\0&0&-1\\\\0&1&0\\end{pmatrix},\\quad\nJ_2=\\begin{pmatrix}0&0&1\\\\0&0&0\\\\-1&0&0\\end{pmatrix},\\quad\nJ_3=\\begin{pmatrix}0&-1&0\\\\1&0&0\\\\0&0&0\\end{pmatrix}.\n\\]\n\n令 \\(\\mathcal L_k\\) 为所有有序三元组 \\(M=(M_1,M_2,M_3)\\in M_3(R_k)^3\\) 组成的集合，满足：\n\n1. \\(M_i\\equiv J_i\\pmod2\\)；\n2. 对每个本原向量 \\(\\lambda\\in R_k^3\\)（至少一个坐标为单位，即奇数），矩阵\n   \\[\n   M(\\lambda)=\\lambda_1M_1+\\lambda_2M_2+\\lambda_3M_3\n   \\]\n   都与 \\(\\operatorname{diag}(1,1,0)\\) 左右等价：存在可依赖于 \\(\\lambda\\) 的 \\(U,V\\in\\mathrm{GL}_3(R_k)\\)，使\n   \\[\n   U M(\\lambda)V=\\operatorname{diag}(1,1,0).\n   \\]\n\n另定义近恒等变换下的等价关系：\\(M\\sim_k N\\)，当且仅当存在 \\(P,Q\\in\\mathrm{GL}_3(R_k)\\)，满足 \\(P\\equiv Q\\equiv I\\pmod2\\)，且\n\\[\nN_i=P M_i Q\\qquad(i=1,2,3).\n\\]\n仍不允许重新组合三个矩阵。\n本问：\n给定 \\(M\\in\\mathcal L_2\\)，何时存在 \\(\\widetilde M\\in\\mathcal L_3\\)，使其逐项模 4 化简为 \\(M\\)？\n\n给出充要条件，求可提升的 \\(M\\) 的总数，并求每个可提升解拥有多少个不同的提升。证明你的结论。\n只提交本问结论与可核查证明。不得使用网络或执行程序；前问未完成也可继续，未来小问不会提供。",
+  "promptTemplate": "模 \\(2^k\\) 上的奇异同余与逐层提升，第3/4问，30分，时限1200秒。\n共同题干：\n对整数 \\(k\\ge1\\) 记\n\\[\nf(x)=x^2(x-1),\n\\qquad\nS_k=\\{x\\in\\mathbb Z/2^k\\mathbb Z:\\ f(x)\\equiv 0 \\pmod{2^k}\\},\n\\qquad\nN(k)=|S_k|.\n\\]\n所有同余都按最小非负剩余理解，元素按通常的整数顺序比较。\n\n**可提升性**：称 \\(x\\in S_k\\) 可提升，若存在 \\(y\\in S_{k+1}\\) 使\n\\[\ny\\equiv x \\pmod{2^k}.\n\\]\n称 \\(x\\in S_k\\) **可以无限提升**，若从它出发能逐层提升到 \\(S_{k+1},S_{k+2},S_{k+3},\\dots\\) 的每一层，\n即存在一列 \\(y_j\\in S_{k+j}\\) 使 \\(y_j\\equiv y_{j-1}\\pmod{2^{k+j-1}}\\)。\n\n记 \\(v_2(x)\\) 为 \\(x\\) 的 2-adic 赋值（\\(v_2(0)=+\\infty\\)）。\n本问：\n1. 给出 \\(x\\in S_k\\) 可提升的**充要条件**；\n2. 提交 \\(S_2\\) 中**不可提升**解的个数；\n3. 提交 \\(x=0\\in S_2\\) 在 \\(S_3\\) 中的提升个数；\n4. 提交 \\(S_{12}\\) 中不可提升解的个数。\n只提交本问结论与可核查证明。不得使用网络或执行程序；前问未完成也可继续，未来小问不会提供。",
   "grader": "ultra_proof_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -61152,7 +61152,7 @@
    "partNumber": 3,
    "points": 30,
    "hardSeconds": 1200,
-   "questionHash": "a47b6f86d2401d6c3887ae4b4739364ca045825c69e94b948f0d32c0ac77fc5b",
+   "questionHash": "1f5154503111eabf1887ffc53457eb0b376c537979668459df72d481ebef2f4e",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1",
    "reviewedRubric": {
     "version": "ultra-math-rubric-2026-09-14-v1",
@@ -61203,8 +61203,8 @@
    "rubric_judge_required",
    "not_scoreable_by_atomic_runner"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "0c8c65a38fe76df4",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "fc77965c5efe7577",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -61222,7 +61222,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "局部环上的矩阵三元组，第4/4问，40分，时限1200秒。\n共同题干：\n对整数 \\(k\\ge2\\)，令 \\(R_k=\\mathbb Z/2^k\\mathbb Z\\)。固定以下三个整数矩阵：\n\\[\nJ_1=\\begin{pmatrix}0&0&0\\\\0&0&-1\\\\0&1&0\\end{pmatrix},\\quad\nJ_2=\\begin{pmatrix}0&0&1\\\\0&0&0\\\\-1&0&0\\end{pmatrix},\\quad\nJ_3=\\begin{pmatrix}0&-1&0\\\\1&0&0\\\\0&0&0\\end{pmatrix}.\n\\]\n\n令 \\(\\mathcal L_k\\) 为所有有序三元组 \\(M=(M_1,M_2,M_3)\\in M_3(R_k)^3\\) 组成的集合，满足：\n\n1. \\(M_i\\equiv J_i\\pmod2\\)；\n2. 对每个本原向量 \\(\\lambda\\in R_k^3\\)（至少一个坐标为单位，即奇数），矩阵\n   \\[\n   M(\\lambda)=\\lambda_1M_1+\\lambda_2M_2+\\lambda_3M_3\n   \\]\n   都与 \\(\\operatorname{diag}(1,1,0)\\) 左右等价：存在可依赖于 \\(\\lambda\\) 的 \\(U,V\\in\\mathrm{GL}_3(R_k)\\)，使\n   \\[\n   U M(\\lambda)V=\\operatorname{diag}(1,1,0).\n   \\]\n\n另定义近恒等变换下的等价关系：\\(M\\sim_k N\\)，当且仅当存在 \\(P,Q\\in\\mathrm{GL}_3(R_k)\\)，满足 \\(P\\equiv Q\\equiv I\\pmod2\\)，且\n\\[\nN_i=P M_i Q\\qquad(i=1,2,3).\n\\]\n仍不允许重新组合三个矩阵。\n本问：\n对所有 \\(k\\ge2\\)，同时确定：\n\n1. \\(|\\mathcal L_k|\\) 的闭式表达式；\n2. \\(\\mathcal L_k/\\!\\sim_k\\) 的类数及每类大小；\n3. 模 \\(2^k\\) 的哪些解能提升到模 \\(2^{k+1}\\)；\n4. 能逐层提升至所有更高模数的解所满足的条件。\n\n须给出对任意 \\(k\\) 有效的证明，不能以若干小 \\(k\\) 的枚举结果或未经证明的规律外推代替。\n只提交本问结论与可核查证明。不得使用网络或执行程序；前问未完成也可继续，未来小问不会提供。",
+  "promptTemplate": "模 \\(2^k\\) 上的奇异同余与逐层提升，第4/4问，40分，时限1200秒。\n共同题干：\n对整数 \\(k\\ge1\\) 记\n\\[\nf(x)=x^2(x-1),\n\\qquad\nS_k=\\{x\\in\\mathbb Z/2^k\\mathbb Z:\\ f(x)\\equiv 0 \\pmod{2^k}\\},\n\\qquad\nN(k)=|S_k|.\n\\]\n所有同余都按最小非负剩余理解，元素按通常的整数顺序比较。\n\n**可提升性**：称 \\(x\\in S_k\\) 可提升，若存在 \\(y\\in S_{k+1}\\) 使\n\\[\ny\\equiv x \\pmod{2^k}.\n\\]\n称 \\(x\\in S_k\\) **可以无限提升**，若从它出发能逐层提升到 \\(S_{k+1},S_{k+2},S_{k+3},\\dots\\) 的每一层，\n即存在一列 \\(y_j\\in S_{k+j}\\) 使 \\(y_j\\equiv y_{j-1}\\pmod{2^{k+j-1}}\\)。\n\n记 \\(v_2(x)\\) 为 \\(x\\) 的 2-adic 赋值（\\(v_2(0)=+\\infty\\)）。\n本问：\n对所有 \\(k\\ge1\\)：\n\n1. 提交 \\(S_{20}\\) 中不可提升解的个数，以及 \\(S_{100}\\) 中不可提升解的个数；\n2. 给出「不可提升解个数」关于 \\(k\\) 的**分段闭式表达式**；\n3. 判断哪些 \\(x\\in S_k\\) 可以**无限提升**，并给出证明。\n只提交本问结论与可核查证明。不得使用网络或执行程序；前问未完成也可继续，未来小问不会提供。",
   "grader": "ultra_proof_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -61234,7 +61234,7 @@
    "partNumber": 4,
    "points": 40,
    "hardSeconds": 1200,
-   "questionHash": "eb02e1266b88f09f2e152c3ba16ed7c30c3ed5fccb5931df87e8ddea9b6b56a2",
+   "questionHash": "4b60a3912f68885985e37c5f8b6ddf9415538a944c50f541018db410bc9d3ca2",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1",
    "reviewedRubric": {
     "version": "ultra-math-rubric-2026-09-14-v1",
@@ -61300,8 +61300,8 @@
    "rubric_judge_required",
    "not_scoreable_by_atomic_runner"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "f700203e4242c6d4",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "efbcdd7b838f3ad9",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",

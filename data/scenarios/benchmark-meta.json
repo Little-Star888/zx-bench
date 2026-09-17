@@ -1,5 +1,5 @@
 {
- "version": "1.43.0",
+ "version": "1.44.0",
  "count": 815,
  "retiredCount": 112,
  "totalCount": 927,
@@ -421,11 +421,8 @@
   "scope": "user-selected in two rounds on 2026-09-17: round 1 = MX3-21/22/23 (12 parts), round 2 = MX3-15/16 (8 parts) after the first live test of MX3-14/15/16/17; no replacement authored in this round. Groups with any discriminating part are kept (MX3-24, MX3-14, MX3-17, MX3-13, MX3-18, MX3-19, MX3-20)."
  },
  "ultraMath": {
-  "questionVersion": "ultra-math-2026-09-17-v3",
-  "rubricVersion": "ultra-math-rubric-2026-09-17-v2",
-  "note": "UMX 八题标 developmentShadow 退出默认题库；定义与 rubric 保留，人工/专用轨道仍可用。",
-  "scoringPath": "explicit_progressive_exam",
-  "atomicRunDisabled": true,
-  "atomicRunDisabledReason": "ultra_proof_part 恒返回 0 分 + PROOF_REQUIRES_RUBRIC_JUDGE，而 rubric 判分函数（scoreUltraMathRubric）没有接进任何执行路径，所以普通 run 会落到通用 LLM judge 上，任何非空答案都拿 ~100 —— 分数不携带信息。"
+  "questionVersion": "ultra-math-2026-09-17-v4",
+  "rubricVersion": "ultra-math-rubric-2026-09-17-v3",
+  "note": "UMX-01（v3）与 UMX-02（v4）均已重写为可达版本；UMX 八题标 developmentShadow，只在人工/专用轨道使用。"
  }
 }

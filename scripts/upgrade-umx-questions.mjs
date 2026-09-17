@@ -1,17 +1,17 @@
 // ============================================================
-// UMX-01 就地升级：把 2026-09-17 重写的四问题面同步进题库。
+// UMX 题组的**就地升级**：把重写后的题面同步进题库（覆盖 UMX-01 与 UMX-02）。
 //
-//   node scripts/upgrade-umx01-questions.mjs [--apply] [--apply-api]
+//   node scripts/upgrade-umx-questions.mjs [--apply] [--apply-api]
 //
-// 背景：UMX-01 原版在 V=F₂⁶ 上要求完整共轭分类 + 中心化子阶分布 + 扩域 F₄ 秩分布，
-// 在 tools=false、单问限时 360/1200 秒下不可达（实测 8 问里 7 问恒为 0 分）。
-// 新版降到 V=F₂⁴、二维公共空间，四问的 gold 依次为
-//   P1: 4096 / 35   P2: 3906   P3: 3780   P4: 162 / 144 / 0（不可能性）
-// 全部由两套独立实现枚举复核（tmp/_zx_math/design_umx01b.py 与 verify_umx01.py）。
+// 历次内容
+//   v3（2026-09-17）：UMX-01 由 V=F₂⁶ 的完整共轭分类改写为 V=F₂⁴、二维公共空间的可达版本。
+//   v4（2026-09-17）：UMX-02 由「3×3 矩阵三元组 + ∀本原 λ 秩条件」改写为
+//        f(x)=x²(x−1) ≡ 0 (mod 2^k) 的奇异同余（主题不变：模 2^k / 奇异分支 / 逐层提升）。
+//        改写的量化依据见 data/scenarios/umx02-rewrite-2026-09-17.json。
 //
 // 只改 promptTemplate / requirements.questionHash / scenarioVersion / scenarioHash，
-// 其余字段原样保留；题目 id 不变（UMX-01-P1..P4），历史 run 行不受影响。
-// UMX-02 未改动，脚本会显式跳过并报出「题面是否与 markdown 一致」。
+// 其余字段原样保留；题目 id 不变（UMX-01/02-P1..P4），历史 run 行不受影响。
+// 脚本内置自检：**另一组**的题面必须已与 markdown 一致（不应被本轮改动）。
 // ============================================================
 import { readFileSync, writeFileSync } from 'node:fs';
 import { buildUltraMathQuestions } from '../packages/core/dist/evaluationLab/ultraMathQuestions.js';
@@ -21,7 +21,7 @@ import { hashScenarioShort } from '../packages/core/dist/contracts/canonicalize.
 const APPLY = process.argv.includes('--apply');
 const APPLY_API = process.argv.includes('--apply-api');
 const BASE = process.env.BASE_URL || 'http://localhost:3001';
-const TARGETS = ['UMX-01-P1', 'UMX-01-P2', 'UMX-01-P3', 'UMX-01-P4'];
+const TARGETS = ['UMX-02-P1', 'UMX-02-P2', 'UMX-02-P3', 'UMX-02-P4'];
 const NEXT_VERSION = '1.1.0';
 
 const ROOT = new URL('../', import.meta.url);
@@ -33,9 +33,9 @@ const bankUrl = new URL('data/scenarios/benchmark.json', ROOT);
 const bank = JSON.parse(readFileSync(bankUrl, 'utf8'));
 const byId = new Map(bank.map(s => [s.id, s]));
 
-// 自检：UMX-02 四问的题面必须与题库一致（本脚本不应改动它们）
+// 自检：UMX-01 四问的题面必须**已经**与题库一致（上一轮升过，本轮不应再变）
 const untouched = [];
-for (const id of ['UMX-02-P1', 'UMX-02-P2', 'UMX-02-P3', 'UMX-02-P4']) {
+for (const id of ['UMX-01-P1', 'UMX-01-P2', 'UMX-01-P3', 'UMX-01-P4']) {
   const s = byId.get(id), q = byQ.get(id);
   if (!s || !q) { untouched.push(`${id}: 缺`); continue; }
   const same = s.promptTemplate === q.messages[0].content;
@@ -74,26 +74,28 @@ if (APPLY) {
   writeFileSync(bankUrl, `${JSON.stringify(bank, null, 1)}\n`);
   const metaUrl = new URL('data/scenarios/benchmark-meta.json', ROOT);
   const meta = JSON.parse(readFileSync(metaUrl, 'utf8'));
-  meta.version = '1.42.0';
+  meta.version = '1.44.0';
   meta.generatedAt = '2026-09-17T00:00:00.000Z';
   meta.ultraMath = { questionVersion: ULTRA_MATH_RELEASE.questionVersion, rubricVersion: ULTRA_MATH_RELEASE.version,
-    note: 'UMX-01 于 2026-09-17 重写为可达版本（V=F₂⁴ + 二维公共空间）；UMX-02 未改动。' };
+    note: 'UMX-01（v3）与 UMX-02（v4）均已重写为可达版本；UMX 八题标 developmentShadow，只在人工/专用轨道使用。' };
   writeFileSync(metaUrl, `${JSON.stringify(meta, null, 1)}\n`);
-  const auditUrl = new URL('data/scenarios/umx01-rewrite-2026-09-17.json', ROOT);
+  const auditUrl = new URL('data/scenarios/umx02-rewrite-2026-09-17.json', ROOT);
   writeFileSync(auditUrl, `${JSON.stringify({
     date: '2026-09-17T00:00:00.000Z', dimension: 'reasoning_math', grader: 'ultra_proof_part',
     questionVersion: ULTRA_MATH_RELEASE.questionVersion, rubricVersion: ULTRA_MATH_RELEASE.version,
-    reason: '原版 UMX-01 在 V=F₂⁶ 上要求完整共轭分类 + 中心化子阶分布 + 扩域 F₄ 秩分布，'
-      + '无工具下不可达：实测 8 问里 7 问恒为 0 分（HARD_TIME_LIMIT 1200s 或 token 耗尽），'
-      + '而 ultra_proof_part 的 judge 是唯一评分器，无输出即 0 且计入维度均分。',
-    designPrinciple: '难度递增 = 判断难度递增，不是计算量递增；每问最短可算路径必须落在 10²~10³ 次基本运算内。',
-    gold: { 'UMX-01-P1': [4096, 35], 'UMX-01-P2': [3906], 'UMX-01-P3': [3780], 'UMX-01-P4': [162, 144, 0] },
-    verification: '两套独立实现枚举复核（design_umx01b.py 位编码版 vs verify_umx01.py Fractions+显式列张成版）：'
-      + '7 项计数全部一致；闭式另做构造性验证（反例 3·4³−3+1=190；互异直线 3!·3³=162；反例 6·3=18）。',
-    screeningArchive: 'v2 的 Qwen 33.0 / DeepSeek 38.5 已标注为历史值（invalidForCurrentQuestions）。',
+    reason: '原版 UMX-02 要求 3×3 矩阵三元组中**每个本原 λ** 的线性组合都左右等价于 diag(1,1,0)。'
+      + '该条件是为 3×3 调的：降到 2×2 后枚举可证最多满足 24/56 个本原 λ（加入任一混合方向即归零），'
+      + '而保留 3×3 则候选空间 512³≈1.34 亿、且 Z/2^k 上左右等价缺少可靠判据'
+      + '（Fitting 理想不能决定等价类：diag(2,0) 与 diag(2,2) 理想相同却不同类）。',
+    designPrinciple: '换载体而保主题：保留 模 2^k / 奇异分支 / 逐层提升，把载体换成标量同余；'
+      + '四问动作与原版一一对应（计数 → 解集结构 → 提升充要条件 → 任意层级闭式与无限提升）。',
+    gold: { 'UMX-02-P1': [3, [0, 1, 4]], 'UMX-02-P2': [5, '2^50+1'], 'UMX-02-P3': [1, 2, 32], 'UMX-02-P4': [512, '2^49'] },
+    verification: '双路：暴力枚举（k≤16，逐点代入 f）vs 结构式（S_k = {x : v₂(x) ≥ ⌈k/2⌉} ∪ {1}）；'
+      + 'N(k)=2^⌊k/2⌋+1 两路完全一致；提升结构（不可提升个数 = 0/2^(k/2−1)）实测与推导 k=1..11 全对；'
+      + '无限提升支经连续 5 层实测确认。见 tmp/_zx_math/gold_umx02.py',
     changed, alreadyUpgraded: already,
   }, null, 1)}\n`);
-  console.log(`\nbenchmark.json 已更新（${changed.length} 行）；审计 -> umx01-rewrite-2026-09-17.json`);
+  console.log(`\nbenchmark.json 已更新（${changed.length} 行）；审计 -> umx02-rewrite-2026-09-17.json`);
 }
 
 if (APPLY_API) {

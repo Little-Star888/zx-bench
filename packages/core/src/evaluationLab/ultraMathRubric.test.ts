@@ -19,10 +19,10 @@ describe('ultra math criterion rubric',()=>{
  });
  it('preserves submitted parts, scores empty timeout as zero and applies semantic proof caps',()=>{
   const a=answers(1);a[6]={id:'UMX-02-P3',outcome:'completed',output:'nonempty'};
-  const r=[fullReviews()[0],review('UMX-02-P3',{lift_iff:10,lifts_per_base:4,lift_fiber_proof:4,iff_proof:8},['core_iff_wrong'])];
+  const r=[fullReviews()[0],review('UMX-02-P3',{s2_not_liftable:6,zero_lifts:6,u12:6,lift_iff_proof:12},['core_iff_wrong'])];
   const scored=scoreUltraMathRubric(a,r),lift=scored.rows.find(x=>x.id==='UMX-02-P3')!;
-  expect(scored.groups[0].earned).toBe(10);expect(lift.earned).toBe(8);
-  expect(lift.criteria.find(x=>x.id==='iff_proof')).toMatchObject({awarded:0,blocked:true});
+  expect(scored.groups[0].earned).toBe(10);expect(lift.earned).toBe(18);
+  expect(lift.criteria.find(x=>x.id==='lift_iff_proof')).toMatchObject({awarded:0,blocked:true});
   expect(scored.official).toBe(false);
  });
  it('archives the v2 screening profiles and keeps the comparison machinery sound',()=>{

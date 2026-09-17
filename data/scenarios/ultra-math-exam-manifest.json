@@ -1,7 +1,7 @@
 {
-  "version": "ultra-math-exam-2026-09-17-v3",
-  "questionVersion": "ultra-math-2026-09-17-v3",
-  "contractHash": "92606bb7b2b00bd1b9f7a1d6601b611c9509b3d8782ee91b37c7e844c4e82504",
+  "version": "ultra-math-exam-2026-09-17-v4",
+  "questionVersion": "ultra-math-2026-09-17-v4",
+  "contractHash": "08086f3bf829239af3ef48ac93d290392f7b22f1212b8ae124045276046914be",
   "dimension": "reasoning_math",
   "mode": "explicit_progressive_exam",
   "status": "approved",
@@ -45,25 +45,25 @@
           "id": "UMX-02-P1",
           "points": 10,
           "hardSeconds": 360,
-          "questionHash": "f76b2434a1cda3c165429b27c816b5869263c7de55712312b43318ff16d02df7"
+          "questionHash": "5ab2e689b6f94d823eee0b8c6e62f4bd16b2ae9f5234fed2d2051601ddf72bb1"
         },
         {
           "id": "UMX-02-P2",
           "points": 20,
           "hardSeconds": 360,
-          "questionHash": "d19571fccdc79fa5e7fbb2a5bb7eac23cac980f486fa43e02390b7b6fe094897"
+          "questionHash": "54f4c7e60fda133b0707cf2482545087f92875d3317e0b442e65c8d08d9bdf5c"
         },
         {
           "id": "UMX-02-P3",
           "points": 30,
           "hardSeconds": 1200,
-          "questionHash": "a47b6f86d2401d6c3887ae4b4739364ca045825c69e94b948f0d32c0ac77fc5b"
+          "questionHash": "1f5154503111eabf1887ffc53457eb0b376c537979668459df72d481ebef2f4e"
         },
         {
           "id": "UMX-02-P4",
           "points": 40,
           "hardSeconds": 1200,
-          "questionHash": "eb02e1266b88f09f2e152c3ba16ed7c30c3ed5fccb5931df87e8ddea9b6b56a2"
+          "questionHash": "4b60a3912f68885985e37c5f8b6ddf9415538a944c50f541018db410bc9d3ca2"
         }
       ]
     }
@@ -82,7 +82,7 @@
     "scoringPath": "explicit_progressive_exam"
   },
   "scoring": {
-    "rubricVersion": "ultra-math-rubric-2026-09-17-v2",
+    "rubricVersion": "ultra-math-rubric-2026-09-17-v3",
     "axes": [
       "conclusion",
       "proof"
