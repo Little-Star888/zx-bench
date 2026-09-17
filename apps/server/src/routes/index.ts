@@ -36,11 +36,22 @@ import { selectLatestResultsByKey, selectLatestScenarioResults } from '../result
 // The database is mutable and may retain bundled development/history rows from
 // an older import. Official runs are therefore selected against the released
 // benchmark catalogue, not every row that happens to remain `valid` in SQLite.
-const RELEASE_BENCHMARK = JSON.parse(fs.readFileSync(
-  new URL('../../../../data/scenarios/benchmark.json', import.meta.url),
-  'utf8',
-)) as Scenario[];
-const RELEASE_BENCHMARK_BY_ID = new Map(RELEASE_BENCHMARK.map((scenario) => [scenario.id, scenario]));
+// NOTE: the catalogue is the frozen reference for official runs, but it lives on
+// disk while the server is a long-lived process.  Loading it once at module
+// startup made the server compare the database against a *stale* copy after
+// `benchmark.json` was updated (2026-09-17: the eight UMX-01/02 parts were
+// re-tagged, the database was re-synced, yet every official run kept failing
+// with "Official benchmark database is out of sync" until a restart).  Re-read
+// the file whenever its mtime changes instead.
+const RELEASE_BENCHMARK_URL = new URL('../../../../data/scenarios/benchmark.json', import.meta.url);
+let releaseBenchmarkCache: { mtimeMs: number; byId: Map<string, Scenario> } | null = null;
+function releaseBenchmarkById(): Map<string, Scenario> {
+  const mtimeMs = fs.statSync(RELEASE_BENCHMARK_URL).mtimeMs;
+  if (releaseBenchmarkCache?.mtimeMs === mtimeMs) return releaseBenchmarkCache.byId;
+  const list = JSON.parse(fs.readFileSync(RELEASE_BENCHMARK_URL, 'utf8')) as Scenario[];
+  releaseBenchmarkCache = { mtimeMs, byId: new Map(list.map((scenario) => [scenario.id, scenario])) };
+  return releaseBenchmarkCache.byId;
+}
 
 /** Pack 短名 → 维度映射（all 表示不过滤） */
 const PACK_DIMENSION_MAP: Record<string, string> = {
@@ -69,9 +80,10 @@ async function selectBenchmarkPack(config: EvalRunConfig, dimensionIds?: string[
   const rows = await prisma.scenarioDefinition.findMany({ where: { status: 'valid' } });
   let selected = rows.filter(s => !dimensionIds?.length || dimensionIds.includes(s.dimension));
   if (config.evaluationMode === 'official') {
-    selected = selected.filter((scenario) => RELEASE_BENCHMARK_BY_ID.has(scenario.id));
+    const released = releaseBenchmarkById();
+    selected = selected.filter((scenario) => released.has(scenario.id));
     const drifted = selected.filter((scenario) =>
-      scenario.scenarioHash !== RELEASE_BENCHMARK_BY_ID.get(scenario.id)?.scenarioHash,
+      scenario.scenarioHash !== released.get(scenario.id)?.scenarioHash,
     );
     if (drifted.length) {
       throw new Error(`Official benchmark database is out of sync: ${drifted.map((s) => s.id).join(', ')}`);
@@ -2272,7 +2284,7 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
     const totalResults = await prisma.scenarioResult.count();
     const dimensions = await prisma.scenarioDefinition.groupBy({
       by: ['dimension'],
-      where: { status: 'valid', id: { in: [...RELEASE_BENCHMARK_BY_ID.keys()] } },
+      where: { status: 'valid', id: { in: [...releaseBenchmarkById().keys()] } },
       _count: { id: true },
     });
 
