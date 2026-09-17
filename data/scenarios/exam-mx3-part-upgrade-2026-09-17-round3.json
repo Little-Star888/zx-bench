@@ -1,0 +1,70 @@
+{
+ "date": "2026-09-17T00:00:00.000Z",
+ "round": 3,
+ "dimension": "reasoning_math",
+ "grader": "ultra_batch_part",
+ "groups": [
+  "MX3-03",
+  "MX3-11",
+  "MX3-14",
+  "MX3-15",
+  "MX3-16",
+  "MX3-21",
+  "MX3-22",
+  "MX3-23"
+ ],
+ "reason": "组内答案泄漏：progressive exam 会把前面小问的模型回答带进后续小问的上下文，所以组内两个小问 gold 相同 = 后面那一档可以直接抄前面，绕过它的概念。",
+ "findings": {
+  "MX3-03-P1": "row_min_sum(旧 44) 恰等于 P2 的 value(44) —— 该矩阵的最优解取到各行最小值，因此行最小值之和就是最优值",
+  "MX3-11-P4": "count 在 k>=5 后恒为 36，与 P3 的 count(36) 撞；改问解数的奇偶构成",
+  "MX3-14-P4": "旧真值 a1=7 与 P3 的 n_zero=7 撞；改用 (a3,a4)=(51,129) → (a0,a1)=(4,9)"
+ },
+ "independentCheck": "tmp/_zx_math/verify_leakfix2.py：col_min_sum=42≠44；odd_count=18；(4,9)↔(51,129) 的系数矩阵 det=−216 与 p 互素 ⇒ 反解唯一；三组组内 gold 互不相同",
+ "generatorGuard": "build-exam-expansion.py 新增 assert_distinct()，把「组内 gold 不得重复」写成断言",
+ "fromScenarioVersion": [
+  "1.0.0",
+  "1.1.0",
+  "1.2.0"
+ ],
+ "toScenarioVersion": "1.1.0",
+ "changed": [
+  {
+   "id": "MX3-03-P1",
+   "points": 10,
+   "hardSeconds": 300,
+   "version": "1.2.0 -> 1.1.0",
+   "oldTask": "提交 row_min=[成本矩阵每行的最小值]（按行顺序，长度6），以及 row_min_sum=各行最小值之和。",
+   "newTask": "提交 row_min=[成本矩阵每行的最小值]（按行顺序，长度6），以及 col_min_sum=各列最小值之和。",
+   "answers": {
+    "row_min": "8,7,6,8,7,8",
+    "col_min_sum": "42"
+   }
+  },
+  {
+   "id": "MX3-11-P4",
+   "points": 40,
+   "hardSeconds": 1200,
+   "version": "1.0.0 -> 1.1.0",
+   "oldTask": "k=12，提交 count，以及 histogram=[[min(v₃(x²−1),12),该类解数],...]。v₃(0)=∞，只列非零类别，按第一列升序。",
+   "newTask": "k=12，提交 odd_count=解中奇数的个数，以及 histogram=[[min(v₃(x²−1),12),该类解数],...]。v₃(0)=∞，只列非零类别，按第一列升序。",
+   "answers": {
+    "odd_count": "18",
+    "histogram": "2,18,10,12,11,4,12,2"
+   }
+  },
+  {
+   "id": "MX3-14-P4",
+   "points": 40,
+   "hardSeconds": 1200,
+   "version": "1.0.0 -> 1.1.0",
+   "oldTask": "回到 p=1000000007。递推式不变，但初值 (a₀, a₁) 未知；已知 a_3 = 43、a_4 = 113。提交 a0、a1。",
+   "newTask": "回到 p=1000000007。递推式不变，但初值 (a₀, a₁) 未知；已知 a_3 = 51、a_4 = 129。提交 a0、a1。",
+   "answers": {
+    "a0": "4",
+    "a1": "9"
+   }
+  }
+ ],
+ "alreadyUpgraded": [],
+ "notInBank": []
+}

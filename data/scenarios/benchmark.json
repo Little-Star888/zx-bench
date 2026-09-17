@@ -44239,7 +44239,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「受限指派与势函数」，第1/4问，10分，时限300秒。\n共同题干：6名工人到6项工作的一一指派，编号0..5，成本矩阵：[[8, 9, 23, 14, 8, 19], [7, 21, 7, 18, 16, 10], [6, 12, 18, 6, 22, 13], [8, 16, 11, 24, 9, 17], [7, 7, 19, 10, 15, 21], [8, 14, 9, 17, 12, 8]]。最小化总成本。certificate={permutation:[工人对应工作],u:[...],v:[...],value:...}；所有允许边应有u[i]+v[j]≤cost[i][j]，且总成本=Σu+Σv。\n本问：提交 row_min=[成本矩阵每行的最小值]（按行顺序，长度6），以及 row_min_sum=各行最小值之和。\n评分项：row_min(5分)、row_min_sum(5分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「受限指派与势函数」，第1/4问，10分，时限300秒。\n共同题干：6名工人到6项工作的一一指派，编号0..5，成本矩阵：[[8, 9, 23, 14, 8, 19], [7, 21, 7, 18, 16, 10], [6, 12, 18, 6, 22, 13], [8, 16, 11, 24, 9, 17], [7, 7, 19, 10, 15, 21], [8, 14, 9, 17, 12, 8]]。最小化总成本。certificate={permutation:[工人对应工作],u:[...],v:[...],value:...}；所有允许边应有u[i]+v[j]≤cost[i][j]，且总成本=Σu+Σv。\n本问：提交 row_min=[成本矩阵每行的最小值]（按行顺序，长度6），以及 col_min_sum=各列最小值之和。\n评分项：row_min(5分)、col_min_sum(5分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -44251,7 +44251,7 @@
    "partNumber": 1,
    "points": 10,
    "hardSeconds": 300,
-   "questionHash": "3735eaa011a572b7680550065a013a89aa3a9e758054f264e69ad997ec840feb",
+   "questionHash": "ef859b3f1dcb558ec58b5bab185e54168db2e234afc673c94184e84c721e4f5f",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -44260,10 +44260,10 @@
    "group_MX3-03",
    "part_1",
    "points_10",
-   "timeout_180s"
+   "timeout_300s"
   ],
-  "scenarioVersion": "1.2.0",
-  "scenarioHash": "fc7d229294f2c219",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "e0b78b9c4cb53b33",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -45541,7 +45541,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「共享因子的奇异提升」，第4/4问，40分，时限1200秒。\n共同题干：研究整数同余 (x²−1)(x²−10)≡0 mod 3^k。不同x按模3^k计。不能假定两因子之一单独被3^k整除。\n本问：k=12，提交 count，以及 histogram=[[min(v₃(x²−1),12),该类解数],...]。v₃(0)=∞，只列非零类别，按第一列升序。\n评分项：count(10分)、histogram(30分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「共享因子的奇异提升」，第4/4问，40分，时限1200秒。\n共同题干：研究整数同余 (x²−1)(x²−10)≡0 mod 3^k。不同x按模3^k计。不能假定两因子之一单独被3^k整除。\n本问：k=12，提交 odd_count=解中奇数的个数，以及 histogram=[[min(v₃(x²−1),12),该类解数],...]。v₃(0)=∞，只列非零类别，按第一列升序。\n评分项：odd_count(10分)、histogram(30分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -45553,7 +45553,7 @@
    "partNumber": 4,
    "points": 40,
    "hardSeconds": 1200,
-   "questionHash": "e357cca520fdddaa120b468d4326c1709e9e224541a85c7956c9a264dd72dc9b",
+   "questionHash": "069818be5ab89af9ba8069e6c56bb14e5b4b4e58b895722be233864a48ce9252",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -45564,8 +45564,8 @@
    "points_40",
    "timeout_1200s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "f94d9c784a82d029",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "318517a2427da626",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -45877,7 +45877,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "数学大题「线性递推的四层推理」，第4/4问，40分，时限1200秒。\n共同题干：序列满足 aₙ₊₂ = 5aₙ₊₁ − 6aₙ（模 p），a₀ = 1、a₁ = 4。所有下标从 0 开始，答案取模 p 后落在 [0,p)。四问依次考察四种不同的推理动作：递推求值 → 解析求解 → 模结构性质 → 逆向反推。\n本问：回到 p=1000000007。递推式不变，但初值 (a₀, a₁) 未知；已知 a_3 = 43、a_4 = 113。提交 a0、a1。\n评分项：a0(20分)、a1(20分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
+  "promptTemplate": "数学大题「线性递推的四层推理」，第4/4问，40分，时限1200秒。\n共同题干：序列满足 aₙ₊₂ = 5aₙ₊₁ − 6aₙ（模 p），a₀ = 1、a₁ = 4。所有下标从 0 开始，答案取模 p 后落在 [0,p)。四问依次考察四种不同的推理动作：递推求值 → 解析求解 → 模结构性质 → 逆向反推。\n本问：回到 p=1000000007。递推式不变，但初值 (a₀, a₁) 未知；已知 a_3 = 51、a_4 = 129。提交 a0、a1。\n评分项：a0(20分)、a1(20分)。每项单独提交完整JSON：{\"item\":\"评分项编号\",\"answer\":答案}。可逐项提交和修订；最后一条完整记录为准。超时、截断保留完整提交项的得分，未完成项0分；前问得分不受影响。数值可提交精确整数、分数或仅用整数及+-*/^括号的表达式字符串。不要提交代码，不使用外部工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -45889,7 +45889,7 @@
    "partNumber": 4,
    "points": 40,
    "hardSeconds": 1200,
-   "questionHash": "a6ff198d392c261b39605513cc186bfdb5df3cb95a6c4a57f7d85ca8568d185d",
+   "questionHash": "bb9dec53aa44139a1bbc653731842a31f2199370f7e04a2ca0eda35b36da87fe",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -45900,8 +45900,8 @@
    "points_40",
    "timeout_1200s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "73acd883b3e347f3",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "4a97e899d4463e99",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",

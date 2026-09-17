@@ -35,6 +35,20 @@ def solve(a, b):
 def dot(a, b): return sum(x*y for x,y in zip(a,b))
 def exact(key, points, value): return {'key': key, 'points': points, 'kind': 'exact', 'expected': clean(value)}
 
+def assert_distinct(name, *values):
+    """组内 gold 不得重复。
+
+    踩过的坑（2026-09-17 体检发现）：progressive exam 会把前面小问的**模型回答**
+    带进后续小问的上下文（evaluationLab/examExpansion/index.ts:196），
+    所以组内两个小问答案相同 = 后面那一档可以直接抄前面的答案，绕过它的概念。
+    实例：MX3-03 的 row_min_sum=44 与 value=44；MX3-11 的 P3/P4 count 都是 36；
+          MX3-14 的 n_zero=7 与 a1=7。
+    注意：列表型 gold 按整体比较，不要把分量拆开（否则 MX3-11 的 parity=[3,3] 会误报）。
+    """
+    ser = [json.dumps(v, ensure_ascii=False) if isinstance(v, (list, dict)) else str(v) for v in values]
+    dup = sorted({s for s in ser if ser.count(s) > 1})
+    assert not dup, '%s 组内答案重复（泄漏）：%s' % (name, dup)
+
 # --- helpers added 2026-09-16 for the de-trivialised warm-up parts -----------
 def gf2_rank(vals, bits=13):
     basis = [0]*bits; r = 0
@@ -455,13 +469,16 @@ second_best = next(v for v in _all_totals if v > _all_totals[0])
 
 group('03','assignment-duality','受限指派与势函数', '6名工人到6项工作的一一指派，编号0..5，成本矩阵：'+json.dumps(cost)+
       '。最小化总成本。certificate={permutation:[工人对应工作],u:[...],v:[...],value:...}；所有允许边应有u[i]+v[j]≤cost[i][j]，且总成本=Σu+Σv。',[
-    part('提交 row_min=[成本矩阵每行的最小值]（按行顺序，长度6），以及 row_min_sum=各行最小值之和。',
-         exact('row_min',5,[min(r) for r in cost]),exact('row_min_sum',5,sum(min(r) for r in cost))),
+    part('提交 row_min=[成本矩阵每行的最小值]（按行顺序，长度6），以及 col_min_sum=各列最小值之和。',
+         exact('row_min',5,[min(r) for r in cost]),exact('col_min_sum',5,sum(min(c) for c in zip(*cost)))),
     part('求最小成本 value。',exact('value',20,asg['value'])),
     part('提交达到最优值的指派及对偶势函数 certificate。',cert('certificate',30,'assignment',{'cost':cost,'banned':[]},asg)),
     part('提交 optimal_count=达到最小总成本的指派方案数，以及 second_best=严格大于最小总成本的最小总成本。',
          exact('optimal_count',20,optimal_count),exact('second_best',20,second_best))],
-    '从求最优值升级为解空间结构：最优解是否唯一、次优值是多少。','四问分别需要行最小值、指派最优化、对偶证书、解空间枚举与排序；答案均为精确值。')
+    '从求最优值升级为解空间结构：最优解是否唯一、次优值是多少。','四问分别需要行最小值、指派最优化、对偶证书、解空间枚举与排序；答案均为精确值。'
+    '注：P1 原问「各行最小值之和」恰等于最优值 44 ⇒ 会把 P2 的答案直接送出去（2026-09-17 体检发现），已改为问各列最小值之和（=42，不等于最优值）。')
+assert_distinct('MX3-03', [min(r) for r in cost], sum(min(c) for c in zip(*cost)),
+                asg['value'], optimal_count, second_best)
 
 # 4. Modular polynomial quotient ring, solve multiplication as a linear map.
 def pmul(a,b,p=7):
@@ -657,8 +674,13 @@ group('11','singular-adic-lifting','共享因子的奇异提升','研究整数�
          exact('count',5,len(rs3)),exact('parity',5,[sum(1 for x in rs3 if x%2==0),sum(1 for x in rs3 if x%2==1)])),
     part('提交 min_k_full=最小的 k（k ≥ 1）使解数 count(k) 达到 36。',exact('min_k_full',20,min_k_full)),
     part('k=8，提交 count，并提交 split_count=满足x²≡1或10 mod3^8的解数。',exact('count',15,len(rs8)),exact('split_count',15,sum((x*x-1)%3**8==0 or (x*x-10)%3**8==0 for x in rs8))),
-    part('k=12，提交 count，以及 histogram=[[min(v₃(x²−1),12),该类解数],...]。v₃(0)=∞，只列非零类别，按第一列升序。',exact('count',10,len(rs12)),exact('histogram',30,sorted(vh.items())))],
-    '由「给 k 求计数」升级为「跨 k 反查计数首次达到上限的 k」，再进入分解结构与赋值分布。','四问分别需要对给定 k 精确计数、跨 k 搜索、分解结构判定、赋值的 3-adic 分布统计；答案均为精确值。')
+    part('k=12，提交 odd_count=解中奇数的个数，以及 histogram=[[min(v₃(x²−1),12),该类解数],...]。v₃(0)=∞，只列非零类别，按第一列升序。',exact('odd_count',10,sum(1 for x in rs12 if x%2==1)),exact('histogram',30,sorted(vh.items())))],
+    '由「给 k 求计数」升级为「跨 k 反查计数首次达到上限的 k」，再进入分解结构与赋值分布。','四问分别需要对给定 k 精确计数、跨 k 搜索、分解结构判定、赋值的 3-adic 分布统计；答案均为精确值。'
+    '注：k≥5 后解数恒为 36，故 P4 不重复问 count（那会与 P3 撞车），改问解数的奇偶构成。')
+assert_distinct('MX3-11', len(rs3),
+                [sum(1 for x in rs3 if x % 2 == 0), sum(1 for x in rs3 if x % 2 == 1)], min_k_full,
+                len(rs8), sum((x*x-1) % 3**8 == 0 or (x*x-10) % 3**8 == 0 for x in rs8),
+                sum(1 for x in rs12 if x % 2 == 1), sorted(vh.items()))
 
 # 12. Discrete moment problem; primal distribution and polynomial dual.
 support=list(range(7)); moments2=[1,3,11];moments3=[1,3,11,45]
@@ -781,17 +803,22 @@ def rec14_structure(mod, limit=400):
     return zero, period
 
 m14_nzero, m14_period = rec14_structure(11)
-# 逆向题：真值 (a0,a1)=(3,7) → a2=17, a3=43, a4=113；由 a3,a4 反解唯一（6 在模 1e9+7 下可逆）
-m14_inv_a3, m14_inv_a4, m14_inv_a0, m14_inv_a1 = 43, 113, 3, 7
+# 逆向题：真值 (a0,a1)=(4,9) → a2=21, a3=51, a4=129；由 a3,a4 反解唯一
+# （系数矩阵 det = 19·(−114) − (−30)·65 = −216，与 p 互素）
+# 2026-09-17 体检发现：旧真值 (3,7) 的 a1=7 与 P3 的 n_zero=7 撞车（可被前问答案复用），故换掉。
+m14_inv_a3, m14_inv_a4, m14_inv_a0, m14_inv_a1 = 51, 129, 4, 9
 group('14','linear-recurrence-four-actions','线性递推的四层推理','序列满足 aₙ₊₂ = 5aₙ₊₁ − 6aₙ（模 p），a₀ = 1、a₁ = 4。所有下标从 0 开始，答案取模 p 后落在 [0,p)。四问依次考察四种不同的推理动作：递推求值 → 解析求解 → 模结构性质 → 逆向反推。',[
     part('p=1000000007。提交 a_10。',exact('a_10',10,m14_10)),
     part('p=1000000007。用特征根法把通项写成 a_n = alpha·3^n + beta·2^n（alpha、beta 为整数，允许为负）。提交 alpha、beta、a_1000000。',
          exact('alpha',5,2),exact('beta',5,-1),exact('a_1000000',10,m14_1e6)),
     part('改模数 p=11。提交 n_zero、period：n_zero 是最小的 n ≥ 1 使 a_n ≡ 0 (mod 11)；period 是序列 (a_n mod 11) 的最小正周期。',
          exact('n_zero',15,m14_nzero),exact('period',15,m14_period)),
-    part('回到 p=1000000007。递推式不变，但初值 (a₀, a₁) 未知；已知 a_3 = 43、a_4 = 113。提交 a0、a1。',
+    part('回到 p=1000000007。递推式不变，但初值 (a₀, a₁) 未知；已知 a_3 = %d、a_4 = %d。提交 a0、a1。'
+         % (m14_inv_a3, m14_inv_a4),
          exact('a0',20,m14_inv_a0),exact('a1',20,m14_inv_a1))],
-    '由正向求值转为逆向反推：需先由 a_3、a_4 解出 a_2，再逐步回代得到初值。','四问分别需要迭代、特征根解析、模周期分析与线性反解四种不同推理动作；答案唯一且可精确校验。')
+    '由正向求值转为逆向反推：需先由 a_3、a_4 解出 a_2，再逐步回代得到初值。','四问分别需要迭代、特征根解析、模周期分析与线性反解四种不同推理动作；答案唯一且可精确校验。'
+    '注：旧真值 (3,7) 的 a1=7 与 P3 的 n_zero=7 撞车（可被前问答案复用），2026-09-17 换为 (4,9)。')
+assert_distinct('MX3-14', m14_10, 2, -1, m14_1e6, m14_nzero, m14_period, m14_inv_a0, m14_inv_a1)
 
 # 15. Constrained lattice enumeration; the disjoint-family part is exactly the
 # Lindstrom-Gessel-Viennot determinant that frontier benchmarks like to use.
@@ -1277,7 +1304,7 @@ group('24','hypergeometric-window','超几何求和的证成与证伪：望远�
     'P3/P4 的规律不能靠「前几项都成立」外推：该等式恰好对 1 ≤ n ≤ d+1 成立，从 n = d+2 起永久失效（已扫至 n=40 未再成立）。',
     'n = 1 对任意 d 都**平凡成立**（d ≥ 2 时左右端同为 0），只抽查小 n 会误判为恒等式；Δ(d) = (d+2)² 这一规律必须从若干个 d 的实际值读出，且 P1/P2 各自的望远镜证书不通用（平方差与阶乘各走一条）。')
 
-pack={'version':'math-exam-expansion-2026-09-17-v18','status':'candidate-unmeasured',
+pack={'version':'math-exam-expansion-2026-09-17-v19','status':'candidate-unmeasured',
       # 时限遵循项目参考值：题级默认 600 秒、上限 1200 秒
       # （packages/core/src/model/caller.ts 的 600_000 默认 + apiControlStream 的 1_200_000 上限）。
       # 原为 [180,360,1200,1200]，是给"不需要计算的"旧 P1 白送分题调的；
