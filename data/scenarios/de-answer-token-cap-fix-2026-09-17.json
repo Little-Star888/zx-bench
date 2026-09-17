@@ -1,0 +1,243 @@
+{
+ "date": "2026-09-17T00:00:00.000Z",
+ "dimension": "data_extraction",
+ "grader": "json_atomic_fields",
+ "scope": [
+  "DE-CN-036",
+  "DE-CN-037",
+  "DE-CN-038",
+  "DE-CN-039",
+  "DE-CN-040",
+  "DE-CN-041",
+  "DE-CN-042",
+  "DE-CN-043",
+  "DE-CN-044",
+  "DE-CN-045",
+  "DE-CN-046",
+  "DE-CN-047",
+  "DE-CN-048",
+  "DE-CN-049",
+  "DE-CN-050",
+  "DE-CN-051",
+  "DE-CN-052",
+  "DE-CN-053",
+  "DE-CN-054",
+  "DE-CN-055",
+  "DE-CN-056"
+ ],
+ "reason": "这些题的 maxAnswerTokens=1024 是 2026-09-12 的 upgrade-data-extraction-v3.mjs 留下的旧口径值（那批题在 answerFirst 口径下造的，后来题面改成「只能输出 JSON」，字段没跟着改）。该字段在 caller.ts:385-386 会**静默顶掉运行级 maxTokens**：defaultMaxTokens = 0 + 1024 = 1024，导致推理模型的 reasoning 吃光预算、content 为空 ⇒ finishReason=length ⇒ 恒 0 分。",
+ "mechanism": [
+  "orchestrator.ts:75   题级 maxAnswerTokens 无条件覆盖运行级 constraints",
+  "caller.ts:382-387    发包前重算 defaultMaxTokens = maxReasoningTokens + maxAnswerTokens（非兜底）",
+  "caller.ts:41/:86     body.max_tokens = defaultMaxTokens",
+  "caller.ts:544-546    字段非空时还会把「最终答案必须控制在 N 个 token 以内」拼进 prompt",
+  "orchestrator.ts:288  token 升级重试 16384/32768/65536 因每次重算而被废掉"
+ ],
+ "evidence": {
+  "neverSucceeded": "DE-CN-047 三次 run 输出 token 都恰好 1024（maxTokens 分别 98192/88192/98192）",
+  "truncatedRows": "7 行 finishReason=length 且输出为空",
+  "reallyHarmed": [
+   "DE-CN-047（3/3 行全截断，最高分 0）",
+   "DE-CN-039（最高分 0，其「有信号」是截断假象）"
+  ],
+  "occasional": [
+   "DE-CN-044",
+   "DE-CN-046",
+   "DE-CN-051"
+  ],
+  "unaffected": "其余 18 题次次满分（短答案，1024 够用）"
+ },
+ "fromValue": 1024,
+ "toValue": null,
+ "scenarioVersionPolicy": "保持不变（题面与判分契约未变；dataExtractionV3.test.ts 冻结 56 题为 3.0.0）",
+ "hashPolicy": "maxAnswerTokens 在 canonicalize.ts HASH_FIELDS 中 ⇒ 同步重算 scenarioHash",
+ "changed": [
+  {
+   "id": "DE-CN-036",
+   "category": "record_precedence",
+   "difficulty": "hard",
+   "maxAnswerTokens": "1024 -> null",
+   "scenarioHash": "aa44092fb0a41545 -> 1d7ef371f348bfa4",
+   "scenarioVersion": "3.0.0"
+  },
+  {
+   "id": "DE-CN-037",
+   "category": "table_footnotes",
+   "difficulty": "hard",
+   "maxAnswerTokens": "1024 -> null",
+   "scenarioHash": "4e99739238387148 -> 654bce1a5db7e14b",
+   "scenarioVersion": "3.0.0"
+  },
+  {
+   "id": "DE-CN-038",
+   "category": "event_deduplication",
+   "difficulty": "hard",
+   "maxAnswerTokens": "1024 -> null",
+   "scenarioHash": "50f5061a28d42703 -> 491ee19dbe1a8db2",
+   "scenarioVersion": "3.0.0"
+  },
+  {
+   "id": "DE-CN-039",
+   "category": "ocr_normalization",
+   "difficulty": "medium",
+   "maxAnswerTokens": "1024 -> null",
+   "scenarioHash": "c7d58a7b893ade28 -> a084014dce0480a8",
+   "scenarioVersion": "3.0.0"
+  },
+  {
+   "id": "DE-CN-040",
+   "category": "timezone_normalization",
+   "difficulty": "hard",
+   "maxAnswerTokens": "1024 -> null",
+   "scenarioHash": "feb83c0424e09420 -> 4bfbaceef09a855d",
+   "scenarioVersion": "3.0.0"
+  },
+  {
+   "id": "DE-CN-041",
+   "category": "null_false_zero",
+   "difficulty": "medium",
+   "maxAnswerTokens": "1024 -> null",
+   "scenarioHash": "4de3ec4294887edf -> 63fda8611bfe8937",
+   "scenarioVersion": "3.0.0"
+  },
+  {
+   "id": "DE-CN-042",
+   "category": "multi_table_join",
+   "difficulty": "hard",
+   "maxAnswerTokens": "1024 -> null",
+   "scenarioHash": "3f1476ea23514e60 -> c5426244451fc0f3",
+   "scenarioVersion": "3.0.0"
+  },
+  {
+   "id": "DE-CN-043",
+   "category": "entity_coreference",
+   "difficulty": "hard",
+   "maxAnswerTokens": "1024 -> null",
+   "scenarioHash": "a0dbcf5a9ec49bca -> b1231106b034eeb7",
+   "scenarioVersion": "3.0.0"
+  },
+  {
+   "id": "DE-CN-044",
+   "category": "document_precedence",
+   "difficulty": "adversarial",
+   "maxAnswerTokens": "1024 -> null",
+   "scenarioHash": "227d0ad3ed43cdaa -> 6c382c24b1538773",
+   "scenarioVersion": "3.0.0"
+  },
+  {
+   "id": "DE-CN-045",
+   "category": "merge_patch",
+   "difficulty": "hard",
+   "maxAnswerTokens": "1024 -> null",
+   "scenarioHash": "a9038ab905ba4cac -> 73d7bfee64560678",
+   "scenarioVersion": "3.0.0"
+  },
+  {
+   "id": "DE-CN-046",
+   "category": "multilingual_locale",
+   "difficulty": "hard",
+   "maxAnswerTokens": "1024 -> null",
+   "scenarioHash": "30a744172ff822d3 -> 71d2e915f9ddea1c",
+   "scenarioVersion": "3.0.0"
+  },
+  {
+   "id": "DE-CN-047",
+   "category": "email_thread_latest",
+   "difficulty": "adversarial",
+   "maxAnswerTokens": "1024 -> null",
+   "scenarioHash": "57f2a22081c5b194 -> 2cc1b7b06c246a31",
+   "scenarioVersion": "3.0.0"
+  },
+  {
+   "id": "DE-CN-048",
+   "category": "relative_datetime",
+   "difficulty": "hard",
+   "maxAnswerTokens": "1024 -> null",
+   "scenarioHash": "2e4aa79cd732f149 -> 54c8f4d65e205b26",
+   "scenarioVersion": "3.0.0"
+  },
+  {
+   "id": "DE-CN-049",
+   "category": "markup_noise",
+   "difficulty": "adversarial",
+   "maxAnswerTokens": "1024 -> null",
+   "scenarioHash": "20560cef1abdcc30 -> 272672690d4c64d7",
+   "scenarioVersion": "3.0.0"
+  },
+  {
+   "id": "DE-CN-050",
+   "category": "versioned_configuration",
+   "difficulty": "hard",
+   "maxAnswerTokens": "1024 -> null",
+   "scenarioHash": "ac9d677a5b15da51 -> a3b76967c8e54864",
+   "scenarioVersion": "3.0.0"
+  },
+  {
+   "id": "DE-CN-051",
+   "category": "lab_report",
+   "difficulty": "hard",
+   "maxAnswerTokens": "1024 -> null",
+   "scenarioHash": "14ad6475d160c149 -> 82cdea3ba0163980",
+   "scenarioVersion": "3.0.0"
+  },
+  {
+   "id": "DE-CN-052",
+   "category": "financial_restatement",
+   "difficulty": "hard",
+   "maxAnswerTokens": "1024 -> null",
+   "scenarioHash": "b3e8546cfebf3363 -> d6232efcd6ccc185",
+   "scenarioVersion": "3.0.0"
+  },
+  {
+   "id": "DE-CN-053",
+   "category": "legal_exception",
+   "difficulty": "hard",
+   "maxAnswerTokens": "1024 -> null",
+   "scenarioHash": "6f7446a18ed07016 -> 52623060c7e803e5",
+   "scenarioVersion": "3.0.0"
+  },
+  {
+   "id": "DE-CN-054",
+   "category": "quality_flag_filter",
+   "difficulty": "hard",
+   "maxAnswerTokens": "1024 -> null",
+   "scenarioHash": "45c5ef730657677e -> 1f39637f913d3417",
+   "scenarioVersion": "3.0.0"
+  },
+  {
+   "id": "DE-CN-055",
+   "category": "variant_binding",
+   "difficulty": "adversarial",
+   "maxAnswerTokens": "1024 -> null",
+   "scenarioHash": "aa613f5e2b7e5bf1 -> 5c0835806a43627f",
+   "scenarioVersion": "3.0.0"
+  },
+  {
+   "id": "DE-CN-056",
+   "category": "embedded_instruction_attack",
+   "difficulty": "adversarial",
+   "maxAnswerTokens": "1024 -> null",
+   "scenarioHash": "8c5462a0402f449f -> a4c61a322f5348c9",
+   "scenarioVersion": "3.0.0"
+  }
+ ],
+ "alreadyFixed": [],
+ "before": {
+  "total": 849,
+  "valid": 815,
+  "cap1024": 21,
+  "cap393216": 192,
+  "capNone": 636,
+  "smallCaps": 21
+ },
+ "after": {
+  "total": 849,
+  "valid": 815,
+  "cap1024": 0,
+  "cap393216": 192,
+  "capNone": 657,
+  "smallCaps": 0
+ },
+ "guard": "改完后 bank 中不再存在 (0, 8192) 区间的 maxAnswerTokens",
+ "applyDb": "node scripts/sync-reviewed-question-contracts.mjs apps/data/zxbench.db --apply"
+}

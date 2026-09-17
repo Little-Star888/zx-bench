@@ -27882,7 +27882,7 @@
    "strict-json-contract"
   ],
   "scenarioVersion": "3.0.0",
-  "scenarioHash": "aa44092fb0a41545",
+  "scenarioHash": "1d7ef371f348bfa4",
   "responseMode": null,
   "outputPolicy": "raw_only",
   "environmentImage": null,
@@ -27891,7 +27891,7 @@
   "goldVerifiedAt": "2026-09-12T00:00:00.000+08:00",
   "reviewStatus": "verified",
   "answerFirst": null,
-  "maxAnswerTokens": 1024,
+  "maxAnswerTokens": null,
   "maxReasoningTokens": null
  },
  {
@@ -27951,7 +27951,7 @@
    "strict-json-contract"
   ],
   "scenarioVersion": "3.0.0",
-  "scenarioHash": "4e99739238387148",
+  "scenarioHash": "654bce1a5db7e14b",
   "responseMode": null,
   "outputPolicy": "raw_only",
   "environmentImage": null,
@@ -27960,7 +27960,7 @@
   "goldVerifiedAt": "2026-09-12T00:00:00.000+08:00",
   "reviewStatus": "verified",
   "answerFirst": null,
-  "maxAnswerTokens": 1024,
+  "maxAnswerTokens": null,
   "maxReasoningTokens": null
  },
  {
@@ -28011,7 +28011,7 @@
    "strict-json-contract"
   ],
   "scenarioVersion": "3.0.0",
-  "scenarioHash": "50f5061a28d42703",
+  "scenarioHash": "491ee19dbe1a8db2",
   "responseMode": null,
   "outputPolicy": "raw_only",
   "environmentImage": null,
@@ -28020,7 +28020,7 @@
   "goldVerifiedAt": "2026-09-12T00:00:00.000+08:00",
   "reviewStatus": "verified",
   "answerFirst": null,
-  "maxAnswerTokens": 1024,
+  "maxAnswerTokens": null,
   "maxReasoningTokens": null
  },
  {
@@ -28074,7 +28074,7 @@
    "strict-json-contract"
   ],
   "scenarioVersion": "3.0.0",
-  "scenarioHash": "c7d58a7b893ade28",
+  "scenarioHash": "a084014dce0480a8",
   "responseMode": null,
   "outputPolicy": "raw_only",
   "environmentImage": null,
@@ -28083,7 +28083,7 @@
   "goldVerifiedAt": "2026-09-12T00:00:00.000+08:00",
   "reviewStatus": "verified",
   "answerFirst": null,
-  "maxAnswerTokens": 1024,
+  "maxAnswerTokens": null,
   "maxReasoningTokens": null
  },
  {
@@ -28131,7 +28131,7 @@
    "strict-json-contract"
   ],
   "scenarioVersion": "3.0.0",
-  "scenarioHash": "feb83c0424e09420",
+  "scenarioHash": "4bfbaceef09a855d",
   "responseMode": null,
   "outputPolicy": "raw_only",
   "environmentImage": null,
@@ -28140,7 +28140,7 @@
   "goldVerifiedAt": "2026-09-12T00:00:00.000+08:00",
   "reviewStatus": "verified",
   "answerFirst": null,
-  "maxAnswerTokens": 1024,
+  "maxAnswerTokens": null,
   "maxReasoningTokens": null
  },
  {
@@ -28194,7 +28194,7 @@
    "strict-json-contract"
   ],
   "scenarioVersion": "3.0.0",
-  "scenarioHash": "4de3ec4294887edf",
+  "scenarioHash": "63fda8611bfe8937",
   "responseMode": null,
   "outputPolicy": "raw_only",
   "environmentImage": null,
@@ -28203,7 +28203,7 @@
   "goldVerifiedAt": "2026-09-12T00:00:00.000+08:00",
   "reviewStatus": "verified",
   "answerFirst": null,
-  "maxAnswerTokens": 1024,
+  "maxAnswerTokens": null,
   "maxReasoningTokens": null
  },
  {
@@ -28272,7 +28272,7 @@
    "strict-json-contract"
   ],
   "scenarioVersion": "3.0.0",
-  "scenarioHash": "3f1476ea23514e60",
+  "scenarioHash": "c5426244451fc0f3",
   "responseMode": null,
   "outputPolicy": "raw_only",
   "environmentImage": null,
@@ -28281,7 +28281,7 @@
   "goldVerifiedAt": "2026-09-12T00:00:00.000+08:00",
   "reviewStatus": "verified",
   "answerFirst": null,
-  "maxAnswerTokens": 1024,
+  "maxAnswerTokens": null,
   "maxReasoningTokens": null
  },
  {
@@ -28332,7 +28332,7 @@
    "strict-json-contract"
   ],
   "scenarioVersion": "3.0.0",
-  "scenarioHash": "a0dbcf5a9ec49bca",
+  "scenarioHash": "b1231106b034eeb7",
   "responseMode": null,
   "outputPolicy": "raw_only",
   "environmentImage": null,
@@ -28341,7 +28341,7 @@
   "goldVerifiedAt": "2026-09-12T00:00:00.000+08:00",
   "reviewStatus": "verified",
   "answerFirst": null,
-  "maxAnswerTokens": 1024,
+  "maxAnswerTokens": null,
   "maxReasoningTokens": null
  },
  {
@@ -28389,7 +28389,7 @@
    "strict-json-contract"
   ],
   "scenarioVersion": "3.0.0",
-  "scenarioHash": "227d0ad3ed43cdaa",
+  "scenarioHash": "6c382c24b1538773",
   "responseMode": null,
   "outputPolicy": "raw_only",
   "environmentImage": null,
@@ -28398,7 +28398,7 @@
   "goldVerifiedAt": "2026-09-12T00:00:00.000+08:00",
   "reviewStatus": "verified",
   "answerFirst": null,
-  "maxAnswerTokens": 1024,
+  "maxAnswerTokens": null,
   "maxReasoningTokens": null
  },
  {
@@ -28458,7 +28458,7 @@
    "strict-json-contract"
   ],
   "scenarioVersion": "3.0.0",
-  "scenarioHash": "a9038ab905ba4cac",
+  "scenarioHash": "73d7bfee64560678",
   "responseMode": null,
   "outputPolicy": "raw_only",
   "environmentImage": null,
@@ -28467,7 +28467,7 @@
   "goldVerifiedAt": "2026-09-12T00:00:00.000+08:00",
   "reviewStatus": "verified",
   "answerFirst": null,
-  "maxAnswerTokens": 1024,
+  "maxAnswerTokens": null,
   "maxReasoningTokens": null
  },
  {
@@ -28524,7 +28524,7 @@
    "strict-json-contract"
   ],
   "scenarioVersion": "3.0.0",
-  "scenarioHash": "30a744172ff822d3",
+  "scenarioHash": "71d2e915f9ddea1c",
   "responseMode": null,
   "outputPolicy": "raw_only",
   "environmentImage": null,
@@ -28533,7 +28533,7 @@
   "goldVerifiedAt": "2026-09-12T00:00:00.000+08:00",
   "reviewStatus": "verified",
   "answerFirst": null,
-  "maxAnswerTokens": 1024,
+  "maxAnswerTokens": null,
   "maxReasoningTokens": null
  },
  {
@@ -28590,7 +28590,7 @@
    "strict-json-contract"
   ],
   "scenarioVersion": "3.0.0",
-  "scenarioHash": "57f2a22081c5b194",
+  "scenarioHash": "2cc1b7b06c246a31",
   "responseMode": null,
   "outputPolicy": "raw_only",
   "environmentImage": null,
@@ -28599,7 +28599,7 @@
   "goldVerifiedAt": "2026-09-12T00:00:00.000+08:00",
   "reviewStatus": "verified",
   "answerFirst": null,
-  "maxAnswerTokens": 1024,
+  "maxAnswerTokens": null,
   "maxReasoningTokens": null
  },
  {
@@ -28644,7 +28644,7 @@
    "strict-json-contract"
   ],
   "scenarioVersion": "3.0.0",
-  "scenarioHash": "2e4aa79cd732f149",
+  "scenarioHash": "54c8f4d65e205b26",
   "responseMode": null,
   "outputPolicy": "raw_only",
   "environmentImage": null,
@@ -28653,7 +28653,7 @@
   "goldVerifiedAt": "2026-09-12T00:00:00.000+08:00",
   "reviewStatus": "verified",
   "answerFirst": null,
-  "maxAnswerTokens": 1024,
+  "maxAnswerTokens": null,
   "maxReasoningTokens": null
  },
  {
@@ -28704,7 +28704,7 @@
    "strict-json-contract"
   ],
   "scenarioVersion": "3.0.0",
-  "scenarioHash": "20560cef1abdcc30",
+  "scenarioHash": "272672690d4c64d7",
   "responseMode": null,
   "outputPolicy": "raw_only",
   "environmentImage": null,
@@ -28713,7 +28713,7 @@
   "goldVerifiedAt": "2026-09-12T00:00:00.000+08:00",
   "reviewStatus": "verified",
   "answerFirst": null,
-  "maxAnswerTokens": 1024,
+  "maxAnswerTokens": null,
   "maxReasoningTokens": null
  },
  {
@@ -28764,7 +28764,7 @@
    "strict-json-contract"
   ],
   "scenarioVersion": "3.0.0",
-  "scenarioHash": "ac9d677a5b15da51",
+  "scenarioHash": "a3b76967c8e54864",
   "responseMode": null,
   "outputPolicy": "raw_only",
   "environmentImage": null,
@@ -28773,7 +28773,7 @@
   "goldVerifiedAt": "2026-09-12T00:00:00.000+08:00",
   "reviewStatus": "verified",
   "answerFirst": null,
-  "maxAnswerTokens": 1024,
+  "maxAnswerTokens": null,
   "maxReasoningTokens": null
  },
  {
@@ -28854,7 +28854,7 @@
    "strict-json-contract"
   ],
   "scenarioVersion": "3.0.0",
-  "scenarioHash": "14ad6475d160c149",
+  "scenarioHash": "82cdea3ba0163980",
   "responseMode": null,
   "outputPolicy": "raw_only",
   "environmentImage": null,
@@ -28863,7 +28863,7 @@
   "goldVerifiedAt": "2026-09-12T00:00:00.000+08:00",
   "reviewStatus": "verified",
   "answerFirst": null,
-  "maxAnswerTokens": 1024,
+  "maxAnswerTokens": null,
   "maxReasoningTokens": null
  },
  {
@@ -28914,7 +28914,7 @@
    "strict-json-contract"
   ],
   "scenarioVersion": "3.0.0",
-  "scenarioHash": "b3e8546cfebf3363",
+  "scenarioHash": "d6232efcd6ccc185",
   "responseMode": null,
   "outputPolicy": "raw_only",
   "environmentImage": null,
@@ -28923,7 +28923,7 @@
   "goldVerifiedAt": "2026-09-12T00:00:00.000+08:00",
   "reviewStatus": "verified",
   "answerFirst": null,
-  "maxAnswerTokens": 1024,
+  "maxAnswerTokens": null,
   "maxReasoningTokens": null
  },
  {
@@ -28983,7 +28983,7 @@
    "strict-json-contract"
   ],
   "scenarioVersion": "3.0.0",
-  "scenarioHash": "6f7446a18ed07016",
+  "scenarioHash": "52623060c7e803e5",
   "responseMode": null,
   "outputPolicy": "raw_only",
   "environmentImage": null,
@@ -28992,7 +28992,7 @@
   "goldVerifiedAt": "2026-09-12T00:00:00.000+08:00",
   "reviewStatus": "verified",
   "answerFirst": null,
-  "maxAnswerTokens": 1024,
+  "maxAnswerTokens": null,
   "maxReasoningTokens": null
  },
  {
@@ -29052,7 +29052,7 @@
    "strict-json-contract"
   ],
   "scenarioVersion": "3.0.0",
-  "scenarioHash": "45c5ef730657677e",
+  "scenarioHash": "1f39637f913d3417",
   "responseMode": null,
   "outputPolicy": "raw_only",
   "environmentImage": null,
@@ -29061,7 +29061,7 @@
   "goldVerifiedAt": "2026-09-12T00:00:00.000+08:00",
   "reviewStatus": "verified",
   "answerFirst": null,
-  "maxAnswerTokens": 1024,
+  "maxAnswerTokens": null,
   "maxReasoningTokens": null
  },
  {
@@ -29124,7 +29124,7 @@
    "strict-json-contract"
   ],
   "scenarioVersion": "3.0.0",
-  "scenarioHash": "aa613f5e2b7e5bf1",
+  "scenarioHash": "5c0835806a43627f",
   "responseMode": null,
   "outputPolicy": "raw_only",
   "environmentImage": null,
@@ -29133,7 +29133,7 @@
   "goldVerifiedAt": "2026-09-12T00:00:00.000+08:00",
   "reviewStatus": "verified",
   "answerFirst": null,
-  "maxAnswerTokens": 1024,
+  "maxAnswerTokens": null,
   "maxReasoningTokens": null
  },
  {
@@ -29187,7 +29187,7 @@
    "strict-json-contract"
   ],
   "scenarioVersion": "3.0.0",
-  "scenarioHash": "8c5462a0402f449f",
+  "scenarioHash": "a4c61a322f5348c9",
   "responseMode": null,
   "outputPolicy": "raw_only",
   "environmentImage": null,
@@ -29196,7 +29196,7 @@
   "goldVerifiedAt": "2026-09-12T00:00:00.000+08:00",
   "reviewStatus": "verified",
   "answerFirst": null,
-  "maxAnswerTokens": 1024,
+  "maxAnswerTokens": null,
   "maxReasoningTokens": null
  },
  {
