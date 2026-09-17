@@ -1,0 +1,128 @@
+{
+ "date": "2026-09-17T00:00:00.000Z",
+ "reason": "saturated against the local 27B model: every run scored 100, so the group no longer discriminates the model it was authored for (user decision, 2026-09-17)",
+ "scope": "user-selected: MX3-21/22/23 only (12 parts); no replacement authored in this round",
+ "dimension": "reasoning_math",
+ "criterion": "user-specified: the local 27B model scored 100 on every run of these parts",
+ "notTheCriterion": "official observed-discrimination gate (cross-model separation) — these are not equivalent; e.g. RM-CN saturates the 27B model yet the gate measures allPassItems=0 / separatingRate=94.1%",
+ "retired": [
+  "MX3-21-P1",
+  "MX3-21-P2",
+  "MX3-21-P3",
+  "MX3-21-P4",
+  "MX3-22-P1",
+  "MX3-22-P2",
+  "MX3-22-P3",
+  "MX3-22-P4",
+  "MX3-23-P1",
+  "MX3-23-P2",
+  "MX3-23-P3",
+  "MX3-23-P4"
+ ],
+ "changed": [
+  {
+   "id": "MX3-21-P1",
+   "from": "valid",
+   "to": "retired",
+   "groupId": "MX3-21",
+   "partNumber": 1,
+   "points": 10
+  },
+  {
+   "id": "MX3-21-P2",
+   "from": "valid",
+   "to": "retired",
+   "groupId": "MX3-21",
+   "partNumber": 2,
+   "points": 20
+  },
+  {
+   "id": "MX3-21-P3",
+   "from": "valid",
+   "to": "retired",
+   "groupId": "MX3-21",
+   "partNumber": 3,
+   "points": 30
+  },
+  {
+   "id": "MX3-21-P4",
+   "from": "valid",
+   "to": "retired",
+   "groupId": "MX3-21",
+   "partNumber": 4,
+   "points": 40
+  },
+  {
+   "id": "MX3-22-P1",
+   "from": "valid",
+   "to": "retired",
+   "groupId": "MX3-22",
+   "partNumber": 1,
+   "points": 10
+  },
+  {
+   "id": "MX3-22-P2",
+   "from": "valid",
+   "to": "retired",
+   "groupId": "MX3-22",
+   "partNumber": 2,
+   "points": 20
+  },
+  {
+   "id": "MX3-22-P3",
+   "from": "valid",
+   "to": "retired",
+   "groupId": "MX3-22",
+   "partNumber": 3,
+   "points": 30
+  },
+  {
+   "id": "MX3-22-P4",
+   "from": "valid",
+   "to": "retired",
+   "groupId": "MX3-22",
+   "partNumber": 4,
+   "points": 40
+  },
+  {
+   "id": "MX3-23-P1",
+   "from": "valid",
+   "to": "retired",
+   "groupId": "MX3-23",
+   "partNumber": 1,
+   "points": 10
+  },
+  {
+   "id": "MX3-23-P2",
+   "from": "valid",
+   "to": "retired",
+   "groupId": "MX3-23",
+   "partNumber": 2,
+   "points": 20
+  },
+  {
+   "id": "MX3-23-P3",
+   "from": "valid",
+   "to": "retired",
+   "groupId": "MX3-23",
+   "partNumber": 3,
+   "points": 30
+  },
+  {
+   "id": "MX3-23-P4",
+   "from": "valid",
+   "to": "retired",
+   "groupId": "MX3-23",
+   "partNumber": 4,
+   "points": 40
+  }
+ ],
+ "alreadyRetired": [],
+ "bankAfter": {
+  "total": 849,
+  "valid": 823,
+  "retired": 26,
+  "defaultRunCount": 822
+ },
+ "note": "status-only change; the exam pack still defines these groups, references and historical run rows are untouched"
+}
