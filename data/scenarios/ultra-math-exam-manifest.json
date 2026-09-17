@@ -76,7 +76,10 @@
     "freshContextPerGroup": true,
     "futurePartsHidden": true,
     "answerFeedback": false,
-    "partialCredit": true
+    "partialCredit": true,
+    "atomicRunnerDisabled": true,
+    "atomicRunnerDisabledReason": "ultra_proof_part 恒返回 0 分 + PROOF_REQUIRES_RUBRIC_JUDGE，而 scoreUltraMathRubric 没有接进任何执行路径，普通 run 会落到通用 LLM judge（judge_bug_detection 等轴）上，任何非空答案都 ~100 分 ⇒ 分数不携带信息。",
+    "scoringPath": "explicit_progressive_exam"
   },
   "scoring": {
     "rubricVersion": "ultra-math-rubric-2026-09-17-v2",
@@ -119,5 +122,15 @@
     "rubricImplementation": "packages/core/src/evaluationLab/ultraMathRubric.ts",
     "qwenEvidence": "docs/ultra-qwen-screen-2026-09-14-evidence.json",
     "deepseekEvidence": "docs/ultra-deepseek-screen-2026-09-14-evidence.json"
+  },
+  "bankRestriction": {
+    "date": "2026-09-17",
+    "measure": "benchmark.json 里 UMX 八题标 requirements.developmentShadow = true，退出 defaultRunCount（814 -> 806）",
+    "tags": [
+      "rubric_judge_required",
+      "not_scoreable_by_atomic_runner"
+    ],
+    "canStillRunExplicitly": true,
+    "note": "manifest 早就声明 defaultAtomicBank: false，之前是题库没有落实；本次落实。"
   }
 }

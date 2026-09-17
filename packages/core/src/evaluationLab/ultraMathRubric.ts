@@ -43,6 +43,18 @@ export const ULTRA_MATH_RELEASE={
 
 const hash=(text:string)=>createHash('sha256').update(text).digest('hex');
 const validNumber=(n:number,max:number)=>Number.isFinite(n)&&n>=0&&n<=max;
+/**
+ * ⚠️ 本函数**目前没有任何执行路径**（全仓只被 `*.test.ts` 引用）—— 2026-09-17 核查确认。
+ *
+ * UMX 的评分器 `ultra_proof_part` 恒返回 0 分 + `PROOF_REQUIRES_RUBRIC_JUDGE`
+ * （见 `evaluators/ultraBatchPart.ts`），然后普通 run 会落到通用 LLM judge 上，
+ * 用 `judge_bug_detection` 之类的通用轴给分 ⇒ 任何非空答案都 ~100，分数不携带信息。
+ *
+ * 所以 UMX 八题已被标为 `developmentShadow`（退出默认题库）并在
+ * `data/scenarios/benchmark-meta.json` 的 `ultraMath.atomicRunDisabled` 里记明原因。
+ * 要让本函数真正生效，需要：① 由 judge 产出 `UltraPartReview`（逐 criteria 的 awarded + evidence，
+ * 支持 `blockedBy` 语义与 `independent` 标记）；② 在 run 收尾时调用本函数而不是通用 judge。
+ */
 export function scoreUltraMathRubric(answers:UltraAnswer[],reviews:UltraPartReview[]){
  const answerIds=new Set(answers.map(x=>x.id));
  if(answers.length!==answerIds.size||answers.some(a=>!ULTRA_MATH_RUBRICS.some(r=>r.id===a.id)||!['completed','timeout','truncated','environment_error'].includes(a.outcome)||typeof a.output!=='string'))throw new Error('Invalid answers');

@@ -1,0 +1,31 @@
+{
+ "date": "2026-09-17T00:00:00.000Z",
+ "dimension": "reasoning_math",
+ "grader": "ultra_proof_part",
+ "reason": "ultra_proof_part 恒返回 0 分 + PROOF_REQUIRES_RUBRIC_JUDGE，而 rubric 判分函数（scoreUltraMathRubric）没有接进任何执行路径，所以普通 run 会落到通用 LLM judge 上，任何非空答案都拿 ~100 —— 分数不携带信息。",
+ "evidence": {
+  "evaluator": "packages/core/src/evaluators/ultraBatchPart.ts:65 ultraProofPartEvaluator 恒返回 totalScore 0 + PROOF_REQUIRES_RUBRIC_JUDGE",
+  "noExecutionPath": "scoreUltraMathRubric 全仓只被 *.test.ts 引用；ULTRA_MATH_RUBRICS 的 criteria 运行期从不被消费",
+  "observed": "探针 UMX-01-P1/P2 改写后 total=100 det=0 judge=100，但 axisScores={} 且 axisEvidence 里是 judge_bug_detection 等通用轴"
+ },
+ "measure": {
+  "developmentShadow": true,
+  "scoringPath": "explicit_progressive_exam",
+  "tags": [
+   "rubric_judge_required",
+   "not_scoreable_by_atomic_runner"
+  ]
+ },
+ "kept": "题面（v3 改写）、rubric criteria、清单与历史 run 行全部保留",
+ "changed": [
+  "UMX-01-P1",
+  "UMX-01-P2",
+  "UMX-01-P3",
+  "UMX-01-P4",
+  "UMX-02-P1",
+  "UMX-02-P2",
+  "UMX-02-P3",
+  "UMX-02-P4"
+ ],
+ "alreadyMarked": []
+}

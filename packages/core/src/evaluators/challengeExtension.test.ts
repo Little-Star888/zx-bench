@@ -28,7 +28,9 @@ describe('bank 1.31.1 challenge integration and restored formal scope', () => {
     expect(pack.hash).toBe(manifest.sourceHash);
     expect(pack.cases).toHaveLength(21);
     expect(bank).toHaveLength(849);
-    expect(bank.filter(s => !(s.requirements as any)?.developmentShadow)).toHaveLength(848);
+    // 2026-09-17：UMX 八题标 developmentShadow（ultra_proof_part 在普通 run 路径下分数无意义），
+    // 非 shadow 数 848 -> 840。定义与 rubric 保留，仍可被显式指定运行。
+    expect(bank.filter(s => !(s.requirements as any)?.developmentShadow)).toHaveLength(840);
     for (const item of pack.cases) {
       const scenario = find(item.id);
       expect(scenario.scenarioHash, item.id).toBe(hashScenarioShort(scenario));

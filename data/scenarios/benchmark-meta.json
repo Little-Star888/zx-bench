@@ -1,5 +1,5 @@
 {
- "version": "1.42.0",
+ "version": "1.43.0",
  "count": 815,
  "retiredCount": 112,
  "totalCount": 927,
@@ -281,7 +281,7 @@
   "sourcePackHash": "42929b253e9e2f4d32568c5e164ab4fcb651cca3712b6472950c7907c2ed10e3",
   "prospectiveOnly": true
  },
- "defaultRunCount": 814,
+ "defaultRunCount": 806,
  "challengeExtension": {
   "version": "challenge-extension-2026-09-13-v1",
   "bankVersion": "1.31.1",
@@ -423,6 +423,9 @@
  "ultraMath": {
   "questionVersion": "ultra-math-2026-09-17-v3",
   "rubricVersion": "ultra-math-rubric-2026-09-17-v2",
-  "note": "UMX-01 于 2026-09-17 重写为可达版本（V=F₂⁴ + 二维公共空间）；UMX-02 未改动。"
+  "note": "UMX 八题标 developmentShadow 退出默认题库；定义与 rubric 保留，人工/专用轨道仍可用。",
+  "scoringPath": "explicit_progressive_exam",
+  "atomicRunDisabled": true,
+  "atomicRunDisabledReason": "ultra_proof_part 恒返回 0 分 + PROOF_REQUIRES_RUBRIC_JUDGE，而 rubric 判分函数（scoreUltraMathRubric）没有接进任何执行路径，所以普通 run 会落到通用 LLM judge 上，任何非空答案都拿 ~100 —— 分数不携带信息。"
  }
 }

@@ -62,6 +62,29 @@ export const ultraBatchPartEvaluator: Evaluator = {
   },
 };
 
+/**
+ * UMX（ultra_proof_part）**不可用普通 run 路径评分** —— 2026-09-17 核查结论。
+ *
+ * 本评分器**故意**恒返回 `totalScore: 0` + `evidence: ['PROOF_REQUIRES_RUBRIC_JUDGE']`，
+ * 表示「证明题必须由 rubric 逐条判分」。但 `scoreUltraMathRubric`
+ * （`evaluationLab/ultraMathRubric.ts`）**全仓只被测试引用，没有任何执行路径**，
+ * `ULTRA_MATH_RUBRICS` 的 criteria 在运行期也从不被消费。
+ *
+ * ⇒ 走普通 run 时，确定性分恒为 0、而 orchestrator 会让**通用 LLM judge** 接手，
+ *   其判分轴是 `judge_bug_detection` / `judge_root_cause` / `judge_patch_correctness` /
+ *   `judge_scope_discipline` / `judge_output_completeness`（与 UMX 的 criteria 毫无关系）
+ *   ⇒ **只要模型产出了非空文本就会拿 ~100 分**；无输出则恒 0。两种分数都不携带信息。
+ *
+ * **判据（排查同类问题用）**：`axisScores` 为空 + `evidence` 含 `PROOF_REQUIRES_RUBRIC_JUDGE`
+ * + `axisEvidence` 出现 `judge_*` 轴 ⇒ 这题在当前路径下没有被真正评分，
+ * 不要用它得到的任何分数（包括满分）做结论。
+ *
+ * 因此 UMX 八题在题库里标了 `requirements.developmentShadow = true` +
+ * `scoringPath: 'explicit_progressive_exam'`（见 `scripts/mark-umx-not-atomically-scoreable.mjs`），
+ * 与 `docs/ultra-math-exam-manifest.json` 声明的 `defaultAtomicBank: false` 对齐。
+ * 若要恢复自动评分，需要先让 judge 产出 `UltraPartReview`（逐 criteria 的 awarded + evidence），
+ * 那是新的设计工作，不是接线。
+ */
 export const ultraProofPartEvaluator: Evaluator = {
   name: 'ultra_proof_part',
   version: '1.0.0',

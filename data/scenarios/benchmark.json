@@ -60727,7 +60727,9 @@
      "分类或构造存在影响结论的遗漏。"
     ],
     "reference": "按每个评分点核查结论、证明和完备性；只给出结论不能获得证明项分数。"
-   }
+   },
+   "developmentShadow": true,
+   "scoringPath": "explicit_progressive_exam"
   },
   "tags": [
    "ultra_difficulty",
@@ -60735,10 +60737,12 @@
    "group_UMX-01",
    "part_1",
    "points_10",
-   "timeout_360s"
+   "timeout_360s",
+   "rubric_judge_required",
+   "not_scoreable_by_atomic_runner"
   ],
   "scenarioVersion": "1.1.0",
-  "scenarioHash": "e8f0f2e22cf43319",
+  "scenarioHash": "1772b731889389dd",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -60795,7 +60799,9 @@
      "分类或构造存在影响结论的遗漏。"
     ],
     "reference": "按每个评分点核查结论、证明和完备性；只给出结论不能获得证明项分数。"
-   }
+   },
+   "developmentShadow": true,
+   "scoringPath": "explicit_progressive_exam"
   },
   "tags": [
    "ultra_difficulty",
@@ -60803,10 +60809,12 @@
    "group_UMX-01",
    "part_2",
    "points_20",
-   "timeout_360s"
+   "timeout_360s",
+   "rubric_judge_required",
+   "not_scoreable_by_atomic_runner"
   ],
   "scenarioVersion": "1.1.0",
-  "scenarioHash": "17151d8c38600909",
+  "scenarioHash": "4d883f0f60ca9c10",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -60873,7 +60881,9 @@
      "分类或构造存在影响结论的遗漏。"
     ],
     "reference": "按每个评分点核查结论、证明和完备性；只给出结论不能获得证明项分数。"
-   }
+   },
+   "developmentShadow": true,
+   "scoringPath": "explicit_progressive_exam"
   },
   "tags": [
    "ultra_difficulty",
@@ -60881,10 +60891,12 @@
    "group_UMX-01",
    "part_3",
    "points_30",
-   "timeout_1200s"
+   "timeout_1200s",
+   "rubric_judge_required",
+   "not_scoreable_by_atomic_runner"
   ],
   "scenarioVersion": "1.1.0",
-  "scenarioHash": "70547f422cb1dde0",
+  "scenarioHash": "3d1a4558560b6751",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -60951,7 +60963,9 @@
      "分类或构造存在影响结论的遗漏。"
     ],
     "reference": "按每个评分点核查结论、证明和完备性；只给出结论不能获得证明项分数。"
-   }
+   },
+   "developmentShadow": true,
+   "scoringPath": "explicit_progressive_exam"
   },
   "tags": [
    "ultra_difficulty",
@@ -60959,10 +60973,12 @@
    "group_UMX-01",
    "part_4",
    "points_40",
-   "timeout_1200s"
+   "timeout_1200s",
+   "rubric_judge_required",
+   "not_scoreable_by_atomic_runner"
   ],
   "scenarioVersion": "1.1.0",
-  "scenarioHash": "9703c22db30b4602",
+  "scenarioHash": "dd47645a1de6a273",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -61014,7 +61030,9 @@
      "分类或构造存在影响结论的遗漏。"
     ],
     "reference": "按每个评分点核查结论、证明和完备性；只给出结论不能获得证明项分数。"
-   }
+   },
+   "developmentShadow": true,
+   "scoringPath": "explicit_progressive_exam"
   },
   "tags": [
    "ultra_difficulty",
@@ -61022,10 +61040,12 @@
    "group_UMX-02",
    "part_1",
    "points_10",
-   "timeout_360s"
+   "timeout_360s",
+   "rubric_judge_required",
+   "not_scoreable_by_atomic_runner"
   ],
   "scenarioVersion": "1.0.0",
-  "scenarioHash": "51655551a2da0c8a",
+  "scenarioHash": "2147c95a246b6d20",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -61087,7 +61107,9 @@
      "分类或构造存在影响结论的遗漏。"
     ],
     "reference": "按每个评分点核查结论、证明和完备性；只给出结论不能获得证明项分数。"
-   }
+   },
+   "developmentShadow": true,
+   "scoringPath": "explicit_progressive_exam"
   },
   "tags": [
    "ultra_difficulty",
@@ -61095,10 +61117,12 @@
    "group_UMX-02",
    "part_2",
    "points_20",
-   "timeout_360s"
+   "timeout_360s",
+   "rubric_judge_required",
+   "not_scoreable_by_atomic_runner"
   ],
   "scenarioVersion": "1.0.0",
-  "scenarioHash": "fd9a660cf3fa1331",
+  "scenarioHash": "b024f369f5072f36",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -61165,7 +61189,9 @@
      "分类或构造存在影响结论的遗漏。"
     ],
     "reference": "按每个评分点核查结论、证明和完备性；只给出结论不能获得证明项分数。"
-   }
+   },
+   "developmentShadow": true,
+   "scoringPath": "explicit_progressive_exam"
   },
   "tags": [
    "ultra_difficulty",
@@ -61173,10 +61199,12 @@
    "group_UMX-02",
    "part_3",
    "points_30",
-   "timeout_1200s"
+   "timeout_1200s",
+   "rubric_judge_required",
+   "not_scoreable_by_atomic_runner"
   ],
   "scenarioVersion": "1.0.0",
-  "scenarioHash": "42e801718b182875",
+  "scenarioHash": "0c8c65a38fe76df4",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -61258,7 +61286,9 @@
      "分类或构造存在影响结论的遗漏。"
     ],
     "reference": "按每个评分点核查结论、证明和完备性；只给出结论不能获得证明项分数。"
-   }
+   },
+   "developmentShadow": true,
+   "scoringPath": "explicit_progressive_exam"
   },
   "tags": [
    "ultra_difficulty",
@@ -61266,10 +61296,12 @@
    "group_UMX-02",
    "part_4",
    "points_40",
-   "timeout_1200s"
+   "timeout_1200s",
+   "rubric_judge_required",
+   "not_scoreable_by_atomic_runner"
   ],
   "scenarioVersion": "1.0.0",
-  "scenarioHash": "049853c6bd8701c0",
+  "scenarioHash": "f700203e4242c6d4",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
