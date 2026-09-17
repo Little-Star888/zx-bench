@@ -23,10 +23,17 @@ const DRY = process.argv.includes('--dry-run');
 const APPLY_API = process.argv.includes('--apply-api');
 const BASE = process.env.BASE_URL || 'http://localhost:3001';
 const RETIRED_AT = '2026-09-17T00:00:00.000Z';
+const META_VERSION = '1.40.0';
+// 每次扩大清单就 +1，保证审计留痕不被覆盖（第 1 轮 = 无后缀）
+const ROUND = 2;
 
 const bankUrl = new URL('../data/scenarios/benchmark.json', import.meta.url);
 const metaUrl = new URL('../data/scenarios/benchmark-meta.json', import.meta.url);
-const auditUrl = new URL('../data/scenarios/exam-group-retirement-2026-09-17.json', import.meta.url);
+const auditUrl = new URL(
+  ROUND === 1
+    ? '../data/scenarios/exam-group-retirement-2026-09-17.json'
+    : `../data/scenarios/exam-group-retirement-2026-09-17-round${ROUND}.json`,
+  import.meta.url);
 
 const bank = JSON.parse(readFileSync(bankUrl, 'utf8'));
 const byId = new Map(bank.map(s => [s.id, s]));
@@ -56,6 +63,7 @@ if (RETIRED_EXAM_GROUP_IDS.some(id => id.startsWith('MX3-24'))) throw new Error(
 
 const audit = {
   date: RETIRED_AT,
+  round: ROUND,
   reason: EXAM_GROUP_RETIREMENT_REASON,
   scope: EXAM_GROUP_RETIREMENT_SCOPE,
   dimension: 'reasoning_math',
@@ -72,7 +80,7 @@ const audit = {
 if (!DRY) {
   writeFileSync(bankUrl, `${JSON.stringify(bank, null, 1)}\n`);
   const meta = JSON.parse(readFileSync(metaUrl, 'utf8'));
-  meta.version = '1.39.0';
+  meta.version = META_VERSION;
   meta.count = valid.length;
   meta.validCount = valid.length;
   meta.retiredCount = Number(meta.retiredCount ?? 0) + changed.length;
@@ -91,7 +99,7 @@ if (!DRY) {
 console.log(JSON.stringify({
   dryRun: DRY, changed: changed.length, alreadyRetired: already.length,
   bank: { total: bank.length, valid: valid.length, retired: retired.length, defaultRunCount },
-  meta: { version: '1.39.0', validCount: valid.length, retiredCount: changed.length },
+  meta: { version: META_VERSION, validCount: valid.length, retiredCount: changed.length },
   reasoning_mathValid: valid.filter(s => s.dimension === 'reasoning_math').length,
 }, null, 2));
 for (const c of changed) console.log(`  retired ${c.id}  (${c.points}分, group=${c.groupId})`);

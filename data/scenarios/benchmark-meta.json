@@ -1,7 +1,7 @@
 {
- "version": "1.39.0",
- "count": 823,
- "retiredCount": 104,
+ "version": "1.40.0",
+ "count": 815,
+ "retiredCount": 112,
  "totalCount": 927,
  "dimensions": {
   "agent_loop": 5,
@@ -11,7 +11,7 @@
   "hallucination_resistance": 134,
   "instruction_following": 42,
   "program": 150,
-  "reasoning_math": 123,
+  "reasoning_math": 115,
   "safety_authority": 50,
   "structured_output": 58,
   "tool_cli_workflow": 56
@@ -20,7 +20,7 @@
   "hallucination_resistance": 78
  },
  "generatedAt": "2026-09-17T00:00:00.000Z",
- "validCount": 823,
+ "validCount": 815,
  "ambiguousCount": 0,
  "reviewCount": 0,
  "questionReview": "math-3.2-hallucination-5.0",
@@ -281,7 +281,7 @@
   "sourcePackHash": "42929b253e9e2f4d32568c5e164ab4fcb651cca3712b6472950c7907c2ed10e3",
   "prospectiveOnly": true
  },
- "defaultRunCount": 822,
+ "defaultRunCount": 814,
  "challengeExtension": {
   "version": "challenge-extension-2026-09-13-v1",
   "bankVersion": "1.31.1",
@@ -407,9 +407,17 @@
    "MX3-23-P1",
    "MX3-23-P2",
    "MX3-23-P3",
-   "MX3-23-P4"
+   "MX3-23-P4",
+   "MX3-15-P1",
+   "MX3-15-P2",
+   "MX3-15-P3",
+   "MX3-15-P4",
+   "MX3-16-P1",
+   "MX3-16-P2",
+   "MX3-16-P3",
+   "MX3-16-P4"
   ],
   "reason": "saturated against the local 27B model: every run scored 100, so the group no longer discriminates the model it was authored for (user decision, 2026-09-17)",
-  "scope": "user-selected: MX3-21/22/23 only (12 parts); no replacement authored in this round"
+  "scope": "user-selected in two rounds on 2026-09-17: round 1 = MX3-21/22/23 (12 parts), round 2 = MX3-15/16 (8 parts) after the first live test of MX3-14/15/16/17; no replacement authored in this round. Groups with any discriminating part are kept (MX3-24, MX3-14, MX3-17, MX3-13, MX3-18, MX3-19, MX3-20)."
  }
 }

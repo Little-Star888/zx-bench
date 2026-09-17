@@ -17,18 +17,30 @@
  *
  * 逐题证据（apps/data/zxbench.db，modelConfigId = 086461bc-49c6-4bd6-b4b8-f8260be0f71f，
  * qwen3.8-27b-nvfp4，已排除 HARD_TIME_LIMIT / Unknown 等工程失败行）：
+ *   —— 第 1 轮（2026-09-17，用户选定「只清这三组」）——
  *   MX3-21-P1..P4   1~2 次 run，全部 100
  *   MX3-22-P1..P4   1~3 次 run，全部 100（改写前 P2 是 600s 超时+零输出的 0 分）
  *   MX3-23-P1..P4   1 次 run，全部 100
- *   对照 MX3-24：P1/P2/P3 = 100，**P4 = 0**（唯一有区分信号的一问）⇒ 该组保留不动。
+ *   —— 第 2 轮（同日，用户追加「同样退役」）——
+ *   MX3-15-P1..P4   各 **2 次** run，全部 100（受限格路：DP / 非交叉路径族）
+ *   MX3-16-P1..P4   各 **2 次** run，全部 100（整数分拆：递推 / 阈值反查 / 欧拉定理 / 模结构）
+ *   注：第 2 轮证据**强于**第 1 轮（2 次 vs 1 次），是首次实测 MX3-14/15/16/17 后筛出来的。
  *
- * 退役只改 `status`（benchmark.json 与 DB 的运行时选取依据），**题包仍保留这三组的定义**
+ * 对照组（均**保留**，因为组内至少有一档真正拉开差距）：
+ *   MX3-24  P1/P2/P3 = 100，**P4 = 0**      → 唯一有区分信号的一问
+ *   MX3-14  P1/P3/P4 = 100，**P2 = 50**     → 有信号
+ *   MX3-17  P1/P3/P4 = 100，**P2 = 0**      → 有信号
+ *   MX3-13 / 18 / 19 / 20                   → 各有档位出现非满分
+ *
+ * 退役只改 `status`（benchmark.json 与 DB 的运行时选取依据），**题包仍保留这些题组的定义**
  * （与 challengeRetirement 的既有约定一致），题目定义、参考答案与历史 run 行全部保留，可随时回滚。
  */
 export const RETIRED_EXAM_GROUP_IDS = [
   'MX3-21-P1', 'MX3-21-P2', 'MX3-21-P3', 'MX3-21-P4',
   'MX3-22-P1', 'MX3-22-P2', 'MX3-22-P3', 'MX3-22-P4',
   'MX3-23-P1', 'MX3-23-P2', 'MX3-23-P3', 'MX3-23-P4',
+  'MX3-15-P1', 'MX3-15-P2', 'MX3-15-P3', 'MX3-15-P4',
+  'MX3-16-P1', 'MX3-16-P2', 'MX3-16-P3', 'MX3-16-P4',
 ] as const;
 
 export const RETIRED_EXAM_GROUP_ID_SET = new Set<string>(RETIRED_EXAM_GROUP_IDS);
@@ -38,6 +50,9 @@ export const EXAM_GROUP_RETIREMENT_REASON =
   'saturated against the local 27B model: every run scored 100, so the group no longer '
   + 'discriminates the model it was authored for (user decision, 2026-09-17)';
 
-/** 用户明确要求：本轮只清这三组，暂不补题 */
+/** 用户明确要求：分两轮清掉这五组（20 小问），本轮暂不补题 */
 export const EXAM_GROUP_RETIREMENT_SCOPE =
-  'user-selected: MX3-21/22/23 only (12 parts); no replacement authored in this round';
+  'user-selected in two rounds on 2026-09-17: round 1 = MX3-21/22/23 (12 parts), '
+  + 'round 2 = MX3-15/16 (8 parts) after the first live test of MX3-14/15/16/17; '
+  + 'no replacement authored in this round. Groups with any discriminating part are kept '
+  + '(MX3-24, MX3-14, MX3-17, MX3-13, MX3-18, MX3-19, MX3-20).';
