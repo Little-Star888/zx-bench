@@ -1,0 +1,63 @@
+{
+ "date": "2026-09-16T00:00:00.000Z",
+ "dimension": "reasoning_math",
+ "grader": "ultra_batch_part",
+ "group": "MX3-13",
+ "reason": "旧四问动作同质（都是精确行列式，只在规模/边约束上有差异）；且旧 P2/P3 答案为 31 位整数，在 tools=false 的考试里纯推理不可达 → 对任何模型都是 0 分噪声。",
+ "designPrinciple": "每一问的最短可算路径必须落在纯推理预算内；难度来自洞察，不来自规模。",
+ "iterations": "v8 首次落库后、任何评测开跑之前，修正了 P4 的措辞歧义：原句「与 G_3 同构的那个 d」会让模型把 d=3 自身也算作答案（G_3 与自身同构），可能造成假阴性；已改为「在 d≠3 中与 G_3 同构的那个 d」。答案与分值不变。",
+ "newActions": {
+  "P1": "正算（矩阵树）",
+  "P2": "条件算（边收缩 tau(G含e)=tau(G/e)）",
+  "P3": "谱结构（DFT 对角化 + 诚实去重，含 lambda_10=lambda_20=8 碰撞陷阱）",
+  "P4": "同构分类（乘子判据）"
+ },
+ "verification": "双路独立复核：矩阵树 vs 谱公式；边收缩 vs 容斥 tau(G)-tau(G-e)；手工核验 cos 取值；乘子判据 vs 精确整数特征多项式指纹聚类。",
+ "timeBudgetPolicy": "hardSeconds 与 points 均未改动（用户选择「接受现状」）。",
+ "tagFix": "同时修正 tags 中历史遗留的 timeout_*s 错标（旧值来自时限倒挂版本）。",
+ "fromScenarioVersion": [
+  "1.0.0",
+  "1.1.0"
+ ],
+ "toScenarioVersion": "1.1.0",
+ "changed": [
+  {
+   "id": "MX3-13-P4",
+   "points": 40,
+   "hardSeconds": 1200,
+   "version": "1.1.0 -> 1.1.0",
+   "hashBefore": "73fb2c9ba026f344b5c55f50c29a24072ada66a0a7693fc7d27c67e6d271b6b5",
+   "hashAfter": "7cb970e6335109aaa1925eb4abd7d3b056c64cdcea9e91bd24cb2e73e60f6e9a",
+   "pointsBefore": 40,
+   "tagsBefore": [
+    "ultra_difficulty",
+    "progressive_exam",
+    "group_MX3-13",
+    "part_4",
+    "points_40",
+    "timeout_1200s"
+   ],
+   "tagsAfter": [
+    "ultra_difficulty",
+    "progressive_exam",
+    "group_MX3-13",
+    "part_4",
+    "points_40",
+    "timeout_1200s"
+   ],
+   "oldTask": "对 d ∈ {1,2,...,20}，记 G_d 为 C_40(S)，其中 S={1,d}。提交 class_count=这 20 个图两两不同构的类数；以及 iso_of_3、iso_of_7：分别与 G_3、G_7 同构的那个 d。",
+   "newTask": "对 d ∈ {1,2,...,20}，记 G_d 为 C_40(S)，其中 S={1,d}。提交 class_count=这 20 个图两两不同构的类数；以及 iso_of_3=在 d≠3 中与 G_3 同构的那个 d，iso_of_7=在 d≠7 中与 G_7 同构的那个 d。",
+   "answers": {
+    "class_count": "18",
+    "iso_of_3": "13",
+    "iso_of_7": "17"
+   }
+  }
+ ],
+ "alreadyUpgraded": [
+  "MX3-13-P1",
+  "MX3-13-P2",
+  "MX3-13-P3"
+ ],
+ "notInBank": []
+}

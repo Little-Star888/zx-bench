@@ -27,8 +27,8 @@ describe('bank 1.31.1 challenge integration and restored formal scope', () => {
   it('freezes the exact source, counts, hashes and default eligibility', () => {
     expect(pack.hash).toBe(manifest.sourceHash);
     expect(pack.cases).toHaveLength(21);
-    expect(bank).toHaveLength(837);
-    expect(bank.filter(s => !(s.requirements as any)?.developmentShadow)).toHaveLength(836);
+    expect(bank).toHaveLength(849);
+    expect(bank.filter(s => !(s.requirements as any)?.developmentShadow)).toHaveLength(848);
     for (const item of pack.cases) {
       const scenario = find(item.id);
       expect(scenario.scenarioHash, item.id).toBe(hashScenarioShort(scenario));

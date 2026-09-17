@@ -1,0 +1,57 @@
+{
+ "date": "2026-09-17T00:00:00.000Z",
+ "dimension": "reasoning_math",
+ "grader": "ultra_batch_part",
+ "groups": [
+  "MX3-21",
+  "MX3-22",
+  "MX3-23"
+ ],
+ "reason": "新出的高难度题组里有几问把答案建立在大规模枚举上，在 tools=false 的考试里纯推理不可达 ⇒ 对任何模型都是 0 分噪声。实测 MX3-22-P2 产出 HARD_TIME_LIMIT 600s、输出 0 字符。",
+ "designPrinciple": "难度递增 = 判断难度递增，不是计算量递增；每一问的最短可算路径必须落在纯推理预算内。",
+ "unreachable": {
+  "MX3-22": "P2 需枚举 10007 项；P3 需 253 × 10007 ≈ 253 万项（三重特征标和 = #E(F_p) − p − 1，无初等闭形式）",
+  "MX3-23": "m=97 需 153 步、联合(7,11) 需 184 步，且每步为 9 位数运算",
+  "MX3-21-P4": "count_at_max 需枚举 C(30,5) = 142,506 个子集"
+ },
+ "reachable": {
+  "MX3-22": "最重 p=13 的 66 对 × 13 项 = 858 次基本运算",
+  "MX3-23": "最多 63 步",
+  "MX3-21-P4": "counting_bound 可直接由 k(k+1)/2 ≤ 30 推出 = 7"
+ },
+ "verification": {
+  "MX3-22": "欧拉判别 χ(a)=a^((p−1)/2) 复核（设计侧用二次剩余查表）",
+  "MX3-23": "矩阵快速幂复核（设计侧用逐步递推），前 81 项完全一致",
+  "MX3-21": "verify_hard6.py 以 C(31,7) / C(31,6) 全量枚举证明极值"
+ },
+ "fromScenarioVersion": [
+  "1.0.0",
+  "1.1.0"
+ ],
+ "toScenarioVersion": "1.1.0",
+ "changed": [
+  {
+   "id": "MX3-21-P4",
+   "points": 40,
+   "hardSeconds": 1200,
+   "version": "1.0.0 -> 1.1.0",
+   "oldTask": "条件变更：改为在**乘法群 Z_31^*** 中取子集 B，要求所有 i≤j 的 bᵢ·bⱼ (mod 31) 互不相同。提交 max_size=这样的 B 的最大规模，以及 count_at_max=恰好达到该规模的子集个数。",
+   "newTask": "条件变更：改为在**乘法群 Z_31^*** 中取子集 B，要求所有 i≤j 的 bᵢ·bⱼ (mod 31) 互不相同。提交 max_size=这样的 B 的最大规模，以及 counting_bound=仅由计数条件 k(k+1)/2 ≤ 30 得到的 k 的上界。",
+   "answers": {
+    "max_size": "5",
+    "counting_bound": "7"
+   }
+  }
+ ],
+ "alreadyUpgraded": [
+  "MX3-22-P1",
+  "MX3-22-P2",
+  "MX3-22-P3",
+  "MX3-22-P4",
+  "MX3-23-P1",
+  "MX3-23-P2",
+  "MX3-23-P3",
+  "MX3-23-P4"
+ ],
+ "notInBank": []
+}

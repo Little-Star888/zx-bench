@@ -1114,12 +1114,170 @@ group('21','sidon-sets-countersearch','Sidon 集：计数上界与真实极值�
          exact('max_size',20,_sidon_k31)),
     part('仍为 Z_31。提交 lexmin_set=**在所有达到最大规模的 Sidon 集中，按元素升序比较所得字典序最小**的那个集合（提交升序数组）。',
          exact('lexmin_set',30,list(_sidon_lex31))),
-    part('条件变更：改为在**乘法群 Z_31^*** 中取子集 B，要求所有 i≤j 的 bᵢ·bⱼ (mod 31) 互不相同。提交 max_size=这样的 B 的最大规模，以及 count_at_max=恰好达到该规模的子集个数。',
-         exact('max_size',15,_sidon_k30),exact('count_at_max',25,_sidon_cnt30))],
+    part('条件变更：改为在**乘法群 Z_31^*** 中取子集 B，要求所有 i≤j 的 bᵢ·bⱼ (mod 31) 互不相同。'
+         '提交 max_size=这样的 B 的最大规模，以及 counting_bound=仅由计数条件 k(k+1)/2 ≤ 30 得到的 k 的上界。',
+         exact('max_size',25,_sidon_k30),exact('counting_bound',15,_sidon_cap30))],
     '从加法群换到乘法群：Z_31^* 是 30 阶循环群，取生成元后与 Z_30 同构，问题迁移过去后极值会进一步下降。',
-    '计数上界与实际极值不等（Z_31 为 7 对 6，Z_31^* 为 7 对 5），因此靠背结论得不到答案；答案互不相同。')
+    '计数上界与实际极值不等（Z_31 为 7 对 6，Z_31^* 为 7 对 5），因此靠背结论得不到答案；答案互不相同。'
+    '注：P4 原为「数出达到最大规模的子集个数」（gold=6540），需要枚举 C(30,5)=142,506 个子集，'
+    '在 tools=false 下不可达 —— 2026-09-17 改为可推导的 counting_bound，避免重蹈 MX3-22/23 的覆辙。')
 
-pack={'version':'math-exam-expansion-2026-09-16-v12','status':'candidate-unmeasured',
+# 22 & 23. Two groups designed against the measured difficulty levers.
+#
+# 实测结论（MX3-18/19/20）：标准命名恒等式、标准算法、纯长算术对强模型都无效
+# （4~7 秒即可做对或直接回忆）；**真正有效的是「想当然的默认假设是错的」**。
+#   MX3-22 三特征标和：值随 (a,b) 大幅变化（本范围 63 种取值），
+#          想当然套 Σχ(x)χ(x+a) = -1 或"三特征标和恒为 0"必错。
+#   MX3-23 模递推的最小命中：序列**定义在 mod 1e9+7 下**，
+#          于是"直接按小模数迭代"这条捷径是错的
+#          （(a_n mod M) mod m ≠ a_n mod m）—— 实测 mod 97 正确 153、捷径 144。
+# --- MX3-22 rewritten 2026-09-17: the p=10007 version was UNREACHABLE without tools ---
+# 实测证据：MX3-22-P2（p=10007 的三重特征标和）产出 `HARD_TIME_LIMIT: Model call timed out
+# after 600000ms`，输出 0 字符 —— 因为 Σ_x χ(x)χ(x+a)χ(x+b) = #E(F_p) − p − 1
+# （E: y²=x(x+a)(x+b)），对一般 (a,b) 没有初等闭形式，只能枚举 10007 项；
+# P3 更需 253 对 × 10007 ≈ 253 万项。这与旧 MX3-13-P2 是同一类缺陷（无工具不可达）。
+# 改写原则：难度 = 判断难度，不是计算量 ⇒ 全部换到小素数（p ∈ {7,11,13}），
+# 让"规律是否普遍成立 / 计数 / 极值"成为难点。
+def _chi_small(q):
+    qr = {x * x % q for x in range(1, q)}
+    return [0 if a % q == 0 else (1 if a % q in qr else -1) for a in range(q)]
+
+def _tri_small(q, a, b):
+    t = _chi_small(q)
+    return sum(t[x] * t[(x + a) % q] * t[(x + b) % q] for x in range(q))
+
+def _pairs_small(q):
+    return [(a, b) for a in range(1, q) for b in range(a + 1, q)]
+
+def _tri_stat(q):
+    ps = _pairs_small(q)
+    vs = [_tri_small(q, a, b) for a, b in ps]
+    mx = max(vs)
+    arg = min(ab for ab, v in zip(ps, vs) if v == mx)
+    return {'n': len(ps), 'zero': sum(1 for v in vs if v == 0),
+            'nonzero': sum(1 for v in vs if v != 0), 'max': mx,
+            'max_count': sum(1 for v in vs if v == mx), 'arg': arg}
+
+_SQ7, _SQ11, _SQ13 = _tri_stat(7), _tri_stat(11), _tri_stat(13)
+_X22_P1 = sum(_chi_small(11)[x] * _chi_small(11)[(x + 1) % 11] for x in range(11))
+# 已知值守卫（经典恒等式）：Σχ = 0、Σχ(x)χ(x+a) = −1 (a≠0)
+for _q in (7, 11, 13):
+    _t = _chi_small(_q)
+    assert sum(_t) == 0, 'MX3-22 守卫失败: Σχ ≠ 0 (q=%d)' % _q
+    assert sum(_t[x] * _t[(x + 1) % _q] for x in range(_q)) == -1, 'MX3-22 守卫失败: Σχχ(x+1) ≠ −1 (q=%d)' % _q
+assert (_X22_P1, _SQ7['zero'], _SQ11['nonzero'], _SQ13['max'], _SQ13['arg']) == (-1, 9, 30, 6, (1, 7)), \
+    'MX3-22 改写 gold 与定稿不符'
+assert len({_X22_P1, _SQ7['zero'], _SQ11['nonzero'], _SQ13['max'],
+            _SQ13['arg'][0], _SQ13['arg'][1]}) == 6, 'MX3-22 改写答案出现重复（泄漏）'
+
+# --- MX3-23 rewritten 2026-09-17: same trap, but a reachable iteration length ---
+# 旧版用 m=97（首次命中 n=153）与联合(7,11)（n=184），模型必须以 9 位数迭代上百步
+# → 与 MX3-22 属同类缺陷（无工具不可达）。改写**保留**「先按 M 迭代、再判小模数整除」
+# 这个陷阱本身，只把模数换成首次命中更早、而捷径仍然失效的那些。
+_REC_MOD, _REC_SEED, _REC_C = 1000000007, (1, 2, 5), (3, -1, 2)
+_REC_N = 120
+
+def _rec_seq(limit, mod):
+    a = list(_REC_SEED)
+    for _ in range(limit):
+        a.append((_REC_C[0] * a[-1] + _REC_C[1] * a[-2] + _REC_C[2] * a[-3]) % mod)
+    return a
+
+_REC = _rec_seq(_REC_N, _REC_MOD)
+
+def _first_zero(mod):
+    return next(n for n in range(3, _REC_N) if _REC[n] % mod == 0)
+
+def _first_consecutive(mod):
+    return next(n for n in range(3, _REC_N - 1) if _REC[n] % mod == 0 and _REC[n + 1] % mod == 0)
+
+# 捷径（直接按小模数迭代）——必须给出**不同**的答案，否则本组失去难度来源
+def _naive_zero(mod, limit=4000):
+    a = _rec_seq(limit, mod)
+    return next((n for n in range(3, limit) if a[n] == 0), None)
+
+def _naive_consecutive(mod, limit=4000):
+    a = _rec_seq(limit, mod)
+    return next((n for n in range(3, limit - 1) if a[n] == 0 and a[n + 1] == 0), None)
+
+assert (_first_zero(7), _first_zero(43), _first_zero(61), _first_consecutive(17)) == (8, 37, 32, 63), \
+    'MX3-23 改写 gold 与定稿不符'
+assert _naive_zero(43) != _first_zero(43) and _naive_zero(61) != _first_zero(61), \
+    'MX3-23 改写失去捷径陷阱'
+assert _naive_consecutive(17) is None, 'MX3-23 改写 P4 出现了捷径（应为无解）'
+assert len({_X22_P1, _SQ7['zero'], _SQ11['nonzero'], _SQ13['max'], _SQ13['arg'][0], _SQ13['arg'][1],
+            _first_zero(7), _first_zero(43), _first_zero(61), _first_consecutive(17)}) == 10, \
+    '答案出现重复（泄漏）'
+group('22','character-sums-vary','二次特征标：三重和的取值统计与极值',
+      'p 为素数。χ 表示模 p 的二次特征标：χ(a)=+1 当 a 是模 p 的二次剩余，−1 当 a 是非二次剩余，χ(0)=0。'
+      '本组只用**很小的素数**（p ∈ {7,11,13}），所以难点在**判断规律是否普遍成立**，而不在枚举规模；'
+      '所有三重和都在 1 ≤ a < b ≤ p−1 的数对上进行。'
+      '注意 Σ_x χ(x)χ(x+a) 对任何 a≠0 都恰好等于 −1，但**三个因子**的情形并不遵循这样简单的规律。',[
+    part('取 p=11。提交 pair=Σ_x χ(x)·χ(x+1)。',exact('pair',10,_X22_P1)),
+    part('取 p=7。提交 zero_pairs=使 Σ_x χ(x)χ(x+a)χ(x+b) 恰好等于 0 的数对 (a,b) 的个数（1≤a<b≤6）。',
+         exact('zero_pairs',20,_SQ7['zero'])),
+    part('取 p=11。提交 nonzero_pairs=使该三重和**不等于** 0 的数对 (a,b) 的个数（1≤a<b≤10）。',
+         exact('nonzero_pairs',30,_SQ11['nonzero'])),
+    part('取 p=13。提交 max_value=该三重和在全部数对上的最大值，以及达到该最大值的**字典序最小**数对的两个分量 argmax_a、argmax_b（1≤a<b≤12）。',
+         exact('max_value',20,_SQ13['max']),
+         exact('argmax_a',10,_SQ13['arg'][0]),
+         exact('argmax_b',10,_SQ13['arg'][1]))],
+    'p=13 时三重和**从不等于 0**（66 对全部非 0），而 p=7 有 9 对为 0、p=11 有 15 对为 0 —— 规律不能跨模数外推。',
+    '各问都必须把全部数对算完才能回答，抽查前几对会得到"和为 0"的错误印象（p=7 的字典序第一对恰为 0）。'
+    '本组最重的计算是 p=13 的 66 对 × 13 项 = 858 次基本运算，属"纪律性枚举"可达范围；'
+    '旧版把同一结构放在 p=10007 上（P2 需 10007 项、P3 需 253×10007 ≈ 253 万项），'
+    '实测 `HARD_TIME_LIMIT: Model call timed out after 600000ms` 且零输出 ⇒ 对任何模型都不可达，已废弃改写。')
+
+group('23','modular-recurrence-hits','模递推的最小命中与陷阱对照',
+      '序列定义在模 M=10⁹+7 意义下：aₙ ≡ 3aₙ₋₁ − aₙ₋₂ + 2aₙ₋₃ (mod M)，其中 a₀=1、a₁=2、a₂=5，下标从 0 起。'
+      '注意 aₙ 指的是**先按上述递推在模 M 下得到的那个数**，再考察它与更小模数的整除关系。'
+      '四问的模数依次为 7 / 43 / 61 / 17，首次命中位置都 ≤ 63 步。',[
+    part('提交 n7=最小的 n≥3 使 aₙ ≡ 0 (mod 7)。',exact('n7',10,_first_zero(7))),
+    part('提交 n43=最小的 n≥3 使 aₙ ≡ 0 (mod 43)。',exact('n43',20,_first_zero(43))),
+    part('提交 n61=最小的 n≥3 使 aₙ ≡ 0 (mod 61)。',exact('n61',30,_first_zero(61))),
+    part('条件变更：提交 n2=最小的 n≥3 使 aₙ 与 aₙ₊₁ **连续两项**都能被 17 整除。',
+         exact('n2',40,_first_consecutive(17)))],
+    '连续两项命中要求的是序列上的联合事件，不能把单点命中的位置直接平移。',
+    '序列先在 mod 10⁹+7 下定义，因此"直接按小模数迭代"会得到不同结果（mod 43 时正确 37、捷径 33；'
+    'mod 61 时正确 32、捷径 64；mod 17 的连续两项在捷径下 4000 步内**无解**），靠捷径必错。'
+    '旧版用 mod 97（153 步）与联合(7,11)（184 步），每步都是 9 位数运算，实测 HARD_TIME_LIMIT 600s 零输出 ⇒ 已废弃改写。')
+
+# --- helpers added 2026-09-16 (third hard batch: telescope certificates + identity window) --
+def _kfact_sum(K): return sum(k * factorial(k) for k in range(1, K + 1))
+def _square_telescope(K):
+    s = F(0)
+    for k in range(1, K + 1): s += F(2 * k + 1, k * k * (k + 1) * (k + 1))
+    return s
+def _win_lhs(d, n): return sum(comb(n, k) ** 2 * comb(2 * k, n + d) for k in range(0, n + d + 1))
+def _win_rhs(d, n): return comb(2 * n, n + d)
+def _win_first_bad(d): return next(n for n in range(1, 600) if _win_lhs(d, n) != _win_rhs(d, n))
+def _win_gap(d):
+    n = _win_first_bad(d); return _win_lhs(d, n) - _win_rhs(d, n)
+def _win_threshold(limit):
+    d = 1
+    while _win_gap(d) < limit: d += 1
+    return d, _win_gap(d)
+
+group('24','hypergeometric-window','超几何求和的证成与证伪：望远镜证书与恒等式窗口',
+      'C(n,k) 表示二项式系数，k! 表示阶乘。「望远镜消去」指把求和项 f(k) 写成 G(k+1)−G(k)，使求和整体塌缩为 G(K+1)−G(1)。所有结果必须按整数或最简分数**精确**计算，不得使用浮点近似。',
+      [
+    part('提交 S = Σ_{k=1}^{13} k·k! 的精确值。',
+         exact('kfact_sum',10,_kfact_sum(13))),
+    part('令 f(k) = (2k+1)/(k²(k+1)²)。提交 S = Σ_{k=1}^{11} f(k) 的最简分数（形如 a/b，a、b 为互素正整数；若为整数则直接写该整数）。',
+         exact('square_telescope',20,_square_telescope(11))),
+    part('命题 P：对任意整数 n ≥ 1 与 d ≥ 0，都有 Σ_{k=0}^{n+d} C(n,k)²·C(2k, n+d) = C(2n, n+d)。'
+         '取 d = 7 检验：提交最小的使该等式不成立的 n（若你判定该等式成立，提交 -1）。'
+         '另提交该 n 处「左端 − 右端」的值（上一栏填 -1 时此处也填 -1）。',
+         exact('window_first_bad',15,_win_first_bad(7)),
+         exact('window_gap',15,_win_gap(7))),
+    part('对 d ≥ 1，记 n₀(d) 为最小的使命题 P 中等式不成立的 n，Δ(d) 为该处的「左端 − 右端」。'
+         '提交使 Δ(d) ≥ 500 成立的最小 d，以及此时的 Δ(d)。',
+         exact('threshold_d',20,_win_threshold(500)[0]),
+         exact('threshold_delta',20,_win_threshold(500)[1]))],
+    'P3/P4 的规律不能靠「前几项都成立」外推：该等式恰好对 1 ≤ n ≤ d+1 成立，从 n = d+2 起永久失效（已扫至 n=40 未再成立）。',
+    'n = 1 对任意 d 都**平凡成立**（d ≥ 2 时左右端同为 0），只抽查小 n 会误判为恒等式；Δ(d) = (d+2)² 这一规律必须从若干个 d 的实际值读出，且 P1/P2 各自的望远镜证书不通用（平方差与阶乘各走一条）。')
+
+pack={'version':'math-exam-expansion-2026-09-17-v18','status':'candidate-unmeasured',
       # 时限遵循项目参考值：题级默认 600 秒、上限 1200 秒
       # （packages/core/src/model/caller.ts 的 600_000 默认 + apiControlStream 的 1_200_000 上限）。
       # 原为 [180,360,1200,1200]，是给"不需要计算的"旧 P1 白送分题调的；

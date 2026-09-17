@@ -1,8 +1,8 @@
 {
- "version": "1.37.0",
- "count": 823,
+ "version": "1.38.0",
+ "count": 835,
  "retiredCount": 92,
- "totalCount": 915,
+ "totalCount": 927,
  "dimensions": {
   "agent_loop": 5,
   "agent_workflow": 45,
@@ -11,7 +11,7 @@
   "hallucination_resistance": 134,
   "instruction_following": 42,
   "program": 150,
-  "reasoning_math": 123,
+  "reasoning_math": 135,
   "safety_authority": 50,
   "structured_output": 58,
   "tool_cli_workflow": 56
@@ -19,8 +19,8 @@
  "retiredDimensions": {
   "hallucination_resistance": 78
  },
- "generatedAt": "2026-09-16T00:00:00.000Z",
- "validCount": 823,
+ "generatedAt": "2026-09-17T00:00:00.000Z",
+ "validCount": 835,
  "ambiguousCount": 0,
  "reviewCount": 0,
  "questionReview": "math-3.2-hallucination-5.0",
@@ -281,7 +281,7 @@
   "sourcePackHash": "42929b253e9e2f4d32568c5e164ab4fcb651cca3712b6472950c7907c2ed10e3",
   "prospectiveOnly": true
  },
- "defaultRunCount": 822,
+ "defaultRunCount": 834,
  "challengeExtension": {
   "version": "challenge-extension-2026-09-13-v1",
   "bankVersion": "1.31.1",
@@ -375,7 +375,7 @@
   ]
  },
  "examHardGroups": {
-  "version": "math-exam-expansion-2026-09-16-v12",
+  "version": "math-exam-expansion-2026-09-16-v15",
   "groups": [
    "MX3-13",
    "MX3-14",
@@ -385,7 +385,10 @@
    "MX3-18",
    "MX3-19",
    "MX3-20",
-   "MX3-21"
+   "MX3-21",
+   "MX3-22",
+   "MX3-23",
+   "MX3-24"
   ],
   "parts": 4,
   "note": "brute force infeasible by design; gold computed and independently cross-checked"

@@ -13,7 +13,7 @@ import { hashScenarioShort } from '../packages/core/dist/contracts/canonicalize.
 const DRY = process.argv.includes('--dry-run');
 const APPLY_API = process.argv.includes('--apply-api');
 const BASE = process.env.BASE_URL || 'http://localhost:3001';
-const NEW_GROUPS = ['MX3-13', 'MX3-14', 'MX3-15', 'MX3-16', 'MX3-17', 'MX3-18', 'MX3-19', 'MX3-20', 'MX3-21'];
+const NEW_GROUPS = ['MX3-13', 'MX3-14', 'MX3-15', 'MX3-16', 'MX3-17', 'MX3-18', 'MX3-19', 'MX3-20', 'MX3-21', 'MX3-22', 'MX3-23', 'MX3-24'];
 const GOLD_AT = '2026-09-16T00:00:00.000Z';
 
 const root = new URL('../data/scenarios/', import.meta.url);
@@ -57,7 +57,7 @@ const defaultRunCount = valid.filter(s => !s.requirements?.developmentShadow).le
 if (!DRY) {
   writeFileSync(bankUrl, `${JSON.stringify(next, null, 1)}\n`);
   const meta = JSON.parse(readFileSync(metaUrl, 'utf8'));
-  meta.version = '1.37.0';
+  meta.version = '1.38.0';
   meta.count = valid.length;
   meta.validCount = valid.length;
   meta.totalCount = valid.length + Number(meta.retiredCount ?? 0);

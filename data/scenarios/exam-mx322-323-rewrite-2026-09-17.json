@@ -1,0 +1,134 @@
+{
+ "date": "2026-09-17T00:00:00.000Z",
+ "dimension": "reasoning_math",
+ "grader": "ultra_batch_part",
+ "groups": [
+  "MX3-22",
+  "MX3-23"
+ ],
+ "reason": "旧版两组的答案都建立在大规模枚举上，在 tools=false 的考试里纯推理不可达 → 对任何模型都是 0 分噪声。实测 MX3-22-P2 产出 HARD_TIME_LIMIT 600s、输出 0 字符。",
+ "designPrinciple": "难度递增 = 判断难度递增，不是计算量递增；每一问的最短可算路径必须落在纯推理预算内。",
+ "reachability": {
+  "MX3-22": "p=13 的 66 对 × 13 项 = 858 次基本运算（原 p=10007：P2 需 10007 项、P3 需 253 万项）",
+  "MX3-23": "最多 63 步（原 m=97 需 153 步、联合(7,11) 需 184 步的 9 位数运算）"
+ },
+ "verification": "MX3-22 走欧拉判别 χ(a)=a^((p−1)/2) 复核（设计侧用二次剩余查表）；MX3-23 走矩阵快速幂复核（设计侧用逐步递推），前 81 项完全一致，且陷阱对照（捷径 ≠ 正确）已断言。",
+ "trapPreserved": {
+  "MX3-22": "p=13 三重和从不等于 0，p=7 有 9 对为 0、p=11 有 15 对为 0 ⇒ 规律不可跨模数外推",
+  "MX3-23": "mod 43 正确 37 / 捷径 33；mod 61 正确 32 / 捷径 64；mod 17 连续两项捷径无解"
+ },
+ "fromScenarioVersion": [
+  "1.0.0"
+ ],
+ "toScenarioVersion": "1.1.0",
+ "changed": [
+  {
+   "id": "MX3-22-P1",
+   "points": 10,
+   "hardSeconds": 300,
+   "version": "1.0.0 -> 1.1.0",
+   "hashBefore": "e9ea0de7c6071dc7e2288d5655582f2a1ecdc32ca7715dbdd53de358ba18bb2d",
+   "hashAfter": "8e3e64afbf0f469b8917338572a093a5b517da5a69023b58b9d5992bbf7d9240",
+   "oldTask": "提交 pair=Σ_{x∈F_p} χ(x)·χ(x+1)。",
+   "newTask": "取 p=11。提交 pair=Σ_x χ(x)·χ(x+1)。",
+   "answers": {
+    "pair": "-1"
+   }
+  },
+  {
+   "id": "MX3-22-P2",
+   "points": 20,
+   "hardSeconds": 600,
+   "version": "1.0.0 -> 1.1.0",
+   "hashBefore": "3d186394d72192c9929c5689dde95976a5ddd83de7b0a2e4689c5df6cc9fbac8",
+   "hashAfter": "abcebb60806aa95e5ac71884371c573c36e70ca95410081fc1961258c1349403",
+   "oldTask": "提交 triple=Σ_{x∈F_p} χ(x)·χ(x+1)·χ(x+5)。",
+   "newTask": "取 p=7。提交 zero_pairs=使 Σ_x χ(x)χ(x+a)χ(x+b) 恰好等于 0 的数对 (a,b) 的个数（1≤a<b≤6）。",
+   "answers": {
+    "zero_pairs": "9"
+   }
+  },
+  {
+   "id": "MX3-22-P3",
+   "points": 30,
+   "hardSeconds": 900,
+   "version": "1.0.0 -> 1.1.0",
+   "hashBefore": "5dc06f0ae3e62bcebc5b4cfd5d865fc74f1e09505a6352749362efd24f7b9b2e",
+   "hashAfter": "88dc0b3365a804efe60bcc9af814f5db438af4a9cd11a0bea43c13b796b48e4d",
+   "oldTask": "在全部满足 1≤a<12 且 a<b<24 的整数对 (a,b) 中，提交 max_value=Σ_x χ(x)χ(x+a)χ(x+b) 的最大值，以及达到该最大值的**字典序最小**的数对（提交 [a,b]）。",
+   "newTask": "取 p=11。提交 nonzero_pairs=使该三重和**不等于** 0 的数对 (a,b) 的个数（1≤a<b≤10）。",
+   "answers": {
+    "nonzero_pairs": "30"
+   }
+  },
+  {
+   "id": "MX3-22-P4",
+   "points": 40,
+   "hardSeconds": 1200,
+   "version": "1.0.0 -> 1.1.0",
+   "hashBefore": "f8f8680f3979c5fa6735bbc797a722aa2a7da00a6d1c9635cabbd462723c64c8",
+   "hashAfter": "27e254e8abc588b748df42ebef2a830368bab1c0ec6d1bf83f56009ffa9a888d",
+   "oldTask": "在同一范围（1≤a<12 且 a<b<24）内，提交 zero_count=使该三重和恰好等于 0 的数对 (a,b) 的个数。",
+   "newTask": "取 p=13。提交 max_value=该三重和在全部数对上的最大值，以及达到该最大值的**字典序最小**数对的两个分量 argmax_a、argmax_b（1≤a<b≤12）。",
+   "answers": {
+    "max_value": "6",
+    "argmax_a": "1",
+    "argmax_b": "7"
+   }
+  },
+  {
+   "id": "MX3-23-P1",
+   "points": 10,
+   "hardSeconds": 300,
+   "version": "1.0.0 -> 1.1.0",
+   "hashBefore": "7f9b8199d0ef87053f7ada7421388c5256ea7c1e181af731d489634f6a381044",
+   "hashAfter": "9b2e1000b584def4cd09d09b58f3371c0f54d0ec4cdb484317c87c9b76cba54b",
+   "oldTask": "提交 n7=最小的 n≥3 使 aₙ ≡ 0 (mod 7)。",
+   "newTask": "提交 n7=最小的 n≥3 使 aₙ ≡ 0 (mod 7)。",
+   "answers": {
+    "n7": "8"
+   }
+  },
+  {
+   "id": "MX3-23-P2",
+   "points": 20,
+   "hardSeconds": 600,
+   "version": "1.0.0 -> 1.1.0",
+   "hashBefore": "ee7cdfb79ae14ca3e32e9c6127d1686f2df4dd59b0eb90842e07eb7e50a538d6",
+   "hashAfter": "f599c621bf7c06aa262fe257431c9c86617cdda98f68b34e367be0a56a26f9e3",
+   "oldTask": "提交 n97=最小的 n≥3 使 aₙ ≡ 0 (mod 97)。",
+   "newTask": "提交 n43=最小的 n≥3 使 aₙ ≡ 0 (mod 43)。",
+   "answers": {
+    "n43": "37"
+   }
+  },
+  {
+   "id": "MX3-23-P3",
+   "points": 30,
+   "hardSeconds": 900,
+   "version": "1.0.0 -> 1.1.0",
+   "hashBefore": "136af07c3f123984bc1ec2a28dc919ad1418147ccc3ffbb9121a47a8298b582a",
+   "hashAfter": "a34d2b8139250bf07ff5cd48b61a4a16b0bc6cd7ad5682a93d74f58619bb3a88",
+   "oldTask": "提交 n_joint=最小的 n≥3 使 aₙ 同时被 7 和 11 整除。",
+   "newTask": "提交 n61=最小的 n≥3 使 aₙ ≡ 0 (mod 61)。",
+   "answers": {
+    "n61": "32"
+   }
+  },
+  {
+   "id": "MX3-23-P4",
+   "points": 40,
+   "hardSeconds": 1200,
+   "version": "1.0.0 -> 1.1.0",
+   "hashBefore": "df8a1f142ba36333e4346c6d2a8146563a9bba92799c6b8fefb494a77a594132",
+   "hashAfter": "044bd4218588b719779cadade2ddcf95355f2b40fb972dc8485b3490492bc5ab",
+   "oldTask": "条件变更：提交 n2=最小的 n≥3 使 aₙ 与 aₙ₊₁ **连续两项**都能被 7 整除。",
+   "newTask": "条件变更：提交 n2=最小的 n≥3 使 aₙ 与 aₙ₊₁ **连续两项**都能被 17 整除。",
+   "answers": {
+    "n2": "63"
+   }
+  }
+ ],
+ "alreadyUpgraded": [],
+ "notInBank": []
+}
