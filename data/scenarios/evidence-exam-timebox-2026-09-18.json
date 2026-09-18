@@ -1,0 +1,995 @@
+{
+ "date": "2026-09-18T00:00:00.000Z",
+ "dimension": [
+  "data_extraction",
+  "hallucination_resistance"
+ ],
+ "grader": "ultra_batch_part",
+ "reason": "F3：DX3/HX3 的 P1/P2 时限盒过紧，实测 2 题在 180s 被硬止损",
+ "engineChange": "packages/core/src/evaluationLab/evidenceExam/index.ts 的 policy.hardSeconds 与 policy.version",
+ "fromHardSeconds": [
+  180,
+  360,
+  1200,
+  1200
+ ],
+ "toHardSeconds": [
+  300,
+  600,
+  1200,
+  1200
+ ],
+ "paperVersion": "ultra-evidence-exam-2026-09-18-v3",
+ "contractHash": "a589d8a2a95ab7214cbf3aaaa6d86dacc9e690d5f3fd5d5f4de578e9d856858c",
+ "questionHashPolicy": "questionHash = snapshotHash(question)，题面含时限文字 ⇒ 改动必须重播种，否则 ultraBatchPart 报 STALE_GRADER_PAPER",
+ "fromScenarioVersion": [
+  "1.0.0"
+ ],
+ "toScenarioVersion": "1.1.0",
+ "changed": [
+  {
+   "id": "DX3-05-P1",
+   "groupId": "DX3-05",
+   "dimension": "data_extraction",
+   "number": 1,
+   "hardSeconds": "180 -> 300",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "a51a082b67a79861",
+   "task": "查询(V=1,K=1)：A.status、A.owner。"
+  },
+  {
+   "id": "DX3-05-P2",
+   "groupId": "DX3-05",
+   "dimension": "data_extraction",
+   "number": 2,
+   "hardSeconds": "360 -> 600",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "de02ca3beb5a0699",
+   "task": "查询(V=5,K=5)：A.status、A.owner、B.status、B.owner。"
+  },
+  {
+   "id": "DX3-05-P3",
+   "groupId": "DX3-05",
+   "dimension": "data_extraction",
+   "number": 3,
+   "hardSeconds": "1200 -> 1200",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "2a72fdfc47e93d07",
+   "task": "业务日仍为5，知悉截止改为9：查询A.status、A.owner、B.status、C.status。"
+  },
+  {
+   "id": "DX3-05-P4",
+   "groupId": "DX3-05",
+   "dimension": "data_extraction",
+   "number": 4,
+   "hardSeconds": "1200 -> 1200",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "04e1e3a8196162af",
+   "task": "查询(V=7,K=12)：完整提交A、B、C各自的status和owner六项，必须保留冲突与缺失。"
+  },
+  {
+   "id": "HX3-11-P1",
+   "groupId": "HX3-11",
+   "dimension": "hallucination_resistance",
+   "number": 1,
+   "hardSeconds": "180 -> 300",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "d1bbfdff6ac9e93a",
+   "task": "分别判断A、B。"
+  },
+  {
+   "id": "HX3-11-P2",
+   "groupId": "HX3-11",
+   "dimension": "hallucination_resistance",
+   "number": 2,
+   "hardSeconds": "360 -> 600",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "bf3a7ea6ba66e3af",
+   "task": "分别判断F、G，不能只列最后一条蕴含而缺少前提。"
+  },
+  {
+   "id": "HX3-11-P3",
+   "groupId": "HX3-11",
+   "dimension": "hallucination_resistance",
+   "number": 3,
+   "hardSeconds": "1200 -> 1200",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "f4db00f0c1688ba7",
+   "task": "分别判断I、L；若不能确定，提供完整正反赋值。"
+  },
+  {
+   "id": "HX3-11-P4",
+   "groupId": "HX3-11",
+   "dimension": "hallucination_resistance",
+   "number": 4,
+   "hardSeconds": "1200 -> 1200",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "95e66c95eb88d37e",
+   "task": "撤回S02；新增S15:[-9]、S16:[13,-8]、S17:[8,-13]。旧S02不能再作为依据。分别判断K、N、M、G，并基于更新后的全部有效材料提供依据。"
+  },
+  {
+   "id": "DX3-01-P1",
+   "groupId": "DX3-01",
+   "dimension": "data_extraction",
+   "number": 1,
+   "hardSeconds": "180 -> 300",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "84170209735fe807",
+   "task": "提交{order_id,line_id,sku,ordered_qty,unit_price,currency,sources}。"
+  },
+  {
+   "id": "DX3-01-P2",
+   "groupId": "DX3-01",
+   "dimension": "data_extraction",
+   "number": 2,
+   "hardSeconds": "360 -> 600",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "147a6d6f115b475e",
+   "task": "提交{delivered_qty,open_qty,shipment_ids,sources}；shipment_ids按编号升序。"
+  },
+  {
+   "id": "DX3-01-P3",
+   "groupId": "DX3-01",
+   "dimension": "data_extraction",
+   "number": 3,
+   "hardSeconds": "1200 -> 1200",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "ef792c9b9d09e6c5",
+   "task": "提交{refund_qty,refund_amount,shipment_id,recognized_net,sources}；recognized_net=订单总额−有效退款。"
+  },
+  {
+   "id": "DX3-01-P4",
+   "groupId": "DX3-01",
+   "dimension": "data_extraction",
+   "number": 4,
+   "hardSeconds": "1200 -> 1200",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "4e1c16fd5e8fbe0e",
+   "task": "提交{refund_qty:{status,candidates},refund_amount:{status,candidates},recognized_net:{status,value},sources}；候选数值升序。"
+  },
+  {
+   "id": "DX3-02-P1",
+   "groupId": "DX3-02",
+   "dimension": "data_extraction",
+   "number": 1,
+   "hardSeconds": "180 -> 300",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "551aa5642076b194",
+   "task": "提交{serial,tag,failed_part,part_type,sources}。"
+  },
+  {
+   "id": "DX3-02-P2",
+   "groupId": "DX3-02",
+   "dimension": "data_extraction",
+   "number": 2,
+   "hardSeconds": "360 -> 600",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "28afb4d52eb2f4f5",
+   "task": "提交{asset_id,current_part,replaced_part,effective_day,sources}。"
+  },
+  {
+   "id": "DX3-02-P3",
+   "groupId": "DX3-02",
+   "dimension": "data_extraction",
+   "number": 3,
+   "hardSeconds": "1200 -> 1200",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "0bcff41ec8e03efd",
+   "task": "提交日7的{asset_id,serial,tag,power_part,old_machine_part,sources}。"
+  },
+  {
+   "id": "DX3-02-P4",
+   "groupId": "DX3-02",
+   "dimension": "data_extraction",
+   "number": 4,
+   "hardSeconds": "1200 -> 1200",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "c99ceed5375ddf81",
+   "task": "提交日9的{sn_b_power:{status,value},p_b_location:{status,candidates},certain_fact,sources}；候选升序。"
+  },
+  {
+   "id": "DX3-03-P1",
+   "groupId": "DX3-03",
+   "dimension": "data_extraction",
+   "number": 1,
+   "hardSeconds": "180 -> 300",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "fe218aafe25bae0a",
+   "task": "提交{parent,subject,children,volume_each_ml,sources}；children升序。"
+  },
+  {
+   "id": "DX3-03-P2",
+   "groupId": "DX3-03",
+   "dimension": "data_extraction",
+   "number": 2,
+   "hardSeconds": "360 -> 600",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "96f664e24f1306a5",
+   "task": "提交A1的{valid_result,valid_run,invalid_runs,sources}。"
+  },
+  {
+   "id": "DX3-03-P3",
+   "groupId": "DX3-03",
+   "dimension": "data_extraction",
+   "number": 3,
+   "hardSeconds": "1200 -> 1200",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "f840b7a09505944c",
+   "task": "提交{pool,contributors,contribution_ml,result,run,sources}；contributors升序。"
+  },
+  {
+   "id": "DX3-03-P4",
+   "groupId": "DX3-03",
+   "dimension": "data_extraction",
+   "number": 4,
+   "hardSeconds": "1200 -> 1200",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "63577f49a23fc394",
+   "task": "提交{pool_result,second_contributor:{status,candidates},traceable_to_M0:{status,value},untraceable_paths,sources}。"
+  },
+  {
+   "id": "DX3-04-P1",
+   "groupId": "DX3-04",
+   "dimension": "data_extraction",
+   "number": 1,
+   "hardSeconds": "180 -> 300",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "5c08d1d49f5fddb5",
+   "task": "提交日2末{A_on_hand,B_on_hand,total,sources}。"
+  },
+  {
+   "id": "DX3-04-P2",
+   "groupId": "DX3-04",
+   "dimension": "data_extraction",
+   "number": 2,
+   "hardSeconds": "360 -> 600",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "3b48f4f1f4246aa7",
+   "task": "提交日4末{A_on_hand,B_on_hand,in_transit,loss_pending,sources}；发出即扣源仓，签收才加目的仓。"
+  },
+  {
+   "id": "DX3-04-P3",
+   "groupId": "DX3-04",
+   "dimension": "data_extraction",
+   "number": 3,
+   "hardSeconds": "1200 -> 1200",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "7e6a802888dcb434",
+   "task": "提交日5末{A_on_hand,B_on_hand,transport_loss,total_accounted,sources}；同event_id重传去重。"
+  },
+  {
+   "id": "DX3-04-P4",
+   "groupId": "DX3-04",
+   "dimension": "data_extraction",
+   "number": 4,
+   "hardSeconds": "1200 -> 1200",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "81eb285388ecf946",
+   "task": "提交日7末{A_on_hand,B_on_hand,transport_loss,rejected_events,total,sources}。"
+  },
+  {
+   "id": "DX3-06-P1",
+   "groupId": "DX3-06",
+   "dimension": "data_extraction",
+   "number": 1,
+   "hardSeconds": "180 -> 300",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "19d8eeea0d520043",
+   "task": "提交{contract_id,monthly_fee,payment_days,jurisdiction,sources}。"
+  },
+  {
+   "id": "DX3-06-P2",
+   "groupId": "DX3-06",
+   "dimension": "data_extraction",
+   "number": 2,
+   "hardSeconds": "360 -> 600",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "7cfde4bd3c36d597",
+   "task": "提交月4的{monthly_fee,payment_days,jurisdiction,sources}。"
+  },
+  {
+   "id": "DX3-06-P3",
+   "groupId": "DX3-06",
+   "dimension": "data_extraction",
+   "number": 3,
+   "hardSeconds": "1200 -> 1200",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "9b945906afccd9d8",
+   "task": "提交月6的{monthly_fee,payment_days,jurisdiction,field_sources}。"
+  },
+  {
+   "id": "DX3-06-P4",
+   "groupId": "DX3-06",
+   "dimension": "data_extraction",
+   "number": 4,
+   "hardSeconds": "1200 -> 1200",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "e4b551fe830147e9",
+   "task": "提交月4与月6的{month4_fee,month6_fee,month6_payment:{status,candidates},month6_jurisdiction,sources}。"
+  },
+  {
+   "id": "DX3-07-P1",
+   "groupId": "DX3-07",
+   "dimension": "data_extraction",
+   "number": 1,
+   "hardSeconds": "180 -> 300",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "e4cbe6ee125bb23f",
+   "task": "提交{P_cny,Q_cny,total_cny,sources}。"
+  },
+  {
+   "id": "DX3-07-P2",
+   "groupId": "DX3-07",
+   "dimension": "data_extraction",
+   "number": 2,
+   "hardSeconds": "360 -> 600",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "5cc01b70c18b5017",
+   "task": "提交{detail_total_cny,reported_subtotal_cny,grand_total_cny,sources}；汇总行不得与所含明细重复相加。"
+  },
+  {
+   "id": "DX3-07-P3",
+   "groupId": "DX3-07",
+   "dimension": "data_extraction",
+   "number": 3,
+   "hardSeconds": "1200 -> 1200",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "2b818e23d1b95f66",
+   "task": "提交{reconstructed_total_cny,subtotal_status,subtotal_delta,sources}。"
+  },
+  {
+   "id": "DX3-07-P4",
+   "groupId": "DX3-07",
+   "dimension": "data_extraction",
+   "number": 4,
+   "hardSeconds": "1200 -> 1200",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "ea330b9e699a2c63",
+   "task": "提交{known_cny,usd_amount:{status,candidates},unconvertible,grand_total:{status,value},sources}。"
+  },
+  {
+   "id": "DX3-08-P1",
+   "groupId": "DX3-08",
+   "dimension": "data_extraction",
+   "number": 1,
+   "hardSeconds": "180 -> 300",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "af5fc0680926b0e8",
+   "task": "提交{proposal,limit_wan,result,sources}。"
+  },
+  {
+   "id": "DX3-08-P2",
+   "groupId": "DX3-08",
+   "dimension": "data_extraction",
+   "number": 2,
+   "hardSeconds": "360 -> 600",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "a64862ba93e257db",
+   "task": "提交{amendment_result,effective_limit_wan,sources}。"
+  },
+  {
+   "id": "DX3-08-P3",
+   "groupId": "DX3-08",
+   "dimension": "data_extraction",
+   "number": 3,
+   "hardSeconds": "1200 -> 1200",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "1fc2dc120cca3381",
+   "task": "提交{final_result,effective_limit_wan,reservations,sources}。"
+  },
+  {
+   "id": "DX3-08-P4",
+   "groupId": "DX3-08",
+   "dimension": "data_extraction",
+   "number": 4,
+   "hardSeconds": "1200 -> 1200",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "b5a44c4eef2bdeb2",
+   "task": "提交{final_result:{status,candidates},effective_limit:{status,value},certain_reservations,sources}。"
+  },
+  {
+   "id": "DX3-09-P1",
+   "groupId": "DX3-09",
+   "dimension": "data_extraction",
+   "number": 1,
+   "hardSeconds": "180 -> 300",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "fc66d44a4b0f9360",
+   "task": "提交{month,usage,charge,sources}。"
+  },
+  {
+   "id": "DX3-09-P2",
+   "groupId": "DX3-09",
+   "dimension": "data_extraction",
+   "number": 2,
+   "hardSeconds": "360 -> 600",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "1e7d401752f2529a",
+   "task": "提交2月{tier_units,tier_charges,total,sources}。"
+  },
+  {
+   "id": "DX3-09-P3",
+   "groupId": "DX3-09",
+   "dimension": "data_extraction",
+   "number": 3,
+   "hardSeconds": "1200 -> 1200",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "5b40683e442c7d50",
+   "task": "提交更正后2月{usage,tier_units,total,credit,sources}。"
+  },
+  {
+   "id": "DX3-09-P4",
+   "groupId": "DX3-09",
+   "dimension": "data_extraction",
+   "number": 4,
+   "hardSeconds": "1200 -> 1200",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "2941fc507bd41e89",
+   "task": "提交{usage:{status,candidates},subtotal:{status,candidates},tax:{status,candidates},total:{status,candidates},sources}；候选升序。"
+  },
+  {
+   "id": "DX3-10-P1",
+   "groupId": "DX3-10",
+   "dimension": "data_extraction",
+   "number": 1,
+   "hardSeconds": "180 -> 300",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "8048acb37d7beead",
+   "task": "提交{root,children,quantities,sources}。"
+  },
+  {
+   "id": "DX3-10-P2",
+   "groupId": "DX3-10",
+   "dimension": "data_extraction",
+   "number": 2,
+   "hardSeconds": "360 -> 600",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "0b74b6b8c8757bf3",
+   "task": "提交{leaf_batches,root_contribution,sources}；批次升序。"
+  },
+  {
+   "id": "DX3-10-P3",
+   "groupId": "DX3-10",
+   "dimension": "data_extraction",
+   "number": 3,
+   "hardSeconds": "1200 -> 1200",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "cea669941872bf29",
+   "task": "提交{affected_customers,affected_units_by_customer,unaffected_units,sources}；客户升序。"
+  },
+  {
+   "id": "DX3-10-P4",
+   "groupId": "DX3-10",
+   "dimension": "data_extraction",
+   "number": 4,
+   "hardSeconds": "1200 -> 1200",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "de5d5b3080ffb1a7",
+   "task": "提交{certain_affected,customer_allocation:{status,value},affected_total:{status,value},sources}。"
+  },
+  {
+   "id": "DX3-11-P1",
+   "groupId": "DX3-11",
+   "dimension": "data_extraction",
+   "number": 1,
+   "hardSeconds": "180 -> 300",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "c45b6cc9ac62a0db",
+   "task": "提交{user,permissions,sources}；权限升序。"
+  },
+  {
+   "id": "DX3-11-P2",
+   "groupId": "DX3-11",
+   "dimension": "data_extraction",
+   "number": 2,
+   "hardSeconds": "360 -> 600",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "183ee2039d689420",
+   "task": "提交{allowed,denied,sources}；数组升序。"
+  },
+  {
+   "id": "DX3-11-P3",
+   "groupId": "DX3-11",
+   "dimension": "data_extraction",
+   "number": 3,
+   "hardSeconds": "1200 -> 1200",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "2cce814f049eb58d",
+   "task": "提交日6的{allowed,denied,active_exceptions,sources}。"
+  },
+  {
+   "id": "DX3-11-P4",
+   "groupId": "DX3-11",
+   "dimension": "data_extraction",
+   "number": 4,
+   "hardSeconds": "1200 -> 1200",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "94cdb751b34a28ac",
+   "task": "提交日8的{read_A,read_B,write_A:{status,candidates},sources}。"
+  },
+  {
+   "id": "DX3-12-P1",
+   "groupId": "DX3-12",
+   "dimension": "data_extraction",
+   "number": 1,
+   "hardSeconds": "180 -> 300",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "f1e2ceb1b1086847",
+   "task": "提交{entities}，按档案ID升序，每项含{id,name,birth_year,id_suffix,sources}。"
+  },
+  {
+   "id": "DX3-12-P2",
+   "groupId": "DX3-12",
+   "dimension": "data_extraction",
+   "number": 2,
+   "hardSeconds": "360 -> 600",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "fb6b6c90e8a414c9",
+   "task": "提交{A7_entity,A8_entity:{status,candidates},sources}；候选ID升序。"
+  },
+  {
+   "id": "DX3-12-P3",
+   "groupId": "DX3-12",
+   "dimension": "data_extraction",
+   "number": 3,
+   "hardSeconds": "1200 -> 1200",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "214cd4dcaa306fd9",
+   "task": "提交{A7_entity,A8_entity:{status,candidates},ignored_records,sources}。"
+  },
+  {
+   "id": "DX3-12-P4",
+   "groupId": "DX3-12",
+   "dimension": "data_extraction",
+   "number": 4,
+   "hardSeconds": "1200 -> 1200",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "f5f9917a00a0bed7",
+   "task": "提交{A7_entity,address:{status,candidates},A8_entity:{status,candidates},certain_fields,sources}。"
+  },
+  {
+   "id": "HX3-01-P1",
+   "groupId": "HX3-01",
+   "dimension": "hallucination_resistance",
+   "number": 1,
+   "hardSeconds": "180 -> 300",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "0704ef102ef9b23f",
+   "task": "判断日1负责人，提交{status,value,sources}。"
+  },
+  {
+   "id": "HX3-01-P2",
+   "groupId": "HX3-01",
+   "dimension": "hallucination_resistance",
+   "number": 2,
+   "hardSeconds": "360 -> 600",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "9feb38fdc27d7bf0",
+   "task": "分别判断负责人和截止日期，提交{owner:{status,value,sources},deadline:{status,value,sources}}。"
+  },
+  {
+   "id": "HX3-01-P3",
+   "groupId": "HX3-01",
+   "dimension": "hallucination_resistance",
+   "number": 3,
+   "hardSeconds": "1200 -> 1200",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "a861ab97d28df068",
+   "task": "提交日3与日4负责人{day3,day4,sources}。"
+  },
+  {
+   "id": "HX3-01-P4",
+   "groupId": "HX3-01",
+   "dimension": "hallucination_resistance",
+   "number": 4,
+   "hardSeconds": "1200 -> 1200",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "3ad82bc20d82545f",
+   "task": "提交{day1_budget:{status,value},day3_budget:{status,value},day3_owner,day6_owner,sources}。"
+  },
+  {
+   "id": "HX3-02-P1",
+   "groupId": "HX3-02",
+   "dimension": "hallucination_resistance",
+   "number": 1,
+   "hardSeconds": "180 -> 300",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "aba46758cd1b5967",
+   "task": "判断pH，提交{status,value,independent_sources,sources}。"
+  },
+  {
+   "id": "HX3-02-P2",
+   "groupId": "HX3-02",
+   "dimension": "hallucination_resistance",
+   "number": 2,
+   "hardSeconds": "360 -> 600",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "1bf9dc342376ad09",
+   "task": "判断pH并保留冲突，提交{status,candidates,sources}。"
+  },
+  {
+   "id": "HX3-02-P3",
+   "groupId": "HX3-02",
+   "dimension": "hallucination_resistance",
+   "number": 3,
+   "hardSeconds": "1200 -> 1200",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "d288655558282052",
+   "task": "分别判断pH与质量，提交{ph:{status,candidates,sources},mass:{status,value,sources}}。"
+  },
+  {
+   "id": "HX3-02-P4",
+   "groupId": "HX3-02",
+   "dimension": "hallucination_resistance",
+   "number": 4,
+   "hardSeconds": "1200 -> 1200",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "2f9d3c60153df211",
+   "task": "提交Q与R的{Q_ph,Q_mass,R_ph,R_mass}，每项含status/value或candidates/sources。"
+  },
+  {
+   "id": "HX3-03-P1",
+   "groupId": "HX3-03",
+   "dimension": "hallucination_resistance",
+   "number": 1,
+   "hardSeconds": "180 -> 300",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "2e1e8db0d3c16e6a",
+   "task": "判断甲是否为成员及丙是否为成员，提交{甲,丙}，各含status/value/sources。"
+  },
+  {
+   "id": "HX3-03-P2",
+   "groupId": "HX3-03",
+   "dimension": "hallucination_resistance",
+   "number": 2,
+   "hardSeconds": "360 -> 600",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "be7c67302f1100bb",
+   "task": "判断丁与己是否属于B组，提交{丁,己}。"
+  },
+  {
+   "id": "HX3-03-P3",
+   "groupId": "HX3-03",
+   "dimension": "hallucination_resistance",
+   "number": 3,
+   "hardSeconds": "1200 -> 1200",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "6a0604b4da0a7fc4",
+   "task": "判断丁是否属于A组、戊是否在联合名册覆盖范围，提交{丁属于A,戊应列入联合名册}。"
+  },
+  {
+   "id": "HX3-03-P4",
+   "groupId": "HX3-03",
+   "dimension": "hallucination_resistance",
+   "number": 4,
+   "hardSeconds": "1200 -> 1200",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "ff6637fcc2cfc34b",
+   "task": "提交日5的{A_甲,A_丙,A_庚,B_丁,B_己}。"
+  },
+  {
+   "id": "HX3-04-P1",
+   "groupId": "HX3-04",
+   "dimension": "hallucination_resistance",
+   "number": 1,
+   "hardSeconds": "180 -> 300",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "7c5fe5ffd06f86a8",
+   "task": "判断甲可否进入A，提交{status,value,sources}。"
+  },
+  {
+   "id": "HX3-04-P2",
+   "groupId": "HX3-04",
+   "dimension": "hallucination_resistance",
+   "number": 2,
+   "hardSeconds": "360 -> 600",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "c79ad992110193c6",
+   "task": "判断乙可否进入A，提交{status,value,sources}。"
+  },
+  {
+   "id": "HX3-04-P3",
+   "groupId": "HX3-04",
+   "dimension": "hallucination_resistance",
+   "number": 3,
+   "hardSeconds": "1200 -> 1200",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "95f3d316376cdd25",
+   "task": "分别判断甲和乙，提交{甲,乙}。"
+  },
+  {
+   "id": "HX3-04-P4",
+   "groupId": "HX3-04",
+   "dimension": "hallucination_resistance",
+   "number": 4,
+   "hardSeconds": "1200 -> 1200",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "7ee50c36d38e83b4",
+   "task": "提交{甲,乙,丙}，不得把角色或文件条件自行补全。"
+  },
+  {
+   "id": "HX3-05-P1",
+   "groupId": "HX3-05",
+   "dimension": "hallucination_resistance",
+   "number": 1,
+   "hardSeconds": "180 -> 300",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "1776637e648a14b7",
+   "task": "判断总体改善率，提交{status,value,sources}。"
+  },
+  {
+   "id": "HX3-05-P2",
+   "groupId": "HX3-05",
+   "dimension": "hallucination_resistance",
+   "number": 2,
+   "hardSeconds": "360 -> 600",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "a3cf9801a10ccbcc",
+   "task": "判断男性改善率，提交{status,value,sources}。"
+  },
+  {
+   "id": "HX3-05-P3",
+   "groupId": "HX3-05",
+   "dimension": "hallucination_resistance",
+   "number": 3,
+   "hardSeconds": "1200 -> 1200",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "644a56ac84a67b50",
+   "task": "判断能否从附表推出X与Y谁改善率更高，并提交{status,value,sources}。"
+  },
+  {
+   "id": "HX3-05-P4",
+   "groupId": "HX3-05",
+   "dimension": "hallucination_resistance",
+   "number": 4,
+   "hardSeconds": "1200 -> 1200",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "47113adc3d794a6d",
+   "task": "提交{overall_rate,X_record_rate,Y_record_rate,X_unique_vs_Y_unique:{status,value},sources}。"
+  },
+  {
+   "id": "HX3-06-P1",
+   "groupId": "HX3-06",
+   "dimension": "hallucination_resistance",
+   "number": 1,
+   "hardSeconds": "180 -> 300",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "b3c3eff49b16eb8b",
+   "task": "判断观察到的改善比例，提交{status,value,sources}。"
+  },
+  {
+   "id": "HX3-06-P2",
+   "groupId": "HX3-06",
+   "dimension": "hallucination_resistance",
+   "number": 2,
+   "hardSeconds": "360 -> 600",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "57d6d3ed5897b876",
+   "task": "判断两组观察比例差，提交{status,value,sources}。"
+  },
+  {
+   "id": "HX3-06-P3",
+   "groupId": "HX3-06",
+   "dimension": "hallucination_resistance",
+   "number": 3,
+   "hardSeconds": "1200 -> 1200",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "0cf04a07f9e9b8d2",
+   "task": "判断“A导致改善率提高20个百分点”，提交{status,value,sources}。"
+  },
+  {
+   "id": "HX3-06-P4",
+   "groupId": "HX3-06",
+   "dimension": "hallucination_resistance",
+   "number": 4,
+   "hardSeconds": "1200 -> 1200",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "fba6525049e7fe44",
+   "task": "提交{observed_association,causal_effect:{status,value},witness_models,sources}。"
+  },
+  {
+   "id": "HX3-07-P1",
+   "groupId": "HX3-07",
+   "dimension": "hallucination_resistance",
+   "number": 1,
+   "hardSeconds": "180 -> 300",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "af68bbb669018aba",
+   "task": "判断原型是否完成，提交{status,value,sources}。"
+  },
+  {
+   "id": "HX3-07-P2",
+   "groupId": "HX3-07",
+   "dimension": "hallucination_resistance",
+   "number": 2,
+   "hardSeconds": "360 -> 600",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "f3e6b7dd2dbafe9e",
+   "task": "判断日10是否会发布，提交{status,value,sources}。"
+  },
+  {
+   "id": "HX3-07-P3",
+   "groupId": "HX3-07",
+   "dimension": "hallucination_resistance",
+   "number": 3,
+   "hardSeconds": "1200 -> 1200",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "5819606908f31e4c",
+   "task": "判断融资到账、原型完成、日10发布，提交{funding,prototype,release}。"
+  },
+  {
+   "id": "HX3-07-P4",
+   "groupId": "HX3-07",
+   "dimension": "hallucination_resistance",
+   "number": 4,
+   "hardSeconds": "1200 -> 1200",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "6037de73f90e17d0",
+   "task": "提交{contract_condition_met,obligation_exists,actual_release:{status,value},facts_still_true,sources}。"
+  },
+  {
+   "id": "HX3-08-P1",
+   "groupId": "HX3-08",
+   "dimension": "hallucination_resistance",
+   "number": 1,
+   "hardSeconds": "180 -> 300",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "a44ba960096c8d88",
+   "task": "判断“陈沐的部门”，提交{status,candidates,sources}。"
+  },
+  {
+   "id": "HX3-08-P2",
+   "groupId": "HX3-08",
+   "dimension": "hallucination_resistance",
+   "number": 2,
+   "hardSeconds": "360 -> 600",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "36113f7d9f997a13",
+   "task": "提交{sender_department,meeting_day,sources}。"
+  },
+  {
+   "id": "HX3-08-P3",
+   "groupId": "HX3-08",
+   "dimension": "hallucination_resistance",
+   "number": 3,
+   "hardSeconds": "1200 -> 1200",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "9810e97999b0883f",
+   "task": "判断报告R作者的部门及报告是否存在，提交{department,report_exists}。"
+  },
+  {
+   "id": "HX3-08-P4",
+   "groupId": "HX3-08",
+   "dimension": "hallucination_resistance",
+   "number": 4,
+   "hardSeconds": "1200 -> 1200",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "2d4ef79360c57662",
+   "task": "提交{author_employee_id,department,office,R_meeting_day:{status,value},sources}。"
+  },
+  {
+   "id": "HX3-09-P1",
+   "groupId": "HX3-09",
+   "dimension": "hallucination_resistance",
+   "number": 1,
+   "hardSeconds": "180 -> 300",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "50ab3ed4f5b0ad08",
+   "task": "判断均值差，提交{status,value,sources}。"
+  },
+  {
+   "id": "HX3-09-P2",
+   "groupId": "HX3-09",
+   "dimension": "hallucination_resistance",
+   "number": 2,
+   "hardSeconds": "360 -> 600",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "abfea62bc254e91b",
+   "task": "判断相对均值差与因果结论，提交{relative_difference,causal_claim}。"
+  },
+  {
+   "id": "HX3-09-P3",
+   "groupId": "HX3-09",
+   "dimension": "hallucination_resistance",
+   "number": 3,
+   "hardSeconds": "1200 -> 1200",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "4920ce9efbe32805",
+   "task": "判断能否支持“所有人都提高”，提交{status,value,sources}。"
+  },
+  {
+   "id": "HX3-09-P4",
+   "groupId": "HX3-09",
+   "dimension": "hallucination_resistance",
+   "number": 4,
+   "hardSeconds": "1200 -> 1200",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "a0258adbe8674c97",
+   "task": "提交{mean_claim,all_individuals_improved:{status,value},compatible_counterexample,sources}。"
+  },
+  {
+   "id": "HX3-10-P1",
+   "groupId": "HX3-10",
+   "dimension": "hallucination_resistance",
+   "number": 1,
+   "hardSeconds": "180 -> 300",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "cd5351cd28e6ef12",
+   "task": "判断日4是否有效，提交{status,value,sources}。"
+  },
+  {
+   "id": "HX3-10-P2",
+   "groupId": "HX3-10",
+   "dimension": "hallucination_resistance",
+   "number": 2,
+   "hardSeconds": "360 -> 600",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "896fd520add208cd",
+   "task": "判断日7是否有效，提交{status,value,sources}。"
+  },
+  {
+   "id": "HX3-10-P3",
+   "groupId": "HX3-10",
+   "dimension": "hallucination_resistance",
+   "number": 3,
+   "hardSeconds": "1200 -> 1200",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "41faf17a90044bca",
+   "task": "提交日7与日13状态{day7,day13,sources}。"
+  },
+  {
+   "id": "HX3-10-P4",
+   "groupId": "HX3-10",
+   "dimension": "hallucination_resistance",
+   "number": 4,
+   "hardSeconds": "1200 -> 1200",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "e26f6a6ea1356c8a",
+   "task": "提交{day8_realtime_view,day8_retro_review,day10_future_validity,day13,sources}。"
+  },
+  {
+   "id": "HX3-12-P1",
+   "groupId": "HX3-12",
+   "dimension": "hallucination_resistance",
+   "number": 1,
+   "hardSeconds": "180 -> 300",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "271f05135742cf8a",
+   "task": "提交{A_color,B_weight}，各含status/value/sources。"
+  },
+  {
+   "id": "HX3-12-P2",
+   "groupId": "HX3-12",
+   "dimension": "hallucination_resistance",
+   "number": 2,
+   "hardSeconds": "360 -> 600",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "b6169f90080b0d74",
+   "task": "提交{A_color,B_weight}，局部冲突不得污染B。"
+  },
+  {
+   "id": "HX3-12-P3",
+   "groupId": "HX3-12",
+   "dimension": "hallucination_resistance",
+   "number": 3,
+   "hardSeconds": "1200 -> 1200",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "0954291b2de103f6",
+   "task": "提交{A_color,A_has_R,minimal_conflicts}；minimal_conflicts为按编号升序的最小冲突材料集合数组。"
+  },
+  {
+   "id": "HX3-12-P4",
+   "groupId": "HX3-12",
+   "dimension": "hallucination_resistance",
+   "number": 4,
+   "hardSeconds": "1200 -> 1200",
+   "version": "1.0.0 -> 1.1.0",
+   "questionHash": "a50dfcb88a4a6a13",
+   "task": "提交{A_color,A_has_R,B_weight,C_color,C_weight,minimal_conflicts,sources}。"
+  }
+ ],
+ "applyDb": [
+  "node scripts/sync-reviewed-question-contracts.mjs apps/data/zxbench.db --apply",
+  "node scripts/refresh-stale-tags.mjs --apply --apply-db --db apps/data/zxbench.db"
+ ]
+}

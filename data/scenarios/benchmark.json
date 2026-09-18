@@ -29208,7 +29208,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "订单、履约与追溯退款，第1/4问，10分，时限180秒。\n材料编号是唯一来源标识。草稿不覆盖正式记录；明确的更正只覆盖其点名字段；同级正式记录冲突时保留候选，不得自行择一。\n只使用截至本问给出的材料。数组按题目指定顺序；sources按材料编号升序。unknown与conflict必须显式保留，不能补常识。\n本问新增材料：\nO01 正式订单：订单O-42，行L1，SKU K7，数量4，未税单价125 CNY。\nN01 客服便笺：客户大概买了5件，待核。\n本问：提交{order_id,line_id,sku,ordered_qty,unit_price,currency,sources}。\n评分项：result(10分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
+  "promptTemplate": "订单、履约与追溯退款，第1/4问，10分，时限300秒。\n材料编号是唯一来源标识。草稿不覆盖正式记录；明确的更正只覆盖其点名字段；同级正式记录冲突时保留候选，不得自行择一。\n只使用截至本问给出的材料。数组按题目指定顺序；sources按材料编号升序。unknown与conflict必须显式保留，不能补常识。\n本问新增材料：\nO01 正式订单：订单O-42，行L1，SKU K7，数量4，未税单价125 CNY。\nN01 客服便笺：客户大概买了5件，待核。\n本问：提交{order_id,line_id,sku,ordered_qty,unit_price,currency,sources}。\n评分项：result(10分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -29219,8 +29219,8 @@
    "groupId": "DX3-01",
    "partNumber": 1,
    "points": 10,
-   "hardSeconds": 180,
-   "questionHash": "ac4a051e92c76b066550bee3bfeadc3b7668c44c95121ff8b07600a1f6b209c0",
+   "hardSeconds": 300,
+   "questionHash": "84170209735fe807d8e42198e07a5a80cce7a841f6f33c2b30baea9a99eb9fb1",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -29229,10 +29229,10 @@
    "group_DX3-01",
    "part_1",
    "points_10",
-   "timeout_180s"
+   "timeout_300s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "6e47812aa8e03bbb",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "01cb40ea992d1379",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -29250,7 +29250,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "订单、履约与追溯退款，第2/4问，20分，时限360秒。\n材料编号是唯一来源标识。草稿不覆盖正式记录；明确的更正只覆盖其点名字段；同级正式记录冲突时保留候选，不得自行择一。\n只使用截至本问给出的材料。数组按题目指定顺序；sources按材料编号升序。unknown与conflict必须显式保留，不能补常识。\n本问新增材料：\nS02 正式发运：批次B1交付L1两件。\nS01 草稿：批次B0计划交付三件。\nS03 正式发运：批次B2交付L1两件。\n本问：提交{delivered_qty,open_qty,shipment_ids,sources}；shipment_ids按编号升序。\n评分项：result(20分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
+  "promptTemplate": "订单、履约与追溯退款，第2/4问，20分，时限600秒。\n材料编号是唯一来源标识。草稿不覆盖正式记录；明确的更正只覆盖其点名字段；同级正式记录冲突时保留候选，不得自行择一。\n只使用截至本问给出的材料。数组按题目指定顺序；sources按材料编号升序。unknown与conflict必须显式保留，不能补常识。\n本问新增材料：\nS02 正式发运：批次B1交付L1两件。\nS01 草稿：批次B0计划交付三件。\nS03 正式发运：批次B2交付L1两件。\n本问：提交{delivered_qty,open_qty,shipment_ids,sources}；shipment_ids按编号升序。\n评分项：result(20分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -29261,8 +29261,8 @@
    "groupId": "DX3-01",
    "partNumber": 2,
    "points": 20,
-   "hardSeconds": 360,
-   "questionHash": "d2d831396368e9df8da057c4736e18b550df966c759f27f6d92e396587cf29b3",
+   "hardSeconds": 600,
+   "questionHash": "147a6d6f115b475e7212465e53d1999c0b571abc33f36ac6207c9960e1e8c1fd",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -29271,10 +29271,10 @@
    "group_DX3-01",
    "part_2",
    "points_20",
-   "timeout_360s"
+   "timeout_600s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "7fe8a9c1a95551ba",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "150b3145205d80c5",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -29315,7 +29315,7 @@
    "points_30",
    "timeout_1200s"
   ],
-  "scenarioVersion": "1.0.0",
+  "scenarioVersion": "1.1.0",
   "scenarioHash": "c515c52b536ddbc3",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
@@ -29357,7 +29357,7 @@
    "points_40",
    "timeout_1200s"
   ],
-  "scenarioVersion": "1.0.0",
+  "scenarioVersion": "1.1.0",
   "scenarioHash": "83da6bfc38dead4a",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
@@ -29376,7 +29376,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "维修别名与整机更换谱系，第1/4问，10分，时限180秒。\n材料编号是唯一来源标识。草稿不覆盖正式记录；明确的更正只覆盖其点名字段；同级正式记录冲突时保留候选，不得自行择一。\n只使用截至本问给出的材料。数组按题目指定顺序；sources按材料编号升序。unknown与conflict必须显式保留，不能补常识。\n本问新增材料：\nW01 正式接机：设备序列号SN-A，机身标签T-19，故障部件P-old。\nW02 检测单：P-old类型为电源板，检测失败。\n本问：提交{serial,tag,failed_part,part_type,sources}。\n评分项：result(10分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
+  "promptTemplate": "维修别名与整机更换谱系，第1/4问，10分，时限300秒。\n材料编号是唯一来源标识。草稿不覆盖正式记录；明确的更正只覆盖其点名字段；同级正式记录冲突时保留候选，不得自行择一。\n只使用截至本问给出的材料。数组按题目指定顺序；sources按材料编号升序。unknown与conflict必须显式保留，不能补常识。\n本问新增材料：\nW01 正式接机：设备序列号SN-A，机身标签T-19，故障部件P-old。\nW02 检测单：P-old类型为电源板，检测失败。\n本问：提交{serial,tag,failed_part,part_type,sources}。\n评分项：result(10分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -29387,8 +29387,8 @@
    "groupId": "DX3-02",
    "partNumber": 1,
    "points": 10,
-   "hardSeconds": 180,
-   "questionHash": "a04918c82fb0afa45a35588c515357ff18a0cddefa88320e0fefe4364d3f3e3e",
+   "hardSeconds": 300,
+   "questionHash": "551aa5642076b1941c70e3cba50670ce40823b3bbd959c0d003f001528b2180d",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -29397,10 +29397,10 @@
    "group_DX3-02",
    "part_1",
    "points_10",
-   "timeout_180s"
+   "timeout_300s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "63f4f210a6326d03",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "9900ee4c0aab48fa",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -29418,7 +29418,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "维修别名与整机更换谱系，第2/4问，20分，时限360秒。\n材料编号是唯一来源标识。草稿不覆盖正式记录；明确的更正只覆盖其点名字段；同级正式记录冲突时保留候选，不得自行择一。\n只使用截至本问给出的材料。数组按题目指定顺序；sources按材料编号升序。unknown与conflict必须显式保留，不能补常识。\n本问新增材料：\nW03 厂商映射：SN-A与资产号AS-7指向同一设备，有效期自日2。\nW04 维修记录：日3安装P-new替代P-old。\n本问：提交{asset_id,current_part,replaced_part,effective_day,sources}。\n评分项：result(20分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
+  "promptTemplate": "维修别名与整机更换谱系，第2/4问，20分，时限600秒。\n材料编号是唯一来源标识。草稿不覆盖正式记录；明确的更正只覆盖其点名字段；同级正式记录冲突时保留候选，不得自行择一。\n只使用截至本问给出的材料。数组按题目指定顺序；sources按材料编号升序。unknown与conflict必须显式保留，不能补常识。\n本问新增材料：\nW03 厂商映射：SN-A与资产号AS-7指向同一设备，有效期自日2。\nW04 维修记录：日3安装P-new替代P-old。\n本问：提交{asset_id,current_part,replaced_part,effective_day,sources}。\n评分项：result(20分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -29429,8 +29429,8 @@
    "groupId": "DX3-02",
    "partNumber": 2,
    "points": 20,
-   "hardSeconds": 360,
-   "questionHash": "427dbcd06db9669d1c2893eb1c00ca98e254e4b36ed5ef4751b35d2ecef1c1eb",
+   "hardSeconds": 600,
+   "questionHash": "28afb4d52eb2f4f5178e99b622651d66564e0d23927bd639b6266708ab3ec544",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -29439,10 +29439,10 @@
    "group_DX3-02",
    "part_2",
    "points_20",
-   "timeout_360s"
+   "timeout_600s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "e2e6fc6be1bec327",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "a3636f2d167da09a",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -29483,7 +29483,7 @@
    "points_30",
    "timeout_1200s"
   ],
-  "scenarioVersion": "1.0.0",
+  "scenarioVersion": "1.1.0",
   "scenarioHash": "b961a56fd3673c89",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
@@ -29525,7 +29525,7 @@
    "points_40",
    "timeout_1200s"
   ],
-  "scenarioVersion": "1.0.0",
+  "scenarioVersion": "1.1.0",
   "scenarioHash": "172e52072b78febb",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
@@ -29544,7 +29544,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "实验样本谱系、作废与混样，第1/4问，10分，时限180秒。\n材料编号是唯一来源标识。草稿不覆盖正式记录；明确的更正只覆盖其点名字段；同级正式记录冲突时保留候选，不得自行择一。\n只使用截至本问给出的材料。数组按题目指定顺序；sources按材料编号升序。unknown与conflict必须显式保留，不能补常识。\n本问新增材料：\nL01 登记：母样M0，受试者Q8，采集日1。\nL02 分样：M0分为A1、A2，各2mL。\n本问：提交{parent,subject,children,volume_each_ml,sources}；children升序。\n评分项：result(10分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
+  "promptTemplate": "实验样本谱系、作废与混样，第1/4问，10分，时限300秒。\n材料编号是唯一来源标识。草稿不覆盖正式记录；明确的更正只覆盖其点名字段；同级正式记录冲突时保留候选，不得自行择一。\n只使用截至本问给出的材料。数组按题目指定顺序；sources按材料编号升序。unknown与conflict必须显式保留，不能补常识。\n本问新增材料：\nL01 登记：母样M0，受试者Q8，采集日1。\nL02 分样：M0分为A1、A2，各2mL。\n本问：提交{parent,subject,children,volume_each_ml,sources}；children升序。\n评分项：result(10分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -29555,8 +29555,8 @@
    "groupId": "DX3-03",
    "partNumber": 1,
    "points": 10,
-   "hardSeconds": 180,
-   "questionHash": "8741c7125f4b7c0229a70c247ec7f7afc99f6f6ec7f60dd6033d1804747bd216",
+   "hardSeconds": 300,
+   "questionHash": "fe218aafe25bae0a5b7e41034d0c904ce9133070806fde0c6b6053fa2ecde45e",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -29565,10 +29565,10 @@
    "group_DX3-03",
    "part_1",
    "points_10",
-   "timeout_180s"
+   "timeout_300s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "aaae615701d5e84d",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "127b6e38d1744ae0",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -29586,7 +29586,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "实验样本谱系、作废与混样，第2/4问，20分，时限360秒。\n材料编号是唯一来源标识。草稿不覆盖正式记录；明确的更正只覆盖其点名字段；同级正式记录冲突时保留候选，不得自行择一。\n只使用截至本问给出的材料。数组按题目指定顺序；sources按材料编号升序。unknown与conflict必须显式保留，不能补常识。\n本问新增材料：\nL03 检测：A1结果7.2，方法X，运行R1。\nL04 作废：仅作废运行R1。\nL05 复测：A1结果7.5，方法X，运行R2。\n本问：提交A1的{valid_result,valid_run,invalid_runs,sources}。\n评分项：result(20分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
+  "promptTemplate": "实验样本谱系、作废与混样，第2/4问，20分，时限600秒。\n材料编号是唯一来源标识。草稿不覆盖正式记录；明确的更正只覆盖其点名字段；同级正式记录冲突时保留候选，不得自行择一。\n只使用截至本问给出的材料。数组按题目指定顺序；sources按材料编号升序。unknown与conflict必须显式保留，不能补常识。\n本问新增材料：\nL03 检测：A1结果7.2，方法X，运行R1。\nL04 作废：仅作废运行R1。\nL05 复测：A1结果7.5，方法X，运行R2。\n本问：提交A1的{valid_result,valid_run,invalid_runs,sources}。\n评分项：result(20分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -29597,8 +29597,8 @@
    "groupId": "DX3-03",
    "partNumber": 2,
    "points": 20,
-   "hardSeconds": 360,
-   "questionHash": "edaf78025b98f2bdbe1a8041610887c81558bfc45a82c9d7b6ff61a79ce05137",
+   "hardSeconds": 600,
+   "questionHash": "96f664e24f1306a52a779f1925443db35ab976b672e5ff61c9a531889a17d630",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -29607,10 +29607,10 @@
    "group_DX3-03",
    "part_2",
    "points_20",
-   "timeout_360s"
+   "timeout_600s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "f5a1004f868a0789",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "7d306a5f184df93e",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -29651,7 +29651,7 @@
    "points_30",
    "timeout_1200s"
   ],
-  "scenarioVersion": "1.0.0",
+  "scenarioVersion": "1.1.0",
   "scenarioHash": "5e99981051cf379e",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
@@ -29693,7 +29693,7 @@
    "points_40",
    "timeout_1200s"
   ],
-  "scenarioVersion": "1.0.0",
+  "scenarioVersion": "1.1.0",
   "scenarioHash": "ab52396ccc867b88",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
@@ -29712,7 +29712,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "跨仓调拨与截止时点库存，第1/4问，10分，时限180秒。\n材料编号是唯一来源标识。草稿不覆盖正式记录；明确的更正只覆盖其点名字段；同级正式记录冲突时保留候选，不得自行择一。\n只使用截至本问给出的材料。数组按题目指定顺序；sources按材料编号升序。unknown与conflict必须显式保留，不能补常识。\n本问新增材料：\nI01 日1盘点：SKU-X在仓A为10，在仓B为4。\nI02 日2销售：仓A出库3。\n本问：提交日2末{A_on_hand,B_on_hand,total,sources}。\n评分项：result(10分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
+  "promptTemplate": "跨仓调拨与截止时点库存，第1/4问，10分，时限300秒。\n材料编号是唯一来源标识。草稿不覆盖正式记录；明确的更正只覆盖其点名字段；同级正式记录冲突时保留候选，不得自行择一。\n只使用截至本问给出的材料。数组按题目指定顺序；sources按材料编号升序。unknown与conflict必须显式保留，不能补常识。\n本问新增材料：\nI01 日1盘点：SKU-X在仓A为10，在仓B为4。\nI02 日2销售：仓A出库3。\n本问：提交日2末{A_on_hand,B_on_hand,total,sources}。\n评分项：result(10分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -29723,8 +29723,8 @@
    "groupId": "DX3-04",
    "partNumber": 1,
    "points": 10,
-   "hardSeconds": 180,
-   "questionHash": "8b73d4b982b443eba75417138c1bf6766e08c84aca56485c38998869a2f6fafc",
+   "hardSeconds": 300,
+   "questionHash": "5c08d1d49f5fddb5a217addd8e4ed40c15cef08de4b9ba02f4bf62093aa6ccf4",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -29733,10 +29733,10 @@
    "group_DX3-04",
    "part_1",
    "points_10",
-   "timeout_180s"
+   "timeout_300s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "750e21057c8a1bb5",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "d37bea19cb212729",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -29754,7 +29754,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "跨仓调拨与截止时点库存，第2/4问，20分，时限360秒。\n材料编号是唯一来源标识。草稿不覆盖正式记录；明确的更正只覆盖其点名字段；同级正式记录冲突时保留候选，不得自行择一。\n只使用截至本问给出的材料。数组按题目指定顺序；sources按材料编号升序。unknown与conflict必须显式保留，不能补常识。\n本问新增材料：\nI03 日3调拨发出：T1由A发往B，数量5。\nI04 日4签收：B签收T1数量4，短少1。\n本问：提交日4末{A_on_hand,B_on_hand,in_transit,loss_pending,sources}；发出即扣源仓，签收才加目的仓。\n评分项：result(20分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
+  "promptTemplate": "跨仓调拨与截止时点库存，第2/4问，20分，时限600秒。\n材料编号是唯一来源标识。草稿不覆盖正式记录；明确的更正只覆盖其点名字段；同级正式记录冲突时保留候选，不得自行择一。\n只使用截至本问给出的材料。数组按题目指定顺序；sources按材料编号升序。unknown与conflict必须显式保留，不能补常识。\n本问新增材料：\nI03 日3调拨发出：T1由A发往B，数量5。\nI04 日4签收：B签收T1数量4，短少1。\n本问：提交日4末{A_on_hand,B_on_hand,in_transit,loss_pending,sources}；发出即扣源仓，签收才加目的仓。\n评分项：result(20分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -29765,8 +29765,8 @@
    "groupId": "DX3-04",
    "partNumber": 2,
    "points": 20,
-   "hardSeconds": 360,
-   "questionHash": "6f132dd00076c5115bdcf6aa287b656033f865b81482d420f5bd2d4459c93c53",
+   "hardSeconds": 600,
+   "questionHash": "3b48f4f1f4246aa79d3014baa1c4d343bd0c24a2f2ac45d6ca9bf18f32c62b4b",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -29775,10 +29775,10 @@
    "group_DX3-04",
    "part_2",
    "points_20",
-   "timeout_360s"
+   "timeout_600s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "95f901d539de090f",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "94f2a15a31a7cf28",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -29819,7 +29819,7 @@
    "points_30",
    "timeout_1200s"
   ],
-  "scenarioVersion": "1.0.0",
+  "scenarioVersion": "1.1.0",
   "scenarioHash": "2085ae3f91c133eb",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
@@ -29861,7 +29861,7 @@
    "points_40",
    "timeout_1200s"
   ],
-  "scenarioVersion": "1.0.0",
+  "scenarioVersion": "1.1.0",
   "scenarioHash": "31089c89766afd49",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
@@ -29880,7 +29880,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "双时态工单快照，第1/4问，10分，时限180秒。\n以下是封闭的工单事件账本，日期均为同一月份的日号。entity为工单，field为字段，valid为业务生效日，known为系统收到日。查询(V,K)只使用valid≤V且known≤K的原事件，以及known≤K的修订。修订只替换所指原事件的值，保留其entity/field/valid；null表示撤销原事件。同一原事件以可见的最后修订为准。对未撤销事件按valid取最大者；同valid的不同原事件同级，不能按known分先后：值不同则conflict。无可用事件为missing，不把缺失当成关闭。\n事件=[{\"id\":\"E01\",\"entity\":\"A\",\"field\":\"status\",\"valid\":1,\"known\":1,\"value\":\"open\"},{\"id\":\"E02\",\"entity\":\"A\",\"field\":\"owner\",\"valid\":1,\"known\":1,\"value\":\"Lin\"},{\"id\":\"E03\",\"entity\":\"B\",\"field\":\"status\",\"valid\":2,\"known\":2,\"value\":\"open\"},{\"id\":\"E04\",\"entity\":\"B\",\"field\":\"owner\",\"valid\":2,\"known\":2,\"value\":\"He\"},{\"id\":\"E05\",\"entity\":\"A\",\"field\":\"status\",\"valid\":4,\"known\":4,\"value\":\"closed\"},{\"id\":\"E06\",\"entity\":\"A\",\"field\":\"owner\",\"valid\":4,\"known\":6,\"value\":\"Wu\"},{\"id\":\"E07\",\"entity\":\"B\",\"field\":\"status\",\"valid\":5,\"known\":5,\"value\":\"closed\"},{\"id\":\"E08\",\"entity\":\"C\",\"field\":\"status\",\"valid\":3,\"known\":8,\"value\":\"open\"},{\"id\":\"E09\",\"entity\":\"A\",\"field\":\"status\",\"valid\":6,\"known\":7,\"value\":\"reopened\"},{\"id\":\"E10\",\"entity\":\"B\",\"field\":\"owner\",\"valid\":6,\"known\":8,\"value\":\"Zhou\"},{\"id\":\"E11\",\"entity\":\"B\",\"field\":\"owner\",\"valid\":6,\"known\":9,\"value\":\"Sun\"},{\"id\":\"E12\",\"entity\":\"C\",\"field\":\"owner\",\"valid\":8,\"known\":9,\"value\":\"Lu\"},{\"id\":\"E13\",\"entity\":\"C\",\"field\":\"status\",\"valid\":7,\"known\":10,\"value\":\"closed\"},{\"id\":\"E14\",\"entity\":\"A\",\"field\":\"owner\",\"valid\":7,\"known\":11,\"value\":\"He\"}]\n修订=[{\"id\":\"R01\",\"root\":\"E05\",\"known\":7,\"value\":null},{\"id\":\"R02\",\"root\":\"E07\",\"known\":8,\"value\":\"reopened\"},{\"id\":\"R03\",\"root\":\"E06\",\"known\":9,\"value\":\"Chen\"},{\"id\":\"R04\",\"root\":\"E09\",\"known\":10,\"value\":null},{\"id\":\"R05\",\"root\":\"E07\",\"known\":11,\"value\":null},{\"id\":\"R06\",\"root\":\"E13\",\"known\":12,\"value\":null}]\n每个字段提交{status:\"determined\"|\"missing\"|\"conflict\",value:单值|null|不同候选值数组,sources:[记录ID]}。来源是审计轨迹：所有胜出原事件及各自最后可见修订，加上valid不早于胜出事件、因撤销而跳过的原事件及最后修订；不附无关/更早覆盖记录。无胜出事件时列出本字段全部符合日期条件的撤销记录及其最后修订；完全无符合条件记录时sources=[]。值正确得该项70%，审计轨迹完整准确再得30%。\n本问：查询(V=1,K=1)：A.status、A.owner。\n评分项：A.status(5分)、A.owner(5分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
+  "promptTemplate": "双时态工单快照，第1/4问，10分，时限300秒。\n以下是封闭的工单事件账本，日期均为同一月份的日号。entity为工单，field为字段，valid为业务生效日，known为系统收到日。查询(V,K)只使用valid≤V且known≤K的原事件，以及known≤K的修订。修订只替换所指原事件的值，保留其entity/field/valid；null表示撤销原事件。同一原事件以可见的最后修订为准。对未撤销事件按valid取最大者；同valid的不同原事件同级，不能按known分先后：值不同则conflict。无可用事件为missing，不把缺失当成关闭。\n事件=[{\"id\":\"E01\",\"entity\":\"A\",\"field\":\"status\",\"valid\":1,\"known\":1,\"value\":\"open\"},{\"id\":\"E02\",\"entity\":\"A\",\"field\":\"owner\",\"valid\":1,\"known\":1,\"value\":\"Lin\"},{\"id\":\"E03\",\"entity\":\"B\",\"field\":\"status\",\"valid\":2,\"known\":2,\"value\":\"open\"},{\"id\":\"E04\",\"entity\":\"B\",\"field\":\"owner\",\"valid\":2,\"known\":2,\"value\":\"He\"},{\"id\":\"E05\",\"entity\":\"A\",\"field\":\"status\",\"valid\":4,\"known\":4,\"value\":\"closed\"},{\"id\":\"E06\",\"entity\":\"A\",\"field\":\"owner\",\"valid\":4,\"known\":6,\"value\":\"Wu\"},{\"id\":\"E07\",\"entity\":\"B\",\"field\":\"status\",\"valid\":5,\"known\":5,\"value\":\"closed\"},{\"id\":\"E08\",\"entity\":\"C\",\"field\":\"status\",\"valid\":3,\"known\":8,\"value\":\"open\"},{\"id\":\"E09\",\"entity\":\"A\",\"field\":\"status\",\"valid\":6,\"known\":7,\"value\":\"reopened\"},{\"id\":\"E10\",\"entity\":\"B\",\"field\":\"owner\",\"valid\":6,\"known\":8,\"value\":\"Zhou\"},{\"id\":\"E11\",\"entity\":\"B\",\"field\":\"owner\",\"valid\":6,\"known\":9,\"value\":\"Sun\"},{\"id\":\"E12\",\"entity\":\"C\",\"field\":\"owner\",\"valid\":8,\"known\":9,\"value\":\"Lu\"},{\"id\":\"E13\",\"entity\":\"C\",\"field\":\"status\",\"valid\":7,\"known\":10,\"value\":\"closed\"},{\"id\":\"E14\",\"entity\":\"A\",\"field\":\"owner\",\"valid\":7,\"known\":11,\"value\":\"He\"}]\n修订=[{\"id\":\"R01\",\"root\":\"E05\",\"known\":7,\"value\":null},{\"id\":\"R02\",\"root\":\"E07\",\"known\":8,\"value\":\"reopened\"},{\"id\":\"R03\",\"root\":\"E06\",\"known\":9,\"value\":\"Chen\"},{\"id\":\"R04\",\"root\":\"E09\",\"known\":10,\"value\":null},{\"id\":\"R05\",\"root\":\"E07\",\"known\":11,\"value\":null},{\"id\":\"R06\",\"root\":\"E13\",\"known\":12,\"value\":null}]\n每个字段提交{status:\"determined\"|\"missing\"|\"conflict\",value:单值|null|不同候选值数组,sources:[记录ID]}。来源是审计轨迹：所有胜出原事件及各自最后可见修订，加上valid不早于胜出事件、因撤销而跳过的原事件及最后修订；不附无关/更早覆盖记录。无胜出事件时列出本字段全部符合日期条件的撤销记录及其最后修订；完全无符合条件记录时sources=[]。值正确得该项70%，审计轨迹完整准确再得30%。\n本问：查询(V=1,K=1)：A.status、A.owner。\n评分项：A.status(5分)、A.owner(5分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -29891,8 +29891,8 @@
    "groupId": "DX3-05",
    "partNumber": 1,
    "points": 10,
-   "hardSeconds": 180,
-   "questionHash": "76d1f972c7cb961d361290f810dd687957743b557f827642f3f1f40e1e01d5d8",
+   "hardSeconds": 300,
+   "questionHash": "a51a082b67a79861bb7659fa5da81cff1ff995e8c4feae010d457e41838c4186",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -29901,10 +29901,10 @@
    "group_DX3-05",
    "part_1",
    "points_10",
-   "timeout_180s"
+   "timeout_300s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "1780bc6152e461df",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "783e624ea3fabfbd",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -29922,7 +29922,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "双时态工单快照，第2/4问，20分，时限360秒。\n以下是封闭的工单事件账本，日期均为同一月份的日号。entity为工单，field为字段，valid为业务生效日，known为系统收到日。查询(V,K)只使用valid≤V且known≤K的原事件，以及known≤K的修订。修订只替换所指原事件的值，保留其entity/field/valid；null表示撤销原事件。同一原事件以可见的最后修订为准。对未撤销事件按valid取最大者；同valid的不同原事件同级，不能按known分先后：值不同则conflict。无可用事件为missing，不把缺失当成关闭。\n事件=[{\"id\":\"E01\",\"entity\":\"A\",\"field\":\"status\",\"valid\":1,\"known\":1,\"value\":\"open\"},{\"id\":\"E02\",\"entity\":\"A\",\"field\":\"owner\",\"valid\":1,\"known\":1,\"value\":\"Lin\"},{\"id\":\"E03\",\"entity\":\"B\",\"field\":\"status\",\"valid\":2,\"known\":2,\"value\":\"open\"},{\"id\":\"E04\",\"entity\":\"B\",\"field\":\"owner\",\"valid\":2,\"known\":2,\"value\":\"He\"},{\"id\":\"E05\",\"entity\":\"A\",\"field\":\"status\",\"valid\":4,\"known\":4,\"value\":\"closed\"},{\"id\":\"E06\",\"entity\":\"A\",\"field\":\"owner\",\"valid\":4,\"known\":6,\"value\":\"Wu\"},{\"id\":\"E07\",\"entity\":\"B\",\"field\":\"status\",\"valid\":5,\"known\":5,\"value\":\"closed\"},{\"id\":\"E08\",\"entity\":\"C\",\"field\":\"status\",\"valid\":3,\"known\":8,\"value\":\"open\"},{\"id\":\"E09\",\"entity\":\"A\",\"field\":\"status\",\"valid\":6,\"known\":7,\"value\":\"reopened\"},{\"id\":\"E10\",\"entity\":\"B\",\"field\":\"owner\",\"valid\":6,\"known\":8,\"value\":\"Zhou\"},{\"id\":\"E11\",\"entity\":\"B\",\"field\":\"owner\",\"valid\":6,\"known\":9,\"value\":\"Sun\"},{\"id\":\"E12\",\"entity\":\"C\",\"field\":\"owner\",\"valid\":8,\"known\":9,\"value\":\"Lu\"},{\"id\":\"E13\",\"entity\":\"C\",\"field\":\"status\",\"valid\":7,\"known\":10,\"value\":\"closed\"},{\"id\":\"E14\",\"entity\":\"A\",\"field\":\"owner\",\"valid\":7,\"known\":11,\"value\":\"He\"}]\n修订=[{\"id\":\"R01\",\"root\":\"E05\",\"known\":7,\"value\":null},{\"id\":\"R02\",\"root\":\"E07\",\"known\":8,\"value\":\"reopened\"},{\"id\":\"R03\",\"root\":\"E06\",\"known\":9,\"value\":\"Chen\"},{\"id\":\"R04\",\"root\":\"E09\",\"known\":10,\"value\":null},{\"id\":\"R05\",\"root\":\"E07\",\"known\":11,\"value\":null},{\"id\":\"R06\",\"root\":\"E13\",\"known\":12,\"value\":null}]\n每个字段提交{status:\"determined\"|\"missing\"|\"conflict\",value:单值|null|不同候选值数组,sources:[记录ID]}。来源是审计轨迹：所有胜出原事件及各自最后可见修订，加上valid不早于胜出事件、因撤销而跳过的原事件及最后修订；不附无关/更早覆盖记录。无胜出事件时列出本字段全部符合日期条件的撤销记录及其最后修订；完全无符合条件记录时sources=[]。值正确得该项70%，审计轨迹完整准确再得30%。\n本问：查询(V=5,K=5)：A.status、A.owner、B.status、B.owner。\n评分项：A.status(5分)、A.owner(5分)、B.status(5分)、B.owner(5分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
+  "promptTemplate": "双时态工单快照，第2/4问，20分，时限600秒。\n以下是封闭的工单事件账本，日期均为同一月份的日号。entity为工单，field为字段，valid为业务生效日，known为系统收到日。查询(V,K)只使用valid≤V且known≤K的原事件，以及known≤K的修订。修订只替换所指原事件的值，保留其entity/field/valid；null表示撤销原事件。同一原事件以可见的最后修订为准。对未撤销事件按valid取最大者；同valid的不同原事件同级，不能按known分先后：值不同则conflict。无可用事件为missing，不把缺失当成关闭。\n事件=[{\"id\":\"E01\",\"entity\":\"A\",\"field\":\"status\",\"valid\":1,\"known\":1,\"value\":\"open\"},{\"id\":\"E02\",\"entity\":\"A\",\"field\":\"owner\",\"valid\":1,\"known\":1,\"value\":\"Lin\"},{\"id\":\"E03\",\"entity\":\"B\",\"field\":\"status\",\"valid\":2,\"known\":2,\"value\":\"open\"},{\"id\":\"E04\",\"entity\":\"B\",\"field\":\"owner\",\"valid\":2,\"known\":2,\"value\":\"He\"},{\"id\":\"E05\",\"entity\":\"A\",\"field\":\"status\",\"valid\":4,\"known\":4,\"value\":\"closed\"},{\"id\":\"E06\",\"entity\":\"A\",\"field\":\"owner\",\"valid\":4,\"known\":6,\"value\":\"Wu\"},{\"id\":\"E07\",\"entity\":\"B\",\"field\":\"status\",\"valid\":5,\"known\":5,\"value\":\"closed\"},{\"id\":\"E08\",\"entity\":\"C\",\"field\":\"status\",\"valid\":3,\"known\":8,\"value\":\"open\"},{\"id\":\"E09\",\"entity\":\"A\",\"field\":\"status\",\"valid\":6,\"known\":7,\"value\":\"reopened\"},{\"id\":\"E10\",\"entity\":\"B\",\"field\":\"owner\",\"valid\":6,\"known\":8,\"value\":\"Zhou\"},{\"id\":\"E11\",\"entity\":\"B\",\"field\":\"owner\",\"valid\":6,\"known\":9,\"value\":\"Sun\"},{\"id\":\"E12\",\"entity\":\"C\",\"field\":\"owner\",\"valid\":8,\"known\":9,\"value\":\"Lu\"},{\"id\":\"E13\",\"entity\":\"C\",\"field\":\"status\",\"valid\":7,\"known\":10,\"value\":\"closed\"},{\"id\":\"E14\",\"entity\":\"A\",\"field\":\"owner\",\"valid\":7,\"known\":11,\"value\":\"He\"}]\n修订=[{\"id\":\"R01\",\"root\":\"E05\",\"known\":7,\"value\":null},{\"id\":\"R02\",\"root\":\"E07\",\"known\":8,\"value\":\"reopened\"},{\"id\":\"R03\",\"root\":\"E06\",\"known\":9,\"value\":\"Chen\"},{\"id\":\"R04\",\"root\":\"E09\",\"known\":10,\"value\":null},{\"id\":\"R05\",\"root\":\"E07\",\"known\":11,\"value\":null},{\"id\":\"R06\",\"root\":\"E13\",\"known\":12,\"value\":null}]\n每个字段提交{status:\"determined\"|\"missing\"|\"conflict\",value:单值|null|不同候选值数组,sources:[记录ID]}。来源是审计轨迹：所有胜出原事件及各自最后可见修订，加上valid不早于胜出事件、因撤销而跳过的原事件及最后修订；不附无关/更早覆盖记录。无胜出事件时列出本字段全部符合日期条件的撤销记录及其最后修订；完全无符合条件记录时sources=[]。值正确得该项70%，审计轨迹完整准确再得30%。\n本问：查询(V=5,K=5)：A.status、A.owner、B.status、B.owner。\n评分项：A.status(5分)、A.owner(5分)、B.status(5分)、B.owner(5分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -29933,8 +29933,8 @@
    "groupId": "DX3-05",
    "partNumber": 2,
    "points": 20,
-   "hardSeconds": 360,
-   "questionHash": "15fa18eabfee2ebff9f15df253630d5a64eac8072c710eaf282d8aee797ee0cf",
+   "hardSeconds": 600,
+   "questionHash": "de02ca3beb5a06991dfccc115fc41d504a0745030cae6cc48c8bf47a2aa20da3",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -29943,10 +29943,10 @@
    "group_DX3-05",
    "part_2",
    "points_20",
-   "timeout_360s"
+   "timeout_600s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "f480d7e257765d72",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "fc0c6f7b58352284",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -29987,7 +29987,7 @@
    "points_30",
    "timeout_1200s"
   ],
-  "scenarioVersion": "1.0.0",
+  "scenarioVersion": "1.1.0",
   "scenarioHash": "21e3c8780a02094e",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
@@ -30029,7 +30029,7 @@
    "points_40",
    "timeout_1200s"
   ],
-  "scenarioVersion": "1.0.0",
+  "scenarioVersion": "1.1.0",
   "scenarioHash": "7c2987c030867c93",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
@@ -30048,7 +30048,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "合同字段级修订与同级冲突，第1/4问，10分，时限180秒。\n材料编号是唯一来源标识。草稿不覆盖正式记录；明确的更正只覆盖其点名字段；同级正式记录冲突时保留候选，不得自行择一。\n只使用截至本问给出的材料。数组按题目指定顺序；sources按材料编号升序。unknown与conflict必须显式保留，不能补常识。\n本问新增材料：\nC01 主合同正式版：合同K-9；服务费1000/月；付款期30日；管辖地甲市。\n本问：提交{contract_id,monthly_fee,payment_days,jurisdiction,sources}。\n评分项：result(10分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
+  "promptTemplate": "合同字段级修订与同级冲突，第1/4问，10分，时限300秒。\n材料编号是唯一来源标识。草稿不覆盖正式记录；明确的更正只覆盖其点名字段；同级正式记录冲突时保留候选，不得自行择一。\n只使用截至本问给出的材料。数组按题目指定顺序；sources按材料编号升序。unknown与conflict必须显式保留，不能补常识。\n本问新增材料：\nC01 主合同正式版：合同K-9；服务费1000/月；付款期30日；管辖地甲市。\n本问：提交{contract_id,monthly_fee,payment_days,jurisdiction,sources}。\n评分项：result(10分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -30059,8 +30059,8 @@
    "groupId": "DX3-06",
    "partNumber": 1,
    "points": 10,
-   "hardSeconds": 180,
-   "questionHash": "ddbf54ab31cfb1682f0151f4f46bdace53d3f823042430491e75302b18c9e4a3",
+   "hardSeconds": 300,
+   "questionHash": "19d8eeea0d5200434ddb1297f526323fc43251d271a323a23b5414e8a1dde180",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -30069,10 +30069,10 @@
    "group_DX3-06",
    "part_1",
    "points_10",
-   "timeout_180s"
+   "timeout_300s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "5bf68f5b91f99c90",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "addac999a0bae8ee",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -30090,7 +30090,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "合同字段级修订与同级冲突，第2/4问，20分，时限360秒。\n材料编号是唯一来源标识。草稿不覆盖正式记录；明确的更正只覆盖其点名字段；同级正式记录冲突时保留候选，不得自行择一。\n只使用截至本问给出的材料。数组按题目指定顺序；sources按材料编号升序。unknown与conflict必须显式保留，不能补常识。\n本问新增材料：\nC02 附件A：自月3起服务费改为1200；其余条款不变。\nC03 附件B草稿：付款期改为45日。\n本问：提交月4的{monthly_fee,payment_days,jurisdiction,sources}。\n评分项：result(20分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
+  "promptTemplate": "合同字段级修订与同级冲突，第2/4问，20分，时限600秒。\n材料编号是唯一来源标识。草稿不覆盖正式记录；明确的更正只覆盖其点名字段；同级正式记录冲突时保留候选，不得自行择一。\n只使用截至本问给出的材料。数组按题目指定顺序；sources按材料编号升序。unknown与conflict必须显式保留，不能补常识。\n本问新增材料：\nC02 附件A：自月3起服务费改为1200；其余条款不变。\nC03 附件B草稿：付款期改为45日。\n本问：提交月4的{monthly_fee,payment_days,jurisdiction,sources}。\n评分项：result(20分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -30101,8 +30101,8 @@
    "groupId": "DX3-06",
    "partNumber": 2,
    "points": 20,
-   "hardSeconds": 360,
-   "questionHash": "44cfdf37c35cc1d1c5157ff881d3c32a8f50ac6d750a37f4e60f4e6ae65f3d14",
+   "hardSeconds": 600,
+   "questionHash": "7cfde4bd3c36d597fa3c98dc5c3af8cfa02d99fe700f4aba05b9a6b79bb6c7fd",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -30111,10 +30111,10 @@
    "group_DX3-06",
    "part_2",
    "points_20",
-   "timeout_360s"
+   "timeout_600s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "f85f87500063ce39",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "58a3f9950bcfd2ff",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -30155,7 +30155,7 @@
    "points_30",
    "timeout_1200s"
   ],
-  "scenarioVersion": "1.0.0",
+  "scenarioVersion": "1.1.0",
   "scenarioHash": "b821bd33315358ee",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
@@ -30197,7 +30197,7 @@
    "points_40",
    "timeout_1200s"
   ],
-  "scenarioVersion": "1.0.0",
+  "scenarioVersion": "1.1.0",
   "scenarioHash": "838f91d82f6f9744",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
@@ -30216,7 +30216,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "汇总口径、币种与重复明细，第1/4问，10分，时限180秒。\n材料编号是唯一来源标识。草稿不覆盖正式记录；明确的更正只覆盖其点名字段；同级正式记录冲突时保留候选，不得自行择一。\n只使用截至本问给出的材料。数组按题目指定顺序；sources按材料编号升序。unknown与conflict必须显式保留，不能补常识。\n本问新增材料：\nA01 明细：项目P，收入100 USD。\nA02 明细：项目Q，收入700 CNY。\nA03 汇率表：本期1 USD=7 CNY。\n本问：提交{P_cny,Q_cny,total_cny,sources}。\n评分项：result(10分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
+  "promptTemplate": "汇总口径、币种与重复明细，第1/4问，10分，时限300秒。\n材料编号是唯一来源标识。草稿不覆盖正式记录；明确的更正只覆盖其点名字段；同级正式记录冲突时保留候选，不得自行择一。\n只使用截至本问给出的材料。数组按题目指定顺序；sources按材料编号升序。unknown与conflict必须显式保留，不能补常识。\n本问新增材料：\nA01 明细：项目P，收入100 USD。\nA02 明细：项目Q，收入700 CNY。\nA03 汇率表：本期1 USD=7 CNY。\n本问：提交{P_cny,Q_cny,total_cny,sources}。\n评分项：result(10分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -30227,8 +30227,8 @@
    "groupId": "DX3-07",
    "partNumber": 1,
    "points": 10,
-   "hardSeconds": 180,
-   "questionHash": "43937184fcb5bcc740ea731acf4446d033d73f62e55076eaf1997410e7a01320",
+   "hardSeconds": 300,
+   "questionHash": "e4cbe6ee125bb23f8d06a53c5fb1f7b0180c7867988a10cf0544addcbde31cb5",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -30237,10 +30237,10 @@
    "group_DX3-07",
    "part_1",
    "points_10",
-   "timeout_180s"
+   "timeout_300s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "1fa540fcf9a9856f",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "c7db0ea0e6ce43c0",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -30258,7 +30258,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "汇总口径、币种与重复明细，第2/4问，20分，时限360秒。\n材料编号是唯一来源标识。草稿不覆盖正式记录；明确的更正只覆盖其点名字段；同级正式记录冲突时保留候选，不得自行择一。\n只使用截至本问给出的材料。数组按题目指定顺序；sources按材料编号升序。unknown与conflict必须显式保留，不能补常识。\n本问新增材料：\nA04 汇总行：部门合计1400 CNY，包含A01与A02。\nA05 明细：项目R，收入200 CNY。\n本问：提交{detail_total_cny,reported_subtotal_cny,grand_total_cny,sources}；汇总行不得与所含明细重复相加。\n评分项：result(20分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
+  "promptTemplate": "汇总口径、币种与重复明细，第2/4问，20分，时限600秒。\n材料编号是唯一来源标识。草稿不覆盖正式记录；明确的更正只覆盖其点名字段；同级正式记录冲突时保留候选，不得自行择一。\n只使用截至本问给出的材料。数组按题目指定顺序；sources按材料编号升序。unknown与conflict必须显式保留，不能补常识。\n本问新增材料：\nA04 汇总行：部门合计1400 CNY，包含A01与A02。\nA05 明细：项目R，收入200 CNY。\n本问：提交{detail_total_cny,reported_subtotal_cny,grand_total_cny,sources}；汇总行不得与所含明细重复相加。\n评分项：result(20分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -30269,8 +30269,8 @@
    "groupId": "DX3-07",
    "partNumber": 2,
    "points": 20,
-   "hardSeconds": 360,
-   "questionHash": "ffe69081854a945a6f2411fa3fbf1d41abd57de24bb1063fc1a62e987f011705",
+   "hardSeconds": 600,
+   "questionHash": "5cc01b70c18b50178ed8233ca50eb838f50608742908a1bfcf94d1d81386ab07",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -30279,10 +30279,10 @@
    "group_DX3-07",
    "part_2",
    "points_20",
-   "timeout_360s"
+   "timeout_600s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "ee6699f2498066bb",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "d76c3b6634d64064",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -30323,7 +30323,7 @@
    "points_30",
    "timeout_1200s"
   ],
-  "scenarioVersion": "1.0.0",
+  "scenarioVersion": "1.1.0",
   "scenarioHash": "46893720c1920bca",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
@@ -30365,7 +30365,7 @@
    "points_40",
    "timeout_1200s"
   ],
-  "scenarioVersion": "1.0.0",
+  "scenarioVersion": "1.1.0",
   "scenarioHash": "ce7d4f4b7034dd28",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
@@ -30384,7 +30384,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "会议决议、修正案与重议，第1/4问，10分，时限180秒。\n材料编号是唯一来源标识。草稿不覆盖正式记录；明确的更正只覆盖其点名字段；同级正式记录冲突时保留候选，不得自行择一。\n只使用截至本问给出的材料。数组按题目指定顺序；sources按材料编号升序。unknown与conflict必须显式保留，不能补常识。\n本问新增材料：\nM01 提案P7：预算上限100万元。\nM02 首轮投票：赞成4、反对2、弃权1；章程要求有效票过半。\n本问：提交{proposal,limit_wan,result,sources}。\n评分项：result(10分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
+  "promptTemplate": "会议决议、修正案与重议，第1/4问，10分，时限300秒。\n材料编号是唯一来源标识。草稿不覆盖正式记录；明确的更正只覆盖其点名字段；同级正式记录冲突时保留候选，不得自行择一。\n只使用截至本问给出的材料。数组按题目指定顺序；sources按材料编号升序。unknown与conflict必须显式保留，不能补常识。\n本问新增材料：\nM01 提案P7：预算上限100万元。\nM02 首轮投票：赞成4、反对2、弃权1；章程要求有效票过半。\n本问：提交{proposal,limit_wan,result,sources}。\n评分项：result(10分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -30395,8 +30395,8 @@
    "groupId": "DX3-08",
    "partNumber": 1,
    "points": 10,
-   "hardSeconds": 180,
-   "questionHash": "691b35e0743a8f8ed65fc1a2c5c56c222371223165025aa75fad8d92d8e59c30",
+   "hardSeconds": 300,
+   "questionHash": "af5fc0680926b0e8d7f88cd8e67e8b1df24d04778dcef7640dbc633b1f3594bb",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -30405,10 +30405,10 @@
    "group_DX3-08",
    "part_1",
    "points_10",
-   "timeout_180s"
+   "timeout_300s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "ac39193dd44109f2",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "81f51dfa8a04c3b6",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -30426,7 +30426,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "会议决议、修正案与重议，第2/4问，20分，时限360秒。\n材料编号是唯一来源标识。草稿不覆盖正式记录；明确的更正只覆盖其点名字段；同级正式记录冲突时保留候选，不得自行择一。\n只使用截至本问给出的材料。数组按题目指定顺序；sources按材料编号升序。unknown与conflict必须显式保留，不能补常识。\n本问新增材料：\nM03 修正案A：把上限改为80万元；投票赞成3、反对3、弃权1。\nM04 章程：修正案须赞成票严格多于反对票。\n本问：提交{amendment_result,effective_limit_wan,sources}。\n评分项：result(20分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
+  "promptTemplate": "会议决议、修正案与重议，第2/4问，20分，时限600秒。\n材料编号是唯一来源标识。草稿不覆盖正式记录；明确的更正只覆盖其点名字段；同级正式记录冲突时保留候选，不得自行择一。\n只使用截至本问给出的材料。数组按题目指定顺序；sources按材料编号升序。unknown与conflict必须显式保留，不能补常识。\n本问新增材料：\nM03 修正案A：把上限改为80万元；投票赞成3、反对3、弃权1。\nM04 章程：修正案须赞成票严格多于反对票。\n本问：提交{amendment_result,effective_limit_wan,sources}。\n评分项：result(20分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -30437,8 +30437,8 @@
    "groupId": "DX3-08",
    "partNumber": 2,
    "points": 20,
-   "hardSeconds": 360,
-   "questionHash": "1163e06ef6ed912690f33ee0c7a0489a40f8b1b68133d9a4b73f50741b1ba23a",
+   "hardSeconds": 600,
+   "questionHash": "a64862ba93e257db223268e9a3b384535281e5c19519039c562b972fc172508e",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -30447,10 +30447,10 @@
    "group_DX3-08",
    "part_2",
    "points_20",
-   "timeout_360s"
+   "timeout_600s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "9d6d3404f4d52404",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "d66b6d4e0746abdd",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -30491,7 +30491,7 @@
    "points_30",
    "timeout_1200s"
   ],
-  "scenarioVersion": "1.0.0",
+  "scenarioVersion": "1.1.0",
   "scenarioHash": "14711b911db136f1",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
@@ -30533,7 +30533,7 @@
    "points_40",
    "timeout_1200s"
   ],
-  "scenarioVersion": "1.0.0",
+  "scenarioVersion": "1.1.0",
   "scenarioHash": "23f3650fe07f3c93",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
@@ -30552,7 +30552,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "阶梯计费、跨月冲正与舍入，第1/4问，10分，时限180秒。\n材料编号是唯一来源标识。草稿不覆盖正式记录；明确的更正只覆盖其点名字段；同级正式记录冲突时保留候选，不得自行择一。\n只使用截至本问给出的材料。数组按题目指定顺序；sources按材料编号升序。unknown与conflict必须显式保留，不能补常识。\n本问新增材料：\nB01 费率：每月前100单位每单位2元，101至200每单位1.5元，超过200每单位1元；各段分别计算后总额保留两位。\nB02 1月用量80。\n本问：提交{month,usage,charge,sources}。\n评分项：result(10分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
+  "promptTemplate": "阶梯计费、跨月冲正与舍入，第1/4问，10分，时限300秒。\n材料编号是唯一来源标识。草稿不覆盖正式记录；明确的更正只覆盖其点名字段；同级正式记录冲突时保留候选，不得自行择一。\n只使用截至本问给出的材料。数组按题目指定顺序；sources按材料编号升序。unknown与conflict必须显式保留，不能补常识。\n本问新增材料：\nB01 费率：每月前100单位每单位2元，101至200每单位1.5元，超过200每单位1元；各段分别计算后总额保留两位。\nB02 1月用量80。\n本问：提交{month,usage,charge,sources}。\n评分项：result(10分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -30563,8 +30563,8 @@
    "groupId": "DX3-09",
    "partNumber": 1,
    "points": 10,
-   "hardSeconds": 180,
-   "questionHash": "4be5075c452ed7f841c06185d2dcc1ea8a46042986b79d8d31fa9b355efe2802",
+   "hardSeconds": 300,
+   "questionHash": "fc66d44a4b0f93604fefda4616a2f633a6cd95a7ad1db9a8b2060f8ad87399f6",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -30573,10 +30573,10 @@
    "group_DX3-09",
    "part_1",
    "points_10",
-   "timeout_180s"
+   "timeout_300s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "b9f47849b74b88ce",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "a924a297385557c0",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -30594,7 +30594,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "阶梯计费、跨月冲正与舍入，第2/4问，20分，时限360秒。\n材料编号是唯一来源标识。草稿不覆盖正式记录；明确的更正只覆盖其点名字段；同级正式记录冲突时保留候选，不得自行择一。\n只使用截至本问给出的材料。数组按题目指定顺序；sources按材料编号升序。unknown与conflict必须显式保留，不能补常识。\n本问新增材料：\nB03 2月用量160。\nB04 账期独立，不把1月用量带入2月阶梯。\n本问：提交2月{tier_units,tier_charges,total,sources}。\n评分项：result(20分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
+  "promptTemplate": "阶梯计费、跨月冲正与舍入，第2/4问，20分，时限600秒。\n材料编号是唯一来源标识。草稿不覆盖正式记录；明确的更正只覆盖其点名字段；同级正式记录冲突时保留候选，不得自行择一。\n只使用截至本问给出的材料。数组按题目指定顺序；sources按材料编号升序。unknown与conflict必须显式保留，不能补常识。\n本问新增材料：\nB03 2月用量160。\nB04 账期独立，不把1月用量带入2月阶梯。\n本问：提交2月{tier_units,tier_charges,total,sources}。\n评分项：result(20分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -30605,8 +30605,8 @@
    "groupId": "DX3-09",
    "partNumber": 2,
    "points": 20,
-   "hardSeconds": 360,
-   "questionHash": "6c832b0dea9dce88803ebd1ebfd08d8325909a3742cfac744d1641e4afea5a7a",
+   "hardSeconds": 600,
+   "questionHash": "1e7d401752f2529a0086c2edd1f6d5c94ee1433fa143049177c4150356e2680f",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -30615,10 +30615,10 @@
    "group_DX3-09",
    "part_2",
    "points_20",
-   "timeout_360s"
+   "timeout_600s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "6820c9de7fb0a56b",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "b4cc64f18980163b",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -30659,7 +30659,7 @@
    "points_30",
    "timeout_1200s"
   ],
-  "scenarioVersion": "1.0.0",
+  "scenarioVersion": "1.1.0",
   "scenarioHash": "4920e3868fbcd7e5",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
@@ -30701,7 +30701,7 @@
    "points_40",
    "timeout_1200s"
   ],
-  "scenarioVersion": "1.0.0",
+  "scenarioVersion": "1.1.0",
   "scenarioHash": "f44bbf181f04f635",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
@@ -30720,7 +30720,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "批次拆并与召回传播，第1/4问，10分，时限180秒。\n材料编号是唯一来源标识。草稿不覆盖正式记录；明确的更正只覆盖其点名字段；同级正式记录冲突时保留候选，不得自行择一。\n只使用截至本问给出的材料。数组按题目指定顺序；sources按材料编号升序。unknown与conflict必须显式保留，不能补常识。\n本问新增材料：\nT01 原批次R0数量100。\nT02 拆分：R0生成R1数量60、R2数量40。\n本问：提交{root,children,quantities,sources}。\n评分项：result(10分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
+  "promptTemplate": "批次拆并与召回传播，第1/4问，10分，时限300秒。\n材料编号是唯一来源标识。草稿不覆盖正式记录；明确的更正只覆盖其点名字段；同级正式记录冲突时保留候选，不得自行择一。\n只使用截至本问给出的材料。数组按题目指定顺序；sources按材料编号升序。unknown与conflict必须显式保留，不能补常识。\n本问新增材料：\nT01 原批次R0数量100。\nT02 拆分：R0生成R1数量60、R2数量40。\n本问：提交{root,children,quantities,sources}。\n评分项：result(10分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -30731,8 +30731,8 @@
    "groupId": "DX3-10",
    "partNumber": 1,
    "points": 10,
-   "hardSeconds": 180,
-   "questionHash": "e0f29c6230be50cfdf34ad514ae4ee83327e9d0ca65be599fbff06b02c33fae9",
+   "hardSeconds": 300,
+   "questionHash": "8048acb37d7beead022d108855f7f4001bb3fcef5bca39d43b10bbe8a6cf553e",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -30741,10 +30741,10 @@
    "group_DX3-10",
    "part_1",
    "points_10",
-   "timeout_180s"
+   "timeout_300s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "98aac96f808d6b34",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "bdef58b3f6c2e77d",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -30762,7 +30762,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "批次拆并与召回传播，第2/4问，20分，时限360秒。\n材料编号是唯一来源标识。草稿不覆盖正式记录；明确的更正只覆盖其点名字段；同级正式记录冲突时保留候选，不得自行择一。\n只使用截至本问给出的材料。数组按题目指定顺序；sources按材料编号升序。unknown与conflict必须显式保留，不能补常识。\n本问新增材料：\nT03 R1中20单位转为R3，其余40仍为R1。\nT04 R2与外部批次X的10单位合并生成R4数量50。\n本问：提交{leaf_batches,root_contribution,sources}；批次升序。\n评分项：result(20分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
+  "promptTemplate": "批次拆并与召回传播，第2/4问，20分，时限600秒。\n材料编号是唯一来源标识。草稿不覆盖正式记录；明确的更正只覆盖其点名字段；同级正式记录冲突时保留候选，不得自行择一。\n只使用截至本问给出的材料。数组按题目指定顺序；sources按材料编号升序。unknown与conflict必须显式保留，不能补常识。\n本问新增材料：\nT03 R1中20单位转为R3，其余40仍为R1。\nT04 R2与外部批次X的10单位合并生成R4数量50。\n本问：提交{leaf_batches,root_contribution,sources}；批次升序。\n评分项：result(20分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -30773,8 +30773,8 @@
    "groupId": "DX3-10",
    "partNumber": 2,
    "points": 20,
-   "hardSeconds": 360,
-   "questionHash": "af7ec957e950aa165b8ade669a7ed41ae76d6db5bd2ebd05795dd9c7ed7baae9",
+   "hardSeconds": 600,
+   "questionHash": "0b74b6b8c8757bf30791dfa839400e13c1cedcf57826f420f028e20ef9dc7d42",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -30783,10 +30783,10 @@
    "group_DX3-10",
    "part_2",
    "points_20",
-   "timeout_360s"
+   "timeout_600s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "9a932696c4b212f9",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "2f4c3d921bac5f93",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -30827,7 +30827,7 @@
    "points_30",
    "timeout_1200s"
   ],
-  "scenarioVersion": "1.0.0",
+  "scenarioVersion": "1.1.0",
   "scenarioHash": "53b513fff4d34158",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
@@ -30869,7 +30869,7 @@
    "points_40",
    "timeout_1200s"
   ],
-  "scenarioVersion": "1.0.0",
+  "scenarioVersion": "1.1.0",
   "scenarioHash": "2ad37f9c964b6fbd",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
@@ -30888,7 +30888,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "权限继承、显式拒绝与临时例外，第1/4问，10分，时限180秒。\n材料编号是唯一来源标识。草稿不覆盖正式记录；明确的更正只覆盖其点名字段；同级正式记录冲突时保留候选，不得自行择一。\n只使用截至本问给出的材料。数组按题目指定顺序；sources按材料编号升序。unknown与conflict必须显式保留，不能补常识。\n本问新增材料：\nP01 用户U直属组G1。\nP02 G1授予read:A与write:A。\n本问：提交{user,permissions,sources}；权限升序。\n评分项：result(10分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
+  "promptTemplate": "权限继承、显式拒绝与临时例外，第1/4问，10分，时限300秒。\n材料编号是唯一来源标识。草稿不覆盖正式记录；明确的更正只覆盖其点名字段；同级正式记录冲突时保留候选，不得自行择一。\n只使用截至本问给出的材料。数组按题目指定顺序；sources按材料编号升序。unknown与conflict必须显式保留，不能补常识。\n本问新增材料：\nP01 用户U直属组G1。\nP02 G1授予read:A与write:A。\n本问：提交{user,permissions,sources}；权限升序。\n评分项：result(10分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -30899,8 +30899,8 @@
    "groupId": "DX3-11",
    "partNumber": 1,
    "points": 10,
-   "hardSeconds": 180,
-   "questionHash": "141339033a86b5610bf42987de3822a771cf74859813ca1bf105efb11d56a433",
+   "hardSeconds": 300,
+   "questionHash": "c45b6cc9ac62a0db7629d9c05a803cc9c1ae03fb3e2cad3d6835181350c50f63",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -30909,10 +30909,10 @@
    "group_DX3-11",
    "part_1",
    "points_10",
-   "timeout_180s"
+   "timeout_300s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "22bdc597793085e9",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "1a2b9219218c042a",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -30930,7 +30930,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "权限继承、显式拒绝与临时例外，第2/4问，20分，时限360秒。\n材料编号是唯一来源标识。草稿不覆盖正式记录；明确的更正只覆盖其点名字段；同级正式记录冲突时保留候选，不得自行择一。\n只使用截至本问给出的材料。数组按题目指定顺序；sources按材料编号升序。unknown与conflict必须显式保留，不能补常识。\n本问新增材料：\nP03 U同时属于G2。\nP04 G2授予read:B。\nP05 U被显式拒绝write:A；显式拒绝优先于组授权。\n本问：提交{allowed,denied,sources}；数组升序。\n评分项：result(20分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
+  "promptTemplate": "权限继承、显式拒绝与临时例外，第2/4问，20分，时限600秒。\n材料编号是唯一来源标识。草稿不覆盖正式记录；明确的更正只覆盖其点名字段；同级正式记录冲突时保留候选，不得自行择一。\n只使用截至本问给出的材料。数组按题目指定顺序；sources按材料编号升序。unknown与conflict必须显式保留，不能补常识。\n本问新增材料：\nP03 U同时属于G2。\nP04 G2授予read:B。\nP05 U被显式拒绝write:A；显式拒绝优先于组授权。\n本问：提交{allowed,denied,sources}；数组升序。\n评分项：result(20分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -30941,8 +30941,8 @@
    "groupId": "DX3-11",
    "partNumber": 2,
    "points": 20,
-   "hardSeconds": 360,
-   "questionHash": "41798cdf04ee977a5b7dbe272d16ad0411a41b8144981cece49ef88074bb7436",
+   "hardSeconds": 600,
+   "questionHash": "183ee2039d68942027f2c13d01bfc56b406f36b366e4f7e5258f282deba2d315",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -30951,10 +30951,10 @@
    "group_DX3-11",
    "part_2",
    "points_20",
-   "timeout_360s"
+   "timeout_600s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "c0dba11ce4ef49f4",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "601b97a28488efae",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -30995,7 +30995,7 @@
    "points_30",
    "timeout_1200s"
   ],
-  "scenarioVersion": "1.0.0",
+  "scenarioVersion": "1.1.0",
   "scenarioHash": "e7b783e380f1f74a",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
@@ -31037,7 +31037,7 @@
    "points_40",
    "timeout_1200s"
   ],
-  "scenarioVersion": "1.0.0",
+  "scenarioVersion": "1.1.0",
   "scenarioHash": "644a07a4f0d6573a",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
@@ -31056,7 +31056,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "实体合并、拆分与候选保留，第1/4问，10分，时限180秒。\n材料编号是唯一来源标识。草稿不覆盖正式记录；明确的更正只覆盖其点名字段；同级正式记录冲突时保留候选，不得自行择一。\n只使用截至本问给出的材料。数组按题目指定顺序；sources按材料编号升序。unknown与conflict必须显式保留，不能补常识。\n本问新增材料：\nE01 档案D1：姓名林禾，出生年1990，证件尾号17。\nE02 档案D2：姓名林禾，出生年1992，证件尾号83。\n本问：提交{entities}，按档案ID升序，每项含{id,name,birth_year,id_suffix,sources}。\n评分项：result(10分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
+  "promptTemplate": "实体合并、拆分与候选保留，第1/4问，10分，时限300秒。\n材料编号是唯一来源标识。草稿不覆盖正式记录；明确的更正只覆盖其点名字段；同级正式记录冲突时保留候选，不得自行择一。\n只使用截至本问给出的材料。数组按题目指定顺序；sources按材料编号升序。unknown与conflict必须显式保留，不能补常识。\n本问新增材料：\nE01 档案D1：姓名林禾，出生年1990，证件尾号17。\nE02 档案D2：姓名林禾，出生年1992，证件尾号83。\n本问：提交{entities}，按档案ID升序，每项含{id,name,birth_year,id_suffix,sources}。\n评分项：result(10分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -31067,8 +31067,8 @@
    "groupId": "DX3-12",
    "partNumber": 1,
    "points": 10,
-   "hardSeconds": 180,
-   "questionHash": "94d650a8b394aeba506b696978b4011802fb7f96f2e645a7ab93b6bbbe5cc9e1",
+   "hardSeconds": 300,
+   "questionHash": "f1e2ceb1b1086847eea6c67831682b238f2e4c3308eec0abb97bd7d78f295984",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -31077,10 +31077,10 @@
    "group_DX3-12",
    "part_1",
    "points_10",
-   "timeout_180s"
+   "timeout_300s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "3745e0b9baae2fd5",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "5acd32ae76e90b26",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -31098,7 +31098,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "实体合并、拆分与候选保留，第2/4问，20分，时限360秒。\n材料编号是唯一来源标识。草稿不覆盖正式记录；明确的更正只覆盖其点名字段；同级正式记录冲突时保留候选，不得自行择一。\n只使用截至本问给出的材料。数组按题目指定顺序；sources按材料编号升序。unknown与conflict必须显式保留，不能补常识。\n本问新增材料：\nE03 账户A7实名尾号17，联系电话尾号4401。\nE04 账户A8姓名林禾，联系电话尾号9930，未提供证件。\n本问：提交{A7_entity,A8_entity:{status,candidates},sources}；候选ID升序。\n评分项：result(20分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
+  "promptTemplate": "实体合并、拆分与候选保留，第2/4问，20分，时限600秒。\n材料编号是唯一来源标识。草稿不覆盖正式记录；明确的更正只覆盖其点名字段；同级正式记录冲突时保留候选，不得自行择一。\n只使用截至本问给出的材料。数组按题目指定顺序；sources按材料编号升序。unknown与conflict必须显式保留，不能补常识。\n本问新增材料：\nE03 账户A7实名尾号17，联系电话尾号4401。\nE04 账户A8姓名林禾，联系电话尾号9930，未提供证件。\n本问：提交{A7_entity,A8_entity:{status,candidates},sources}；候选ID升序。\n评分项：result(20分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -31109,8 +31109,8 @@
    "groupId": "DX3-12",
    "partNumber": 2,
    "points": 20,
-   "hardSeconds": 360,
-   "questionHash": "c151914235cb0b9a216e4331a0b61874848d25f4061bab0e4a468630dbeaef71",
+   "hardSeconds": 600,
+   "questionHash": "fb6b6c90e8a414c92c783a546c488d16f9b50750d06c083513e5327903cf3e66",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -31119,10 +31119,10 @@
    "group_DX3-12",
    "part_2",
    "points_20",
-   "timeout_360s"
+   "timeout_600s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "7942c26f73a6064e",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "5d48663fe6ade074",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -31163,7 +31163,7 @@
    "points_30",
    "timeout_1200s"
   ],
-  "scenarioVersion": "1.0.0",
+  "scenarioVersion": "1.1.0",
   "scenarioHash": "9032f2a3a067ffee",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
@@ -31205,7 +31205,7 @@
    "points_40",
    "timeout_1200s"
   ],
-  "scenarioVersion": "1.0.0",
+  "scenarioVersion": "1.1.0",
   "scenarioHash": "9f63255fa33bd400",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
@@ -37782,7 +37782,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "追溯更正的时间边界，第1/4问，10分，时限180秒。\n只依据题面材料。determined表示全部有效材料唯一支持；insufficient表示至少存在两个兼容解释；conflict表示有效的同级直接材料互相矛盾。\n每项都必须给出status、有限结论value及最小相关sources；不能因为局部未知而拒绝回答其余可确定字段。sources按编号升序。\n本问新增材料：\nS01 日1公告：项目A负责人为周岚。\n本问：判断日1负责人，提交{status,value,sources}。\n评分项：result(10分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
+  "promptTemplate": "追溯更正的时间边界，第1/4问，10分，时限300秒。\n只依据题面材料。determined表示全部有效材料唯一支持；insufficient表示至少存在两个兼容解释；conflict表示有效的同级直接材料互相矛盾。\n每项都必须给出status、有限结论value及最小相关sources；不能因为局部未知而拒绝回答其余可确定字段。sources按编号升序。\n本问新增材料：\nS01 日1公告：项目A负责人为周岚。\n本问：判断日1负责人，提交{status,value,sources}。\n评分项：result(10分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -37793,8 +37793,8 @@
    "groupId": "HX3-01",
    "partNumber": 1,
    "points": 10,
-   "hardSeconds": 180,
-   "questionHash": "04ce3ede0cb5036487dfc4baed3ef26ba31625a8a03e157331a08b7dd03a9086",
+   "hardSeconds": 300,
+   "questionHash": "0704ef102ef9b23febd88a184fa53aa29a6f48a6f69ea49f346f9c6f1a02415e",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -37803,10 +37803,10 @@
    "group_HX3-01",
    "part_1",
    "points_10",
-   "timeout_180s"
+   "timeout_300s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "835504159bd1a85b",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "1c4519a297aeebf1",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -37824,7 +37824,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "追溯更正的时间边界，第2/4问，20分，时限360秒。\n只依据题面材料。determined表示全部有效材料唯一支持；insufficient表示至少存在两个兼容解释；conflict表示有效的同级直接材料互相矛盾。\n每项都必须给出status、有限结论value及最小相关sources；不能因为局部未知而拒绝回答其余可确定字段。sources按编号升序。\n本问新增材料：\nS02 日2公告：项目A预算为80万元；未说明截止日期。\n本问：分别判断负责人和截止日期，提交{owner:{status,value,sources},deadline:{status,value,sources}}。\n评分项：result(20分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
+  "promptTemplate": "追溯更正的时间边界，第2/4问，20分，时限600秒。\n只依据题面材料。determined表示全部有效材料唯一支持；insufficient表示至少存在两个兼容解释；conflict表示有效的同级直接材料互相矛盾。\n每项都必须给出status、有限结论value及最小相关sources；不能因为局部未知而拒绝回答其余可确定字段。sources按编号升序。\n本问新增材料：\nS02 日2公告：项目A预算为80万元；未说明截止日期。\n本问：分别判断负责人和截止日期，提交{owner:{status,value,sources},deadline:{status,value,sources}}。\n评分项：result(20分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -37835,8 +37835,8 @@
    "groupId": "HX3-01",
    "partNumber": 2,
    "points": 20,
-   "hardSeconds": 360,
-   "questionHash": "a14fabb336c04a8882920377ce5555c6c866bd34f08b7aded38f279e36d7e5bf",
+   "hardSeconds": 600,
+   "questionHash": "9feb38fdc27d7bf09e67e8aea054a646742ad0f42f9ce33dc7105d3ba2ca9c53",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -37845,10 +37845,10 @@
    "group_HX3-01",
    "part_2",
    "points_20",
-   "timeout_360s"
+   "timeout_600s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "e5bb352367500713",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "77835ab9ea308827",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -37889,7 +37889,7 @@
    "points_30",
    "timeout_1200s"
   ],
-  "scenarioVersion": "1.0.0",
+  "scenarioVersion": "1.1.0",
   "scenarioHash": "6c319ef0b1478306",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
@@ -37931,7 +37931,7 @@
    "points_40",
    "timeout_1200s"
   ],
-  "scenarioVersion": "1.0.0",
+  "scenarioVersion": "1.1.0",
   "scenarioHash": "763536e9b57e03b6",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
@@ -37950,7 +37950,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "独立来源、转述与局部冲突，第1/4问，10分，时限180秒。\n只依据题面材料。determined表示全部有效材料唯一支持；insufficient表示至少存在两个兼容解释；conflict表示有效的同级直接材料互相矛盾。\n每项都必须给出status、有限结论value及最小相关sources；不能因为局部未知而拒绝回答其余可确定字段。sources按编号升序。\n本问新增材料：\nS01 原始检测台账：样品Q的pH为6.8。\nS02 新闻稿转述S01：pH为6.8。\n本问：判断pH，提交{status,value,independent_sources,sources}。\n评分项：result(10分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
+  "promptTemplate": "独立来源、转述与局部冲突，第1/4问，10分，时限300秒。\n只依据题面材料。determined表示全部有效材料唯一支持；insufficient表示至少存在两个兼容解释；conflict表示有效的同级直接材料互相矛盾。\n每项都必须给出status、有限结论value及最小相关sources；不能因为局部未知而拒绝回答其余可确定字段。sources按编号升序。\n本问新增材料：\nS01 原始检测台账：样品Q的pH为6.8。\nS02 新闻稿转述S01：pH为6.8。\n本问：判断pH，提交{status,value,independent_sources,sources}。\n评分项：result(10分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -37961,8 +37961,8 @@
    "groupId": "HX3-02",
    "partNumber": 1,
    "points": 10,
-   "hardSeconds": 180,
-   "questionHash": "9fe592b5083cca8f1f373b06947aa84f22930b596bbe6e0b1f63533f95e90b74",
+   "hardSeconds": 300,
+   "questionHash": "aba46758cd1b596726b743c170a792eecfc54b99369f0f6a994fbd5415663521",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -37971,10 +37971,10 @@
    "group_HX3-02",
    "part_1",
    "points_10",
-   "timeout_180s"
+   "timeout_300s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "4b1a00d539dd636d",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "f89fd9c06b1a72e3",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -37992,7 +37992,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "独立来源、转述与局部冲突，第2/4问，20分，时限360秒。\n只依据题面材料。determined表示全部有效材料唯一支持；insufficient表示至少存在两个兼容解释；conflict表示有效的同级直接材料互相矛盾。\n每项都必须给出status、有限结论value及最小相关sources；不能因为局部未知而拒绝回答其余可确定字段。sources按编号升序。\n本问新增材料：\nS03 独立复测台账：样品Q的pH为7.1。\n本问：判断pH并保留冲突，提交{status,candidates,sources}。\n评分项：result(20分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
+  "promptTemplate": "独立来源、转述与局部冲突，第2/4问，20分，时限600秒。\n只依据题面材料。determined表示全部有效材料唯一支持；insufficient表示至少存在两个兼容解释；conflict表示有效的同级直接材料互相矛盾。\n每项都必须给出status、有限结论value及最小相关sources；不能因为局部未知而拒绝回答其余可确定字段。sources按编号升序。\n本问新增材料：\nS03 独立复测台账：样品Q的pH为7.1。\n本问：判断pH并保留冲突，提交{status,candidates,sources}。\n评分项：result(20分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -38003,8 +38003,8 @@
    "groupId": "HX3-02",
    "partNumber": 2,
    "points": 20,
-   "hardSeconds": 360,
-   "questionHash": "a0832fed815c68c05e87a9ca0c932e628040c6abdc52b6e060b754961617e95d",
+   "hardSeconds": 600,
+   "questionHash": "1bf9dc342376ad0947857be05d237353b42831e24b59bde70d6893af619f9d8c",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -38013,10 +38013,10 @@
    "group_HX3-02",
    "part_2",
    "points_20",
-   "timeout_360s"
+   "timeout_600s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "39a9e1bb6b6693e3",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "dfe2b26dd472ebe4",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -38057,7 +38057,7 @@
    "points_30",
    "timeout_1200s"
   ],
-  "scenarioVersion": "1.0.0",
+  "scenarioVersion": "1.1.0",
   "scenarioHash": "3370a78959ef3caa",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
@@ -38099,7 +38099,7 @@
    "points_40",
    "timeout_1200s"
   ],
-  "scenarioVersion": "1.0.0",
+  "scenarioVersion": "1.1.0",
   "scenarioHash": "53c9f5bddc3da50a",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
@@ -38118,7 +38118,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "不完备名册与覆盖声明，第1/4问，10分，时限180秒。\n只依据题面材料。determined表示全部有效材料唯一支持；insufficient表示至少存在两个兼容解释；conflict表示有效的同级直接材料互相矛盾。\n每项都必须给出status、有限结论value及最小相关sources；不能因为局部未知而拒绝回答其余可确定字段。sources按编号升序。\n本问新增材料：\nS01 名册A列出成员甲、乙。\nS02 声明：名册A完整覆盖一组全部成员。\n本问：判断甲是否为成员及丙是否为成员，提交{甲,丙}，各含status/value/sources。\n评分项：result(10分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
+  "promptTemplate": "不完备名册与覆盖声明，第1/4问，10分，时限300秒。\n只依据题面材料。determined表示全部有效材料唯一支持；insufficient表示至少存在两个兼容解释；conflict表示有效的同级直接材料互相矛盾。\n每项都必须给出status、有限结论value及最小相关sources；不能因为局部未知而拒绝回答其余可确定字段。sources按编号升序。\n本问新增材料：\nS01 名册A列出成员甲、乙。\nS02 声明：名册A完整覆盖一组全部成员。\n本问：判断甲是否为成员及丙是否为成员，提交{甲,丙}，各含status/value/sources。\n评分项：result(10分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -38129,8 +38129,8 @@
    "groupId": "HX3-03",
    "partNumber": 1,
    "points": 10,
-   "hardSeconds": 180,
-   "questionHash": "b6de1d8bb1ef574043e302c06320f34261293d51dd030f57f181959ca7696593",
+   "hardSeconds": 300,
+   "questionHash": "2e1e8db0d3c16e6aed7afe9e74d86a67e03dd9739b4839da9526e7759656177f",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -38139,10 +38139,10 @@
    "group_HX3-03",
    "part_1",
    "points_10",
-   "timeout_180s"
+   "timeout_300s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "23a65c81cd06285e",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "908ff51d0b0c3cca",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -38160,7 +38160,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "不完备名册与覆盖声明，第2/4问，20分，时限360秒。\n只依据题面材料。determined表示全部有效材料唯一支持；insufficient表示至少存在两个兼容解释；conflict表示有效的同级直接材料互相矛盾。\n每项都必须给出status、有限结论value及最小相关sources；不能因为局部未知而拒绝回答其余可确定字段。sources按编号升序。\n本问新增材料：\nS03 名册B列出成员丁、戊；没有完整性声明。\n本问：判断丁与己是否属于B组，提交{丁,己}。\n评分项：result(20分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
+  "promptTemplate": "不完备名册与覆盖声明，第2/4问，20分，时限600秒。\n只依据题面材料。determined表示全部有效材料唯一支持；insufficient表示至少存在两个兼容解释；conflict表示有效的同级直接材料互相矛盾。\n每项都必须给出status、有限结论value及最小相关sources；不能因为局部未知而拒绝回答其余可确定字段。sources按编号升序。\n本问新增材料：\nS03 名册B列出成员丁、戊；没有完整性声明。\n本问：判断丁与己是否属于B组，提交{丁,己}。\n评分项：result(20分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -38171,8 +38171,8 @@
    "groupId": "HX3-03",
    "partNumber": 2,
    "points": 20,
-   "hardSeconds": 360,
-   "questionHash": "cfd71cc31b7aa3d74239f5eaf62f0568836f99d236a2bfef68a9404fbc84fd2a",
+   "hardSeconds": 600,
+   "questionHash": "be7c67302f1100bb88b15fda063d13874b7813ecb2f046909748c14d1ba97e5a",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -38181,10 +38181,10 @@
    "group_HX3-03",
    "part_2",
    "points_20",
-   "timeout_360s"
+   "timeout_600s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "d23042494e40b757",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "99021622a837c277",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -38225,7 +38225,7 @@
    "points_30",
    "timeout_1200s"
   ],
-  "scenarioVersion": "1.0.0",
+  "scenarioVersion": "1.1.0",
   "scenarioHash": "6dcd6bd06542b315",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
@@ -38267,7 +38267,7 @@
    "points_40",
    "timeout_1200s"
   ],
-  "scenarioVersion": "1.0.0",
+  "scenarioVersion": "1.1.0",
   "scenarioHash": "8772df380fb568c0",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
@@ -38286,7 +38286,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "条件规则与多层例外，第1/4问，10分，时限180秒。\n只依据题面材料。determined表示全部有效材料唯一支持；insufficient表示至少存在两个兼容解释；conflict表示有效的同级直接材料互相矛盾。\n每项都必须给出status、有限结论value及最小相关sources；不能因为局部未知而拒绝回答其余可确定字段。sources按编号升序。\n本问新增材料：\nS01 规则：持证且完成培训者可进入区A。\nS02 事实：甲持证并完成培训。\n本问：判断甲可否进入A，提交{status,value,sources}。\n评分项：result(10分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
+  "promptTemplate": "条件规则与多层例外，第1/4问，10分，时限300秒。\n只依据题面材料。determined表示全部有效材料唯一支持；insufficient表示至少存在两个兼容解释；conflict表示有效的同级直接材料互相矛盾。\n每项都必须给出status、有限结论value及最小相关sources；不能因为局部未知而拒绝回答其余可确定字段。sources按编号升序。\n本问新增材料：\nS01 规则：持证且完成培训者可进入区A。\nS02 事实：甲持证并完成培训。\n本问：判断甲可否进入A，提交{status,value,sources}。\n评分项：result(10分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -38297,8 +38297,8 @@
    "groupId": "HX3-04",
    "partNumber": 1,
    "points": 10,
-   "hardSeconds": 180,
-   "questionHash": "3cf48b5eb9484901b9e448e8a7561d97cac713f13233c86dbda8f1110d28774e",
+   "hardSeconds": 300,
+   "questionHash": "7c5fe5ffd06f86a8f8a1da0e750d918367a4fae560a4304c1e1c2bba57b3d0e5",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -38307,10 +38307,10 @@
    "group_HX3-04",
    "part_1",
    "points_10",
-   "timeout_180s"
+   "timeout_300s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "0bafd1948575a443",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "539fda12f4e7e89d",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -38328,7 +38328,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "条件规则与多层例外，第2/4问，20分，时限360秒。\n只依据题面材料。determined表示全部有效材料唯一支持；insufficient表示至少存在两个兼容解释；conflict表示有效的同级直接材料互相矛盾。\n每项都必须给出status、有限结论value及最小相关sources；不能因为局部未知而拒绝回答其余可确定字段。sources按编号升序。\n本问新增材料：\nS03 事实：乙持证；材料未说明培训。\n本问：判断乙可否进入A，提交{status,value,sources}。\n评分项：result(20分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
+  "promptTemplate": "条件规则与多层例外，第2/4问，20分，时限600秒。\n只依据题面材料。determined表示全部有效材料唯一支持；insufficient表示至少存在两个兼容解释；conflict表示有效的同级直接材料互相矛盾。\n每项都必须给出status、有限结论value及最小相关sources；不能因为局部未知而拒绝回答其余可确定字段。sources按编号升序。\n本问新增材料：\nS03 事实：乙持证；材料未说明培训。\n本问：判断乙可否进入A，提交{status,value,sources}。\n评分项：result(20分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -38339,8 +38339,8 @@
    "groupId": "HX3-04",
    "partNumber": 2,
    "points": 20,
-   "hardSeconds": 360,
-   "questionHash": "5fd688fc47ca066bd37d860232b803a859160a6e1ac60edf6998250838e5d21d",
+   "hardSeconds": 600,
+   "questionHash": "c79ad992110193c67fd0dd8dc52fa04d2952f60423392aa969cab2d1d89a9231",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -38349,10 +38349,10 @@
    "group_HX3-04",
    "part_2",
    "points_20",
-   "timeout_360s"
+   "timeout_600s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "e1865f7c5faf18f0",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "1a455d46bdc47e12",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -38393,7 +38393,7 @@
    "points_30",
    "timeout_1200s"
   ],
-  "scenarioVersion": "1.0.0",
+  "scenarioVersion": "1.1.0",
   "scenarioHash": "43d9600d9823ac09",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
@@ -38435,7 +38435,7 @@
    "points_40",
    "timeout_1200s"
   ],
-  "scenarioVersion": "1.0.0",
+  "scenarioVersion": "1.1.0",
   "scenarioHash": "afb27925d33c3bbf",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
@@ -38454,7 +38454,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "统计口径、分母与重复样本，第1/4问，10分，时限180秒。\n只依据题面材料。determined表示全部有效材料唯一支持；insufficient表示至少存在两个兼容解释；conflict表示有效的同级直接材料互相矛盾。\n每项都必须给出status、有限结论value及最小相关sources；不能因为局部未知而拒绝回答其余可确定字段。sources按编号升序。\n本问新增材料：\nS01 研究报告：纳入100人，其中60人改善。\n本问：判断总体改善率，提交{status,value,sources}。\n评分项：result(10分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
+  "promptTemplate": "统计口径、分母与重复样本，第1/4问，10分，时限300秒。\n只依据题面材料。determined表示全部有效材料唯一支持；insufficient表示至少存在两个兼容解释；conflict表示有效的同级直接材料互相矛盾。\n每项都必须给出status、有限结论value及最小相关sources；不能因为局部未知而拒绝回答其余可确定字段。sources按编号升序。\n本问新增材料：\nS01 研究报告：纳入100人，其中60人改善。\n本问：判断总体改善率，提交{status,value,sources}。\n评分项：result(10分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -38465,8 +38465,8 @@
    "groupId": "HX3-05",
    "partNumber": 1,
    "points": 10,
-   "hardSeconds": 180,
-   "questionHash": "95702d841149e2f38e71b33f52d3bc7921ab7237c076ffd3fe4a1c0881220107",
+   "hardSeconds": 300,
+   "questionHash": "1776637e648a14b755f4ee5f20352a0f4a83e9a8c1136bf0cb6b75416a522d8e",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -38475,10 +38475,10 @@
    "group_HX3-05",
    "part_1",
    "points_10",
-   "timeout_180s"
+   "timeout_300s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "65c1c5ef00894851",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "c806a00e3f69c8c4",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -38496,7 +38496,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "统计口径、分母与重复样本，第2/4问，20分，时限360秒。\n只依据题面材料。determined表示全部有效材料唯一支持；insufficient表示至少存在两个兼容解释；conflict表示有效的同级直接材料互相矛盾。\n每项都必须给出status、有限结论value及最小相关sources；不能因为局部未知而拒绝回答其余可确定字段。sources按编号升序。\n本问新增材料：\nS02 报告未给出男性人数或男性改善人数。\n本问：判断男性改善率，提交{status,value,sources}。\n评分项：result(20分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
+  "promptTemplate": "统计口径、分母与重复样本，第2/4问，20分，时限600秒。\n只依据题面材料。determined表示全部有效材料唯一支持；insufficient表示至少存在两个兼容解释；conflict表示有效的同级直接材料互相矛盾。\n每项都必须给出status、有限结论value及最小相关sources；不能因为局部未知而拒绝回答其余可确定字段。sources按编号升序。\n本问新增材料：\nS02 报告未给出男性人数或男性改善人数。\n本问：判断男性改善率，提交{status,value,sources}。\n评分项：result(20分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -38507,8 +38507,8 @@
    "groupId": "HX3-05",
    "partNumber": 2,
    "points": 20,
-   "hardSeconds": 360,
-   "questionHash": "89c62bfdce033351b576dc569dd42c0ba77a53050e0010875c03efde2d69ab13",
+   "hardSeconds": 600,
+   "questionHash": "a3cf9801a10ccbcc9f3f324a8436c5f1902df1960276967bc20a76660596e6ec",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -38517,10 +38517,10 @@
    "group_HX3-05",
    "part_2",
    "points_20",
-   "timeout_360s"
+   "timeout_600s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "e10f347f564b9226",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "cdef76a29b827f0d",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -38561,7 +38561,7 @@
    "points_30",
    "timeout_1200s"
   ],
-  "scenarioVersion": "1.0.0",
+  "scenarioVersion": "1.1.0",
   "scenarioHash": "e10634ef2bb7ecd6",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
@@ -38603,7 +38603,7 @@
    "points_40",
    "timeout_1200s"
   ],
-  "scenarioVersion": "1.0.0",
+  "scenarioVersion": "1.1.0",
   "scenarioHash": "931732af374097ab",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
@@ -38622,7 +38622,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "观察、相关与因果见证，第1/4问，10分，时限180秒。\n只依据题面材料。determined表示全部有效材料唯一支持；insufficient表示至少存在两个兼容解释；conflict表示有效的同级直接材料互相矛盾。\n每项都必须给出status、有限结论value及最小相关sources；不能因为局部未知而拒绝回答其余可确定字段。sources按编号升序。\n本问新增材料：\nS01 观察：服用方案A的80人中56人改善。\n本问：判断观察到的改善比例，提交{status,value,sources}。\n评分项：result(10分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
+  "promptTemplate": "观察、相关与因果见证，第1/4问，10分，时限300秒。\n只依据题面材料。determined表示全部有效材料唯一支持；insufficient表示至少存在两个兼容解释；conflict表示有效的同级直接材料互相矛盾。\n每项都必须给出status、有限结论value及最小相关sources；不能因为局部未知而拒绝回答其余可确定字段。sources按编号升序。\n本问新增材料：\nS01 观察：服用方案A的80人中56人改善。\n本问：判断观察到的改善比例，提交{status,value,sources}。\n评分项：result(10分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -38633,8 +38633,8 @@
    "groupId": "HX3-06",
    "partNumber": 1,
    "points": 10,
-   "hardSeconds": 180,
-   "questionHash": "bc521548462dffff78fa232d6262c073446f0ad5b083d9d74a113ce2ce97f842",
+   "hardSeconds": 300,
+   "questionHash": "b3c3eff49b16eb8b34f24cc542470e9821c9d302631d9f1a673697ab97881574",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -38643,10 +38643,10 @@
    "group_HX3-06",
    "part_1",
    "points_10",
-   "timeout_180s"
+   "timeout_300s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "b10899fce11ddfa1",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "434441621bc539fb",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -38664,7 +38664,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "观察、相关与因果见证，第2/4问，20分，时限360秒。\n只依据题面材料。determined表示全部有效材料唯一支持；insufficient表示至少存在两个兼容解释；conflict表示有效的同级直接材料互相矛盾。\n每项都必须给出status、有限结论value及最小相关sources；不能因为局部未知而拒绝回答其余可确定字段。sources按编号升序。\n本问新增材料：\nS02 未服用A的60人中30人改善。\n本问：判断两组观察比例差，提交{status,value,sources}。\n评分项：result(20分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
+  "promptTemplate": "观察、相关与因果见证，第2/4问，20分，时限600秒。\n只依据题面材料。determined表示全部有效材料唯一支持；insufficient表示至少存在两个兼容解释；conflict表示有效的同级直接材料互相矛盾。\n每项都必须给出status、有限结论value及最小相关sources；不能因为局部未知而拒绝回答其余可确定字段。sources按编号升序。\n本问新增材料：\nS02 未服用A的60人中30人改善。\n本问：判断两组观察比例差，提交{status,value,sources}。\n评分项：result(20分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -38675,8 +38675,8 @@
    "groupId": "HX3-06",
    "partNumber": 2,
    "points": 20,
-   "hardSeconds": 360,
-   "questionHash": "910caebaa4e0a9bf5cba0fc83b1785faec1ad573657642b84143115d2a060abc",
+   "hardSeconds": 600,
+   "questionHash": "57d6d3ed5897b8762876492e33beb364da806438c32b93a36931c5dae868553b",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -38685,10 +38685,10 @@
    "group_HX3-06",
    "part_2",
    "points_20",
-   "timeout_360s"
+   "timeout_600s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "620dc1b994595327",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "baeb919eac2e8f15",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -38729,7 +38729,7 @@
    "points_30",
    "timeout_1200s"
   ],
-  "scenarioVersion": "1.0.0",
+  "scenarioVersion": "1.1.0",
   "scenarioHash": "1e83861ec18ec77a",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
@@ -38771,7 +38771,7 @@
    "points_40",
    "timeout_1200s"
   ],
-  "scenarioVersion": "1.0.0",
+  "scenarioVersion": "1.1.0",
   "scenarioHash": "76c9b958163b1120",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
@@ -38790,7 +38790,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "计划、承诺与已发生事实，第1/4问，10分，时限180秒。\n只依据题面材料。determined表示全部有效材料唯一支持；insufficient表示至少存在两个兼容解释；conflict表示有效的同级直接材料互相矛盾。\n每项都必须给出status、有限结论value及最小相关sources；不能因为局部未知而拒绝回答其余可确定字段。sources按编号升序。\n本问新增材料：\nS01 日1记录：团队已完成原型。\n本问：判断原型是否完成，提交{status,value,sources}。\n评分项：result(10分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
+  "promptTemplate": "计划、承诺与已发生事实，第1/4问，10分，时限300秒。\n只依据题面材料。determined表示全部有效材料唯一支持；insufficient表示至少存在两个兼容解释；conflict表示有效的同级直接材料互相矛盾。\n每项都必须给出status、有限结论value及最小相关sources；不能因为局部未知而拒绝回答其余可确定字段。sources按编号升序。\n本问新增材料：\nS01 日1记录：团队已完成原型。\n本问：判断原型是否完成，提交{status,value,sources}。\n评分项：result(10分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -38801,8 +38801,8 @@
    "groupId": "HX3-07",
    "partNumber": 1,
    "points": 10,
-   "hardSeconds": 180,
-   "questionHash": "86d2e59b8706d6c9c900ae9de5c296c0d3e1003c593053ff2c020f78a95203b5",
+   "hardSeconds": 300,
+   "questionHash": "af68bbb669018abac44e95de5054da79f4b479c3fbd10cc0eccd452390a6f28d",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -38811,10 +38811,10 @@
    "group_HX3-07",
    "part_1",
    "points_10",
-   "timeout_180s"
+   "timeout_300s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "43674c9517c73e92",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "c1f168ed9fc51206",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -38832,7 +38832,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "计划、承诺与已发生事实，第2/4问，20分，时限360秒。\n只依据题面材料。determined表示全部有效材料唯一支持；insufficient表示至少存在两个兼容解释；conflict表示有效的同级直接材料互相矛盾。\n每项都必须给出status、有限结论value及最小相关sources；不能因为局部未知而拒绝回答其余可确定字段。sources按编号升序。\n本问新增材料：\nS02 日2计划：若融资到账，将在日10发布。\nS03 未说明融资是否到账。\n本问：判断日10是否会发布，提交{status,value,sources}。\n评分项：result(20分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
+  "promptTemplate": "计划、承诺与已发生事实，第2/4问，20分，时限600秒。\n只依据题面材料。determined表示全部有效材料唯一支持；insufficient表示至少存在两个兼容解释；conflict表示有效的同级直接材料互相矛盾。\n每项都必须给出status、有限结论value及最小相关sources；不能因为局部未知而拒绝回答其余可确定字段。sources按编号升序。\n本问新增材料：\nS02 日2计划：若融资到账，将在日10发布。\nS03 未说明融资是否到账。\n本问：判断日10是否会发布，提交{status,value,sources}。\n评分项：result(20分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -38843,8 +38843,8 @@
    "groupId": "HX3-07",
    "partNumber": 2,
    "points": 20,
-   "hardSeconds": 360,
-   "questionHash": "f5e4062d2756917fac40b75d6923efa2a3fcea0a5b151603848f8e1696961162",
+   "hardSeconds": 600,
+   "questionHash": "f3e6b7dd2dbafe9e8d1df581d9a4b89a5fe4c4b1504576a048ca97d4a33d218f",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -38853,10 +38853,10 @@
    "group_HX3-07",
    "part_2",
    "points_20",
-   "timeout_360s"
+   "timeout_600s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "a272cec548294fb3",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "54df185dc0ec977d",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -38897,7 +38897,7 @@
    "points_30",
    "timeout_1200s"
   ],
-  "scenarioVersion": "1.0.0",
+  "scenarioVersion": "1.1.0",
   "scenarioHash": "872b7b062da5a6ea",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
@@ -38939,7 +38939,7 @@
    "points_40",
    "timeout_1200s"
   ],
-  "scenarioVersion": "1.0.0",
+  "scenarioVersion": "1.1.0",
   "scenarioHash": "cff1469b4c8aa3c3",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
@@ -38958,7 +38958,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "同名实体与局部可答字段，第1/4问，10分，时限180秒。\n只依据题面材料。determined表示全部有效材料唯一支持；insufficient表示至少存在两个兼容解释；conflict表示有效的同级直接材料互相矛盾。\n每项都必须给出status、有限结论value及最小相关sources；不能因为局部未知而拒绝回答其余可确定字段。sources按编号升序。\n本问新增材料：\nS01 档案D1：陈沐，部门甲，工号17。\nS02 档案D2：陈沐，部门乙，工号29。\n本问：判断“陈沐的部门”，提交{status,candidates,sources}。\n评分项：result(10分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
+  "promptTemplate": "同名实体与局部可答字段，第1/4问，10分，时限300秒。\n只依据题面材料。determined表示全部有效材料唯一支持；insufficient表示至少存在两个兼容解释；conflict表示有效的同级直接材料互相矛盾。\n每项都必须给出status、有限结论value及最小相关sources；不能因为局部未知而拒绝回答其余可确定字段。sources按编号升序。\n本问新增材料：\nS01 档案D1：陈沐，部门甲，工号17。\nS02 档案D2：陈沐，部门乙，工号29。\n本问：判断“陈沐的部门”，提交{status,candidates,sources}。\n评分项：result(10分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -38969,8 +38969,8 @@
    "groupId": "HX3-08",
    "partNumber": 1,
    "points": 10,
-   "hardSeconds": 180,
-   "questionHash": "e11dea0cb1446694224a1351bf1590f4cd0fd148bc9880fe05e77be6d708b268",
+   "hardSeconds": 300,
+   "questionHash": "a44ba960096c8d88e51da2e27a125b67b2020a773b58da37f9b810e8139e6c2f",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -38979,10 +38979,10 @@
    "group_HX3-08",
    "part_1",
    "points_10",
-   "timeout_180s"
+   "timeout_300s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "24d64df75331ab4f",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "cd78d426869aa93d",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -39000,7 +39000,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "同名实体与局部可答字段，第2/4问，20分，时限360秒。\n只依据题面材料。determined表示全部有效材料唯一支持；insufficient表示至少存在两个兼容解释；conflict表示有效的同级直接材料互相矛盾。\n每项都必须给出status、有限结论value及最小相关sources；不能因为局部未知而拒绝回答其余可确定字段。sources按编号升序。\n本问新增材料：\nS03 邮件由工号17发送，内容确认会议在周三。\n本问：提交{sender_department,meeting_day,sources}。\n评分项：result(20分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
+  "promptTemplate": "同名实体与局部可答字段，第2/4问，20分，时限600秒。\n只依据题面材料。determined表示全部有效材料唯一支持；insufficient表示至少存在两个兼容解释；conflict表示有效的同级直接材料互相矛盾。\n每项都必须给出status、有限结论value及最小相关sources；不能因为局部未知而拒绝回答其余可确定字段。sources按编号升序。\n本问新增材料：\nS03 邮件由工号17发送，内容确认会议在周三。\n本问：提交{sender_department,meeting_day,sources}。\n评分项：result(20分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -39011,8 +39011,8 @@
    "groupId": "HX3-08",
    "partNumber": 2,
    "points": 20,
-   "hardSeconds": 360,
-   "questionHash": "ca7151114765fc6a20103fbd1bfb10cec2d47874b1f75ecd4bdbf8e549d64c9d",
+   "hardSeconds": 600,
+   "questionHash": "36113f7d9f997a13cbe8c1730c562d693394b8fc71c8bd13fcf2fefd7285a13d",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -39021,10 +39021,10 @@
    "group_HX3-08",
    "part_2",
    "points_20",
-   "timeout_360s"
+   "timeout_600s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "d41b3853223cc91f",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "00fcda9e0a25cb7b",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -39065,7 +39065,7 @@
    "points_30",
    "timeout_1200s"
   ],
-  "scenarioVersion": "1.0.0",
+  "scenarioVersion": "1.1.0",
   "scenarioHash": "b7f0bab0ba5d5d39",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
@@ -39107,7 +39107,7 @@
    "points_40",
    "timeout_1200s"
   ],
-  "scenarioVersion": "1.0.0",
+  "scenarioVersion": "1.1.0",
   "scenarioHash": "79a8886f22815e5f",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
@@ -39126,7 +39126,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "引用断链与摘要夸大，第1/4问，10分，时限180秒。\n只依据题面材料。determined表示全部有效材料唯一支持；insufficient表示至少存在两个兼容解释；conflict表示有效的同级直接材料互相矛盾。\n每项都必须给出status、有限结论value及最小相关sources；不能因为局部未知而拒绝回答其余可确定字段。sources按编号升序。\n本问新增材料：\nS01 原始表：处理组均值12，对照组均值10。\n本问：判断均值差，提交{status,value,sources}。\n评分项：result(10分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
+  "promptTemplate": "引用断链与摘要夸大，第1/4问，10分，时限300秒。\n只依据题面材料。determined表示全部有效材料唯一支持；insufficient表示至少存在两个兼容解释；conflict表示有效的同级直接材料互相矛盾。\n每项都必须给出status、有限结论value及最小相关sources；不能因为局部未知而拒绝回答其余可确定字段。sources按编号升序。\n本问新增材料：\nS01 原始表：处理组均值12，对照组均值10。\n本问：判断均值差，提交{status,value,sources}。\n评分项：result(10分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -39137,8 +39137,8 @@
    "groupId": "HX3-09",
    "partNumber": 1,
    "points": 10,
-   "hardSeconds": 180,
-   "questionHash": "b19747754bc6111eea702c8fd9c7ba7b5f6ec5ec22617abe7e01a7c924ec1cac",
+   "hardSeconds": 300,
+   "questionHash": "50ab3ed4f5b0ad086f0b3626436434295ebbf0fd5edf0b8daee7c725dcd21bb3",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -39147,10 +39147,10 @@
    "group_HX3-09",
    "part_1",
    "points_10",
-   "timeout_180s"
+   "timeout_300s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "15f0bedfe201dc20",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "634aa73bfc5f6f01",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -39168,7 +39168,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "引用断链与摘要夸大，第2/4问，20分，时限360秒。\n只依据题面材料。determined表示全部有效材料唯一支持；insufficient表示至少存在两个兼容解释；conflict表示有效的同级直接材料互相矛盾。\n每项都必须给出status、有限结论value及最小相关sources；不能因为局部未知而拒绝回答其余可确定字段。sources按编号升序。\n本问新增材料：\nS02 摘要称“处理使结果提高20%”。\nS03 原文未给因果识别设计。\n本问：判断相对均值差与因果结论，提交{relative_difference,causal_claim}。\n评分项：result(20分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
+  "promptTemplate": "引用断链与摘要夸大，第2/4问，20分，时限600秒。\n只依据题面材料。determined表示全部有效材料唯一支持；insufficient表示至少存在两个兼容解释；conflict表示有效的同级直接材料互相矛盾。\n每项都必须给出status、有限结论value及最小相关sources；不能因为局部未知而拒绝回答其余可确定字段。sources按编号升序。\n本问新增材料：\nS02 摘要称“处理使结果提高20%”。\nS03 原文未给因果识别设计。\n本问：判断相对均值差与因果结论，提交{relative_difference,causal_claim}。\n评分项：result(20分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -39179,8 +39179,8 @@
    "groupId": "HX3-09",
    "partNumber": 2,
    "points": 20,
-   "hardSeconds": 360,
-   "questionHash": "d78cbc98c3e1d45e50f1605dc95756bbfecce7dc532bb32471b882d9a5a5484f",
+   "hardSeconds": 600,
+   "questionHash": "abfea62bc254e91bcd5ffefce0232e51e4f00f441557e927cc56a7bcf829c80e",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -39189,10 +39189,10 @@
    "group_HX3-09",
    "part_2",
    "points_20",
-   "timeout_360s"
+   "timeout_600s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "db2fdc9aab776448",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "2a249bf33f10ebd1",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -39233,7 +39233,7 @@
    "points_30",
    "timeout_1200s"
   ],
-  "scenarioVersion": "1.0.0",
+  "scenarioVersion": "1.1.0",
   "scenarioHash": "b824da8a06f6bec7",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
@@ -39275,7 +39275,7 @@
    "points_40",
    "timeout_1200s"
   ],
-  "scenarioVersion": "1.0.0",
+  "scenarioVersion": "1.1.0",
   "scenarioHash": "5e373ec6cd81d14e",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
@@ -39294,7 +39294,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "时间有效性、续期与追溯生效，第1/4问，10分，时限180秒。\n只依据题面材料。determined表示全部有效材料唯一支持；insufficient表示至少存在两个兼容解释；conflict表示有效的同级直接材料互相矛盾。\n每项都必须给出status、有限结论value及最小相关sources；不能因为局部未知而拒绝回答其余可确定字段。sources按编号升序。\n本问新增材料：\nS01 许可证L有效期为日1至日5（含）。\n本问：判断日4是否有效，提交{status,value,sources}。\n评分项：result(10分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
+  "promptTemplate": "时间有效性、续期与追溯生效，第1/4问，10分，时限300秒。\n只依据题面材料。determined表示全部有效材料唯一支持；insufficient表示至少存在两个兼容解释；conflict表示有效的同级直接材料互相矛盾。\n每项都必须给出status、有限结论value及最小相关sources；不能因为局部未知而拒绝回答其余可确定字段。sources按编号升序。\n本问新增材料：\nS01 许可证L有效期为日1至日5（含）。\n本问：判断日4是否有效，提交{status,value,sources}。\n评分项：result(10分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -39305,8 +39305,8 @@
    "groupId": "HX3-10",
    "partNumber": 1,
    "points": 10,
-   "hardSeconds": 180,
-   "questionHash": "7c644335347d08e86afbdb89304d8dfc7b13154cae8f4eece0763931d7f17c1d",
+   "hardSeconds": 300,
+   "questionHash": "cd5351cd28e6ef1293f53ca28f54fceb3e34e184a400413a9231b0468afae835",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -39315,10 +39315,10 @@
    "group_HX3-10",
    "part_1",
    "points_10",
-   "timeout_180s"
+   "timeout_300s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "860b99663dc73ed3",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "72268e8bd7579cb7",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -39336,7 +39336,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "时间有效性、续期与追溯生效，第2/4问，20分，时限360秒。\n只依据题面材料。determined表示全部有效材料唯一支持；insufficient表示至少存在两个兼容解释；conflict表示有效的同级直接材料互相矛盾。\n每项都必须给出status、有限结论value及最小相关sources；不能因为局部未知而拒绝回答其余可确定字段。sources按编号升序。\n本问新增材料：\nS02 材料没有日6以后的续期记录。\n本问：判断日7是否有效，提交{status,value,sources}。\n评分项：result(20分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
+  "promptTemplate": "时间有效性、续期与追溯生效，第2/4问，20分，时限600秒。\n只依据题面材料。determined表示全部有效材料唯一支持；insufficient表示至少存在两个兼容解释；conflict表示有效的同级直接材料互相矛盾。\n每项都必须给出status、有限结论value及最小相关sources；不能因为局部未知而拒绝回答其余可确定字段。sources按编号升序。\n本问新增材料：\nS02 材料没有日6以后的续期记录。\n本问：判断日7是否有效，提交{status,value,sources}。\n评分项：result(20分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -39347,8 +39347,8 @@
    "groupId": "HX3-10",
    "partNumber": 2,
    "points": 20,
-   "hardSeconds": 360,
-   "questionHash": "f65b5ccc4d639bb26a227e590d358d35f2ad517c2fb597a5cdb9a293415a08ae",
+   "hardSeconds": 600,
+   "questionHash": "896fd520add208cdf8abe49fdca53b11ee4f2ec2b64e7df7253f9747625e13ce",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -39357,10 +39357,10 @@
    "group_HX3-10",
    "part_2",
    "points_20",
-   "timeout_360s"
+   "timeout_600s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "0941eddbe8dc2d85",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "5b5bf4547842f2c0",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -39401,7 +39401,7 @@
    "points_30",
    "timeout_1200s"
   ],
-  "scenarioVersion": "1.0.0",
+  "scenarioVersion": "1.1.0",
   "scenarioHash": "e90916b65bf11f1f",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
@@ -39443,7 +39443,7 @@
    "points_40",
    "timeout_1200s"
   ],
-  "scenarioVersion": "1.0.0",
+  "scenarioVersion": "1.1.0",
   "scenarioHash": "dd4322f3b346bf13",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
@@ -39462,7 +39462,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "不完备规则与正反见证，第1/4问，10分，时限180秒。\nA..N是14个布尔命题；只依据下列材料，不把未提及命题当作假。每条clause表示“或”；正整数i表示第i个命题为真，负整数-i表示其为假。所有有效材料必须同时满足；例如[-1,3]表示A蕴含C。材料=[{\"id\":\"S01\",\"clause\":[1]},{\"id\":\"S02\",\"clause\":[-2]},{\"id\":\"S03\",\"clause\":[-1,3]},{\"id\":\"S04\",\"clause\":[-3,4]},{\"id\":\"S05\",\"clause\":[-4,5]},{\"id\":\"S06\",\"clause\":[-5,6]},{\"id\":\"S07\",\"clause\":[2,-7]},{\"id\":\"S08\",\"clause\":[-7,8]},{\"id\":\"S09\",\"clause\":[9,10]},{\"id\":\"S10\",\"clause\":[-9,-10]},{\"id\":\"S11\",\"clause\":[-10,11]},{\"id\":\"S12\",\"clause\":[-11,12]},{\"id\":\"S13\",\"clause\":[12,13]},{\"id\":\"S14\",\"clause\":[-12,14]}]。\n判断目标命题在所有满足材料的赋值中是否固定。固定时提交{status:\"determined\",value:true或false,sources:[材料ID]}，sources须足以推出结论且删除其中任一条后不再足够，允许任意合法的极小支持集。未固定时提交{status:\"insufficient\",value:null,witnessTrue:[A..N的14个布尔值],witnessFalse:[同格式]}，分别让目标为真/假且均满足全部有效材料。不接受仅以“资料不足”代替见证。判断正确占30%，依据正确占70%；不执行代码。\n本问：分别判断A、B。\n评分项：A(5分)、B(5分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
+  "promptTemplate": "不完备规则与正反见证，第1/4问，10分，时限300秒。\nA..N是14个布尔命题；只依据下列材料，不把未提及命题当作假。每条clause表示“或”；正整数i表示第i个命题为真，负整数-i表示其为假。所有有效材料必须同时满足；例如[-1,3]表示A蕴含C。材料=[{\"id\":\"S01\",\"clause\":[1]},{\"id\":\"S02\",\"clause\":[-2]},{\"id\":\"S03\",\"clause\":[-1,3]},{\"id\":\"S04\",\"clause\":[-3,4]},{\"id\":\"S05\",\"clause\":[-4,5]},{\"id\":\"S06\",\"clause\":[-5,6]},{\"id\":\"S07\",\"clause\":[2,-7]},{\"id\":\"S08\",\"clause\":[-7,8]},{\"id\":\"S09\",\"clause\":[9,10]},{\"id\":\"S10\",\"clause\":[-9,-10]},{\"id\":\"S11\",\"clause\":[-10,11]},{\"id\":\"S12\",\"clause\":[-11,12]},{\"id\":\"S13\",\"clause\":[12,13]},{\"id\":\"S14\",\"clause\":[-12,14]}]。\n判断目标命题在所有满足材料的赋值中是否固定。固定时提交{status:\"determined\",value:true或false,sources:[材料ID]}，sources须足以推出结论且删除其中任一条后不再足够，允许任意合法的极小支持集。未固定时提交{status:\"insufficient\",value:null,witnessTrue:[A..N的14个布尔值],witnessFalse:[同格式]}，分别让目标为真/假且均满足全部有效材料。不接受仅以“资料不足”代替见证。判断正确占30%，依据正确占70%；不执行代码。\n本问：分别判断A、B。\n评分项：A(5分)、B(5分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -39473,8 +39473,8 @@
    "groupId": "HX3-11",
    "partNumber": 1,
    "points": 10,
-   "hardSeconds": 180,
-   "questionHash": "06c8f40af9514a802d00d375267e48f2e72aab3185d9e3629a872e34082ad8ab",
+   "hardSeconds": 300,
+   "questionHash": "d1bbfdff6ac9e93ad797bd58b4528735b2495be3d89e00b79d8010c8f7bc2c48",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -39483,10 +39483,10 @@
    "group_HX3-11",
    "part_1",
    "points_10",
-   "timeout_180s"
+   "timeout_300s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "aa2d6cfca52f6637",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "cc2f36c3476863e1",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -39504,7 +39504,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "不完备规则与正反见证，第2/4问，20分，时限360秒。\nA..N是14个布尔命题；只依据下列材料，不把未提及命题当作假。每条clause表示“或”；正整数i表示第i个命题为真，负整数-i表示其为假。所有有效材料必须同时满足；例如[-1,3]表示A蕴含C。材料=[{\"id\":\"S01\",\"clause\":[1]},{\"id\":\"S02\",\"clause\":[-2]},{\"id\":\"S03\",\"clause\":[-1,3]},{\"id\":\"S04\",\"clause\":[-3,4]},{\"id\":\"S05\",\"clause\":[-4,5]},{\"id\":\"S06\",\"clause\":[-5,6]},{\"id\":\"S07\",\"clause\":[2,-7]},{\"id\":\"S08\",\"clause\":[-7,8]},{\"id\":\"S09\",\"clause\":[9,10]},{\"id\":\"S10\",\"clause\":[-9,-10]},{\"id\":\"S11\",\"clause\":[-10,11]},{\"id\":\"S12\",\"clause\":[-11,12]},{\"id\":\"S13\",\"clause\":[12,13]},{\"id\":\"S14\",\"clause\":[-12,14]}]。\n判断目标命题在所有满足材料的赋值中是否固定。固定时提交{status:\"determined\",value:true或false,sources:[材料ID]}，sources须足以推出结论且删除其中任一条后不再足够，允许任意合法的极小支持集。未固定时提交{status:\"insufficient\",value:null,witnessTrue:[A..N的14个布尔值],witnessFalse:[同格式]}，分别让目标为真/假且均满足全部有效材料。不接受仅以“资料不足”代替见证。判断正确占30%，依据正确占70%；不执行代码。\n本问：分别判断F、G，不能只列最后一条蕴含而缺少前提。\n评分项：F(10分)、G(10分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
+  "promptTemplate": "不完备规则与正反见证，第2/4问，20分，时限600秒。\nA..N是14个布尔命题；只依据下列材料，不把未提及命题当作假。每条clause表示“或”；正整数i表示第i个命题为真，负整数-i表示其为假。所有有效材料必须同时满足；例如[-1,3]表示A蕴含C。材料=[{\"id\":\"S01\",\"clause\":[1]},{\"id\":\"S02\",\"clause\":[-2]},{\"id\":\"S03\",\"clause\":[-1,3]},{\"id\":\"S04\",\"clause\":[-3,4]},{\"id\":\"S05\",\"clause\":[-4,5]},{\"id\":\"S06\",\"clause\":[-5,6]},{\"id\":\"S07\",\"clause\":[2,-7]},{\"id\":\"S08\",\"clause\":[-7,8]},{\"id\":\"S09\",\"clause\":[9,10]},{\"id\":\"S10\",\"clause\":[-9,-10]},{\"id\":\"S11\",\"clause\":[-10,11]},{\"id\":\"S12\",\"clause\":[-11,12]},{\"id\":\"S13\",\"clause\":[12,13]},{\"id\":\"S14\",\"clause\":[-12,14]}]。\n判断目标命题在所有满足材料的赋值中是否固定。固定时提交{status:\"determined\",value:true或false,sources:[材料ID]}，sources须足以推出结论且删除其中任一条后不再足够，允许任意合法的极小支持集。未固定时提交{status:\"insufficient\",value:null,witnessTrue:[A..N的14个布尔值],witnessFalse:[同格式]}，分别让目标为真/假且均满足全部有效材料。不接受仅以“资料不足”代替见证。判断正确占30%，依据正确占70%；不执行代码。\n本问：分别判断F、G，不能只列最后一条蕴含而缺少前提。\n评分项：F(10分)、G(10分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -39515,8 +39515,8 @@
    "groupId": "HX3-11",
    "partNumber": 2,
    "points": 20,
-   "hardSeconds": 360,
-   "questionHash": "823675007fd3f7bc0578ff68e1b7160d6ac7a626b79aca0d325a76bfea4584b1",
+   "hardSeconds": 600,
+   "questionHash": "bf3a7ea6ba66e3afac8cf98b8c361d0549f5bfb19d63a92a2fbdd204abe21a2e",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -39525,10 +39525,10 @@
    "group_HX3-11",
    "part_2",
    "points_20",
-   "timeout_360s"
+   "timeout_600s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "aa062348323557d8",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "d9892c9c93095523",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -39569,7 +39569,7 @@
    "points_30",
    "timeout_1200s"
   ],
-  "scenarioVersion": "1.0.0",
+  "scenarioVersion": "1.1.0",
   "scenarioHash": "51e803e198347939",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
@@ -39611,7 +39611,7 @@
    "points_40",
    "timeout_1200s"
   ],
-  "scenarioVersion": "1.0.0",
+  "scenarioVersion": "1.1.0",
   "scenarioHash": "f849dc980de208d4",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
@@ -39630,7 +39630,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "局部矛盾与最小冲突集合，第1/4问，10分，时限180秒。\n只依据题面材料。determined表示全部有效材料唯一支持；insufficient表示至少存在两个兼容解释；conflict表示有效的同级直接材料互相矛盾。\n每项都必须给出status、有限结论value及最小相关sources；不能因为局部未知而拒绝回答其余可确定字段。sources按编号升序。\n本问新增材料：\nS01 台账：箱A颜色红。\nS02 台账：箱B重量5kg。\n本问：提交{A_color,B_weight}，各含status/value/sources。\n评分项：result(10分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
+  "promptTemplate": "局部矛盾与最小冲突集合，第1/4问，10分，时限300秒。\n只依据题面材料。determined表示全部有效材料唯一支持；insufficient表示至少存在两个兼容解释；conflict表示有效的同级直接材料互相矛盾。\n每项都必须给出status、有限结论value及最小相关sources；不能因为局部未知而拒绝回答其余可确定字段。sources按编号升序。\n本问新增材料：\nS01 台账：箱A颜色红。\nS02 台账：箱B重量5kg。\n本问：提交{A_color,B_weight}，各含status/value/sources。\n评分项：result(10分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -39641,8 +39641,8 @@
    "groupId": "HX3-12",
    "partNumber": 1,
    "points": 10,
-   "hardSeconds": 180,
-   "questionHash": "c6aaecc87a43719da04155efec98a4daa822bd53038048613213d3a24349f5d7",
+   "hardSeconds": 300,
+   "questionHash": "271f05135742cf8a6b0e07c7898003a44dffaa3b2cc22b62d2f332779bedaac6",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -39651,10 +39651,10 @@
    "group_HX3-12",
    "part_1",
    "points_10",
-   "timeout_180s"
+   "timeout_300s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "1e6560a6f7fb55ee",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "27f907b01398160c",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -39672,7 +39672,7 @@
   "locale": "zh-CN",
   "status": "valid",
   "tier": "public_dev",
-  "promptTemplate": "局部矛盾与最小冲突集合，第2/4问，20分，时限360秒。\n只依据题面材料。determined表示全部有效材料唯一支持；insufficient表示至少存在两个兼容解释；conflict表示有效的同级直接材料互相矛盾。\n每项都必须给出status、有限结论value及最小相关sources；不能因为局部未知而拒绝回答其余可确定字段。sources按编号升序。\n本问新增材料：\nS03 同级台账：箱A颜色蓝。\n本问：提交{A_color,B_weight}，局部冲突不得污染B。\n评分项：result(20分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
+  "promptTemplate": "局部矛盾与最小冲突集合，第2/4问，20分，时限600秒。\n只依据题面材料。determined表示全部有效材料唯一支持；insufficient表示至少存在两个兼容解释；conflict表示有效的同级直接材料互相矛盾。\n每项都必须给出status、有限结论value及最小相关sources；不能因为局部未知而拒绝回答其余可确定字段。sources按编号升序。\n本问新增材料：\nS03 同级台账：箱A颜色蓝。\n本问：提交{A_color,B_weight}，局部冲突不得污染B。\n评分项：result(20分)。\n每项单独提交完整JSON：{\"item\":\"评分项ID\",\"answer\":上述格式的答案}。按最后一条完整记录计分；截断尾部不覆盖前次完整提交。未完成项记零，前问得分保留。只对明确列出的槽位计分，额外槽位无分；不使用工具。",
   "grader": "ultra_batch_part",
   "graderVersion": "1.0.0",
   "scoring": {
@@ -39683,8 +39683,8 @@
    "groupId": "HX3-12",
    "partNumber": 2,
    "points": 20,
-   "hardSeconds": 360,
-   "questionHash": "fbf024bcec4bf138898672df930d9f3875a9349b48659438b4f7269f17c81dfe",
+   "hardSeconds": 600,
+   "questionHash": "b6169f90080b0d74d6040944050450d2f35636ddfad2099126f96952c59e6cee",
    "sourcePackVersion": "ultra-three-dimension-batch-2026-09-14-v1"
   },
   "tags": [
@@ -39693,10 +39693,10 @@
    "group_HX3-12",
    "part_2",
    "points_20",
-   "timeout_360s"
+   "timeout_600s"
   ],
-  "scenarioVersion": "1.0.0",
-  "scenarioHash": "6c6c6775dbc501c5",
+  "scenarioVersion": "1.1.0",
+  "scenarioHash": "ec7000a13013e7bf",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
   "goldSource": "ultra-three-dimension-batch-2026-09-14-v1",
@@ -39737,7 +39737,7 @@
    "points_30",
    "timeout_1200s"
   ],
-  "scenarioVersion": "1.0.0",
+  "scenarioVersion": "1.1.0",
   "scenarioHash": "1dfb347d092f3e46",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
@@ -39779,7 +39779,7 @@
    "points_40",
    "timeout_1200s"
   ],
-  "scenarioVersion": "1.0.0",
+  "scenarioVersion": "1.1.0",
   "scenarioHash": "b910d46049028dd7",
   "responseMode": "raw_output",
   "outputPolicy": "fenced_allowed",
