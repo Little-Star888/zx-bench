@@ -1,5 +1,5 @@
 {
- "version": "1.45.0",
+ "version": "1.46.0",
  "count": 815,
  "retiredCount": 112,
  "totalCount": 927,
@@ -19,7 +19,7 @@
  "retiredDimensions": {
   "hallucination_resistance": 78
  },
- "generatedAt": "2026-09-17T00:00:00.000Z",
+ "generatedAt": "2026-09-18T00:00:00.000Z",
  "validCount": 815,
  "ambiguousCount": 0,
  "reviewCount": 0,

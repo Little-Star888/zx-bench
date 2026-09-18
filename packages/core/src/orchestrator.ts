@@ -460,7 +460,12 @@ async function evaluateCandidate(options: OrchestrateOptions): Promise<ScenarioR
       scenarioVersion: scenario.scenarioVersion,
       scenarioHash: scenario.scenarioHash,
       dimension: scenario.dimension,
-      graderVersion: scenario.graderVersion,
+      // 与 buildLimitExceededResult（本文件 :123）保持同一格式：落库的 graderVersion 必须是
+      // `grader@version`。此前这里写裸版本号（如 `schema_compliance_v5`），使空响应样本
+      // 在「按 grader@version 分组」的统计里独占一个桶，也让 computeScorerVersionDrift
+      // 把它算成一次假漂移（实测 09-17 run：44 题同批里就这一行是裸值）。
+      // 注意 evaluator 在第 556 行才解析，此处只能用题面声明的版本。
+      graderVersion: `${scenario.grader}@${scenario.graderVersion}`,
       modelOutput: '',
       reasoningContent: modelResponse.reasoningContent,
       outputMetadata: {

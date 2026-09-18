@@ -1,0 +1,419 @@
+{
+ "date": "2026-09-18T00:00:00.000Z",
+ "reason": "题包的 hardSeconds/points 改过，但题库里已冻结的 tags 没跟着改 ⇒ 元数据误导（没有任何代码读这些 tag；题面印的时限与 requirements.hardSeconds 本身自洽）",
+ "tagsNotHashed": "tags 不在 canonicalize.ts 的 HASH_FIELDS ⇒ scenarioHash 逐题未变（见 gates/changed）",
+ "changed": [
+  {
+   "id": "MX3-01-P1",
+   "fixes": [
+    {
+     "from": "timeout_180s",
+     "to": "timeout_300s"
+    }
+   ],
+   "scenarioHash": "733dca46be5fc567"
+  },
+  {
+   "id": "MX3-01-P2",
+   "fixes": [
+    {
+     "from": "timeout_360s",
+     "to": "timeout_600s"
+    }
+   ],
+   "scenarioHash": "fe69a81718af0d80"
+  },
+  {
+   "id": "MX3-01-P3",
+   "fixes": [
+    {
+     "from": "timeout_1200s",
+     "to": "timeout_900s"
+    }
+   ],
+   "scenarioHash": "0cf836c5cd216fa3"
+  },
+  {
+   "id": "MX3-02-P1",
+   "fixes": [
+    {
+     "from": "timeout_180s",
+     "to": "timeout_300s"
+    }
+   ],
+   "scenarioHash": "69d09bdbe92c95a4"
+  },
+  {
+   "id": "MX3-02-P2",
+   "fixes": [
+    {
+     "from": "timeout_360s",
+     "to": "timeout_600s"
+    }
+   ],
+   "scenarioHash": "55c7850fb662610a"
+  },
+  {
+   "id": "MX3-02-P3",
+   "fixes": [
+    {
+     "from": "timeout_1200s",
+     "to": "timeout_900s"
+    }
+   ],
+   "scenarioHash": "f80fb551e5cb76b0"
+  },
+  {
+   "id": "MX3-03-P2",
+   "fixes": [
+    {
+     "from": "timeout_360s",
+     "to": "timeout_600s"
+    }
+   ],
+   "scenarioHash": "da109df9fbf42b14"
+  },
+  {
+   "id": "MX3-03-P3",
+   "fixes": [
+    {
+     "from": "timeout_1200s",
+     "to": "timeout_900s"
+    }
+   ],
+   "scenarioHash": "145325dc18993d7e"
+  },
+  {
+   "id": "MX3-04-P1",
+   "fixes": [
+    {
+     "from": "timeout_180s",
+     "to": "timeout_300s"
+    }
+   ],
+   "scenarioHash": "d8f96c66f6d075e6"
+  },
+  {
+   "id": "MX3-04-P2",
+   "fixes": [
+    {
+     "from": "timeout_360s",
+     "to": "timeout_600s"
+    }
+   ],
+   "scenarioHash": "0875270a0c9e7520"
+  },
+  {
+   "id": "MX3-04-P3",
+   "fixes": [
+    {
+     "from": "timeout_1200s",
+     "to": "timeout_900s"
+    }
+   ],
+   "scenarioHash": "8386fe89d2e5337d"
+  },
+  {
+   "id": "MX3-05-P1",
+   "fixes": [
+    {
+     "from": "timeout_180s",
+     "to": "timeout_300s"
+    }
+   ],
+   "scenarioHash": "4069aacb11715a6d"
+  },
+  {
+   "id": "MX3-05-P2",
+   "fixes": [
+    {
+     "from": "timeout_360s",
+     "to": "timeout_600s"
+    }
+   ],
+   "scenarioHash": "fc6ce7fa24962636"
+  },
+  {
+   "id": "MX3-05-P3",
+   "fixes": [
+    {
+     "from": "timeout_1200s",
+     "to": "timeout_900s"
+    }
+   ],
+   "scenarioHash": "34e458623c969218"
+  },
+  {
+   "id": "MX3-07-P1",
+   "fixes": [
+    {
+     "from": "timeout_180s",
+     "to": "timeout_300s"
+    }
+   ],
+   "scenarioHash": "780946452c146d80"
+  },
+  {
+   "id": "MX3-07-P2",
+   "fixes": [
+    {
+     "from": "timeout_360s",
+     "to": "timeout_600s"
+    }
+   ],
+   "scenarioHash": "98ca78d0fb9f2f31"
+  },
+  {
+   "id": "MX3-07-P3",
+   "fixes": [
+    {
+     "from": "timeout_1200s",
+     "to": "timeout_900s"
+    }
+   ],
+   "scenarioHash": "c21adc624e8026b3"
+  },
+  {
+   "id": "MX3-08-P1",
+   "fixes": [
+    {
+     "from": "timeout_180s",
+     "to": "timeout_300s"
+    }
+   ],
+   "scenarioHash": "723f727a8664d470"
+  },
+  {
+   "id": "MX3-08-P2",
+   "fixes": [
+    {
+     "from": "timeout_360s",
+     "to": "timeout_600s"
+    }
+   ],
+   "scenarioHash": "26dc4956d5028909"
+  },
+  {
+   "id": "MX3-08-P3",
+   "fixes": [
+    {
+     "from": "timeout_1200s",
+     "to": "timeout_900s"
+    }
+   ],
+   "scenarioHash": "8c89882cbe1604a9"
+  },
+  {
+   "id": "MX3-09-P1",
+   "fixes": [
+    {
+     "from": "timeout_180s",
+     "to": "timeout_300s"
+    }
+   ],
+   "scenarioHash": "ed1570986925f804"
+  },
+  {
+   "id": "MX3-09-P2",
+   "fixes": [
+    {
+     "from": "timeout_360s",
+     "to": "timeout_600s"
+    }
+   ],
+   "scenarioHash": "f27140e61fabaa55"
+  },
+  {
+   "id": "MX3-09-P3",
+   "fixes": [
+    {
+     "from": "timeout_1200s",
+     "to": "timeout_900s"
+    }
+   ],
+   "scenarioHash": "ee5206b0483f1250"
+  },
+  {
+   "id": "MX3-10-P1",
+   "fixes": [
+    {
+     "from": "timeout_180s",
+     "to": "timeout_300s"
+    }
+   ],
+   "scenarioHash": "fc307e360ce4ba68"
+  },
+  {
+   "id": "MX3-10-P2",
+   "fixes": [
+    {
+     "from": "timeout_360s",
+     "to": "timeout_600s"
+    }
+   ],
+   "scenarioHash": "c0af5ffbea5be4b1"
+  },
+  {
+   "id": "MX3-10-P3",
+   "fixes": [
+    {
+     "from": "timeout_1200s",
+     "to": "timeout_900s"
+    }
+   ],
+   "scenarioHash": "ceb21bf2c5b27b11"
+  },
+  {
+   "id": "MX3-11-P1",
+   "fixes": [
+    {
+     "from": "timeout_180s",
+     "to": "timeout_300s"
+    }
+   ],
+   "scenarioHash": "ebd4582ecf5bd349"
+  },
+  {
+   "id": "MX3-11-P2",
+   "fixes": [
+    {
+     "from": "timeout_360s",
+     "to": "timeout_600s"
+    }
+   ],
+   "scenarioHash": "b36e733340b3208a"
+  },
+  {
+   "id": "MX3-11-P3",
+   "fixes": [
+    {
+     "from": "timeout_1200s",
+     "to": "timeout_900s"
+    }
+   ],
+   "scenarioHash": "37d31f61d8611919"
+  },
+  {
+   "id": "MX3-14-P1",
+   "fixes": [
+    {
+     "from": "timeout_600s",
+     "to": "timeout_300s"
+    }
+   ],
+   "scenarioHash": "652f3dcc217a9f63"
+  },
+  {
+   "id": "MX3-14-P2",
+   "fixes": [
+    {
+     "from": "timeout_360s",
+     "to": "timeout_600s"
+    }
+   ],
+   "scenarioHash": "158a61082f5142b6"
+  },
+  {
+   "id": "MX3-14-P3",
+   "fixes": [
+    {
+     "from": "timeout_1200s",
+     "to": "timeout_900s"
+    }
+   ],
+   "scenarioHash": "d8bdb4513389a5d5"
+  },
+  {
+   "id": "MX3-15-P1",
+   "fixes": [
+    {
+     "from": "timeout_600s",
+     "to": "timeout_300s"
+    }
+   ],
+   "scenarioHash": "72aefdd53ad4609b"
+  },
+  {
+   "id": "MX3-15-P2",
+   "fixes": [
+    {
+     "from": "timeout_360s",
+     "to": "timeout_600s"
+    }
+   ],
+   "scenarioHash": "7d3928a50c76d220"
+  },
+  {
+   "id": "MX3-15-P3",
+   "fixes": [
+    {
+     "from": "timeout_1200s",
+     "to": "timeout_900s"
+    }
+   ],
+   "scenarioHash": "fdbe885c693552cb"
+  },
+  {
+   "id": "MX3-16-P1",
+   "fixes": [
+    {
+     "from": "timeout_600s",
+     "to": "timeout_300s"
+    }
+   ],
+   "scenarioHash": "07ce16b956108ae1"
+  },
+  {
+   "id": "MX3-16-P2",
+   "fixes": [
+    {
+     "from": "timeout_360s",
+     "to": "timeout_600s"
+    }
+   ],
+   "scenarioHash": "6236bb484bc84964"
+  },
+  {
+   "id": "MX3-16-P3",
+   "fixes": [
+    {
+     "from": "timeout_1200s",
+     "to": "timeout_900s"
+    }
+   ],
+   "scenarioHash": "f4592ebbe3145c47"
+  },
+  {
+   "id": "MX3-17-P1",
+   "fixes": [
+    {
+     "from": "timeout_600s",
+     "to": "timeout_300s"
+    }
+   ],
+   "scenarioHash": "e940bfc1afc96818"
+  },
+  {
+   "id": "MX3-17-P2",
+   "fixes": [
+    {
+     "from": "timeout_360s",
+     "to": "timeout_600s"
+    }
+   ],
+   "scenarioHash": "d6ee18bb1cbc8ad0"
+  },
+  {
+   "id": "MX3-17-P3",
+   "fixes": [
+    {
+     "from": "timeout_1200s",
+     "to": "timeout_900s"
+    }
+   ],
+   "scenarioHash": "81fd6a42c35712a0"
+  }
+ ],
+ "fromMetaVersion": "1.45.0",
+ "toMetaVersion": "1.46.0"
+}

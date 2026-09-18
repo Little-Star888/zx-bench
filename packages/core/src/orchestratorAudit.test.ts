@@ -63,4 +63,14 @@ describe('end-to-end candidate vs Judge accounting (mock transport)', () => {
     expect(r.criterionResults?.[0].status).toBe('fail');
     expect(r.outputMetadata.evaluationAudit?.criterionResults).toHaveLength(1);
   });
+  // 09-17 run 实测：44 题里只有 SO-CN-017（空响应早退）落库成裸 `schema_compliance_v5`，
+  // 使按 `grader@version` 分组的统计多出一个桶，也让版本漂移审计把它算成假漂移。
+  it('empty-response early exit reports a qualified graderVersion like every other exit', async () => {
+    vi.mocked(callModelWithRetry).mockResolvedValue({ content: '', finishReason: 'stop', latencyMs: 1, usage: { inputTokens: 1, outputTokens: 1, totalTokens: 2 } } as ModelResponse);
+    const scenario = { ...s, dimension: 'structured_output', grader: 'schema_compliance', graderVersion: 'schema_compliance_v5' } as unknown as Scenario;
+    const r = await orchestrateEvaluation({ scenario, modelConfig: model, modelParams: {}, evalConfig: { ...config, judgeEnabled: false } });
+    expect(r.modelOutput).toBe('');
+    expect(r.graderVersion).toBe('schema_compliance@schema_compliance_v5');
+    expect(r.outputMetadata.evaluationAudit?.graderVersion).toBe('schema_compliance@schema_compliance_v5');
+  });
 });

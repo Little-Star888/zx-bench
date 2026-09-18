@@ -5,6 +5,7 @@
 import type { FastifyInstance } from 'fastify';
 import { prisma } from '../index.js';
 import { decodeScenario } from '../evaluationSnapshot.js';
+import { computeRunTimeline } from '../runTimeline.js';
 import { registerCalibrationRoutes } from '../calibration/routes.js';
 import { getCalibrationStore } from '../calibration/store.js';
 import { intakeRuns } from '../calibration/intake.js';
@@ -4642,32 +4643,19 @@ async function runEvaluation(
   // durationMs 原为 finishedAt - startTime，而 startTime 在每次 resume 时被重置为续跑时刻，
   // 导致 3 小时真实跨度被报成最后一段的 29 分钟。现从全量结果还原真实时间轴：
   //   firstStartedAt = 最早一题开始时间（无结果时退回 startTime）
-  //   executionMs    = 去重后各题执行跨度之和（真实执行占用，并行时含重叠）
-  //   pausedMs       = 墙钟 - executionMs（中断/暂停空档，非负截断）
+  //   executionMs    = 各题执行跨度之和（真实执行占用，并行时含重叠）
+  //   activeMs       = 区间并集 = 至少有一题在执行的真实时长（并行免疫）
+  //   pausedMs       = 墙钟 - activeMs（中断/暂停空档，非负截断）
   //   resumeCount    = 按题间空档 >60s 聚类的执行段数（1 = 从未中断）
-  const spanRows = results
-    .map((r) => ({ start: +new Date(r.startedAt), end: +new Date(r.finishedAt) }))
-    .filter((s) => Number.isFinite(s.start) && Number.isFinite(s.end) && s.end >= s.start);
-  const firstStartedAt = spanRows.length > 0
-    ? Math.min(...spanRows.map((s) => s.start))
-    : startTime;
-  const executionMs = spanRows.length > 0
-    ? spanRows.reduce((acc, s) => acc + (s.end - s.start), 0)
-    : finishedAt - startTime;
-  const wallClockMs = finishedAt - firstStartedAt;
-  const pausedMs = Math.max(0, wallClockMs - executionMs);
-  let resumeCount = 1;
-  {
-    const ivs = spanRows
-      .map((s) => [s.start, s.end] as [number, number])
-      .sort((a, b) => a[0] - b[0]);
-    let cursor: number | null = null;
-    for (const [s, e] of ivs) {
-      if (cursor !== null && s - cursor > 60_000) resumeCount++;
-      cursor = cursor === null ? e : Math.max(cursor, e);
-    }
-  }
-  const durationMs = wallClockMs;
+  // ⚠️ 2026-09-18 修：pausedMs 原为「墙钟 - executionMs」，而 parallelism≥2 时
+  //    executionMs ≈ 墙钟 × p ⇒ 该差值恒为负 ⇒ pausedMs 恒为 0（实测 5.95h vs 11.42h，
+  //    真实经历 2 次 resume 仍报 0）。改用区间并集，见 src/runTimeline.ts。
+  const timeline = computeRunTimeline(
+    results.map((r) => ({ start: +new Date(r.startedAt), end: +new Date(r.finishedAt) })),
+    startTime,
+    finishedAt,
+  );
+  const { firstStartedAt, executionMs, wallClockMs, activeMs, pausedMs, resumeCount, durationMs } = timeline;
   // 计算每题独立 token 速度中位数
   const perQuestionSpeeds2: number[] = [];
   let summaryInputTokens = 0;
@@ -4736,6 +4724,7 @@ async function runEvaluation(
         finishedAt: new Date(finishedAt).toISOString(),
         durationMs,
         executionMs,
+        activeMs,
         pausedMs,
         resumeCount,
       }),
