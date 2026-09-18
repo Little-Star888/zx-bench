@@ -47,6 +47,27 @@ describe('Judge integrity', () => {
     response(content);
     await expect(runTieredJudge(input, options)).rejects.toThrow(/JUDGE_INVALID/);
   });
+  // 2026-09-18：Judge 常把候选输出里的 ``` 引用进自己的 evidence（例如
+  // 「满足 c3: 包含用 ```json 标记的请求示例代码块」）。原来的**非贪婪**围栏正则会
+  // 在那个内嵌围栏处收尾，把 JSON 截成半截 ⇒ 初始 + compact 重试双双失败 ⇒ 降级。
+  // 实测 09-17 run：IF-CN-007 / SO-CN-041 因此被判 JUDGE_FAILED。
+  it('accepts a fenced judgment whose evidence quotes the candidate code fences', async () => {
+    const quoted = {
+      ...valid,
+      evidence: ['满足 c3: 包含用 ```json 标记的请求示例代码块', '满足 c7: bash 块必须是 ```bash curl -X POST'],
+    };
+    response('```json\n' + JSON.stringify(quoted) + '\n```');
+    expect((await runTieredJudge(input, options)).finalJudge.patchCorrectness).toBe(1);
+  });
+  it('falls back to the outermost braces when prose surrounds the JSON', async () => {
+    response('分析如下：\n' + JSON.stringify(valid) + '\n以上，仅供参考。');
+    expect((await runTieredJudge(input, options)).finalJudge.patchCorrectness).toBe(1);
+  });
+  it('keeps the shadow evidence contract strict: a fenced answer is still rejected', async () => {
+    response('```json\n' + JSON.stringify(valid) + '\n```');
+    await expect(runTieredJudge({ ...input, judgeEvidenceContract: 'criterion_evidence_v1' }, options))
+      .rejects.toThrow(/shadow evidence contract/);
+  });
   it('accepts the hallucination-specific factuality contract', async () => {
     response(JSON.stringify({ verdict: 'correct', factuality: 1, confidence: 0.9 }));
     expect((await runTieredJudge({ ...input, dimension: 'hallucination_resistance' }, options)).finalJudge.factuality).toBe(1);

@@ -150,6 +150,46 @@ function isRetryableJudgeOutputFailure(error: unknown): boolean {
     || /timed out|timeout|fetch failed/i.test(message);
 }
 
+/**
+ * 从 Judge 响应里取出可解析的 JSON 对象（多候选，按可靠性排序）。
+ *
+ * 2026-09-18 修：原来只用**非贪婪**围栏正则 `/```(?:json)?\s*([\s\S]*?)```/`，
+ * 而 Judge 经常把候选输出里的 ``` 引用进自己的 `evidence` 字符串（例如
+ * 「满足 c3: 包含用 ```json 标记的请求示例代码块」）—— 非贪婪匹配会在那个
+ * **内嵌围栏**处收尾，把 JSON 截成半截 ⇒ JSON.parse 失败 ⇒ 初始 + compact 重试
+ * 双双失败 ⇒ JUDGE_FAILED。
+ * 实测 09-17 的 5 维 run：2/444 题因此被降级（IF-CN-007 候选含 ```json/```bash、
+ * SO-CN-041 候选含 sql/bash/yaml 三个围栏）；同维度、候选不含围栏的 IF-CN-008 正常。
+ * 6 次采样里围栏包裹占 3 次、裸 JSON 占 3 次，另有 1 次 reasoning 耗尽预算
+ * （finishReason=length，58k 字符推理）—— 后者由既有的截断/重试逻辑处理。
+ *
+ * 候选顺序：贪婪围栏 → 原文 → 首尾花括号切片。
+ * `strictBare`（证据契约 criterion_evidence_v1）刻意只接受裸 JSON 对象 ——
+ * 该契约是 fail-closed 的，不允许从围栏或散文里抠。
+ */
+function parseJudgeJson(content: string, strictBare: boolean): unknown {
+  const text = (content ?? '').trim();
+  if (!text) return undefined;
+  const candidates: string[] = [];
+  if (strictBare) {
+    candidates.push(text);
+  } else {
+    // 贪婪：从第一个开围栏吃到**最后一个**闭围栏，这样内嵌的 ``` 不会被当成结尾
+    const greedy = text.match(/```(?:json)?\s*([\s\S]*)```/);
+    if (greedy) candidates.push(greedy[1].trim());
+    candidates.push(text);
+    const first = text.indexOf('{');
+    const last = text.lastIndexOf('}');
+    if (first >= 0 && last > first) candidates.push(text.slice(first, last + 1));
+  }
+  for (const candidate of candidates) {
+    try {
+      return JSON.parse(candidate);
+    } catch { /* 试下一个候选 */ }
+  }
+  return undefined;
+}
+
 /** 调用 Judge 模型 */
 async function callJudgeModel(
   model: ModelConfig,
@@ -184,15 +224,14 @@ async function callJudgeModel(
     throw new Error('JUDGE_OUTPUT_TRUNCATED: Judge generation reached max_tokens; no score accepted');
   }
 
-  // 解析 Judge 输出（严格 JSON，带截断修复）
+  // 解析 Judge 输出（多候选严格 JSON，带截断修复）
   let parsed: Record<string, unknown>;
-  try {
-    // 尝试从代码块中提取 JSON
-    const jsonMatch = input.judgeEvidenceContract ? null : response.content.match(/```(?:json)?\s*([\s\S]*?)```/);
-    const jsonStr = jsonMatch ? jsonMatch[1].trim() : response.content.trim();
-    parsed = JSON.parse(jsonStr);
-  } catch {
-    if (input.judgeEvidenceContract) throw new Error('JUDGE_INVALID_JSON: shadow evidence contract requires a complete bare JSON object');
+  const parsedCandidate = parseJudgeJson(response.content, Boolean(input.judgeEvidenceContract));
+  if (parsedCandidate !== undefined) {
+    parsed = parsedCandidate as Record<string, unknown>;
+  } else if (input.judgeEvidenceContract) {
+    throw new Error('JUDGE_INVALID_JSON: shadow evidence contract requires a complete bare JSON object');
+  } else {
     // JSON 解析失败 — 尝试修复截断的 JSON
     const repaired = tryRepairTruncatedJson(response.content);
     if (repaired) {
