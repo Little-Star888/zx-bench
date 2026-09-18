@@ -34,7 +34,8 @@ describe('targeted evidence semantics',()=>{
     for(const groupId of new Set(p.parts.map(x=>x.groupId))){
       const group=p.parts.filter(x=>x.groupId===groupId);
       expect(group.map(x=>x.points)).toEqual([10,20,30,40]);
-      expect(group.map(x=>x.hardSeconds)).toEqual([180,360,1200,1200]);
+      // 2026-09-18：P1/P2 由 180/360 抬到 300/600（对齐数学题包；180s 实测会造成硬止损）
+      expect(group.map(x=>x.hardSeconds)).toEqual([300,600,1200,1200]);
     }
     const input={contractHash:p.contractHash,runId:'synthetic',modelId:'synthetic',modelFamily:'synthetic',answers:p.parts.map(part=>({id:part.id,questionHash:part.question.questionHash,outcome:'completed' as const,output:referenceOutput(part)}))};
     expect(scoreExam(p,input).dimensions.map(x=>x.score)).toEqual([100,100]);

@@ -25,8 +25,15 @@ export function buildEvidenceExam(){
     ]},
     ...evidenceCatalogGroups,
   ];
-  const policy={version:'ultra-evidence-exam-2026-09-14-v2',modelCalls:0,productionEligible:true,officialRankingEligible:false,difficultyCalibrated:false,
-    hardSeconds:[180,360,1200,1200],partPoints:[10,20,30,40],carrySubmittedAnswers:true,answerFeedback:false,
+  // 2026-09-18 修订（v2 → v3）：hardSeconds 的 P1/P2 由 [180,360] 抬到 [300,600]。
+  // 实测 09-17 的 5 维 run 里，48 道 DX3/HX3 的 P1/P2 有 2 题（DX3-03-P1、DX3-04-P1）
+  // 在 180 秒的盒子里被硬止损 —— 与「不要在时间预算上做文章」同一类错误：
+  // 题目作者控制不了模型思考多久，盒子设紧只会制造不可复现的失败。
+  // 此处对齐同一仓库数学题包（math-exam-expansion）的前两档 300/600。
+  // ⚠️ 改这个数组会同时改变题面文字（时限N秒）与每问的 questionHash、契约 contractHash
+  //    ⇒ 必须用 scripts/upgrade-evidence-exam-parts.mjs 重播种题库与 DB。
+  const policy={version:'ultra-evidence-exam-2026-09-18-v3',modelCalls:0,productionEligible:true,officialRankingEligible:false,difficultyCalibrated:false,
+    hardSeconds:[300,600,1200,1200],partPoints:[10,20,30,40],carrySubmittedAnswers:true,answerFeedback:false,
     timeout:'keep_committed_points',unknownSlots:'ignored_no_credit',automaticModelExecution:false};
   const parts=groups.flatMap(g=>g.parts.map((part,i)=>{
     const id=`${g.id}-P${i+1}`,points=part.items.reduce((s,x)=>s+x.points,0),hardSeconds=policy.hardSeconds[i];
