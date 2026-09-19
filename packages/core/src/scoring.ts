@@ -229,21 +229,16 @@ export function computeConsistencyScore(scores: number[]): number {
 
 /**
  * 工程失败样本分类（P0 噪声剔除，2026-09-14）。
- * 背景：实测 reasoning_math 维度低分(<25)样本占 26%，其中 56% 是测量伪影而非模型能力——
- * 输出截断/思考耗尽 token 导致空输出、评分器未注册、环境故障。这些样本把维度均分无差别
- * 下压，是"分数带压缩、天花板效应"的主要成因之一。
+ * 背景：评分器未注册、环境故障等测量伪影会无差别下压维度均分，且不反映模型能力。
  *
  * 判定为工程失败的样本不计入维度均分（与 environmentError 隔离逻辑一致），
  * 由调用方单独统计上报「工程失败率」。
  *
  * 注意边界：截断但已有内容的样本**不**在此剔除（保留部分信号，与 multi-run
- * "include truncated attempts" 设计一致）；只有完全没有可评估内容的样本才剔除。
- *
- * 2026-09-16 补充 `limit_exceeded`：硬约束（运行级 hardTimeLimitMs / maxTotalTokens）
- * 触发的中断走 `buildLimitExceededResult`，它与普通的"模型空响应"证据前缀不同，
- * 此前完全漏判。若下游只做「能力对比」，这类样本必须与 empty_output 同等剔除。
+ * "include truncated attempts" 设计一致）。运行级 HARD_TIME_LIMIT / REASONING_TOKEN_BUDGET
+ * 也不属于工程失败：模型未在统一约束内提交答案是能力失败，必须以该题 0 分计入总分。
  */
-export type EngineeringFailureKind = 'environment_error' | 'no_evaluator' | 'empty_output' | 'limit_exceeded';
+export type EngineeringFailureKind = 'environment_error' | 'no_evaluator' | 'empty_output';
 
 export interface EngineeringFailureInput {
   environmentError?: boolean | null;
@@ -267,13 +262,8 @@ const EMPTY_OUTPUT_EVIDENCE_RE = /^(Empty model output|Model returned empty resp
  */
 const EVALUATION_FAILED_RE = /^Evaluation failed:/i;
 /**
- * 硬约束提前终止（P0，2026-09-16）。
- * 背景：开启运行级 constraints（hardTimeLimitMs / maxTotalTokens）后，模型超时或把预算
- * 全耗在思考上时，orchestrator 走 `buildLimitExceededResult` 提前返回，evidence 前缀是
- * `HARD_TIME_LIMIT:` / `REASONING_TOKEN_BUDGET:`——既不匹配上面的空输出正则，聚合调用点
- * 又普遍不传 modelOutput，于是这些「没有作答、无法测量」的样本被当成 0 分能力样本计入
- * 维度均分。实测 09-15 run：15 条此类样本（8 math + 7 data_extraction）全部漏隔离，
- * 使 reasoning_math 均分被低估 8.87 分（83.65 → 92.52）、全维度加权总分低估 3.98 分。
+ * 模型能力约束提前终止。该标记用于避免后续的空输出兜底把它误归为工程失败；
+ * HARD_TIME_LIMIT / REASONING_TOKEN_BUDGET 对所有模型采用同一约束，故按 0 分计入聚合。
  */
 const LIMIT_EXCEEDED_EVIDENCE_RE = /^(REASONING_TOKEN_BUDGET|HARD_TIME_LIMIT):/i;
 
@@ -293,11 +283,11 @@ export function classifyEngineeringFailure(r: EngineeringFailureInput): Engineer
   if (r.environmentError === true) return 'environment_error';
   const ev = normalizeEvidence(r.evidence);
   if (ev.some((e) => NO_EVALUATOR_RE.test(e))) return 'no_evaluator';
-  if (ev.some((e) => EMPTY_OUTPUT_EVIDENCE_RE.test(e))) return 'empty_output';
   // 生成阶段抛异常（后端不可达/超时/鉴权失败）优先按环境故障隔离
   if (ev.some((e) => EVALUATION_FAILED_RE.test(e))) return 'environment_error';
-  // 硬约束提前终止：比 modelOutput 空白更具体的归因（预算耗尽 vs 硬超时），优先归类。
-  if (ev.some((e) => LIMIT_EXCEEDED_EVIDENCE_RE.test(e))) return 'limit_exceeded';
+  // 统一能力约束内未作答：按 0 分计入总分，不能再被空输出证据/空 modelOutput 剔除。
+  if (ev.some((e) => LIMIT_EXCEEDED_EVIDENCE_RE.test(e))) return null;
+  if (ev.some((e) => EMPTY_OUTPUT_EVIDENCE_RE.test(e))) return 'empty_output';
   // 仅当调用方显式提供 modelOutput 且为空白时才据此判定（聚合映射常省略该字段，不可臆断）
   if (r.modelOutput !== undefined && r.modelOutput !== null && !r.modelOutput.trim()) return 'empty_output';
   return null;

@@ -219,19 +219,23 @@ describe('classifyEngineeringFailure (P0 noise exclusion, 2026-09-14)', () => {
     expect(classifyEngineeringFailure({ evidence: [] })).toBeNull();
   });
 
-  // P0（2026-09-16）：运行级 constraints 触发的中断走 buildLimitExceededResult，
-  // 证据前缀是 HARD_TIME_LIMIT / REASONING_TOKEN_BUDGET，与「模型空响应」不同，
-  // 此前完全漏判，导致 09-15 run 15 条无作答样本被当成 0 分能力样本计入维度均分。
-  it('flags hard-time-limit termination as limit_exceeded', () => {
+  // 运行级 constraints 是统一的能力边界；未在时限/预算内提交答案应按 0 分计入，
+  // 不能因 modelOutput 为空而被归到工程失败并从分母中剔除。
+  it('keeps hard-time-limit termination as a scored capability failure', () => {
     expect(classifyEngineeringFailure({
       evidence: ['HARD_TIME_LIMIT: Model call timed out after 1200000ms — hard time limit reached', 'NO_ANSWER_SUBMITTED'],
-    })).toBe('limit_exceeded');
+      modelOutput: '',
+    })).toBeNull();
   });
 
-  it('flags reasoning-budget exhaustion as limit_exceeded', () => {
+  it('keeps reasoning-budget exhaustion as a scored capability failure', () => {
     expect(classifyEngineeringFailure({
-      evidence: ['REASONING_TOKEN_BUDGET: reasoning exhausted maxTokens=98192, output tokens=98192 (empty output, thinking consumed the budget)'],
-    })).toBe('limit_exceeded');
+      evidence: [
+        'REASONING_TOKEN_BUDGET: reasoning exhausted maxTokens=98192, output tokens=98192 (empty output, thinking consumed the budget)',
+        'Model returned empty response: length',
+      ],
+      modelOutput: '   ',
+    })).toBeNull();
   });
 
   it('does not let the limit prefix leak onto ordinary evidence', () => {
@@ -240,7 +244,7 @@ describe('classifyEngineeringFailure (P0 noise exclusion, 2026-09-14)', () => {
     expect(classifyEngineeringFailure({ evidence: ['Extracted answer: "REASONING_TOKEN_BUDGET: 1"'] })).toBeNull();
   });
 
-  it('keeps environment_error and no_evaluator precedence over limit_exceeded', () => {
+  it('keeps genuine environment_error and no_evaluator precedence over capability limits', () => {
     expect(classifyEngineeringFailure({
       environmentError: true,
       evidence: ['HARD_TIME_LIMIT: timed out'],
@@ -355,8 +359,7 @@ describe('computeScorerVersionDrift', () => {
   });
 });
 
-// P0（2026-09-16）：硬约束中断样本必须与空输出同等隔离，否则维度均分被测量伪影压低。
-  it('excludes hard-limit terminations from the dimension average', () => {
+  it('counts hard-limit terminations as zeroes in the dimension average', () => {
     const results = [
       { scenarioId: 'a', dimension: 'reasoning_math', totalScore: 100 },
       { scenarioId: 'b', dimension: 'reasoning_math', totalScore: 0, evidence: ['HARD_TIME_LIMIT: Model call timed out after 1200000ms'] },
@@ -365,9 +368,9 @@ describe('computeScorerVersionDrift', () => {
     ];
     const stats = createDimAvgExclusionStats();
     const avgs = computeDifficultyWeightedDimAvgs(results, lookup, undefined, undefined, stats);
-    // 剔除 b、c（均为 medium，权重相同）后 = (100+80)/2 = 90
-    expect(avgs.get('reasoning_math')).toBe(90);
-    expect(stats.excludedByKind.get('limit_exceeded')).toBe(2);
-    expect(stats.excludedByDimension.get('reasoning_math')).toBe(2);
+    // 四题权重相同，b、c 按 0 分计入：(100+0+0+80)/4 = 45
+    expect(avgs.get('reasoning_math')).toBe(45);
+    expect(stats.excludedTotal).toBe(0);
+    expect(stats.excludedByDimension.get('reasoning_math')).toBeUndefined();
   });
 });

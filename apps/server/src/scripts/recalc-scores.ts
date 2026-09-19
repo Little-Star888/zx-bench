@@ -135,7 +135,8 @@ async function main() {
       totalOutputTokens: tokenOutput,
       avgTokensPerSecond: medianSpeed,
       safetyRedLineCount: results.filter((r) => r.safetyLevel === 'red_line').length,
-      // P0 披露：工程失败样本数（空输出/评分器缺失/环境故障/硬约束中断）
+      // P0 披露：工程失败样本数（空输出/评分器缺失/环境故障）。
+      // 硬时限/推理预算耗尽属于能力失败，按 0 分计入，不在此剔除。
       engineeringFailures: {
         total: engStats.excludedTotal,
         byKind: Object.fromEntries(engStats.excludedByKind),
