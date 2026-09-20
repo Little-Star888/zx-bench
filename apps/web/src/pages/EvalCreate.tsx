@@ -38,6 +38,7 @@ export default function EvalCreate() {
   const [mode, setMode] = useState<'single' | 'batch'>('single');
   const navigate = useNavigate();
   const { t } = useLanguage();
+  const answerFirstEnabled = Form.useWatch('answerFirst', form);
 
   useEffect(() => {
     fetch('/api/models')
@@ -67,7 +68,10 @@ export default function EvalCreate() {
     try {
       // 思考/输出约束（反拖尾）：任一约束项开启时组装 constraints
       const constraints: Record<string, unknown> = {};
-      if (values.answerFirst) constraints.answerFirst = true;
+      if (values.answerFirst) {
+        constraints.answerFirst = true;
+        constraints.visibleRationale = values.visibleRationale || 'auto';
+      }
       if (values.maxReasoningTokens) constraints.maxReasoningTokens = values.maxReasoningTokens;
             if (values.hardTimeLimitSec) constraints.hardTimeLimitMs = (values.hardTimeLimitSec as number) * 1000;
       const hasActiveConstraint = Object.keys(constraints).length > 0;
@@ -394,9 +398,23 @@ export default function EvalCreate() {
                 label={t('eval.answerFirst')}
                 name="answerFirst"
                 valuePropName="checked"
-                tooltip="在 prompt 中强制要求先给出最终答案，再给出原因。提高答案提取成功率，避免答案埋在长段思考里"
+                tooltip="要求最终答案位于输出开头。严格格式题会自动只输出答案，不再强制附加解释"
               >
                 <Switch />
+              </Form.Item>
+            </Col>
+            <Col span={6}>
+              <Form.Item
+                label={t('eval.visibleRationale')}
+                name="visibleRationale"
+                initialValue="auto"
+                tooltip="自动：严格格式题仅输出答案，其余题可附简短理由。也可强制禁止或要求解释"
+              >
+                <Select disabled={!answerFirstEnabled}>
+                  <Select.Option value="auto">自动适配</Select.Option>
+                  <Select.Option value="forbidden">仅答案</Select.Option>
+                  <Select.Option value="required">答案后附理由</Select.Option>
+                </Select>
               </Form.Item>
             </Col>
             <Col span={6}>

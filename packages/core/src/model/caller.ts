@@ -534,12 +534,18 @@ export async function callModelWithRetry(
 }
 
 /** 根据约束生成注入 prompt 的指令文本（软约束；硬校验在编排器中执行） */
-function buildConstraintInstructions(constraints?: EvalConstraints): string {
+export function buildConstraintInstructions(constraints?: EvalConstraints): string {
   if (!constraints) return '';
   const lines: string[] = [];
 
   if (constraints.answerFirst) {
-    lines.push('请先给出最终答案，再给出原因或推理过程。不要把答案埋在长段分析中间。如果题目要求使用 ANSWER:/答案: 标签，必须把该标签答案放在第一个非空行；如果题面另有“最后一行给出答案”等位置要求，以本先答模式为准。');
+    if (constraints.visibleRationale === 'forbidden') {
+      lines.push('请立即输出题目要求的最终答案，不要输出原因、推理过程、自检说明或要求复述。严格遵守题目的行数、段落、字数和格式；除非题目明确要求，否则不要自行添加 ANSWER:/答案: 标签。');
+    } else if (constraints.visibleRationale === 'required') {
+      lines.push('请在第一个非空行使用 ANSWER:/答案: 标签给出最终答案，再给出简短的原因或推理过程。不要把答案埋在长段分析中间。');
+    } else {
+      lines.push('请在第一个非空行使用 ANSWER:/答案: 标签给出最终答案，不要把答案埋在长段分析中间。仅当题目允许附加说明时，才在答案后提供简短理由；若题目限制行数、段落、字数或格式，或禁止额外内容，只输出题目要求的内容。');
+    }
   }
   if (constraints.maxAnswerTokens) {
     lines.push(`最终答案必须控制在 ${constraints.maxAnswerTokens} 个 token（约 ${Math.round(constraints.maxAnswerTokens * 0.75)} 个汉字或 ${Math.round(constraints.maxAnswerTokens * 3)} 个英文字符）以内。`);

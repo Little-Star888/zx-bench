@@ -67,7 +67,7 @@
     "scripts/upgrade-execution-review-v2.mjs": "6db3b5cb82ed70f46944573cf49035a601f5e5063b110a406a8c19ba6c044248",
     "scripts/sync-reviewed-question-contracts.mjs": "267ab1ed6070aea2bbfb1dcbc5902aed60227eb5fcd4740e2538e8679fae287a",
     "scripts/test-containers.mjs": "51179d56761f73ef7ed8d53fa95c8627abc2e3f98ccc949b10a9baca51ca3318",
-    "packages/core/src/orchestrator.ts": "c3b8898cb72c130d42315b30ebfcee92aa98d279cec7161e375627f6e2780566",
+    "packages/core/src/orchestrator.ts": "71dcc63021ead672227e363e0329b09a602c21f4aca04639826bde897b524263",
     "apps/server/src/routes/index.ts": "4bbd1766549dce573091d1bb9f70f0bd3b27ccb3fe2ea42a9d84ae77290d1e66",
     "packages/core/src/evaluationLab/deepAdversarial.ts": "6e3592c0b01c8a76f5c357d35fb8d1b6fa9385d0b658c3e8907a2081516728fe",
     "packages/core/src/evaluators/codeRepair.ts": "56d61329e0a537c9b52aa1e5734012407efa272ef435dbbacced40071c13a2dc",

@@ -4,7 +4,7 @@
 // 「先答模式 / 硬止损」这类已下发且影响分数的约束从未被校验。
 import { describe, expect, it } from 'vitest';
 import type { ScenarioResult } from '@zxbench/types';
-import { buildConstraintCriteria } from './orchestrator.js';
+import { buildConstraintCriteria, resolveVisibleRationale } from './orchestrator.js';
 import { summarizeCriteria } from './audit.js';
 
 type Probe = Pick<ScenarioResult, 'modelOutput' | 'outputMetadata'>;
@@ -33,6 +33,14 @@ describe('buildConstraintCriteria', () => {
     const criteria = buildConstraintCriteria({ answerFirst: true }, probe('   '));
     expect(criteria[0].status).toBe('unmeasured');
     expect(summarizeCriteria(criteria).measured).toBe(0);
+  });
+
+  it('accepts an unlabeled first line when strict answer-only mode forbids wrappers', () => {
+    const criteria = buildConstraintCriteria(
+      { answerFirst: true, visibleRationale: 'forbidden' },
+      probe('1\n2\n3（三）'),
+    );
+    expect(criteria[0]).toMatchObject({ id: 'answer_first', status: 'pass' });
   });
 
   it('fails the critical time-limit criterion when the hard limit fired', () => {
@@ -64,5 +72,28 @@ describe('buildConstraintCriteria', () => {
     );
     expect(criteria.map(c => c.id)).toEqual(['answer_first', 'hard_time_limit', 'token_budget']);
     expect(summarizeCriteria(criteria)).toMatchObject({ total: 3, measured: 3, passed: 3, strictPass: true });
+  });
+});
+
+describe('resolveVisibleRationale', () => {
+  const scenario = (overrides: Record<string, unknown> = {}) => ({
+    dimension: 'program',
+    grader: 'code_repair',
+    promptTemplate: '修复这个问题并说明验证方法。',
+    ...overrides,
+  }) as Parameters<typeof resolveVisibleRationale>[0];
+
+  it('forbids visible rationale for instruction-following and raw-only contracts', () => {
+    expect(resolveVisibleRationale(scenario({ dimension: 'instruction_following', grader: 'instruction_checklist' }))).toBe('forbidden');
+    expect(resolveVisibleRationale(scenario({ outputPolicy: 'raw_only' }))).toBe('forbidden');
+  });
+
+  it('detects exact-output wording outside the known strict dimensions', () => {
+    expect(resolveVisibleRationale(scenario({ promptTemplate: '恰好输出 5 行，不要添加任何说明文字。' }))).toBe('forbidden');
+  });
+
+  it('keeps ordinary tasks automatic and honors an explicit run override', () => {
+    expect(resolveVisibleRationale(scenario())).toBe('auto');
+    expect(resolveVisibleRationale(scenario(), 'required')).toBe('required');
   });
 });

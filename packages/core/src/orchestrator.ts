@@ -27,6 +27,7 @@ import type {
   ModelResponse,
   RuntimeEvaluation,
   CriterionResult,
+  VisibleRationaleMode,
 } from '@zxbench/types';
 import { callModelWithRetry } from './model/caller.js';
 import { runAgentLoop, type AgentLoopConfig } from './agentLoop/loop.js';
@@ -58,7 +59,36 @@ export interface OrchestrateOptions {
 }
 
 /** 解析题目级 + 运行级合并后的生效约束 */
-function resolveConstraints(
+/**
+ * Decide whether an explanation may appear in the visible answer.  Exact-output
+ * dimensions must never be polluted by a run-level anti-dragging instruction.
+ * Hidden reasoning remains independently bounded by maxReasoningTokens/time.
+ */
+export function resolveVisibleRationale(
+  scenario: Pick<Scenario, 'dimension' | 'grader' | 'outputPolicy' | 'responseMode' | 'promptTemplate'>,
+  requested: VisibleRationaleMode = 'auto',
+): VisibleRationaleMode {
+  if (requested !== 'auto') return requested;
+
+  if (
+    scenario.outputPolicy === 'raw_only'
+    || scenario.responseMode === 'raw_output'
+    || scenario.dimension === 'instruction_following'
+    || scenario.dimension === 'structured_output'
+    || scenario.dimension === 'data_extraction'
+    || scenario.grader === 'instruction_checklist'
+    || scenario.grader === 'schema_compliance'
+  ) return 'forbidden';
+
+  // Covers strict contracts outside the dimensions above without trying to
+  // infer whether ordinary prose questions benefit from a short explanation.
+  if (/(?:不要|不得|禁止|不加).{0,12}(?:额外|其他|说明|解释|开头|结尾)|(?:只|仅)(?:能|需|要)?(?:输出|返回)|恰好\s*\d+\s*(?:行|段|句|个代码块)|(?:总字数|全文长度|字数).{0,16}(?:恰好|不超过|以内|之间)/u.test(scenario.promptTemplate)) {
+    return 'forbidden';
+  }
+  return 'auto';
+}
+
+export function resolveConstraints(
   scenario: Scenario,
   runConstraints?: EvalConstraints,
 ): EvalConstraints {
@@ -72,6 +102,10 @@ function resolveConstraints(
   }
   // 题目级字段覆盖运行级
   if (scenario.answerFirst != null) c.answerFirst = scenario.answerFirst;
+  c.visibleRationale = resolveVisibleRationale(
+    scenario,
+    c.visibleRationale ?? 'auto',
+  );
   if (scenario.maxAnswerTokens != null) c.maxAnswerTokens = scenario.maxAnswerTokens;
   if (scenario.maxReasoningTokens != null) c.maxReasoningTokens = scenario.maxReasoningTokens;
   return c;
@@ -180,14 +214,16 @@ export function buildConstraintCriteria(
     const lines = result.modelOutput.split('\n');
     const firstIdx = lines.findIndex((line) => line.trim().length > 0);
     const firstLine = firstIdx >= 0 ? lines[firstIdx] : '';
+    const answerOnly = constraints.visibleRationale === 'forbidden';
     const labelled = /^\s*(?:ANSWER|答案|最终答案)\s*[:：]/i.test(firstLine);
     criteria.push({
       id: 'answer_first',
       description: '先答模式：第一个非空行即给出答案行',
-      status: !hasAnswer ? 'unmeasured' : labelled ? 'pass' : 'fail',
+      status: !hasAnswer ? 'unmeasured' : (answerOnly || labelled) ? 'pass' : 'fail',
       critical: false,
       source: 'rule',
       evidence: !hasAnswer ? 'No candidate output'
+        : answerOnly ? `Answer-only mode; first non-empty line: ${firstLine.slice(0, 80)}`
         : labelled ? `First non-empty line: ${firstLine.slice(0, 80)}`
         : `First non-empty line carries no ANSWER label: ${firstLine.slice(0, 80)}`,
     });

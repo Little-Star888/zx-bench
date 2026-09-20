@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { callModel, callModelWithRetry, type CallModelOptions } from './caller.js';
+import { buildConstraintInstructions, callModel, callModelWithRetry, type CallModelOptions } from './caller.js';
 
 const options = { config: { name: 'test', provider: 'openai', baseUrl: 'http://unused/v1' }, params: {}, userPrompt: 'test', stream: true } as CallModelOptions;
 const event = (data: unknown) => `data: ${JSON.stringify(data)}\n\n`;
@@ -104,5 +104,25 @@ describe('OpenAI-compatible usage and reasoning streams', () => {
     expect(r.finishReason).toBe('length');
     expect(cancel).toHaveBeenCalledOnce();
     expect(JSON.parse(fetchMock.mock.calls[1][1].body).stream_options).toBeUndefined();
+  });
+});
+
+describe('answer-first prompt policy', () => {
+  it('does not force a rationale in automatic mode', () => {
+    const text = buildConstraintInstructions({ answerFirst: true, visibleRationale: 'auto' });
+    expect(text).toContain('仅当题目允许附加说明时');
+    expect(text).toContain('第一个非空行使用 ANSWER:/答案: 标签');
+    expect(text).not.toContain('再给出原因或推理过程');
+  });
+
+  it('protects strict outputs from labels and visible reasoning', () => {
+    const text = buildConstraintInstructions({ answerFirst: true, visibleRationale: 'forbidden' });
+    expect(text).toContain('不要输出原因、推理过程');
+    expect(text).toContain('不要自行添加 ANSWER:/答案: 标签');
+  });
+
+  it('can still require a short rationale when explicitly requested', () => {
+    const text = buildConstraintInstructions({ answerFirst: true, visibleRationale: 'required' });
+    expect(text).toContain('再给出简短的原因或推理过程');
   });
 });

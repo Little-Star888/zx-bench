@@ -10,6 +10,7 @@ export type Difficulty = 'easy' | 'medium' | 'hard' | 'adversarial';
 export type Verdict = 'fix' | 'no_bug';
 export type FinishReason = 'stop' | 'length' | 'content_filter' | 'tool_calls' | 'error' | 'unknown';
 export type OutputPolicy = 'raw_only' | 'fenced_allowed';
+export type VisibleRationaleMode = 'auto' | 'forbidden' | 'required';
 export type ScenarioTier = 'public_dev' | 'private_validation' | 'blind_holdout';
 export type EvalRunStatus = 'pending' | 'running' | 'paused' | 'completed' | 'failed' | 'cancelled';
 export type JudgeVerdict = 'correct' | 'incorrect' | 'partial' | 'ambiguous';
@@ -91,7 +92,7 @@ export interface Scenario {
   judgeHint?: string;
 
   // ----- 思考/输出约束（GPT5.6 反拖尾） -----
-  /** 要求先给出最终答案，再给出原因（渲染进 prompt，同时由编排器硬校验） */
+  /** 要求把最终答案放在可见输出开头（不等于必须输出解释） */
   answerFirst?: boolean;
   /** 最终答案（content 部分）token 上限；超出判定超限 */
   maxAnswerTokens?: number;
@@ -115,8 +116,10 @@ export interface Scenario {
 
 /** 评测运行级思考/输出约束策略 */
 export interface EvalConstraints {
-  /** 强制先答案后原因（注入 prompt） */
+  /** 强制最终答案位于可见输出开头（注入 prompt） */
   answerFirst?: boolean;
+  /** 可见解释策略：auto=按题目契约决定，forbidden=仅答案，required=答案后附简短理由 */
+  visibleRationale?: VisibleRationaleMode;
   /** 最终答案 content token 上限（硬校验，超限中断） */
   maxAnswerTokens?: number;
   /** 思考链 token 上限（硬校验，超限中断） */
