@@ -2,14 +2,14 @@
 // token 预算守卫（2026-09-17）
 //
 // 背景：排查「DE-CN-047 三次 run 都恒 0 分」时发现，题级 `maxAnswerTokens`
-// 会**静默顶掉运行级 `maxTokens``，是一条隐藏的预算覆盖：
+// 会参与计算实发预算；旧逻辑把它作为隐藏覆盖：
 //   · packages/core/src/orchestrator.ts:75
 //        if (scenario.maxAnswerTokens != null) c.maxAnswerTokens = scenario.maxAnswerTokens;
 //   · packages/core/src/model/caller.ts:382-387（发包前重算，**不是兜底**）
-//        let defaultMaxTokens = params.maxTokens ?? (isReasoningModel ? 32768 : 8192);
-//        if (constraints?.maxTotalTokens) defaultMaxTokens = constraints.maxTotalTokens;
+//        const runMaxTokens = params.maxTokens ?? (isReasoningModel ? 32768 : 8192);
+//        if (constraints?.maxTotalTokens) defaultMaxTokens = Math.min(runMaxTokens, constraints.maxTotalTokens);
 //        else if (constraints?.maxReasoningTokens || constraints?.maxAnswerTokens)
-//          defaultMaxTokens = (constraints.maxReasoningTokens ?? 0) + (constraints.maxAnswerTokens ?? 0);
+//          defaultMaxTokens = Math.min(runMaxTokens, reasoning + answer);
 //   · packages/core/src/model/caller.ts:41 / :86  → body.max_tokens = defaultMaxTokens
 //   · packages/core/src/model/caller.ts:544-546   → 还会把「最终答案必须控制在 N 个 token 以内」拼进 prompt
 //
@@ -19,9 +19,8 @@
 // 修复：把这 21 题改为 `null`（落回运行级 maxTokens）；脚本 `scripts/fix-de-answer-token-cap.mjs`。
 //
 // 本文件两部分：
-//  A. **引擎契约**（行为测试）：把「题级上限会顶掉运行级预算」这条语义钉住，
-//     使这条耦合不可能再被无声地忽略。若将来引擎改成「分档取大」，
-//     这些断言会失败 —— 那是**好信号**，届时请同步放宽/删除 B 部分的数据守卫。
+//  A. **引擎契约**（行为测试）：题级上限可以收紧运行预算，但不得向上扩张
+//     运行级 maxTokens。这样既保留题级硬上限，又不会生成超过供应商限制的请求。
 //  B. **题库数据守卫**：题级上限不得低于安全下限；被修复的那批必须保持 null。
 // ============================================================
 import { describe, expect, it, vi, afterEach } from 'vitest';
@@ -82,14 +81,19 @@ describe('题级 token 上限对运行级预算的影响（引擎契约）', () 
     expect(maxTokens).toBeLessThan(RUN_LEVEL_MAX_TOKENS);
   });
 
-  it('同时给 reasoning 与 answer 上限时，两者相加才是实发预算', async () => {
+  it('reasoning 与 answer 之和高于运行上限时，仍由运行级 maxTokens 封顶', async () => {
     const { maxTokens } = await captureRequest({ maxReasoningTokens: 393216, maxAnswerTokens: 393216 }, { maxTokens: RUN_LEVEL_MAX_TOKENS });
-    expect(maxTokens).toBe(786432);
+    expect(maxTokens).toBe(RUN_LEVEL_MAX_TOKENS);
   });
 
-  it('maxTotalTokens 优先级最高，直接决定实发预算', async () => {
+  it('maxTotalTokens 低于运行上限时会收紧实发预算', async () => {
     const { maxTokens } = await captureRequest({ maxTotalTokens: 50000, maxAnswerTokens: 1024 }, { maxTokens: RUN_LEVEL_MAX_TOKENS });
     expect(maxTokens).toBe(50000);
+  });
+
+  it('maxTotalTokens 高于运行上限时不能扩张实发预算', async () => {
+    const { maxTokens } = await captureRequest({ maxTotalTokens: 393216 }, { maxTokens: RUN_LEVEL_MAX_TOKENS });
+    expect(maxTokens).toBe(RUN_LEVEL_MAX_TOKENS);
   });
 
   it('题级上限非空时，旧口径软指令会被拼进 prompt（这也是那次 1024 的出处）', async () => {

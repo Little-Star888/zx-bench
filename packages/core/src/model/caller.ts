@@ -379,11 +379,16 @@ function buildMessages(
   }
   messages.push({ role: 'user', content: constraintSuffix ? `${userPrompt}${constraintSuffix}` : userPrompt });
 
-  let defaultMaxTokens = params.maxTokens ?? (isReasoningModel ? REASONING_DEFAULT_TOKENS : NORMAL_DEFAULT_TOKENS);
+  // 运行级 maxTokens 是一次请求的硬上限。题级 token 约束可以进一步收紧预算，
+  // 但绝不能把运行级上限向上扩张；否则题库中的 reasoning + answer 配额会生成
+  // 超出供应商允许范围的请求，并把环境错误误记为模型 0 分。
+  const runMaxTokens = params.maxTokens ?? (isReasoningModel ? REASONING_DEFAULT_TOKENS : NORMAL_DEFAULT_TOKENS);
+  let defaultMaxTokens = runMaxTokens;
   if (constraints?.maxTotalTokens) {
-    defaultMaxTokens = constraints.maxTotalTokens;
+    defaultMaxTokens = Math.min(runMaxTokens, constraints.maxTotalTokens);
   } else if (constraints?.maxReasoningTokens || constraints?.maxAnswerTokens) {
-    defaultMaxTokens = (constraints.maxReasoningTokens ?? 0) + (constraints.maxAnswerTokens ?? 0);
+    const scenarioMaxTokens = (constraints.maxReasoningTokens ?? 0) + (constraints.maxAnswerTokens ?? 0);
+    defaultMaxTokens = Math.min(runMaxTokens, scenarioMaxTokens);
   }
 
   return { messages, defaultMaxTokens };
