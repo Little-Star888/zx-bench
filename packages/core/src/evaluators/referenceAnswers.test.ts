@@ -109,6 +109,31 @@ ANSWER: ${answer}次`)).toBe(100);
 });
 
 describe('strict answer-contract regressions', () => {
+  it.each([
+    [13, '累计占比=A:40%,B:64%,C:80%,D:86.4%,E:91.2%,F:94.4%,G:96.8%,H:98.4%,I:99.6%,J:100%，A类=A,B，B类=C,D，C类=E,F,G,H,I,J'],
+    [22, 'A=20万,B=15万,C=27万,D=10万,E=48万'],
+    [23, '12'],
+    [34, '10809.09元'],
+  ])('records correct content without changing strict scoring for RM-CN-%i', async (id, output) => {
+    const result = await evaluator.evaluate(scenario(id), output, meta);
+    expect(result.axisScores?.content_accuracy).toBe(100);
+    expect(result.axisScores?.answer_accuracy).toBe(0);
+    expect(result.totalScore).toBe(0);
+  });
+  it('does not recover a wrong or ambiguous final answer from earlier text', async () => {
+    const wrong = await evaluator.evaluate(scenario(23), '12\n13', meta);
+    expect(wrong.axisScores?.content_accuracy).toBe(0);
+    const ambiguous = await evaluator.evaluate(scenario(23), 'ANSWER: 12种\n13', meta);
+    expect(ambiguous.axisScores?.content_accuracy).toBe(0);
+    const fenced = await evaluator.evaluate(scenario(23), '```\n12\n```', meta);
+    expect(fenced.axisScores?.content_accuracy).toBe(0);
+  });
+  it('records both content and strict accuracy for a compliant answer', async () => {
+    const result = await evaluator.evaluate(scenario(23), 'ANSWER: 12种', meta);
+    expect(result.axisScores?.content_accuracy).toBe(100);
+    expect(result.axisScores?.answer_accuracy).toBe(100);
+    expect(result.totalScore).toBe(100);
+  });
   it('uses the first labelled line when the effective run enables answerFirst', async () => {
     const answerFirstScenario = { ...scenario(4), answerFirst: true } as Scenario;
     const result = await evaluator.evaluate(

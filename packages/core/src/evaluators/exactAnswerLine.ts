@@ -29,6 +29,8 @@ export const exactAnswerLineEvaluator: Evaluator = {
     if (!modelOutput || modelOutput.trim().length === 0) {
       axisScores.format_valid = 0;
       axisEvidence.format_valid = 'rule';
+      axisScores.content_accuracy = 0;
+      axisEvidence.content_accuracy = 'rule';
       evidence.push('Empty model output');
       return {
         axisScores,
@@ -54,6 +56,16 @@ export const exactAnswerLineEvaluator: Evaluator = {
       axisScores.answer_accuracy = 0;
       axisEvidence.answer_accuracy = 'unmeasured';
       return { axisScores, axisEvidence, totalScore: 0, environmentError: true, humanReviewRequired: true, safetyLevel: 'safe', evidence: ['GRADING_UNAVAILABLE: missing reference answer'] };
+    }
+
+    // Diagnostic axis only: do not let a missing ANSWER label erase an otherwise
+    // unambiguous final answer, but keep the existing strict total unchanged.
+    const contentAccuracy = scoreExactAnswerContent(scenario, modelOutput);
+    if (contentAccuracy !== null) {
+      axisScores.content_accuracy = contentAccuracy;
+      axisEvidence.content_accuracy = 'rule';
+    } else {
+      axisEvidence.content_accuracy = 'unmeasured';
     }
 
     // ===== 3. 截断惩罚 =====
@@ -130,6 +142,37 @@ export const exactAnswerLineEvaluator: Evaluator = {
     };
   },
 };
+
+/** Content-only diagnostic for exact-answer questions; it never changes totalScore. */
+export function scoreExactAnswerContent(scenario: Scenario, output: string): number | null {
+  const requirements = (scenario.requirements as unknown as Record<string, unknown>) || {};
+  const expected = requirements.answer;
+  if (expected === undefined || expected === null) return null;
+  if (!output.trim()) return 0;
+  const scoring = scenario.scoring as unknown as Record<string, unknown>;
+  const strict = scoring.comparisonMode === 'strict';
+  const finalLine = output.split(/\r?\n/).filter(line => line.trim()).at(-1)?.trim() ?? '';
+  const labelledFinal = strict ? extractAnswerLine(output) : null;
+  // A bare last line is only a fallback when the response contains no explicit
+  // answer label. A conflicting or unfinished labelled answer is ambiguous.
+  const hasAnswerLabel = /(?:^|\n)\s*(?:\*\*)?(?:ANSWER|最终答案|答案)(?:\*\*)?\s*[:：]/im.test(output);
+  const bareFinal = strict && !hasAnswerLabel && finalLine && !finalLine.startsWith('```')
+    ? finalLine : null;
+  const candidates = strict
+    ? [scenario.answerFirst === true ? extractFirstAnswer(output) : null, labelledFinal, bareFinal]
+    : [extractFinalAnswer(output)];
+  const answers = [...new Set(candidates.filter((value): value is string | number => value !== null && value !== ''))];
+  if (answers.length === 0) return 0;
+  const variants = Array.isArray(requirements.acceptedVariants)
+    ? requirements.acceptedVariants.filter((v): v is string => typeof v === 'string') : [];
+  const tolerance = (scoring.tolerance as number) ?? 0.01;
+  const toleranceMode = scoring.toleranceMode === 'absolute' ? 'absolute' : 'relative';
+  let accuracy = Math.max(...answers.map(answer => strict
+    ? Math.max(...[expected, ...variants].map(value => compareStrictAnswer(answer, value, scoring.answerUnit)))
+    : compareAnswer(answer, expected, tolerance, toleranceMode)));
+  if (requirements.solutionVerifier === 'river_crossing' && !validRiverCrossing(output)) accuracy = 0;
+  return accuracy;
+}
 
 /** Read only the last nonempty line for the default versioned prompt contract. */
 export function extractAnswerLine(text: string): string | null {

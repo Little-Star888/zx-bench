@@ -14,7 +14,7 @@ import { createBenchmarkPack, verifyBenchmarkPack, checkScenarioEligibility, run
 import { DOCKER_NOT_READY, isDockerInfrastructureFailure } from '@zxbench/core';
 import type { APIResponse, ModelConfig, EvalRunConfig, CreateEvalRunRequest, CreateBatchEvalRunRequest, CreateBatchEvalRunResponse, BatchProgressResponse, BatchRunStatus, BatchRunInfo, ScenarioTier, EvalProgress, DimensionProgress, QuestionLiveResult, EvalStage, OutputPolicy, OutputMetadata, Scenario, ScoringConfig, JudgeResult, ScenarioResult } from '@zxbench/types';
 import { generateId, generateRunId } from '@zxbench/utils';
-import { orchestrateEvaluation, generateManifest, callModel, runTieredJudge, runJudgeEnsemble, computeJudgeScore, applyReviewedVerdict, getJudgeWeights, mixDeterministicJudge, getEvaluator } from '@zxbench/core';
+import { orchestrateEvaluation, generateManifest, callModel, runTieredJudge, runJudgeEnsemble, computeJudgeScore, applyReviewedVerdict, getJudgeWeights, mixDeterministicJudge, getEvaluator, scoreExactAnswerContent } from '@zxbench/core';
 import { generateReport, generateCompareReport, analyzeRunQuality, referenceAnswerWarnings, partitionReferenceAnswerRuns } from '@zxbench/core';
 import type { ReportUserPromptData, CompareReportUserPromptData } from '@zxbench/core';
 import { computeWeightedTotal, computeDifficultyWeightedDimAvgs as computeDifficultyWeightedDimAvgsPure, buildDimAvgWeightLookups, validateScenario, classifyEngineeringFailure, createDimAvgExclusionStats, computeScorerVersionDrift } from '@zxbench/core';
@@ -1299,6 +1299,23 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
 
     // 反序列化
     const deserialized = results.map(deserializeResult);
+
+    // Older results predate the diagnostic content axis. Derive it for display
+    // only when the stored scenario hash matches today's reference contract;
+    // never rewrite historical scores or reinterpret a changed question.
+    const mathIds = [...new Set(results.filter(r => r.dimension === 'reasoning_math').map(r => r.scenarioId))];
+    const mathDefinitions = mathIds.length
+      ? await prisma.scenarioDefinition.findMany({ where: { id: { in: mathIds } } }) : [];
+    const mathById = new Map(mathDefinitions.map(row => [row.id, row]));
+    for (const result of deserialized) {
+      if (result.axisScores.content_accuracy != null) continue;
+      const definition = mathById.get(result.scenarioId);
+      if (definition?.grader !== 'exact_answer_line' || result.scenarioHash !== definition.scenarioHash) continue;
+      const accuracy = scoreExactAnswerContent(decodeScenario(definition), result.modelOutput);
+      if (accuracy === null) continue;
+      result.axisScores.content_accuracy = accuracy;
+      result.axisEvidence = { ...result.axisEvidence, content_accuracy: 'rule' };
+    }
 
     // 计算评测起止时间（跨所有子运行）
     let evalStartedAt: Date | null = null;

@@ -163,6 +163,11 @@ export default function EvalDetail() {
   const failCount = allResults.length - passCount;
   const redLineCount = allResults.filter((r) => r.safetyLevel === 'red_line').length;
   const truncatedCount = allResults.filter((r) => r.outputMetadata?.truncated).length;
+  const measuredMathContent = allResults.filter((r) => r.dimension === 'reasoning_math'
+    && !r.environmentError && typeof r.axisScores?.content_accuracy === 'number');
+  const mathContentAverage = measuredMathContent.length
+    ? measuredMathContent.reduce((sum, r) => sum + r.axisScores.content_accuracy, 0) / measuredMathContent.length
+    : null;
 
   return (
     <div>
@@ -181,6 +186,14 @@ export default function EvalDetail() {
           <div className="kpi-label">{lang === 'en' ? 'Composite Score' : '综合分'}</div>
           <div className="kpi-value accent">{avgScore.toFixed(2)}</div>
         </div>
+        {mathContentAverage !== null && <div className="swiss-kpi-card">
+          <Tooltip title={lang === 'en'
+            ? `Unweighted mean over ${measuredMathContent.length} exact-answer math questions; unidentifiable answers score 0, while unavailable references and environment errors are excluded. Does not affect the composite score.`
+            : `对 ${measuredMathContent.length} 道数学精确答案题取未加权平均；无法识别的答案记 0，缺参考答案与环境错误不计入，不影响综合分。`}>
+            <div className="kpi-label">{lang === 'en' ? 'Exact-answer content' : '数学精确题内容分'}</div>
+          </Tooltip>
+          <div className="kpi-value">{mathContentAverage.toFixed(1)}</div>
+        </div>}
         <div className="swiss-kpi-card">
           <div className="kpi-label">{lang === 'en' ? 'Pass Rate' : '通过率'}</div>
           <div className="kpi-value">{allResults.length > 0 ? Math.round((passCount / allResults.length) * 100) : 0}%</div>
@@ -336,6 +349,20 @@ export default function EvalDetail() {
                 </div>
               ),
               sorter: (a: ScenarioResult, b: ScenarioResult) => a.totalScore - b.totalScore,
+            },
+            {
+              title: <Tooltip title={lang === 'en'
+                ? 'Checks the unambiguous final answer without the required ANSWER label. Diagnostic only; does not affect the existing total score.'
+                : '核对可明确提取的最终答案内容，不要求 ANSWER 标签。仅供诊断，不影响现有总分。'}>{lang === 'en' ? 'Content accuracy' : '内容正确性'}</Tooltip>,
+              key: 'content_accuracy', width: 110,
+              render: (_: unknown, r: ScenarioResult) => {
+                const score = r.axisScores?.content_accuracy;
+                return typeof score === 'number'
+                  ? <Tag color={score >= 90 ? 'green' : score > 0 ? 'orange' : 'red'}>{score}</Tag>
+                  : <span style={{ color: 'var(--text-helper)' }}>—</span>;
+              },
+              sorter: (a: ScenarioResult, b: ScenarioResult) =>
+                (a.axisScores?.content_accuracy ?? -1) - (b.axisScores?.content_accuracy ?? -1),
             },
             {
               title: lang === 'en' ? 'Safety' : '安全', dataIndex: 'safetyLevel', key: 'safetyLevel', width: 70,

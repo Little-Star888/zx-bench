@@ -22,7 +22,7 @@ export { codeRepairEvaluator } from './evaluators/codeRepair.js';
 export { projectRepairEvaluator } from './evaluators/projectRepair.js';
 export { structuredOutputEvaluator } from './evaluators/structuredOutput.js';
 export { dataExtractionEvaluator } from './evaluators/dataExtraction.js';
-export { exactAnswerLineEvaluator } from './evaluators/exactAnswerLine.js';
+export { exactAnswerLineEvaluator, scoreExactAnswerContent } from './evaluators/exactAnswerLine.js';
 export { instructionChecklistEvaluator } from './evaluators/instructionChecklist.js';
 export { canaryAuthorityEvaluator } from './evaluators/canaryAuthority.js';
 export { toolCallTraceEvaluator } from './evaluators/toolCallTrace.js';
