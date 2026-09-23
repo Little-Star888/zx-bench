@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
-import { Card, Progress, Tag, Button, Row, Col, Spin, Alert, Typography, Statistic, Tooltip } from 'antd';
+import { Card, Progress, Tag, Button, Row, Col, Spin, Alert, Typography, Statistic, Tooltip, Tabs } from 'antd';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import type { BatchProgressResponse, BatchRunStatus } from '@zxbench/types';
 
@@ -41,6 +41,7 @@ export default function EvalBatchLive() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [now, setNow] = useState(Date.now());
+  const [activeRunId, setActiveRunId] = useState<string>();
   const pollRef = useRef<number | null>(null);
 
   const fetchBatch = useCallback(async () => {
@@ -74,6 +75,14 @@ export default function EvalBatchLive() {
     const t = window.setInterval(() => setNow(Date.now()), 1000);
     return () => window.clearInterval(t);
   }, []);
+
+  // 首次拿到批量数据时默认展示第一个模型；后续轮询不打断用户当前选中的 Tab。
+  useEffect(() => {
+    if (!batch?.runs.length) return;
+    if (!activeRunId || !batch.runs.some((run) => run.id === activeRunId)) {
+      setActiveRunId(batch.runs[0].id);
+    }
+  }, [batch, activeRunId]);
 
   if (loading && !batch) {
     return (
@@ -146,19 +155,31 @@ export default function EvalBatchLive() {
 
       {error && <Alert type="warning" showIcon message={error} style={{ marginBottom: 16 }} />}
 
-      {/* 各模型卡片 */}
-      <Row gutter={[16, 16]}>
-        {data.runs.map((run) => (
-          <Col xs={24} lg={12} xxl={8} key={run.id}>
-            <BatchRunCard run={run} now={now} />
-          </Col>
-        ))}
-      </Row>
+      {/* 每个模型独立一个 Tab，轮询更新时保留当前 Tab。 */}
+      <Card className="swiss-card" bodyStyle={{ paddingTop: 8 }}>
+        <Tabs
+          activeKey={activeRunId}
+          onChange={setActiveRunId}
+          tabBarGutter={12}
+          items={data.runs.map((run) => ({
+            key: run.id,
+            label: (
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+                <span>{run.modelName || run.name}</span>
+                <Tag color={STATUS_COLOR[run.status] || 'default'} style={{ marginInlineEnd: 0 }}>
+                  {run.status === 'running' ? `${run.percentage}%` : (STATUS_LABEL[run.status] || run.status)}
+                </Tag>
+              </span>
+            ),
+            children: <BatchRunPanel run={run} now={now} />,
+          }))}
+        />
+      </Card>
     </div>
   );
 }
 
-function BatchRunCard({ run, now }: { run: BatchRunStatus; now: number }) {
+function BatchRunPanel({ run, now }: { run: BatchRunStatus; now: number }) {
   // 运行中耗时实时计算
   const liveDuration =
     run.status === 'running' || run.status === 'paused'
@@ -172,16 +193,18 @@ function BatchRunCard({ run, now }: { run: BatchRunStatus; now: number }) {
   const strokeColor = run.status === 'failed' ? '#ff4d4f' : run.status === 'completed' ? '#52c41a' : '#1677ff';
 
   return (
-    <Card
-      className="swiss-card"
-      title={
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <Tooltip title={run.id}><span style={{ fontSize: 15 }}>{run.modelName || run.name}</span></Tooltip>
-          <Tag color={STATUS_COLOR[run.status] || 'default'}>{STATUS_LABEL[run.status] || run.status}</Tag>
+    <div>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginBottom: 16, flexWrap: 'wrap' }}>
+        <div>
+          <Tooltip title={run.id}><Title level={4} style={{ margin: 0 }}>{run.modelName || run.name}</Title></Tooltip>
+          <Text type="secondary">{run.name}</Text>
         </div>
-      }
-      extra={<Link to={`/eval/live/${run.id}`}>实时详情 →</Link>}
-    >
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <Tag color={STATUS_COLOR[run.status] || 'default'}>{STATUS_LABEL[run.status] || run.status}</Tag>
+          <Link to={`/eval/live/${run.id}`}><Button type="primary">打开完整实时详情</Button></Link>
+        </div>
+      </div>
+
       <div style={{ marginBottom: 12 }}>
         <Progress
           percent={progressPercent}
@@ -220,9 +243,36 @@ function BatchRunCard({ run, now }: { run: BatchRunStatus; now: number }) {
         </div>
       )}
 
+      {run.dimensionProgress && run.dimensionProgress.length > 0 && (
+        <div style={{ marginTop: 20 }}>
+          <Text strong>各维度进度</Text>
+          <Row gutter={[12, 12]} style={{ marginTop: 10 }}>
+            {run.dimensionProgress.map((dimension) => {
+              const percent = dimension.total > 0 ? Math.round((dimension.completed / dimension.total) * 100) : 0;
+              return (
+                <Col xs={24} md={12} xl={8} key={dimension.dimension}>
+                  <Card size="small" bordered>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, marginBottom: 6 }}>
+                      <Text ellipsis={{ tooltip: dimension.dimension }}>{dimension.dimension}</Text>
+                      <Text type="secondary">{dimension.completed}/{dimension.total}</Text>
+                    </div>
+                    <Progress percent={percent} size="small" showInfo={false} />
+                    <div style={{ display: 'flex', gap: 10, fontSize: 12, marginTop: 6 }}>
+                      <Text type="success">通过 {dimension.passed}</Text>
+                      <Text type="danger">未通过 {dimension.failed}</Text>
+                      <Text type="secondary">均分 {Number(dimension.avgScore.toFixed(1))}</Text>
+                    </div>
+                  </Card>
+                </Col>
+              );
+            })}
+          </Row>
+        </div>
+      )}
+
       {run.status === 'failed' && (
         <Alert type="error" showIcon style={{ marginTop: 12 }} message="该模型评测失败，不影响其他模型。可进入详情页查看或重试。" />
       )}
-    </Card>
+    </div>
   );
 }

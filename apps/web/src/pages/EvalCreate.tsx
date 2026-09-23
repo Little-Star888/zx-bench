@@ -35,6 +35,7 @@ export default function EvalCreate() {
   const [loading, setLoading] = useState(false);
   const [judgeEnabled, setJudgeEnabled] = useState(false);
   const [selectedModelReasoning, setSelectedModelReasoning] = useState(false);
+  const [selectedBatchModelIds, setSelectedBatchModelIds] = useState<string[]>([]);
   const [mode, setMode] = useState<'single' | 'batch'>('single');
   const navigate = useNavigate();
   const { t } = useLanguage();
@@ -152,7 +153,17 @@ export default function EvalCreate() {
           {/* ===== 测试模式：单模型 / 多模型并行 ===== */}
           <div style={{ marginBottom: 20 }}>
             <div style={{ fontSize: 13, color: 'var(--text-helper)', marginBottom: 8 }}>{t('eval.testMode')}</div>
-            <Radio.Group value={mode} onChange={(e) => setMode(e.target.value)}>
+            <Radio.Group
+              value={mode}
+              onChange={(e) => {
+                const nextMode = e.target.value as 'single' | 'batch';
+                setMode(nextMode);
+                const selectedIds = nextMode === 'batch'
+                  ? selectedBatchModelIds
+                  : [form.getFieldValue('modelConfigId') as string | undefined].filter((id): id is string => Boolean(id));
+                setSelectedModelReasoning(selectedIds.some((id) => testedModels.find((model) => model.id === id)?.reasoningModel));
+              }}
+            >
               <Radio.Button value="single">单模型（原模式）</Radio.Button>
               <Radio.Button value="batch">多模型并行</Radio.Button>
             </Radio.Group>
@@ -180,12 +191,29 @@ export default function EvalCreate() {
                 <Form.Item
                   label={t('eval.model')}
                   name="modelConfigIds"
-                  rules={[{ required: true, message: '请至少选择一个被测模型' }]}
+                  rules={[
+                    { required: true, message: '请至少选择一个被测模型' },
+                    { type: 'array', max: 8, message: '单次最多选择 8 个模型' },
+                  ]}
                   tooltip="可同时选择多个不同模型，点击「开始并行评测」后将并发执行，各模型评测任务相互独立、错误互不干扰"
                 >
-                  <Select mode="multiple" placeholder="选择要并发评测的模型（可多选）" maxTagCount="responsive" allowClear>
+                  <Select
+                    mode="multiple"
+                    placeholder="选择要并发评测的模型（最多 8 个）"
+                    maxTagCount="responsive"
+                    allowClear
+                    onChange={(ids: string[]) => {
+                      setSelectedBatchModelIds(ids);
+                      const includesReasoningModel = ids.some((id) => testedModels.find((model) => model.id === id)?.reasoningModel);
+                      setSelectedModelReasoning(includesReasoningModel);
+                      if (includesReasoningModel) {
+                        form.setFieldValue('maxTokens', 49152);
+                        form.setFieldValue('maxReasoningTokens', 30000);
+                      }
+                    }}
+                  >
                     {testedModels.map((m) => (
-                      <Select.Option key={m.id} value={m.id}>
+                      <Select.Option key={m.id} value={m.id} disabled={selectedBatchModelIds.length >= 8 && !selectedBatchModelIds.includes(m.id)}>
                         {m.name} ({m.provider}){m.reasoningModel ? ' [推理]' : ''}
                       </Select.Option>
                     ))}
@@ -236,9 +264,9 @@ export default function EvalCreate() {
             不选任何维度 = 全量评测；选中部分维度时仅跑对应题目，排行榜会按实际覆盖范围统计题量
           </Text>
 
-          {mode === 'single' && selectedModelReasoning && (
+          {selectedModelReasoning && (
             <Alert
-              message="推理模型已选择"
+              message={mode === 'batch' ? '已选模型中包含推理模型' : '推理模型已选择'}
               description="推理模型会产生大量思考链 tokens。已自动设为 Max Tokens=49152、思考链上限=30000（可自行调整），若仍频繁截断可调至 65536。"
               type="info"
               showIcon

@@ -1475,9 +1475,15 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
   app.post('/api/runs/batch', async (request, reply) => {
     try {
       const body = request.body as CreateBatchEvalRunRequest;
-      const modelConfigIds = Array.isArray(body.modelConfigIds) ? body.modelConfigIds : [];
+      const requestedModelConfigIds = Array.isArray(body.modelConfigIds)
+        ? body.modelConfigIds.filter((id): id is string => typeof id === 'string' && id.trim().length > 0)
+        : [];
+      const modelConfigIds = [...new Set(requestedModelConfigIds)];
       if (modelConfigIds.length === 0) {
         return reply.status(400).send({ success: false, error: '请至少选择一个被测模型' });
+      }
+      if (modelConfigIds.length !== requestedModelConfigIds.length) {
+        return reply.status(400).send({ success: false, error: '被测模型不能重复选择' });
       }
       const MAX_MODELS = 8;
       if (modelConfigIds.length > MAX_MODELS) {

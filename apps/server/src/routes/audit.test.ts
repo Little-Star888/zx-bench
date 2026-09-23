@@ -233,4 +233,10 @@ describe('audited run API without network or real database', () => {
     expect(packs).toHaveLength(2);
     expect(new Set(packs).size).toBe(1);
   });
+  it('rejects duplicate models in a batch instead of launching the same model twice', async () => {
+    const res = await app.inject({ method: 'POST', url: '/api/runs/batch', payload: { modelConfigIds: ['mock', 'mock'] } });
+    expect(res.statusCode).toBe(400);
+    expect(res.json().error).toContain('不能重复');
+    expect(db.evalRun.create).not.toHaveBeenCalled();
+  });
 });
