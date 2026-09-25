@@ -1,0 +1,26 @@
+[
+  {
+    "model": "ByteShape IQ2_XXS",
+    "scenarioId": "RM-CN-014",
+    "oldScore": 15,
+    "newScore": 100,
+    "outputSha256": "e9580135256a7dc1c2143b268babde89f4d9be7529c2265dd5e6a14a3dc5f1ea",
+    "reason": "会议A和会议B、会议D和会议E与A和B、D和E是同一对冲突；60分钟及无法安排均正确。"
+  },
+  {
+    "model": "ByteShape IQ2_XXS",
+    "scenarioId": "CLI-CN-034",
+    "oldScore": 91,
+    "newScore": 100,
+    "outputSha256": "df52c13738c4ecbe09b53032194f9743d01c912b850e3d7028aa05ef75748227",
+    "reason": "提交的2.31.0与参考版本完全相同；数值解析截断成2.31。"
+  },
+  {
+    "model": "Swift",
+    "scenarioId": "CLI-CN-034",
+    "oldScore": 91,
+    "newScore": 100,
+    "outputSha256": "df52c13738c4ecbe09b53032194f9743d01c912b850e3d7028aa05ef75748227",
+    "reason": "提交的2.31.0与参考版本完全相同；数值解析截断成2.31。"
+  }
+]

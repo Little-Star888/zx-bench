@@ -6,6 +6,8 @@
 
 ZxBench is a locally deployed LLM evaluation platform with a versioned question bank, containerized programming tests, deterministic grading plus an optional AI Judge, live monitoring, resume, reports, and leaderboards. The current bank is **1.47.0**: **815 valid questions across 11 dimensions**. Nine are explicit-only development-shadow questions, leaving **806 questions in a default run**. Inclusion does not certify independent gold-answer review or discrimination across all models.
 
+The current implementation emphasizes **frozen question packs and auditable scoring**. Official runs preserve question snapshots; progressive questions receive the actual prior prompts and model answers in group order. Score recovery, infrastructure failures, and rule/Judge conflicts have separate evidence. A completed run is not automatically a fully graded run, and quality checks can keep incomplete scores off the leaderboard.
+
 ## Quick start
 
 Requires Node.js ≥22.13 and pnpm ≥11. Programming tasks also require a running Docker installation. Prepare the language images required by the questions you run; a missing image is an environment problem, not evidence that the model failed.
@@ -50,10 +52,18 @@ Programming includes single-file repair, no-bug traps, and multi-file project ta
 - Create a single-model run or a batch of up to eight distinct models; each model has an independent run. Question concurrency is 1–4, default 4.
 - Reasoning models can use a larger generation budget, reasoning cap, and per-question deadline. Run-level `Max Tokens` is a hard request cap; question-level constraints can only lower it. Configure it within the model server's context and output limits, and distinguish timeouts or environment errors from capability results.
 - Live monitoring supports pause, resume, cancel, and question retry. Reports and leaderboards expose dimension scores and evidence. Batch monitoring lets you switch between models.
+- Four-part progressive questions run in frozen-pack order and pass actual prior turns to later parts. Retrying a part checks for existing later answers so separate attempts are not mixed into one conversation.
+- Run creation checks the selected Judge configuration and connectivity. Frozen runs support read-only auditing before rescoring. Execution failures, Judge failures, model errors, and rule/Judge conflicts are recorded separately; runs with `scoringComplete=false` are excluded from the leaderboard.
 - Use `pnpm --filter server run:verify-score <run-id> [database-url]` for a read-only check of the frozen bank, primary question results, dimension scores, and total. Add `--repair-summary` only when intentionally repairing an older cached summary; that operation first backs up the database.
 - `pnpm test` runs regression tests; `pnpm test:containers` runs Docker-dependent positive/negative checks; `pnpm build` verifies the frontend and backend builds. CI installs dependencies, generates Prisma, builds, then tests on push/PR.
 
-For methods and limitations, see [evaluation reliability](docs/evaluation-reliability-implementation-2026-09-09.md), [integrity fixes](docs/evaluation-integrity-fixes-2026-09.md), and [bank review](docs/reviewed-question-bank-v5.md). Older release details remain in `docs/` and should not be read as the current bank size or scoring rules.
+For methods and limitations, see [scoring integrity and release gates](docs/scoring-integrity.md), [evaluation reliability](docs/evaluation-reliability-implementation-2026-09-09.md), and [bank review](docs/reviewed-question-bank-v5.md). Older release details remain in `docs/` and should not be read as the current bank size or scoring rules.
+
+## Published evaluation report
+
+The [five-model evaluation report (2026-09-25)](analysis/swift-five-model-report/Swift与五模型全维度测评报告-20260925.md) compares Swift, GSQ-RCO, NVFP4, Bonsai-2 Q1, and ByteShape on their **801 shared questions across ten dimensions**. It covers rerun progressive questions, token use, alternative scoring views, limitations, figures, and item-level format adjudications. This historical analysis is **not the current 806-question default run or a hardware-normalized speed benchmark**. The report is written in Chinese.
+
+[Download the PDF](output/pdf/Swift与五模型全维度测评报告-20260925.pdf) · [Open the portable HTML](analysis/swift-five-model-report/Swift与五模型全维度测评报告-单文件.html)
 
 ## Repository layout
 
@@ -65,6 +75,7 @@ packages/types/  Shared types
 data/scenarios/  Current bank, metadata, archives, development questions
 scripts/         Bank import, export, and audit tools
 docs/            Methods and screenshots
+analysis/swift-five-model-report/  Five-model report, figures, and review data
 ```
 
 MIT License · Copyright (c) 2026 ZhiXiu Contributors

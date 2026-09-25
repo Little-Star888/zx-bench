@@ -2,7 +2,15 @@
 
 All notable changes to ZxBench are documented here.
 
-## [0.2.2] — 2026-09-13
+## [0.2.2] — 2026-09-26
+
+### Current benchmark and evaluation reliability
+
+- Update the released bank to **1.47.0**: 815 valid questions in 11 dimensions, including nine explicit-only development-shadow questions; a default run selects 806.
+- Preserve frozen question packs and run constraints. Progressive four-part questions now carry their actual prior prompts and model answers in order, including during controlled replay.
+- Distinguish model failures from execution-environment and Judge failures. Audit stored scores and rule/Judge conflicts, and keep runs with incomplete scoring off the leaderboard.
+- Preflight the selected Judge before starting a run; improve batch monitoring and keep run-level token limits effective for each question.
+- Publish the [five-model evaluation report](analysis/swift-five-model-report/Swift与五模型全维度测评报告-20260925.md) with figures, common-question methodology, and item-level format adjudications. Its 801-question comparison is a historical analysis, not the current default run.
 
 ### Hotfix
 

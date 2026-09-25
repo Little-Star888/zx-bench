@@ -6,6 +6,8 @@
 
 ZxBench 是本地部署的大模型评测平台，提供版本化题库、容器化编程测试、规则评分与可选 AI Judge、实时监控、断点续跑、报告和排行榜。当前题库版本为 **1.47.0**：11 个维度、815 道有效题，其中 9 道是仅可显式运行的开发影子题，默认运行 **806 道**。题目数量不等于所有题目均已通过独立金标审计或跨模型区分度验证。
 
+最新功能重点是**冻结题集与可审计评分**：正式运行保存题目快照，递进题按组顺序携带前问的真实提问和模型回答；评分恢复、环境故障及规则/Judge 冲突分别留证。运行结束与评分可信是两个不同状态，质量审计可阻止未完成评分的结果进入榜单。
+
 ## 快速开始
 
 需要 Node.js ≥22.13、pnpm ≥11；编程题执行还需要已启动的 Docker。隔离执行所需镜像应预先准备；不同题目需要不同语言镜像，缺失镜像会报告环境未就绪，不应解释为模型能力失败。
@@ -50,10 +52,18 @@ pnpm --filter server start
 - 创建评测可选单模型或最多 8 个不同模型的批量评测；每个模型独立运行。题目并发数为 1–4，默认 4。
 - 推理模型可设置更大的生成预算、思考链上限和单题硬时限；运行级 `Max Tokens` 是请求硬上限，题级约束只能收紧它。请结合模型服务端的上下文与输出限制配置，不要把超时或环境错误混入能力比较。
 - 实时监控支持暂停、恢复、取消、单题重试；报告和排行榜展示维度分及证据。批量监控可按模型切换查看。
+- 四问递进题按冻结题集顺序执行，后问使用同组前问的真实上下文；重试时会检查已有后问，避免把新旧回答混成一条对话。
+- 创建评测时预检选定的 Judge 配置及连通性；冻结运行可先只读审计，再按需要重算评分。执行失败、Judge 失败、模型失分和规则/Judge 冲突分别记录，`scoringComplete=false` 的运行不会进入榜单。
 - 用 `pnpm --filter server run:verify-score <run-id> [database-url]` 只读核验冻结题集、题级主结果、维度分和总分。需要修复旧缓存摘要时再显式使用 `--repair-summary`，它会先备份数据库。
 - `pnpm test` 运行回归测试；`pnpm test:containers` 运行需要 Docker 的容器正反例检查；`pnpm build` 验证前后端构建。CI 在 push/PR 后依次安装依赖、生成 Prisma 客户端、构建、测试。
 
-更多方法与边界见[评测可靠性实现](docs/evaluation-reliability-implementation-2026-09-09.md)、[完整性修复](docs/evaluation-integrity-fixes-2026-09.md)及[题库复核](docs/reviewed-question-bank-v5.md)。历史版本变更保留在对应 `docs/` 文档中，不作为当前题库规模或评分规则的依据。
+更多方法与边界见[评分可信度与发布闸门](docs/scoring-integrity.md)、[评测可靠性实现](docs/evaluation-reliability-implementation-2026-09-09.md)及[题库复核](docs/reviewed-question-bank-v5.md)。历史版本变更保留在对应 `docs/` 文档中，不作为当前题库规模或评分规则的依据。
+
+## 公开测评报告
+
+[五模型全维度测评报告（2026-09-25）](analysis/swift-five-model-report/Swift与五模型全维度测评报告-20260925.md)比较 Swift、GSQ-RCO、NVFP4、Bonsai-2 Q1 和 ByteShape：主榜使用五款模型共同的 **801 题、十个维度**，包含递进题重跑、Token 用量、替代计分和限制说明。报告附有图表及逐题格式复核清单。它是一次历史运行的分析，**不等同于当前 806 题默认评测，也不是跨硬件的速度基准**。
+
+[下载 PDF](output/pdf/Swift与五模型全维度测评报告-20260925.pdf) · [打开便携 HTML](analysis/swift-five-model-report/Swift与五模型全维度测评报告-单文件.html)
 
 ## 项目结构
 
@@ -65,6 +75,7 @@ packages/types/  共享类型
 data/scenarios/  当前题库、元数据、归档与开发题
 scripts/         题库导入、导出及审计工具
 docs/            方法说明与截图
+analysis/swift-five-model-report/  五模型报告、图表和复核数据
 ```
 
 MIT License · Copyright (c) 2026 ZhiXiu Contributors

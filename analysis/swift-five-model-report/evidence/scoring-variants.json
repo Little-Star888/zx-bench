@@ -1,0 +1,46 @@
+{
+  "commonQuestions": 801,
+  "adjudicatedRows": 3,
+  "models": [
+    {
+      "model": "GSQ-RCO",
+      "strict": 83.72,
+      "withoutSafety": 84.71,
+      "relaxedVerified": 83.72,
+      "withoutSafetyAndRelaxed": 84.71,
+      "correctedRows": 0
+    },
+    {
+      "model": "Bonsai-2 Q1",
+      "strict": 80.58,
+      "withoutSafety": 81.48,
+      "relaxedVerified": 80.58,
+      "withoutSafetyAndRelaxed": 81.48,
+      "correctedRows": 0
+    },
+    {
+      "model": "ByteShape IQ2_XXS",
+      "strict": 76.92,
+      "withoutSafety": 77.61,
+      "relaxedVerified": 77.07,
+      "withoutSafetyAndRelaxed": 77.77,
+      "correctedRows": 2
+    },
+    {
+      "model": "Swift",
+      "strict": 83.4,
+      "withoutSafety": 84.77,
+      "relaxedVerified": 83.41,
+      "withoutSafetyAndRelaxed": 84.78,
+      "correctedRows": 1
+    },
+    {
+      "model": "NVFP4",
+      "strict": 82.61,
+      "withoutSafety": 83.81,
+      "relaxedVerified": 82.61,
+      "withoutSafetyAndRelaxed": 83.81,
+      "correctedRows": 0
+    }
+  ]
+}
