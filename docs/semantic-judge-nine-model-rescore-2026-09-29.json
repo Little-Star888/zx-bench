@@ -1,0 +1,214 @@
+{
+  "benchmarkSourceQuestionCount": 803,
+  "dockerMigratedSourceQuestionCount": 189,
+  "dockerTaskInstanceCount": 306,
+  "structuredOutputSourceQuestionCount": 60,
+  "judgeModel": "deepseek-v4.1-flash",
+  "eightModelVerdictsSha256": "e79c9acc1b1b088f5c784fa7b17613b1c04729178a8e9247ed88ad69f188dd31",
+  "signalVerdictsSha256": "e699882acc8edec7bb1c35b9aa127fe5a2c81737bb6cf2916337db89671ceab9",
+  "reviewedTaskInstances": 161,
+  "approvedTaskInstances": 106,
+  "signalChangedSourceQuestions": [
+    "CLI-CN-040",
+    "CLI-CN-042",
+    "HA-CN-005",
+    "HA-CN-022",
+    "SA-CN-002",
+    "SA-CN-023",
+    "SA-CN-024",
+    "TC-CN-042",
+    "TC-CN-048"
+  ],
+  "models": [
+    {
+      "model": "Nerkyor EfficientThink",
+      "modelId": "05c8edd2-6ca6-4c95-9090-e6431b8ab415",
+      "scoreBefore": 72.96,
+      "scoreAfter": 75.54,
+      "approvedTaskCount": 29,
+      "dimensionsAfter": {
+        "agent_loop": 100.0,
+        "hallucination_resistance": 81.82,
+        "cli_deep_tasks": 74.67,
+        "program": 68.09,
+        "instruction_following": 91.75,
+        "data_extraction": 82.74,
+        "agent_workflow": 44.41,
+        "reasoning_math": 90.33,
+        "safety_authority": 73.66,
+        "structured_output": 89.08,
+        "tool_cli_workflow": 41.47
+      },
+      "resultKind": "saved-results-composite"
+    },
+    {
+      "model": "GSQ-RCO",
+      "modelId": "b2df011e-e4f1-484e-8f39-57360f51cbbf",
+      "scoreBefore": 74.46,
+      "scoreAfter": 74.77,
+      "approvedTaskCount": 4,
+      "dimensionsAfter": {
+        "agent_loop": 100.0,
+        "hallucination_resistance": 83.82,
+        "cli_deep_tasks": 72.89,
+        "program": 71.4,
+        "instruction_following": 83.52,
+        "data_extraction": 83.18,
+        "agent_workflow": 35.37,
+        "reasoning_math": 94.57,
+        "safety_authority": 66.42,
+        "structured_output": 97.13,
+        "tool_cli_workflow": 42.18
+      },
+      "resultKind": "saved-results-composite"
+    },
+    {
+      "model": "Swift",
+      "modelId": "eca5de88-eadb-476b-bb28-f187ffd0182a",
+      "scoreBefore": 71.77,
+      "scoreAfter": 72.96,
+      "approvedTaskCount": 15,
+      "dimensionsAfter": {
+        "agent_loop": 100.0,
+        "hallucination_resistance": 83.44,
+        "cli_deep_tasks": 72.0,
+        "program": 68.73,
+        "instruction_following": 92.18,
+        "data_extraction": 86.16,
+        "agent_workflow": 36.44,
+        "reasoning_math": 92.02,
+        "safety_authority": 46.42,
+        "structured_output": 92.6,
+        "tool_cli_workflow": 41.47
+      },
+      "resultKind": "saved-results-composite"
+    },
+    {
+      "model": "Signal",
+      "modelId": null,
+      "scoreBefore": 71.22,
+      "scoreAfter": 72.3,
+      "approvedTaskCount": 14,
+      "dimensionsAfter": {
+        "hallucination_resistance": 80.34467831019556,
+        "cli_deep_tasks": 66.66666666666667,
+        "agent_loop": 97.33333333333333,
+        "program": 68.19593345656192,
+        "data_extraction": 84.70765661252901,
+        "agent_workflow": 40.95744680851064,
+        "instruction_following": 92.36423841059603,
+        "safety_authority": 52.083333333333336,
+        "tool_cli_workflow": 39.312796208530806,
+        "reasoning_math": 88.17073170731707,
+        "structured_output": 93.00411522633745
+      },
+      "resultKind": "official-completed-run",
+      "runId": "zxbench-pro-2026-09-28T07-33-33-382Z-e21bf5cd"
+    },
+    {
+      "model": "NVFP4",
+      "modelId": "086461bc-49c6-4bd6-b4b8-f8260be0f71f",
+      "scoreBefore": 72.19,
+      "scoreAfter": 72.19,
+      "approvedTaskCount": 0,
+      "dimensionsAfter": {
+        "agent_loop": 100.0,
+        "hallucination_resistance": 78.79,
+        "cli_deep_tasks": 67.78,
+        "program": 73.53,
+        "instruction_following": 84.75,
+        "data_extraction": 77.01,
+        "agent_workflow": 39.89,
+        "reasoning_math": 91.39,
+        "safety_authority": 58.44,
+        "structured_output": 91.82,
+        "tool_cli_workflow": 33.41
+      },
+      "resultKind": "saved-results-composite"
+    },
+    {
+      "model": "ByteShape IQ2_XXS",
+      "modelId": "2d405b1f-8014-487c-b54f-594d90eab868",
+      "scoreBefore": 67.24,
+      "scoreAfter": 69.36,
+      "approvedTaskCount": 24,
+      "dimensionsAfter": {
+        "agent_loop": 96.67,
+        "hallucination_resistance": 79.9,
+        "cli_deep_tasks": 65.11,
+        "program": 63.11,
+        "instruction_following": 92.15,
+        "data_extraction": 78.22,
+        "agent_workflow": 46.81,
+        "reasoning_math": 58.9,
+        "safety_authority": 69.59,
+        "structured_output": 87.29,
+        "tool_cli_workflow": 41.71
+      },
+      "resultKind": "saved-results-composite"
+    },
+    {
+      "model": "Bonsai-2 Q1",
+      "modelId": "ed16d154-f5e9-4650-b355-cf5418846b81",
+      "scoreBefore": 66.85,
+      "scoreAfter": 67.16,
+      "approvedTaskCount": 4,
+      "dimensionsAfter": {
+        "agent_loop": 93.33,
+        "hallucination_resistance": 80.12,
+        "cli_deep_tasks": 56.22,
+        "program": 66.13,
+        "instruction_following": 81.62,
+        "data_extraction": 84.45,
+        "agent_workflow": 32.98,
+        "reasoning_math": 82.35,
+        "safety_authority": 52.1,
+        "structured_output": 81.93,
+        "tool_cli_workflow": 29.15
+      },
+      "resultKind": "saved-results-composite"
+    },
+    {
+      "model": "DavidAU Twin",
+      "modelId": "7c63fa1b-87f0-4c32-aa39-437a9e40c779",
+      "scoreBefore": 66.53,
+      "scoreAfter": 66.76,
+      "approvedTaskCount": 3,
+      "dimensionsAfter": {
+        "agent_loop": 82.29,
+        "hallucination_resistance": 67.16,
+        "cli_deep_tasks": 72.67,
+        "program": 72.67,
+        "instruction_following": 88.84,
+        "data_extraction": 82.05,
+        "agent_workflow": 28.46,
+        "reasoning_math": 70.18,
+        "safety_authority": 50.23,
+        "structured_output": 86.62,
+        "tool_cli_workflow": 33.41
+      },
+      "resultKind": "saved-results-composite"
+    },
+    {
+      "model": "Qwopus Flash V2",
+      "modelId": "7c34094e-de73-4223-9d43-147fe100f293",
+      "scoreBefore": 62.84,
+      "scoreAfter": 63.9,
+      "approvedTaskCount": 13,
+      "dimensionsAfter": {
+        "agent_loop": 96.67,
+        "hallucination_resistance": 78.22,
+        "cli_deep_tasks": 51.56,
+        "program": 69.99,
+        "instruction_following": 81.68,
+        "data_extraction": 82.59,
+        "agent_workflow": 25.0,
+        "reasoning_math": 67.07,
+        "safety_authority": 47.33,
+        "structured_output": 79.58,
+        "tool_cli_workflow": 25.12
+      },
+      "resultKind": "saved-results-composite"
+    }
+  ]
+}
