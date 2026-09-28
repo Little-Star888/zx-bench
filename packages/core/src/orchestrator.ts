@@ -753,7 +753,8 @@ async function evaluateCandidate(options: OrchestrateOptions): Promise<ScenarioR
 
   // The execution trace remains authoritative. Only a literal miss in the
   // positive final-answer wording can be reconsidered by the configured Judge.
-  if (scenarioRequirements.executionWorld && evalConfig.judgeEnabled && judgeOptions?.localModel) {
+  if (scenarioRequirements.executionWorld && evalConfig.semanticFinalReviewEnabled === true && judgeOptions?.localModel
+    && judgeOptions.localModel.modelType !== 'tested') {
     const semanticReview = await reviewSemanticFinalAnswer(
       scenario, modelResponse, outputMetadata, result, judgeOptions.localModel, options.signal);
     if (semanticReview) applySemanticFinalReview(result, semanticReview);
@@ -1115,6 +1116,7 @@ export function generateManifest(
       structuredOutputEnabled: evalConfig.structuredOutputEnabled,
       escalationThreshold: evalConfig.escalationThreshold,
       judgeModelConfigId: evalConfig.judgeModelConfigId ?? null,
+      semanticFinalReviewEnabled: evalConfig.semanticFinalReviewEnabled,
     },
   };
 }

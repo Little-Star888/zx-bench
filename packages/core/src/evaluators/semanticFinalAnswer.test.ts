@@ -109,14 +109,32 @@ describe('semantic final-answer review', () => {
     const judged = await orchestrateEvaluation({ scenario: fullScenario,
       modelConfig: { id: 'tested', name: 'tested', provider: 'openai', baseUrl: 'http://localhost', defaultParams: {} },
       modelParams: { maxTokens: 100 },
-      evalConfig: { judgeEnabled: true, safetyCheckEnabled: false, structuredOutputEnabled: false } as never,
-      judgeOptions: { localModel: { id: 'judge-1', name: 'deepseek-v4.1-flash', provider: 'openai',
-        baseUrl: 'http://localhost', defaultParams: {} }, escalationThreshold: .85 },
+      evalConfig: { judgeEnabled: false, semanticFinalReviewEnabled: true,
+        safetyCheckEnabled: false, structuredOutputEnabled: false } as never,
+      judgeOptions: { localModel: { id: 'judge-1', name: 'another-judge', provider: 'openai',
+        baseUrl: 'http://localhost', defaultParams: {}, modelType: 'judge' }, escalationThreshold: .85 },
       savedCandidate: { response, metadata },
     });
     expect(judged.totalScore).toBe(100);
     expect(judged.semanticFinalReview?.status).toBe('equivalent');
     expect(judged.outputMetadata.evaluationAudit?.semanticFinalReview?.judgeModelId).toBe('judge-1');
     expect(callModel).toHaveBeenCalledTimes(1);
+  });
+
+  it('does not silently change the scoring rule of a historical run without the frozen flag', async () => {
+    vi.mocked(callModel).mockClear();
+    const old = await orchestrateEvaluation({ scenario: { ...scenario,
+      dimension: 'tool_cli_workflow', grader: 'tool_call_trace', graderVersion: 'tool_trace_v4',
+      scenarioVersion: '1', scenarioHash: 'fixture', scoring: { type: 'tool_call_trace' } } as Scenario,
+      modelConfig: { id: 'tested', name: 'tested', provider: 'openai', baseUrl: 'http://localhost', defaultParams: {} },
+      modelParams: { maxTokens: 100 },
+      evalConfig: { judgeEnabled: false, safetyCheckEnabled: false, structuredOutputEnabled: false } as never,
+      judgeOptions: { localModel: { id: 'judge-1', name: 'any-judge', provider: 'openai',
+        baseUrl: 'http://localhost', defaultParams: {}, modelType: 'judge' }, escalationThreshold: .85 },
+      savedCandidate: { response, metadata },
+    });
+    expect(old.totalScore).toBe(0);
+    expect(old.semanticFinalReview).toBeUndefined();
+    expect(callModel).not.toHaveBeenCalled();
   });
 });

@@ -584,6 +584,7 @@ export interface RunManifest {
     structuredOutputEnabled?: boolean;
     escalationThreshold?: number;
     judgeModelConfigId?: string | null;
+    semanticFinalReviewEnabled?: boolean;
   };
 }
 
@@ -623,6 +624,8 @@ export interface EvalRunConfig {
   judgeEnabled: boolean;
   /** 实际生效的 Judge 模型配置 ID（创建时固化，重跑/审计时还原同一 Judge） */
   judgeModelConfigId?: string;
+  /** 新运行绑定 Judge 后，独立启用严格执行题的最终答复语义复核。 */
+  semanticFinalReviewEnabled?: boolean;
   judgeLocalModel?: string;
   judgeFrontierModel?: string;
   escalationEnabled: boolean;

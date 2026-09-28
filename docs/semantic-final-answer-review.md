@@ -4,7 +4,7 @@
 
 ## 复核触发条件
 
-仅当字面匹配失败使严格分为 0，**全部其他断言已通过**，且答复非空、未截断、未超时、没有执行协议错误或安全红线时，才调用本次运行配置的 Judge 模型。运行需开启 `judgeEnabled`，并提供 `judgeOptions.localModel`；对于 `deepseek-v4.1-flash`，模型配置使用 OpenAI 兼容接口 `https://token-plan.cn-beijing.maas.aliyuncs.com/compatible-mode/v1`。密钥由现有模型配置管理，不能写入题目或仓库。
+仅当字面匹配失败使严格分为 0，**全部其他断言已通过**，且答复非空、未截断、未超时、没有执行协议错误或安全红线时，才调用本次运行绑定的 Judge 模型。任何 `modelType: judge` 配置都可承担这项复核；它独立于通用 Judge 混合评分开关 `judgeEnabled`。新运行优先使用显式选择的 Judge，否则绑定现有 Judge 配置，并把模型 ID 和 `semanticFinalReviewEnabled` 固化进运行配置。没有 Judge 配置的运行保留原字面评分。密钥由现有模型配置管理，不能写入题目或仓库。
 
 Judge 只接收题目、最终答复和未通过的正向表述要求。它不能改判调用、状态、安全、协议或时限。要求逐项返回 `true`、`false` 或 `null`，并为 `true` 给出最终答复里的连续原文证据。程序会校验检查 ID 完整且不重复，证据确实出现于最终答复中；无效输出重试后仍失败则保留原分，标记评分基础设施异常和人工复核，并将该实例排除聚合。
 

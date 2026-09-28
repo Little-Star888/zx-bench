@@ -173,7 +173,7 @@ interface Evaluator {
 
 ### Strict execution-world final-answer semantics
 
-For `executionWorld` scenarios with `scoreMode: 'strict'`, the execution trace remains authoritative. If every call, state, safety, protocol and completion check passes but a positive final-answer phrase check misses its literal wording, an enabled configured Judge may verify semantic equivalence against the final answer alone. All failed positive phrase checks must be confirmed for that task instance to receive 100; a negative, uncertain or failed Judge decision keeps the original score. See [the scoring and audit contract](docs/semantic-final-answer-review.md).
+For `executionWorld` scenarios with `scoreMode: 'strict'`, the execution trace remains authoritative. If every call, state, safety, protocol and completion check passes but a positive final-answer phrase check misses its literal wording, any bound `modelType: judge` model verifies semantic equivalence against the final answer alone. This runs independently of the general Judge mixed-scoring switch. All failed positive phrase checks must be confirmed for that task instance to receive 100; a negative, uncertain or failed Judge decision keeps the original score. See [the scoring and audit contract](docs/semantic-final-answer-review.md).
 
 ### 5.1 bug_finding v2
 
