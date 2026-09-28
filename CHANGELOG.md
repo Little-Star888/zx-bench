@@ -2,6 +2,16 @@
 
 All notable changes to ZxBench are documented here.
 
+
+## [0.2.3] — 2026-09-28
+
+### Updated questions and scoring
+
+- Publish 60 structured-output questions and 189 Docker migration sources with 306 execution instances, with native task packs and reference checks.
+- Repair Docker question wording, runtime budgets and termination records, multi-line replies, trace-based grading, safety classification, Git workspace setup, and script interpreter selection.
+- Preserve historical run snapshots. Publishing this release does not update the online scenario database or a running evaluation; corrected prompts and budgets require targeted new model answers.
+- Verify the workspace build, 69 related tests, and local Docker positive/negative probes. See [the question refresh note](docs/question-refresh-2026-09-28.md).
+
 ## [0.2.2] — 2026-09-26
 
 ### Current benchmark and evaluation reliability
