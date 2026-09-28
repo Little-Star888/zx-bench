@@ -317,6 +317,17 @@ export interface StructuredContractMetrics {
   };
 }
 
+/** A narrowly scoped Judge decision about failed positive final-answer wording. */
+export interface SemanticFinalReview {
+  version: string;
+  judgeModelId: string;
+  judgeModel: string;
+  status: 'equivalent' | 'not_equivalent' | 'inconclusive' | 'error';
+  checks: Array<{ id: string; equivalent: boolean | null; quote: string }>;
+  tokenUsage?: TokenUsage;
+  error?: string;
+}
+
 export interface EvaluationAudit {
   version: 1;
   scenarioHash: string;
@@ -324,6 +335,7 @@ export interface EvaluationAudit {
   runtimeEvaluation?: RuntimeEvaluation;
   graderVersion?: string;
   criterionResults?: CriterionResult[];
+  semanticFinalReview?: SemanticFinalReview;
   structuredContractMetrics?: StructuredContractMetrics;
   judgeScoreHistory?: number[];
   multiRunStats?: MultiRunStats;
@@ -356,6 +368,7 @@ export interface ScenarioResult {
   axisCoverage?: number;
   totalScore: number;
   criterionResults?: CriterionResult[];
+  semanticFinalReview?: SemanticFinalReview;
   structuredContractMetrics?: StructuredContractMetrics;
   deterministicScore?: number;
   judgeScore?: number;
