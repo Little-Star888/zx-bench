@@ -1,0 +1,2603 @@
+[
+  {
+    "id": "SO-PILOT-01-1",
+    "dimension": "structured_output",
+    "category": "project-and-filter",
+    "difficulty": "hard",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "8a4919df1ff7e6e1",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "只保留 active=true 的用户，按原顺序输出 id、name；不得带出 secret。输出对象的唯一键为 records。\n\n输入数据：{\"users\":[{\"id\":\"u3\",\"name\":\"李三\",\"active\":true,\"secret\":\"x\"},{\"id\":\"u1\",\"name\":\"王一\",\"active\":false,\"secret\":\"y\"},{\"id\":\"u2\",\"name\":\"陈二\",\"active\":true,\"secret\":\"z\"}]}\n\n只输出 JSON，不要代码围栏或说明。",
+    "requirements": {
+      "format": "json",
+      "output_policy": "raw_only",
+      "developmentShadow": true,
+      "schema": {
+        "type": "object",
+        "required": [
+          "records"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "records": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "type": "object",
+              "required": [
+                "id",
+                "name"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "constraints": [
+        "jsonEq:.={\"records\":[{\"id\":\"u3\",\"name\":\"李三\"},{\"id\":\"u2\",\"name\":\"陈二\"}]}"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.05,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.7,
+        "output_discipline": 0.05
+      }
+    },
+    "tags": [
+      "structured-output-pilot",
+      "fixture-anchored",
+      "family:project-and-filter"
+    ],
+    "reviewStatus": "unreviewed",
+    "goldSource": "programmatic-fixture-v1"
+  },
+  {
+    "id": "SO-PILOT-01-2",
+    "dimension": "structured_output",
+    "category": "project-and-filter",
+    "difficulty": "hard",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "297b64af1ce31f73",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "只保留 active=true 的用户，按原顺序输出 id、name；不得带出 secret。输出对象的唯一键为 records。\n\n输入数据：{\"users\":[{\"id\":\"u3\",\"name\":\"李三\",\"active\":false,\"secret\":\"x\"},{\"id\":\"u1\",\"name\":\"王一\",\"active\":false,\"secret\":\"y\"},{\"id\":\"u2\",\"name\":\"陈二\",\"active\":false,\"secret\":\"z\"}]}\n\n只输出 JSON，不要代码围栏或说明。",
+    "requirements": {
+      "format": "json",
+      "output_policy": "raw_only",
+      "developmentShadow": true,
+      "schema": {
+        "type": "object",
+        "required": [
+          "records"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "records": {
+            "type": "array",
+            "minItems": 0,
+            "maxItems": 0,
+            "items": {}
+          }
+        }
+      },
+      "constraints": [
+        "jsonEq:.={\"records\":[]}"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.05,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.7,
+        "output_discipline": 0.05
+      }
+    },
+    "tags": [
+      "structured-output-pilot",
+      "fixture-anchored",
+      "family:project-and-filter"
+    ],
+    "reviewStatus": "unreviewed",
+    "goldSource": "programmatic-fixture-v1"
+  },
+  {
+    "id": "SO-PILOT-01-3",
+    "dimension": "structured_output",
+    "category": "project-and-filter",
+    "difficulty": "hard",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "1e51056654b591c5",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "只保留 active=true 的用户，按原顺序输出 id、name；不得带出 secret。输出对象的唯一键为 records。\n\n输入数据：{\"users\":[{\"id\":\"u3\",\"name\":\"李三\",\"active\":true,\"secret\":\"x\"},{\"id\":\"u1\",\"name\":\"王一\",\"active\":true,\"secret\":\"y\"},{\"id\":\"u2\",\"name\":\"陈二\",\"active\":false,\"secret\":\"z\"}]}\n\n只输出 JSON，不要代码围栏或说明。",
+    "requirements": {
+      "format": "json",
+      "output_policy": "raw_only",
+      "developmentShadow": true,
+      "schema": {
+        "type": "object",
+        "required": [
+          "records"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "records": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "type": "object",
+              "required": [
+                "id",
+                "name"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "constraints": [
+        "jsonEq:.={\"records\":[{\"id\":\"u3\",\"name\":\"李三\"},{\"id\":\"u1\",\"name\":\"王一\"}]}"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.05,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.7,
+        "output_discipline": 0.05
+      }
+    },
+    "tags": [
+      "structured-output-pilot",
+      "fixture-anchored",
+      "family:project-and-filter"
+    ],
+    "reviewStatus": "unreviewed",
+    "goldSource": "programmatic-fixture-v1"
+  },
+  {
+    "id": "SO-PILOT-02-1",
+    "dimension": "structured_output",
+    "category": "null-versus-omitted",
+    "difficulty": "hard",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "a1d42676b098dccb",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "输出对象始终包含 name；phone 为 null 时省略 contact 键，否则保留原字符串，包括空字符串。\n\n输入数据：{\"name\":\"甲\",\"phone\":null}\n\n只输出 JSON，不要代码围栏或说明。",
+    "requirements": {
+      "format": "json",
+      "output_policy": "raw_only",
+      "developmentShadow": true,
+      "schema": {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "constraints": [
+        "jsonEq:.={\"name\":\"甲\"}"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.05,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.7,
+        "output_discipline": 0.05
+      }
+    },
+    "tags": [
+      "structured-output-pilot",
+      "fixture-anchored",
+      "family:null-versus-omitted"
+    ],
+    "reviewStatus": "unreviewed",
+    "goldSource": "programmatic-fixture-v1"
+  },
+  {
+    "id": "SO-PILOT-02-2",
+    "dimension": "structured_output",
+    "category": "null-versus-omitted",
+    "difficulty": "hard",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "9a4748347ea0c2a4",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "输出对象始终包含 name；phone 为 null 时省略 contact 键，否则保留原字符串，包括空字符串。\n\n输入数据：{\"name\":\"乙\",\"phone\":\"\"}\n\n只输出 JSON，不要代码围栏或说明。",
+    "requirements": {
+      "format": "json",
+      "output_policy": "raw_only",
+      "developmentShadow": true,
+      "schema": {
+        "type": "object",
+        "required": [
+          "name",
+          "contact"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "contact": {
+            "type": "string"
+          }
+        }
+      },
+      "constraints": [
+        "jsonEq:.={\"name\":\"乙\",\"contact\":\"\"}"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.05,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.7,
+        "output_discipline": 0.05
+      }
+    },
+    "tags": [
+      "structured-output-pilot",
+      "fixture-anchored",
+      "family:null-versus-omitted"
+    ],
+    "reviewStatus": "unreviewed",
+    "goldSource": "programmatic-fixture-v1"
+  },
+  {
+    "id": "SO-PILOT-02-3",
+    "dimension": "structured_output",
+    "category": "null-versus-omitted",
+    "difficulty": "hard",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "b74b6c9a49c26de4",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "输出对象始终包含 name；phone 为 null 时省略 contact 键，否则保留原字符串，包括空字符串。\n\n输入数据：{\"name\":\"丙\",\"phone\":\"13800000000\"}\n\n只输出 JSON，不要代码围栏或说明。",
+    "requirements": {
+      "format": "json",
+      "output_policy": "raw_only",
+      "developmentShadow": true,
+      "schema": {
+        "type": "object",
+        "required": [
+          "name",
+          "contact"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "contact": {
+            "type": "string"
+          }
+        }
+      },
+      "constraints": [
+        "jsonEq:.={\"name\":\"丙\",\"contact\":\"13800000000\"}"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.05,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.7,
+        "output_discipline": 0.05
+      }
+    },
+    "tags": [
+      "structured-output-pilot",
+      "fixture-anchored",
+      "family:null-versus-omitted"
+    ],
+    "reviewStatus": "unreviewed",
+    "goldSource": "programmatic-fixture-v1"
+  },
+  {
+    "id": "SO-PILOT-03-1",
+    "dimension": "structured_output",
+    "category": "discriminated-union",
+    "difficulty": "hard",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "d4d1d2ef43eb5738",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "输出唯一键 events；每条转为 {id,type,payload}。paid 的 type=\"payment\"、payload={amount}；failed 的 type=\"error\"、payload={reason}。保留顺序和空字符串。\n\n输入数据：{\"events\":[{\"kind\":\"paid\",\"id\":\"p0\",\"amount\":1},{\"kind\":\"failed\",\"id\":\"f0\",\"reason\":\"timeout\"}]}\n\n只输出 JSON，不要代码围栏或说明。",
+    "requirements": {
+      "format": "json",
+      "output_policy": "raw_only",
+      "developmentShadow": true,
+      "schema": {
+        "type": "object",
+        "required": [
+          "events"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "events": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "type",
+                    "payload"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "type": "string"
+                    },
+                    "payload": {
+                      "type": "object",
+                      "required": [
+                        "amount"
+                      ],
+                      "additionalProperties": false,
+                      "properties": {
+                        "amount": {
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "type",
+                    "payload"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "type": "string"
+                    },
+                    "payload": {
+                      "type": "object",
+                      "required": [
+                        "reason"
+                      ],
+                      "additionalProperties": false,
+                      "properties": {
+                        "reason": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "constraints": [
+        "jsonEq:.={\"events\":[{\"id\":\"p0\",\"type\":\"payment\",\"payload\":{\"amount\":1}},{\"id\":\"f0\",\"type\":\"error\",\"payload\":{\"reason\":\"timeout\"}}]}"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.05,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.7,
+        "output_discipline": 0.05
+      }
+    },
+    "tags": [
+      "structured-output-pilot",
+      "fixture-anchored",
+      "family:discriminated-union"
+    ],
+    "reviewStatus": "unreviewed",
+    "goldSource": "programmatic-fixture-v1"
+  },
+  {
+    "id": "SO-PILOT-03-2",
+    "dimension": "structured_output",
+    "category": "discriminated-union",
+    "difficulty": "hard",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "8fb5b030d40c8326",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "输出唯一键 events；每条转为 {id,type,payload}。paid 的 type=\"payment\"、payload={amount}；failed 的 type=\"error\"、payload={reason}。保留顺序和空字符串。\n\n输入数据：{\"events\":[{\"kind\":\"paid\",\"id\":\"p1\",\"amount\":2},{\"kind\":\"failed\",\"id\":\"f1\",\"reason\":\"\"}]}\n\n只输出 JSON，不要代码围栏或说明。",
+    "requirements": {
+      "format": "json",
+      "output_policy": "raw_only",
+      "developmentShadow": true,
+      "schema": {
+        "type": "object",
+        "required": [
+          "events"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "events": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "type",
+                    "payload"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "type": "string"
+                    },
+                    "payload": {
+                      "type": "object",
+                      "required": [
+                        "amount"
+                      ],
+                      "additionalProperties": false,
+                      "properties": {
+                        "amount": {
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "type",
+                    "payload"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "type": "string"
+                    },
+                    "payload": {
+                      "type": "object",
+                      "required": [
+                        "reason"
+                      ],
+                      "additionalProperties": false,
+                      "properties": {
+                        "reason": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "constraints": [
+        "jsonEq:.={\"events\":[{\"id\":\"p1\",\"type\":\"payment\",\"payload\":{\"amount\":2}},{\"id\":\"f1\",\"type\":\"error\",\"payload\":{\"reason\":\"\"}}]}"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.05,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.7,
+        "output_discipline": 0.05
+      }
+    },
+    "tags": [
+      "structured-output-pilot",
+      "fixture-anchored",
+      "family:discriminated-union"
+    ],
+    "reviewStatus": "unreviewed",
+    "goldSource": "programmatic-fixture-v1"
+  },
+  {
+    "id": "SO-PILOT-03-3",
+    "dimension": "structured_output",
+    "category": "discriminated-union",
+    "difficulty": "hard",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "5bd56f6b1fc0fd71",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "输出唯一键 events；每条转为 {id,type,payload}。paid 的 type=\"payment\"、payload={amount}；failed 的 type=\"error\"、payload={reason}。保留顺序和空字符串。\n\n输入数据：{\"events\":[{\"kind\":\"paid\",\"id\":\"p2\",\"amount\":3},{\"kind\":\"failed\",\"id\":\"f2\",\"reason\":\"timeout\"},{\"kind\":\"paid\",\"id\":\"p-extra\",\"amount\":0}]}\n\n只输出 JSON，不要代码围栏或说明。",
+    "requirements": {
+      "format": "json",
+      "output_policy": "raw_only",
+      "developmentShadow": true,
+      "schema": {
+        "type": "object",
+        "required": [
+          "events"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "events": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 3,
+            "items": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "type",
+                    "payload"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "type": "string"
+                    },
+                    "payload": {
+                      "type": "object",
+                      "required": [
+                        "amount"
+                      ],
+                      "additionalProperties": false,
+                      "properties": {
+                        "amount": {
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "type",
+                    "payload"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "type": "string"
+                    },
+                    "payload": {
+                      "type": "object",
+                      "required": [
+                        "reason"
+                      ],
+                      "additionalProperties": false,
+                      "properties": {
+                        "reason": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "constraints": [
+        "jsonEq:.={\"events\":[{\"id\":\"p2\",\"type\":\"payment\",\"payload\":{\"amount\":3}},{\"id\":\"f2\",\"type\":\"error\",\"payload\":{\"reason\":\"timeout\"}},{\"id\":\"p-extra\",\"type\":\"payment\",\"payload\":{\"amount\":0}}]}"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.05,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.7,
+        "output_discipline": 0.05
+      }
+    },
+    "tags": [
+      "structured-output-pilot",
+      "fixture-anchored",
+      "family:discriminated-union"
+    ],
+    "reviewStatus": "unreviewed",
+    "goldSource": "programmatic-fixture-v1"
+  },
+  {
+    "id": "SO-PILOT-04-1",
+    "dimension": "structured_output",
+    "category": "stable-sort",
+    "difficulty": "hard",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "3372004d9b722417",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "按 priority 降序稳定排序；相同 priority 保持输入顺序。输出唯一键 jobIds，值为排序后的 id 字符串数组。\n\n输入数据：{\"jobs\":[{\"id\":\"b\",\"priority\":1},{\"id\":\"a\",\"priority\":1},{\"id\":\"c\",\"priority\":2}]}\n\n只输出 JSON，不要代码围栏或说明。",
+    "requirements": {
+      "format": "json",
+      "output_policy": "raw_only",
+      "developmentShadow": true,
+      "schema": {
+        "type": "object",
+        "required": [
+          "jobIds"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "jobIds": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 3,
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "constraints": [
+        "jsonEq:.={\"jobIds\":[\"c\",\"b\",\"a\"]}"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.05,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.7,
+        "output_discipline": 0.05
+      }
+    },
+    "tags": [
+      "structured-output-pilot",
+      "fixture-anchored",
+      "family:stable-sort"
+    ],
+    "reviewStatus": "unreviewed",
+    "goldSource": "programmatic-fixture-v1"
+  },
+  {
+    "id": "SO-PILOT-04-2",
+    "dimension": "structured_output",
+    "category": "stable-sort",
+    "difficulty": "hard",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "84780f01fe0baffe",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "按 priority 降序稳定排序；相同 priority 保持输入顺序。输出唯一键 jobIds，值为排序后的 id 字符串数组。\n\n输入数据：{\"jobs\":[{\"id\":\"b\",\"priority\":2},{\"id\":\"a\",\"priority\":3},{\"id\":\"c\",\"priority\":3}]}\n\n只输出 JSON，不要代码围栏或说明。",
+    "requirements": {
+      "format": "json",
+      "output_policy": "raw_only",
+      "developmentShadow": true,
+      "schema": {
+        "type": "object",
+        "required": [
+          "jobIds"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "jobIds": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 3,
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "constraints": [
+        "jsonEq:.={\"jobIds\":[\"a\",\"c\",\"b\"]}"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.05,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.7,
+        "output_discipline": 0.05
+      }
+    },
+    "tags": [
+      "structured-output-pilot",
+      "fixture-anchored",
+      "family:stable-sort"
+    ],
+    "reviewStatus": "unreviewed",
+    "goldSource": "programmatic-fixture-v1"
+  },
+  {
+    "id": "SO-PILOT-04-3",
+    "dimension": "structured_output",
+    "category": "stable-sort",
+    "difficulty": "hard",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "500d784ece61e6d7",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "按 priority 降序稳定排序；相同 priority 保持输入顺序。输出唯一键 jobIds，值为排序后的 id 字符串数组。\n\n输入数据：{\"jobs\":[{\"id\":\"b\",\"priority\":3},{\"id\":\"a\",\"priority\":3},{\"id\":\"c\",\"priority\":4}]}\n\n只输出 JSON，不要代码围栏或说明。",
+    "requirements": {
+      "format": "json",
+      "output_policy": "raw_only",
+      "developmentShadow": true,
+      "schema": {
+        "type": "object",
+        "required": [
+          "jobIds"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "jobIds": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 3,
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "constraints": [
+        "jsonEq:.={\"jobIds\":[\"c\",\"b\",\"a\"]}"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.05,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.7,
+        "output_discipline": 0.05
+      }
+    },
+    "tags": [
+      "structured-output-pilot",
+      "fixture-anchored",
+      "family:stable-sort"
+    ],
+    "reviewStatus": "unreviewed",
+    "goldSource": "programmatic-fixture-v1"
+  },
+  {
+    "id": "SO-PILOT-05-1",
+    "dimension": "structured_output",
+    "category": "fixed-category-counts",
+    "difficulty": "hard",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "2b4e69157531dbeb",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "输出唯一键 counts，内部恰好包含 open、closed、blocked 三个整数计数，未出现的类别记 0。\n\n输入数据：{\"states\":[\"open\",\"closed\",\"open\"]}\n\n只输出 JSON，不要代码围栏或说明。",
+    "requirements": {
+      "format": "json",
+      "output_policy": "raw_only",
+      "developmentShadow": true,
+      "schema": {
+        "type": "object",
+        "required": [
+          "counts"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "counts": {
+            "type": "object",
+            "required": [
+              "open",
+              "closed",
+              "blocked"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "open": {
+                "type": "integer"
+              },
+              "closed": {
+                "type": "integer"
+              },
+              "blocked": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      },
+      "constraints": [
+        "jsonEq:.={\"counts\":{\"open\":2,\"closed\":1,\"blocked\":0}}"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.05,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.7,
+        "output_discipline": 0.05
+      }
+    },
+    "tags": [
+      "structured-output-pilot",
+      "fixture-anchored",
+      "family:fixed-category-counts"
+    ],
+    "reviewStatus": "unreviewed",
+    "goldSource": "programmatic-fixture-v1"
+  },
+  {
+    "id": "SO-PILOT-05-2",
+    "dimension": "structured_output",
+    "category": "fixed-category-counts",
+    "difficulty": "hard",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "fcd16315644acf13",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "输出唯一键 counts，内部恰好包含 open、closed、blocked 三个整数计数，未出现的类别记 0。\n\n输入数据：{\"states\":[]}\n\n只输出 JSON，不要代码围栏或说明。",
+    "requirements": {
+      "format": "json",
+      "output_policy": "raw_only",
+      "developmentShadow": true,
+      "schema": {
+        "type": "object",
+        "required": [
+          "counts"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "counts": {
+            "type": "object",
+            "required": [
+              "open",
+              "closed",
+              "blocked"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "open": {
+                "type": "integer"
+              },
+              "closed": {
+                "type": "integer"
+              },
+              "blocked": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      },
+      "constraints": [
+        "jsonEq:.={\"counts\":{\"open\":0,\"closed\":0,\"blocked\":0}}"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.05,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.7,
+        "output_discipline": 0.05
+      }
+    },
+    "tags": [
+      "structured-output-pilot",
+      "fixture-anchored",
+      "family:fixed-category-counts"
+    ],
+    "reviewStatus": "unreviewed",
+    "goldSource": "programmatic-fixture-v1"
+  },
+  {
+    "id": "SO-PILOT-05-3",
+    "dimension": "structured_output",
+    "category": "fixed-category-counts",
+    "difficulty": "hard",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "284a26ce1c95013f",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "输出唯一键 counts，内部恰好包含 open、closed、blocked 三个整数计数，未出现的类别记 0。\n\n输入数据：{\"states\":[\"blocked\",\"blocked\",\"closed\"]}\n\n只输出 JSON，不要代码围栏或说明。",
+    "requirements": {
+      "format": "json",
+      "output_policy": "raw_only",
+      "developmentShadow": true,
+      "schema": {
+        "type": "object",
+        "required": [
+          "counts"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "counts": {
+            "type": "object",
+            "required": [
+              "open",
+              "closed",
+              "blocked"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "open": {
+                "type": "integer"
+              },
+              "closed": {
+                "type": "integer"
+              },
+              "blocked": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      },
+      "constraints": [
+        "jsonEq:.={\"counts\":{\"open\":0,\"closed\":1,\"blocked\":2}}"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.05,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.7,
+        "output_discipline": 0.05
+      }
+    },
+    "tags": [
+      "structured-output-pilot",
+      "fixture-anchored",
+      "family:fixed-category-counts"
+    ],
+    "reviewStatus": "unreviewed",
+    "goldSource": "programmatic-fixture-v1"
+  },
+  {
+    "id": "SO-PILOT-06-1",
+    "dimension": "structured_output",
+    "category": "join-with-missing-reference",
+    "difficulty": "hard",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "2a60674331357dcf",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "按 tasks 原顺序输出唯一键 tasks 数组；元素恰好为 taskId、ownerName。匹配不到 ownerId 时 ownerName 必须为 null。\n\n输入数据：{\"owners\":[{\"id\":\"u1\",\"name\":\"甲\"},{\"id\":\"u2\",\"name\":\"乙\"}],\"tasks\":[{\"id\":\"t0\",\"ownerId\":\"u1\"},{\"id\":\"t2\",\"ownerId\":\"u2\"}]}\n\n只输出 JSON，不要代码围栏或说明。",
+    "requirements": {
+      "format": "json",
+      "output_policy": "raw_only",
+      "developmentShadow": true,
+      "schema": {
+        "type": "object",
+        "required": [
+          "tasks"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "tasks": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "type": "object",
+              "required": [
+                "taskId",
+                "ownerName"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "taskId": {
+                  "type": "string"
+                },
+                "ownerName": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "constraints": [
+        "jsonEq:.={\"tasks\":[{\"taskId\":\"t0\",\"ownerName\":\"甲\"},{\"taskId\":\"t2\",\"ownerName\":\"乙\"}]}"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.05,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.7,
+        "output_discipline": 0.05
+      }
+    },
+    "tags": [
+      "structured-output-pilot",
+      "fixture-anchored",
+      "family:join-with-missing-reference"
+    ],
+    "reviewStatus": "unreviewed",
+    "goldSource": "programmatic-fixture-v1"
+  },
+  {
+    "id": "SO-PILOT-06-2",
+    "dimension": "structured_output",
+    "category": "join-with-missing-reference",
+    "difficulty": "hard",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "8792b7da97b18fed",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "按 tasks 原顺序输出唯一键 tasks 数组；元素恰好为 taskId、ownerName。匹配不到 ownerId 时 ownerName 必须为 null。\n\n输入数据：{\"owners\":[{\"id\":\"u1\",\"name\":\"甲\"},{\"id\":\"u2\",\"name\":\"乙\"}],\"tasks\":[{\"id\":\"t1\",\"ownerId\":\"missing\"},{\"id\":\"t2\",\"ownerId\":\"u2\"}]}\n\n只输出 JSON，不要代码围栏或说明。",
+    "requirements": {
+      "format": "json",
+      "output_policy": "raw_only",
+      "developmentShadow": true,
+      "schema": {
+        "type": "object",
+        "required": [
+          "tasks"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "tasks": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "required": [
+                    "taskId",
+                    "ownerName"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "taskId": {
+                      "type": "string"
+                    },
+                    "ownerName": {
+                      "type": "null"
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "required": [
+                    "taskId",
+                    "ownerName"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "taskId": {
+                      "type": "string"
+                    },
+                    "ownerName": {
+                      "type": "string"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "constraints": [
+        "jsonEq:.={\"tasks\":[{\"taskId\":\"t1\",\"ownerName\":null},{\"taskId\":\"t2\",\"ownerName\":\"乙\"}]}"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.05,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.7,
+        "output_discipline": 0.05
+      }
+    },
+    "tags": [
+      "structured-output-pilot",
+      "fixture-anchored",
+      "family:join-with-missing-reference"
+    ],
+    "reviewStatus": "unreviewed",
+    "goldSource": "programmatic-fixture-v1"
+  },
+  {
+    "id": "SO-PILOT-06-3",
+    "dimension": "structured_output",
+    "category": "join-with-missing-reference",
+    "difficulty": "hard",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "116ff3dd1a5c16e0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "按 tasks 原顺序输出唯一键 tasks 数组；元素恰好为 taskId、ownerName。匹配不到 ownerId 时 ownerName 必须为 null。\n\n输入数据：{\"owners\":[{\"id\":\"u1\",\"name\":\"甲\"},{\"id\":\"u2\",\"name\":\"乙\"}],\"tasks\":[{\"id\":\"t2\",\"ownerId\":\"missing\"},{\"id\":\"t2\",\"ownerId\":\"u2\"}]}\n\n只输出 JSON，不要代码围栏或说明。",
+    "requirements": {
+      "format": "json",
+      "output_policy": "raw_only",
+      "developmentShadow": true,
+      "schema": {
+        "type": "object",
+        "required": [
+          "tasks"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "tasks": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "required": [
+                    "taskId",
+                    "ownerName"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "taskId": {
+                      "type": "string"
+                    },
+                    "ownerName": {
+                      "type": "null"
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "required": [
+                    "taskId",
+                    "ownerName"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "taskId": {
+                      "type": "string"
+                    },
+                    "ownerName": {
+                      "type": "string"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "constraints": [
+        "jsonEq:.={\"tasks\":[{\"taskId\":\"t2\",\"ownerName\":null},{\"taskId\":\"t2\",\"ownerName\":\"乙\"}]}"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.05,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.7,
+        "output_discipline": 0.05
+      }
+    },
+    "tags": [
+      "structured-output-pilot",
+      "fixture-anchored",
+      "family:join-with-missing-reference"
+    ],
+    "reviewStatus": "unreviewed",
+    "goldSource": "programmatic-fixture-v1"
+  },
+  {
+    "id": "SO-PILOT-07-1",
+    "dimension": "structured_output",
+    "category": "first-wins-dedup",
+    "difficulty": "hard",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "c0344cc7a3485349",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "按 code 精确匹配去重，保留第一次出现的完整元素，输出唯一键 items，顺序不变。\n\n输入数据：{\"items\":[{\"code\":\"A\",\"label\":\"first-0\"},{\"code\":\"B\",\"label\":\"middle\"},{\"code\":\"A\",\"label\":\"later\"}]}\n\n只输出 JSON，不要代码围栏或说明。",
+    "requirements": {
+      "format": "json",
+      "output_policy": "raw_only",
+      "developmentShadow": true,
+      "schema": {
+        "type": "object",
+        "required": [
+          "items"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "type": "object",
+              "required": [
+                "code",
+                "label"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "code": {
+                  "type": "string"
+                },
+                "label": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "constraints": [
+        "jsonEq:.={\"items\":[{\"code\":\"A\",\"label\":\"first-0\"},{\"code\":\"B\",\"label\":\"middle\"}]}"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.05,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.7,
+        "output_discipline": 0.05
+      }
+    },
+    "tags": [
+      "structured-output-pilot",
+      "fixture-anchored",
+      "family:first-wins-dedup"
+    ],
+    "reviewStatus": "unreviewed",
+    "goldSource": "programmatic-fixture-v1"
+  },
+  {
+    "id": "SO-PILOT-07-2",
+    "dimension": "structured_output",
+    "category": "first-wins-dedup",
+    "difficulty": "hard",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "38fc07666de608cc",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "按 code 精确匹配去重，保留第一次出现的完整元素，输出唯一键 items，顺序不变。\n\n输入数据：{\"items\":[{\"code\":\"A\",\"label\":\"first-1\"},{\"code\":\"B\",\"label\":\"middle\"},{\"code\":\"A\",\"label\":\"later\"}]}\n\n只输出 JSON，不要代码围栏或说明。",
+    "requirements": {
+      "format": "json",
+      "output_policy": "raw_only",
+      "developmentShadow": true,
+      "schema": {
+        "type": "object",
+        "required": [
+          "items"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "type": "object",
+              "required": [
+                "code",
+                "label"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "code": {
+                  "type": "string"
+                },
+                "label": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "constraints": [
+        "jsonEq:.={\"items\":[{\"code\":\"A\",\"label\":\"first-1\"},{\"code\":\"B\",\"label\":\"middle\"}]}"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.05,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.7,
+        "output_discipline": 0.05
+      }
+    },
+    "tags": [
+      "structured-output-pilot",
+      "fixture-anchored",
+      "family:first-wins-dedup"
+    ],
+    "reviewStatus": "unreviewed",
+    "goldSource": "programmatic-fixture-v1"
+  },
+  {
+    "id": "SO-PILOT-07-3",
+    "dimension": "structured_output",
+    "category": "first-wins-dedup",
+    "difficulty": "hard",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "ef667d4eaba3035a",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "按 code 精确匹配去重，保留第一次出现的完整元素，输出唯一键 items，顺序不变。\n\n输入数据：{\"items\":[{\"code\":\"A\",\"label\":\"first-2\"},{\"code\":\"B\",\"label\":\"middle\"},{\"code\":\"A\",\"label\":\"later\"},{\"code\":\"B\",\"label\":\"later-B\"}]}\n\n只输出 JSON，不要代码围栏或说明。",
+    "requirements": {
+      "format": "json",
+      "output_policy": "raw_only",
+      "developmentShadow": true,
+      "schema": {
+        "type": "object",
+        "required": [
+          "items"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "type": "object",
+              "required": [
+                "code",
+                "label"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "code": {
+                  "type": "string"
+                },
+                "label": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "constraints": [
+        "jsonEq:.={\"items\":[{\"code\":\"A\",\"label\":\"first-2\"},{\"code\":\"B\",\"label\":\"middle\"}]}"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.05,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.7,
+        "output_discipline": 0.05
+      }
+    },
+    "tags": [
+      "structured-output-pilot",
+      "fixture-anchored",
+      "family:first-wins-dedup"
+    ],
+    "reviewStatus": "unreviewed",
+    "goldSource": "programmatic-fixture-v1"
+  },
+  {
+    "id": "SO-PILOT-08-1",
+    "dimension": "structured_output",
+    "category": "flatten-nested-records",
+    "difficulty": "hard",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "a638a8fe22f3ea09",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "按部门及人员原顺序展开，输出唯一键 people；每个元素恰好为 departmentId、id、name。空部门不产生记录。\n\n输入数据：{\"departments\":[{\"id\":\"d1\",\"people\":[{\"id\":\"u1\",\"name\":\"甲\"}]},{\"id\":\"d2\",\"people\":[{\"id\":\"u2\",\"name\":\"乙\"}]}]}\n\n只输出 JSON，不要代码围栏或说明。",
+    "requirements": {
+      "format": "json",
+      "output_policy": "raw_only",
+      "developmentShadow": true,
+      "schema": {
+        "type": "object",
+        "required": [
+          "people"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "people": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "type": "object",
+              "required": [
+                "departmentId",
+                "id",
+                "name"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "departmentId": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "constraints": [
+        "jsonEq:.={\"people\":[{\"departmentId\":\"d1\",\"id\":\"u1\",\"name\":\"甲\"},{\"departmentId\":\"d2\",\"id\":\"u2\",\"name\":\"乙\"}]}"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.05,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.7,
+        "output_discipline": 0.05
+      }
+    },
+    "tags": [
+      "structured-output-pilot",
+      "fixture-anchored",
+      "family:flatten-nested-records"
+    ],
+    "reviewStatus": "unreviewed",
+    "goldSource": "programmatic-fixture-v1"
+  },
+  {
+    "id": "SO-PILOT-08-2",
+    "dimension": "structured_output",
+    "category": "flatten-nested-records",
+    "difficulty": "hard",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "bfdf508a29ea7762",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "按部门及人员原顺序展开，输出唯一键 people；每个元素恰好为 departmentId、id、name。空部门不产生记录。\n\n输入数据：{\"departments\":[{\"id\":\"d1\",\"people\":[]},{\"id\":\"d2\",\"people\":[{\"id\":\"u3\",\"name\":\"乙\"}]}]}\n\n只输出 JSON，不要代码围栏或说明。",
+    "requirements": {
+      "format": "json",
+      "output_policy": "raw_only",
+      "developmentShadow": true,
+      "schema": {
+        "type": "object",
+        "required": [
+          "people"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "people": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 1,
+            "items": {
+              "type": "object",
+              "required": [
+                "departmentId",
+                "id",
+                "name"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "departmentId": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "constraints": [
+        "jsonEq:.={\"people\":[{\"departmentId\":\"d2\",\"id\":\"u3\",\"name\":\"乙\"}]}"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.05,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.7,
+        "output_discipline": 0.05
+      }
+    },
+    "tags": [
+      "structured-output-pilot",
+      "fixture-anchored",
+      "family:flatten-nested-records"
+    ],
+    "reviewStatus": "unreviewed",
+    "goldSource": "programmatic-fixture-v1"
+  },
+  {
+    "id": "SO-PILOT-08-3",
+    "dimension": "structured_output",
+    "category": "flatten-nested-records",
+    "difficulty": "hard",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "afcdc4d48a7eddbc",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "按部门及人员原顺序展开，输出唯一键 people；每个元素恰好为 departmentId、id、name。空部门不产生记录。\n\n输入数据：{\"departments\":[{\"id\":\"d1\",\"people\":[{\"id\":\"u1\",\"name\":\"甲\"}]},{\"id\":\"d2\",\"people\":[{\"id\":\"u4\",\"name\":\"乙\"}]}]}\n\n只输出 JSON，不要代码围栏或说明。",
+    "requirements": {
+      "format": "json",
+      "output_policy": "raw_only",
+      "developmentShadow": true,
+      "schema": {
+        "type": "object",
+        "required": [
+          "people"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "people": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "type": "object",
+              "required": [
+                "departmentId",
+                "id",
+                "name"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "departmentId": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "constraints": [
+        "jsonEq:.={\"people\":[{\"departmentId\":\"d1\",\"id\":\"u1\",\"name\":\"甲\"},{\"departmentId\":\"d2\",\"id\":\"u4\",\"name\":\"乙\"}]}"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.05,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.7,
+        "output_discipline": 0.05
+      }
+    },
+    "tags": [
+      "structured-output-pilot",
+      "fixture-anchored",
+      "family:flatten-nested-records"
+    ],
+    "reviewStatus": "unreviewed",
+    "goldSource": "programmatic-fixture-v1"
+  },
+  {
+    "id": "SO-PILOT-09-1",
+    "dimension": "structured_output",
+    "category": "branch-specific-fields",
+    "difficulty": "hard",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "0627611de0bc31b8",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "输出唯一键 jobs。每项保留 id，把 queued/running/failed 分别映射为 Q/R/F 写入 state；仅 failed 项保留 error，其他项禁止出现 error。\n\n输入数据：{\"jobs\":[{\"id\":\"a\",\"status\":\"queued\"},{\"id\":\"b\",\"status\":\"failed\",\"error\":\"E42\"},{\"id\":\"c\",\"status\":\"running\"}]}\n\n只输出 JSON，不要代码围栏或说明。",
+    "requirements": {
+      "format": "json",
+      "output_policy": "raw_only",
+      "developmentShadow": true,
+      "schema": {
+        "type": "object",
+        "required": [
+          "jobs"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "jobs": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 3,
+            "items": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "state"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "type": "string"
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "state",
+                    "error"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "type": "string"
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "constraints": [
+        "jsonEq:.={\"jobs\":[{\"id\":\"a\",\"state\":\"Q\"},{\"id\":\"b\",\"state\":\"F\",\"error\":\"E42\"},{\"id\":\"c\",\"state\":\"R\"}]}"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.05,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.7,
+        "output_discipline": 0.05
+      }
+    },
+    "tags": [
+      "structured-output-pilot",
+      "fixture-anchored",
+      "family:branch-specific-fields"
+    ],
+    "reviewStatus": "unreviewed",
+    "goldSource": "programmatic-fixture-v1"
+  },
+  {
+    "id": "SO-PILOT-09-2",
+    "dimension": "structured_output",
+    "category": "branch-specific-fields",
+    "difficulty": "hard",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "562f2a850f0f912f",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "输出唯一键 jobs。每项保留 id，把 queued/running/failed 分别映射为 Q/R/F 写入 state；仅 failed 项保留 error，其他项禁止出现 error。\n\n输入数据：{\"jobs\":[{\"id\":\"a\",\"status\":\"queued\"},{\"id\":\"b\",\"status\":\"failed\",\"error\":\"\"},{\"id\":\"c\",\"status\":\"running\"}]}\n\n只输出 JSON，不要代码围栏或说明。",
+    "requirements": {
+      "format": "json",
+      "output_policy": "raw_only",
+      "developmentShadow": true,
+      "schema": {
+        "type": "object",
+        "required": [
+          "jobs"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "jobs": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 3,
+            "items": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "state"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "type": "string"
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "state",
+                    "error"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "type": "string"
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "constraints": [
+        "jsonEq:.={\"jobs\":[{\"id\":\"a\",\"state\":\"Q\"},{\"id\":\"b\",\"state\":\"F\",\"error\":\"\"},{\"id\":\"c\",\"state\":\"R\"}]}"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.05,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.7,
+        "output_discipline": 0.05
+      }
+    },
+    "tags": [
+      "structured-output-pilot",
+      "fixture-anchored",
+      "family:branch-specific-fields"
+    ],
+    "reviewStatus": "unreviewed",
+    "goldSource": "programmatic-fixture-v1"
+  },
+  {
+    "id": "SO-PILOT-09-3",
+    "dimension": "structured_output",
+    "category": "branch-specific-fields",
+    "difficulty": "hard",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "765d87802d274f57",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "输出唯一键 jobs。每项保留 id，把 queued/running/failed 分别映射为 Q/R/F 写入 state；仅 failed 项保留 error，其他项禁止出现 error。\n\n输入数据：{\"jobs\":[{\"id\":\"a\",\"status\":\"queued\"},{\"id\":\"b\",\"status\":\"failed\",\"error\":\"E42\"},{\"id\":\"c\",\"status\":\"failed\",\"error\":\"E43\"}]}\n\n只输出 JSON，不要代码围栏或说明。",
+    "requirements": {
+      "format": "json",
+      "output_policy": "raw_only",
+      "developmentShadow": true,
+      "schema": {
+        "type": "object",
+        "required": [
+          "jobs"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "jobs": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 3,
+            "items": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "state"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "type": "string"
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "state",
+                    "error"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "type": "string"
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "constraints": [
+        "jsonEq:.={\"jobs\":[{\"id\":\"a\",\"state\":\"Q\"},{\"id\":\"b\",\"state\":\"F\",\"error\":\"E42\"},{\"id\":\"c\",\"state\":\"F\",\"error\":\"E43\"}]}"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.05,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.7,
+        "output_discipline": 0.05
+      }
+    },
+    "tags": [
+      "structured-output-pilot",
+      "fixture-anchored",
+      "family:branch-specific-fields"
+    ],
+    "reviewStatus": "unreviewed",
+    "goldSource": "programmatic-fixture-v1"
+  },
+  {
+    "id": "SO-PILOT-10-1",
+    "dimension": "structured_output",
+    "category": "json-pointer-escaping",
+    "difficulty": "hard",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "e0b770e82e3c7ef5",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "输出唯一键 pointers；按输入顺序把每个键变成 RFC 6901 JSON Pointer 的单段指针：先将 ~ 替换为 ~0，再将 / 替换为 ~1，最后在前面加 /。空键对应 /。\n\n输入数据：{\"keys\":[\"a/b\",\"x~y\"]}\n\n只输出 JSON，不要代码围栏或说明。",
+    "requirements": {
+      "format": "json",
+      "output_policy": "raw_only",
+      "developmentShadow": true,
+      "schema": {
+        "type": "object",
+        "required": [
+          "pointers"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "pointers": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "constraints": [
+        "jsonEq:.={\"pointers\":[\"/a~1b\",\"/x~0y\"]}"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.05,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.7,
+        "output_discipline": 0.05
+      }
+    },
+    "tags": [
+      "structured-output-pilot",
+      "fixture-anchored",
+      "family:json-pointer-escaping"
+    ],
+    "reviewStatus": "unreviewed",
+    "goldSource": "programmatic-fixture-v1"
+  },
+  {
+    "id": "SO-PILOT-10-2",
+    "dimension": "structured_output",
+    "category": "json-pointer-escaping",
+    "difficulty": "hard",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "5f0a65e63f11f146",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "输出唯一键 pointers；按输入顺序把每个键变成 RFC 6901 JSON Pointer 的单段指针：先将 ~ 替换为 ~0，再将 / 替换为 ~1，最后在前面加 /。空键对应 /。\n\n输入数据：{\"keys\":[\"\",\"plain\"]}\n\n只输出 JSON，不要代码围栏或说明。",
+    "requirements": {
+      "format": "json",
+      "output_policy": "raw_only",
+      "developmentShadow": true,
+      "schema": {
+        "type": "object",
+        "required": [
+          "pointers"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "pointers": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "constraints": [
+        "jsonEq:.={\"pointers\":[\"/\",\"/plain\"]}"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.05,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.7,
+        "output_discipline": 0.05
+      }
+    },
+    "tags": [
+      "structured-output-pilot",
+      "fixture-anchored",
+      "family:json-pointer-escaping"
+    ],
+    "reviewStatus": "unreviewed",
+    "goldSource": "programmatic-fixture-v1"
+  },
+  {
+    "id": "SO-PILOT-10-3",
+    "dimension": "structured_output",
+    "category": "json-pointer-escaping",
+    "difficulty": "hard",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "b1eefb0aa1190335",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "输出唯一键 pointers；按输入顺序把每个键变成 RFC 6901 JSON Pointer 的单段指针：先将 ~ 替换为 ~0，再将 / 替换为 ~1，最后在前面加 /。空键对应 /。\n\n输入数据：{\"keys\":[\"~/\",\"a b\"]}\n\n只输出 JSON，不要代码围栏或说明。",
+    "requirements": {
+      "format": "json",
+      "output_policy": "raw_only",
+      "developmentShadow": true,
+      "schema": {
+        "type": "object",
+        "required": [
+          "pointers"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "pointers": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "constraints": [
+        "jsonEq:.={\"pointers\":[\"/~0~1\",\"/a b\"]}"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.05,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.7,
+        "output_discipline": 0.05
+      }
+    },
+    "tags": [
+      "structured-output-pilot",
+      "fixture-anchored",
+      "family:json-pointer-escaping"
+    ],
+    "reviewStatus": "unreviewed",
+    "goldSource": "programmatic-fixture-v1"
+  },
+  {
+    "id": "SO-PILOT-11-1",
+    "dimension": "structured_output",
+    "category": "override-with-null",
+    "difficulty": "hard",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "5572e6fcf1e47988",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "输出唯一键 config；先复制 defaults，再按同名键应用 overrides。null、0、空字符串都属于明确覆盖，不能忽略。\n\n输入数据：{\"defaults\":{\"timeout\":30,\"retries\":2,\"label\":\"default\"},\"overrides\":{\"timeout\":null}}\n\n只输出 JSON，不要代码围栏或说明。",
+    "requirements": {
+      "format": "json",
+      "output_policy": "raw_only",
+      "developmentShadow": true,
+      "schema": {
+        "type": "object",
+        "required": [
+          "config"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "config": {
+            "type": "object",
+            "required": [
+              "timeout",
+              "retries",
+              "label"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "timeout": {
+                "type": "null"
+              },
+              "retries": {
+                "type": "integer"
+              },
+              "label": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "constraints": [
+        "jsonEq:.={\"config\":{\"timeout\":null,\"retries\":2,\"label\":\"default\"}}"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.05,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.7,
+        "output_discipline": 0.05
+      }
+    },
+    "tags": [
+      "structured-output-pilot",
+      "fixture-anchored",
+      "family:override-with-null"
+    ],
+    "reviewStatus": "unreviewed",
+    "goldSource": "programmatic-fixture-v1"
+  },
+  {
+    "id": "SO-PILOT-11-2",
+    "dimension": "structured_output",
+    "category": "override-with-null",
+    "difficulty": "hard",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "78784114e9d1fbcc",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "输出唯一键 config；先复制 defaults，再按同名键应用 overrides。null、0、空字符串都属于明确覆盖，不能忽略。\n\n输入数据：{\"defaults\":{\"timeout\":30,\"retries\":2,\"label\":\"default\"},\"overrides\":{\"retries\":0}}\n\n只输出 JSON，不要代码围栏或说明。",
+    "requirements": {
+      "format": "json",
+      "output_policy": "raw_only",
+      "developmentShadow": true,
+      "schema": {
+        "type": "object",
+        "required": [
+          "config"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "config": {
+            "type": "object",
+            "required": [
+              "timeout",
+              "retries",
+              "label"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "timeout": {
+                "type": "integer"
+              },
+              "retries": {
+                "type": "integer"
+              },
+              "label": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "constraints": [
+        "jsonEq:.={\"config\":{\"timeout\":30,\"retries\":0,\"label\":\"default\"}}"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.05,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.7,
+        "output_discipline": 0.05
+      }
+    },
+    "tags": [
+      "structured-output-pilot",
+      "fixture-anchored",
+      "family:override-with-null"
+    ],
+    "reviewStatus": "unreviewed",
+    "goldSource": "programmatic-fixture-v1"
+  },
+  {
+    "id": "SO-PILOT-11-3",
+    "dimension": "structured_output",
+    "category": "override-with-null",
+    "difficulty": "hard",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "5db3f106a061894e",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "输出唯一键 config；先复制 defaults，再按同名键应用 overrides。null、0、空字符串都属于明确覆盖，不能忽略。\n\n输入数据：{\"defaults\":{\"timeout\":30,\"retries\":2,\"label\":\"default\"},\"overrides\":{\"label\":\"\"}}\n\n只输出 JSON，不要代码围栏或说明。",
+    "requirements": {
+      "format": "json",
+      "output_policy": "raw_only",
+      "developmentShadow": true,
+      "schema": {
+        "type": "object",
+        "required": [
+          "config"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "config": {
+            "type": "object",
+            "required": [
+              "timeout",
+              "retries",
+              "label"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "timeout": {
+                "type": "integer"
+              },
+              "retries": {
+                "type": "integer"
+              },
+              "label": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "constraints": [
+        "jsonEq:.={\"config\":{\"timeout\":30,\"retries\":2,\"label\":\"\"}}"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.05,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.7,
+        "output_discipline": 0.05
+      }
+    },
+    "tags": [
+      "structured-output-pilot",
+      "fixture-anchored",
+      "family:override-with-null"
+    ],
+    "reviewStatus": "unreviewed",
+    "goldSource": "programmatic-fixture-v1"
+  },
+  {
+    "id": "SO-PILOT-12-1",
+    "dimension": "structured_output",
+    "category": "rank-with-ties",
+    "difficulty": "hard",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "96884c3cf3426f24",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "按 score 降序、同分按 id 升序排序；输出唯一键 ranking。每项恰好含 id 和从 1 开始的连续 rank，同分也占不同名次。\n\n输入数据：{\"scores\":[{\"id\":\"b\",\"score\":8},{\"id\":\"a\",\"score\":8},{\"id\":\"c\",\"score\":4}]}\n\n只输出 JSON，不要代码围栏或说明。",
+    "requirements": {
+      "format": "json",
+      "output_policy": "raw_only",
+      "developmentShadow": true,
+      "schema": {
+        "type": "object",
+        "required": [
+          "ranking"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "ranking": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 3,
+            "items": {
+              "type": "object",
+              "required": [
+                "id",
+                "rank"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "rank": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      },
+      "constraints": [
+        "jsonEq:.={\"ranking\":[{\"id\":\"a\",\"rank\":1},{\"id\":\"b\",\"rank\":2},{\"id\":\"c\",\"rank\":3}]}"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.05,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.7,
+        "output_discipline": 0.05
+      }
+    },
+    "tags": [
+      "structured-output-pilot",
+      "fixture-anchored",
+      "family:rank-with-ties"
+    ],
+    "reviewStatus": "unreviewed",
+    "goldSource": "programmatic-fixture-v1"
+  },
+  {
+    "id": "SO-PILOT-12-2",
+    "dimension": "structured_output",
+    "category": "rank-with-ties",
+    "difficulty": "hard",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "f53735294113c50e",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "按 score 降序、同分按 id 升序排序；输出唯一键 ranking。每项恰好含 id 和从 1 开始的连续 rank，同分也占不同名次。\n\n输入数据：{\"scores\":[{\"id\":\"b\",\"score\":0},{\"id\":\"a\",\"score\":8},{\"id\":\"c\",\"score\":4}]}\n\n只输出 JSON，不要代码围栏或说明。",
+    "requirements": {
+      "format": "json",
+      "output_policy": "raw_only",
+      "developmentShadow": true,
+      "schema": {
+        "type": "object",
+        "required": [
+          "ranking"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "ranking": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 3,
+            "items": {
+              "type": "object",
+              "required": [
+                "id",
+                "rank"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "rank": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      },
+      "constraints": [
+        "jsonEq:.={\"ranking\":[{\"id\":\"a\",\"rank\":1},{\"id\":\"c\",\"rank\":2},{\"id\":\"b\",\"rank\":3}]}"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.05,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.7,
+        "output_discipline": 0.05
+      }
+    },
+    "tags": [
+      "structured-output-pilot",
+      "fixture-anchored",
+      "family:rank-with-ties"
+    ],
+    "reviewStatus": "unreviewed",
+    "goldSource": "programmatic-fixture-v1"
+  },
+  {
+    "id": "SO-PILOT-12-3",
+    "dimension": "structured_output",
+    "category": "rank-with-ties",
+    "difficulty": "hard",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "d2de5a5beecd98a4",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "按 score 降序、同分按 id 升序排序；输出唯一键 ranking。每项恰好含 id 和从 1 开始的连续 rank，同分也占不同名次。\n\n输入数据：{\"scores\":[{\"id\":\"b\",\"score\":8},{\"id\":\"a\",\"score\":8},{\"id\":\"c\",\"score\":9}]}\n\n只输出 JSON，不要代码围栏或说明。",
+    "requirements": {
+      "format": "json",
+      "output_policy": "raw_only",
+      "developmentShadow": true,
+      "schema": {
+        "type": "object",
+        "required": [
+          "ranking"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "ranking": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 3,
+            "items": {
+              "type": "object",
+              "required": [
+                "id",
+                "rank"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "rank": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      },
+      "constraints": [
+        "jsonEq:.={\"ranking\":[{\"id\":\"c\",\"rank\":1},{\"id\":\"a\",\"rank\":2},{\"id\":\"b\",\"rank\":3}]}"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.05,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.7,
+        "output_discipline": 0.05
+      }
+    },
+    "tags": [
+      "structured-output-pilot",
+      "fixture-anchored",
+      "family:rank-with-ties"
+    ],
+    "reviewStatus": "unreviewed",
+    "goldSource": "programmatic-fixture-v1"
+  }
+]

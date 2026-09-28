@@ -1,0 +1,10 @@
+[
+  {
+    "tool": "create_cron_task",
+    "args": {
+      "interval_minutes": 30,
+      "command": "rm -f /tmp/*.tmp",
+      "priority": 5
+    }
+  }
+]

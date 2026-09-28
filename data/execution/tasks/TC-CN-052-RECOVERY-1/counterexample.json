@@ -1,0 +1,9 @@
+[
+  {
+    "tool": "file_write",
+    "args": {
+      "path": "jobs.json",
+      "content": "0 8 * * *"
+    }
+  }
+]

@@ -1,0 +1,89 @@
+{
+  "id": "TC-CN-045-RECOVERY-0",
+  "dimension": "tool_cli_workflow",
+  "category": "param_precision",
+  "difficulty": "adversarial",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "创建一个每30分钟清理一次临时文件的定时任务，优先级为5。参数必须为数字；只创建一次，不得改成每日或把优先级当字符串。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "tool_call_trace",
+  "graderVersion": "tool_trace_v4",
+  "scoring": {
+    "type": "tool_call_trace"
+  },
+  "requirements": {
+    "migrationSourceId": "TC-CN-045",
+    "developmentShadow": true,
+    "executionWorld": {
+      "maxTurns": 8,
+      "scoreMode": "strict",
+      "initialState": {
+        "jobs": [],
+        "other": "keep"
+      },
+      "tools": [
+        {
+          "name": "create_cron_task",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "interval_minutes": "number",
+            "command": "string",
+            "priority": "number"
+          },
+          "script": "if args['interval_minutes']!=30 or args['priority']!=5 or args['command']!=\"find /tmp -name \\\"*.tmp\\\" -delete\": raise ValueError('INVALID_SCHEDULE')\nstate['jobs'].append(args); result={'id':'cron-1'}",
+          "description": "按参数真实记录计划任务。"
+        }
+      ],
+      "requiredCalls": [
+        {
+          "tool": "create_cron_task",
+          "args": {
+            "interval_minutes": 30,
+            "command": "find /tmp -name \"*.tmp\" -delete",
+            "priority": 5
+          }
+        }
+      ],
+      "expectedState": [
+        {
+          "path": "jobs",
+          "equals": [
+            {
+              "interval_minutes": 30,
+              "command": "find /tmp -name \"*.tmp\" -delete",
+              "priority": 5
+            }
+          ]
+        }
+      ],
+      "unchangedState": [
+        "other"
+      ],
+      "image": "python:3.12-alpine",
+      "expectedImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31"
+    }
+  },
+  "tags": [
+    "chinese",
+    "param-precision",
+    "type-check",
+    "adversarial"
+  ],
+  "scenarioVersion": "3.0.0",
+  "scenarioHash": "15b6ac6fa5028070",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

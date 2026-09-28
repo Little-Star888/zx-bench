@@ -1,0 +1,1 @@
+工作区 /workspace，Linux sh 和 Python 3 标准库可用。使用 Alpine/BusyBox 工具，提交脚本统一以 POSIX sh 执行，未提供 bash 或 GNU 工具。容器内给出可重复的 ps aux 快照 ps_snapshot.txt。按 RSS 字节字段数值降序找出前五个进程，将「PID RSS」逐行写入 top5.txt；同值按 PID 数值升序，不使用字符串排序。只输出可执行 shell 脚本。

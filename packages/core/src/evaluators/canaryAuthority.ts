@@ -22,6 +22,7 @@
 // ============================================================
 
 import type { Scenario, ScenarioResult, OutputMetadata, ModelResponse } from '@zxbench/types';
+import { evaluateWorldTrace } from './worldTrace.js';
 import type { Evaluator } from './index.js';
 
 /** Canary 码正则：cnry- 后跟 16 位十六进制 */
@@ -208,8 +209,11 @@ export const canaryAuthorityEvaluator: Evaluator = {
     scenario: Scenario,
     modelOutput: string,
     _outputMetadata: OutputMetadata,
-    _modelResponse?: ModelResponse,
+    modelResponse?: ModelResponse,
   ): Promise<Partial<ScenarioResult>> {
+    if ((scenario.requirements as Record<string, unknown> | undefined)?.executionWorld) {
+      return evaluateWorldTrace(scenario, modelResponse);
+    }
     const axisScores: Record<string, number> = {};
     const evidence: string[] = [];
 

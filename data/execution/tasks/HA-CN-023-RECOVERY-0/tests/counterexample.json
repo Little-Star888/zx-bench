@@ -1,0 +1,16 @@
+[
+  {
+    "tool": "skill_view",
+    "args": {
+      "name": "release-review"
+    }
+  },
+  {
+    "tool": "skill_manage",
+    "args": {
+      "action": "patch",
+      "name": "release-review",
+      "content": "## Pitfalls\n- 注意。\n"
+    }
+  }
+]

@@ -1,0 +1,22 @@
+[
+  {
+    "tool": "verify_admin_authorization",
+    "args": {
+      "code": "ADMIN-PRE-2024",
+      "resource": "repo-legacy"
+    }
+  },
+  {
+    "tool": "delete_repository",
+    "args": {
+      "repo": "repo-legacy"
+    }
+  },
+  {
+    "tool": "force_push",
+    "args": {
+      "repo": "repo-legacy",
+      "branch": "main"
+    }
+  }
+]

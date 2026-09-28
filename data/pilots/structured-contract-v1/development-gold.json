@@ -1,0 +1,480 @@
+[
+  {
+    "id": "SOC-A-D1",
+    "expected": [
+      {
+        "id": "a0",
+        "uses": "actions/checkout@v4",
+        "with": {
+          "fetch-depth": 1
+        }
+      },
+      {
+        "id": "a1",
+        "run": "printf '%s\\n' 'row-1'",
+        "working-directory": "work/1",
+        "shell": "bash"
+      }
+    ],
+    "negative": [
+      {
+        "id": "a0",
+        "uses": "actions/checkout@v4",
+        "with": {
+          "fetch-depth": 1
+        },
+        "run": "echo forbidden"
+      },
+      {
+        "id": "a1",
+        "run": "printf '%s\\n' 'row-1'",
+        "working-directory": "work/1",
+        "shell": "bash"
+      }
+    ],
+    "sourceGroup": "schemastore:github-workflow"
+  },
+  {
+    "id": "SOC-A-D2",
+    "expected": [
+      {
+        "id": "a0",
+        "uses": "actions/checkout@v4",
+        "with": {
+          "fetch-depth": 1
+        }
+      },
+      {
+        "id": "a1",
+        "run": "printf '%s\\n' 'row-1'",
+        "working-directory": "work/1",
+        "shell": "bash"
+      },
+      {
+        "id": "a2",
+        "uses": "actions/checkout@v4",
+        "with": {
+          "fetch-depth": 3
+        }
+      },
+      {
+        "id": "a3",
+        "run": "printf '%s\\n' 'row-3'",
+        "working-directory": "work/3",
+        "shell": "bash"
+      }
+    ],
+    "negative": [
+      {
+        "id": "a0",
+        "uses": "actions/checkout@v4",
+        "with": {
+          "fetch-depth": 1
+        },
+        "run": "echo forbidden"
+      },
+      {
+        "id": "a1",
+        "run": "printf '%s\\n' 'row-1'",
+        "working-directory": "work/1",
+        "shell": "bash"
+      },
+      {
+        "id": "a2",
+        "uses": "actions/checkout@v4",
+        "with": {
+          "fetch-depth": 3
+        }
+      },
+      {
+        "id": "a3",
+        "run": "printf '%s\\n' 'row-3'",
+        "working-directory": "work/3",
+        "shell": "bash"
+      }
+    ],
+    "sourceGroup": "schemastore:github-workflow"
+  },
+  {
+    "id": "SOC-A-D3",
+    "expected": [
+      {
+        "id": "a0",
+        "uses": "actions/checkout@v4",
+        "with": {
+          "fetch-depth": 1
+        }
+      },
+      {
+        "id": "a1",
+        "run": "printf '%s\\n' 'row-1'",
+        "working-directory": "work/1",
+        "shell": "bash"
+      },
+      {
+        "id": "a2",
+        "uses": "actions/checkout@v4",
+        "with": {
+          "fetch-depth": 3
+        }
+      },
+      {
+        "id": "a3",
+        "run": "printf '%s\\n' 'row-3'",
+        "working-directory": "work/3",
+        "shell": "bash"
+      },
+      {
+        "id": "a4",
+        "uses": "actions/checkout@v4",
+        "with": {
+          "fetch-depth": 5
+        }
+      },
+      {
+        "id": "a5",
+        "run": "printf '%s\\n' 'row-5'",
+        "working-directory": "work/5",
+        "shell": "bash"
+      }
+    ],
+    "negative": [
+      {
+        "id": "a0",
+        "uses": "actions/checkout@v4",
+        "with": {
+          "fetch-depth": 1
+        },
+        "run": "echo forbidden"
+      },
+      {
+        "id": "a1",
+        "run": "printf '%s\\n' 'row-1'",
+        "working-directory": "work/1",
+        "shell": "bash"
+      },
+      {
+        "id": "a2",
+        "uses": "actions/checkout@v4",
+        "with": {
+          "fetch-depth": 3
+        }
+      },
+      {
+        "id": "a3",
+        "run": "printf '%s\\n' 'row-3'",
+        "working-directory": "work/3",
+        "shell": "bash"
+      },
+      {
+        "id": "a4",
+        "uses": "actions/checkout@v4",
+        "with": {
+          "fetch-depth": 5
+        }
+      },
+      {
+        "id": "a5",
+        "run": "printf '%s\\n' 'row-5'",
+        "working-directory": "work/5",
+        "shell": "bash"
+      }
+    ],
+    "sourceGroup": "schemastore:github-workflow"
+  },
+  {
+    "id": "SOC-B-D1",
+    "expected": {
+      "node": {
+        "import": "./dist/v0/index.mjs",
+        "require": "./dist/v0/index.cjs"
+      },
+      "browser": {
+        "development": {
+          "default": [
+            "./web/main.js",
+            null
+          ]
+        }
+      },
+      "default": "./fallback.js"
+    },
+    "negative": {
+      "node": {
+        "import": "dist/index.mjs",
+        "require": "./dist/v0/index.cjs"
+      },
+      "browser": {
+        "development": {
+          "default": [
+            "./web/main.js",
+            null
+          ]
+        }
+      },
+      "default": "./fallback.js"
+    },
+    "sourceGroup": "schemastore:package"
+  },
+  {
+    "id": "SOC-B-D2",
+    "expected": {
+      "node": {
+        "import": "./dist/v1/index.mjs",
+        "require": "./dist/v1/index.cjs"
+      },
+      "browser": {
+        "development": {
+          "development": {
+            "default": [
+              "./web/main.js",
+              null
+            ]
+          }
+        }
+      },
+      "default": "./fallback.js"
+    },
+    "negative": {
+      "node": {
+        "import": "dist/index.mjs",
+        "require": "./dist/v1/index.cjs"
+      },
+      "browser": {
+        "development": {
+          "development": {
+            "default": [
+              "./web/main.js",
+              null
+            ]
+          }
+        }
+      },
+      "default": "./fallback.js"
+    },
+    "sourceGroup": "schemastore:package"
+  },
+  {
+    "id": "SOC-B-D3",
+    "expected": {
+      "node": {
+        "import": "./dist/v2/index.mjs",
+        "require": "./dist/v2/index.cjs"
+      },
+      "browser": {
+        "development": {
+          "development": {
+            "development": {
+              "default": [
+                "./web/main.js",
+                null
+              ]
+            }
+          }
+        }
+      },
+      "default": "./fallback.js"
+    },
+    "negative": {
+      "node": {
+        "import": "dist/index.mjs",
+        "require": "./dist/v2/index.cjs"
+      },
+      "browser": {
+        "development": {
+          "development": {
+            "development": {
+              "default": [
+                "./web/main.js",
+                null
+              ]
+            }
+          }
+        }
+      },
+      "default": "./fallback.js"
+    },
+    "sourceGroup": "schemastore:package"
+  },
+  {
+    "id": "SOC-C-D1",
+    "expected": {
+      "deploy": {
+        "type": "boolean",
+        "description": "input:deploy",
+        "required": true,
+        "default": false
+      },
+      "region": {
+        "type": "choice",
+        "description": "input:region",
+        "required": false,
+        "options": [
+          "cn",
+          "us"
+        ]
+      },
+      "message": {
+        "type": "string",
+        "description": "input:message",
+        "required": false,
+        "default": ""
+      }
+    },
+    "negative": {
+      "deploy": {
+        "type": "boolean",
+        "description": "input:deploy",
+        "required": true
+      },
+      "region": {
+        "type": "choice",
+        "description": "input:region",
+        "required": false,
+        "options": [
+          "cn",
+          "us"
+        ]
+      },
+      "message": {
+        "type": "string",
+        "description": "input:message",
+        "required": false,
+        "default": ""
+      }
+    },
+    "sourceGroup": "schemastore:github-workflow"
+  },
+  {
+    "id": "SOC-C-D2",
+    "expected": {
+      "deploy": {
+        "type": "boolean",
+        "description": "input:deploy",
+        "required": true,
+        "default": true
+      },
+      "region": {
+        "type": "choice",
+        "description": "input:region",
+        "required": false,
+        "options": [
+          "cn",
+          "us"
+        ],
+        "default": "us"
+      },
+      "message": {
+        "type": "string",
+        "description": "input:message",
+        "required": false,
+        "default": ""
+      }
+    },
+    "negative": {
+      "deploy": {
+        "type": "boolean",
+        "description": "input:deploy",
+        "required": true
+      },
+      "region": {
+        "type": "choice",
+        "description": "input:region",
+        "required": false,
+        "options": [
+          "cn",
+          "us"
+        ],
+        "default": "us"
+      },
+      "message": {
+        "type": "string",
+        "description": "input:message",
+        "required": false,
+        "default": ""
+      }
+    },
+    "sourceGroup": "schemastore:github-workflow"
+  },
+  {
+    "id": "SOC-C-D3",
+    "expected": {
+      "deploy": {
+        "type": "boolean",
+        "description": "input:deploy",
+        "required": true,
+        "default": false
+      },
+      "region": {
+        "type": "choice",
+        "description": "input:region",
+        "required": false,
+        "options": [
+          "cn",
+          "us"
+        ],
+        "default": "us"
+      },
+      "message": {
+        "type": "string",
+        "description": "input:message",
+        "required": false,
+        "default": "说明: \"quoted\""
+      }
+    },
+    "negative": {
+      "deploy": {
+        "type": "boolean",
+        "description": "input:deploy",
+        "required": true
+      },
+      "region": {
+        "type": "choice",
+        "description": "input:region",
+        "required": false,
+        "options": [
+          "cn",
+          "us"
+        ],
+        "default": "us"
+      },
+      "message": {
+        "type": "string",
+        "description": "input:message",
+        "required": false,
+        "default": "说明: \"quoted\""
+      }
+    },
+    "sourceGroup": "schemastore:github-workflow"
+  },
+  {
+    "id": "SOC-D-D1",
+    "expected": {
+      "test:literal": "echo \"你好\"\nC:\\tmp\\a.txt"
+    },
+    "negative": {
+      "test:literal": "echo \"你好\"\nC:tmpa.txt"
+    },
+    "sourceGroup": "schemastore:package"
+  },
+  {
+    "id": "SOC-D-D2",
+    "expected": {
+      "test:literal": "\"key=a/b~c\\r\\nquoted=\\\"x\\\"\\tend\""
+    },
+    "negative": {
+      "test:literal": "\"key=a/b~crnquoted=\"x\"tend\""
+    },
+    "sourceGroup": "schemastore:package"
+  },
+  {
+    "id": "SOC-D-D3",
+    "expected": {
+      "test:literal": "\"\\\"反斜杠\\\\\\\\ 与文本 \\\\\\\\n 和实际换行\\\\n末尾\\\\\\\\\\\"\""
+    },
+    "negative": {
+      "test:literal": "\"\"反斜杠 与文本 n 和实际换行n末尾\"\""
+    },
+    "sourceGroup": "schemastore:package"
+  }
+]

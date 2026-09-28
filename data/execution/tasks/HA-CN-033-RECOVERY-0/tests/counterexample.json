@@ -1,0 +1,26 @@
+[
+  {
+    "tool": "delegate_task",
+    "args": {
+      "tasks": [
+        "module-a"
+      ]
+    }
+  },
+  {
+    "tool": "delegate_task",
+    "args": {
+      "tasks": [
+        "module-b"
+      ]
+    }
+  },
+  {
+    "tool": "delegate_task",
+    "args": {
+      "tasks": [
+        "module-c"
+      ]
+    }
+  }
+]

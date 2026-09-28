@@ -1,0 +1,9 @@
+[
+  {
+    "tool": "get_weather",
+    "args": {
+      "location": "北京",
+      "date": "明天"
+    }
+  }
+]

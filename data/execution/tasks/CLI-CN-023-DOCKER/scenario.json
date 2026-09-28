@@ -1,0 +1,80 @@
+{
+  "id": "CLI-CN-023-DOCKER",
+  "dimension": "cli_deep_tasks",
+  "category": "archive_encoding",
+  "difficulty": "adversarial",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "工作区 /workspace，Linux sh 和 Python 3 标准库可用。使用 Alpine/BusyBox 工具，提交脚本统一以 POSIX sh 执行，未提供 bash 或 GNU 工具。archive.tar 有 20 个普通文件。生成 new.tar，仅把 config.ini 的 mode=dev 改为 mode=prod。保持条目顺序、各条目 uid/gid/mode/mtime/uname/gname 及其余文件字节不变。原归档不能修改。只输出可执行 shell 脚本。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "cli_command",
+  "graderVersion": "cli_command_v5",
+  "scoring": {
+    "type": "cli_command",
+    "mode": "executed_state"
+  },
+  "requirements": {
+    "migrationSourceId": "CLI-CN-023",
+    "developmentShadow": true,
+    "executionInterpreter": "sh",
+    "executionImage": "python:3.12-alpine",
+    "executionImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31",
+    "executionCases": [
+      {
+        "files": [
+          {
+            "path": "sentinel",
+            "content": "keep"
+          }
+        ],
+        "setupCommands": [
+          "python3 -I - <<'PY'\nimport tarfile, io\nnames = [\"sub/file-0.bin\",\"sub/file-7.bin\",\"sub/file-14.bin\",\"sub/file-21.bin\",\"sub/file-5.bin\",\"sub/file-12.bin\",\"sub/file-19.bin\",\"config.ini\",\"sub/file-10.bin\",\"sub/file-17.bin\",\"sub/file-1.bin\",\"sub/file-8.bin\",\"sub/file-15.bin\",\"sub/file-22.bin\",\"sub/file-6.bin\",\"sub/file-13.bin\",\"sub/file-20.bin\",\"sub/file-4.bin\",\"sub/file-11.bin\",\"sub/file-18.bin\"]\nwith tarfile.open('archive.tar','w',format=tarfile.USTAR_FORMAT) as t:\n    for i,name in enumerate(names):\n        data = b'mode=dev\\n' if name == 'config.ini' else bytes([i,0,255,0])*17\n        info=tarfile.TarInfo(name); info.size=len(data); info.uid=100+i; info.gid=200+i; info.mode=0o640; info.mtime=1700000000+i\n        info.uname='u'; info.gname='g'; t.addfile(info,io.BytesIO(data))\nPY"
+        ],
+        "unchangedFiles": [
+          "sentinel"
+        ],
+        "assertCommands": [
+          "python3 -I - <<'PY'\nimport tarfile, io, hashlib\nfrom pathlib import Path\nnames = [\"sub/file-0.bin\",\"sub/file-7.bin\",\"sub/file-14.bin\",\"sub/file-21.bin\",\"sub/file-5.bin\",\"sub/file-12.bin\",\"sub/file-19.bin\",\"config.ini\",\"sub/file-10.bin\",\"sub/file-17.bin\",\"sub/file-1.bin\",\"sub/file-8.bin\",\"sub/file-15.bin\",\"sub/file-22.bin\",\"sub/file-6.bin\",\"sub/file-13.bin\",\"sub/file-20.bin\",\"sub/file-4.bin\",\"sub/file-11.bin\",\"sub/file-18.bin\"]\noriginal=io.BytesIO()\nwith tarfile.open(fileobj=original,mode='w',format=tarfile.USTAR_FORMAT) as t:\n    for i,name in enumerate(names):\n        data = b'mode=dev\\n' if name == 'config.ini' else bytes([i,0,255,0])*17\n        info=tarfile.TarInfo(name); info.size=len(data); info.uid=100+i; info.gid=200+i; info.mode=0o640; info.mtime=1700000000+i\n        info.uname='u'; info.gname='g'; t.addfile(info,io.BytesIO(data))\nassert Path('archive.tar').read_bytes() == original.getvalue()\nwith tarfile.open('archive.tar') as a, tarfile.open('new.tar') as b:\n    aa=a.getmembers(); bb=b.getmembers(); assert [x.name for x in aa] == [x.name for x in bb]\n    for x,y in zip(aa,bb):\n        assert y.isfile()\n        assert all(getattr(x,k)==getattr(y,k) for k in ['uid','gid','mode','mtime','uname','gname'])\n        expected=b'mode=prod\\n' if x.name=='config.ini' else a.extractfile(x).read()\n        assert b.extractfile(y).read()==expected\nPY"
+        ]
+      },
+      {
+        "files": [
+          {
+            "path": "sentinel",
+            "content": "keep"
+          }
+        ],
+        "setupCommands": [
+          "python3 -I - <<'PY'\nimport tarfile, io\nnames = [\"sub/file-1.bin\",\"sub/file-8.bin\",\"sub/file-15.bin\",\"sub/file-22.bin\",\"sub/file-6.bin\",\"sub/file-13.bin\",\"sub/file-20.bin\",\"config.ini\",\"sub/file-11.bin\",\"sub/file-18.bin\",\"sub/file-2.bin\",\"sub/file-9.bin\",\"sub/file-16.bin\",\"sub/file-0.bin\",\"sub/file-7.bin\",\"sub/file-14.bin\",\"sub/file-21.bin\",\"sub/file-5.bin\",\"sub/file-12.bin\",\"sub/file-19.bin\"]\nwith tarfile.open('archive.tar','w',format=tarfile.USTAR_FORMAT) as t:\n    for i,name in enumerate(names):\n        data = b'mode=dev\\n' if name == 'config.ini' else bytes([i,0,255,1])*17\n        info=tarfile.TarInfo(name); info.size=len(data); info.uid=100+i; info.gid=200+i; info.mode=0o640; info.mtime=1700000000+i\n        info.uname='u'; info.gname='g'; t.addfile(info,io.BytesIO(data))\nPY"
+        ],
+        "unchangedFiles": [
+          "sentinel"
+        ],
+        "assertCommands": [
+          "python3 -I - <<'PY'\nimport tarfile, io, hashlib\nfrom pathlib import Path\nnames = [\"sub/file-1.bin\",\"sub/file-8.bin\",\"sub/file-15.bin\",\"sub/file-22.bin\",\"sub/file-6.bin\",\"sub/file-13.bin\",\"sub/file-20.bin\",\"config.ini\",\"sub/file-11.bin\",\"sub/file-18.bin\",\"sub/file-2.bin\",\"sub/file-9.bin\",\"sub/file-16.bin\",\"sub/file-0.bin\",\"sub/file-7.bin\",\"sub/file-14.bin\",\"sub/file-21.bin\",\"sub/file-5.bin\",\"sub/file-12.bin\",\"sub/file-19.bin\"]\noriginal=io.BytesIO()\nwith tarfile.open(fileobj=original,mode='w',format=tarfile.USTAR_FORMAT) as t:\n    for i,name in enumerate(names):\n        data = b'mode=dev\\n' if name == 'config.ini' else bytes([i,0,255,1])*17\n        info=tarfile.TarInfo(name); info.size=len(data); info.uid=100+i; info.gid=200+i; info.mode=0o640; info.mtime=1700000000+i\n        info.uname='u'; info.gname='g'; t.addfile(info,io.BytesIO(data))\nassert Path('archive.tar').read_bytes() == original.getvalue()\nwith tarfile.open('archive.tar') as a, tarfile.open('new.tar') as b:\n    aa=a.getmembers(); bb=b.getmembers(); assert [x.name for x in aa] == [x.name for x in bb]\n    for x,y in zip(aa,bb):\n        assert y.isfile()\n        assert all(getattr(x,k)==getattr(y,k) for k in ['uid','gid','mode','mtime','uname','gname'])\n        expected=b'mode=prod\\n' if x.name=='config.ini' else a.extractfile(x).read()\n        assert b.extractfile(y).read()==expected\nPY"
+        ]
+      }
+    ]
+  },
+  "tags": [
+    "cli",
+    "archive",
+    "repack",
+    "trap"
+  ],
+  "scenarioVersion": "3.1.0",
+  "scenarioHash": "72575e22ff7d622b",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

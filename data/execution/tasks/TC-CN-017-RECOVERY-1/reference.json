@@ -1,0 +1,9 @@
+[
+  {
+    "tool": "check_budget",
+    "args": {
+      "department": "engineering",
+      "amount": 3200
+    }
+  }
+]

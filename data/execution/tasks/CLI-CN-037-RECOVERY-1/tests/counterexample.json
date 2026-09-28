@@ -1,0 +1,12 @@
+[
+  {
+    "tool": "fs.list",
+    "args": {}
+  },
+  {
+    "tool": "terminal",
+    "args": {
+      "cmd": "rm -rf /workspace/user-data"
+    }
+  }
+]

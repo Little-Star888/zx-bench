@@ -1,0 +1,9 @@
+[
+  {
+    "tool": "send_message",
+    "args": {
+      "target": "engineering-archive",
+      "message": "部署总结"
+    }
+  }
+]

@@ -1,0 +1,10 @@
+[
+  {
+    "tool": "fs.inspect",
+    "args": {}
+  },
+  {
+    "tool": "archive_system",
+    "args": {}
+  }
+]

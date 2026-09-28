@@ -1,0 +1,124 @@
+{
+  "id": "TC-CN-042-RECOVERY-0",
+  "dimension": "tool_cli_workflow",
+  "category": "tool_selection",
+  "difficulty": "hard",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "把 report.pdf 第 3 页提取为 PNG 图片。只用 pdf_page_to_image(path,page=3)，不得调用 PDF 文本、拆分或缩放工具；结果必须是有效 PNG，图像内容对应第 3 页。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "tool_call_trace",
+  "graderVersion": "tool_trace_v4",
+  "scoring": {
+    "type": "tool_call_trace"
+  },
+  "requirements": {
+    "migrationSourceId": "TC-CN-042",
+    "developmentShadow": true,
+    "executionWorld": {
+      "maxTurns": 8,
+      "scoreMode": "strict",
+      "initialState": {
+        "label": "REPORT-A",
+        "initialized": false,
+        "convertedPages": [],
+        "otherCalls": [],
+        "other": "keep"
+      },
+      "tools": [
+        {
+          "name": "pdf_page_to_image",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "path": "string",
+            "page": "number"
+          },
+          "script": "from pathlib import Path\nroot=Path('/workspace/pdf-pages'); root.mkdir(exist_ok=True)\nif not state['initialized']:\n    pages=[b'Page 1',b'Page 2',b'Page 3']\n    objects=[b'<< /Type /Catalog /Pages 2 0 R >>',b'<< /Type /Pages /Kids [3 0 R 5 0 R 7 0 R] /Count 3 >>']\n    for i,text in enumerate(pages):\n        page_id=3+2*i; content_id=page_id+1\n        objects.append(f'<< /Type /Page /Parent 2 0 R /MediaBox [0 0 128 128] /Contents {content_id} 0 R >>'.encode())\n        stream=b'BT 10 100 Td ('+text+b') Tj ET'\n        objects.append(b'<< /Length '+str(len(stream)).encode()+b' >>\\nstream\\n'+stream+b'\\nendstream')\n    out=bytearray(b'%PDF-1.4\\n'); offsets=[0]\n    for i,obj in enumerate(objects,1): offsets.append(len(out)); out.extend(f'{i} 0 obj\\n'.encode()+obj+b'\\nendobj\\n')\n    xref=len(out); out.extend(f'xref\\n0 {len(offsets)}\\n0000000000 65535 f \\n'.encode())\n    for pos in offsets[1:]: out.extend(f'{pos:010d} 00000 n \\n'.encode())\n    out.extend(f'trailer\\n<< /Root 1 0 R /Size {len(offsets)} >>\\nstartxref\\n{xref}\\n%%EOF\\n'.encode())\n    (root/'report.pdf').write_bytes(out); state['initialized']=True\nimport re,zlib,struct\nif args['path']!='report.pdf' or args['page']!=3: raise ValueError('WRONG_PAGE')\nsource=(root/'report.pdf').read_bytes()\npages=re.findall(rb'\\((Page [1-3])\\) Tj',source)\nif len(pages)!=3: raise ValueError('INVALID_SOURCE_PDF')\ndigit=int(pages[args['page']-1][-1:])\npattern={1:['00100','01100','00100','00100','00100','00100','01110'],2:['01110','10001','00001','00010','00100','01000','11111'],3:['11110','00001','00001','01110','00001','00001','11110']}[digit]\nrows=[]\nfor y in range(64):\n    row=bytearray([0])\n    for x in range(64):\n        px=(x-12)//8; py=(y-4)//8\n        black=0<=py<7 and 0<=px<5 and pattern[py][px]=='1'\n        row.extend((0,0,0) if black else (255,255,255))\n    rows.append(bytes(row))\ndef chunk(kind,data): return struct.pack('>I',len(data))+kind+data+struct.pack('>I',zlib.crc32(kind+data)&0xffffffff)\nblob=b'\\x89PNG\\r\\n\\x1a\\n'+chunk(b'IHDR',struct.pack('>IIBBBBB',64,64,8,2,0,0,0))+chunk(b'IDAT',zlib.compress(b''.join(rows)))+chunk(b'IEND',b'')\nout=root/'page-3.png'; out.write_bytes(blob)\nstate['convertedPages'].append(digit); result={'path':'page-3.png','bytes':len(blob)}",
+          "description": "从 PDF 第三页文字流渲染数字 3 为真实 PNG。"
+        },
+        {
+          "name": "pdf_to_text",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {},
+          "script": "state['otherCalls'].append('pdf_to_text'); result={}",
+          "description": "本题不需要的额外处理。"
+        },
+        {
+          "name": "pdf_split",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {},
+          "script": "state['otherCalls'].append('pdf_split'); result={}",
+          "description": "本题不需要的额外处理。"
+        },
+        {
+          "name": "image_resize",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {},
+          "script": "state['otherCalls'].append('image_resize'); result={}",
+          "description": "本题不需要的额外处理。"
+        }
+      ],
+      "requiredCalls": [
+        {
+          "tool": "pdf_page_to_image",
+          "args": {
+            "path": "report.pdf",
+            "page": 3
+          }
+        }
+      ],
+      "forbiddenCalls": [
+        "pdf_to_text",
+        "pdf_split",
+        "image_resize"
+      ],
+      "expectedState": [
+        {
+          "path": "convertedPages",
+          "equals": [
+            3
+          ]
+        },
+        {
+          "path": "otherCalls",
+          "equals": []
+        }
+      ],
+      "unchangedState": [
+        "label",
+        "other"
+      ],
+      "finalMessageMustContain": [
+        "PNG",
+        "第3页"
+      ],
+      "image": "python:3.12-alpine",
+      "expectedImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31"
+    }
+  },
+  "tags": [
+    "chinese",
+    "tool-selection",
+    "similar-tools",
+    "hard"
+  ],
+  "scenarioVersion": "3.0.0",
+  "scenarioHash": "9b2d675ac29c36a5",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

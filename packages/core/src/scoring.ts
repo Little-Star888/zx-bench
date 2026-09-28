@@ -138,6 +138,7 @@ export function computeWeightedTotal(dimAvgs: Map<string, number>): number {
  * 按维度/题型定义确定性评分与 AI Judge 权重
  */
 export function getJudgeWeights(dimension: string, grader: string): { deterministic: number; judge: number } {
+  if (grader === 'structured_contract') return { deterministic: 1, judge: 0 };
   if (grader === 'ultra_batch_part') return { deterministic: 1, judge: 0 };
   if (grader === 'ultra_proof_part') return { deterministic: 0, judge: 1 };
   if (grader === 'challenge_supplement' || grader === 'challenge_extension') return { deterministic: 1, judge: 0 };
@@ -189,6 +190,7 @@ export function detectFormatBlindspot(input: {
   codeExtractionFailed?: boolean;
 }): boolean {
   const { scenario } = input;
+  if (scenario.grader === 'structured_contract') return false;
   const strictAnswer = scenario.grader === 'exact_answer_line'
     && (scenario.scoring as unknown as Record<string, unknown>).comparisonMode === 'strict';
   if (strictAnswer) return false;
@@ -310,6 +312,7 @@ export function classifyEngineeringFailure(r: EngineeringFailureInput): Engineer
   if (ev.some((e) => NO_EVALUATOR_RE.test(e))) return 'no_evaluator';
   // 生成阶段抛异常（后端不可达/超时/鉴权失败）优先按环境故障隔离
   if (ev.some((e) => EVALUATION_FAILED_RE.test(e))) return 'environment_error';
+  if (ev.some(e => e.startsWith('STRUCTURED_EMPTY_ANSWER:'))) return null;
   // 统一能力约束内未作答：按 0 分计入总分，不能再被空输出证据/空 modelOutput 剔除。
   if (ev.some((e) => LIMIT_EXCEEDED_EVIDENCE_RE.test(e))) return null;
   if (ev.some((e) => EMPTY_OUTPUT_EVIDENCE_RE.test(e))) return 'empty_output';

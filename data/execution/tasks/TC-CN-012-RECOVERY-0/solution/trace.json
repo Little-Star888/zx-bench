@@ -1,0 +1,17 @@
+[
+  {
+    "tool": "search_products",
+    "args": {
+      "category": "国产手机",
+      "price_range": [
+        0,
+        3000
+      ],
+      "sort_by": "popularity",
+      "filters": {
+        "min_performance": 80
+      },
+      "limit": 5
+    }
+  }
+]

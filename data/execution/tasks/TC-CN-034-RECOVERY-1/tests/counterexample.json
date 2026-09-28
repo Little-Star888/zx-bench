@@ -1,0 +1,9 @@
+[
+  {
+    "tool": "notify_user",
+    "args": {
+      "message": "已回退",
+      "urgency": "high"
+    }
+  }
+]

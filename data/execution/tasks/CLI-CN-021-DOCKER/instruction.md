@@ -1,0 +1,1 @@
+工作区 /workspace，Linux sh 和 Python 3 标准库可用。使用 Alpine/BusyBox 工具，提交脚本统一以 POSIX sh 执行，未提供 bash 或 GNU 工具。payload.txt 由原文先 gzip 压缩，再 base64 编码而成。按逆序解码，写入 original.txt；输出须与原始 UTF-8 字节完全相同，保持 payload.txt 和无关文件不变。只输出可执行 shell 脚本。

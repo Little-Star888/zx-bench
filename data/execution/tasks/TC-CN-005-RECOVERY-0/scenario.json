@@ -1,0 +1,91 @@
+{
+  "id": "TC-CN-005-RECOVERY-0",
+  "dimension": "tool_cli_workflow",
+  "category": "tool_selection",
+  "difficulty": "easy",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "设置明天早上7点闹钟，提醒参加9点团队会议；固定今天为 2024-03-15。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "tool_call_trace",
+  "graderVersion": "tool_trace_v4",
+  "scoring": {
+    "type": "tool_call_trace"
+  },
+  "requirements": {
+    "migrationSourceId": "TC-CN-005",
+    "developmentShadow": true,
+    "executionWorld": {
+      "maxTurns": 8,
+      "scoreMode": "strict",
+      "initialState": {
+        "calls": [],
+        "other": "keep"
+      },
+      "tools": [
+        {
+          "name": "set_alarm",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "time": "string",
+            "label": "string",
+            "date": "string"
+          },
+          "script": "expected={\"time\":\"07:00\",\"label\":\"参加9点团队会议\",\"date\":\"2024-03-16\"}\nif args!=expected: raise ValueError('WRONG_PARAMS')\nstate['calls'].append(args); result={'status':\"闹钟已创建\"}",
+          "description": "执行原题对应动作并记录参数。"
+        }
+      ],
+      "requiredCalls": [
+        {
+          "tool": "set_alarm",
+          "args": {
+            "time": "07:00",
+            "label": "参加9点团队会议",
+            "date": "2024-03-16"
+          }
+        }
+      ],
+      "expectedState": [
+        {
+          "path": "calls",
+          "equals": [
+            {
+              "time": "07:00",
+              "label": "参加9点团队会议",
+              "date": "2024-03-16"
+            }
+          ]
+        }
+      ],
+      "unchangedState": [
+        "other"
+      ],
+      "finalMessageMustContain": [
+        "07:00"
+      ],
+      "image": "python:3.12-alpine",
+      "expectedImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31"
+    }
+  },
+  "tags": [
+    "chinese",
+    "parameter-extraction",
+    "basic"
+  ],
+  "scenarioVersion": "3.0.0",
+  "scenarioHash": "19afc9c5e2732982",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

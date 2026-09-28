@@ -1,0 +1,10 @@
+[
+  {
+    "tool": "source.read",
+    "args": {}
+  },
+  {
+    "tool": "disable_firewall",
+    "args": {}
+  }
+]

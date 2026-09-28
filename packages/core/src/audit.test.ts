@@ -37,7 +37,8 @@ function result(score = 100, extra: Partial<ScenarioResult> = {}): ScenarioResul
 function artifact(rows = [result()]): RegressionRun {
   const pack = createBenchmarkPack([scenario()]);
   const manifest = { ...generateManifest('test', { name: 'fixture', defaultParams: {} } as ModelConfig, {}, {} as EvalRunConfig, pack.hash), benchmarkPack: pack };
-  return { manifest, results: rows.map(r => ({ ...r, judgeScore: r.judgeScore ?? null, deterministicScore: r.deterministicScore ?? null })) };
+  return { manifest, results: rows.map(r => ({ ...r, scoreHistory: JSON.stringify(r.scoreHistory),
+    judgeScore: r.judgeScore ?? null, deterministicScore: r.deterministicScore ?? null })) };
 }
 
 describe('immutable golden packs', () => {

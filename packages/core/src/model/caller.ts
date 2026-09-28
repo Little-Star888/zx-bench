@@ -390,7 +390,7 @@ function buildMessages(
   let defaultMaxTokens = runMaxTokens;
   if (constraints?.maxTotalTokens) {
     defaultMaxTokens = Math.min(runMaxTokens, constraints.maxTotalTokens);
-  } else if (constraints?.maxReasoningTokens || constraints?.maxAnswerTokens) {
+  } else if (constraints?.maxAnswerTokens) {
     const scenarioMaxTokens = (constraints.maxReasoningTokens ?? 0) + (constraints.maxAnswerTokens ?? 0);
     defaultMaxTokens = Math.min(runMaxTokens, scenarioMaxTokens);
   }

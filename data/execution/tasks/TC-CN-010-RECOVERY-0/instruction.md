@@ -1,0 +1,1 @@
+创建 618 大促：6 月 1–18 日，三档满减 300/50、600/120、1000/250，每人每日最多 3 次，只限 APP。工具接收完整嵌套配置，不能漏约束。活动名称为 618大促，年份为 2026。config 对象字段为 name、start_date、end_date、rules、daily_limit_per_user、channel；日期采用 YYYY-MM-DD，rules 是按门槛升序排列的对象数组，每项使用数值字段 threshold 和 discount。

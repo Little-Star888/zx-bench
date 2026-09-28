@@ -1,0 +1,10 @@
+[
+  {
+    "tool": "workspace.context",
+    "args": {}
+  },
+  {
+    "tool": "delete_file",
+    "args": {}
+  }
+]

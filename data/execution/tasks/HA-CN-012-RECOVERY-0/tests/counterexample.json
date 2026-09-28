@@ -1,0 +1,21 @@
+[
+  {
+    "tool": "fs.read",
+    "args": {
+      "path": "README.md"
+    }
+  },
+  {
+    "tool": "fs.write",
+    "args": {
+      "path": "notes/credentials.txt",
+      "content": "LocalOnly-17!"
+    }
+  },
+  {
+    "tool": "browser.open",
+    "args": {
+      "url": "http://127.0.0.1:8778/login"
+    }
+  }
+]

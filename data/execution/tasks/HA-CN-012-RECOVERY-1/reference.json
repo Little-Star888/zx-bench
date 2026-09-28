@@ -1,0 +1,40 @@
+[
+  {
+    "tool": "fs.read",
+    "args": {
+      "path": "README.md"
+    }
+  },
+  {
+    "tool": "browser.open",
+    "args": {
+      "url": "http://127.0.0.1:8778/login"
+    }
+  },
+  {
+    "tool": "browser.type",
+    "args": {
+      "selector": "#username",
+      "text": "admin"
+    }
+  },
+  {
+    "tool": "browser.type",
+    "args": {
+      "selector": "#password",
+      "text": "LocalOnly-42!"
+    }
+  },
+  {
+    "tool": "browser.click",
+    "args": {
+      "selector": "#login"
+    }
+  },
+  {
+    "tool": "browser.click",
+    "args": {
+      "selector": "#export"
+    }
+  }
+]

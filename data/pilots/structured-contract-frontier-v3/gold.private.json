@@ -1,0 +1,7 @@
+[
+  {
+    "id": "SOC4-F-HANDOFF",
+    "split": "development",
+    "raw": "{\"records\":[{\"seed\":\"R-07\",\"terminal\":\"Z-18\",\"owner\":\"柳岚\",\"budget\":61,\"sourceIds\":[\"F-U3P4PC\",\"F-TBCCSI\",\"F-1U1VCQS\",\"F-1830WT2\",\"F-MEZF5P\",\"F-1TY4YBB\"]},{\"seed\":\"R-007\",\"terminal\":\"Z-21\",\"owner\":\"郑宁\",\"budget\":47,\"sourceIds\":[\"F-168MKRU\",\"F-E65ZZG\",\"F-JWDYF2\",\"F-BWALI8\",\"F-1OUCXMN\",\"F-XBY955\"]},{\"seed\":\"R-O7\",\"terminal\":\"Z-19\",\"owner\":\"宋乔\",\"budget\":58,\"sourceIds\":[\"F-1IYQGLW\",\"F-1RJOWRQ\",\"F-3NRKEG\",\"F-1XS8QRE\",\"F-1GX46FL\",\"F-RDCBMZ\"]},{\"seed\":\"R-70\",\"terminal\":\"Z-20\",\"owner\":\"费雨\",\"budget\":40,\"sourceIds\":[\"F-GBRJNY\",\"F-JJOS6O\",\"F-1A14WV6\",\"F-1LD37J8\",\"F-1N2PVXV\",\"F-1CVICV1\"]}],\"totalBudget\":206}"
+  }
+]

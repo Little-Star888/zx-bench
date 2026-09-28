@@ -1,0 +1,83 @@
+{
+  "id": "CLI-CN-054-DOCKER",
+  "dimension": "cli_deep_tasks",
+  "category": "process_management",
+  "difficulty": "medium",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "工作区 /workspace，Linux sh 和 Python 3 标准库可用。使用 Alpine/BusyBox 工具，提交脚本统一以 POSIX sh 执行，未提供 bash 或 GNU 工具。容器内给出可重复的 ps aux 快照 ps_snapshot.txt。按 RSS 字节字段数值降序找出前五个进程，将「PID RSS」逐行写入 top5.txt；同值按 PID 数值升序，不使用字符串排序。只输出可执行 shell 脚本。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "cli_command",
+  "graderVersion": "cli_command_v5",
+  "scoring": {
+    "type": "cli_command",
+    "mode": "executed_state"
+  },
+  "requirements": {
+    "migrationSourceId": "CLI-CN-054",
+    "developmentShadow": true,
+    "executionInterpreter": "sh",
+    "executionImage": "python:3.12-alpine",
+    "executionImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31",
+    "executionCases": [
+      {
+        "files": [
+          {
+            "path": "ps_snapshot.txt",
+            "content": "USER PID %CPU %MEM VSZ RSS TTY STAT START TIME COMMAND\nuser 1000 0.1 1.0 99999 90000 ? S 09:00 0:00 proc-0\nuser 1013 0.1 1.0 99999 1431 ? S 09:00 0:00 proc-1\nuser 1026 0.1 1.0 99999 1862 ? S 09:00 0:00 proc-2\nuser 1039 0.1 1.0 99999 2293 ? S 09:00 0:00 proc-3\nuser 1052 0.1 1.0 99999 2724 ? S 09:00 0:00 proc-4\nuser 1065 0.1 1.0 99999 3155 ? S 09:00 0:00 proc-5\nuser 1078 0.1 1.0 99999 3586 ? S 09:00 0:00 proc-6\nuser 1091 0.1 1.0 99999 4017 ? S 09:00 0:00 proc-7\nuser 1104 0.1 1.0 99999 4448 ? S 09:00 0:00 proc-8\nuser 1117 0.1 1.0 99999 90000 ? S 09:00 0:00 proc-9\nuser 1130 0.1 1.0 99999 5310 ? S 09:00 0:00 proc-10\nuser 1143 0.1 1.0 99999 5741 ? S 09:00 0:00 proc-11\nuser 1156 0.1 1.0 99999 6172 ? S 09:00 0:00 proc-12\nuser 1169 0.1 1.0 99999 6603 ? S 09:00 0:00 proc-13\nuser 1182 0.1 1.0 99999 7034 ? S 09:00 0:00 proc-14\nuser 1195 0.1 1.0 99999 7465 ? S 09:00 0:00 proc-15\nuser 1208 0.1 1.0 99999 7896 ? S 09:00 0:00 proc-16\nuser 1221 0.1 1.0 99999 8327 ? S 09:00 0:00 proc-17\nuser 1234 0.1 1.0 99999 90000 ? S 09:00 0:00 proc-18\nuser 1247 0.1 1.0 99999 9189 ? S 09:00 0:00 proc-19\nuser 1260 0.1 1.0 99999 9620 ? S 09:00 0:00 proc-20\nuser 1273 0.1 1.0 99999 10051 ? S 09:00 0:00 proc-21\nuser 1286 0.1 1.0 99999 10482 ? S 09:00 0:00 proc-22\nuser 1299 0.1 1.0 99999 10913 ? S 09:00 0:00 proc-23\nuser 1312 0.1 1.0 99999 11344 ? S 09:00 0:00 proc-24\nuser 1325 0.1 1.0 99999 11775 ? S 09:00 0:00 proc-25\nuser 1338 0.1 1.0 99999 12206 ? S 09:00 0:00 proc-26\nuser 1351 0.1 1.0 99999 90000 ? S 09:00 0:00 proc-27\nuser 1364 0.1 1.0 99999 13068 ? S 09:00 0:00 proc-28\nuser 1377 0.1 1.0 99999 13499 ? S 09:00 0:00 proc-29\nuser 1390 0.1 1.0 99999 13930 ? S 09:00 0:00 proc-30\nuser 1403 0.1 1.0 99999 14361 ? S 09:00 0:00 proc-31\nuser 1416 0.1 1.0 99999 14792 ? S 09:00 0:00 proc-32\nuser 1429 0.1 1.0 99999 15223 ? S 09:00 0:00 proc-33\nuser 1442 0.1 1.0 99999 15654 ? S 09:00 0:00 proc-34\nuser 1455 0.1 1.0 99999 16085 ? S 09:00 0:00 proc-35\nuser 1468 0.1 1.0 99999 90000 ? S 09:00 0:00 proc-36\nuser 1481 0.1 1.0 99999 16947 ? S 09:00 0:00 proc-37\nuser 1494 0.1 1.0 99999 17378 ? S 09:00 0:00 proc-38\nuser 1507 0.1 1.0 99999 17809 ? S 09:00 0:00 proc-39\nuser 1520 0.1 1.0 99999 18240 ? S 09:00 0:00 proc-40\nuser 1533 0.1 1.0 99999 18671 ? S 09:00 0:00 proc-41\nuser 1546 0.1 1.0 99999 19102 ? S 09:00 0:00 proc-42\nuser 1559 0.1 1.0 99999 19533 ? S 09:00 0:00 proc-43\nuser 1572 0.1 1.0 99999 19964 ? S 09:00 0:00 proc-44\nuser 1585 0.1 1.0 99999 90000 ? S 09:00 0:00 proc-45\nuser 1598 0.1 1.0 99999 20826 ? S 09:00 0:00 proc-46\nuser 1611 0.1 1.0 99999 21257 ? S 09:00 0:00 proc-47\nuser 1624 0.1 1.0 99999 21688 ? S 09:00 0:00 proc-48\nuser 1637 0.1 1.0 99999 22119 ? S 09:00 0:00 proc-49\nuser 1650 0.1 1.0 99999 22550 ? S 09:00 0:00 proc-50\nuser 1663 0.1 1.0 99999 22981 ? S 09:00 0:00 proc-51\nuser 1676 0.1 1.0 99999 23412 ? S 09:00 0:00 proc-52\nuser 1689 0.1 1.0 99999 23843 ? S 09:00 0:00 proc-53\nuser 1702 0.1 1.0 99999 90000 ? S 09:00 0:00 proc-54\nuser 1715 0.1 1.0 99999 24705 ? S 09:00 0:00 proc-55\nuser 1728 0.1 1.0 99999 25136 ? S 09:00 0:00 proc-56\nuser 1741 0.1 1.0 99999 25567 ? S 09:00 0:00 proc-57\nuser 1754 0.1 1.0 99999 25998 ? S 09:00 0:00 proc-58\nuser 1767 0.1 1.0 99999 26429 ? S 09:00 0:00 proc-59\n"
+          },
+          {
+            "path": "sentinel",
+            "content": "keep"
+          }
+        ],
+        "expectedFiles": {
+          "top5.txt": "1000 90000\n1117 90000\n1234 90000\n1351 90000\n1468 90000\n"
+        },
+        "unchangedFiles": [
+          "ps_snapshot.txt",
+          "sentinel"
+        ]
+      },
+      {
+        "files": [
+          {
+            "path": "ps_snapshot.txt",
+            "content": "USER PID %CPU %MEM VSZ RSS TTY STAT START TIME COMMAND\nuser 1001 0.1 1.0 99999 90000 ? S 09:00 0:00 proc-0\nuser 1014 0.1 1.0 99999 1450 ? S 09:00 0:00 proc-1\nuser 1027 0.1 1.0 99999 1881 ? S 09:00 0:00 proc-2\nuser 1040 0.1 1.0 99999 2312 ? S 09:00 0:00 proc-3\nuser 1053 0.1 1.0 99999 2743 ? S 09:00 0:00 proc-4\nuser 1066 0.1 1.0 99999 3174 ? S 09:00 0:00 proc-5\nuser 1079 0.1 1.0 99999 3605 ? S 09:00 0:00 proc-6\nuser 1092 0.1 1.0 99999 4036 ? S 09:00 0:00 proc-7\nuser 1105 0.1 1.0 99999 4467 ? S 09:00 0:00 proc-8\nuser 1118 0.1 1.0 99999 90000 ? S 09:00 0:00 proc-9\nuser 1131 0.1 1.0 99999 5329 ? S 09:00 0:00 proc-10\nuser 1144 0.1 1.0 99999 5760 ? S 09:00 0:00 proc-11\nuser 1157 0.1 1.0 99999 6191 ? S 09:00 0:00 proc-12\nuser 1170 0.1 1.0 99999 6622 ? S 09:00 0:00 proc-13\nuser 1183 0.1 1.0 99999 7053 ? S 09:00 0:00 proc-14\nuser 1196 0.1 1.0 99999 7484 ? S 09:00 0:00 proc-15\nuser 1209 0.1 1.0 99999 7915 ? S 09:00 0:00 proc-16\nuser 1222 0.1 1.0 99999 8346 ? S 09:00 0:00 proc-17\nuser 1235 0.1 1.0 99999 90000 ? S 09:00 0:00 proc-18\nuser 1248 0.1 1.0 99999 9208 ? S 09:00 0:00 proc-19\nuser 1261 0.1 1.0 99999 9639 ? S 09:00 0:00 proc-20\nuser 1274 0.1 1.0 99999 10070 ? S 09:00 0:00 proc-21\nuser 1287 0.1 1.0 99999 10501 ? S 09:00 0:00 proc-22\nuser 1300 0.1 1.0 99999 10932 ? S 09:00 0:00 proc-23\nuser 1313 0.1 1.0 99999 11363 ? S 09:00 0:00 proc-24\nuser 1326 0.1 1.0 99999 11794 ? S 09:00 0:00 proc-25\nuser 1339 0.1 1.0 99999 12225 ? S 09:00 0:00 proc-26\nuser 1352 0.1 1.0 99999 90000 ? S 09:00 0:00 proc-27\nuser 1365 0.1 1.0 99999 13087 ? S 09:00 0:00 proc-28\nuser 1378 0.1 1.0 99999 13518 ? S 09:00 0:00 proc-29\nuser 1391 0.1 1.0 99999 13949 ? S 09:00 0:00 proc-30\nuser 1404 0.1 1.0 99999 14380 ? S 09:00 0:00 proc-31\nuser 1417 0.1 1.0 99999 14811 ? S 09:00 0:00 proc-32\nuser 1430 0.1 1.0 99999 15242 ? S 09:00 0:00 proc-33\nuser 1443 0.1 1.0 99999 15673 ? S 09:00 0:00 proc-34\nuser 1456 0.1 1.0 99999 16104 ? S 09:00 0:00 proc-35\nuser 1469 0.1 1.0 99999 90000 ? S 09:00 0:00 proc-36\nuser 1482 0.1 1.0 99999 16966 ? S 09:00 0:00 proc-37\nuser 1495 0.1 1.0 99999 17397 ? S 09:00 0:00 proc-38\nuser 1508 0.1 1.0 99999 17828 ? S 09:00 0:00 proc-39\nuser 1521 0.1 1.0 99999 18259 ? S 09:00 0:00 proc-40\nuser 1534 0.1 1.0 99999 18690 ? S 09:00 0:00 proc-41\nuser 1547 0.1 1.0 99999 19121 ? S 09:00 0:00 proc-42\nuser 1560 0.1 1.0 99999 19552 ? S 09:00 0:00 proc-43\nuser 1573 0.1 1.0 99999 19983 ? S 09:00 0:00 proc-44\nuser 1586 0.1 1.0 99999 90000 ? S 09:00 0:00 proc-45\nuser 1599 0.1 1.0 99999 20845 ? S 09:00 0:00 proc-46\nuser 1612 0.1 1.0 99999 21276 ? S 09:00 0:00 proc-47\nuser 1625 0.1 1.0 99999 21707 ? S 09:00 0:00 proc-48\nuser 1638 0.1 1.0 99999 22138 ? S 09:00 0:00 proc-49\nuser 1651 0.1 1.0 99999 22569 ? S 09:00 0:00 proc-50\nuser 1664 0.1 1.0 99999 23000 ? S 09:00 0:00 proc-51\nuser 1677 0.1 1.0 99999 23431 ? S 09:00 0:00 proc-52\nuser 1690 0.1 1.0 99999 23862 ? S 09:00 0:00 proc-53\nuser 1703 0.1 1.0 99999 90000 ? S 09:00 0:00 proc-54\nuser 1716 0.1 1.0 99999 24724 ? S 09:00 0:00 proc-55\nuser 1729 0.1 1.0 99999 25155 ? S 09:00 0:00 proc-56\nuser 1742 0.1 1.0 99999 25586 ? S 09:00 0:00 proc-57\nuser 1755 0.1 1.0 99999 26017 ? S 09:00 0:00 proc-58\nuser 1768 0.1 1.0 99999 26448 ? S 09:00 0:00 proc-59\n"
+          },
+          {
+            "path": "sentinel",
+            "content": "keep"
+          }
+        ],
+        "expectedFiles": {
+          "top5.txt": "1001 90000\n1118 90000\n1235 90000\n1352 90000\n1469 90000\n"
+        },
+        "unchangedFiles": [
+          "ps_snapshot.txt",
+          "sentinel"
+        ]
+      }
+    ]
+  },
+  "tags": [
+    "cli",
+    "process",
+    "top-n"
+  ],
+  "scenarioVersion": "3.1.0",
+  "scenarioHash": "adaa739488b56617",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

@@ -1,0 +1,10 @@
+[
+  {
+    "tool": "config.generate",
+    "args": {}
+  },
+  {
+    "tool": "deliver",
+    "args": {}
+  }
+]

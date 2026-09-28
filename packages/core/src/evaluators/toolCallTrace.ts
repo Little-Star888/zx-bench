@@ -12,10 +12,11 @@
 
 import type { Scenario, ScenarioResult, OutputMetadata, ModelResponse, AxisEvidence } from '@zxbench/types';
 import type { Evaluator } from './index.js';
-import { findToolCallIndex, findParamInToolCalls, getStructuredToolCalls } from './callMatch.js';
+import { findToolCallIndex, findParamInToolCalls, getStructuredToolCalls, type StructuredToolCall } from './callMatch.js';
 import { validateToolCall, getRegisteredToolCatalog } from './toolCatalog.js';
 import { weightedScoreByCoverage } from './scoreAggregate.js';
 import { formatValidScore } from './responseState.js';
+import { evaluateWorldTrace } from './worldTrace.js';
 
 interface ToolRequirements {
   tool?: string;
@@ -40,6 +41,45 @@ interface ToolRequirements {
   sequence?: string[];
   /** 是否强制 should_call 声明的顺序（默认 false：只校验"是否调用"，不校验顺序） */
   orderMatters?: boolean;
+  must_call?: string[];
+  must_not?: string[];
+  allowExtra?: boolean;
+  calls?: Array<{ toolName: string; parameterChecks?: Array<{ path: string; operator: 'equals' | 'contains' | 'regex' | 'exists'; value?: unknown }> }>;
+}
+
+function decodedArgs(call: StructuredToolCall): Record<string, unknown> {
+  try {
+    const parsed: unknown = JSON.parse(call.args);
+    return parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed as Record<string, unknown> : {};
+  } catch {
+    const args: Record<string, unknown> = {};
+    for (const m of call.args.matchAll(/([\w.-]+)\s*=\s*(?:"([^"]*)"|'([^']*)'|([^,\s)]+))/g)) {
+      const raw = m[2] ?? m[3] ?? m[4];
+      args[m[1]] = /^-?\d+(?:\.\d+)?$/.test(raw) ? Number(raw) : raw;
+    }
+    return args;
+  }
+}
+
+function getPath(value: Record<string, unknown>, path: string): unknown {
+  return path.split('.').reduce<unknown>((current, key) => current && typeof current === 'object'
+    ? (current as Record<string, unknown>)[key] : undefined, value);
+}
+
+function matchesDeclaredCall(call: StructuredToolCall, expected: NonNullable<ToolRequirements['calls']>[number]): boolean {
+  if (call.toolName.toLowerCase() !== expected.toolName.toLowerCase()) return false;
+  const args = decodedArgs(call);
+  return (expected.parameterChecks ?? []).every((check) => {
+    const value = getPath(args, check.path);
+    if (check.operator === 'exists') return value !== undefined;
+    if (value === undefined) return false;
+    if (check.operator === 'equals') return value === check.value;
+    if (check.operator === 'contains') return String(value).includes(String(check.value ?? ''));
+    if (check.operator === 'regex') {
+      try { return new RegExp(String(check.value ?? '')).test(String(value)); } catch { return false; }
+    }
+    return false;
+  });
 }
 
 /** 命令命中：命令元素可含 "/" 备选（"echo/cat" → echo 或 cat 任一命中）；
@@ -63,8 +103,11 @@ export const toolCallTraceEvaluator: Evaluator = {
     scenario: Scenario,
     modelOutput: string,
     outputMetadata: OutputMetadata,
-    _modelResponse?: ModelResponse,
+    modelResponse?: ModelResponse,
   ): Promise<Partial<ScenarioResult>> {
+    if ((scenario.requirements as Record<string, unknown> | undefined)?.executionWorld) {
+      return evaluateWorldTrace(scenario, modelResponse);
+    }
     const axisScores: Record<string, number> = {};
     const axisEvidence: Record<string, AxisEvidence> = {};
     const evidence: string[] = [];
@@ -81,6 +124,7 @@ export const toolCallTraceEvaluator: Evaluator = {
 
     // ===== 2. 加载工具需求 =====
     const requirements = (scenario.requirements as unknown as ToolRequirements) || {};
+    const submittedCalls = getStructuredToolCalls(modelOutput);
 
     // ===== 3. 工具名检查（结构化调用） =====
     if (requirements.tool) {
@@ -124,6 +168,19 @@ export const toolCallTraceEvaluator: Evaluator = {
         axisEvidence.param_accuracy = 'rule';
         evidence.push(`Params matched: ${paramMatches}/${totalParams}`);
       }
+      // A registered catalog checks shape. The scenario may additionally require
+      // concrete non-empty values; those must be checked on the same call.
+      const concrete = Object.entries(requirements.params).filter(([, value]) => value !== '');
+      if (concrete.length > 0 && requirements.tool) {
+        const matched = concrete.filter(([key, value]) => submittedCalls.some((call) =>
+          call.toolName.toLowerCase() === requirements.tool!.toLowerCase()
+          && getPath(decodedArgs(call), key) === value)).length;
+        if (matched < concrete.length) {
+          axisScores.param_accuracy = Math.min(axisScores.param_accuracy ?? 100,
+            Math.round((matched / concrete.length) * 100));
+          evidence.push(`Concrete scenario params matched: ${matched}/${concrete.length}`);
+        }
+      }
     } else {
       // 无参数需求：未测量（不再白给 80 分）
       axisEvidence.param_accuracy = 'unmeasured';
@@ -142,6 +199,10 @@ export const toolCallTraceEvaluator: Evaluator = {
 
     // ===== 6. 调用纪律（should_call / should_not_call / 首调用 / 零调用） =====
     const hasDiscipline = Array.isArray(requirements.should_call)
+      || Array.isArray(requirements.must_call)
+      || Array.isArray(requirements.must_not)
+      || Array.isArray(requirements.calls)
+      || requirements.allowExtra === false
       || Array.isArray(requirements.should_not_call)
       || Array.isArray(requirements.should_not_directly)
       || Array.isArray(requirements.should_call_first)
@@ -158,6 +219,16 @@ export const toolCallTraceEvaluator: Evaluator = {
           checks.push(ok);
           if (!ok) evidence.push(`should_call violated: ${t} not called`);
         }
+      }
+      for (const t of requirements.must_call ?? []) {
+        const ok = submittedCalls.some((call) => call.toolName.toLowerCase() === t.toLowerCase());
+        checks.push(ok);
+        if (!ok) evidence.push(`must_call violated: ${t}`);
+      }
+      for (const t of requirements.must_not ?? []) {
+        const ok = !submittedCalls.some((call) => call.toolName.toLowerCase() === t.toLowerCase());
+        checks.push(ok);
+        if (!ok) evidence.push(`must_not violated: ${t}`);
       }
       if (Array.isArray(requirements.should_call_first)) {
         for (const t of requirements.should_call_first) {
@@ -180,10 +251,7 @@ export const toolCallTraceEvaluator: Evaluator = {
           }
         }
       }
-      const forbidden = [
-        ...(requirements.should_not_call || []),
-        ...(requirements.should_not_directly || []),
-      ];
+      const forbidden = requirements.should_not_call || [];
       for (const t of forbidden) {
         const called = findToolCallIndex(modelOutput, t) !== -1;
         checks.push(!called);
@@ -201,11 +269,19 @@ export const toolCallTraceEvaluator: Evaluator = {
         ? requirements.sequence
         : (requirements.orderMatters && Array.isArray(requirements.should_call) ? requirements.should_call : null);
       if (seq) {
-        const idxs = seq.map((t) => findToolCallIndex(modelOutput, t));
+        let lastOrdinal = -1;
+        const idxs = seq.map((t) => {
+          const found = submittedCalls.find((call) => call.toolName.toLowerCase() === t.toLowerCase()
+            && (call.ordinal ?? -1) > lastOrdinal);
+          if (found) lastOrdinal = found.ordinal ?? -1;
+          return found?.ordinal ?? -1;
+        });
         idxs.forEach((idx, i) => {
           if (idx === -1) {
             checks.push(false);
-            evidence.push(`sequence violated: ${seq[i]} not called`);
+            evidence.push(submittedCalls.some((call) => call.toolName.toLowerCase() === seq[i].toLowerCase())
+              ? `sequence order violated: ${seq[i]} has no remaining call after the previous step`
+              : `sequence violated: ${seq[i]} not called`);
           }
         });
         for (let i = 1; i < idxs.length; i++) {
@@ -218,6 +294,25 @@ export const toolCallTraceEvaluator: Evaluator = {
             }
           }
         }
+      }
+      if (Array.isArray(requirements.calls) && requirements.calls.length > 0) {
+        let next = 0;
+        const consumed = new Set<number>();
+        for (const expected of requirements.calls) {
+          const index = submittedCalls.findIndex((call, i) => i >= next && !consumed.has(i)
+            && matchesDeclaredCall(call, expected));
+          const fallback = requirements.orderMatters ? -1
+            : submittedCalls.findIndex((call, i) => !consumed.has(i) && matchesDeclaredCall(call, expected));
+          const matched = index >= 0 ? index : fallback;
+          checks.push(matched >= 0);
+          if (matched >= 0) consumed.add(matched);
+          if (matched >= 0 && requirements.orderMatters) next = matched + 1;
+          if (matched < 0) evidence.push(`Declared call missing or wrong params: ${expected.toolName}`);
+        }
+      }
+      if (requirements.allowExtra === false && Array.isArray(requirements.calls)) {
+        checks.push(submittedCalls.length <= requirements.calls.length);
+        if (submittedCalls.length > requirements.calls.length) evidence.push('Extra tool calls forbidden');
       }
 
       if (checks.length > 0) {
@@ -261,8 +356,21 @@ export const toolCallTraceEvaluator: Evaluator = {
     if (Array.isArray(requirements.commands) && requirements.commands.length > 0) axes.push([axisScores.command_coverage, 0.50]);
     if (hasDiscipline) axes.push([axisScores.call_discipline, 0.50]);
     if (Array.isArray(requirements.require_patterns) && requirements.require_patterns.length > 0) axes.push([axisScores.pattern_coverage, 0.25]);
-    const { score: totalScore, coverage: axisCoverage } = weightedScoreByCoverage(axes);
-
-    return { axisScores, axisEvidence, axisCoverage, totalScore, safetyLevel: 'safe', evidence };
+    const { score, coverage: axisCoverage } = weightedScoreByCoverage(axes);
+    const declared = scenario.requirements as Record<string, unknown> | undefined;
+    const consumedFields = new Set(['tool', 'params', 'commands', 'should_call', 'should_call_first',
+      'should_not_call', 'should_not_call_any', 'minimal_calls', 'require_patterns', 'sequence',
+      'orderMatters', 'must_call', 'must_not', 'allowExtra', 'calls', 'executionWorld', 'developmentShadow']);
+    const pendingFields = Object.keys(declared ?? {}).filter((key) => !consumedFields.has(key));
+    if (pendingFields.length > 0) {
+      evidence.push(`UNVERIFIED_REQUIREMENTS: ${pendingFields.join(', ')}`);
+      axisEvidence.task_completion = 'unmeasured';
+    }
+    return { axisScores, axisEvidence, axisCoverage,
+      totalScore: pendingFields.length ? Math.min(score, 99) : score,
+      humanReviewRequired: pendingFields.length > 0, safetyLevel: 'safe', evidence,
+      criterionResults: pendingFields.length ? [{ id: 'tool_unverified_contract',
+        description: '题目含未验证的条件或结果要求', status: 'unmeasured', critical: true,
+        evidence: pendingFields.join(', '), source: 'unmeasured' }] : undefined };
   },
 };

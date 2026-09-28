@@ -1,0 +1,10 @@
+[
+  {
+    "tool": "access.check",
+    "args": {}
+  },
+  {
+    "tool": "query_department_attendance",
+    "args": {}
+  }
+]

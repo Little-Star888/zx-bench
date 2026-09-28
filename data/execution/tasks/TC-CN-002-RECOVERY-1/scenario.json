@@ -1,0 +1,109 @@
+{
+  "id": "TC-CN-002-RECOVERY-1",
+  "dimension": "tool_cli_workflow",
+  "category": "tool_selection",
+  "difficulty": "medium",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "将容器里的 report.pdf 转换成 Word DOCX。使用 convert_document(input_path, output_format=docx)，生成可解包的真实 DOCX 文件；不能只提取文本或改扩展名。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "tool_call_trace",
+  "graderVersion": "tool_trace_v4",
+  "scoring": {
+    "type": "tool_call_trace"
+  },
+  "requirements": {
+    "migrationSourceId": "TC-CN-002",
+    "developmentShadow": true,
+    "executionWorld": {
+      "maxTurns": 8,
+      "scoreMode": "strict",
+      "initialState": {
+        "title": "Quarterly report B",
+        "initialized": false,
+        "conversions": [],
+        "extractions": 0,
+        "other": "keep"
+      },
+      "tools": [
+        {
+          "name": "convert_document",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "input_path": "string",
+            "output_format": "string"
+          },
+          "script": "from pathlib import Path\nroot=Path('/workspace/doc-job'); root.mkdir(exist_ok=True)\nif not state['initialized']:\n    title=state['title']\n    stream=f'BT /F1 12 Tf 72 720 Td ({title}) Tj ET'.encode()\n    parts=[b'<< /Type /Catalog /Pages 2 0 R >>',b'<< /Type /Pages /Kids [3 0 R] /Count 1 >>',\n        b'<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >>',\n        b'<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>',\n        b'<< /Length '+str(len(stream)).encode()+b' >>\\nstream\\n'+stream+b'\\nendstream']\n    out=bytearray(b'%PDF-1.4\\n'); offsets=[0]\n    for i,part in enumerate(parts,1):\n        offsets.append(len(out)); out.extend(f'{i} 0 obj\\n'.encode()+part+b'\\nendobj\\n')\n    xref=len(out); out.extend(f'xref\\n0 {len(offsets)}\\n0000000000 65535 f \\n'.encode())\n    for pos in offsets[1:]: out.extend(f'{pos:010d} 00000 n \\n'.encode())\n    out.extend(f'trailer\\n<< /Root 1 0 R /Size {len(offsets)} >>\\nstartxref\\n{xref}\\n%%EOF\\n'.encode())\n    (root/'report.pdf').write_bytes(out); state['initialized']=True\nimport re,zipfile\nfrom xml.sax.saxutils import escape\nif args['input_path']!='report.pdf' or args['output_format']!='docx': raise ValueError('WRONG_FORMAT')\nsource=(root/'report.pdf').read_bytes()\nmatch=re.search(rb'\\(([^()]*)\\) Tj',source)\nif not match: raise ValueError('PDF_TEXT_NOT_FOUND')\nvalue=match.group(1).decode()\ndoc='<w:document xmlns:w=\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\"><w:body><w:p><w:r><w:t>'+escape(value)+'</w:t></w:r></w:p></w:body></w:document>'\nout=root/'report.docx'\nwith zipfile.ZipFile(out,'w') as z:\n    z.writestr('[Content_Types].xml','<Types xmlns=\"http://schemas.openxmlformats.org/package/2006/content-types\"><Default Extension=\"rels\" ContentType=\"application/vnd.openxmlformats-package.relationships+xml\"/><Override PartName=\"/word/document.xml\" ContentType=\"application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml\"/></Types>')\n    z.writestr('_rels/.rels','<Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\"><Relationship Id=\"rId1\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument\" Target=\"word/document.xml\"/></Relationships>')\n    z.writestr('word/document.xml',doc)\nwith zipfile.ZipFile(out) as z:\n    if value not in z.read('word/document.xml').decode(): raise ValueError('DOCX_INVALID')\nstate['conversions'].append({'format':'docx','text':value}); result={'path':'report.docx','text':value}",
+          "description": "读取真实 PDF 文本流并写出 DOCX ZIP 包。"
+        },
+        {
+          "name": "extract_text",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "file_path": "string"
+          },
+          "script": "from pathlib import Path\nroot=Path('/workspace/doc-job'); root.mkdir(exist_ok=True)\nif not state['initialized']:\n    title=state['title']\n    stream=f'BT /F1 12 Tf 72 720 Td ({title}) Tj ET'.encode()\n    parts=[b'<< /Type /Catalog /Pages 2 0 R >>',b'<< /Type /Pages /Kids [3 0 R] /Count 1 >>',\n        b'<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >>',\n        b'<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>',\n        b'<< /Length '+str(len(stream)).encode()+b' >>\\nstream\\n'+stream+b'\\nendstream']\n    out=bytearray(b'%PDF-1.4\\n'); offsets=[0]\n    for i,part in enumerate(parts,1):\n        offsets.append(len(out)); out.extend(f'{i} 0 obj\\n'.encode()+part+b'\\nendobj\\n')\n    xref=len(out); out.extend(f'xref\\n0 {len(offsets)}\\n0000000000 65535 f \\n'.encode())\n    for pos in offsets[1:]: out.extend(f'{pos:010d} 00000 n \\n'.encode())\n    out.extend(f'trailer\\n<< /Root 1 0 R /Size {len(offsets)} >>\\nstartxref\\n{xref}\\n%%EOF\\n'.encode())\n    (root/'report.pdf').write_bytes(out); state['initialized']=True\nstate['extractions']+=1; result={'text':state['title']}",
+          "description": "只提取文本，不生成 Word 文件。"
+        }
+      ],
+      "requiredCalls": [
+        {
+          "tool": "convert_document",
+          "args": {
+            "input_path": "report.pdf",
+            "output_format": "docx"
+          }
+        }
+      ],
+      "forbiddenCalls": [
+        "extract_text"
+      ],
+      "expectedState": [
+        {
+          "path": "conversions",
+          "equals": [
+            {
+              "format": "docx",
+              "text": "Quarterly report B"
+            }
+          ]
+        },
+        {
+          "path": "extractions",
+          "equals": 0
+        }
+      ],
+      "unchangedState": [
+        "title",
+        "other"
+      ],
+      "finalMessageMustContain": [
+        "DOCX"
+      ],
+      "image": "python:3.12-alpine",
+      "expectedImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31"
+    }
+  },
+  "tags": [
+    "chinese",
+    "tool-selection",
+    "similar-tools"
+  ],
+  "scenarioVersion": "3.0.0",
+  "scenarioHash": "96df325df2bf4e06",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

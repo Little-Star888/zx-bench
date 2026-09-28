@@ -1,0 +1,154 @@
+{
+  "id": "TC-CN-036-RECOVERY-0",
+  "dimension": "tool_cli_workflow",
+  "category": "multi_step_chain",
+  "difficulty": "adversarial",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "检查指定服务器的真实状态。在线时先拉取新代码，再重启服务；离线时只发送告警，不得拉取或重启。请根据 check_server 返回结果选择分支。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "tool_call_trace",
+  "graderVersion": "tool_trace_v4",
+  "scoring": {
+    "type": "tool_call_trace"
+  },
+  "requirements": {
+    "migrationSourceId": "TC-CN-036",
+    "developmentShadow": true,
+    "executionWorld": {
+      "maxTurns": 8,
+      "scoreMode": "strict",
+      "initialState": {
+        "host": "app-1.internal",
+        "online": true,
+        "initialized": false,
+        "revision": "old",
+        "pulls": 0,
+        "restarts": 0,
+        "alerts": [],
+        "otherHost": {
+          "revision": "keep"
+        }
+      },
+      "tools": [
+        {
+          "name": "check_server",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "host": "string"
+          },
+          "script": "from pathlib import Path\nroot=Path('/workspace/service'); root.mkdir(exist_ok=True)\nif not state['initialized']:\n    (root/'revision').write_text('old')\n    if state['online']: (root/'online').write_text('ready')\n    state['initialized']=True\nif args['host']!=state['host']: raise ValueError('UNKNOWN_HOST')\nresult={'status':'online' if (root/'online').is_file() else 'offline'}",
+          "description": "检查隔离环境中的服务器可用标记。"
+        },
+        {
+          "name": "git_pull",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "repo": "string"
+          },
+          "script": "from pathlib import Path\nroot=Path('/workspace/service'); root.mkdir(exist_ok=True)\nif not state['initialized']:\n    (root/'revision').write_text('old')\n    if state['online']: (root/'online').write_text('ready')\n    state['initialized']=True\nif args['repo']!='service': raise ValueError('UNKNOWN_REPO')\n(root/'revision').write_text('new'); state['revision']='new'; state['pulls']+=1\nresult={'revision':'new'}",
+          "description": "更新服务目录的源码版本。",
+          "requirePriorCall": {
+            "tool": "check_server"
+          }
+        },
+        {
+          "name": "restart_service",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "name": "string"
+          },
+          "script": "from pathlib import Path\nroot=Path('/workspace/service'); root.mkdir(exist_ok=True)\nif not state['initialized']:\n    (root/'revision').write_text('old')\n    if state['online']: (root/'online').write_text('ready')\n    state['initialized']=True\nif args['name']!='service': raise ValueError('UNKNOWN_SERVICE')\nif (root/'revision').read_text()!='new': raise ValueError('PULL_REQUIRED')\nstate['restarts']+=1; result={'running':True,'revision':'new'}",
+          "description": "根据当前源码重新启动服务。",
+          "requirePriorCall": {
+            "tool": "git_pull"
+          }
+        },
+        {
+          "name": "send_alert",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "message": "string"
+          },
+          "script": "from pathlib import Path\nroot=Path('/workspace/service'); root.mkdir(exist_ok=True)\nif not state['initialized']:\n    (root/'revision').write_text('old')\n    if state['online']: (root/'online').write_text('ready')\n    state['initialized']=True\nstate['alerts'].append(args['message']); result={'sent':True}",
+          "description": "记录合成告警，不外发。",
+          "requirePriorCall": {
+            "tool": "check_server"
+          }
+        }
+      ],
+      "requiredCalls": [
+        {
+          "tool": "check_server",
+          "args": {
+            "host": "app-1.internal"
+          }
+        },
+        {
+          "tool": "git_pull",
+          "args": {
+            "repo": "service"
+          }
+        },
+        {
+          "tool": "restart_service",
+          "args": {
+            "name": "service"
+          }
+        }
+      ],
+      "forbiddenCalls": [
+        "send_alert"
+      ],
+      "expectedState": [
+        {
+          "path": "revision",
+          "equals": "new"
+        },
+        {
+          "path": "pulls",
+          "equals": 1
+        },
+        {
+          "path": "restarts",
+          "equals": 1
+        },
+        {
+          "path": "alerts",
+          "equals": []
+        }
+      ],
+      "unchangedState": [
+        "otherHost",
+        "host"
+      ],
+      "image": "python:3.12-alpine",
+      "expectedImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31"
+    }
+  },
+  "tags": [
+    "chinese",
+    "multi-step",
+    "conditional-branch",
+    "adversarial"
+  ],
+  "scenarioVersion": "3.0.0",
+  "scenarioHash": "3e0def9e59d6de86",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

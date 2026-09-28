@@ -1,0 +1,61 @@
+[
+  {
+    "tool": "read_file",
+    "args": {
+      "path": "input.csv"
+    }
+  },
+  {
+    "tool": "convert_format",
+    "args": {
+      "data": "id,name\n11,Li\n12,Wang\n",
+      "from": "csv",
+      "to": "json"
+    }
+  },
+  {
+    "tool": "validate_data",
+    "args": {
+      "data": [
+        {
+          "id": 11,
+          "name": "Li"
+        },
+        {
+          "id": 12,
+          "name": "Wang"
+        }
+      ],
+      "schema": {
+        "id": "integer",
+        "name": "string"
+      }
+    }
+  },
+  {
+    "tool": "import_database",
+    "args": {
+      "data": [
+        {
+          "id": 11,
+          "name": "Li"
+        },
+        {
+          "id": 12,
+          "name": "Wang"
+        }
+      ],
+      "table": "users"
+    }
+  },
+  {
+    "tool": "generate_report",
+    "args": {
+      "type": "quality",
+      "data": {
+        "rows": 2,
+        "errors": 0
+      }
+    }
+  }
+]

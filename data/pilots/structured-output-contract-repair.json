@@ -1,0 +1,991 @@
+[
+  {
+    "id": "SO-CN-001",
+    "dimension": "structured_output",
+    "category": "json",
+    "difficulty": "easy",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "promptTemplate": "请生成一个公司组织结构的 JSON 数据。\n\n要求：\n1. 包含公司名称（字段名 company_name）、成立日期（founded_date）、地址（address）\n2. 包含 3 个部门（字段名 departments），每个部门有 name、leader、employee_count\n3. 每个部门包含 2-3 个项目（字段名 projects），项目有 name 和 status\n4. 输出纯 JSON，不要 markdown 代码块",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "json",
+      "output_policy": "raw_only",
+      "requiredFields": [
+        "company_name",
+        "departments",
+        "departments[0].name",
+        "departments[0].projects[0].name"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.15,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.45,
+        "cross_field_consistency": 0.05,
+        "output_discipline": 0.15
+      },
+      "schema": {
+        "type": "object",
+        "required": [
+          "company_name",
+          "founded_date",
+          "address",
+          "departments"
+        ],
+        "properties": {
+          "company_name": {
+            "type": "string"
+          },
+          "founded_date": {
+            "type": "string"
+          },
+          "address": {
+            "type": [
+              "string",
+              "object"
+            ]
+          },
+          "departments": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 3,
+            "items": {
+              "type": "object",
+              "required": [
+                "name",
+                "leader",
+                "employee_count",
+                "projects"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "employee_count": {
+                  "type": "integer"
+                },
+                "projects": {
+                  "type": "array",
+                  "minItems": 2,
+                  "maxItems": 3,
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "name",
+                      "status"
+                    ],
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "status": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "tags": [
+      "chinese",
+      "json",
+      "nested-object"
+    ],
+    "scenarioVersion": "2.1.2",
+    "scenarioHash": "fdac2d770cc31bd7",
+    "responseMode": null,
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null
+  },
+  {
+    "id": "SO-CN-002",
+    "dimension": "structured_output",
+    "category": "json",
+    "difficulty": "easy",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "promptTemplate": "请生成一个用户列表的 JSON 响应，模拟 REST API 返回格式。\n\n要求：\n1. 包含分页信息：page, pageSize, total, totalPages\n2. 包含 data 数组，每个元素有 id, name, email, role, createdAt\n3. 生成5条数据\n4. 日期格式为 ISO 8601\n5. role 只能是 admin, user, moderator 之一\n6. 输出纯 JSON",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "json",
+      "output_policy": "raw_only",
+      "requiredFields": [
+        "page",
+        "pageSize",
+        "total",
+        "totalPages",
+        "data",
+        "data[0].id",
+        "data[0].role",
+        "data[0].createdAt"
+      ],
+      "schema": {
+        "type": "object",
+        "required": [
+          "page",
+          "pageSize",
+          "total",
+          "totalPages",
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "minItems": 5,
+            "items": {
+              "type": "object",
+              "required": [
+                "id",
+                "name",
+                "email",
+                "role",
+                "createdAt"
+              ],
+              "properties": {
+                "role": {
+                  "enum": [
+                    "admin",
+                    "user",
+                    "moderator"
+                  ]
+                },
+                "createdAt": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              }
+            }
+          }
+        }
+      },
+      "axis_weights": {
+        "syntax_parse": 0.15,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.45,
+        "cross_field_consistency": 0.05,
+        "output_discipline": 0.15
+      },
+      "constraints": [
+        "length:data=5",
+        "type:page=integer",
+        "type:pageSize=integer",
+        "type:total=integer",
+        "type:totalPages=integer"
+      ]
+    },
+    "tags": [
+      "chinese",
+      "json",
+      "pagination",
+      "api-response"
+    ],
+    "scenarioVersion": "2.3.2",
+    "scenarioHash": "0f03b36af47f285e",
+    "responseMode": null,
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null
+  },
+  {
+    "id": "SO-CN-004",
+    "dimension": "structured_output",
+    "category": "json",
+    "difficulty": "hard",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "promptTemplate": "请为一个\"员工信息管理系统\"生成 JSON Schema（draft-07）。\n\n要求：\n1. 定义 Employee 对象，包含：id, name, department, position, salary, hire_date, skills, address\n2. skills 是字符串数组，至少1项\n3. address 是嵌套对象（province, city, district, street, zipcode）\n4. salary 是数字，最小值3000，最大值200000\n5. hire_date 格式为 date\n6. department 枚举值：技术部、产品部、市场部、人事部、财务部\n7. 必填字段：id, name, department, hire_date\n8. 包含 $schema, title, description 顶级字段\n9. 输出纯 JSON",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "json",
+      "output_policy": "raw_only",
+      "requiredFields": [
+        "$schema",
+        "title",
+        "description",
+        "type",
+        "properties",
+        "required"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.15,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.45,
+        "cross_field_consistency": 0.05,
+        "output_discipline": 0.15
+      },
+      "constraints": [
+        "valueEq:properties.salary.minimum=3000",
+        "valueEq:properties.salary.maximum=200000",
+        "valueEq:properties.skills.minItems=1",
+        "valueEq:properties.hire_date.format=date",
+        "jsonSetEq:properties.department.enum=[\"技术部\",\"产品部\",\"市场部\",\"人事部\",\"财务部\"]",
+        "arrayContainsAll:required=[\"id\",\"name\",\"department\",\"hire_date\"]"
+      ]
+    },
+    "tags": [
+      "chinese",
+      "json",
+      "json-schema",
+      "validation"
+    ],
+    "scenarioVersion": "2.0.2",
+    "scenarioHash": "ba098bb219386027",
+    "responseMode": null,
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null
+  },
+  {
+    "id": "SO-CN-005",
+    "dimension": "structured_output",
+    "category": "json",
+    "difficulty": "hard",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "promptTemplate": "请生成一个包含以下内容的 JSON 对象：\n\n1. name: 包含引号的字符串，如：他说\"你好\"\n2. path: Windows 路径，如：C:\\Users\\admin\\file.txt\n3. description: 包含换行符的多行文本\n4. emoji: 包含 emoji 表情，如：🎉🚀💡\n5. chinese: 包含中文特殊标点，如：《》【】「」\n6. url: 包含查询参数的 URL\n7. code: 包含代码片段，有反斜杠和反引号\n8. null_value: null\n9. empty_string: 空字符串\n\n输出纯 JSON，确保所有特殊字符正确转义。",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "json",
+      "output_policy": "raw_only",
+      "requiredFields": [
+        "name",
+        "path",
+        "description",
+        "emoji",
+        "chinese",
+        "url",
+        "code",
+        "null_value",
+        "empty_string"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.15,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.45,
+        "cross_field_consistency": 0.05,
+        "output_discipline": 0.15
+      },
+      "constraints": [
+        "matches:name:\"",
+        "matches:path:^[A-Za-z]:\\\\",
+        "matches:description:\\n",
+        "matches:emoji:[\\u{1F300}-\\u{1FAFF}]",
+        "matches:chinese:[《》【】「」]",
+        "matches:url:\\?",
+        "matches:code:\\\\",
+        "matches:code:`",
+        "type:null_value=null",
+        "valueEq:empty_string=\"\""
+      ]
+    },
+    "tags": [
+      "chinese",
+      "json",
+      "special-characters",
+      "adversarial",
+      "escaping"
+    ],
+    "scenarioVersion": "2.1.2",
+    "scenarioHash": "76ae6fc722f6cb33",
+    "responseMode": null,
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null
+  },
+  {
+    "id": "SO-CN-011",
+    "dimension": "structured_output",
+    "category": "csv_yaml",
+    "difficulty": "medium",
+    "language": "general",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "promptTemplate": "请生成一个产品目录 CSV，包含需要转义的特殊字符。\n\n要求：\n1. 表头：产品名,描述,价格,标签\n2. 至少5行数据\n3. 描述字段中必须包含逗号（用双引号包裹该字段）\n4. 至少一个字段包含双引号（用双双引号转义）\n5. 标签字段包含多个标签用分号分隔\n6. 价格保留两位小数\n7. 纯 CSV 输出，符合 RFC 4180 标准",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "csv",
+      "output_policy": "raw_only",
+      "requiredFields": [
+        "产品名",
+        "描述",
+        "价格",
+        "标签"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.15,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.45,
+        "cross_field_consistency": 0.05,
+        "output_discipline": 0.15
+      },
+      "constraints": [
+        "jsonEq:headers=[\"产品名\",\"描述\",\"价格\",\"标签\"]",
+        "minLength:rows=5",
+        "csvSomeCell:1:,",
+        "csvSomeCell:1:\"",
+        "csvSomeCell:3:;",
+        "csvAllCell:2:^\\d+\\.\\d{2}$"
+      ]
+    },
+    "tags": [
+      "chinese",
+      "csv",
+      "escaping",
+      "rfc4180"
+    ],
+    "scenarioVersion": "2.0.2",
+    "scenarioHash": "7180e78b1535c880",
+    "responseMode": null,
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null
+  },
+  {
+    "dimension": "structured_output",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "scenarioVersion": "2.3.2",
+    "scenarioHash": "5674f69a3afa33af",
+    "responseMode": null,
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null,
+    "id": "SO-CN-031",
+    "category": "json",
+    "difficulty": "hard",
+    "language": "json",
+    "promptTemplate": "请为一个「多租户工单系统」生成 JSON Schema（draft-07）。\n\n要求：\n1. 顶级包含 $schema、$id、title、description、type、properties、required、$defs\n2. 定义 Ticket 对象：id（string, format 为 uuid）、tenantId、title、priority（枚举：low/medium/high/critical）、status（枚举：open/closed/pending）、assignee（引用 $defs 中的 User）、tags（字符串数组，minItems 1）、createdAt（string, format 为 date-time）\n3. 用 $defs 定义可复用的 User 对象（id、name、email）\n4. 用 oneOf 表达「assignee 是 User 对象 或 是 null」\n5. 用 pattern 约束 ticketNumber，例如以 TKT- 开头后跟数字\n6. required 至少包含 id、tenantId、title、priority、status、createdAt\n7. 输出纯 JSON，不要 markdown 代码块\n根 Schema 自身定义 Ticket 对象；$defs.User 仅供 assignee 引用。",
+    "requirements": {
+      "format": "json",
+      "output_policy": "raw_only",
+      "requiredFields": [
+        "$schema",
+        "$id",
+        "title",
+        "description",
+        "type",
+        "properties",
+        "required",
+        "$defs",
+        "properties.priority",
+        "properties.tags",
+        "properties.createdAt",
+        "properties.ticketNumber",
+        "**.oneOf",
+        "**.pattern",
+        "**.minItems"
+      ],
+      "schema": {
+        "type": "object",
+        "required": [
+          "$schema",
+          "type",
+          "properties",
+          "$defs"
+        ],
+        "properties": {
+          "properties": {
+            "type": "object"
+          },
+          "$defs": {
+            "type": "object"
+          },
+          "required": {
+            "type": "array",
+            "minItems": 4
+          }
+        }
+      },
+      "axis_weights": {
+        "syntax_parse": 0.15,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.45,
+        "cross_field_consistency": 0.05,
+        "output_discipline": 0.15
+      },
+      "constraints": [
+        "schemaAccepts:.={\"id\":\"123e4567-e89b-12d3-a456-426614174000\",\"tenantId\":\"tenant-1\",\"title\":\"工单\",\"priority\":\"low\",\"status\":\"open\",\"assignee\":null,\"tags\":[\"help\"],\"createdAt\":\"2024-03-20T12:00:00Z\",\"ticketNumber\":\"TKT-100\"}",
+        "schemaRejectsLiteral:.={\"id\":\"123e4567-e89b-12d3-a456-426614174000\",\"tenantId\":\"tenant-1\",\"title\":\"工单\",\"priority\":\"urgent\",\"status\":\"open\",\"assignee\":null,\"tags\":[\"help\"],\"createdAt\":\"2024-03-20T12:00:00Z\",\"ticketNumber\":\"TKT-100\"}",
+        "schemaRejectsLiteral:.={\"id\":\"123e4567-e89b-12d3-a456-426614174000\",\"tenantId\":\"tenant-1\",\"title\":\"工单\",\"priority\":\"low\",\"status\":\"open\",\"assignee\":null,\"tags\":[],\"createdAt\":\"2024-03-20T12:00:00Z\",\"ticketNumber\":\"TKT-100\"}",
+        "schemaRejectsLiteral:.={\"id\":\"123e4567-e89b-12d3-a456-426614174000\",\"tenantId\":\"tenant-1\",\"title\":\"工单\",\"priority\":\"low\",\"status\":\"open\",\"assignee\":null,\"tags\":[\"help\"],\"createdAt\":\"2024-03-20T12:00:00Z\",\"ticketNumber\":\"BAD-100\"}",
+        "schemaRejectsLiteral:.={\"id\":\"123e4567-e89b-12d3-a456-426614174000\",\"tenantId\":\"tenant-1\",\"title\":\"工单\",\"priority\":\"low\",\"status\":\"open\",\"assignee\":42,\"tags\":[\"help\"],\"createdAt\":\"2024-03-20T12:00:00Z\",\"ticketNumber\":\"TKT-100\"}"
+      ]
+    },
+    "tags": [
+      "json-schema",
+      "draft-07",
+      "defs",
+      "pattern",
+      "reuse"
+    ]
+  },
+  {
+    "dimension": "structured_output",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "scenarioVersion": "3.1.2",
+    "scenarioHash": "ffb06c07e7734f80",
+    "responseMode": null,
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null,
+    "id": "SO-CN-043",
+    "category": "csv_yaml",
+    "difficulty": "adversarial",
+    "language": "csv",
+    "promptTemplate": "请生成一个 CSV 商品表，表头**恰好**为 sku,name,desc,price,qty，并严格使用下列 5 行数据：\n\n| sku | name | desc | price | qty |\n| A-1 | 无线鼠标 | 静音, 便携, 支持蓝牙 | 129.00 | 12 |\n| A-2 | 机械键盘 | 轴体为\"青轴\", 手感清脆 | 499.00 | 5 |\n| A-3 | 显示器 | 尺寸 27 英寸<换行>分辨率 2560x1440 | 1899.00 | 3 |\n| A-4 | 数据线 | Type-C, 1.5 米 | 39.90 | 20 |\n| A-5 | 支架 | 铝合金, 可升降 | 259.00 | 8 |\n\n要求：\n1. 严格遵守 RFC 4180：单元格内容含逗号、双引号时，必须用双引号包裹整个单元格\n2. 单元格内的双引号必须写成两个连续双引号转义（\"\"）\n3. 第 3 行（显示器）的 desc 必须真的包含一个换行符：上表中的 <换行> 是占位标记，实际输出里该单元格必须跨两个物理行，因此整张表共 6 个物理行\n4. 不要 BOM，不要表头以外的空行\n5. 输出纯 CSV，不要 markdown 代码块，不要任何解释文字",
+    "requirements": {
+      "format": "csv",
+      "output_policy": "raw_only",
+      "requiredFields": [
+        "sku",
+        "name",
+        "desc",
+        "price",
+        "qty"
+      ],
+      "constraints": [
+        "csvCell:0:2:静音, 便携, 支持蓝牙",
+        "csvCell:1:2:轴体为\"青轴\", 手感清脆",
+        "csvCell:2:2:尺寸 27 英寸\\n分辨率 2560x1440",
+        "csvCell:3:2:Type-C, 1.5 米",
+        "csvCell:4:2:铝合金, 可升降",
+        "count:\":>=8",
+        "jsonEq:headers=[\"sku\",\"name\",\"desc\",\"price\",\"qty\"]",
+        "jsonEq:rows=[[\"A-1\",\"无线鼠标\",\"静音, 便携, 支持蓝牙\",\"129.00\",\"12\"],[\"A-2\",\"机械键盘\",\"轴体为\\\"青轴\\\", 手感清脆\",\"499.00\",\"5\"],[\"A-3\",\"显示器\",\"尺寸 27 英寸\\n分辨率 2560x1440\",\"1899.00\",\"3\"],[\"A-4\",\"数据线\",\"Type-C, 1.5 米\",\"39.90\",\"20\"],[\"A-5\",\"支架\",\"铝合金, 可升降\",\"259.00\",\"8\"]]"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.05,
+        "schema_compliance": 0.1,
+        "field_constraints": 0.55,
+        "cross_field_consistency": 0.1,
+        "output_discipline": 0.15
+      }
+    },
+    "tags": [
+      "csv",
+      "rfc4180",
+      "quoting",
+      "escape",
+      "multiline-cell"
+    ]
+  },
+  {
+    "dimension": "structured_output",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "scenarioVersion": "4.0.1",
+    "scenarioHash": "35d15e8624aecd89",
+    "responseMode": null,
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null,
+    "id": "SO-CN-047",
+    "category": "json",
+    "difficulty": "adversarial",
+    "language": "json",
+    "promptTemplate": "请输出一个 JSON 对象，顶层键**恰好**为 schema、config 两个，任何层级都**不得出现未声明的键**。\n\nconfig 描述「多环境部署配置」，其键**恰好**为 service、version、environments 三个：\n1. service：非空字符串；version：形如 1.2.3 的字符串\n2. environments：**恰好**含 dev、staging、prod 三个键\n3. dev / staging / prod 每个的值**恰好**含 replicas、image、env、resources 四个键\n4. replicas 为整数：dev 必须为 1，staging 必须为 2，prod 必须不小于 3\n5. image 为含冒号 tag 的字符串\n6. env **恰好**含 4 个键，键名为大写字母加下划线形式（如 DB_HOST、LOG_LEVEL）\n7. resources **恰好**含 cpu、memory 两个键，取值为字符串\n8. schema 必须在同一文档内描述上述全部约束（含 additionalProperties 为 false、pattern、enum、required、replicas 的整数上下界），且 config 必须满足 schema\n9. 输出纯 JSON，不要 markdown 代码块，不要任何解释文字",
+    "requirements": {
+      "format": "json",
+      "output_policy": "raw_only",
+      "requiredFields": [
+        "schema",
+        "config",
+        "config.environments",
+        "config.environments.prod.replicas"
+      ],
+      "constraints": [
+        "keys:.=schema,config",
+        "keys:config=service,version,environments",
+        "length:config.environments=3",
+        "keys:config.environments=dev,staging,prod",
+        "keys:config.environments.dev=replicas,image,env,resources",
+        "keys:config.environments.staging=replicas,image,env,resources",
+        "keys:config.environments.prod=replicas,image,env,resources",
+        "length:config.environments.dev.env=4",
+        "length:config.environments.staging.env=4",
+        "length:config.environments.prod.env=4",
+        "keys:config.environments.prod.resources=cpu,memory",
+        "type:config.environments.prod.replicas=number",
+        "schemaValidates:schema:config",
+        "type:schema.additionalProperties=boolean",
+        "valueEq:schema.additionalProperties=false",
+        "keys:config.environments.dev.resources=cpu,memory",
+        "matches:config.environments.dev.image:.+:.+",
+        "matches:config.environments.dev.resources.cpu:.+",
+        "matches:config.environments.dev.resources.memory:.+",
+        "keys:config.environments.staging.resources=cpu,memory",
+        "matches:config.environments.staging.image:.+:.+",
+        "matches:config.environments.staging.resources.cpu:.+",
+        "matches:config.environments.staging.resources.memory:.+",
+        "matches:config.environments.prod.image:.+:.+",
+        "matches:config.environments.prod.resources.cpu:.+",
+        "matches:config.environments.prod.resources.memory:.+",
+        "valueEq:config.environments.dev.replicas=1",
+        "valueEq:config.environments.staging.replicas=2",
+        "type:config.environments.prod.replicas=integer",
+        "atLeast:config.environments.prod.replicas=3",
+        "matches:config.version:^\\d+\\.\\d+\\.\\d+$",
+        "nonempty:config.service"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.05,
+        "schema_compliance": 0.1,
+        "field_constraints": 0.55,
+        "cross_field_consistency": 0.1,
+        "output_discipline": 0.15
+      }
+    },
+    "tags": [
+      "json",
+      "exact-keys",
+      "trap",
+      "additional-properties",
+      "self-consistency"
+    ]
+  },
+  {
+    "id": "SO-CN-053",
+    "dimension": "structured_output",
+    "category": "json",
+    "difficulty": "adversarial",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "promptTemplate": "下面给出 6 个**合法**样本与 5 个**非法**样本，它们都只有 sku 与 qty 两个字段。\n\n合法样本：\n1. {\"sku\": \"A-1\", \"qty\": 12}\n2. {\"sku\": \"A-9\", \"qty\": 30}\n3. {\"sku\": \"A-2\", \"qty\": 10}\n4. {\"sku\": \"A-104\", \"qty\": 25}\n5. {\"sku\": \"A-7\", \"qty\": 18}\n6. {\"sku\": \"A-3\", \"qty\": 44}\n\n非法样本：\n1. {\"sku\": \"B-1\", \"qty\": 20}\n2. {\"sku\": \"A-3\", \"qty\": 9}\n3. {\"sku\": \"A-4\", \"qty\": 12.5}\n4. {\"sku\": \"C-2\", \"qty\": 100}\n5. {\"sku\": \"A-5\", \"qty\": 0}\n\n请根据下面明确的业务规则构造 JSON Schema，并用 JSON Schema 表达出来。要求：\n1. 输出顶层键**恰好**为 schema、positives、negatives 三个\n2. schema 的键**恰好**为 type、properties、required、additionalProperties 四个：\n   - type 为 object；additionalProperties 必须为 false\n   - properties **恰好**含 sku、qty 两个键；required **恰好**含这两项\n   - schema 必须让上面 6 个合法样本全部通过、5 个非法样本全部被拒\n3. **禁止使用 anyOf / oneOf / allOf**：必须用属性级约束表达这条判定规则\n4. positives 与 negatives：按题面给出的**顺序原样回显**（键名、键值都必须一致）\n5. 输出纯 JSON，不要 markdown 代码块，不要任何解释文字\n\n业务规则：sku 必须匹配 ^A-\\d+$；qty 必须是大于等于 10 的整数，不设上限。除这两项外不得添加范围或枚举限制。",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "scenarioVersion": "4.4.2",
+    "scenarioHash": "53a2464b3b84cfe2",
+    "responseMode": null,
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null,
+    "tags": [
+      "json-schema",
+      "schema-induction",
+      "positive-negative",
+      "minimal-schema",
+      "ood"
+    ],
+    "requirements": {
+      "format": "json",
+      "output_policy": "raw_only",
+      "axis_weights": {
+        "syntax_parse": 0.05,
+        "schema_compliance": 0.05,
+        "field_constraints": 0.8,
+        "cross_field_consistency": 0.05,
+        "output_discipline": 0.05
+      },
+      "requiredFields": [
+        "schema",
+        "positives",
+        "negatives",
+        "schema.properties",
+        "positives[5].sku",
+        "negatives[4].qty"
+      ],
+      "constraints": [
+        "keys:.=schema,positives,negatives",
+        "keys:schema=type,properties,required,additionalProperties",
+        "valueEq:schema.type=object",
+        "keys:schema.properties=sku,qty",
+        "length:schema.required=2",
+        "valueEq:schema.additionalProperties=false",
+        "count:\"anyOf\":==0",
+        "count:\"oneOf\":==0",
+        "count:\"allOf\":==0",
+        "length:positives=6",
+        "length:negatives=5",
+        "setEquals:positives[].sku=A-1,A-9,A-2,A-104,A-7,A-3",
+        "setEquals:negatives[].sku=B-1,A-3,A-4,C-2,A-5",
+        "sumEq:positives[].qty=139",
+        "sumEq:negatives[].qty=141.5",
+        "deepEq:positives[2].qty=10",
+        "deepEq:negatives[1].qty=9",
+        "deepEq:negatives[2].qty=12.5",
+        "schemaValidates:schema:positives[0]",
+        "schemaValidates:schema:positives[1]",
+        "schemaValidates:schema:positives[2]",
+        "schemaValidates:schema:positives[3]",
+        "schemaValidates:schema:positives[4]",
+        "schemaValidates:schema:positives[5]",
+        "schemaRejects:schema:negatives[0]",
+        "schemaRejects:schema:negatives[1]",
+        "schemaRejects:schema:negatives[2]",
+        "schemaRejects:schema:negatives[3]",
+        "schemaRejects:schema:negatives[4]",
+        "schemaAccepts:schema={\"sku\":\"A-999\",\"qty\":1000}",
+        "schemaAccepts:schema={\"sku\":\"A-1\",\"qty\":10}",
+        "schemaRejectsLiteral:schema={\"sku\":\"A-1\",\"qty\":9}",
+        "schemaRejectsLiteral:schema={\"sku\":\"A-1\",\"qty\":10.5}",
+        "schemaRejectsLiteral:schema={\"sku\":\"B-1\",\"qty\":11}"
+      ]
+    }
+  },
+  {
+    "id": "SO-CN-054",
+    "dimension": "structured_output",
+    "category": "json",
+    "difficulty": "adversarial",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "promptTemplate": "请构造一个使用 **oneOf** 的 JSON Schema，并给出 5 个用例，用来证明你理解 oneOf 与 anyOf 的区别。\n\n输出顶层键**恰好**为 schema、cases 两个：\n1. schema：必须含 `oneOf`，且 `oneOf` **恰好 3 个分支**。三个分支分别描述三种形状：\n   - 分支一：含 `type` 且值为 \"shape\"，且含数值字段 `radius`\n   - 分支二：含 `type` 且值为 \"shape\"，且含数值字段 `side`\n   - 分支三：含 `type` 且值为 \"text\"，且含字符串字段 `value`\n   （分支可以互相重合，这正是本题要考的地方）\n2. cases：**恰好 5 个**元素，每个元素**恰好**含 expected、instance 两个键\n   - cases[0] / cases[1] / cases[2]：各是一个只匹配**恰好一个**分支的实例，expected 为 \"valid\"\n   - cases[3]：一个 **同时满足两个分支** 的实例，expected 为 \"invalid\"\n     （必须**恰好**是 {\"type\":\"shape\",\"radius\":5,\"side\":5}）\n   - cases[4]：一个 **一个分支都不满足** 的实例，expected 为 \"invalid\"\n     （必须**恰好**是 {\"type\":\"text\",\"value\":42}）\n3. 禁止使用 anyOf 代替 oneOf\n4. 输出纯 JSON，不要 markdown 代码块，不要任何解释文字",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "scenarioVersion": "4.4.2",
+    "scenarioHash": "73eb5f46f64cf47a",
+    "responseMode": null,
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null,
+    "tags": [
+      "json-schema",
+      "oneof-exactly-one",
+      "counterexample",
+      "combinatorics",
+      "ood"
+    ],
+    "requirements": {
+      "format": "json",
+      "output_policy": "raw_only",
+      "axis_weights": {
+        "syntax_parse": 0.05,
+        "schema_compliance": 0.05,
+        "field_constraints": 0.8,
+        "cross_field_consistency": 0.05,
+        "output_discipline": 0.05
+      },
+      "requiredFields": [
+        "schema",
+        "cases",
+        "schema.oneOf",
+        "cases[0].instance",
+        "cases[3].instance",
+        "cases[4].instance"
+      ],
+      "constraints": [
+        "keys:.=schema,cases",
+        "length:cases=5",
+        "length:schema.oneOf=3",
+        "count:\"oneOf\":>=1",
+        "count:\"anyOf\":==0",
+        "valueEq:cases[0].expected=\"valid\"",
+        "valueEq:cases[1].expected=\"valid\"",
+        "valueEq:cases[2].expected=\"valid\"",
+        "valueEq:cases[3].expected=\"invalid\"",
+        "valueEq:cases[4].expected=\"invalid\"",
+        "schemaValidates:schema:cases[0].instance",
+        "schemaValidates:schema:cases[1].instance",
+        "schemaValidates:schema:cases[2].instance",
+        "schemaRejects:schema:cases[3].instance",
+        "schemaRejects:schema:cases[4].instance",
+        "deepEq:cases[3].instance.type=\"shape\"",
+        "deepEq:cases[3].instance.radius=5",
+        "deepEq:cases[3].instance.side=5",
+        "deepEq:cases[4].instance.type=\"text\"",
+        "deepEq:cases[4].instance.value=42",
+        "schemaAccepts:schema={\"type\":\"shape\",\"radius\":1}",
+        "schemaAccepts:schema={\"type\":\"shape\",\"side\":1}",
+        "schemaAccepts:schema={\"type\":\"text\",\"value\":\"ok\"}",
+        "schemaAccepts:schema={\"type\":\"shape\",\"radius\":2}",
+        "schemaAccepts:schema={\"type\":\"shape\",\"side\":2}",
+        "schemaRejectsLiteral:schema={\"type\":\"shape\",\"radius\":5,\"side\":5}",
+        "schemaRejectsLiteral:schema={\"type\":\"shape\",\"radius\":2,\"side\":2}",
+        "schemaRejectsLiteral:schema={\"type\":\"text\",\"value\":42}"
+      ]
+    }
+  },
+  {
+    "id": "SO-CN-055",
+    "dimension": "structured_output",
+    "category": "json",
+    "difficulty": "hard",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "promptTemplate": "请输出一个**递归** JSON Schema 以及两棵树的实例，用来证明递归定义真的生效。\n\n输出顶层键**恰好**为 schema、tree、overfull 三个：\n1. schema 描述一个树节点，键**恰好**为 type、properties、required、additionalProperties 四个：\n   - type 为 object；additionalProperties 为 false\n   - properties **恰好**含 name、weight、children 三个键：\n     · name：string，minLength 1\n     · weight：integer，minimum 0\n     · children：array，**最多 4 个元素**，元素必须是**同一个节点定义本身**（必须用 `$ref` 指向根模式实现递归，不得展开成固定层数）\n   - required **恰好**含这三个键\n2. tree：一棵满足 schema 的树，且结构被完全钉死：\n   - **恰好 10 个节点**（把每个对象算一个节点，数组容器不计）\n   - 根节点的 children **恰好 2 个元素**\n   - 根的第 1 个子节点的 children **恰好 1 个元素**\n   - 再往下那个节点（根的第 1 个子节点的第 1 个子节点）的 children **恰好 3 个元素**\n   - 其余节点自行安排，但总数必须正好 10；所有节点都必须带 children 键（叶子写空数组）\n   - 根节点的 name 为 \"root\"，weight 为 0\n3. overfull：一个**违反 schema** 的实例（提示：让某个节点的 children 超过 4 个）\n4. 输出纯 JSON，不要 markdown 代码块，不要任何解释文字",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "scenarioVersion": "4.4.2",
+    "scenarioHash": "04bcf36d00a7d1dc",
+    "responseMode": null,
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null,
+    "tags": [
+      "json-schema",
+      "recursive-ref",
+      "tree-shape",
+      "node-count",
+      "ood"
+    ],
+    "requirements": {
+      "format": "json",
+      "output_policy": "raw_only",
+      "axis_weights": {
+        "syntax_parse": 0.05,
+        "schema_compliance": 0.05,
+        "field_constraints": 0.8,
+        "cross_field_consistency": 0.05,
+        "output_discipline": 0.05
+      },
+      "requiredFields": [
+        "schema",
+        "tree",
+        "overfull",
+        "schema.properties",
+        "tree.children",
+        "overfull.children"
+      ],
+      "constraints": [
+        "keys:.=schema,tree,overfull",
+        "keys:schema=type,properties,required,additionalProperties",
+        "keys:schema.properties=name,weight,children",
+        "length:schema.required=3",
+        "valueEq:schema.additionalProperties=false",
+        "count:\"\\$ref\":>=1",
+        "nodeCount:tree=10",
+        "length:tree.children=2",
+        "length:tree.children[0].children=1",
+        "length:tree.children[0].children[0].children=3",
+        "deepEq:tree.name=\"root\"",
+        "deepEq:tree.weight=0",
+        "schemaValidates:schema:tree",
+        "schemaRejects:schema:overfull",
+        "noNulls:tree",
+        "schemaAccepts:schema={\"name\":\"root\",\"weight\":0,\"children\":[{\"name\":\"a\",\"weight\":0,\"children\":[]}]}",
+        "schemaRejectsLiteral:schema={\"name\":\"root\",\"weight\":0,\"children\":[{\"name\":\"a\",\"weight\":0,\"children\":[]},{\"name\":\"b\",\"weight\":0,\"children\":[]},{\"name\":\"c\",\"weight\":0,\"children\":[]},{\"name\":\"d\",\"weight\":0,\"children\":[]},{\"name\":\"e\",\"weight\":0,\"children\":[]}]}",
+        "schemaRejectsLiteral:schema={\"name\":\"\",\"weight\":0,\"children\":[]}",
+        "schemaRejectsLiteral:schema={\"name\":\"root\",\"weight\":-1,\"children\":[]}"
+      ]
+    }
+  },
+  {
+    "id": "SO-CN-056",
+    "dimension": "structured_output",
+    "category": "json",
+    "difficulty": "adversarial",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "promptTemplate": "请输出一份 JSON，用来证明你能正确处理**特殊字符**与 **RFC 6901 JSON Pointer**。\n\n输出顶层键**恰好**为 records、pointers、csv 三个：\n1. records：**恰好 2 个**元素\n   - records[0] 的键**恰好**为 `a.b`、`c/d`、`e~f` 三个（注意键里分别有句点、斜杠、波浪号）：\n     · `a.b` 的值为两行文本：第一行 `line1`，第二行 `line2`（真的含换行符）\n     · `c/d` 的值为 `quote\"inside`（含一个双引号）\n     · `e~f` 的值为 `back\\\\slash`（含一个反斜杠）\n   - records[1] 的键**恰好**为 `emoji`、`spaced` 两个：\n     · `emoji` 的值为火箭 emoji 字符本身\n     · `spaced` 的值为 `ok`\n2. pointers：**恰好 3 个**字符串，依次是指向 records[0] 三个字段的 **RFC 6901 JSON Pointer**，\n   要求每个指针在本文件内真实可解析到上面的值（注意 `~` 必须写成 `~0`、`/` 必须写成 `~1`）\n3. csv：一份**恰好 3 行数据**的 RFC 4180 CSV，表头为 `id,value`，三行的 value 依次是上面三个特殊值，\n   含逗号/双引号/换行的单元格必须按 RFC 4180 加引号并转义（不得引入 BOM，不要多余空行；换行单元格会导致物理行数与逻辑行数不同，这是允许的）\n4. 不要用任何字符串转义以外的技巧（例如把换行写成两个字符 `\\n`）\n5. 输出纯 JSON，不要 markdown 代码块，不要任何解释文字",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "scenarioVersion": "4.4.2",
+    "scenarioHash": "8dff99b3fc6fb89d",
+    "responseMode": null,
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null,
+    "tags": [
+      "json",
+      "escaping",
+      "json-pointer",
+      "rfc6901",
+      "rfc4180",
+      "copy"
+    ],
+    "requirements": {
+      "format": "json",
+      "output_policy": "raw_only",
+      "axis_weights": {
+        "syntax_parse": 0.05,
+        "schema_compliance": 0.05,
+        "field_constraints": 0.8,
+        "cross_field_consistency": 0.05,
+        "output_discipline": 0.05
+      },
+      "requiredFields": [
+        "records",
+        "pointers",
+        "csv",
+        "records[1].emoji",
+        "pointers[0]"
+      ],
+      "constraints": [
+        "keys:.=records,pointers,csv",
+        "length:records=2",
+        "keys:records[0]=a.b,c/d,e~f",
+        "length:pointers=3",
+        "jsonPointer:pointers[0]=\"line1\\nline2\"",
+        "jsonPointer:pointers[1]=\"quote\\\"inside\"",
+        "jsonPointer:pointers[2]=\"back\\\\slash\"",
+        "deepEq:records[1].emoji=\"\\ud83d\\ude80\"",
+        "deepEq:records[1].spaced=\"ok\"",
+        "csvField:csv:0:1:line1\\nline2",
+        "csvField:csv:1:1:quote\"inside",
+        "csvField:csv:2:1:back\\\\slash",
+        "keys:records[1]=emoji,spaced",
+        "embeddedCsvHeaders:csv=[\"id\",\"value\"]",
+        "embeddedCsvRows:csv=3"
+      ]
+    }
+  }
+]

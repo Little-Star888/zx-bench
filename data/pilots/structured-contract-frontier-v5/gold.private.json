@@ -1,0 +1,194 @@
+[
+  {
+    "id": "SOC4-T2S-000-BASE",
+    "split": "development",
+    "pairId": "T2S-000",
+    "variant": "base",
+    "raw": "{\"selected_options\":\"A,D\"}",
+    "sourceIndex": 0
+  },
+  {
+    "id": "SOC4-T2S-000-STRUCTURED",
+    "split": "development",
+    "pairId": "T2S-000",
+    "variant": "structured",
+    "raw": "{\"option_decisions\":{\"A\":true,\"B\":false,\"C\":false,\"D\":true},\"selected_options\":\"A,D\",\"selected_count\":2}",
+    "sourceIndex": 0
+  },
+  {
+    "id": "SOC4-T2S-001-BASE",
+    "split": "development",
+    "pairId": "T2S-001",
+    "variant": "base",
+    "raw": "{\"selected_options\":\"C\"}",
+    "sourceIndex": 1
+  },
+  {
+    "id": "SOC4-T2S-001-STRUCTURED",
+    "split": "development",
+    "pairId": "T2S-001",
+    "variant": "structured",
+    "raw": "{\"option_decisions\":{\"A\":false,\"B\":false,\"C\":true,\"D\":false},\"selected_options\":\"C\",\"selected_count\":1}",
+    "sourceIndex": 1
+  },
+  {
+    "id": "SOC4-T2S-020-BASE",
+    "split": "development",
+    "pairId": "T2S-020",
+    "variant": "base",
+    "raw": "{\"selected_options\":\"A,C\"}",
+    "sourceIndex": 20
+  },
+  {
+    "id": "SOC4-T2S-020-STRUCTURED",
+    "split": "development",
+    "pairId": "T2S-020",
+    "variant": "structured",
+    "raw": "{\"option_decisions\":{\"A\":true,\"B\":false,\"C\":true,\"D\":false},\"selected_options\":\"A,C\",\"selected_count\":2}",
+    "sourceIndex": 20
+  },
+  {
+    "id": "SOC4-T2S-023-BASE",
+    "split": "development",
+    "pairId": "T2S-023",
+    "variant": "base",
+    "raw": "{\"selected_options\":\"A,B,D\"}",
+    "sourceIndex": 23
+  },
+  {
+    "id": "SOC4-T2S-023-STRUCTURED",
+    "split": "development",
+    "pairId": "T2S-023",
+    "variant": "structured",
+    "raw": "{\"option_decisions\":{\"A\":true,\"B\":true,\"C\":false,\"D\":true},\"selected_options\":\"A,B,D\",\"selected_count\":3}",
+    "sourceIndex": 23
+  },
+  {
+    "id": "SOC4-T2S-029-BASE",
+    "split": "development",
+    "pairId": "T2S-029",
+    "variant": "base",
+    "raw": "{\"selected_options\":\"A,B\"}",
+    "sourceIndex": 29
+  },
+  {
+    "id": "SOC4-T2S-029-STRUCTURED",
+    "split": "development",
+    "pairId": "T2S-029",
+    "variant": "structured",
+    "raw": "{\"option_decisions\":{\"A\":true,\"B\":true,\"C\":false,\"D\":false},\"selected_options\":\"A,B\",\"selected_count\":2}",
+    "sourceIndex": 29
+  },
+  {
+    "id": "SOC4-T2S-038-BASE",
+    "split": "development",
+    "pairId": "T2S-038",
+    "variant": "base",
+    "raw": "{\"selected_options\":\"A,C\"}",
+    "sourceIndex": 38
+  },
+  {
+    "id": "SOC4-T2S-038-STRUCTURED",
+    "split": "development",
+    "pairId": "T2S-038",
+    "variant": "structured",
+    "raw": "{\"option_decisions\":{\"A\":true,\"B\":false,\"C\":true,\"D\":false},\"selected_options\":\"A,C\",\"selected_count\":2}",
+    "sourceIndex": 38
+  },
+  {
+    "id": "SOC4-T2S-060-BASE",
+    "split": "development",
+    "pairId": "T2S-060",
+    "variant": "base",
+    "raw": "{\"selected_options\":\"B,D\"}",
+    "sourceIndex": 60
+  },
+  {
+    "id": "SOC4-T2S-060-STRUCTURED",
+    "split": "development",
+    "pairId": "T2S-060",
+    "variant": "structured",
+    "raw": "{\"option_decisions\":{\"A\":false,\"B\":true,\"C\":false,\"D\":true},\"selected_options\":\"B,D\",\"selected_count\":2}",
+    "sourceIndex": 60
+  },
+  {
+    "id": "SOC4-T2S-087-BASE",
+    "split": "development",
+    "pairId": "T2S-087",
+    "variant": "base",
+    "raw": "{\"selected_options\":\"A,C,D\"}",
+    "sourceIndex": 87
+  },
+  {
+    "id": "SOC4-T2S-087-STRUCTURED",
+    "split": "development",
+    "pairId": "T2S-087",
+    "variant": "structured",
+    "raw": "{\"option_decisions\":{\"A\":true,\"B\":false,\"C\":true,\"D\":true},\"selected_options\":\"A,C,D\",\"selected_count\":3}",
+    "sourceIndex": 87
+  },
+  {
+    "id": "SOC4-T2S-040-BASE",
+    "split": "holdout",
+    "pairId": "T2S-040",
+    "variant": "base",
+    "raw": "{\"selected_options\":\"C\"}",
+    "sourceIndex": 40
+  },
+  {
+    "id": "SOC4-T2S-040-STRUCTURED",
+    "split": "holdout",
+    "pairId": "T2S-040",
+    "variant": "structured",
+    "raw": "{\"option_decisions\":{\"A\":false,\"B\":false,\"C\":true,\"D\":false},\"selected_options\":\"C\",\"selected_count\":1}",
+    "sourceIndex": 40
+  },
+  {
+    "id": "SOC4-T2S-042-BASE",
+    "split": "holdout",
+    "pairId": "T2S-042",
+    "variant": "base",
+    "raw": "{\"selected_options\":\"A,B,D\"}",
+    "sourceIndex": 42
+  },
+  {
+    "id": "SOC4-T2S-042-STRUCTURED",
+    "split": "holdout",
+    "pairId": "T2S-042",
+    "variant": "structured",
+    "raw": "{\"option_decisions\":{\"A\":true,\"B\":true,\"C\":false,\"D\":true},\"selected_options\":\"A,B,D\",\"selected_count\":3}",
+    "sourceIndex": 42
+  },
+  {
+    "id": "SOC4-T2S-045-BASE",
+    "split": "holdout",
+    "pairId": "T2S-045",
+    "variant": "base",
+    "raw": "{\"selected_options\":\"A,B\"}",
+    "sourceIndex": 45
+  },
+  {
+    "id": "SOC4-T2S-045-STRUCTURED",
+    "split": "holdout",
+    "pairId": "T2S-045",
+    "variant": "structured",
+    "raw": "{\"option_decisions\":{\"A\":true,\"B\":true,\"C\":false,\"D\":false},\"selected_options\":\"A,B\",\"selected_count\":2}",
+    "sourceIndex": 45
+  },
+  {
+    "id": "SOC4-T2S-063-BASE",
+    "split": "holdout",
+    "pairId": "T2S-063",
+    "variant": "base",
+    "raw": "{\"selected_options\":\"C\"}",
+    "sourceIndex": 63
+  },
+  {
+    "id": "SOC4-T2S-063-STRUCTURED",
+    "split": "holdout",
+    "pairId": "T2S-063",
+    "variant": "structured",
+    "raw": "{\"option_decisions\":{\"A\":false,\"B\":false,\"C\":true,\"D\":false},\"selected_options\":\"C\",\"selected_count\":1}",
+    "sourceIndex": 63
+  }
+]

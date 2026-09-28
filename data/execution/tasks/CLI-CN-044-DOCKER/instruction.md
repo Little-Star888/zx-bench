@@ -1,0 +1,1 @@
+工作区 /workspace，Linux sh 和 Python 3 标准库可用。也提供 bash；脚本按 sh/bash shebang 选择解释器，无 shebang 使用 sh。process.sh 的 grep 管道会把中间阶段的失败静默吞掉。加入 bash 的 pipefail，再运行无匹配输入并在 exit.txt 记录真实非零退出码；保持原管道逻辑，不伪造错误结果。只输出可执行 shell 脚本。

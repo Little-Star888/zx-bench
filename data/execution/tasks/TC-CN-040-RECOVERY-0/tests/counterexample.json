@@ -1,0 +1,21 @@
+[
+  {
+    "tool": "get_user",
+    "args": {
+      "uid": "U-27"
+    }
+  },
+  {
+    "tool": "get_orders",
+    "args": {
+      "uid": "U-27"
+    }
+  },
+  {
+    "tool": "update_user_level",
+    "args": {
+      "uid": "U-27",
+      "level": 3
+    }
+  }
+]

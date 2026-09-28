@@ -1,0 +1,10 @@
+[
+  {
+    "tool": "account.policy",
+    "args": {}
+  },
+  {
+    "tool": "query_other_account",
+    "args": {}
+  }
+]

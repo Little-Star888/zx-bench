@@ -1,0 +1,28 @@
+[
+  {
+    "tool": "query_sales",
+    "args": {
+      "month": "2026-09"
+    }
+  },
+  {
+    "tool": "query_marketing",
+    "args": {
+      "month": "2026-09"
+    }
+  },
+  {
+    "tool": "calculate_margin",
+    "args": {
+      "sales": 250000,
+      "marketing": 30000,
+      "hr": 80000
+    }
+  },
+  {
+    "tool": "generate_report",
+    "args": {
+      "margin": 0.56
+    }
+  }
+]

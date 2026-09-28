@@ -1,0 +1,86 @@
+{
+  "id": "CLI-CN-022-DOCKER",
+  "dimension": "cli_deep_tasks",
+  "category": "archive_encoding",
+  "difficulty": "adversarial",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "工作区 /workspace，Linux sh 和 Python 3 标准库可用。使用 Alpine/BusyBox 工具，提交脚本统一以 POSIX sh 执行，未提供 bash 或 GNU 工具。binary.dat 是 4096 字节二进制文件。把偏移 100 至 199（含两端）的 100 字节写成无分隔符的大写十六进制，输出到 slice.hex；不得有行尾换行或地址列，保持原文件不变。只输出可执行 shell 脚本。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "cli_command",
+  "graderVersion": "cli_command_v5",
+  "scoring": {
+    "type": "cli_command",
+    "mode": "executed_state"
+  },
+  "requirements": {
+    "migrationSourceId": "CLI-CN-022",
+    "developmentShadow": true,
+    "executionInterpreter": "sh",
+    "executionImage": "python:3.12-alpine",
+    "executionImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31",
+    "executionCases": [
+      {
+        "files": [
+          {
+            "path": "sentinel",
+            "content": "keep"
+          }
+        ],
+        "setupCommands": [
+          "python3 -I - <<'PY'\nfrom pathlib import Path\nPath('binary.dat').write_bytes(bytes((i*37+0*89+(i>>4))%256 for i in range(4096)))\nPY"
+        ],
+        "expectedFiles": {
+          "slice.hex": "7A9FC4E90E33587DA2C7EC11375C81A6CBF0153A5F84A9CEF3183D6288ADD2F71C41668BB0D5FA1F44698EB3D9FE23486D92B7DC01264B7095BADF042A4F7499BEE3082D52779CC1E60B30557BA0C5EA0F34597EA3C8ED12375C81A6CCF1163B6085AACF"
+        },
+        "unchangedFiles": [
+          "sentinel"
+        ],
+        "assertCommands": [
+          "python3 -I - <<'PY'\nfrom pathlib import Path\nfrom hashlib import sha256\nassert len(Path('binary.dat').read_bytes())==4096\nassert sha256(Path('binary.dat').read_bytes()).hexdigest()=='011c12903eca7c4a03db0a95c6f0e7068c72f258828c3536573a3748baa94fc8'\nPY"
+        ]
+      },
+      {
+        "files": [
+          {
+            "path": "sentinel",
+            "content": "keep"
+          }
+        ],
+        "setupCommands": [
+          "python3 -I - <<'PY'\nfrom pathlib import Path\nPath('binary.dat').write_bytes(bytes((i*37+1*89+(i>>4))%256 for i in range(4096)))\nPY"
+        ],
+        "expectedFiles": {
+          "slice.hex": "D3F81D42678CB1D6FB20456A90B5DAFF24496E93B8DD02274C7196BBE1062B50759ABFE4092E53789DC2E70C32577CA1C6EB10355A7FA4C9EE13385D83A8CDF2173C6186ABD0F51A3F6489AED4F91E43688DB2D7FC21466B90B5DAFF254A6F94B9DE0328"
+        },
+        "unchangedFiles": [
+          "sentinel"
+        ],
+        "assertCommands": [
+          "python3 -I - <<'PY'\nfrom pathlib import Path\nfrom hashlib import sha256\nassert len(Path('binary.dat').read_bytes())==4096\nassert sha256(Path('binary.dat').read_bytes()).hexdigest()=='c6b4c62a04f9a1cad877e9c099de880170c5378f5feda52be58a02f1677b6b5d'\nPY"
+        ]
+      }
+    ]
+  },
+  "tags": [
+    "cli",
+    "encoding",
+    "hex-range",
+    "trap"
+  ],
+  "scenarioVersion": "3.1.0",
+  "scenarioHash": "0c217f50fd1cd41b",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

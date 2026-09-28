@@ -1,0 +1,27 @@
+{
+  "version": "structured-contract-challenge-v1",
+  "status": "frozen-unmeasured",
+  "count": 14,
+  "sourceGroups": [
+    "policy:POLICY",
+    "policy:ROUTE",
+    "tree-edit:TREE",
+    "tree-edit:FOREST",
+    "unicode:UNICODE",
+    "unicode:PATH",
+    "event-ledger:paired",
+    "nested-conversion:csv",
+    "nested-conversion:xml",
+    "schema-behavior:AUTH",
+    "schema-behavior:ARRAY",
+    "svg-derived:BARS",
+    "svg-derived:DELTA"
+  ],
+  "hashes": {
+    "development": "44d12c2cc15763f71c52db22460003297e5f2d6c2b79b3a57d4bc7d3d39df2bb",
+    "gold": "b9055bcf81c3e9aacbce15ccaba81d95247dbf73f026865ec105a38c17b4c371"
+  },
+  "gradePolicy": "Complete success iff raw format, published JSON Schema, all source-derived content checks, and rendering/behavior if applicable pass.",
+  "difficultyClaim": "Prospective challenge design only; no measured discrimination on these new prompts.",
+  "modelCalls": 0
+}

@@ -1,0 +1,447 @@
+[
+  {
+    "id": "SOC2-A-D-1",
+    "sourceGroup": "schemastore:github-workflow",
+    "raw": "{\"environment\":\"prod\",\"steps\":[{\"id\":\"checkout\",\"uses\":\"actions/checkout@v4\",\"with\":{\"fetch-depth\":0}},{\"id\":\"verify\",\"run\":\"printf \\\"a\\\\nb\\\"\",\"working-directory\":\"src/目录\",\"shell\":\"bash\"},{\"id\":\"publish\",\"uses\":\"example/publish@v2\",\"with\":{\"dryRun\":false,\"token\":\"${{ secrets.PUBLISH }}\"}}],\"cache\":true,\"cacheKey\":\"build/prod~v2\",\"approval\":{\"team\":\"ops\",\"timeout\":0},\"permissions\":{\"contents\":\"read\",\"packages\":\"write\"}}",
+    "negative": "{\"environment\":\"prod\",\"steps\":[{\"id\":\"checkout\",\"uses\":\"actions/checkout@v4\",\"with\":{\"fetch-depth\":0}},{\"id\":\"verify\",\"run\":\"printf \\\"a\\\\nb\\\"\",\"working-directory\":\"src/目录\",\"shell\":\"bash\"},{\"id\":\"publish\",\"uses\":\"example/publish@v2\",\"with\":{\"dryRun\":false,\"token\":\"${{ secrets.PUBLISH }}\"}}],\"cache\":true,\"cacheKey\":\"build/prod~v2\",\"approval\":{\"team\":\"ops\",\"timeout\":1},\"permissions\":{\"contents\":\"read\",\"packages\":\"write\"}}",
+    "expected": {
+      "environment": "prod",
+      "steps": [
+        {
+          "id": "checkout",
+          "uses": "actions/checkout@v4",
+          "with": {
+            "fetch-depth": 0
+          }
+        },
+        {
+          "id": "verify",
+          "run": "printf \"a\\nb\"",
+          "working-directory": "src/目录",
+          "shell": "bash"
+        },
+        {
+          "id": "publish",
+          "uses": "example/publish@v2",
+          "with": {
+            "dryRun": false,
+            "token": "${{ secrets.PUBLISH }}"
+          }
+        }
+      ],
+      "cache": true,
+      "cacheKey": "build/prod~v2",
+      "approval": {
+        "team": "ops",
+        "timeout": 0
+      },
+      "permissions": {
+        "contents": "read",
+        "packages": "write"
+      }
+    }
+  },
+  {
+    "id": "SOC2-A-D-2",
+    "sourceGroup": "schemastore:github-workflow",
+    "raw": "{\"environment\":\"dev\",\"steps\":[{\"id\":\"checkout\",\"uses\":\"actions/checkout@v4\",\"with\":{\"fetch-depth\":0}},{\"id\":\"verify\",\"run\":\"printf \\\"a\\\\nb\\\"\",\"working-directory\":\"src/目录\",\"shell\":\"bash\"},{\"id\":\"publish\",\"uses\":\"example/publish@v2\",\"with\":{\"dryRun\":true,\"token\":\"${{ secrets.PUBLISH }}\"}}],\"cache\":false,\"permissions\":{\"contents\":\"read\"}}",
+    "negative": "{\"environment\":\"dev\",\"steps\":[{\"id\":\"checkout\",\"uses\":\"actions/checkout@v4\",\"with\":{\"fetch-depth\":0}},{\"id\":\"verify\",\"run\":\"printf \\\"a\\\\nb\\\"\",\"working-directory\":\"src/目录\",\"shell\":\"bash\"},{\"id\":\"publish\",\"uses\":\"example/publish@v2\",\"with\":{\"dryRun\":true,\"token\":\"${{ secrets.PUBLISH }}\"}}],\"cache\":false,\"permissions\":{\"contents\":\"read\"},\"approval\":{\"team\":\"ops\",\"timeout\":1}}",
+    "expected": {
+      "environment": "dev",
+      "steps": [
+        {
+          "id": "checkout",
+          "uses": "actions/checkout@v4",
+          "with": {
+            "fetch-depth": 0
+          }
+        },
+        {
+          "id": "verify",
+          "run": "printf \"a\\nb\"",
+          "working-directory": "src/目录",
+          "shell": "bash"
+        },
+        {
+          "id": "publish",
+          "uses": "example/publish@v2",
+          "with": {
+            "dryRun": true,
+            "token": "${{ secrets.PUBLISH }}"
+          }
+        }
+      ],
+      "cache": false,
+      "permissions": {
+        "contents": "read"
+      }
+    }
+  },
+  {
+    "id": "SOC2-B-D-1",
+    "sourceGroup": "schemastore:package",
+    "raw": "{\"node\":{\"import\":\"./a.mjs\",\"require\":[\"./shim.cjs\",\"./a.cjs\"]},\"browser\":{\"development\":{\"default\":[\"./last.js\",\"./dev.js\",null]}},\"default\":null}",
+    "negative": "{\"node\":{\"import\":\"./a.mjs\",\"require\":\"./a.cjs\"},\"browser\":{\"development\":{\"default\":[\"./dev.js\",null,\"./last.js\"]}},\"default\":\"./fallback.js\"}",
+    "expected": {
+      "node": {
+        "import": "./a.mjs",
+        "require": [
+          "./shim.cjs",
+          "./a.cjs"
+        ]
+      },
+      "browser": {
+        "development": {
+          "default": [
+            "./last.js",
+            "./dev.js",
+            null
+          ]
+        }
+      },
+      "default": null
+    }
+  },
+  {
+    "id": "SOC2-B-D-2",
+    "sourceGroup": "schemastore:package",
+    "raw": "{\"node\":{\"import\":\"./a.mjs\",\"require\":\"./a.cjs\"},\"browser\":{\"development\":{\"default\":[null,\"./last.js\"]},\"production\":{\"default\":\"./a.mjs\"}},\"default\":\"./fallback.js\"}",
+    "negative": "{\"node\":{\"import\":\"./a.mjs\",\"require\":\"./a.cjs\"},\"browser\":{\"development\":{\"default\":[\"./dev.js\",null,\"./last.js\"]}},\"default\":\"./fallback.js\"}",
+    "expected": {
+      "node": {
+        "import": "./a.mjs",
+        "require": "./a.cjs"
+      },
+      "browser": {
+        "development": {
+          "default": [
+            null,
+            "./last.js"
+          ]
+        },
+        "production": {
+          "default": "./a.mjs"
+        }
+      },
+      "default": "./fallback.js"
+    }
+  },
+  {
+    "id": "SOC2-C-D-1",
+    "sourceGroup": "authored:C:development",
+    "raw": "[{\"id\":\"007\",\"enabled\":false,\"original\":\"Café/路径\",\"encoded\":\"Q2Fmw6kv6Lev5b6E\"},{\"id\":\"010\",\"enabled\":true,\"original\":\"\",\"encoded\":\"\"},{\"id\":\"011\",\"enabled\":false}]",
+    "negative": "[{\"id\":\"007\",\"original\":\"Café/路径\",\"encoded\":\"Q2Fmw6kv6Lev5b6E\"},{\"id\":\"010\",\"enabled\":true,\"original\":\"\",\"encoded\":\"\"},{\"id\":\"011\",\"enabled\":false}]",
+    "expected": [
+      {
+        "id": "007",
+        "enabled": false,
+        "original": "Café/路径",
+        "encoded": "Q2Fmw6kv6Lev5b6E"
+      },
+      {
+        "id": "010",
+        "enabled": true,
+        "original": "",
+        "encoded": ""
+      },
+      {
+        "id": "011",
+        "enabled": false
+      }
+    ]
+  },
+  {
+    "id": "SOC2-C-D-2",
+    "sourceGroup": "authored:C:development",
+    "raw": "[{\"id\":\"007\",\"enabled\":false,\"original\":\"a/b~c\\r\\n\\\"x\\\"\",\"encoded\":\"YS9ifmMNCiJ4Ig\"},{\"id\":\"010\",\"enabled\":true,\"original\":\"\",\"encoded\":\"\"},{\"id\":\"011\",\"enabled\":false}]",
+    "negative": "[{\"id\":\"007\",\"original\":\"a/b~c\\r\\n\\\"x\\\"\",\"encoded\":\"YS9ifmMNCiJ4Ig\"},{\"id\":\"010\",\"enabled\":true,\"original\":\"\",\"encoded\":\"\"},{\"id\":\"011\",\"enabled\":false}]",
+    "expected": [
+      {
+        "id": "007",
+        "enabled": false,
+        "original": "a/b~c\r\n\"x\"",
+        "encoded": "YS9ifmMNCiJ4Ig"
+      },
+      {
+        "id": "010",
+        "enabled": true,
+        "original": "",
+        "encoded": ""
+      },
+      {
+        "id": "011",
+        "enabled": false
+      }
+    ]
+  },
+  {
+    "id": "SOC-D-D1",
+    "expected": {
+      "test:literal": "echo \"你好\"\nC:\\tmp\\a.txt"
+    },
+    "negative": "{\"test:literal\":\"echo \\\"你好\\\"\\nC:tmpa.txt\"}",
+    "sourceGroup": "schemastore:package",
+    "raw": "{\"test:literal\":\"echo \\\"你好\\\"\\nC:\\\\tmp\\\\a.txt\"}"
+  },
+  {
+    "id": "SOC-D-D2",
+    "expected": {
+      "test:literal": "\"key=a/b~c\\r\\nquoted=\\\"x\\\"\\tend\""
+    },
+    "negative": "{\"test:literal\":\"\\\"key=a/b~crnquoted=\\\"x\\\"tend\\\"\"}",
+    "sourceGroup": "schemastore:package",
+    "raw": "{\"test:literal\":\"\\\"key=a/b~c\\\\r\\\\nquoted=\\\\\\\"x\\\\\\\"\\\\tend\\\"\"}"
+  },
+  {
+    "id": "SOC-D-D3",
+    "expected": {
+      "test:literal": "\"\\\"反斜杠\\\\\\\\ 与文本 \\\\\\\\n 和实际换行\\\\n末尾\\\\\\\\\\\"\""
+    },
+    "negative": "{\"test:literal\":\"\\\"\\\"反斜杠 与文本 n 和实际换行n末尾\\\"\\\"\"}",
+    "sourceGroup": "schemastore:package",
+    "raw": "{\"test:literal\":\"\\\"\\\\\\\"反斜杠\\\\\\\\\\\\\\\\ 与文本 \\\\\\\\\\\\\\\\n 和实际换行\\\\\\\\n末尾\\\\\\\\\\\\\\\\\\\\\\\"\\\"\"}"
+  },
+  {
+    "id": "SOC2-E-D-simple",
+    "sourceGroup": "authored:event-ci",
+    "raw": "[{\"id\":\"0007\",\"state\":\"ok\",\"note\":\"\"},{\"id\":\"0010\",\"state\":\"error\",\"note\":\"引号\\\"和\\\\\"},{\"id\":\"0011\",\"state\":\"skip\",\"note\":null}]",
+    "negative": "[]",
+    "expected": [
+      {
+        "id": "0007",
+        "state": "ok",
+        "note": ""
+      },
+      {
+        "id": "0010",
+        "state": "error",
+        "note": "引号\"和\\"
+      },
+      {
+        "id": "0011",
+        "state": "skip",
+        "note": null
+      }
+    ]
+  },
+  {
+    "id": "SOC2-E-D-complex",
+    "sourceGroup": "authored:event-ci",
+    "raw": "[{\"0007\":{\"ok\":{\"message\":\"\"}}},{\"0010\":{\"error\":{\"message\":\"引号\\\"和\\\\\",\"retryable\":false}}},{\"0011\":{\"skipped\":true}}]",
+    "negative": "[{\"id\":\"0007\",\"state\":\"ok\",\"note\":\"\"},{\"id\":\"0010\",\"state\":\"error\",\"note\":\"引号\\\"和\\\\\"},{\"id\":\"0011\",\"state\":\"skip\",\"note\":null}]",
+    "expected": [
+      {
+        "0007": {
+          "ok": {
+            "message": ""
+          }
+        }
+      },
+      {
+        "0010": {
+          "error": {
+            "message": "引号\"和\\",
+            "retryable": false
+          }
+        }
+      },
+      {
+        "0011": {
+          "skipped": true
+        }
+      }
+    ]
+  },
+  {
+    "id": "SOC2-F-D-csv",
+    "sourceGroup": "authored:conversion-catalog",
+    "raw": "code,name,note\r\n\"001\",\"甲,\"\"乙\"\"\",\"line1\nline2\"\r\n\"010\",\"ON\",\"\"\r\n",
+    "negative": "code,name,note\r\n",
+    "expected": [
+      {
+        "code": "001",
+        "name": "甲,\"乙\"",
+        "note": "line1\nline2"
+      },
+      {
+        "code": "010",
+        "name": "ON",
+        "note": ""
+      }
+    ]
+  },
+  {
+    "id": "SOC2-F-D-xml",
+    "sourceGroup": "authored:conversion-catalog",
+    "raw": "<records><record><code>001</code><name>甲,\"乙\"</name><note>line1\nline2</note></record><record><code>010</code><name>ON</name><note null=\"true\"/></record></records>",
+    "negative": "<records><record><code>1</code><name>甲,\"乙\"</name><note>line1\nline2</note></record><record><code>010</code><name>ON</name><note null=\"true\"/></record></records>",
+    "expected": [
+      {
+        "code": "001",
+        "name": "甲,\"乙\"",
+        "note": "line1\nline2"
+      },
+      {
+        "code": "010",
+        "name": "ON",
+        "note": null
+      }
+    ]
+  },
+  {
+    "id": "SOC2-F-D-yaml",
+    "sourceGroup": "authored:conversion-catalog",
+    "raw": "[{\"code\":\"001\",\"name\":\"甲,\\\"乙\\\"\",\"note\":\"line1\\nline2\"},{\"code\":\"010\",\"name\":\"ON\",\"note\":\"\"}]",
+    "negative": "[]",
+    "expected": [
+      {
+        "code": "001",
+        "name": "甲,\"乙\"",
+        "note": "line1\nline2"
+      },
+      {
+        "code": "010",
+        "name": "ON",
+        "note": ""
+      }
+    ]
+  },
+  {
+    "id": "SOC2-F-D-toml",
+    "sourceGroup": "authored:conversion-catalog",
+    "raw": "[[records]]\ncode = \"001\"\nname = \"甲,\\\"乙\\\"\"\nnote = \"line1\\nline2\"\n[[records]]\ncode = \"010\"\nname = \"ON\"\nnote = \"\"",
+    "negative": "records = []",
+    "expected": {
+      "records": [
+        {
+          "code": "001",
+          "name": "甲,\"乙\"",
+          "note": "line1\nline2"
+        },
+        {
+          "code": "010",
+          "name": "ON",
+          "note": ""
+        }
+      ]
+    }
+  },
+  {
+    "id": "SOC2-G-D-1",
+    "sourceGroup": "authored:G:development",
+    "raw": "{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"object\",\"properties\":{\"mode\":{\"enum\":[\"local\",\"remote\"]},\"enabled\":{\"type\":\"boolean\"},\"path\":{\"type\":\"string\"},\"credentials\":{\"oneOf\":[{\"type\":\"object\",\"properties\":{\"token\":{\"type\":\"string\",\"minLength\":1}},\"required\":[\"token\"],\"additionalProperties\":false},{\"type\":\"object\",\"properties\":{\"user\":{\"type\":\"string\"},\"password\":{\"type\":\"string\"}},\"required\":[\"user\",\"password\"],\"additionalProperties\":false}]}},\"required\":[\"mode\",\"enabled\"],\"allOf\":[{\"if\":{\"properties\":{\"mode\":{\"const\":\"local\"}},\"required\":[\"mode\"]},\"then\":{\"required\":[\"path\"],\"not\":{\"required\":[\"credentials\"]}},\"else\":{\"required\":[\"credentials\"],\"not\":{\"required\":[\"path\"]}}}],\"additionalProperties\":false}",
+    "negative": "true"
+  },
+  {
+    "id": "SOC2-G-D-2",
+    "sourceGroup": "authored:G:development",
+    "raw": "{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"object\",\"properties\":{\"mode\":{\"enum\":[\"local\",\"remote\"]},\"enabled\":{\"type\":\"boolean\"},\"path\":{\"type\":\"string\"},\"credentials\":{\"oneOf\":[{\"type\":\"object\",\"properties\":{\"token\":{\"type\":\"string\",\"minLength\":1}},\"required\":[\"token\"],\"additionalProperties\":false},{\"type\":\"object\",\"properties\":{\"user\":{\"type\":\"string\"},\"password\":{\"type\":\"string\"}},\"required\":[\"user\",\"password\"],\"additionalProperties\":false}]},\"version\":{\"type\":\"integer\",\"minimum\":1,\"maximum\":3}},\"required\":[\"mode\",\"enabled\",\"version\"],\"allOf\":[{\"if\":{\"properties\":{\"mode\":{\"const\":\"local\"}},\"required\":[\"mode\"]},\"then\":{\"required\":[\"path\"],\"not\":{\"required\":[\"credentials\"]}},\"else\":{\"required\":[\"credentials\"],\"not\":{\"required\":[\"path\"]}}}],\"additionalProperties\":false}",
+    "negative": "true"
+  },
+  {
+    "id": "SOC2-H-D-1",
+    "sourceGroup": "authored:node-link",
+    "raw": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"240\" height=\"120\" viewBox=\"0 0 240 120\"><rect id=\"node/a~0\" x=\"20\" y=\"20\" width=\"60\" height=\"40\" fill=\"rgb(255,128,0)\"/><rect id=\"node-b\" x=\"150\" y=\"20\" width=\"60\" height=\"40\" fill=\"#00aa00\"/><line id=\"edge\" x1=\"80\" y1=\"40\" x2=\"150\" y2=\"40\" stroke=\"black\" stroke-width=\"4\"/><text id=\"label\" x=\"20\" y=\"90\">A &lt; B &amp; \"C\"</text></svg>",
+    "negative": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"240\" height=\"120\" viewBox=\"0 0 240 120\"><rect id=\"node/a~0\" x=\"20\" y=\"20\" width=\"60\" height=\"40\" fill=\"rgb(255,128,0)\"/><rect id=\"node-b\" x=\"150\" y=\"20\" width=\"60\" height=\"40\" fill=\"#ffffff\"/><line id=\"edge\" x1=\"80\" y1=\"40\" x2=\"150\" y2=\"40\" stroke=\"black\" stroke-width=\"4\"/><text id=\"label\" x=\"20\" y=\"90\">A &lt; B &amp; \"C\"</text></svg>",
+    "expected": {
+      "width": 240,
+      "height": 120,
+      "viewBox": [
+        0,
+        0,
+        240,
+        120
+      ],
+      "nodes": {
+        "node/a~0": {
+          "tag": "rect",
+          "attrs": {
+            "x": 20,
+            "y": 20,
+            "width": 60,
+            "height": 40
+          }
+        },
+        "node-b": {
+          "tag": "rect",
+          "attrs": {
+            "x": 150,
+            "y": 20,
+            "width": 60,
+            "height": 40
+          }
+        },
+        "edge": {
+          "tag": "line",
+          "attrs": {
+            "x1": 80,
+            "y1": 40,
+            "x2": 150,
+            "y2": 40
+          }
+        },
+        "label": {
+          "tag": "text",
+          "attrs": {
+            "x": 20,
+            "y": 90
+          },
+          "text": "A < B & \"C\""
+        }
+      }
+    }
+  },
+  {
+    "id": "SOC2-H-D-2",
+    "sourceGroup": "authored:node-link",
+    "raw": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"240\" height=\"120\" viewBox=\"0 0 240 120\"><rect id=\"node/a~0\" x=\"20\" y=\"20\" width=\"60\" height=\"40\" fill=\"rgb(0,128,255)\"/><rect id=\"node-b\" x=\"150\" y=\"20\" width=\"60\" height=\"40\" fill=\"#00aa00\"/><line id=\"edge\" x1=\"80\" y1=\"40\" x2=\"150\" y2=\"40\" stroke=\"black\" stroke-width=\"4\"/><text id=\"label\" x=\"20\" y=\"90\">A &lt; B &amp; \"C\"</text></svg>",
+    "negative": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"240\" height=\"120\" viewBox=\"0 0 240 120\"><rect id=\"node/a~0\" x=\"20\" y=\"20\" width=\"60\" height=\"40\" fill=\"rgb(0,128,255)\"/><rect id=\"node-b\" x=\"150\" y=\"20\" width=\"60\" height=\"40\" fill=\"#ffffff\"/><line id=\"edge\" x1=\"80\" y1=\"40\" x2=\"150\" y2=\"40\" stroke=\"black\" stroke-width=\"4\"/><text id=\"label\" x=\"20\" y=\"90\">A &lt; B &amp; \"C\"</text></svg>",
+    "expected": {
+      "width": 240,
+      "height": 120,
+      "viewBox": [
+        0,
+        0,
+        240,
+        120
+      ],
+      "nodes": {
+        "node/a~0": {
+          "tag": "rect",
+          "attrs": {
+            "x": 20,
+            "y": 20,
+            "width": 60,
+            "height": 40
+          }
+        },
+        "node-b": {
+          "tag": "rect",
+          "attrs": {
+            "x": 150,
+            "y": 20,
+            "width": 60,
+            "height": 40
+          }
+        },
+        "edge": {
+          "tag": "line",
+          "attrs": {
+            "x1": 80,
+            "y1": 40,
+            "x2": 150,
+            "y2": 40
+          }
+        },
+        "label": {
+          "tag": "text",
+          "attrs": {
+            "x": 20,
+            "y": 90
+          },
+          "text": "A < B & \"C\""
+        }
+      }
+    }
+  }
+]

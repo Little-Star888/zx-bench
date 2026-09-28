@@ -1,0 +1,103 @@
+{
+  "id": "HA-CN-028-RECOVERY-1",
+  "dimension": "agent_workflow",
+  "category": "scheduling_delivery",
+  "difficulty": "adversarial",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "把总结“发布已完成，构建正常。”发到 engineering 频道。频道目录有相似名称；必须先列出并解析正确的频道 ID，然后只向 engineering 发送一次总结。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "agent_trace",
+  "graderVersion": "agent_trace_v5",
+  "scoring": {
+    "type": "agent_trace"
+  },
+  "requirements": {
+    "migrationSourceId": "HA-CN-028",
+    "developmentShadow": true,
+    "executionWorld": {
+      "maxTurns": 8,
+      "scoreMode": "strict",
+      "initialState": {
+        "directory": {
+          "engineering": "channel-eng-84",
+          "engineering-archive": "channel-old-3"
+        },
+        "summary": "发布已完成，构建正常。",
+        "listed": false,
+        "messages": [],
+        "other": "keep"
+      },
+      "tools": [
+        {
+          "name": "send_message",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "action": "string",
+            "params": "object"
+          },
+          "script": "action=args['action']; params=args['params']\nif action=='list':\n    if params: raise ValueError('INVALID_LIST_PARAMS')\n    state['listed']=True; result={'targets':state['directory']}\nelif action=='send':\n    if not state['listed']: raise ValueError('LIST_REQUIRED')\n    target=params.get('target'); body=params.get('message')\n    if target not in state['directory'].values() or not isinstance(body,str) or state['summary'] not in body: raise ValueError('INVALID_TARGET_OR_MESSAGE')\n    state['messages'].append({'target':target,'message':body}); result={'delivered':True}\nelse: raise ValueError('INVALID_ACTION')",
+          "description": "list 返回频道目录；send 写入实际目标 ID 的本地收件箱。"
+        }
+      ],
+      "requiredCalls": [
+        {
+          "tool": "send_message",
+          "args": {
+            "action": "list",
+            "params": {}
+          }
+        },
+        {
+          "tool": "send_message",
+          "args": {
+            "action": "send"
+          }
+        }
+      ],
+      "expectedState": [
+        {
+          "path": "listed",
+          "equals": true
+        },
+        {
+          "path": "messages/length",
+          "equals": 1
+        },
+        {
+          "path": "messages/0/target",
+          "equals": "channel-eng-84"
+        }
+      ],
+      "unchangedState": [
+        "directory",
+        "summary",
+        "other"
+      ],
+      "image": "python:3.12-alpine",
+      "expectedImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31"
+    }
+  },
+  "tags": [
+    "agent",
+    "delivery",
+    "list-before-send",
+    "trace-invariant"
+  ],
+  "scenarioVersion": "3.0.0",
+  "scenarioHash": "43b3f10e1877b72a",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

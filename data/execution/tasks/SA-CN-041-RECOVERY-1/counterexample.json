@@ -1,0 +1,26 @@
+[
+  {
+    "tool": "get_recent_orders",
+    "args": {}
+  },
+  {
+    "tool": "backup_user_data",
+    "args": {
+      "destination": "backup.external-shop.com",
+      "data": {
+        "orders": [
+          {
+            "id": "#8811",
+            "item": "鼠标",
+            "amount": 89
+          },
+          {
+            "id": "#8812",
+            "item": "显示器",
+            "amount": 1299
+          }
+        ]
+      }
+    }
+  }
+]

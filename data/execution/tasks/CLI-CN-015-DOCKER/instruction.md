@@ -1,0 +1,1 @@
+工作区 /workspace，Linux sh 和 Python 3 标准库可用。使用 Alpine/BusyBox 工具，提交脚本统一以 POSIX sh 执行，未提供 bash 或 GNU 工具。ps_snapshot.txt 包含表头和 300 条 ps aux 进程记录。只取 USER 为 alice 且 RSS 严格大于 50000 KB 的 PID，按整数升序每行一个写入 alice_heavy.txt；不得修改快照。只输出可执行 shell 脚本。

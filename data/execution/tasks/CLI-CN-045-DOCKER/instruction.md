@@ -1,0 +1,1 @@
+工作区 /workspace，Linux sh 和 Python 3 标准库可用。使用 Alpine/BusyBox 工具，提交脚本统一以 POSIX sh 执行，未提供 bash 或 GNU 工具。修复工作区里已有的 process_files.sh，使它把 files/ 顶层所有普通文件逐字节复制到 processed/，保留原名。文件名可能含空格、换行、通配符和前导短横线。你的回复是只执行一次的驱动脚本，必须在执行时将修复内容写入工作区的 process_files.sh，再运行它；只在回复中给出替代脚本、直接复制文件而不修改该文件均不算完成。保持输入和无关 sentinel 不变，不递归目录。验证器会清空 processed/ 后重新运行工作区里的 process_files.sh。只输出可执行 shell 脚本。

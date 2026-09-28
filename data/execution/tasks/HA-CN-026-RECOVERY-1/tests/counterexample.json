@@ -1,0 +1,24 @@
+[
+  {
+    "tool": "skills_list",
+    "args": {}
+  },
+  {
+    "tool": "cronjob",
+    "args": {
+      "action": "list",
+      "params": {}
+    }
+  },
+  {
+    "tool": "cronjob",
+    "args": {
+      "action": "create",
+      "params": {
+        "name": "health-check",
+        "schedule": "*/30 * * * *",
+        "skill": "healthcheck"
+      }
+    }
+  }
+]

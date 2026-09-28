@@ -1,0 +1,8 @@
+[
+  {
+    "tool": "flight_status_api",
+    "args": {
+      "flight_no": "CA1234"
+    }
+  }
+]

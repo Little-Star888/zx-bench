@@ -1,0 +1,141 @@
+{
+  "id": "HA-CN-004-RECOVERY-1",
+  "dimension": "agent_workflow",
+  "category": "memory_recall",
+  "difficulty": "adversarial",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "把历史会话中上次使用的 Docker 网络修复方法应用到当前 compose.yml。先检索历史修复记录并读取当前文件；只使用检索到的补丁修改文件，保留其他配置。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "agent_trace",
+  "graderVersion": "agent_trace_v5",
+  "scoring": {
+    "type": "agent_trace"
+  },
+  "requirements": {
+    "migrationSourceId": "HA-CN-004",
+    "developmentShadow": true,
+    "executionWorld": {
+      "maxTurns": 8,
+      "scoreMode": "strict",
+      "initialState": {
+        "fixes": {
+          "network": {
+            "patch": {
+              "old": "network_mode: bridge\n",
+              "new": "networks: [private]\n"
+            }
+          }
+        },
+        "sourceFile": "services:\n  web:\n    network_mode: bridge\n    image: demo:v1\n",
+        "currentFile": "services:\n  web:\n    network_mode: bridge\n    image: demo:v1\n",
+        "initialized": false,
+        "lastSearch": null,
+        "readCurrent": false,
+        "otherFile": "keep"
+      },
+      "tools": [
+        {
+          "name": "session_search",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "query": "string"
+          },
+          "script": "from pathlib import Path\nfile=Path('/workspace/compose.yml')\nif not state['initialized']:\n    file.write_text(state['sourceFile']); state['initialized']=True\nif 'network' not in args['query'].lower(): raise ValueError('NO_MATCH')\nstate['lastSearch']=state['fixes']['network']; result=state['lastSearch']",
+          "description": "从历史会话返回上次的网络修复补丁。"
+        },
+        {
+          "name": "fs.read",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "path": "string"
+          },
+          "script": "from pathlib import Path\nfile=Path('/workspace/compose.yml')\nif not state['initialized']:\n    file.write_text(state['sourceFile']); state['initialized']=True\nif args['path']!='compose.yml': raise ValueError('UNKNOWN_PATH')\nstate['readCurrent']=True; result=file.read_text()",
+          "description": "读取当前 compose 文件。",
+          "requirePriorCall": {
+            "tool": "session_search"
+          }
+        },
+        {
+          "name": "fs.patch",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "path": "string",
+            "diff": "object"
+          },
+          "script": "from pathlib import Path\nfile=Path('/workspace/compose.yml')\nif not state['initialized']:\n    file.write_text(state['sourceFile']); state['initialized']=True\nif args['path']!='compose.yml' or not state['readCurrent'] or args['diff']!=state['lastSearch']['patch']: raise ValueError('PATCH_NOT_GROUNDED')\nold=args['diff']['old']; new=args['diff']['new']; content=file.read_text()\nif content.count(old)!=1: raise ValueError('PATCH_PRECONDITION_FAILED')\nfile.write_text(content.replace(old,new,1)); state['currentFile']=file.read_text()\nresult={'patched':args['path']}",
+          "description": "验证补丁来自历史记录，并对真实文件作一次精确替换。",
+          "requirePriorCall": {
+            "tool": "fs.read",
+            "sameArgs": [
+              "path"
+            ]
+          }
+        }
+      ],
+      "requiredCalls": [
+        {
+          "tool": "session_search",
+          "args": {}
+        },
+        {
+          "tool": "fs.read",
+          "args": {
+            "path": "compose.yml"
+          }
+        },
+        {
+          "tool": "fs.patch",
+          "args": {
+            "path": "compose.yml",
+            "diff": {
+              "old": "network_mode: bridge\n",
+              "new": "networks: [private]\n"
+            }
+          }
+        }
+      ],
+      "expectedState": [
+        {
+          "path": "currentFile",
+          "equals": "services:\n  web:\n    networks: [private]\n    image: demo:v1\n"
+        },
+        {
+          "path": "readCurrent",
+          "equals": true
+        }
+      ],
+      "unchangedState": [
+        "fixes",
+        "sourceFile",
+        "otherFile"
+      ],
+      "image": "python:3.12-alpine",
+      "expectedImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31"
+    }
+  },
+  "tags": [
+    "agent",
+    "memory",
+    "recall-before-fix",
+    "trace-invariant"
+  ],
+  "scenarioVersion": "3.0.0",
+  "scenarioHash": "06e6166197331bc7",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

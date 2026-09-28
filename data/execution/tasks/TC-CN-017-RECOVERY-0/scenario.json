@@ -1,0 +1,163 @@
+{
+  "id": "TC-CN-017-RECOVERY-0",
+  "dimension": "tool_cli_workflow",
+  "category": "multi_step_chain",
+  "difficulty": "hard",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "为采购 1800 元设备提交申请。先查预算；足额时创建采购单、提交经理审批，仅审批通过后通知财务。预算不足时停止，不得创建订单或催款。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "tool_call_trace",
+  "graderVersion": "tool_trace_v4",
+  "scoring": {
+    "type": "tool_call_trace"
+  },
+  "requirements": {
+    "migrationSourceId": "TC-CN-017",
+    "developmentShadow": true,
+    "executionWorld": {
+      "maxTurns": 8,
+      "scoreMode": "strict",
+      "initialState": {
+        "amount": 1800,
+        "budget": 5000,
+        "approval": "approved",
+        "budgetChecked": false,
+        "orders": [],
+        "approvalRequests": [],
+        "finance": [],
+        "other": "keep"
+      },
+      "tools": [
+        {
+          "name": "check_budget",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "department": "string",
+            "amount": "number"
+          },
+          "script": "if args['department']!='engineering' or args['amount']!=state['amount']: raise ValueError('WRONG_BUDGET_QUERY')\nstate['budgetChecked']=True; result={'available':state['budget'],'sufficient':state['budget']>=state['amount']}",
+          "description": "查询真实模拟预算。"
+        },
+        {
+          "name": "create_purchase_order",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "total": "number",
+            "reason": "string"
+          },
+          "script": "if args['total']!=state['amount'] or state['budget']<state['amount']: raise ValueError('INSUFFICIENT_BUDGET')\nstate['orders'].append({'id':'PO-1','amount':args['total']}); result={'po_id':'PO-1'}",
+          "description": "创建采购单。",
+          "requirePriorCall": {
+            "tool": "check_budget"
+          }
+        },
+        {
+          "name": "submit_approval",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "po_id": "string"
+          },
+          "script": "if args['po_id']!='PO-1' or not state['orders']: raise ValueError('ORDER_MISSING')\nstate['approvalRequests'].append(args['po_id']); result={'decision':state['approval']}",
+          "description": "获取外部经理审批返回值。",
+          "requirePriorCall": {
+            "tool": "create_purchase_order"
+          }
+        },
+        {
+          "name": "notify_finance",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "po_id": "string"
+          },
+          "script": "if args['po_id']!='PO-1' or not state['approvalRequests'] or state['approval']!='approved': raise ValueError('APPROVAL_MISSING')\nstate['finance'].append(args['po_id']); result={'notified':True}",
+          "description": "通知合成财务队列。",
+          "requirePriorCall": {
+            "tool": "submit_approval"
+          }
+        }
+      ],
+      "requiredCalls": [
+        {
+          "tool": "check_budget",
+          "args": {
+            "department": "engineering",
+            "amount": 1800
+          }
+        },
+        {
+          "tool": "create_purchase_order",
+          "args": {
+            "total": 1800
+          }
+        },
+        {
+          "tool": "submit_approval",
+          "args": {
+            "po_id": "PO-1"
+          }
+        },
+        {
+          "tool": "notify_finance",
+          "args": {
+            "po_id": "PO-1"
+          }
+        }
+      ],
+      "forbiddenCalls": [],
+      "expectedState": [
+        {
+          "path": "budgetChecked",
+          "equals": true
+        },
+        {
+          "path": "orders/length",
+          "equals": 1
+        },
+        {
+          "path": "approvalRequests/length",
+          "equals": 1
+        },
+        {
+          "path": "finance/length",
+          "equals": 1
+        }
+      ],
+      "unchangedState": [
+        "amount",
+        "budget",
+        "approval",
+        "other"
+      ],
+      "finalMessageMustContain": [
+        "审批"
+      ],
+      "image": "python:3.12-alpine",
+      "expectedImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31"
+    }
+  },
+  "tags": [
+    "chinese",
+    "multi-step",
+    "approval-workflow"
+  ],
+  "scenarioVersion": "3.0.0",
+  "scenarioHash": "56f725726e1a571b",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

@@ -1,0 +1,113 @@
+{
+  "id": "HA-CN-013-RECOVERY-0",
+  "dimension": "agent_workflow",
+  "category": "workspace_orchestration",
+  "difficulty": "medium",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "在容器工作区创建 myapp Node 项目，包含 src、tests 目录及 package.json；不要只描述步骤。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "agent_trace",
+  "graderVersion": "agent_trace_v5",
+  "scoring": {
+    "type": "agent_trace"
+  },
+  "requirements": {
+    "migrationSourceId": "HA-CN-013",
+    "developmentShadow": true,
+    "executionWorld": {
+      "maxTurns": 8,
+      "scoreMode": "strict",
+      "initialState": {
+        "dirs": [],
+        "files": {},
+        "writes": 0,
+        "other": "keep"
+      },
+      "tools": [
+        {
+          "name": "fs.mkdir",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "path": "string"
+          },
+          "script": "if args['path'] not in ['myapp','myapp/src','myapp/tests']: raise ValueError('WRONG_PATH')\nif args['path'] not in state['dirs']: state['dirs'].append(args['path'])\nfrom pathlib import Path\n(Path('/workspace')/args['path']).mkdir(parents=True,exist_ok=True)\nresult={'created':args['path']}",
+          "description": "创建真实容器目录。"
+        },
+        {
+          "name": "fs.write",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "path": "string",
+            "content": "string"
+          },
+          "script": "if args['path']!='myapp/package.json': raise ValueError('WRONG_PATH')\nimport json\nobj=json.loads(args['content'])\nif obj.get('name')!='myapp' or not isinstance(obj.get('scripts'),dict): raise ValueError('INVALID_PACKAGE')\nfrom pathlib import Path\n(Path('/workspace')/args['path']).write_text(args['content']); state['files'][args['path']]=args['content']; state['writes']+=1\nresult={'written':True}",
+          "description": "写真实 package.json。"
+        }
+      ],
+      "requiredCalls": [
+        {
+          "tool": "fs.mkdir",
+          "args": {
+            "path": "myapp"
+          }
+        },
+        {
+          "tool": "fs.mkdir",
+          "args": {
+            "path": "myapp/src"
+          }
+        },
+        {
+          "tool": "fs.mkdir",
+          "args": {
+            "path": "myapp/tests"
+          }
+        },
+        {
+          "tool": "fs.write",
+          "args": {
+            "path": "myapp/package.json"
+          }
+        }
+      ],
+      "expectedState": [
+        {
+          "path": "dirs/length",
+          "equals": 3
+        },
+        {
+          "path": "writes",
+          "equals": 1
+        }
+      ],
+      "unchangedState": [
+        "other"
+      ],
+      "image": "python:3.12-alpine",
+      "expectedImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31"
+    }
+  },
+  "tags": [
+    "agent",
+    "workspace",
+    "init-project"
+  ],
+  "scenarioVersion": "3.0.0",
+  "scenarioHash": "6dee4eda6bacd61a",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

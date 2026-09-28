@@ -1,0 +1,22 @@
+[
+  {
+    "tool": "payment.query",
+    "args": {
+      "id": "order-42"
+    }
+  },
+  {
+    "tool": "payment.charge",
+    "args": {
+      "id": "order-42",
+      "amt": 125,
+      "idempotency_key": "pay-order-42-v1"
+    }
+  },
+  {
+    "tool": "payment.query",
+    "args": {
+      "id": "order-42"
+    }
+  }
+]

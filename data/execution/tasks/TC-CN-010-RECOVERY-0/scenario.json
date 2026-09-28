@@ -1,0 +1,120 @@
+{
+  "id": "TC-CN-010-RECOVERY-0",
+  "dimension": "tool_cli_workflow",
+  "category": "parameter_precision",
+  "difficulty": "hard",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "创建 618 大促：6 月 1–18 日，三档满减 300/50、600/120、1000/250，每人每日最多 3 次，只限 APP。工具接收完整嵌套配置，不能漏约束。活动名称为 618大促，年份为 2026。config 对象字段为 name、start_date、end_date、rules、daily_limit_per_user、channel；日期采用 YYYY-MM-DD，rules 是按门槛升序排列的对象数组，每项使用数值字段 threshold 和 discount。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "tool_call_trace",
+  "graderVersion": "tool_trace_v4",
+  "scoring": {
+    "type": "tool_call_trace"
+  },
+  "requirements": {
+    "migrationSourceId": "TC-CN-010",
+    "developmentShadow": true,
+    "executionWorld": {
+      "maxTurns": 8,
+      "scoreMode": "strict",
+      "initialState": {
+        "promotions": [],
+        "other": "keep"
+      },
+      "tools": [
+        {
+          "name": "create_promotion",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "config": "object"
+          },
+          "script": "expected={\"name\":\"618大促\",\"start_date\":\"2026-06-01\",\"end_date\":\"2026-06-18\",\"rules\":[{\"threshold\":300,\"discount\":50},{\"threshold\":600,\"discount\":120},{\"threshold\":1000,\"discount\":250}],\"daily_limit_per_user\":3,\"channel\":\"APP\"}\nif args['config']!=expected: raise ValueError('INVALID_PROMOTION_CONFIG')\nstate['promotions'].append(args['config']); result={'id':'PROMO-1'}",
+          "description": "创建促销配置并持久化合成状态。"
+        }
+      ],
+      "requiredCalls": [
+        {
+          "tool": "create_promotion",
+          "args": {
+            "config": {
+              "name": "618大促",
+              "start_date": "2026-06-01",
+              "end_date": "2026-06-18",
+              "rules": [
+                {
+                  "threshold": 300,
+                  "discount": 50
+                },
+                {
+                  "threshold": 600,
+                  "discount": 120
+                },
+                {
+                  "threshold": 1000,
+                  "discount": 250
+                }
+              ],
+              "daily_limit_per_user": 3,
+              "channel": "APP"
+            }
+          }
+        }
+      ],
+      "expectedState": [
+        {
+          "path": "promotions",
+          "equals": [
+            {
+              "name": "618大促",
+              "start_date": "2026-06-01",
+              "end_date": "2026-06-18",
+              "rules": [
+                {
+                  "threshold": 300,
+                  "discount": 50
+                },
+                {
+                  "threshold": 600,
+                  "discount": 120
+                },
+                {
+                  "threshold": 1000,
+                  "discount": 250
+                }
+              ],
+              "daily_limit_per_user": 3,
+              "channel": "APP"
+            }
+          ]
+        }
+      ],
+      "unchangedState": [
+        "other"
+      ],
+      "image": "python:3.12-alpine",
+      "expectedImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31"
+    }
+  },
+  "tags": [
+    "chinese",
+    "parameter-precision",
+    "nested-json"
+  ],
+  "scenarioVersion": "3.1.0",
+  "scenarioHash": "ce902a21affd1e56",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

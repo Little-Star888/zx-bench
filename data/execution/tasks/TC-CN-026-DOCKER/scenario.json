@@ -1,0 +1,91 @@
+{
+  "id": "TC-CN-026-DOCKER",
+  "dimension": "tool_cli_workflow",
+  "category": "cli_operations",
+  "difficulty": "hard",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "工作区 /workspace，Linux sh 和 Python 3 标准库可用。使用 Alpine/BusyBox 工具，提交脚本统一以 POSIX sh 执行，未提供 bash 或 GNU 工具。在网络关闭的 Docker 诊断环境中，逐项运行本地 diagtool 的 dns、ping、port443、route、firewall、proxy、capture --seconds 10，汇总真实返回值到 network-report.txt。抓包必须限时 10 秒，不能跳过失败项。使用 ./diagtool，按上述顺序每项调用一次。network-report.txt 每行由该子命令的大写名称、一个空格、原样返回值组成；文件以换行结尾。只输出可执行 shell 脚本。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "cli_command",
+  "graderVersion": "cli_command_v5",
+  "scoring": {
+    "type": "cli_command",
+    "mode": "executed_state"
+  },
+  "requirements": {
+    "migrationSourceId": "TC-CN-026",
+    "developmentShadow": true,
+    "executionInterpreter": "sh",
+    "executionImage": "python:3.12-alpine",
+    "executionImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31",
+    "executionCases": [
+      {
+        "files": [
+          {
+            "path": "diagtool",
+            "content": "#!/usr/bin/env python3\nimport sys,json\nfrom pathlib import Path\nvalues={\"dns\":\"OK 192.0.2.10\",\"ping\":\"OK 30ms\",\"port443\":\"REFUSED\",\"route\":\"via 10.0.0.1\",\"firewall\":\"ALLOW outbound\",\"proxy\":\"none\",\"capture\":\"SYN without response\"}\nname=sys.argv[1] if len(sys.argv)>1 else ''\nif name not in values: raise SystemExit(2)\nif name=='capture' and sys.argv[2:]!=['--seconds','10']: raise SystemExit(3)\nwith Path('diag-calls.txt').open('a') as f: f.write(name+'\\n')\nprint(values[name])\n"
+          },
+          {
+            "path": "sentinel",
+            "content": "keep"
+          }
+        ],
+        "setupCommands": [
+          "chmod 755 diagtool"
+        ],
+        "expectedFiles": {
+          "network-report.txt": "DNS OK 192.0.2.10\nPING OK 30ms\nPORT443 REFUSED\nROUTE via 10.0.0.1\nFIREWALL ALLOW outbound\nPROXY none\nCAPTURE SYN without response\n",
+          "diag-calls.txt": "dns\nping\nport443\nroute\nfirewall\nproxy\ncapture\n"
+        },
+        "unchangedFiles": [
+          "diagtool",
+          "sentinel"
+        ]
+      },
+      {
+        "files": [
+          {
+            "path": "diagtool",
+            "content": "#!/usr/bin/env python3\nimport sys,json\nfrom pathlib import Path\nvalues={\"dns\":\"OK 192.0.2.10\",\"ping\":\"OK 30ms\",\"port443\":\"TIMEOUT\",\"route\":\"via 10.0.0.1\",\"firewall\":\"ALLOW outbound\",\"proxy\":\"none\",\"capture\":\"SYN without response\"}\nname=sys.argv[1] if len(sys.argv)>1 else ''\nif name not in values: raise SystemExit(2)\nif name=='capture' and sys.argv[2:]!=['--seconds','10']: raise SystemExit(3)\nwith Path('diag-calls.txt').open('a') as f: f.write(name+'\\n')\nprint(values[name])\n"
+          },
+          {
+            "path": "sentinel",
+            "content": "keep"
+          }
+        ],
+        "setupCommands": [
+          "chmod 755 diagtool"
+        ],
+        "expectedFiles": {
+          "network-report.txt": "DNS OK 192.0.2.10\nPING OK 30ms\nPORT443 TIMEOUT\nROUTE via 10.0.0.1\nFIREWALL ALLOW outbound\nPROXY none\nCAPTURE SYN without response\n",
+          "diag-calls.txt": "dns\nping\nport443\nroute\nfirewall\nproxy\ncapture\n"
+        },
+        "unchangedFiles": [
+          "diagtool",
+          "sentinel"
+        ]
+      }
+    ]
+  },
+  "tags": [
+    "chinese",
+    "cli",
+    "network-diagnosis"
+  ],
+  "scenarioVersion": "3.1.0",
+  "scenarioHash": "b813c14d4aa7dcd8",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

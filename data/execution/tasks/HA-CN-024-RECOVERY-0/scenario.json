@@ -1,0 +1,135 @@
+{
+  "id": "HA-CN-024-RECOVERY-0",
+  "dimension": "agent_workflow",
+  "category": "skills_procedural",
+  "difficulty": "hard",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "用已存在的发布技能发布 service-a。先查看技能流程，再在真实容器项目执行 build、test、publish 三步；不得跳过质量门。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "agent_trace",
+  "graderVersion": "agent_trace_v5",
+  "scoring": {
+    "type": "agent_trace"
+  },
+  "requirements": {
+    "migrationSourceId": "HA-CN-024",
+    "developmentShadow": true,
+    "executionWorld": {
+      "maxTurns": 8,
+      "scoreMode": "strict",
+      "initialState": {
+        "skills": {
+          "release": "build -> test -> publish",
+          "other": "keep"
+        },
+        "initialized": false,
+        "viewed": false,
+        "steps": [],
+        "artifacts": [],
+        "other": "keep"
+      },
+      "tools": [
+        {
+          "name": "skill_view",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "name": "string"
+          },
+          "script": "if args['name']!='release': raise ValueError('SKILL_NOT_FOUND')\nstate['viewed']=True; result={'procedure':state['skills']['release']}",
+          "description": "查看发布技能。"
+        },
+        {
+          "name": "terminal",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "cmd": "string"
+          },
+          "script": "from pathlib import Path\nroot=Path('/workspace/service-a')\nif not state['initialized']:\n    root.mkdir(exist_ok=True); (root/'source.txt').write_text('service-a')\n    state['initialized']=True\nif args['cmd'] not in ['build','test','publish']: raise ValueError('COMMAND_NOT_ALLOWED')\nneeded={'build':[],'test':['build'],'publish':['build','test']}[args['cmd']]\nif state['steps']!=needed: raise ValueError('WRONG_RELEASE_ORDER')\nif args['cmd']=='build': (root/'build.txt').write_text((root/'source.txt').read_text())\nelif args['cmd']=='test':\n    if (root/'build.txt').read_text()!='service-a': raise ValueError('TEST_FAILED')\nelif args['cmd']=='publish':\n    (root/'release.txt').write_text((root/'build.txt').read_text()); state['artifacts'].append('release.txt')\nstate['steps'].append(args['cmd']); result={'step':args['cmd'],'ok':True}",
+          "description": "在容器真实文件上执行发布步骤。",
+          "requirePriorCall": {
+            "tool": "skill_view"
+          }
+        }
+      ],
+      "requiredCalls": [
+        {
+          "tool": "skill_view",
+          "args": {
+            "name": "release"
+          }
+        },
+        {
+          "tool": "terminal",
+          "args": {
+            "cmd": "build"
+          }
+        },
+        {
+          "tool": "terminal",
+          "args": {
+            "cmd": "test"
+          }
+        },
+        {
+          "tool": "terminal",
+          "args": {
+            "cmd": "publish"
+          }
+        }
+      ],
+      "expectedState": [
+        {
+          "path": "viewed",
+          "equals": true
+        },
+        {
+          "path": "steps",
+          "equals": [
+            "build",
+            "test",
+            "publish"
+          ]
+        },
+        {
+          "path": "artifacts",
+          "equals": [
+            "release.txt"
+          ]
+        }
+      ],
+      "unchangedState": [
+        "skills",
+        "other"
+      ],
+      "finalMessageMustContain": [
+        "发布",
+        "通过"
+      ],
+      "image": "python:3.12-alpine",
+      "expectedImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31"
+    }
+  },
+  "tags": [
+    "agent",
+    "skill",
+    "procedure-reuse"
+  ],
+  "scenarioVersion": "3.0.0",
+  "scenarioHash": "741d5f1b91ffca5c",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

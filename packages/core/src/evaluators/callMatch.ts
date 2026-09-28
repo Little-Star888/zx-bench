@@ -12,6 +12,8 @@ export interface StructuredToolCall {
   toolName: string;
   args: string;
   index: number;
+  /** Position in the parsed call sequence, including repeated calls. */
+  ordinal?: number;
   raw: string;
 }
 
@@ -72,7 +74,7 @@ export function getStructuredToolCalls(output: string): StructuredToolCall[] {
     }
   }
 
-  return calls.sort((a, b) => a.index - b.index);
+  return calls.sort((a, b) => a.index - b.index).map((call, ordinal) => ({ ...call, ordinal }));
 }
 
 export function findToolCalls(output: string, toolName: string): StructuredToolCall[] {

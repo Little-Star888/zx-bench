@@ -1,0 +1,306 @@
+[
+  {
+    "id": "SOC2-A-H-route",
+    "sourceGroup": "authored:A:holdout",
+    "raw": "{\"mode\":\"private\",\"host\":\"svc.internal\",\"ports\":[443,8443],\"auth\":{\"scheme\":\"mtls\",\"ca\":\"ca/内网.pem\"}}",
+    "negative": "{\"mode\":\"public\",\"host\":\"svc.internal\",\"ports\":[443],\"auth\":{\"scheme\":\"mtls\",\"ca\":\"ca/内网.pem\"}}",
+    "expected": {
+      "mode": "private",
+      "host": "svc.internal",
+      "ports": [
+        443,
+        8443
+      ],
+      "auth": {
+        "scheme": "mtls",
+        "ca": "ca/内网.pem"
+      }
+    }
+  },
+  {
+    "id": "SOC2-B-H-tree",
+    "sourceGroup": "authored:B:holdout",
+    "raw": "{\"kind\":\"group\",\"name\":\"根\",\"children\":[{\"kind\":\"leaf\",\"name\":\"a/b~c\",\"value\":null},{\"kind\":\"group\",\"name\":\"nested\",\"children\":[{\"kind\":\"leaf\",\"name\":\"empty\",\"value\":\"\"}]}]}",
+    "negative": "{\"kind\":\"group\",\"name\":\"根\",\"children\":[]}",
+    "expected": {
+      "kind": "group",
+      "name": "根",
+      "children": [
+        {
+          "kind": "leaf",
+          "name": "a/b~c",
+          "value": null
+        },
+        {
+          "kind": "group",
+          "name": "nested",
+          "children": [
+            {
+              "kind": "leaf",
+              "name": "empty",
+              "value": ""
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "SOC2-C-H-headers",
+    "sourceGroup": "authored:C:holdout",
+    "raw": "{\"headers\":{\"x-note\":\"a%2Fb%20%E7%A9%BA\",\"x-empty\":\"\",\"x-enabled\":false}}",
+    "negative": "{\"headers\":{\"x-note\":\"a/b 空\",\"x-empty\":\"\",\"x-enabled\":false}}",
+    "expected": {
+      "headers": {
+        "x-note": "a%2Fb%20%E7%A9%BA",
+        "x-empty": "",
+        "x-enabled": false
+      }
+    }
+  },
+  {
+    "id": "SOC-D-H1",
+    "expected": {
+      "registry/a~b": {
+        "type": "npm-registry",
+        "url": "https://registry.example.test",
+        "token": "{\"note\":\"\\\"quoted\\\"\\\\slash\\n${{data}}\"}"
+      }
+    },
+    "negative": "{\"registry/a~b\":{\"type\":\"npm-registry\",\"url\":\"https://registry.example.test\",\"token\":\"\\\"quoted\\\"\\\\slash\\n${{data}}\"}}",
+    "sourceGroup": "schemastore:dependabot-2.0",
+    "raw": "{\"registry/a~b\":{\"type\":\"npm-registry\",\"url\":\"https://registry.example.test\",\"token\":\"{\\\"note\\\":\\\"\\\\\\\"quoted\\\\\\\"\\\\\\\\slash\\\\n${{data}}\\\"}\"}}"
+  },
+  {
+    "id": "SOC-D-H2",
+    "expected": {
+      "registry/a~b": {
+        "type": "npm-registry",
+        "url": "https://registry.example.test",
+        "token": "{\"note\":\"用户名=\\\"甲\\\"\\r\\n路径=C:\\\\temp\\\\秘密\"}"
+      }
+    },
+    "negative": "{\"registry/a~b\":{\"type\":\"npm-registry\",\"url\":\"https://registry.example.test\",\"token\":\"用户名=\\\"甲\\\"\\r\\n路径=C:\\\\temp\\\\秘密\"}}",
+    "sourceGroup": "schemastore:dependabot-2.0",
+    "raw": "{\"registry/a~b\":{\"type\":\"npm-registry\",\"url\":\"https://registry.example.test\",\"token\":\"{\\\"note\\\":\\\"用户名=\\\\\\\"甲\\\\\\\"\\\\r\\\\n路径=C:\\\\\\\\temp\\\\\\\\秘密\\\"}\"}}"
+  },
+  {
+    "id": "SOC2-E-H-simple",
+    "sourceGroup": "authored:permissions",
+    "raw": "[{\"id\":\"02\",\"role\":\"guest\",\"token\":null},{\"id\":\"03\",\"role\":\"member\",\"token\":\"\"},{\"id\":\"04\",\"role\":\"admin\",\"token\":\"a~b\"}]",
+    "negative": "[]",
+    "expected": [
+      {
+        "id": "02",
+        "role": "guest",
+        "token": null
+      },
+      {
+        "id": "03",
+        "role": "member",
+        "token": ""
+      },
+      {
+        "id": "04",
+        "role": "admin",
+        "token": "a~b"
+      }
+    ]
+  },
+  {
+    "id": "SOC2-E-H-complex",
+    "sourceGroup": "authored:permissions",
+    "raw": "{\"grants\":{\"02\":[],\"03\":[\"read\"],\"04\":[\"read\",\"write\"]},\"credentials\":{\"03\":\"\",\"04\":\"a~b\"}}",
+    "negative": "[{\"id\":\"02\",\"role\":\"guest\",\"token\":null},{\"id\":\"03\",\"role\":\"member\",\"token\":\"\"},{\"id\":\"04\",\"role\":\"admin\",\"token\":\"a~b\"}]",
+    "expected": {
+      "grants": {
+        "02": [],
+        "03": [
+          "read"
+        ],
+        "04": [
+          "read",
+          "write"
+        ]
+      },
+      "credentials": {
+        "03": "",
+        "04": "a~b"
+      }
+    }
+  },
+  {
+    "id": "SOC2-F-H-csv",
+    "sourceGroup": "authored:conversion-grouped-audit",
+    "raw": "code,name,note\r\n\"000\",\"x<y & z\",\"C:\\tmp\\a\"\r\n\"002\",\"false\",\"\"\r\n",
+    "negative": "code,name,note\r\n",
+    "expected": [
+      {
+        "code": "000",
+        "name": "x<y & z",
+        "note": "C:\\tmp\\a"
+      },
+      {
+        "code": "002",
+        "name": "false",
+        "note": ""
+      }
+    ]
+  },
+  {
+    "id": "SOC2-F-H-xml",
+    "sourceGroup": "authored:conversion-grouped-audit",
+    "raw": "<records><record><code>000</code><name>x&lt;y &amp; z</name><note>C:\\tmp\\a</note></record><record><code>002</code><name>false</name><note null=\"true\"/></record></records>",
+    "negative": "<records><record><code>0</code><name>x&lt;y &amp; z</name><note>C:\\tmp\\a</note></record><record><code>002</code><name>false</name><note null=\"true\"/></record></records>",
+    "expected": [
+      {
+        "code": "000",
+        "name": "x<y & z",
+        "note": "C:\\tmp\\a"
+      },
+      {
+        "code": "002",
+        "name": "false",
+        "note": null
+      }
+    ]
+  },
+  {
+    "id": "SOC2-F-H-yaml",
+    "sourceGroup": "authored:conversion-grouped-audit",
+    "raw": "[{\"code\":\"000\",\"name\":\"x<y & z\",\"note\":\"C:\\\\tmp\\\\a\"},{\"code\":\"002\",\"name\":\"false\",\"note\":\"\"}]",
+    "negative": "[]",
+    "expected": [
+      {
+        "code": "000",
+        "name": "x<y & z",
+        "note": "C:\\tmp\\a"
+      },
+      {
+        "code": "002",
+        "name": "false",
+        "note": ""
+      }
+    ]
+  },
+  {
+    "id": "SOC2-F-H-toml",
+    "sourceGroup": "authored:conversion-grouped-audit",
+    "raw": "[[records]]\ncode = \"000\"\nname = \"x<y & z\"\nnote = \"C:\\\\tmp\\\\a\"\n[[records]]\ncode = \"002\"\nname = \"false\"\nnote = \"\"",
+    "negative": "records = []",
+    "expected": {
+      "records": [
+        {
+          "code": "000",
+          "name": "x<y & z",
+          "note": "C:\\tmp\\a"
+        },
+        {
+          "code": "002",
+          "name": "false",
+          "note": ""
+        }
+      ]
+    }
+  },
+  {
+    "id": "SOC2-G-H-1",
+    "sourceGroup": "authored:G:holdout",
+    "raw": "{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"array\",\"minItems\":2,\"maxItems\":4,\"uniqueItems\":true,\"items\":{\"type\":\"object\",\"properties\":{\"kind\":{\"enum\":[\"start\",\"stop\"]},\"name\":{\"type\":\"string\",\"minLength\":1}},\"required\":[\"kind\",\"name\"],\"additionalProperties\":false},\"contains\":{\"type\":\"object\",\"properties\":{\"kind\":{\"const\":\"start\"}},\"required\":[\"kind\"]},\"minContains\":1,\"maxContains\":1}",
+    "negative": "true"
+  },
+  {
+    "id": "SOC2-G-H-2",
+    "sourceGroup": "authored:G:holdout",
+    "raw": "{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"array\",\"minItems\":2,\"maxItems\":4,\"uniqueItems\":true,\"items\":{\"type\":\"object\",\"properties\":{\"kind\":{\"enum\":[\"start\",\"stop\"]},\"name\":{\"type\":\"string\",\"minLength\":1,\"pattern\":\"^[A-Z][A-Z0-9]*$\"}},\"required\":[\"kind\",\"name\"],\"additionalProperties\":false},\"contains\":{\"type\":\"object\",\"properties\":{\"kind\":{\"const\":\"start\"}},\"required\":[\"kind\"]},\"minContains\":1,\"maxContains\":1}",
+    "negative": "true"
+  },
+  {
+    "id": "SOC2-H-H-1",
+    "sourceGroup": "authored:bar-chart",
+    "raw": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"160\" height=\"130\" viewBox=\"0 0 160 130\"><rect id=\"bar:left\" x=\"20\" y=\"50\" width=\"30\" height=\"50\" fill=\"blue\"/><rect id=\"bar:right\" x=\"80\" y=\"20\" width=\"30\" height=\"80\" fill=\"red\"/><text id=\"caption\" x=\"20\" y=\"115\">计数 / 001 ~ 甲</text></svg>",
+    "negative": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"160\" height=\"130\" viewBox=\"0 0 160 130\"><rect id=\"bar:left\" x=\"20\" y=\"50\" width=\"30\" height=\"50\" fill=\"blue\"/><rect id=\"bar:right\" x=\"80\" y=\"20\" width=\"30\" height=\"80\" fill=\"blue\"/><text id=\"caption\" x=\"20\" y=\"115\">计数 / 001 ~ 甲</text></svg>",
+    "expected": {
+      "width": 160,
+      "height": 130,
+      "viewBox": [
+        0,
+        0,
+        160,
+        130
+      ],
+      "nodes": {
+        "bar:left": {
+          "tag": "rect",
+          "attrs": {
+            "x": 20,
+            "y": 50,
+            "width": 30,
+            "height": 50
+          }
+        },
+        "bar:right": {
+          "tag": "rect",
+          "attrs": {
+            "x": 80,
+            "y": 20,
+            "width": 30,
+            "height": 80
+          }
+        },
+        "caption": {
+          "tag": "text",
+          "attrs": {
+            "x": 20,
+            "y": 115
+          },
+          "text": "计数 / 001 ~ 甲"
+        }
+      }
+    }
+  },
+  {
+    "id": "SOC2-H-H-2",
+    "sourceGroup": "authored:bar-chart",
+    "raw": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"160\" height=\"130\" viewBox=\"0 0 160 130\"><rect id=\"bar:left\" x=\"20\" y=\"50\" width=\"30\" height=\"50\" fill=\"blue\"/><rect id=\"bar:right\" x=\"80\" y=\"20\" width=\"30\" height=\"80\" fill=\"red\"/><text id=\"caption\" x=\"20\" y=\"115\">总计 &lt; 预期 &amp; \"保留\"</text></svg>",
+    "negative": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"160\" height=\"130\" viewBox=\"0 0 160 130\"><rect id=\"bar:left\" x=\"20\" y=\"50\" width=\"30\" height=\"50\" fill=\"blue\"/><rect id=\"bar:right\" x=\"80\" y=\"20\" width=\"30\" height=\"80\" fill=\"blue\"/><text id=\"caption\" x=\"20\" y=\"115\">总计 &lt; 预期 &amp; \"保留\"</text></svg>",
+    "expected": {
+      "width": 160,
+      "height": 130,
+      "viewBox": [
+        0,
+        0,
+        160,
+        130
+      ],
+      "nodes": {
+        "bar:left": {
+          "tag": "rect",
+          "attrs": {
+            "x": 20,
+            "y": 50,
+            "width": 30,
+            "height": 50
+          }
+        },
+        "bar:right": {
+          "tag": "rect",
+          "attrs": {
+            "x": 80,
+            "y": 20,
+            "width": 30,
+            "height": 80
+          }
+        },
+        "caption": {
+          "tag": "text",
+          "attrs": {
+            "x": 20,
+            "y": 115
+          },
+          "text": "总计 < 预期 & \"保留\""
+        }
+      }
+    }
+  }
+]

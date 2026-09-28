@@ -1,0 +1,30 @@
+{
+  "version": "structured-contract-escape-v1",
+  "status": "development-only",
+  "counts": {
+    "development": 4,
+    "holdout": 2
+  },
+  "source": {
+    "dataset": "SchemaBench Escape Translation",
+    "officialRepo": "https://github.com/thunlp/SchemaReinforcementLearning",
+    "mirror": "https://huggingface.co/datasets/kimddalko/SchemaBench",
+    "sourceSha256": "9d39ecc39a33dd14465d86a5b91bbcf47c80fbd1831d924d7007e693803940a1",
+    "indices": {
+      "development": [
+        61,
+        81
+      ],
+      "holdout": [
+        95
+      ]
+    }
+  },
+  "pairPolicy": "Base and challenge share token; challenge uses original real-world schema. Distinct source schemas in development and holdout.",
+  "hashes": {
+    "development": "aa6393393bb78b748adf76cfa0f9785bc1132efd774f09bbc3bdb4f36ac417d8",
+    "holdout": "81992ec9e3469481a0a48ab1cbe23f593f783add8bf1c75706282abf1d571370",
+    "gold": "cccb34484ae6984685150e3474aab7c1ca29d0ba1e04485383b9ee314d5bf0c1"
+  },
+  "modelCalls": 0
+}

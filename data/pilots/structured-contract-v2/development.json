@@ -1,0 +1,3320 @@
+[
+  {
+    "id": "SOC2-A-D-1",
+    "dimension": "structured_output",
+    "category": "contract_A",
+    "difficulty": "medium",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v2",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "把输入步骤转换为配置。environment=prod，cache=true。action 行把 target→uses、args→with；shell 行把 target→run、cwd→working-directory；保留 id、shell；其余源字段删除。步骤及值保持顺序/原类型。其余顶层字段按 Schema 的条件分支生成：有 cacheKey 时为 build/prod~v2。必须使用 schema 中声明的具体值，包括 0 和 false。输入：[{\"id\":\"checkout\",\"type\":\"action\",\"target\":\"actions/checkout@v4\",\"args\":{\"fetch-depth\":0}},{\"id\":\"verify\",\"type\":\"shell\",\"target\":\"printf \\\"a\\\\nb\\\"\",\"cwd\":\"src/目录\",\"shell\":\"bash\"},{\"id\":\"publish\",\"type\":\"action\",\"target\":\"example/publish@v2\",\"args\":{\"dryRun\":false,\"token\":\"${{ secrets.PUBLISH }}\"}}]\n输出必须遵循这个 Schema：{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"object\",\"properties\":{\"environment\":{\"enum\":[\"prod\",\"dev\"]},\"steps\":{\"type\":\"array\",\"minItems\":3,\"maxItems\":3,\"items\":{\"$ref\":\"#/definitions/step\"}},\"cache\":{\"type\":\"boolean\"}},\"required\":[\"environment\",\"steps\",\"cache\"],\"allOf\":[{\"if\":{\"properties\":{\"environment\":{\"const\":\"prod\"}},\"required\":[\"environment\"]},\"then\":{\"properties\":{\"approval\":{\"type\":\"object\",\"properties\":{\"team\":{\"const\":\"ops\"},\"timeout\":{\"const\":0}},\"required\":[\"team\",\"timeout\"],\"additionalProperties\":false},\"permissions\":{\"type\":\"object\",\"properties\":{\"contents\":{\"const\":\"read\"},\"packages\":{\"const\":\"write\"}},\"required\":[\"contents\",\"packages\"],\"additionalProperties\":false}},\"required\":[\"approval\",\"permissions\"]},\"else\":{\"properties\":{\"permissions\":{\"type\":\"object\",\"properties\":{\"contents\":{\"const\":\"read\"}},\"required\":[\"contents\"],\"additionalProperties\":false}},\"required\":[\"permissions\"],\"not\":{\"required\":[\"approval\"]}}},{\"if\":{\"properties\":{\"cache\":{\"const\":true}},\"required\":[\"cache\"]},\"then\":{\"properties\":{\"cacheKey\":{\"type\":\"string\",\"pattern\":\"^build/[a-z]+~v2$\"}},\"required\":[\"cacheKey\"]},\"else\":{\"not\":{\"required\":[\"cacheKey\"]}}}],\"dependentRequired\":{\"approval\":[\"permissions\"]},\"unevaluatedProperties\":false,\"definitions\":{\"step\":{\"type\":\"object\",\"additionalProperties\":false,\"dependencies\":{\"working-directory\":[\"run\"],\"shell\":[\"run\"]},\"oneOf\":[{\"type\":\"object\",\"properties\":{\"uses\":true},\"required\":[\"uses\"]},{\"type\":\"object\",\"properties\":{\"run\":true},\"required\":[\"run\"]},{\"type\":\"object\",\"properties\":{\"wait\":true},\"required\":[\"wait\"]},{\"type\":\"object\",\"properties\":{\"wait-all\":true},\"required\":[\"wait-all\"]},{\"type\":\"object\",\"properties\":{\"cancel\":true},\"required\":[\"cancel\"]},{\"type\":\"object\",\"properties\":{\"parallel\":true},\"required\":[\"parallel\"]}],\"properties\":{\"id\":{\"type\":\"string\"},\"if\":{\"anyOf\":[{\"type\":\"boolean\"},{\"type\":\"number\"},{\"type\":\"string\"}]},\"name\":{\"type\":\"string\"},\"uses\":{\"type\":\"string\"},\"run\":{\"type\":\"string\"},\"working-directory\":{\"$ref\":\"#/definitions/working-directory\"},\"shell\":{\"$ref\":\"#/definitions/shell\"},\"with\":{\"$ref\":\"#/definitions/env\",\"anyOf\":[{\"$ref\":\"#/definitions/env\"},{\"type\":\"object\",\"properties\":{\"args\":{\"type\":\"string\"},\"entrypoint\":{\"type\":\"string\"}}}]},\"env\":{\"$ref\":\"#/definitions/env\"},\"continue-on-error\":{\"oneOf\":[{\"type\":\"boolean\"},{\"$ref\":\"#/definitions/expressionSyntax\"}]},\"timeout-minutes\":{\"oneOf\":[{\"type\":\"number\"},{\"$ref\":\"#/definitions/expressionSyntax\"}]},\"background\":{\"type\":\"boolean\"},\"wait\":{\"oneOf\":[{\"type\":\"string\"},{\"type\":\"array\",\"items\":{\"type\":\"string\"},\"minItems\":1}]},\"wait-all\":{\"anyOf\":[{\"type\":\"boolean\"},{\"type\":\"null\"}]},\"cancel\":{\"type\":\"string\"},\"parallel\":{\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/step\"},\"minItems\":1}}},\"expressionSyntax\":{\"type\":\"string\",\"pattern\":\"^\\\\$\\\\{\\\\{(.|[\\r\\n])*\\\\}\\\\}$\"},\"env\":{\"oneOf\":[{\"type\":\"object\",\"additionalProperties\":{\"oneOf\":[{\"type\":\"string\"},{\"type\":\"number\"},{\"type\":\"boolean\"}]}},{\"$ref\":\"#/definitions/stringContainingExpressionSyntax\"}]},\"stringContainingExpressionSyntax\":{\"type\":\"string\",\"pattern\":\"^.*\\\\$\\\\{\\\\{(.|[\\r\\n])*\\\\}\\\\}.*$\"},\"shell\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"string\",\"enum\":[\"bash\",\"pwsh\",\"python\",\"sh\",\"cmd\",\"powershell\"]}]},\"working-directory\":{\"type\":\"string\"}}}\n只输出完整 JSON 原文，不要围栏或解释。对象键序不限。响应最多 131072 个字符。",
+    "requirements": {
+      "format": "json",
+      "dialect": "2020-12",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "environment": {
+            "enum": [
+              "prod",
+              "dev"
+            ]
+          },
+          "steps": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 3,
+            "items": {
+              "$ref": "#/definitions/step"
+            }
+          },
+          "cache": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "environment",
+          "steps",
+          "cache"
+        ],
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "environment": {
+                  "const": "prod"
+                }
+              },
+              "required": [
+                "environment"
+              ]
+            },
+            "then": {
+              "properties": {
+                "approval": {
+                  "type": "object",
+                  "properties": {
+                    "team": {
+                      "const": "ops"
+                    },
+                    "timeout": {
+                      "const": 0
+                    }
+                  },
+                  "required": [
+                    "team",
+                    "timeout"
+                  ],
+                  "additionalProperties": false
+                },
+                "permissions": {
+                  "type": "object",
+                  "properties": {
+                    "contents": {
+                      "const": "read"
+                    },
+                    "packages": {
+                      "const": "write"
+                    }
+                  },
+                  "required": [
+                    "contents",
+                    "packages"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "approval",
+                "permissions"
+              ]
+            },
+            "else": {
+              "properties": {
+                "permissions": {
+                  "type": "object",
+                  "properties": {
+                    "contents": {
+                      "const": "read"
+                    }
+                  },
+                  "required": [
+                    "contents"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "permissions"
+              ],
+              "not": {
+                "required": [
+                  "approval"
+                ]
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "cache": {
+                  "const": true
+                }
+              },
+              "required": [
+                "cache"
+              ]
+            },
+            "then": {
+              "properties": {
+                "cacheKey": {
+                  "type": "string",
+                  "pattern": "^build/[a-z]+~v2$"
+                }
+              },
+              "required": [
+                "cacheKey"
+              ]
+            },
+            "else": {
+              "not": {
+                "required": [
+                  "cacheKey"
+                ]
+              }
+            }
+          }
+        ],
+        "dependentRequired": {
+          "approval": [
+            "permissions"
+          ]
+        },
+        "unevaluatedProperties": false,
+        "definitions": {
+          "step": {
+            "type": "object",
+            "additionalProperties": false,
+            "dependencies": {
+              "working-directory": [
+                "run"
+              ],
+              "shell": [
+                "run"
+              ]
+            },
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "uses": true
+                },
+                "required": [
+                  "uses"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "run": true
+                },
+                "required": [
+                  "run"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "wait": true
+                },
+                "required": [
+                  "wait"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "wait-all": true
+                },
+                "required": [
+                  "wait-all"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "cancel": true
+                },
+                "required": [
+                  "cancel"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "parallel": true
+                },
+                "required": [
+                  "parallel"
+                ]
+              }
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "if": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              },
+              "name": {
+                "type": "string"
+              },
+              "uses": {
+                "type": "string"
+              },
+              "run": {
+                "type": "string"
+              },
+              "working-directory": {
+                "$ref": "#/definitions/working-directory"
+              },
+              "shell": {
+                "$ref": "#/definitions/shell"
+              },
+              "with": {
+                "$ref": "#/definitions/env",
+                "anyOf": [
+                  {
+                    "$ref": "#/definitions/env"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "args": {
+                        "type": "string"
+                      },
+                      "entrypoint": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                ]
+              },
+              "env": {
+                "$ref": "#/definitions/env"
+              },
+              "continue-on-error": {
+                "oneOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "$ref": "#/definitions/expressionSyntax"
+                  }
+                ]
+              },
+              "timeout-minutes": {
+                "oneOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "$ref": "#/definitions/expressionSyntax"
+                  }
+                ]
+              },
+              "background": {
+                "type": "boolean"
+              },
+              "wait": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "minItems": 1
+                  }
+                ]
+              },
+              "wait-all": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "cancel": {
+                "type": "string"
+              },
+              "parallel": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/step"
+                },
+                "minItems": 1
+              }
+            }
+          },
+          "expressionSyntax": {
+            "type": "string",
+            "pattern": "^\\$\\{\\{(.|[\r\n])*\\}\\}$"
+          },
+          "env": {
+            "oneOf": [
+              {
+                "type": "object",
+                "additionalProperties": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "boolean"
+                    }
+                  ]
+                }
+              },
+              {
+                "$ref": "#/definitions/stringContainingExpressionSyntax"
+              }
+            ]
+          },
+          "stringContainingExpressionSyntax": {
+            "type": "string",
+            "pattern": "^.*\\$\\{\\{(.|[\r\n])*\\}\\}.*$"
+          },
+          "shell": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "bash",
+                  "pwsh",
+                  "python",
+                  "sh",
+                  "cmd",
+                  "powershell"
+                ]
+              }
+            ]
+          },
+          "working-directory": {
+            "type": "string"
+          }
+        }
+      },
+      "formatAssertions": true,
+      "family": "A",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": {
+            "environment": "prod",
+            "steps": [
+              {
+                "id": "checkout",
+                "uses": "actions/checkout@v4",
+                "with": {
+                  "fetch-depth": 0
+                }
+              },
+              {
+                "id": "verify",
+                "run": "printf \"a\\nb\"",
+                "working-directory": "src/目录",
+                "shell": "bash"
+              },
+              {
+                "id": "publish",
+                "uses": "example/publish@v2",
+                "with": {
+                  "dryRun": false,
+                  "token": "${{ secrets.PUBLISH }}"
+                }
+              }
+            ],
+            "cache": true,
+            "cacheKey": "build/prod~v2",
+            "approval": {
+              "team": "ops",
+              "timeout": 0
+            },
+            "permissions": {
+              "contents": "read",
+              "packages": "write"
+            }
+          },
+          "description": "Preserve the publicly specified data and transformation"
+        }
+      ],
+      "developmentShadow": true,
+      "provenance": {
+        "sourceGroup": "schemastore:github-workflow",
+        "source": {
+          "sourceUrl": "https://raw.githubusercontent.com/SchemaStore/schemastore/87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0/src/schemas/json/github-workflow.json",
+          "sourceRevision": "87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0",
+          "sourceLicense": "Apache-2.0",
+          "originalSha256": "d10c9f4656e1bd5bc6727e9b35080e017dc167154726fca93da33c7a6bd1c4f3",
+          "fragment": "/definitions/step",
+          "sourceGroup": "schemastore:github-workflow",
+          "transformations": [
+            "selected fragment and transitive local definitions",
+            "removed documentation annotations",
+            "added explicit local task requirements"
+          ],
+          "upstreamBenchmark": "SchemaStore source; locally authored tasks, not official SchemaBench instances",
+          "split": "development",
+          "designLevel": 3,
+          "seed": "A:development:2",
+          "baseIds": [
+            "SO-CN-012",
+            "SO-CN-047"
+          ]
+        },
+        "pairId": null,
+        "split": "development",
+        "seed": "SOC2-A-D-1",
+        "method": "Locally authored composition/conversion task; not an official benchmark instance"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "frozen-derived-fixture-v2",
+    "tags": [
+      "structured-contract-v2",
+      "family:A",
+      "split:development"
+    ],
+    "scenarioHash": "20bb87afd4c2855f"
+  },
+  {
+    "id": "SOC2-A-D-2",
+    "dimension": "structured_output",
+    "category": "contract_A",
+    "difficulty": "medium",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v2",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "把输入步骤转换为配置。environment=dev，cache=false。action 行把 target→uses、args→with；shell 行把 target→run、cwd→working-directory；保留 id、shell；其余源字段删除。步骤及值保持顺序/原类型。其余顶层字段按 Schema 的条件分支生成：有 cacheKey 时为 build/dev~v2。必须使用 schema 中声明的具体值，包括 0 和 false。输入：[{\"id\":\"checkout\",\"type\":\"action\",\"target\":\"actions/checkout@v4\",\"args\":{\"fetch-depth\":0}},{\"id\":\"verify\",\"type\":\"shell\",\"target\":\"printf \\\"a\\\\nb\\\"\",\"cwd\":\"src/目录\",\"shell\":\"bash\"},{\"id\":\"publish\",\"type\":\"action\",\"target\":\"example/publish@v2\",\"args\":{\"dryRun\":true,\"token\":\"${{ secrets.PUBLISH }}\"}}]\n输出必须遵循这个 Schema：{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"object\",\"properties\":{\"environment\":{\"enum\":[\"prod\",\"dev\"]},\"steps\":{\"type\":\"array\",\"minItems\":3,\"maxItems\":3,\"items\":{\"$ref\":\"#/definitions/step\"}},\"cache\":{\"type\":\"boolean\"}},\"required\":[\"environment\",\"steps\",\"cache\"],\"allOf\":[{\"if\":{\"properties\":{\"environment\":{\"const\":\"prod\"}},\"required\":[\"environment\"]},\"then\":{\"properties\":{\"approval\":{\"type\":\"object\",\"properties\":{\"team\":{\"const\":\"ops\"},\"timeout\":{\"const\":0}},\"required\":[\"team\",\"timeout\"],\"additionalProperties\":false},\"permissions\":{\"type\":\"object\",\"properties\":{\"contents\":{\"const\":\"read\"},\"packages\":{\"const\":\"write\"}},\"required\":[\"contents\",\"packages\"],\"additionalProperties\":false}},\"required\":[\"approval\",\"permissions\"]},\"else\":{\"properties\":{\"permissions\":{\"type\":\"object\",\"properties\":{\"contents\":{\"const\":\"read\"}},\"required\":[\"contents\"],\"additionalProperties\":false}},\"required\":[\"permissions\"],\"not\":{\"required\":[\"approval\"]}}},{\"if\":{\"properties\":{\"cache\":{\"const\":true}},\"required\":[\"cache\"]},\"then\":{\"properties\":{\"cacheKey\":{\"type\":\"string\",\"pattern\":\"^build/[a-z]+~v2$\"}},\"required\":[\"cacheKey\"]},\"else\":{\"not\":{\"required\":[\"cacheKey\"]}}}],\"dependentRequired\":{\"approval\":[\"permissions\"]},\"unevaluatedProperties\":false,\"definitions\":{\"step\":{\"type\":\"object\",\"additionalProperties\":false,\"dependencies\":{\"working-directory\":[\"run\"],\"shell\":[\"run\"]},\"oneOf\":[{\"type\":\"object\",\"properties\":{\"uses\":true},\"required\":[\"uses\"]},{\"type\":\"object\",\"properties\":{\"run\":true},\"required\":[\"run\"]},{\"type\":\"object\",\"properties\":{\"wait\":true},\"required\":[\"wait\"]},{\"type\":\"object\",\"properties\":{\"wait-all\":true},\"required\":[\"wait-all\"]},{\"type\":\"object\",\"properties\":{\"cancel\":true},\"required\":[\"cancel\"]},{\"type\":\"object\",\"properties\":{\"parallel\":true},\"required\":[\"parallel\"]}],\"properties\":{\"id\":{\"type\":\"string\"},\"if\":{\"anyOf\":[{\"type\":\"boolean\"},{\"type\":\"number\"},{\"type\":\"string\"}]},\"name\":{\"type\":\"string\"},\"uses\":{\"type\":\"string\"},\"run\":{\"type\":\"string\"},\"working-directory\":{\"$ref\":\"#/definitions/working-directory\"},\"shell\":{\"$ref\":\"#/definitions/shell\"},\"with\":{\"$ref\":\"#/definitions/env\",\"anyOf\":[{\"$ref\":\"#/definitions/env\"},{\"type\":\"object\",\"properties\":{\"args\":{\"type\":\"string\"},\"entrypoint\":{\"type\":\"string\"}}}]},\"env\":{\"$ref\":\"#/definitions/env\"},\"continue-on-error\":{\"oneOf\":[{\"type\":\"boolean\"},{\"$ref\":\"#/definitions/expressionSyntax\"}]},\"timeout-minutes\":{\"oneOf\":[{\"type\":\"number\"},{\"$ref\":\"#/definitions/expressionSyntax\"}]},\"background\":{\"type\":\"boolean\"},\"wait\":{\"oneOf\":[{\"type\":\"string\"},{\"type\":\"array\",\"items\":{\"type\":\"string\"},\"minItems\":1}]},\"wait-all\":{\"anyOf\":[{\"type\":\"boolean\"},{\"type\":\"null\"}]},\"cancel\":{\"type\":\"string\"},\"parallel\":{\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/step\"},\"minItems\":1}}},\"expressionSyntax\":{\"type\":\"string\",\"pattern\":\"^\\\\$\\\\{\\\\{(.|[\\r\\n])*\\\\}\\\\}$\"},\"env\":{\"oneOf\":[{\"type\":\"object\",\"additionalProperties\":{\"oneOf\":[{\"type\":\"string\"},{\"type\":\"number\"},{\"type\":\"boolean\"}]}},{\"$ref\":\"#/definitions/stringContainingExpressionSyntax\"}]},\"stringContainingExpressionSyntax\":{\"type\":\"string\",\"pattern\":\"^.*\\\\$\\\\{\\\\{(.|[\\r\\n])*\\\\}\\\\}.*$\"},\"shell\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"string\",\"enum\":[\"bash\",\"pwsh\",\"python\",\"sh\",\"cmd\",\"powershell\"]}]},\"working-directory\":{\"type\":\"string\"}}}\n只输出完整 JSON 原文，不要围栏或解释。对象键序不限。响应最多 131072 个字符。",
+    "requirements": {
+      "format": "json",
+      "dialect": "2020-12",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "environment": {
+            "enum": [
+              "prod",
+              "dev"
+            ]
+          },
+          "steps": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 3,
+            "items": {
+              "$ref": "#/definitions/step"
+            }
+          },
+          "cache": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "environment",
+          "steps",
+          "cache"
+        ],
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "environment": {
+                  "const": "prod"
+                }
+              },
+              "required": [
+                "environment"
+              ]
+            },
+            "then": {
+              "properties": {
+                "approval": {
+                  "type": "object",
+                  "properties": {
+                    "team": {
+                      "const": "ops"
+                    },
+                    "timeout": {
+                      "const": 0
+                    }
+                  },
+                  "required": [
+                    "team",
+                    "timeout"
+                  ],
+                  "additionalProperties": false
+                },
+                "permissions": {
+                  "type": "object",
+                  "properties": {
+                    "contents": {
+                      "const": "read"
+                    },
+                    "packages": {
+                      "const": "write"
+                    }
+                  },
+                  "required": [
+                    "contents",
+                    "packages"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "approval",
+                "permissions"
+              ]
+            },
+            "else": {
+              "properties": {
+                "permissions": {
+                  "type": "object",
+                  "properties": {
+                    "contents": {
+                      "const": "read"
+                    }
+                  },
+                  "required": [
+                    "contents"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "permissions"
+              ],
+              "not": {
+                "required": [
+                  "approval"
+                ]
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "cache": {
+                  "const": true
+                }
+              },
+              "required": [
+                "cache"
+              ]
+            },
+            "then": {
+              "properties": {
+                "cacheKey": {
+                  "type": "string",
+                  "pattern": "^build/[a-z]+~v2$"
+                }
+              },
+              "required": [
+                "cacheKey"
+              ]
+            },
+            "else": {
+              "not": {
+                "required": [
+                  "cacheKey"
+                ]
+              }
+            }
+          }
+        ],
+        "dependentRequired": {
+          "approval": [
+            "permissions"
+          ]
+        },
+        "unevaluatedProperties": false,
+        "definitions": {
+          "step": {
+            "type": "object",
+            "additionalProperties": false,
+            "dependencies": {
+              "working-directory": [
+                "run"
+              ],
+              "shell": [
+                "run"
+              ]
+            },
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "uses": true
+                },
+                "required": [
+                  "uses"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "run": true
+                },
+                "required": [
+                  "run"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "wait": true
+                },
+                "required": [
+                  "wait"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "wait-all": true
+                },
+                "required": [
+                  "wait-all"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "cancel": true
+                },
+                "required": [
+                  "cancel"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "parallel": true
+                },
+                "required": [
+                  "parallel"
+                ]
+              }
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "if": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              },
+              "name": {
+                "type": "string"
+              },
+              "uses": {
+                "type": "string"
+              },
+              "run": {
+                "type": "string"
+              },
+              "working-directory": {
+                "$ref": "#/definitions/working-directory"
+              },
+              "shell": {
+                "$ref": "#/definitions/shell"
+              },
+              "with": {
+                "$ref": "#/definitions/env",
+                "anyOf": [
+                  {
+                    "$ref": "#/definitions/env"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "args": {
+                        "type": "string"
+                      },
+                      "entrypoint": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                ]
+              },
+              "env": {
+                "$ref": "#/definitions/env"
+              },
+              "continue-on-error": {
+                "oneOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "$ref": "#/definitions/expressionSyntax"
+                  }
+                ]
+              },
+              "timeout-minutes": {
+                "oneOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "$ref": "#/definitions/expressionSyntax"
+                  }
+                ]
+              },
+              "background": {
+                "type": "boolean"
+              },
+              "wait": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "minItems": 1
+                  }
+                ]
+              },
+              "wait-all": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "cancel": {
+                "type": "string"
+              },
+              "parallel": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/step"
+                },
+                "minItems": 1
+              }
+            }
+          },
+          "expressionSyntax": {
+            "type": "string",
+            "pattern": "^\\$\\{\\{(.|[\r\n])*\\}\\}$"
+          },
+          "env": {
+            "oneOf": [
+              {
+                "type": "object",
+                "additionalProperties": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "boolean"
+                    }
+                  ]
+                }
+              },
+              {
+                "$ref": "#/definitions/stringContainingExpressionSyntax"
+              }
+            ]
+          },
+          "stringContainingExpressionSyntax": {
+            "type": "string",
+            "pattern": "^.*\\$\\{\\{(.|[\r\n])*\\}\\}.*$"
+          },
+          "shell": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "bash",
+                  "pwsh",
+                  "python",
+                  "sh",
+                  "cmd",
+                  "powershell"
+                ]
+              }
+            ]
+          },
+          "working-directory": {
+            "type": "string"
+          }
+        }
+      },
+      "formatAssertions": true,
+      "family": "A",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": {
+            "environment": "dev",
+            "steps": [
+              {
+                "id": "checkout",
+                "uses": "actions/checkout@v4",
+                "with": {
+                  "fetch-depth": 0
+                }
+              },
+              {
+                "id": "verify",
+                "run": "printf \"a\\nb\"",
+                "working-directory": "src/目录",
+                "shell": "bash"
+              },
+              {
+                "id": "publish",
+                "uses": "example/publish@v2",
+                "with": {
+                  "dryRun": true,
+                  "token": "${{ secrets.PUBLISH }}"
+                }
+              }
+            ],
+            "cache": false,
+            "permissions": {
+              "contents": "read"
+            }
+          },
+          "description": "Preserve the publicly specified data and transformation"
+        }
+      ],
+      "developmentShadow": true,
+      "provenance": {
+        "sourceGroup": "schemastore:github-workflow",
+        "source": {
+          "sourceUrl": "https://raw.githubusercontent.com/SchemaStore/schemastore/87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0/src/schemas/json/github-workflow.json",
+          "sourceRevision": "87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0",
+          "sourceLicense": "Apache-2.0",
+          "originalSha256": "d10c9f4656e1bd5bc6727e9b35080e017dc167154726fca93da33c7a6bd1c4f3",
+          "fragment": "/definitions/step",
+          "sourceGroup": "schemastore:github-workflow",
+          "transformations": [
+            "selected fragment and transitive local definitions",
+            "removed documentation annotations",
+            "added explicit local task requirements"
+          ],
+          "upstreamBenchmark": "SchemaStore source; locally authored tasks, not official SchemaBench instances",
+          "split": "development",
+          "designLevel": 3,
+          "seed": "A:development:2",
+          "baseIds": [
+            "SO-CN-012",
+            "SO-CN-047"
+          ]
+        },
+        "pairId": null,
+        "split": "development",
+        "seed": "SOC2-A-D-2",
+        "method": "Locally authored composition/conversion task; not an official benchmark instance"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "frozen-derived-fixture-v2",
+    "tags": [
+      "structured-contract-v2",
+      "family:A",
+      "split:development"
+    ],
+    "scenarioHash": "9ab7151ddf4353c5"
+  },
+  {
+    "id": "SOC2-B-D-1",
+    "dimension": "structured_output",
+    "category": "contract_B",
+    "difficulty": "medium",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v2",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "按顺序执行结构编辑并输出最终 npm exports 对象。路径中的点表示对象层级。数组索引从 0 起，移动/删除后立即重排。①把 browser.development.default 最后一个元素移动至索引 0，其余元素相对顺序不变；②把 node.require 的原字符串改为数组 [\"./shim.cjs\",原字符串]；③把 default 改为 null，但不能删除此键。 输入：{\"node\":{\"import\":\"./a.mjs\",\"require\":\"./a.cjs\"},\"browser\":{\"development\":{\"default\":[\"./dev.js\",null,\"./last.js\"]}},\"default\":\"./fallback.js\"}\n输出必须遵循这个 Schema：{\"$schema\":\"http://json-schema.org/draft-07/schema#\",\"oneOf\":[{\"$ref\":\"#/definitions/packageExportsEntryPath\"},{\"$ref\":\"#/definitions/packageExportsEntryObject\"}],\"definitions\":{\"packageExportsEntryObject\":{\"type\":\"object\",\"properties\":{\"require\":{\"$ref\":\"#/definitions/packageExportsEntryOrFallback\"},\"import\":{\"$ref\":\"#/definitions/packageExportsEntryOrFallback\"},\"module-sync\":{\"$ref\":\"#/definitions/packageExportsEntryOrFallback\"},\"node\":{\"$ref\":\"#/definitions/packageExportsEntryOrFallback\"},\"default\":{\"$ref\":\"#/definitions/packageExportsEntryOrFallback\"},\"types\":{\"$ref\":\"#/definitions/packageExportsEntryOrFallback\"}},\"patternProperties\":{\"^[^.0-9]+$\":{\"$ref\":\"#/definitions/packageExportsEntryOrFallback\"},\"^types@.+$\":{\"$ref\":\"#/definitions/packageExportsEntryOrFallback\"}},\"additionalProperties\":false},\"packageExportsEntryOrFallback\":{\"oneOf\":[{\"$ref\":\"#/definitions/packageExportsEntry\"},{\"$ref\":\"#/definitions/packageExportsFallback\"}]},\"packageExportsFallback\":{\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/packageExportsEntry\"}},\"packageExportsEntry\":{\"oneOf\":[{\"$ref\":\"#/definitions/packageExportsEntryPath\"},{\"$ref\":\"#/definitions/packageExportsEntryObject\"}]},\"packageExportsEntryPath\":{\"type\":[\"string\",\"null\"],\"pattern\":\"^\\\\./\"}}}\n只输出完整 JSON 原文，不要围栏或解释。对象键序不限。响应最多 131072 个字符。",
+    "requirements": {
+      "format": "json",
+      "dialect": "draft-07",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "oneOf": [
+          {
+            "$ref": "#/definitions/packageExportsEntryPath"
+          },
+          {
+            "$ref": "#/definitions/packageExportsEntryObject"
+          }
+        ],
+        "definitions": {
+          "packageExportsEntryObject": {
+            "type": "object",
+            "properties": {
+              "require": {
+                "$ref": "#/definitions/packageExportsEntryOrFallback"
+              },
+              "import": {
+                "$ref": "#/definitions/packageExportsEntryOrFallback"
+              },
+              "module-sync": {
+                "$ref": "#/definitions/packageExportsEntryOrFallback"
+              },
+              "node": {
+                "$ref": "#/definitions/packageExportsEntryOrFallback"
+              },
+              "default": {
+                "$ref": "#/definitions/packageExportsEntryOrFallback"
+              },
+              "types": {
+                "$ref": "#/definitions/packageExportsEntryOrFallback"
+              }
+            },
+            "patternProperties": {
+              "^[^.0-9]+$": {
+                "$ref": "#/definitions/packageExportsEntryOrFallback"
+              },
+              "^types@.+$": {
+                "$ref": "#/definitions/packageExportsEntryOrFallback"
+              }
+            },
+            "additionalProperties": false
+          },
+          "packageExportsEntryOrFallback": {
+            "oneOf": [
+              {
+                "$ref": "#/definitions/packageExportsEntry"
+              },
+              {
+                "$ref": "#/definitions/packageExportsFallback"
+              }
+            ]
+          },
+          "packageExportsFallback": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/packageExportsEntry"
+            }
+          },
+          "packageExportsEntry": {
+            "oneOf": [
+              {
+                "$ref": "#/definitions/packageExportsEntryPath"
+              },
+              {
+                "$ref": "#/definitions/packageExportsEntryObject"
+              }
+            ]
+          },
+          "packageExportsEntryPath": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^\\./"
+          }
+        }
+      },
+      "formatAssertions": true,
+      "family": "B",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": {
+            "node": {
+              "import": "./a.mjs",
+              "require": [
+                "./shim.cjs",
+                "./a.cjs"
+              ]
+            },
+            "browser": {
+              "development": {
+                "default": [
+                  "./last.js",
+                  "./dev.js",
+                  null
+                ]
+              }
+            },
+            "default": null
+          },
+          "description": "Preserve the publicly specified data and transformation"
+        }
+      ],
+      "developmentShadow": true,
+      "provenance": {
+        "sourceGroup": "schemastore:package",
+        "source": {
+          "sourceUrl": "https://raw.githubusercontent.com/SchemaStore/schemastore/87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0/src/schemas/json/package.json",
+          "sourceRevision": "87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0",
+          "sourceLicense": "Apache-2.0",
+          "originalSha256": "e5390e202b0ab1bcf3154f69bb2334576c53218638dcd857deb413f18ab55a29",
+          "fragment": "/definitions/packageExportsEntry",
+          "sourceGroup": "schemastore:package",
+          "transformations": [
+            "selected fragment and transitive local definitions",
+            "removed documentation annotations",
+            "added explicit local task requirements"
+          ],
+          "upstreamBenchmark": "SchemaStore source; locally authored tasks, not official SchemaBench instances",
+          "split": "development",
+          "designLevel": 3,
+          "seed": "B:development:2",
+          "baseIds": [
+            "SO-CN-055"
+          ]
+        },
+        "pairId": null,
+        "split": "development",
+        "seed": "SOC2-B-D-1",
+        "method": "Locally authored composition/conversion task; not an official benchmark instance"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "frozen-derived-fixture-v2",
+    "tags": [
+      "structured-contract-v2",
+      "family:B",
+      "split:development"
+    ],
+    "scenarioHash": "e11f14cdf83775af"
+  },
+  {
+    "id": "SOC2-B-D-2",
+    "dimension": "structured_output",
+    "category": "contract_B",
+    "difficulty": "medium",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v2",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "按顺序执行结构编辑并输出最终 npm exports 对象。路径中的点表示对象层级。数组索引从 0 起，移动/删除后立即重排。①删除 browser.development.default 数组索引 0；②读取 node.import 的当前字符串复制到 browser.production.default（创建缺失的中间对象）；③保留其余节点。 输入：{\"node\":{\"import\":\"./a.mjs\",\"require\":\"./a.cjs\"},\"browser\":{\"development\":{\"default\":[\"./dev.js\",null,\"./last.js\"]}},\"default\":\"./fallback.js\"}\n输出必须遵循这个 Schema：{\"$schema\":\"http://json-schema.org/draft-07/schema#\",\"oneOf\":[{\"$ref\":\"#/definitions/packageExportsEntryPath\"},{\"$ref\":\"#/definitions/packageExportsEntryObject\"}],\"definitions\":{\"packageExportsEntryObject\":{\"type\":\"object\",\"properties\":{\"require\":{\"$ref\":\"#/definitions/packageExportsEntryOrFallback\"},\"import\":{\"$ref\":\"#/definitions/packageExportsEntryOrFallback\"},\"module-sync\":{\"$ref\":\"#/definitions/packageExportsEntryOrFallback\"},\"node\":{\"$ref\":\"#/definitions/packageExportsEntryOrFallback\"},\"default\":{\"$ref\":\"#/definitions/packageExportsEntryOrFallback\"},\"types\":{\"$ref\":\"#/definitions/packageExportsEntryOrFallback\"}},\"patternProperties\":{\"^[^.0-9]+$\":{\"$ref\":\"#/definitions/packageExportsEntryOrFallback\"},\"^types@.+$\":{\"$ref\":\"#/definitions/packageExportsEntryOrFallback\"}},\"additionalProperties\":false},\"packageExportsEntryOrFallback\":{\"oneOf\":[{\"$ref\":\"#/definitions/packageExportsEntry\"},{\"$ref\":\"#/definitions/packageExportsFallback\"}]},\"packageExportsFallback\":{\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/packageExportsEntry\"}},\"packageExportsEntry\":{\"oneOf\":[{\"$ref\":\"#/definitions/packageExportsEntryPath\"},{\"$ref\":\"#/definitions/packageExportsEntryObject\"}]},\"packageExportsEntryPath\":{\"type\":[\"string\",\"null\"],\"pattern\":\"^\\\\./\"}}}\n只输出完整 JSON 原文，不要围栏或解释。对象键序不限。响应最多 131072 个字符。",
+    "requirements": {
+      "format": "json",
+      "dialect": "draft-07",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "oneOf": [
+          {
+            "$ref": "#/definitions/packageExportsEntryPath"
+          },
+          {
+            "$ref": "#/definitions/packageExportsEntryObject"
+          }
+        ],
+        "definitions": {
+          "packageExportsEntryObject": {
+            "type": "object",
+            "properties": {
+              "require": {
+                "$ref": "#/definitions/packageExportsEntryOrFallback"
+              },
+              "import": {
+                "$ref": "#/definitions/packageExportsEntryOrFallback"
+              },
+              "module-sync": {
+                "$ref": "#/definitions/packageExportsEntryOrFallback"
+              },
+              "node": {
+                "$ref": "#/definitions/packageExportsEntryOrFallback"
+              },
+              "default": {
+                "$ref": "#/definitions/packageExportsEntryOrFallback"
+              },
+              "types": {
+                "$ref": "#/definitions/packageExportsEntryOrFallback"
+              }
+            },
+            "patternProperties": {
+              "^[^.0-9]+$": {
+                "$ref": "#/definitions/packageExportsEntryOrFallback"
+              },
+              "^types@.+$": {
+                "$ref": "#/definitions/packageExportsEntryOrFallback"
+              }
+            },
+            "additionalProperties": false
+          },
+          "packageExportsEntryOrFallback": {
+            "oneOf": [
+              {
+                "$ref": "#/definitions/packageExportsEntry"
+              },
+              {
+                "$ref": "#/definitions/packageExportsFallback"
+              }
+            ]
+          },
+          "packageExportsFallback": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/packageExportsEntry"
+            }
+          },
+          "packageExportsEntry": {
+            "oneOf": [
+              {
+                "$ref": "#/definitions/packageExportsEntryPath"
+              },
+              {
+                "$ref": "#/definitions/packageExportsEntryObject"
+              }
+            ]
+          },
+          "packageExportsEntryPath": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^\\./"
+          }
+        }
+      },
+      "formatAssertions": true,
+      "family": "B",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": {
+            "node": {
+              "import": "./a.mjs",
+              "require": "./a.cjs"
+            },
+            "browser": {
+              "development": {
+                "default": [
+                  null,
+                  "./last.js"
+                ]
+              },
+              "production": {
+                "default": "./a.mjs"
+              }
+            },
+            "default": "./fallback.js"
+          },
+          "description": "Preserve the publicly specified data and transformation"
+        }
+      ],
+      "developmentShadow": true,
+      "provenance": {
+        "sourceGroup": "schemastore:package",
+        "source": {
+          "sourceUrl": "https://raw.githubusercontent.com/SchemaStore/schemastore/87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0/src/schemas/json/package.json",
+          "sourceRevision": "87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0",
+          "sourceLicense": "Apache-2.0",
+          "originalSha256": "e5390e202b0ab1bcf3154f69bb2334576c53218638dcd857deb413f18ab55a29",
+          "fragment": "/definitions/packageExportsEntry",
+          "sourceGroup": "schemastore:package",
+          "transformations": [
+            "selected fragment and transitive local definitions",
+            "removed documentation annotations",
+            "added explicit local task requirements"
+          ],
+          "upstreamBenchmark": "SchemaStore source; locally authored tasks, not official SchemaBench instances",
+          "split": "development",
+          "designLevel": 3,
+          "seed": "B:development:2",
+          "baseIds": [
+            "SO-CN-055"
+          ]
+        },
+        "pairId": null,
+        "split": "development",
+        "seed": "SOC2-B-D-2",
+        "method": "Locally authored composition/conversion task; not an official benchmark instance"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "frozen-derived-fixture-v2",
+    "tags": [
+      "structured-contract-v2",
+      "family:B",
+      "split:development"
+    ],
+    "scenarioHash": "d1992121e3d671aa"
+  },
+  {
+    "id": "SOC2-C-D-1",
+    "dimension": "structured_output",
+    "category": "contract_C",
+    "difficulty": "medium",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v2",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "按输入顺序输出数组。id 必须保留前导零和字符串类型；enabled 原样保留，包括 false。note 为 null 时省略 original、encoded；否则 original 保存未经规范化的原 note，encoded 保存 note 先 NFC 规范化、再 UTF-8、再 Base64URL 编码的结果（用 -_ 替代 +/，去掉尾部 =）。空串必须保留。不要给 original 做 NFC 规范化。输入：[{\"id\":\"007\",\"note\":\"Café/路径\",\"enabled\":false},{\"id\":\"010\",\"note\":\"\",\"enabled\":true},{\"id\":\"011\",\"note\":null,\"enabled\":false}]\n输出必须遵循这个 Schema：{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\",\"pattern\":\"^0[0-9]{2}$\"},\"enabled\":{\"type\":\"boolean\"},\"original\":{\"type\":\"string\"},\"encoded\":{\"type\":\"string\",\"pattern\":\"^[A-Za-z0-9_-]*$\"}},\"required\":[\"id\",\"enabled\"],\"dependentRequired\":{\"original\":[\"encoded\"],\"encoded\":[\"original\"]},\"additionalProperties\":false}}\n只输出完整 JSON 原文，不要围栏或解释。对象键序不限。响应最多 131072 个字符。",
+    "requirements": {
+      "format": "json",
+      "dialect": "2020-12",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "pattern": "^0[0-9]{2}$"
+            },
+            "enabled": {
+              "type": "boolean"
+            },
+            "original": {
+              "type": "string"
+            },
+            "encoded": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]*$"
+            }
+          },
+          "required": [
+            "id",
+            "enabled"
+          ],
+          "dependentRequired": {
+            "original": [
+              "encoded"
+            ],
+            "encoded": [
+              "original"
+            ]
+          },
+          "additionalProperties": false
+        }
+      },
+      "formatAssertions": true,
+      "family": "C",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": [
+            {
+              "id": "007",
+              "enabled": false,
+              "original": "Café/路径",
+              "encoded": "Q2Fmw6kv6Lev5b6E"
+            },
+            {
+              "id": "010",
+              "enabled": true,
+              "original": "",
+              "encoded": ""
+            },
+            {
+              "id": "011",
+              "enabled": false
+            }
+          ],
+          "description": "Preserve the publicly specified data and transformation"
+        }
+      ],
+      "developmentShadow": true,
+      "provenance": {
+        "sourceGroup": "authored:C:development",
+        "source": null,
+        "pairId": null,
+        "split": "development",
+        "seed": "SOC2-C-D-1",
+        "method": "Locally authored composition/conversion task; not an official benchmark instance"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "frozen-derived-fixture-v2",
+    "tags": [
+      "structured-contract-v2",
+      "family:C",
+      "split:development"
+    ],
+    "scenarioHash": "10fdeec58de965cf"
+  },
+  {
+    "id": "SOC2-C-D-2",
+    "dimension": "structured_output",
+    "category": "contract_C",
+    "difficulty": "medium",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v2",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "按输入顺序输出数组。id 必须保留前导零和字符串类型；enabled 原样保留，包括 false。note 为 null 时省略 original、encoded；否则 original 保存未经规范化的原 note，encoded 保存 note 先 NFC 规范化、再 UTF-8、再 Base64URL 编码的结果（用 -_ 替代 +/，去掉尾部 =）。空串必须保留。不要给 original 做 NFC 规范化。输入：[{\"id\":\"007\",\"note\":\"a/b~c\\r\\n\\\"x\\\"\",\"enabled\":false},{\"id\":\"010\",\"note\":\"\",\"enabled\":true},{\"id\":\"011\",\"note\":null,\"enabled\":false}]\n输出必须遵循这个 Schema：{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\",\"pattern\":\"^0[0-9]{2}$\"},\"enabled\":{\"type\":\"boolean\"},\"original\":{\"type\":\"string\"},\"encoded\":{\"type\":\"string\",\"pattern\":\"^[A-Za-z0-9_-]*$\"}},\"required\":[\"id\",\"enabled\"],\"dependentRequired\":{\"original\":[\"encoded\"],\"encoded\":[\"original\"]},\"additionalProperties\":false}}\n只输出完整 JSON 原文，不要围栏或解释。对象键序不限。响应最多 131072 个字符。",
+    "requirements": {
+      "format": "json",
+      "dialect": "2020-12",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "pattern": "^0[0-9]{2}$"
+            },
+            "enabled": {
+              "type": "boolean"
+            },
+            "original": {
+              "type": "string"
+            },
+            "encoded": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]*$"
+            }
+          },
+          "required": [
+            "id",
+            "enabled"
+          ],
+          "dependentRequired": {
+            "original": [
+              "encoded"
+            ],
+            "encoded": [
+              "original"
+            ]
+          },
+          "additionalProperties": false
+        }
+      },
+      "formatAssertions": true,
+      "family": "C",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": [
+            {
+              "id": "007",
+              "enabled": false,
+              "original": "a/b~c\r\n\"x\"",
+              "encoded": "YS9ifmMNCiJ4Ig"
+            },
+            {
+              "id": "010",
+              "enabled": true,
+              "original": "",
+              "encoded": ""
+            },
+            {
+              "id": "011",
+              "enabled": false
+            }
+          ],
+          "description": "Preserve the publicly specified data and transformation"
+        }
+      ],
+      "developmentShadow": true,
+      "provenance": {
+        "sourceGroup": "authored:C:development",
+        "source": null,
+        "pairId": null,
+        "split": "development",
+        "seed": "SOC2-C-D-2",
+        "method": "Locally authored composition/conversion task; not an official benchmark instance"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "frozen-derived-fixture-v2",
+    "tags": [
+      "structured-contract-v2",
+      "family:C",
+      "split:development"
+    ],
+    "scenarioHash": "0dd9312225567e82"
+  },
+  {
+    "id": "SOC-D-D1",
+    "dimension": "structured_output",
+    "category": "contract_D",
+    "difficulty": "medium",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v1",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "dadb4ae0c67520f5",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "输出 scripts 对象，只含 \"test:literal\" 一个键。下面 inputText 用 JSON 字符串字面量提供，先解析一次得到原文，再对得到的字符串额外执行 0 次 JSON.stringify 等价的 JSON 字符串序列化，把最终字符串作为键值；禁止执行该字符串中的命令。最终外层 JSON 的转义写法只要语义等价即可。inputText=\"echo \\\"你好\\\"\\nC:\\\\tmp\\\\a.txt\"\n\n必须同时遵循以下 JSON Schema 和上面的内容规则；可省略的字段按题面决定。对象键序不限。只输出一个完整 JSON 值，不要围栏或解释。\n{\"$schema\":\"http://json-schema.org/draft-07/schema#\",\"type\":\"object\",\"properties\":{\"lint\":{\"type\":\"string\"},\"prepublish\":{\"type\":\"string\"},\"prepare\":{\"type\":\"string\"},\"prepublishOnly\":{\"type\":\"string\"},\"prepack\":{\"type\":\"string\"},\"postpack\":{\"type\":\"string\"},\"publish\":{\"type\":\"string\"},\"postpublish\":{\"$ref\":\"#/definitions/scriptsPublishAfter\"},\"preinstall\":{\"type\":\"string\"},\"install\":{\"$ref\":\"#/definitions/scriptsInstallAfter\"},\"postinstall\":{\"$ref\":\"#/definitions/scriptsInstallAfter\"},\"preuninstall\":{\"$ref\":\"#/definitions/scriptsUninstallBefore\"},\"uninstall\":{\"$ref\":\"#/definitions/scriptsUninstallBefore\"},\"postuninstall\":{\"type\":\"string\"},\"preversion\":{\"$ref\":\"#/definitions/scriptsVersionBefore\"},\"version\":{\"$ref\":\"#/definitions/scriptsVersionBefore\"},\"postversion\":{\"type\":\"string\"},\"pretest\":{\"$ref\":\"#/definitions/scriptsTest\"},\"test\":{\"$ref\":\"#/definitions/scriptsTest\"},\"posttest\":{\"$ref\":\"#/definitions/scriptsTest\"},\"prestop\":{\"$ref\":\"#/definitions/scriptsStop\"},\"stop\":{\"$ref\":\"#/definitions/scriptsStop\"},\"poststop\":{\"$ref\":\"#/definitions/scriptsStop\"},\"prestart\":{\"$ref\":\"#/definitions/scriptsStart\"},\"start\":{\"$ref\":\"#/definitions/scriptsStart\"},\"poststart\":{\"$ref\":\"#/definitions/scriptsStart\"},\"prerestart\":{\"$ref\":\"#/definitions/scriptsRestart\"},\"restart\":{\"$ref\":\"#/definitions/scriptsRestart\"},\"postrestart\":{\"$ref\":\"#/definitions/scriptsRestart\"},\"serve\":{\"type\":\"string\"}},\"additionalProperties\":{\"type\":\"string\"},\"definitions\":{\"scriptsRestart\":{\"type\":\"string\"},\"scriptsStart\":{\"type\":\"string\"},\"scriptsStop\":{\"type\":\"string\"},\"scriptsTest\":{\"type\":\"string\"},\"scriptsVersionBefore\":{\"type\":\"string\"},\"scriptsUninstallBefore\":{\"type\":\"string\"},\"scriptsInstallAfter\":{\"type\":\"string\"},\"scriptsPublishAfter\":{\"type\":\"string\"}}}",
+    "requirements": {
+      "format": "json",
+      "dialect": "draft-07",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "lint": {
+            "type": "string"
+          },
+          "prepublish": {
+            "type": "string"
+          },
+          "prepare": {
+            "type": "string"
+          },
+          "prepublishOnly": {
+            "type": "string"
+          },
+          "prepack": {
+            "type": "string"
+          },
+          "postpack": {
+            "type": "string"
+          },
+          "publish": {
+            "type": "string"
+          },
+          "postpublish": {
+            "$ref": "#/definitions/scriptsPublishAfter"
+          },
+          "preinstall": {
+            "type": "string"
+          },
+          "install": {
+            "$ref": "#/definitions/scriptsInstallAfter"
+          },
+          "postinstall": {
+            "$ref": "#/definitions/scriptsInstallAfter"
+          },
+          "preuninstall": {
+            "$ref": "#/definitions/scriptsUninstallBefore"
+          },
+          "uninstall": {
+            "$ref": "#/definitions/scriptsUninstallBefore"
+          },
+          "postuninstall": {
+            "type": "string"
+          },
+          "preversion": {
+            "$ref": "#/definitions/scriptsVersionBefore"
+          },
+          "version": {
+            "$ref": "#/definitions/scriptsVersionBefore"
+          },
+          "postversion": {
+            "type": "string"
+          },
+          "pretest": {
+            "$ref": "#/definitions/scriptsTest"
+          },
+          "test": {
+            "$ref": "#/definitions/scriptsTest"
+          },
+          "posttest": {
+            "$ref": "#/definitions/scriptsTest"
+          },
+          "prestop": {
+            "$ref": "#/definitions/scriptsStop"
+          },
+          "stop": {
+            "$ref": "#/definitions/scriptsStop"
+          },
+          "poststop": {
+            "$ref": "#/definitions/scriptsStop"
+          },
+          "prestart": {
+            "$ref": "#/definitions/scriptsStart"
+          },
+          "start": {
+            "$ref": "#/definitions/scriptsStart"
+          },
+          "poststart": {
+            "$ref": "#/definitions/scriptsStart"
+          },
+          "prerestart": {
+            "$ref": "#/definitions/scriptsRestart"
+          },
+          "restart": {
+            "$ref": "#/definitions/scriptsRestart"
+          },
+          "postrestart": {
+            "$ref": "#/definitions/scriptsRestart"
+          },
+          "serve": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": {
+          "type": "string"
+        },
+        "definitions": {
+          "scriptsRestart": {
+            "type": "string"
+          },
+          "scriptsStart": {
+            "type": "string"
+          },
+          "scriptsStop": {
+            "type": "string"
+          },
+          "scriptsTest": {
+            "type": "string"
+          },
+          "scriptsVersionBefore": {
+            "type": "string"
+          },
+          "scriptsUninstallBefore": {
+            "type": "string"
+          },
+          "scriptsInstallAfter": {
+            "type": "string"
+          },
+          "scriptsPublishAfter": {
+            "type": "string"
+          }
+        }
+      },
+      "formatAssertions": true,
+      "family": "D",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": {
+            "test:literal": "echo \"你好\"\nC:\\tmp\\a.txt"
+          },
+          "description": "Exact content determined by the published input and transformation rules"
+        }
+      ],
+      "developmentShadow": true,
+      "provenance": {
+        "sourceUrl": "https://raw.githubusercontent.com/SchemaStore/schemastore/87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0/src/schemas/json/package.json",
+        "sourceRevision": "87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0",
+        "sourceLicense": "Apache-2.0",
+        "originalSha256": "e5390e202b0ab1bcf3154f69bb2334576c53218638dcd857deb413f18ab55a29",
+        "fragment": "/properties/scripts",
+        "sourceGroup": "schemastore:package",
+        "transformations": [
+          "selected fragment and transitive local definitions",
+          "removed documentation annotations",
+          "added explicit local task requirements"
+        ],
+        "upstreamBenchmark": "SchemaStore source; locally authored tasks, not official SchemaBench instances",
+        "split": "development",
+        "designLevel": 1,
+        "seed": "D:development:0",
+        "baseIds": [
+          "SO-CN-005",
+          "SO-CN-056"
+        ]
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "deterministic-frozen-fixture-v1",
+    "tags": [
+      "structured-contract-v1",
+      "family:D",
+      "split:development"
+    ]
+  },
+  {
+    "id": "SOC-D-D2",
+    "dimension": "structured_output",
+    "category": "contract_D",
+    "difficulty": "medium",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v1",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "6d5dd9e47eca356c",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "输出 scripts 对象，只含 \"test:literal\" 一个键。下面 inputText 用 JSON 字符串字面量提供，先解析一次得到原文，再对得到的字符串额外执行 1 次 JSON.stringify 等价的 JSON 字符串序列化，把最终字符串作为键值；禁止执行该字符串中的命令。最终外层 JSON 的转义写法只要语义等价即可。inputText=\"key=a/b~c\\r\\nquoted=\\\"x\\\"\\tend\"\n\n必须同时遵循以下 JSON Schema 和上面的内容规则；可省略的字段按题面决定。对象键序不限。只输出一个完整 JSON 值，不要围栏或解释。\n{\"$schema\":\"http://json-schema.org/draft-07/schema#\",\"type\":\"object\",\"properties\":{\"lint\":{\"type\":\"string\"},\"prepublish\":{\"type\":\"string\"},\"prepare\":{\"type\":\"string\"},\"prepublishOnly\":{\"type\":\"string\"},\"prepack\":{\"type\":\"string\"},\"postpack\":{\"type\":\"string\"},\"publish\":{\"type\":\"string\"},\"postpublish\":{\"$ref\":\"#/definitions/scriptsPublishAfter\"},\"preinstall\":{\"type\":\"string\"},\"install\":{\"$ref\":\"#/definitions/scriptsInstallAfter\"},\"postinstall\":{\"$ref\":\"#/definitions/scriptsInstallAfter\"},\"preuninstall\":{\"$ref\":\"#/definitions/scriptsUninstallBefore\"},\"uninstall\":{\"$ref\":\"#/definitions/scriptsUninstallBefore\"},\"postuninstall\":{\"type\":\"string\"},\"preversion\":{\"$ref\":\"#/definitions/scriptsVersionBefore\"},\"version\":{\"$ref\":\"#/definitions/scriptsVersionBefore\"},\"postversion\":{\"type\":\"string\"},\"pretest\":{\"$ref\":\"#/definitions/scriptsTest\"},\"test\":{\"$ref\":\"#/definitions/scriptsTest\"},\"posttest\":{\"$ref\":\"#/definitions/scriptsTest\"},\"prestop\":{\"$ref\":\"#/definitions/scriptsStop\"},\"stop\":{\"$ref\":\"#/definitions/scriptsStop\"},\"poststop\":{\"$ref\":\"#/definitions/scriptsStop\"},\"prestart\":{\"$ref\":\"#/definitions/scriptsStart\"},\"start\":{\"$ref\":\"#/definitions/scriptsStart\"},\"poststart\":{\"$ref\":\"#/definitions/scriptsStart\"},\"prerestart\":{\"$ref\":\"#/definitions/scriptsRestart\"},\"restart\":{\"$ref\":\"#/definitions/scriptsRestart\"},\"postrestart\":{\"$ref\":\"#/definitions/scriptsRestart\"},\"serve\":{\"type\":\"string\"}},\"additionalProperties\":{\"type\":\"string\"},\"definitions\":{\"scriptsRestart\":{\"type\":\"string\"},\"scriptsStart\":{\"type\":\"string\"},\"scriptsStop\":{\"type\":\"string\"},\"scriptsTest\":{\"type\":\"string\"},\"scriptsVersionBefore\":{\"type\":\"string\"},\"scriptsUninstallBefore\":{\"type\":\"string\"},\"scriptsInstallAfter\":{\"type\":\"string\"},\"scriptsPublishAfter\":{\"type\":\"string\"}}}",
+    "requirements": {
+      "format": "json",
+      "dialect": "draft-07",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "lint": {
+            "type": "string"
+          },
+          "prepublish": {
+            "type": "string"
+          },
+          "prepare": {
+            "type": "string"
+          },
+          "prepublishOnly": {
+            "type": "string"
+          },
+          "prepack": {
+            "type": "string"
+          },
+          "postpack": {
+            "type": "string"
+          },
+          "publish": {
+            "type": "string"
+          },
+          "postpublish": {
+            "$ref": "#/definitions/scriptsPublishAfter"
+          },
+          "preinstall": {
+            "type": "string"
+          },
+          "install": {
+            "$ref": "#/definitions/scriptsInstallAfter"
+          },
+          "postinstall": {
+            "$ref": "#/definitions/scriptsInstallAfter"
+          },
+          "preuninstall": {
+            "$ref": "#/definitions/scriptsUninstallBefore"
+          },
+          "uninstall": {
+            "$ref": "#/definitions/scriptsUninstallBefore"
+          },
+          "postuninstall": {
+            "type": "string"
+          },
+          "preversion": {
+            "$ref": "#/definitions/scriptsVersionBefore"
+          },
+          "version": {
+            "$ref": "#/definitions/scriptsVersionBefore"
+          },
+          "postversion": {
+            "type": "string"
+          },
+          "pretest": {
+            "$ref": "#/definitions/scriptsTest"
+          },
+          "test": {
+            "$ref": "#/definitions/scriptsTest"
+          },
+          "posttest": {
+            "$ref": "#/definitions/scriptsTest"
+          },
+          "prestop": {
+            "$ref": "#/definitions/scriptsStop"
+          },
+          "stop": {
+            "$ref": "#/definitions/scriptsStop"
+          },
+          "poststop": {
+            "$ref": "#/definitions/scriptsStop"
+          },
+          "prestart": {
+            "$ref": "#/definitions/scriptsStart"
+          },
+          "start": {
+            "$ref": "#/definitions/scriptsStart"
+          },
+          "poststart": {
+            "$ref": "#/definitions/scriptsStart"
+          },
+          "prerestart": {
+            "$ref": "#/definitions/scriptsRestart"
+          },
+          "restart": {
+            "$ref": "#/definitions/scriptsRestart"
+          },
+          "postrestart": {
+            "$ref": "#/definitions/scriptsRestart"
+          },
+          "serve": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": {
+          "type": "string"
+        },
+        "definitions": {
+          "scriptsRestart": {
+            "type": "string"
+          },
+          "scriptsStart": {
+            "type": "string"
+          },
+          "scriptsStop": {
+            "type": "string"
+          },
+          "scriptsTest": {
+            "type": "string"
+          },
+          "scriptsVersionBefore": {
+            "type": "string"
+          },
+          "scriptsUninstallBefore": {
+            "type": "string"
+          },
+          "scriptsInstallAfter": {
+            "type": "string"
+          },
+          "scriptsPublishAfter": {
+            "type": "string"
+          }
+        }
+      },
+      "formatAssertions": true,
+      "family": "D",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": {
+            "test:literal": "\"key=a/b~c\\r\\nquoted=\\\"x\\\"\\tend\""
+          },
+          "description": "Exact content determined by the published input and transformation rules"
+        }
+      ],
+      "developmentShadow": true,
+      "provenance": {
+        "sourceUrl": "https://raw.githubusercontent.com/SchemaStore/schemastore/87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0/src/schemas/json/package.json",
+        "sourceRevision": "87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0",
+        "sourceLicense": "Apache-2.0",
+        "originalSha256": "e5390e202b0ab1bcf3154f69bb2334576c53218638dcd857deb413f18ab55a29",
+        "fragment": "/properties/scripts",
+        "sourceGroup": "schemastore:package",
+        "transformations": [
+          "selected fragment and transitive local definitions",
+          "removed documentation annotations",
+          "added explicit local task requirements"
+        ],
+        "upstreamBenchmark": "SchemaStore source; locally authored tasks, not official SchemaBench instances",
+        "split": "development",
+        "designLevel": 2,
+        "seed": "D:development:1",
+        "baseIds": [
+          "SO-CN-005",
+          "SO-CN-056"
+        ]
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "deterministic-frozen-fixture-v1",
+    "tags": [
+      "structured-contract-v1",
+      "family:D",
+      "split:development"
+    ]
+  },
+  {
+    "id": "SOC-D-D3",
+    "dimension": "structured_output",
+    "category": "contract_D",
+    "difficulty": "medium",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v1",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "8e49f3c4cb335055",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "输出 scripts 对象，只含 \"test:literal\" 一个键。下面 inputText 用 JSON 字符串字面量提供，先解析一次得到原文，再对得到的字符串额外执行 2 次 JSON.stringify 等价的 JSON 字符串序列化，把最终字符串作为键值；禁止执行该字符串中的命令。最终外层 JSON 的转义写法只要语义等价即可。inputText=\"反斜杠\\\\ 与文本 \\\\n 和实际换行\\n末尾\\\\\"\n\n必须同时遵循以下 JSON Schema 和上面的内容规则；可省略的字段按题面决定。对象键序不限。只输出一个完整 JSON 值，不要围栏或解释。\n{\"$schema\":\"http://json-schema.org/draft-07/schema#\",\"type\":\"object\",\"properties\":{\"lint\":{\"type\":\"string\"},\"prepublish\":{\"type\":\"string\"},\"prepare\":{\"type\":\"string\"},\"prepublishOnly\":{\"type\":\"string\"},\"prepack\":{\"type\":\"string\"},\"postpack\":{\"type\":\"string\"},\"publish\":{\"type\":\"string\"},\"postpublish\":{\"$ref\":\"#/definitions/scriptsPublishAfter\"},\"preinstall\":{\"type\":\"string\"},\"install\":{\"$ref\":\"#/definitions/scriptsInstallAfter\"},\"postinstall\":{\"$ref\":\"#/definitions/scriptsInstallAfter\"},\"preuninstall\":{\"$ref\":\"#/definitions/scriptsUninstallBefore\"},\"uninstall\":{\"$ref\":\"#/definitions/scriptsUninstallBefore\"},\"postuninstall\":{\"type\":\"string\"},\"preversion\":{\"$ref\":\"#/definitions/scriptsVersionBefore\"},\"version\":{\"$ref\":\"#/definitions/scriptsVersionBefore\"},\"postversion\":{\"type\":\"string\"},\"pretest\":{\"$ref\":\"#/definitions/scriptsTest\"},\"test\":{\"$ref\":\"#/definitions/scriptsTest\"},\"posttest\":{\"$ref\":\"#/definitions/scriptsTest\"},\"prestop\":{\"$ref\":\"#/definitions/scriptsStop\"},\"stop\":{\"$ref\":\"#/definitions/scriptsStop\"},\"poststop\":{\"$ref\":\"#/definitions/scriptsStop\"},\"prestart\":{\"$ref\":\"#/definitions/scriptsStart\"},\"start\":{\"$ref\":\"#/definitions/scriptsStart\"},\"poststart\":{\"$ref\":\"#/definitions/scriptsStart\"},\"prerestart\":{\"$ref\":\"#/definitions/scriptsRestart\"},\"restart\":{\"$ref\":\"#/definitions/scriptsRestart\"},\"postrestart\":{\"$ref\":\"#/definitions/scriptsRestart\"},\"serve\":{\"type\":\"string\"}},\"additionalProperties\":{\"type\":\"string\"},\"definitions\":{\"scriptsRestart\":{\"type\":\"string\"},\"scriptsStart\":{\"type\":\"string\"},\"scriptsStop\":{\"type\":\"string\"},\"scriptsTest\":{\"type\":\"string\"},\"scriptsVersionBefore\":{\"type\":\"string\"},\"scriptsUninstallBefore\":{\"type\":\"string\"},\"scriptsInstallAfter\":{\"type\":\"string\"},\"scriptsPublishAfter\":{\"type\":\"string\"}}}",
+    "requirements": {
+      "format": "json",
+      "dialect": "draft-07",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "lint": {
+            "type": "string"
+          },
+          "prepublish": {
+            "type": "string"
+          },
+          "prepare": {
+            "type": "string"
+          },
+          "prepublishOnly": {
+            "type": "string"
+          },
+          "prepack": {
+            "type": "string"
+          },
+          "postpack": {
+            "type": "string"
+          },
+          "publish": {
+            "type": "string"
+          },
+          "postpublish": {
+            "$ref": "#/definitions/scriptsPublishAfter"
+          },
+          "preinstall": {
+            "type": "string"
+          },
+          "install": {
+            "$ref": "#/definitions/scriptsInstallAfter"
+          },
+          "postinstall": {
+            "$ref": "#/definitions/scriptsInstallAfter"
+          },
+          "preuninstall": {
+            "$ref": "#/definitions/scriptsUninstallBefore"
+          },
+          "uninstall": {
+            "$ref": "#/definitions/scriptsUninstallBefore"
+          },
+          "postuninstall": {
+            "type": "string"
+          },
+          "preversion": {
+            "$ref": "#/definitions/scriptsVersionBefore"
+          },
+          "version": {
+            "$ref": "#/definitions/scriptsVersionBefore"
+          },
+          "postversion": {
+            "type": "string"
+          },
+          "pretest": {
+            "$ref": "#/definitions/scriptsTest"
+          },
+          "test": {
+            "$ref": "#/definitions/scriptsTest"
+          },
+          "posttest": {
+            "$ref": "#/definitions/scriptsTest"
+          },
+          "prestop": {
+            "$ref": "#/definitions/scriptsStop"
+          },
+          "stop": {
+            "$ref": "#/definitions/scriptsStop"
+          },
+          "poststop": {
+            "$ref": "#/definitions/scriptsStop"
+          },
+          "prestart": {
+            "$ref": "#/definitions/scriptsStart"
+          },
+          "start": {
+            "$ref": "#/definitions/scriptsStart"
+          },
+          "poststart": {
+            "$ref": "#/definitions/scriptsStart"
+          },
+          "prerestart": {
+            "$ref": "#/definitions/scriptsRestart"
+          },
+          "restart": {
+            "$ref": "#/definitions/scriptsRestart"
+          },
+          "postrestart": {
+            "$ref": "#/definitions/scriptsRestart"
+          },
+          "serve": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": {
+          "type": "string"
+        },
+        "definitions": {
+          "scriptsRestart": {
+            "type": "string"
+          },
+          "scriptsStart": {
+            "type": "string"
+          },
+          "scriptsStop": {
+            "type": "string"
+          },
+          "scriptsTest": {
+            "type": "string"
+          },
+          "scriptsVersionBefore": {
+            "type": "string"
+          },
+          "scriptsUninstallBefore": {
+            "type": "string"
+          },
+          "scriptsInstallAfter": {
+            "type": "string"
+          },
+          "scriptsPublishAfter": {
+            "type": "string"
+          }
+        }
+      },
+      "formatAssertions": true,
+      "family": "D",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": {
+            "test:literal": "\"\\\"反斜杠\\\\\\\\ 与文本 \\\\\\\\n 和实际换行\\\\n末尾\\\\\\\\\\\"\""
+          },
+          "description": "Exact content determined by the published input and transformation rules"
+        }
+      ],
+      "developmentShadow": true,
+      "provenance": {
+        "sourceUrl": "https://raw.githubusercontent.com/SchemaStore/schemastore/87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0/src/schemas/json/package.json",
+        "sourceRevision": "87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0",
+        "sourceLicense": "Apache-2.0",
+        "originalSha256": "e5390e202b0ab1bcf3154f69bb2334576c53218638dcd857deb413f18ab55a29",
+        "fragment": "/properties/scripts",
+        "sourceGroup": "schemastore:package",
+        "transformations": [
+          "selected fragment and transitive local definitions",
+          "removed documentation annotations",
+          "added explicit local task requirements"
+        ],
+        "upstreamBenchmark": "SchemaStore source; locally authored tasks, not official SchemaBench instances",
+        "split": "development",
+        "designLevel": 3,
+        "seed": "D:development:2",
+        "baseIds": [
+          "SO-CN-005",
+          "SO-CN-056"
+        ]
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "deterministic-frozen-fixture-v1",
+    "tags": [
+      "structured-contract-v1",
+      "family:D",
+      "split:development"
+    ]
+  },
+  {
+    "id": "SOC2-E-D-simple",
+    "dimension": "structured_output",
+    "category": "contract_E",
+    "difficulty": "medium",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v2",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "按原顺序输出每条记录的 id、state、note，值和类型不变。输入：[{\"id\":\"0007\",\"state\":\"ok\",\"note\":\"\"},{\"id\":\"0010\",\"state\":\"error\",\"note\":\"引号\\\"和\\\\\"},{\"id\":\"0011\",\"state\":\"skip\",\"note\":null}]\n输出必须遵循这个 Schema：{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"},\"state\":{\"enum\":[\"ok\",\"error\",\"skip\"]},\"note\":{\"type\":[\"string\",\"null\"]}},\"required\":[\"id\",\"state\",\"note\"],\"additionalProperties\":false}}\n只输出完整 JSON 原文，不要围栏或解释。对象键序不限。响应最多 131072 个字符。",
+    "requirements": {
+      "format": "json",
+      "dialect": "2020-12",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "state": {
+              "enum": [
+                "ok",
+                "error",
+                "skip"
+              ]
+            },
+            "note": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "id",
+            "state",
+            "note"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "formatAssertions": true,
+      "family": "E",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": [
+            {
+              "id": "0007",
+              "state": "ok",
+              "note": ""
+            },
+            {
+              "id": "0010",
+              "state": "error",
+              "note": "引号\"和\\"
+            },
+            {
+              "id": "0011",
+              "state": "skip",
+              "note": null
+            }
+          ],
+          "description": "Preserve the publicly specified data and transformation"
+        }
+      ],
+      "developmentShadow": true,
+      "provenance": {
+        "sourceGroup": "authored:event-ci",
+        "source": null,
+        "pairId": "pair:E:development",
+        "split": "development",
+        "seed": "SOC2-E-D-simple",
+        "method": "Locally authored composition/conversion task; not an official benchmark instance"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "frozen-derived-fixture-v2",
+    "tags": [
+      "structured-contract-v2",
+      "family:E",
+      "split:development"
+    ],
+    "scenarioHash": "144fb1364ca3581e"
+  },
+  {
+    "id": "SOC2-E-D-complex",
+    "dimension": "structured_output",
+    "category": "contract_E",
+    "difficulty": "medium",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v2",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "按输入顺序输出数组，每项是仅含一个动态键的对象，键为原 id 字符串。state=skip 时值只能是 {\"skipped\":true}；ok 时值为 {\"ok\":{\"message\":原note}}；error 时值为 {\"error\":{\"message\":原note,\"retryable\":false}}。保留空串、反斜杠与换行，不额外输出 state/note。输入：[{\"id\":\"0007\",\"state\":\"ok\",\"note\":\"\"},{\"id\":\"0010\",\"state\":\"error\",\"note\":\"引号\\\"和\\\\\"},{\"id\":\"0011\",\"state\":\"skip\",\"note\":null}]\n输出必须遵循这个 Schema：{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"array\",\"items\":{\"type\":\"object\",\"minProperties\":1,\"maxProperties\":1,\"additionalProperties\":{\"oneOf\":[{\"type\":\"object\",\"properties\":{\"skipped\":{\"const\":true}},\"required\":[\"skipped\"],\"additionalProperties\":false},{\"type\":\"object\",\"properties\":{\"ok\":{\"type\":\"object\",\"properties\":{\"message\":{\"type\":\"string\"}},\"required\":[\"message\"],\"additionalProperties\":false}},\"required\":[\"ok\"],\"additionalProperties\":false},{\"type\":\"object\",\"properties\":{\"error\":{\"type\":\"object\",\"properties\":{\"message\":{\"type\":\"string\"},\"retryable\":{\"const\":false}},\"required\":[\"message\",\"retryable\"],\"additionalProperties\":false}},\"required\":[\"error\"],\"additionalProperties\":false}]}}}\n只输出完整 JSON 原文，不要围栏或解释。对象键序不限。响应最多 131072 个字符。",
+    "requirements": {
+      "format": "json",
+      "dialect": "2020-12",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "minProperties": 1,
+          "maxProperties": 1,
+          "additionalProperties": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "skipped": {
+                    "const": true
+                  }
+                },
+                "required": [
+                  "skipped"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "ok": {
+                    "type": "object",
+                    "properties": {
+                      "message": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "message"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "ok"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "error": {
+                    "type": "object",
+                    "properties": {
+                      "message": {
+                        "type": "string"
+                      },
+                      "retryable": {
+                        "const": false
+                      }
+                    },
+                    "required": [
+                      "message",
+                      "retryable"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "error"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          }
+        }
+      },
+      "formatAssertions": true,
+      "family": "E",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": [
+            {
+              "0007": {
+                "ok": {
+                  "message": ""
+                }
+              }
+            },
+            {
+              "0010": {
+                "error": {
+                  "message": "引号\"和\\",
+                  "retryable": false
+                }
+              }
+            },
+            {
+              "0011": {
+                "skipped": true
+              }
+            }
+          ],
+          "description": "Preserve the publicly specified data and transformation"
+        }
+      ],
+      "developmentShadow": true,
+      "provenance": {
+        "sourceGroup": "authored:event-ci",
+        "source": null,
+        "pairId": "pair:E:development",
+        "split": "development",
+        "seed": "SOC2-E-D-complex",
+        "method": "Locally authored composition/conversion task; not an official benchmark instance"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "frozen-derived-fixture-v2",
+    "tags": [
+      "structured-contract-v2",
+      "family:E",
+      "split:development"
+    ],
+    "scenarioHash": "2c4e3672f631f6ad"
+  },
+  {
+    "id": "SOC2-F-D-csv",
+    "dimension": "structured_output",
+    "category": "contract_F",
+    "difficulty": "medium",
+    "language": "csv",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v2",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "把 JSON 输入无损转换为 CSV。首行表头恰为 code,name,note。RFC 4180 引号规则；字段内换行保留为实际换行；不要用字面量 \\n 替换。所有字段按字符串处理。 输入：[{\"code\":\"001\",\"name\":\"甲,\\\"乙\\\"\",\"note\":\"line1\\nline2\"},{\"code\":\"010\",\"name\":\"ON\",\"note\":\"\"}]\n只输出完整 CSV 原文，不要围栏或解释。对象键序不限。响应最多 131072 个字符。",
+    "requirements": {
+      "format": "csv",
+      "dialect": "2020-12",
+      "schema": true,
+      "formatAssertions": true,
+      "family": "F",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": [
+            {
+              "code": "001",
+              "name": "甲,\"乙\"",
+              "note": "line1\nline2"
+            },
+            {
+              "code": "010",
+              "name": "ON",
+              "note": ""
+            }
+          ],
+          "description": "Preserve the publicly specified data and transformation"
+        }
+      ],
+      "developmentShadow": true,
+      "provenance": {
+        "sourceGroup": "authored:conversion-catalog",
+        "source": null,
+        "pairId": null,
+        "split": "development",
+        "seed": "SOC2-F-D-csv",
+        "method": "Locally authored composition/conversion task; not an official benchmark instance"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "frozen-derived-fixture-v2",
+    "tags": [
+      "structured-contract-v2",
+      "family:F",
+      "split:development"
+    ],
+    "scenarioHash": "27798ca402e1cd72"
+  },
+  {
+    "id": "SOC2-F-D-xml",
+    "dimension": "structured_output",
+    "category": "contract_F",
+    "difficulty": "medium",
+    "language": "xml",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v2",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "把 JSON 输入无损转换为 XML。根 records，每行 record，字段顺序 code/name/note。每个字段是一个简单子元素；null 用空元素 <note null=\"true\"/>，空串用空文本元素；其他元素无属性。不能使用 DTD、实体声明或嵌套字段。 输入：[{\"code\":\"001\",\"name\":\"甲,\\\"乙\\\"\",\"note\":\"line1\\nline2\"},{\"code\":\"010\",\"name\":\"ON\",\"note\":null}]\n只输出完整 XML 原文，不要围栏或解释。对象键序不限。响应最多 131072 个字符。",
+    "requirements": {
+      "format": "xml",
+      "dialect": "2020-12",
+      "schema": true,
+      "formatAssertions": true,
+      "family": "F",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": [
+            {
+              "code": "001",
+              "name": "甲,\"乙\"",
+              "note": "line1\nline2"
+            },
+            {
+              "code": "010",
+              "name": "ON",
+              "note": null
+            }
+          ],
+          "description": "Preserve the publicly specified data and transformation"
+        }
+      ],
+      "developmentShadow": true,
+      "provenance": {
+        "sourceGroup": "authored:conversion-catalog",
+        "source": null,
+        "pairId": null,
+        "split": "development",
+        "seed": "SOC2-F-D-xml",
+        "method": "Locally authored composition/conversion task; not an official benchmark instance"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "frozen-derived-fixture-v2",
+    "tags": [
+      "structured-contract-v2",
+      "family:F",
+      "split:development"
+    ],
+    "scenarioHash": "8dc816d6f734ac10"
+  },
+  {
+    "id": "SOC2-F-D-yaml",
+    "dimension": "structured_output",
+    "category": "contract_F",
+    "difficulty": "medium",
+    "language": "yaml",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v2",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "把 JSON 输入无损转换为 YAML。使用 YAML 1.2 的 JSON 兼容数据类型，不使用锚点、别名、自定义标签；字符串保留原类型。也允许 JSON 语法，因为它是合法 YAML。 输入：[{\"code\":\"001\",\"name\":\"甲,\\\"乙\\\"\",\"note\":\"line1\\nline2\"},{\"code\":\"010\",\"name\":\"ON\",\"note\":\"\"}]\n只输出完整 YAML 原文，不要围栏或解释。对象键序不限。响应最多 131072 个字符。",
+    "requirements": {
+      "format": "yaml",
+      "dialect": "2020-12",
+      "schema": true,
+      "formatAssertions": true,
+      "family": "F",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": [
+            {
+              "code": "001",
+              "name": "甲,\"乙\"",
+              "note": "line1\nline2"
+            },
+            {
+              "code": "010",
+              "name": "ON",
+              "note": ""
+            }
+          ],
+          "description": "Preserve the publicly specified data and transformation"
+        }
+      ],
+      "developmentShadow": true,
+      "provenance": {
+        "sourceGroup": "authored:conversion-catalog",
+        "source": null,
+        "pairId": null,
+        "split": "development",
+        "seed": "SOC2-F-D-yaml",
+        "method": "Locally authored composition/conversion task; not an official benchmark instance"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "frozen-derived-fixture-v2",
+    "tags": [
+      "structured-contract-v2",
+      "family:F",
+      "split:development"
+    ],
+    "scenarioHash": "1b5983d2bd08c3c7"
+  },
+  {
+    "id": "SOC2-F-D-toml",
+    "dimension": "structured_output",
+    "category": "contract_F",
+    "difficulty": "medium",
+    "language": "toml",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v2",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "把 JSON 输入无损转换为 TOML。TOML 1.0：顶层只有 records 数组，使用 [[records]]。所有 code/name/note 均为字符串；勿自动转日期、布尔或数字。 输入：[{\"code\":\"001\",\"name\":\"甲,\\\"乙\\\"\",\"note\":\"line1\\nline2\"},{\"code\":\"010\",\"name\":\"ON\",\"note\":\"\"}]\n只输出完整 TOML 原文，不要围栏或解释。对象键序不限。响应最多 131072 个字符。",
+    "requirements": {
+      "format": "toml",
+      "dialect": "2020-12",
+      "schema": true,
+      "formatAssertions": true,
+      "family": "F",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": {
+            "records": [
+              {
+                "code": "001",
+                "name": "甲,\"乙\"",
+                "note": "line1\nline2"
+              },
+              {
+                "code": "010",
+                "name": "ON",
+                "note": ""
+              }
+            ]
+          },
+          "description": "Preserve the publicly specified data and transformation"
+        }
+      ],
+      "developmentShadow": true,
+      "provenance": {
+        "sourceGroup": "authored:conversion-catalog",
+        "source": null,
+        "pairId": null,
+        "split": "development",
+        "seed": "SOC2-F-D-toml",
+        "method": "Locally authored composition/conversion task; not an official benchmark instance"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "frozen-derived-fixture-v2",
+    "tags": [
+      "structured-contract-v2",
+      "family:F",
+      "split:development"
+    ],
+    "scenarioHash": "0f5d0ec43cba1672"
+  },
+  {
+    "id": "SOC2-G-D-1",
+    "dimension": "structured_output",
+    "category": "contract_G",
+    "difficulty": "medium",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v2",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "生成 JSON Schema 2020-12，描述如下全部规则：顶层必须为对象，mode 和 enabled 必需；mode 只能 local/remote，enabled 必须布尔。local 必须有字符串 path（可空），且绝不能有 credentials；remote 必须有 credentials，绝不能有 path。credentials 恰为两种形状之一：仅有非空字符串 token；或恰有字符串 user/password（均可空）。顶层和 credentials 禁止其他键。 可以自由选择等价的标准 Schema 写法；只允许本地引用，不允许外部引用；Schema 嵌套深度不超过 64。使用这些有界题目时验证器会限制编译/验证资源。\n输出必须遵循这个 Schema：{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":[\"object\",\"boolean\"]}\n只输出完整 JSON 原文，不要围栏或解释。对象键序不限。响应最多 131072 个字符。",
+    "requirements": {
+      "format": "json",
+      "dialect": "2020-12",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": [
+          "object",
+          "boolean"
+        ]
+      },
+      "formatAssertions": true,
+      "family": "G",
+      "output_policy": "raw_only",
+      "generatedSchema": {
+        "cases": [
+          {
+            "data": {
+              "mode": "local",
+              "enabled": false,
+              "path": ""
+            },
+            "valid": true
+          },
+          {
+            "data": {
+              "mode": "remote",
+              "enabled": true,
+              "credentials": {
+                "token": "x"
+              }
+            },
+            "valid": true
+          },
+          {
+            "data": {
+              "mode": "remote",
+              "enabled": false,
+              "credentials": {
+                "user": "",
+                "password": ""
+              }
+            },
+            "valid": true
+          },
+          {
+            "data": {},
+            "valid": false
+          },
+          {
+            "data": null,
+            "valid": false
+          },
+          {
+            "data": [],
+            "valid": false
+          },
+          {
+            "data": {
+              "mode": "local",
+              "enabled": false
+            },
+            "valid": false
+          },
+          {
+            "data": {
+              "mode": "local",
+              "enabled": 0,
+              "path": "x"
+            },
+            "valid": false
+          },
+          {
+            "data": {
+              "mode": "remote",
+              "enabled": true,
+              "path": "x"
+            },
+            "valid": false
+          },
+          {
+            "data": {
+              "mode": "local",
+              "enabled": true,
+              "path": "x",
+              "credentials": {
+                "token": "x"
+              }
+            },
+            "valid": false
+          },
+          {
+            "data": {
+              "mode": "remote",
+              "enabled": true,
+              "credentials": {
+                "token": ""
+              }
+            },
+            "valid": false
+          },
+          {
+            "data": {
+              "mode": "remote",
+              "enabled": true,
+              "credentials": {
+                "token": "x",
+                "user": "u",
+                "password": "p"
+              }
+            },
+            "valid": false
+          },
+          {
+            "data": {
+              "mode": "remote",
+              "enabled": true,
+              "credentials": {
+                "user": "u"
+              }
+            },
+            "valid": false
+          },
+          {
+            "data": {
+              "mode": "remote",
+              "enabled": true,
+              "credentials": {
+                "user": "u",
+                "password": "p",
+                "extra": 0
+              }
+            },
+            "valid": false
+          },
+          {
+            "data": {
+              "mode": "local",
+              "enabled": true,
+              "path": "x",
+              "extra": 0
+            },
+            "valid": false
+          }
+        ]
+      },
+      "developmentShadow": true,
+      "provenance": {
+        "sourceGroup": "authored:G:development",
+        "source": null,
+        "pairId": null,
+        "split": "development",
+        "seed": "SOC2-G-D-1",
+        "method": "Locally authored composition/conversion task; not an official benchmark instance"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "frozen-derived-fixture-v2",
+    "tags": [
+      "structured-contract-v2",
+      "family:G",
+      "split:development"
+    ],
+    "scenarioHash": "b3bb8a73ebc02ddb"
+  },
+  {
+    "id": "SOC2-G-D-2",
+    "dimension": "structured_output",
+    "category": "contract_G",
+    "difficulty": "medium",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v2",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "生成 JSON Schema 2020-12，描述如下全部规则：顶层必须为对象，mode 和 enabled 必需；mode 只能 local/remote，enabled 必须布尔。local 必须有字符串 path（可空），且绝不能有 credentials；remote 必须有 credentials，绝不能有 path。credentials 恰为两种形状之一：仅有非空字符串 token；或恰有字符串 user/password（均可空）。顶层和 credentials 禁止其他键。另有必需 version，必须为 1 到 3 的整数（含边界）。 可以自由选择等价的标准 Schema 写法；只允许本地引用，不允许外部引用；Schema 嵌套深度不超过 64。使用这些有界题目时验证器会限制编译/验证资源。\n输出必须遵循这个 Schema：{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":[\"object\",\"boolean\"]}\n只输出完整 JSON 原文，不要围栏或解释。对象键序不限。响应最多 131072 个字符。",
+    "requirements": {
+      "format": "json",
+      "dialect": "2020-12",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": [
+          "object",
+          "boolean"
+        ]
+      },
+      "formatAssertions": true,
+      "family": "G",
+      "output_policy": "raw_only",
+      "generatedSchema": {
+        "cases": [
+          {
+            "data": {
+              "mode": "local",
+              "enabled": false,
+              "path": "",
+              "version": 2
+            },
+            "valid": true
+          },
+          {
+            "data": {
+              "mode": "remote",
+              "enabled": true,
+              "credentials": {
+                "token": "x"
+              },
+              "version": 2
+            },
+            "valid": true
+          },
+          {
+            "data": {
+              "mode": "remote",
+              "enabled": false,
+              "credentials": {
+                "user": "",
+                "password": ""
+              },
+              "version": 2
+            },
+            "valid": true
+          },
+          {
+            "data": {
+              "version": 2
+            },
+            "valid": false
+          },
+          {
+            "data": null,
+            "valid": false
+          },
+          {
+            "data": [],
+            "valid": false
+          },
+          {
+            "data": {
+              "mode": "local",
+              "enabled": false,
+              "version": 2
+            },
+            "valid": false
+          },
+          {
+            "data": {
+              "mode": "local",
+              "enabled": 0,
+              "path": "x",
+              "version": 2
+            },
+            "valid": false
+          },
+          {
+            "data": {
+              "mode": "remote",
+              "enabled": true,
+              "path": "x",
+              "version": 2
+            },
+            "valid": false
+          },
+          {
+            "data": {
+              "mode": "local",
+              "enabled": true,
+              "path": "x",
+              "credentials": {
+                "token": "x"
+              },
+              "version": 2
+            },
+            "valid": false
+          },
+          {
+            "data": {
+              "mode": "remote",
+              "enabled": true,
+              "credentials": {
+                "token": ""
+              },
+              "version": 2
+            },
+            "valid": false
+          },
+          {
+            "data": {
+              "mode": "remote",
+              "enabled": true,
+              "credentials": {
+                "token": "x",
+                "user": "u",
+                "password": "p"
+              },
+              "version": 2
+            },
+            "valid": false
+          },
+          {
+            "data": {
+              "mode": "remote",
+              "enabled": true,
+              "credentials": {
+                "user": "u"
+              },
+              "version": 2
+            },
+            "valid": false
+          },
+          {
+            "data": {
+              "mode": "remote",
+              "enabled": true,
+              "credentials": {
+                "user": "u",
+                "password": "p",
+                "extra": 0
+              },
+              "version": 2
+            },
+            "valid": false
+          },
+          {
+            "data": {
+              "mode": "local",
+              "enabled": true,
+              "path": "x",
+              "extra": 0,
+              "version": 2
+            },
+            "valid": false
+          },
+          {
+            "data": {
+              "mode": "local",
+              "enabled": false,
+              "path": "",
+              "version": 0
+            },
+            "valid": false
+          },
+          {
+            "data": {
+              "mode": "remote",
+              "enabled": true,
+              "credentials": {
+                "token": "x"
+              },
+              "version": 1.5
+            },
+            "valid": false
+          },
+          {
+            "data": {
+              "mode": "remote",
+              "enabled": false,
+              "credentials": {
+                "user": "",
+                "password": ""
+              },
+              "version": 4
+            },
+            "valid": false
+          },
+          {
+            "data": {
+              "mode": "local",
+              "enabled": false,
+              "path": ""
+            },
+            "valid": false
+          },
+          {
+            "data": {
+              "mode": "remote",
+              "enabled": true,
+              "credentials": {
+                "token": "x"
+              }
+            },
+            "valid": false
+          },
+          {
+            "data": {
+              "mode": "remote",
+              "enabled": false,
+              "credentials": {
+                "user": "",
+                "password": ""
+              }
+            },
+            "valid": false
+          }
+        ]
+      },
+      "developmentShadow": true,
+      "provenance": {
+        "sourceGroup": "authored:G:development",
+        "source": null,
+        "pairId": null,
+        "split": "development",
+        "seed": "SOC2-G-D-2",
+        "method": "Locally authored composition/conversion task; not an official benchmark instance"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "frozen-derived-fixture-v2",
+    "tags": [
+      "structured-contract-v2",
+      "family:G",
+      "split:development"
+    ],
+    "scenarioHash": "c50b0bd3ce4965c1"
+  },
+  {
+    "id": "SOC2-H-D-1",
+    "dimension": "structured_output",
+    "category": "contract_H",
+    "difficulty": "medium",
+    "language": "svg",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v2",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "生成一个 SVG 图，width=240、height=120、viewBox=\"0 0 240 120\"。元素 ID 必须唯一，元素类型及属性如下（数字为 SVG 用户坐标）：[{\"id\":\"node/a~0\",\"tag\":\"rect\",\"attrs\":{\"x\":20,\"y\":20,\"width\":60,\"height\":40}},{\"id\":\"node-b\",\"tag\":\"rect\",\"attrs\":{\"x\":150,\"y\":20,\"width\":60,\"height\":40}},{\"id\":\"edge\",\"tag\":\"line\",\"attrs\":{\"x1\":80,\"y1\":40,\"x2\":150,\"y2\":40}},{\"id\":\"label\",\"tag\":\"text\",\"attrs\":{\"x\":20,\"y\":90},\"text\":\"A < B & \\\"C\\\"\"}]。第一个 rect 填充 rgb(255,128,0)，第二个 rect 填充 #00aa00；line 为黑色，stroke-width=4。必须实际可见，不得用透明度、遮盖或变换改变指定位置/颜色；允许等价颜色写法。text 的文字原样显示（正确处理 XML 转义）。禁止脚本、样式表、动画、foreignObject、外部资源、DTD。\n只输出完整 SVG 原文，不要围栏或解释。对象键序不限。响应最多 131072 个字符。",
+    "requirements": {
+      "format": "svg",
+      "dialect": "2020-12",
+      "schema": true,
+      "formatAssertions": true,
+      "family": "H",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": {
+            "width": 240,
+            "height": 120,
+            "viewBox": [
+              0,
+              0,
+              240,
+              120
+            ],
+            "nodes": {
+              "node/a~0": {
+                "tag": "rect",
+                "attrs": {
+                  "x": 20,
+                  "y": 20,
+                  "width": 60,
+                  "height": 40
+                }
+              },
+              "node-b": {
+                "tag": "rect",
+                "attrs": {
+                  "x": 150,
+                  "y": 20,
+                  "width": 60,
+                  "height": 40
+                }
+              },
+              "edge": {
+                "tag": "line",
+                "attrs": {
+                  "x1": 80,
+                  "y1": 40,
+                  "x2": 150,
+                  "y2": 40
+                }
+              },
+              "label": {
+                "tag": "text",
+                "attrs": {
+                  "x": 20,
+                  "y": 90
+                },
+                "text": "A < B & \"C\""
+              }
+            }
+          },
+          "description": "Preserve the publicly specified data and transformation"
+        }
+      ],
+      "svg": {
+        "width": 240,
+        "height": 120,
+        "elements": [
+          {
+            "id": "node/a~0",
+            "tag": "rect",
+            "attrs": {
+              "x": 20,
+              "y": 20,
+              "width": 60,
+              "height": 40
+            }
+          },
+          {
+            "id": "node-b",
+            "tag": "rect",
+            "attrs": {
+              "x": 150,
+              "y": 20,
+              "width": 60,
+              "height": 40
+            }
+          },
+          {
+            "id": "edge",
+            "tag": "line",
+            "attrs": {
+              "x1": 80,
+              "y1": 40,
+              "x2": 150,
+              "y2": 40
+            }
+          },
+          {
+            "id": "label",
+            "tag": "text",
+            "attrs": {
+              "x": 20,
+              "y": 90
+            },
+            "text": "A < B & \"C\""
+          }
+        ],
+        "samples": [
+          {
+            "x": 35,
+            "y": 35,
+            "rgba": [
+              255,
+              128,
+              0,
+              255
+            ]
+          },
+          {
+            "x": 165,
+            "y": 35,
+            "rgba": [
+              0,
+              170,
+              0,
+              255
+            ]
+          },
+          {
+            "x": 125,
+            "y": 40,
+            "rgba": [
+              0,
+              0,
+              0,
+              255
+            ]
+          }
+        ]
+      },
+      "developmentShadow": true,
+      "provenance": {
+        "sourceGroup": "authored:node-link",
+        "source": null,
+        "pairId": null,
+        "split": "development",
+        "seed": "SOC2-H-D-1",
+        "method": "Locally authored composition/conversion task; not an official benchmark instance"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "frozen-derived-fixture-v2",
+    "tags": [
+      "structured-contract-v2",
+      "family:H",
+      "split:development"
+    ],
+    "scenarioHash": "ce58758deb9e3d0c"
+  },
+  {
+    "id": "SOC2-H-D-2",
+    "dimension": "structured_output",
+    "category": "contract_H",
+    "difficulty": "medium",
+    "language": "svg",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v2",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "生成一个 SVG 图，width=240、height=120、viewBox=\"0 0 240 120\"。元素 ID 必须唯一，元素类型及属性如下（数字为 SVG 用户坐标）：[{\"id\":\"node/a~0\",\"tag\":\"rect\",\"attrs\":{\"x\":20,\"y\":20,\"width\":60,\"height\":40}},{\"id\":\"node-b\",\"tag\":\"rect\",\"attrs\":{\"x\":150,\"y\":20,\"width\":60,\"height\":40}},{\"id\":\"edge\",\"tag\":\"line\",\"attrs\":{\"x1\":80,\"y1\":40,\"x2\":150,\"y2\":40}},{\"id\":\"label\",\"tag\":\"text\",\"attrs\":{\"x\":20,\"y\":90},\"text\":\"A < B & \\\"C\\\"\"}]。第一个 rect 填充 rgb(0,128,255)，第二个 rect 填充 #00aa00；line 为黑色，stroke-width=4。必须实际可见，不得用透明度、遮盖或变换改变指定位置/颜色；允许等价颜色写法。text 的文字原样显示（正确处理 XML 转义）。禁止脚本、样式表、动画、foreignObject、外部资源、DTD。\n只输出完整 SVG 原文，不要围栏或解释。对象键序不限。响应最多 131072 个字符。",
+    "requirements": {
+      "format": "svg",
+      "dialect": "2020-12",
+      "schema": true,
+      "formatAssertions": true,
+      "family": "H",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": {
+            "width": 240,
+            "height": 120,
+            "viewBox": [
+              0,
+              0,
+              240,
+              120
+            ],
+            "nodes": {
+              "node/a~0": {
+                "tag": "rect",
+                "attrs": {
+                  "x": 20,
+                  "y": 20,
+                  "width": 60,
+                  "height": 40
+                }
+              },
+              "node-b": {
+                "tag": "rect",
+                "attrs": {
+                  "x": 150,
+                  "y": 20,
+                  "width": 60,
+                  "height": 40
+                }
+              },
+              "edge": {
+                "tag": "line",
+                "attrs": {
+                  "x1": 80,
+                  "y1": 40,
+                  "x2": 150,
+                  "y2": 40
+                }
+              },
+              "label": {
+                "tag": "text",
+                "attrs": {
+                  "x": 20,
+                  "y": 90
+                },
+                "text": "A < B & \"C\""
+              }
+            }
+          },
+          "description": "Preserve the publicly specified data and transformation"
+        }
+      ],
+      "svg": {
+        "width": 240,
+        "height": 120,
+        "elements": [
+          {
+            "id": "node/a~0",
+            "tag": "rect",
+            "attrs": {
+              "x": 20,
+              "y": 20,
+              "width": 60,
+              "height": 40
+            }
+          },
+          {
+            "id": "node-b",
+            "tag": "rect",
+            "attrs": {
+              "x": 150,
+              "y": 20,
+              "width": 60,
+              "height": 40
+            }
+          },
+          {
+            "id": "edge",
+            "tag": "line",
+            "attrs": {
+              "x1": 80,
+              "y1": 40,
+              "x2": 150,
+              "y2": 40
+            }
+          },
+          {
+            "id": "label",
+            "tag": "text",
+            "attrs": {
+              "x": 20,
+              "y": 90
+            },
+            "text": "A < B & \"C\""
+          }
+        ],
+        "samples": [
+          {
+            "x": 35,
+            "y": 35,
+            "rgba": [
+              0,
+              128,
+              255,
+              255
+            ]
+          },
+          {
+            "x": 165,
+            "y": 35,
+            "rgba": [
+              0,
+              170,
+              0,
+              255
+            ]
+          },
+          {
+            "x": 125,
+            "y": 40,
+            "rgba": [
+              0,
+              0,
+              0,
+              255
+            ]
+          }
+        ]
+      },
+      "developmentShadow": true,
+      "provenance": {
+        "sourceGroup": "authored:node-link",
+        "source": null,
+        "pairId": null,
+        "split": "development",
+        "seed": "SOC2-H-D-2",
+        "method": "Locally authored composition/conversion task; not an official benchmark instance"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "frozen-derived-fixture-v2",
+    "tags": [
+      "structured-contract-v2",
+      "family:H",
+      "split:development"
+    ],
+    "scenarioHash": "63e9cdaad247e801"
+  }
+]

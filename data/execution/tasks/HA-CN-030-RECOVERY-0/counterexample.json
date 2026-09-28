@@ -1,0 +1,15 @@
+[
+  {
+    "tool": "cronjob",
+    "args": {
+      "action": "create",
+      "params": {
+        "id": "daily-log-clean",
+        "name": "cleanup-logs",
+        "schedule": "0 0 * * *",
+        "command": "clean logs",
+        "createdAt": "2026-01-01"
+      }
+    }
+  }
+]

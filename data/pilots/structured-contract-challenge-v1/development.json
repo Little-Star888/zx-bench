@@ -1,0 +1,2760 @@
+[
+  {
+    "id": "SOC3-A-POLICY",
+    "dimension": "structured_output",
+    "category": "contract_challenge_A",
+    "difficulty": "adversarial",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_validation",
+    "promptTemplate": "按请求顺序生成权限裁决。role 授权动词：reader→read，editor→write，operator→deploy，admin→read/write/delete/deploy。只看 scope 冒号前的动词；后缀必须完整保留。按以下优先级给 reason：inactive 先于 denied（deny 列表完整匹配 scope），然后有角色授权为 allowed，否则 missing_role。只有 allowed 的 decision 为 allow，其他均为 deny。输出 results、allowedCount、deniedCount，计数必须与结果相符。前导零的 id 保持字符串。\n账户：[{\"id\":\"07\",\"active\":true,\"roles\":[\"reader\",\"editor\"],\"deny\":[\"write:sealed\"]},{\"id\":\"08\",\"active\":false,\"roles\":[\"admin\"],\"deny\":[]},{\"id\":\"09\",\"active\":true,\"roles\":[\"reader\"],\"deny\":[]}]\n请求：[{\"id\":\"r1\",\"account\":\"07\",\"scope\":\"read:open\"},{\"id\":\"r2\",\"account\":\"07\",\"scope\":\"write:sealed\"},{\"id\":\"r3\",\"account\":\"08\",\"scope\":\"delete:open\"},{\"id\":\"r4\",\"account\":\"09\",\"scope\":\"write:open\"},{\"id\":\"r5\",\"account\":\"09\",\"scope\":\"read:sealed\"}]\n输出须满足 JSON Schema：{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"object\",\"properties\":{\"results\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"},\"account\":{\"type\":\"string\"},\"scope\":{\"type\":\"string\"},\"decision\":{\"enum\":[\"allow\",\"deny\"]},\"reason\":{\"enum\":[\"inactive\",\"denied\",\"allowed\",\"missing_role\"]}},\"required\":[\"id\",\"account\",\"scope\",\"decision\",\"reason\"],\"additionalProperties\":false},\"minItems\":5,\"maxItems\":5},\"allowedCount\":{\"type\":\"integer\"},\"deniedCount\":{\"type\":\"integer\"}},\"required\":[\"results\",\"allowedCount\",\"deniedCount\"],\"additionalProperties\":false}\n只输出一个完整 JSON 原文，不要代码围栏、解释或修复性前后缀。对象键序不限。",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v2",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "json",
+      "dialect": "2020-12",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "results": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "account": {
+                  "type": "string"
+                },
+                "scope": {
+                  "type": "string"
+                },
+                "decision": {
+                  "enum": [
+                    "allow",
+                    "deny"
+                  ]
+                },
+                "reason": {
+                  "enum": [
+                    "inactive",
+                    "denied",
+                    "allowed",
+                    "missing_role"
+                  ]
+                }
+              },
+              "required": [
+                "id",
+                "account",
+                "scope",
+                "decision",
+                "reason"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 5,
+            "maxItems": 5
+          },
+          "allowedCount": {
+            "type": "integer"
+          },
+          "deniedCount": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "results",
+          "allowedCount",
+          "deniedCount"
+        ],
+        "additionalProperties": false
+      },
+      "formatAssertions": true,
+      "family": "A",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": {
+            "results": [
+              {
+                "id": "r1",
+                "account": "07",
+                "scope": "read:open",
+                "decision": "allow",
+                "reason": "allowed"
+              },
+              {
+                "id": "r2",
+                "account": "07",
+                "scope": "write:sealed",
+                "decision": "deny",
+                "reason": "denied"
+              },
+              {
+                "id": "r3",
+                "account": "08",
+                "scope": "delete:open",
+                "decision": "deny",
+                "reason": "inactive"
+              },
+              {
+                "id": "r4",
+                "account": "09",
+                "scope": "write:open",
+                "decision": "deny",
+                "reason": "missing_role"
+              },
+              {
+                "id": "r5",
+                "account": "09",
+                "scope": "read:sealed",
+                "decision": "allow",
+                "reason": "allowed"
+              }
+            ],
+            "allowedCount": 2,
+            "deniedCount": 3
+          },
+          "description": "Entire public transformation, including absence of extra data"
+        },
+        {
+          "pointer": "/results",
+          "expected": [
+            {
+              "id": "r1",
+              "account": "07",
+              "scope": "read:open",
+              "decision": "allow",
+              "reason": "allowed"
+            },
+            {
+              "id": "r2",
+              "account": "07",
+              "scope": "write:sealed",
+              "decision": "deny",
+              "reason": "denied"
+            },
+            {
+              "id": "r3",
+              "account": "08",
+              "scope": "delete:open",
+              "decision": "deny",
+              "reason": "inactive"
+            },
+            {
+              "id": "r4",
+              "account": "09",
+              "scope": "write:open",
+              "decision": "deny",
+              "reason": "missing_role"
+            },
+            {
+              "id": "r5",
+              "account": "09",
+              "scope": "read:sealed",
+              "decision": "allow",
+              "reason": "allowed"
+            }
+          ],
+          "description": "Public rule group results preserves exact type, value, and ordering"
+        },
+        {
+          "pointer": "/allowedCount",
+          "expected": 2,
+          "description": "Public rule group allowedCount preserves exact type, value, and ordering"
+        },
+        {
+          "pointer": "/deniedCount",
+          "expected": 3,
+          "description": "Public rule group deniedCount preserves exact type, value, and ordering"
+        }
+      ],
+      "provenance": {
+        "sourceGroup": "policy:POLICY",
+        "sourcePack": "structured-contract-challenge-v1",
+        "method": "Independent local task construction; no official item copied"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "verified",
+    "goldSource": "local-derived-fixture-v1",
+    "goldVerifiedAt": "2026-09-26T12:00:00.000Z",
+    "tags": [
+      "structured-contract-challenge-v1",
+      "family:A",
+      "prospective_only"
+    ],
+    "scenarioHash": "a375361a46581d96"
+  },
+  {
+    "id": "SOC3-A-ROUTE",
+    "dimension": "structured_output",
+    "category": "contract_challenge_A",
+    "difficulty": "adversarial",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_validation",
+    "promptTemplate": "按请求顺序生成权限裁决。role 授权动词：reader→read，editor→write，operator→deploy，admin→read/write/delete/deploy。只看 scope 冒号前的动词；后缀必须完整保留。按以下优先级给 reason：inactive 先于 denied（deny 列表完整匹配 scope），然后有角色授权为 allowed，否则 missing_role。只有 allowed 的 decision 为 allow，其他均为 deny。输出 results、allowedCount、deniedCount，计数必须与结果相符。前导零的 id 保持字符串。\n账户：[{\"id\":\"00\",\"active\":true,\"roles\":[\"operator\"],\"deny\":[]},{\"id\":\"11\",\"active\":true,\"roles\":[\"reader\",\"operator\"],\"deny\":[\"deploy:prod\"]},{\"id\":\"12\",\"active\":false,\"roles\":[\"admin\"],\"deny\":[]}]\n请求：[{\"id\":\"q1\",\"account\":\"00\",\"scope\":\"deploy:dev\"},{\"id\":\"q2\",\"account\":\"00\",\"scope\":\"deploy:prod\"},{\"id\":\"q3\",\"account\":\"11\",\"scope\":\"deploy:prod\"},{\"id\":\"q4\",\"account\":\"11\",\"scope\":\"read:prod\"},{\"id\":\"q5\",\"account\":\"12\",\"scope\":\"read:dev\"}]\n输出须满足 JSON Schema：{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"object\",\"properties\":{\"results\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"},\"account\":{\"type\":\"string\"},\"scope\":{\"type\":\"string\"},\"decision\":{\"enum\":[\"allow\",\"deny\"]},\"reason\":{\"enum\":[\"inactive\",\"denied\",\"allowed\",\"missing_role\"]}},\"required\":[\"id\",\"account\",\"scope\",\"decision\",\"reason\"],\"additionalProperties\":false},\"minItems\":5,\"maxItems\":5},\"allowedCount\":{\"type\":\"integer\"},\"deniedCount\":{\"type\":\"integer\"}},\"required\":[\"results\",\"allowedCount\",\"deniedCount\"],\"additionalProperties\":false}\n只输出一个完整 JSON 原文，不要代码围栏、解释或修复性前后缀。对象键序不限。",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v2",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "json",
+      "dialect": "2020-12",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "results": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "account": {
+                  "type": "string"
+                },
+                "scope": {
+                  "type": "string"
+                },
+                "decision": {
+                  "enum": [
+                    "allow",
+                    "deny"
+                  ]
+                },
+                "reason": {
+                  "enum": [
+                    "inactive",
+                    "denied",
+                    "allowed",
+                    "missing_role"
+                  ]
+                }
+              },
+              "required": [
+                "id",
+                "account",
+                "scope",
+                "decision",
+                "reason"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 5,
+            "maxItems": 5
+          },
+          "allowedCount": {
+            "type": "integer"
+          },
+          "deniedCount": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "results",
+          "allowedCount",
+          "deniedCount"
+        ],
+        "additionalProperties": false
+      },
+      "formatAssertions": true,
+      "family": "A",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": {
+            "results": [
+              {
+                "id": "q1",
+                "account": "00",
+                "scope": "deploy:dev",
+                "decision": "allow",
+                "reason": "allowed"
+              },
+              {
+                "id": "q2",
+                "account": "00",
+                "scope": "deploy:prod",
+                "decision": "allow",
+                "reason": "allowed"
+              },
+              {
+                "id": "q3",
+                "account": "11",
+                "scope": "deploy:prod",
+                "decision": "deny",
+                "reason": "denied"
+              },
+              {
+                "id": "q4",
+                "account": "11",
+                "scope": "read:prod",
+                "decision": "allow",
+                "reason": "allowed"
+              },
+              {
+                "id": "q5",
+                "account": "12",
+                "scope": "read:dev",
+                "decision": "deny",
+                "reason": "inactive"
+              }
+            ],
+            "allowedCount": 3,
+            "deniedCount": 2
+          },
+          "description": "Entire public transformation, including absence of extra data"
+        },
+        {
+          "pointer": "/results",
+          "expected": [
+            {
+              "id": "q1",
+              "account": "00",
+              "scope": "deploy:dev",
+              "decision": "allow",
+              "reason": "allowed"
+            },
+            {
+              "id": "q2",
+              "account": "00",
+              "scope": "deploy:prod",
+              "decision": "allow",
+              "reason": "allowed"
+            },
+            {
+              "id": "q3",
+              "account": "11",
+              "scope": "deploy:prod",
+              "decision": "deny",
+              "reason": "denied"
+            },
+            {
+              "id": "q4",
+              "account": "11",
+              "scope": "read:prod",
+              "decision": "allow",
+              "reason": "allowed"
+            },
+            {
+              "id": "q5",
+              "account": "12",
+              "scope": "read:dev",
+              "decision": "deny",
+              "reason": "inactive"
+            }
+          ],
+          "description": "Public rule group results preserves exact type, value, and ordering"
+        },
+        {
+          "pointer": "/allowedCount",
+          "expected": 3,
+          "description": "Public rule group allowedCount preserves exact type, value, and ordering"
+        },
+        {
+          "pointer": "/deniedCount",
+          "expected": 2,
+          "description": "Public rule group deniedCount preserves exact type, value, and ordering"
+        }
+      ],
+      "provenance": {
+        "sourceGroup": "policy:ROUTE",
+        "sourcePack": "structured-contract-challenge-v1",
+        "method": "Independent local task construction; no official item copied"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "verified",
+    "goldSource": "local-derived-fixture-v1",
+    "goldVerifiedAt": "2026-09-26T12:00:00.000Z",
+    "tags": [
+      "structured-contract-challenge-v1",
+      "family:A",
+      "prospective_only"
+    ],
+    "scenarioHash": "db4138e23a749df7"
+  },
+  {
+    "id": "SOC3-B-TREE",
+    "dimension": "structured_output",
+    "category": "contract_challenge_B",
+    "difficulty": "adversarial",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_validation",
+    "promptTemplate": "按列出的顺序编辑树并输出完整最终树。路径由 id 用 / 分隔，首段为 root；move 是从原父节点删除整个子树，再插入目标节点 children 的指定 0 基索引，随后索引立即重排；set 只改 value；delete 删除整个子树。其余节点、字段、null/空串与兄弟次序原样保留；不要写操作日志。\n输入：{\"id\":\"root\",\"children\":[{\"id\":\"a\",\"value\":\"007\",\"children\":[{\"id\":\"a1\",\"value\":null},{\"id\":\"a2\",\"value\":\"x\"}]},{\"id\":\"b\",\"value\":\"keep\",\"children\":[{\"id\":\"b1\",\"value\":\"old\"}]}]}\n操作：[{\"op\":\"move\",\"from\":\"a/a2\",\"to\":\"b\",\"index\":0},{\"op\":\"set\",\"id\":\"b/b1\",\"value\":\"\"},{\"op\":\"delete\",\"id\":\"a/a1\"}]\n输出须满足 JSON Schema：{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"$defs\":{\"node\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"},\"value\":{\"type\":[\"string\",\"null\"]},\"children\":{\"type\":\"array\",\"items\":{\"$ref\":\"#/$defs/node\"}}},\"required\":[\"id\"],\"additionalProperties\":false}},\"$ref\":\"#/$defs/node\"}\n只输出一个完整 JSON 原文，不要代码围栏、解释或修复性前后缀。对象键序不限。",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v2",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "json",
+      "dialect": "2020-12",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$defs": {
+          "node": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "value": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "children": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/node"
+                }
+              }
+            },
+            "required": [
+              "id"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "$ref": "#/$defs/node"
+      },
+      "formatAssertions": true,
+      "family": "B",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": {
+            "id": "root",
+            "children": [
+              {
+                "id": "a",
+                "value": "007",
+                "children": []
+              },
+              {
+                "id": "b",
+                "value": "keep",
+                "children": [
+                  {
+                    "id": "a2",
+                    "value": "x"
+                  },
+                  {
+                    "id": "b1",
+                    "value": ""
+                  }
+                ]
+              }
+            ]
+          },
+          "description": "Entire public transformation, including absence of extra data"
+        },
+        {
+          "pointer": "/id",
+          "expected": "root",
+          "description": "Public rule group id preserves exact type, value, and ordering"
+        },
+        {
+          "pointer": "/children",
+          "expected": [
+            {
+              "id": "a",
+              "value": "007",
+              "children": []
+            },
+            {
+              "id": "b",
+              "value": "keep",
+              "children": [
+                {
+                  "id": "a2",
+                  "value": "x"
+                },
+                {
+                  "id": "b1",
+                  "value": ""
+                }
+              ]
+            }
+          ],
+          "description": "Public rule group children preserves exact type, value, and ordering"
+        }
+      ],
+      "provenance": {
+        "sourceGroup": "tree-edit:TREE",
+        "sourcePack": "structured-contract-challenge-v1",
+        "method": "Independent local task construction; no official item copied"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "verified",
+    "goldSource": "local-derived-fixture-v1",
+    "goldVerifiedAt": "2026-09-26T12:00:00.000Z",
+    "tags": [
+      "structured-contract-challenge-v1",
+      "family:B",
+      "prospective_only"
+    ],
+    "scenarioHash": "66a93ae109fa50fd"
+  },
+  {
+    "id": "SOC3-B-FOREST",
+    "dimension": "structured_output",
+    "category": "contract_challenge_B",
+    "difficulty": "adversarial",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_validation",
+    "promptTemplate": "按列出的顺序编辑树并输出完整最终树。路径由 id 用 / 分隔，首段为 root；move 是从原父节点删除整个子树，再插入目标节点 children 的指定 0 基索引，随后索引立即重排；set 只改 value；delete 删除整个子树。其余节点、字段、null/空串与兄弟次序原样保留；不要写操作日志。\n输入：{\"id\":\"root\",\"children\":[{\"id\":\"left\",\"value\":\"0\",\"children\":[{\"id\":\"leaf\",\"value\":\"L\"}]},{\"id\":\"right\",\"value\":null,\"children\":[{\"id\":\"r0\",\"value\":\"R0\"},{\"id\":\"r1\",\"value\":\"R1\"}]}]}\n操作：[{\"op\":\"move\",\"from\":\"right/r0\",\"to\":\"left\",\"index\":1},{\"op\":\"delete\",\"id\":\"right/r1\"},{\"op\":\"set\",\"id\":\"left/leaf\",\"value\":\"L\\nR\"}]\n输出须满足 JSON Schema：{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"$defs\":{\"node\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"},\"value\":{\"type\":[\"string\",\"null\"]},\"children\":{\"type\":\"array\",\"items\":{\"$ref\":\"#/$defs/node\"}}},\"required\":[\"id\"],\"additionalProperties\":false}},\"$ref\":\"#/$defs/node\"}\n只输出一个完整 JSON 原文，不要代码围栏、解释或修复性前后缀。对象键序不限。",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v2",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "json",
+      "dialect": "2020-12",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$defs": {
+          "node": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "value": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "children": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/node"
+                }
+              }
+            },
+            "required": [
+              "id"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "$ref": "#/$defs/node"
+      },
+      "formatAssertions": true,
+      "family": "B",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": {
+            "id": "root",
+            "children": [
+              {
+                "id": "left",
+                "value": "0",
+                "children": [
+                  {
+                    "id": "leaf",
+                    "value": "L\nR"
+                  },
+                  {
+                    "id": "r0",
+                    "value": "R0"
+                  }
+                ]
+              },
+              {
+                "id": "right",
+                "value": null,
+                "children": []
+              }
+            ]
+          },
+          "description": "Entire public transformation, including absence of extra data"
+        },
+        {
+          "pointer": "/id",
+          "expected": "root",
+          "description": "Public rule group id preserves exact type, value, and ordering"
+        },
+        {
+          "pointer": "/children",
+          "expected": [
+            {
+              "id": "left",
+              "value": "0",
+              "children": [
+                {
+                  "id": "leaf",
+                  "value": "L\nR"
+                },
+                {
+                  "id": "r0",
+                  "value": "R0"
+                }
+              ]
+            },
+            {
+              "id": "right",
+              "value": null,
+              "children": []
+            }
+          ],
+          "description": "Public rule group children preserves exact type, value, and ordering"
+        }
+      ],
+      "provenance": {
+        "sourceGroup": "tree-edit:FOREST",
+        "sourcePack": "structured-contract-challenge-v1",
+        "method": "Independent local task construction; no official item copied"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "verified",
+    "goldSource": "local-derived-fixture-v1",
+    "goldVerifiedAt": "2026-09-26T12:00:00.000Z",
+    "tags": [
+      "structured-contract-challenge-v1",
+      "family:B",
+      "prospective_only"
+    ],
+    "scenarioHash": "2d3383f6d9b9f95c"
+  },
+  {
+    "id": "SOC3-C-UNICODE",
+    "dimension": "structured_output",
+    "category": "contract_challenge_C",
+    "difficulty": "adversarial",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_validation",
+    "promptTemplate": "按输入顺序处理每项。id 和 enabled 原样保留，text 为 null 时 present=false 且必须省略 raw/nfc/pointerKey/bytes；其他情况 present=true，raw 保存原码点序列，nfc 是 NFC 规范化结果，pointerKey 对原始 raw 按 RFC 6901 逐字替换 ~→~0、/→~1，bytes 是 nfc 的 UTF-8 Base64URL 无填充编码。空串不是 null，不能省略。输入：[{\"id\":\"001\",\"text\":\"Café/猫~\",\"enabled\":false},{\"id\":\"002\",\"text\":\"%25+\\r\\n\",\"enabled\":true},{\"id\":\"003\",\"text\":null,\"enabled\":false}]\n输出须满足 JSON Schema：{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\",\"pattern\":\"^0[0-9]{2}$\"},\"enabled\":{\"type\":\"boolean\"},\"present\":{\"type\":\"boolean\"},\"raw\":{\"type\":\"string\"},\"nfc\":{\"type\":\"string\"},\"pointerKey\":{\"type\":\"string\"},\"bytes\":{\"type\":\"string\",\"pattern\":\"^[A-Za-z0-9_-]*$\"}},\"required\":[\"id\",\"enabled\",\"present\"],\"additionalProperties\":false,\"allOf\":[{\"if\":{\"properties\":{\"present\":{\"const\":true}},\"required\":[\"present\"]},\"then\":{\"required\":[\"raw\",\"nfc\",\"pointerKey\",\"bytes\"]},\"else\":{\"not\":{\"anyOf\":[{\"required\":[\"raw\"]},{\"required\":[\"nfc\"]},{\"required\":[\"pointerKey\"]},{\"required\":[\"bytes\"]}]}}}]},\"minItems\":3,\"maxItems\":3}\n只输出一个完整 JSON 原文，不要代码围栏、解释或修复性前后缀。对象键序不限。",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v2",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "json",
+      "dialect": "2020-12",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "pattern": "^0[0-9]{2}$"
+            },
+            "enabled": {
+              "type": "boolean"
+            },
+            "present": {
+              "type": "boolean"
+            },
+            "raw": {
+              "type": "string"
+            },
+            "nfc": {
+              "type": "string"
+            },
+            "pointerKey": {
+              "type": "string"
+            },
+            "bytes": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]*$"
+            }
+          },
+          "required": [
+            "id",
+            "enabled",
+            "present"
+          ],
+          "additionalProperties": false,
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "present": {
+                    "const": true
+                  }
+                },
+                "required": [
+                  "present"
+                ]
+              },
+              "then": {
+                "required": [
+                  "raw",
+                  "nfc",
+                  "pointerKey",
+                  "bytes"
+                ]
+              },
+              "else": {
+                "not": {
+                  "anyOf": [
+                    {
+                      "required": [
+                        "raw"
+                      ]
+                    },
+                    {
+                      "required": [
+                        "nfc"
+                      ]
+                    },
+                    {
+                      "required": [
+                        "pointerKey"
+                      ]
+                    },
+                    {
+                      "required": [
+                        "bytes"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "minItems": 3,
+        "maxItems": 3
+      },
+      "formatAssertions": true,
+      "family": "C",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": [
+            {
+              "id": "001",
+              "enabled": false,
+              "present": true,
+              "raw": "Café/猫~",
+              "nfc": "Café/猫~",
+              "pointerKey": "Café~1猫~0",
+              "bytes": "Q2Fmw6kv54yrfg"
+            },
+            {
+              "id": "002",
+              "enabled": true,
+              "present": true,
+              "raw": "%25+\r\n",
+              "nfc": "%25+\r\n",
+              "pointerKey": "%25+\r\n",
+              "bytes": "JTI1Kw0K"
+            },
+            {
+              "id": "003",
+              "enabled": false,
+              "present": false
+            }
+          ],
+          "description": "Entire public transformation, including absence of extra data"
+        },
+        {
+          "pointer": "/0",
+          "expected": {
+            "id": "001",
+            "enabled": false,
+            "present": true,
+            "raw": "Café/猫~",
+            "nfc": "Café/猫~",
+            "pointerKey": "Café~1猫~0",
+            "bytes": "Q2Fmw6kv54yrfg"
+          },
+          "description": "Public rule group 0 preserves exact type, value, and ordering"
+        },
+        {
+          "pointer": "/1",
+          "expected": {
+            "id": "002",
+            "enabled": true,
+            "present": true,
+            "raw": "%25+\r\n",
+            "nfc": "%25+\r\n",
+            "pointerKey": "%25+\r\n",
+            "bytes": "JTI1Kw0K"
+          },
+          "description": "Public rule group 1 preserves exact type, value, and ordering"
+        },
+        {
+          "pointer": "/2",
+          "expected": {
+            "id": "003",
+            "enabled": false,
+            "present": false
+          },
+          "description": "Public rule group 2 preserves exact type, value, and ordering"
+        }
+      ],
+      "provenance": {
+        "sourceGroup": "unicode:UNICODE",
+        "sourcePack": "structured-contract-challenge-v1",
+        "method": "Independent local task construction; no official item copied"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "verified",
+    "goldSource": "local-derived-fixture-v1",
+    "goldVerifiedAt": "2026-09-26T12:00:00.000Z",
+    "tags": [
+      "structured-contract-challenge-v1",
+      "family:C",
+      "prospective_only"
+    ],
+    "scenarioHash": "92137fbe6db7d645"
+  },
+  {
+    "id": "SOC3-C-PATH",
+    "dimension": "structured_output",
+    "category": "contract_challenge_C",
+    "difficulty": "adversarial",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_validation",
+    "promptTemplate": "按输入顺序处理每项。id 和 enabled 原样保留，text 为 null 时 present=false 且必须省略 raw/nfc/pointerKey/bytes；其他情况 present=true，raw 保存原码点序列，nfc 是 NFC 规范化结果，pointerKey 对原始 raw 按 RFC 6901 逐字替换 ~→~0、/→~1，bytes 是 nfc 的 UTF-8 Base64URL 无填充编码。空串不是 null，不能省略。输入：[{\"id\":\"010\",\"text\":\"é/甲\",\"enabled\":true},{\"id\":\"011\",\"text\":\"a~b/c\",\"enabled\":false},{\"id\":\"012\",\"text\":\"\",\"enabled\":true}]\n输出须满足 JSON Schema：{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\",\"pattern\":\"^0[0-9]{2}$\"},\"enabled\":{\"type\":\"boolean\"},\"present\":{\"type\":\"boolean\"},\"raw\":{\"type\":\"string\"},\"nfc\":{\"type\":\"string\"},\"pointerKey\":{\"type\":\"string\"},\"bytes\":{\"type\":\"string\",\"pattern\":\"^[A-Za-z0-9_-]*$\"}},\"required\":[\"id\",\"enabled\",\"present\"],\"additionalProperties\":false,\"allOf\":[{\"if\":{\"properties\":{\"present\":{\"const\":true}},\"required\":[\"present\"]},\"then\":{\"required\":[\"raw\",\"nfc\",\"pointerKey\",\"bytes\"]},\"else\":{\"not\":{\"anyOf\":[{\"required\":[\"raw\"]},{\"required\":[\"nfc\"]},{\"required\":[\"pointerKey\"]},{\"required\":[\"bytes\"]}]}}}]},\"minItems\":3,\"maxItems\":3}\n只输出一个完整 JSON 原文，不要代码围栏、解释或修复性前后缀。对象键序不限。",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v2",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "json",
+      "dialect": "2020-12",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "pattern": "^0[0-9]{2}$"
+            },
+            "enabled": {
+              "type": "boolean"
+            },
+            "present": {
+              "type": "boolean"
+            },
+            "raw": {
+              "type": "string"
+            },
+            "nfc": {
+              "type": "string"
+            },
+            "pointerKey": {
+              "type": "string"
+            },
+            "bytes": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]*$"
+            }
+          },
+          "required": [
+            "id",
+            "enabled",
+            "present"
+          ],
+          "additionalProperties": false,
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "present": {
+                    "const": true
+                  }
+                },
+                "required": [
+                  "present"
+                ]
+              },
+              "then": {
+                "required": [
+                  "raw",
+                  "nfc",
+                  "pointerKey",
+                  "bytes"
+                ]
+              },
+              "else": {
+                "not": {
+                  "anyOf": [
+                    {
+                      "required": [
+                        "raw"
+                      ]
+                    },
+                    {
+                      "required": [
+                        "nfc"
+                      ]
+                    },
+                    {
+                      "required": [
+                        "pointerKey"
+                      ]
+                    },
+                    {
+                      "required": [
+                        "bytes"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "minItems": 3,
+        "maxItems": 3
+      },
+      "formatAssertions": true,
+      "family": "C",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": [
+            {
+              "id": "010",
+              "enabled": true,
+              "present": true,
+              "raw": "é/甲",
+              "nfc": "é/甲",
+              "pointerKey": "é~1甲",
+              "bytes": "w6kv55Sy"
+            },
+            {
+              "id": "011",
+              "enabled": false,
+              "present": true,
+              "raw": "a~b/c",
+              "nfc": "a~b/c",
+              "pointerKey": "a~0b~1c",
+              "bytes": "YX5iL2M"
+            },
+            {
+              "id": "012",
+              "enabled": true,
+              "present": true,
+              "raw": "",
+              "nfc": "",
+              "pointerKey": "",
+              "bytes": ""
+            }
+          ],
+          "description": "Entire public transformation, including absence of extra data"
+        },
+        {
+          "pointer": "/0",
+          "expected": {
+            "id": "010",
+            "enabled": true,
+            "present": true,
+            "raw": "é/甲",
+            "nfc": "é/甲",
+            "pointerKey": "é~1甲",
+            "bytes": "w6kv55Sy"
+          },
+          "description": "Public rule group 0 preserves exact type, value, and ordering"
+        },
+        {
+          "pointer": "/1",
+          "expected": {
+            "id": "011",
+            "enabled": false,
+            "present": true,
+            "raw": "a~b/c",
+            "nfc": "a~b/c",
+            "pointerKey": "a~0b~1c",
+            "bytes": "YX5iL2M"
+          },
+          "description": "Public rule group 1 preserves exact type, value, and ordering"
+        },
+        {
+          "pointer": "/2",
+          "expected": {
+            "id": "012",
+            "enabled": true,
+            "present": true,
+            "raw": "",
+            "nfc": "",
+            "pointerKey": "",
+            "bytes": ""
+          },
+          "description": "Public rule group 2 preserves exact type, value, and ordering"
+        }
+      ],
+      "provenance": {
+        "sourceGroup": "unicode:PATH",
+        "sourcePack": "structured-contract-challenge-v1",
+        "method": "Independent local task construction; no official item copied"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "verified",
+    "goldSource": "local-derived-fixture-v1",
+    "goldVerifiedAt": "2026-09-26T12:00:00.000Z",
+    "tags": [
+      "structured-contract-challenge-v1",
+      "family:C",
+      "prospective_only"
+    ],
+    "scenarioHash": "4713468707b08b5c"
+  },
+  {
+    "id": "SOC3-E-SIMPLE",
+    "dimension": "structured_output",
+    "category": "contract_challenge_E",
+    "difficulty": "adversarial",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_validation",
+    "promptTemplate": "给定同一事件流，按原顺序输出原样投影数组：每项仅保留 id、kind、amount、note，含空串和 null。不得丢项或合并金额。输入：[{\"id\":\"a\",\"kind\":\"open\",\"amount\":0,\"note\":\"\"},{\"id\":\"b\",\"kind\":\"charge\",\"amount\":7,\"note\":\"x\\\\y\"},{\"id\":\"c\",\"kind\":\"charge\",\"amount\":4,\"note\":\"\\n\"},{\"id\":\"d\",\"kind\":\"refund\",\"amount\":3,\"note\":null},{\"id\":\"e\",\"kind\":\"close\",\"amount\":0,\"note\":\"\"}]\n输出须满足 JSON Schema：{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"array\",\"minItems\":5,\"maxItems\":5,\"items\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"},\"kind\":{\"enum\":[\"open\",\"charge\",\"refund\",\"close\"]},\"amount\":{\"type\":\"integer\"},\"note\":{\"type\":[\"string\",\"null\"]}},\"required\":[\"id\",\"kind\",\"amount\",\"note\"],\"additionalProperties\":false}}\n只输出一个完整 JSON 原文，不要代码围栏、解释或修复性前后缀。对象键序不限。",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v2",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "json",
+      "dialect": "2020-12",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "array",
+        "minItems": 5,
+        "maxItems": 5,
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "kind": {
+              "enum": [
+                "open",
+                "charge",
+                "refund",
+                "close"
+              ]
+            },
+            "amount": {
+              "type": "integer"
+            },
+            "note": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "id",
+            "kind",
+            "amount",
+            "note"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "formatAssertions": true,
+      "family": "E",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": [
+            {
+              "id": "a",
+              "kind": "open",
+              "amount": 0,
+              "note": ""
+            },
+            {
+              "id": "b",
+              "kind": "charge",
+              "amount": 7,
+              "note": "x\\y"
+            },
+            {
+              "id": "c",
+              "kind": "charge",
+              "amount": 4,
+              "note": "\n"
+            },
+            {
+              "id": "d",
+              "kind": "refund",
+              "amount": 3,
+              "note": null
+            },
+            {
+              "id": "e",
+              "kind": "close",
+              "amount": 0,
+              "note": ""
+            }
+          ],
+          "description": "Entire public transformation, including absence of extra data"
+        },
+        {
+          "pointer": "/0",
+          "expected": {
+            "id": "a",
+            "kind": "open",
+            "amount": 0,
+            "note": ""
+          },
+          "description": "Public rule group 0 preserves exact type, value, and ordering"
+        },
+        {
+          "pointer": "/1",
+          "expected": {
+            "id": "b",
+            "kind": "charge",
+            "amount": 7,
+            "note": "x\\y"
+          },
+          "description": "Public rule group 1 preserves exact type, value, and ordering"
+        },
+        {
+          "pointer": "/2",
+          "expected": {
+            "id": "c",
+            "kind": "charge",
+            "amount": 4,
+            "note": "\n"
+          },
+          "description": "Public rule group 2 preserves exact type, value, and ordering"
+        },
+        {
+          "pointer": "/3",
+          "expected": {
+            "id": "d",
+            "kind": "refund",
+            "amount": 3,
+            "note": null
+          },
+          "description": "Public rule group 3 preserves exact type, value, and ordering"
+        },
+        {
+          "pointer": "/4",
+          "expected": {
+            "id": "e",
+            "kind": "close",
+            "amount": 0,
+            "note": ""
+          },
+          "description": "Public rule group 4 preserves exact type, value, and ordering"
+        }
+      ],
+      "provenance": {
+        "sourceGroup": "event-ledger:paired",
+        "sourcePack": "structured-contract-challenge-v1",
+        "method": "Independent local task construction; no official item copied"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "verified",
+    "goldSource": "local-derived-fixture-v1",
+    "goldVerifiedAt": "2026-09-26T12:00:00.000Z",
+    "tags": [
+      "structured-contract-challenge-v1",
+      "family:E",
+      "prospective_only"
+    ],
+    "scenarioHash": "2301d7139aeb1497"
+  },
+  {
+    "id": "SOC3-E-LEDGER",
+    "dimension": "structured_output",
+    "category": "contract_challenge_E",
+    "difficulty": "adversarial",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_validation",
+    "promptTemplate": "给定同一事件流，按原顺序输出完整账本对象：entries 每条 seq 从 1 起、id 原样；open/close 的 entry 分别只含 {open:true}/{close:true}，charge/refund 的 entry 分别只含 {charge:{amount,note}}/{refund:{amount,note}}；balance 从 0 起，charge 加、refund 减，open/close 不变；finalBalance 为最后余额。不得丢项或合并金额。输入：[{\"id\":\"a\",\"kind\":\"open\",\"amount\":0,\"note\":\"\"},{\"id\":\"b\",\"kind\":\"charge\",\"amount\":7,\"note\":\"x\\\\y\"},{\"id\":\"c\",\"kind\":\"charge\",\"amount\":4,\"note\":\"\\n\"},{\"id\":\"d\",\"kind\":\"refund\",\"amount\":3,\"note\":null},{\"id\":\"e\",\"kind\":\"close\",\"amount\":0,\"note\":\"\"}]\n输出须满足 JSON Schema：{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"object\",\"properties\":{\"entries\":{\"type\":\"array\",\"minItems\":5,\"maxItems\":5,\"items\":{\"type\":\"object\",\"properties\":{\"seq\":{\"type\":\"integer\"},\"id\":{\"type\":\"string\"},\"entry\":{\"type\":\"object\",\"minProperties\":1,\"maxProperties\":1},\"balance\":{\"type\":\"integer\"}},\"required\":[\"seq\",\"id\",\"entry\",\"balance\"],\"additionalProperties\":false}},\"finalBalance\":{\"type\":\"integer\"}},\"required\":[\"entries\",\"finalBalance\"],\"additionalProperties\":false}\n只输出一个完整 JSON 原文，不要代码围栏、解释或修复性前后缀。对象键序不限。",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v2",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "json",
+      "dialect": "2020-12",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "entries": {
+            "type": "array",
+            "minItems": 5,
+            "maxItems": 5,
+            "items": {
+              "type": "object",
+              "properties": {
+                "seq": {
+                  "type": "integer"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "entry": {
+                  "type": "object",
+                  "minProperties": 1,
+                  "maxProperties": 1
+                },
+                "balance": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "seq",
+                "id",
+                "entry",
+                "balance"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "finalBalance": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "entries",
+          "finalBalance"
+        ],
+        "additionalProperties": false
+      },
+      "formatAssertions": true,
+      "family": "E",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": {
+            "entries": [
+              {
+                "seq": 1,
+                "id": "a",
+                "entry": {
+                  "open": true
+                },
+                "balance": 0
+              },
+              {
+                "seq": 2,
+                "id": "b",
+                "entry": {
+                  "charge": {
+                    "amount": 7,
+                    "note": "x\\y"
+                  }
+                },
+                "balance": 7
+              },
+              {
+                "seq": 3,
+                "id": "c",
+                "entry": {
+                  "charge": {
+                    "amount": 4,
+                    "note": "\n"
+                  }
+                },
+                "balance": 11
+              },
+              {
+                "seq": 4,
+                "id": "d",
+                "entry": {
+                  "refund": {
+                    "amount": 3,
+                    "note": null
+                  }
+                },
+                "balance": 8
+              },
+              {
+                "seq": 5,
+                "id": "e",
+                "entry": {
+                  "close": true
+                },
+                "balance": 8
+              }
+            ],
+            "finalBalance": 8
+          },
+          "description": "Entire public transformation, including absence of extra data"
+        },
+        {
+          "pointer": "/entries",
+          "expected": [
+            {
+              "seq": 1,
+              "id": "a",
+              "entry": {
+                "open": true
+              },
+              "balance": 0
+            },
+            {
+              "seq": 2,
+              "id": "b",
+              "entry": {
+                "charge": {
+                  "amount": 7,
+                  "note": "x\\y"
+                }
+              },
+              "balance": 7
+            },
+            {
+              "seq": 3,
+              "id": "c",
+              "entry": {
+                "charge": {
+                  "amount": 4,
+                  "note": "\n"
+                }
+              },
+              "balance": 11
+            },
+            {
+              "seq": 4,
+              "id": "d",
+              "entry": {
+                "refund": {
+                  "amount": 3,
+                  "note": null
+                }
+              },
+              "balance": 8
+            },
+            {
+              "seq": 5,
+              "id": "e",
+              "entry": {
+                "close": true
+              },
+              "balance": 8
+            }
+          ],
+          "description": "Public rule group entries preserves exact type, value, and ordering"
+        },
+        {
+          "pointer": "/finalBalance",
+          "expected": 8,
+          "description": "Public rule group finalBalance preserves exact type, value, and ordering"
+        }
+      ],
+      "provenance": {
+        "sourceGroup": "event-ledger:paired",
+        "sourcePack": "structured-contract-challenge-v1",
+        "method": "Independent local task construction; no official item copied"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "verified",
+    "goldSource": "local-derived-fixture-v1",
+    "goldVerifiedAt": "2026-09-26T12:00:00.000Z",
+    "tags": [
+      "structured-contract-challenge-v1",
+      "family:E",
+      "prospective_only"
+    ],
+    "scenarioHash": "9c6cda0789335387"
+  },
+  {
+    "id": "SOC3-F-CSV",
+    "dimension": "structured_output",
+    "category": "contract_challenge_F",
+    "difficulty": "adversarial",
+    "language": "csv",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_validation",
+    "promptTemplate": "把嵌套输入展平为 CSV。首行表头恰为 actor,index,code,note；逐组、组内原顺序，每条记录的 actor 取组名，index 是组内 0 基序号的十进制字符串。code 保持前导零。note 为 null 时写字面量 <NULL>，空串仍为空串；字段内实际换行必须保持实际换行，按 RFC 4180 引号转义。输入：[{\"actor\":\"A/01\",\"events\":[{\"code\":\"007\",\"note\":\"a,\\\"b\\\"\\n尾\"},{\"code\":\"008\",\"note\":\"\"}]},{\"actor\":\"B~02\",\"events\":[{\"code\":\"010\",\"note\":\"ON\"},{\"code\":\"011\",\"note\":null}]}]\n只输出一个完整 CSV 原文，不要代码围栏、解释或修复性前后缀。对象键序不限。",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v2",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "csv",
+      "dialect": "2020-12",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "array",
+        "minItems": 4,
+        "maxItems": 4,
+        "items": {
+          "type": "object",
+          "properties": {
+            "actor": {
+              "type": "string"
+            },
+            "index": {
+              "type": "string"
+            },
+            "code": {
+              "type": "string"
+            },
+            "note": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "actor",
+            "index",
+            "code",
+            "note"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "formatAssertions": true,
+      "family": "F",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": [
+            {
+              "actor": "A/01",
+              "index": "0",
+              "code": "007",
+              "note": "a,\"b\"\n尾"
+            },
+            {
+              "actor": "A/01",
+              "index": "1",
+              "code": "008",
+              "note": ""
+            },
+            {
+              "actor": "B~02",
+              "index": "0",
+              "code": "010",
+              "note": "ON"
+            },
+            {
+              "actor": "B~02",
+              "index": "1",
+              "code": "011",
+              "note": "<NULL>"
+            }
+          ],
+          "description": "Entire public transformation, including absence of extra data"
+        },
+        {
+          "pointer": "/0",
+          "expected": {
+            "actor": "A/01",
+            "index": "0",
+            "code": "007",
+            "note": "a,\"b\"\n尾"
+          },
+          "description": "Public rule group 0 preserves exact type, value, and ordering"
+        },
+        {
+          "pointer": "/1",
+          "expected": {
+            "actor": "A/01",
+            "index": "1",
+            "code": "008",
+            "note": ""
+          },
+          "description": "Public rule group 1 preserves exact type, value, and ordering"
+        },
+        {
+          "pointer": "/2",
+          "expected": {
+            "actor": "B~02",
+            "index": "0",
+            "code": "010",
+            "note": "ON"
+          },
+          "description": "Public rule group 2 preserves exact type, value, and ordering"
+        },
+        {
+          "pointer": "/3",
+          "expected": {
+            "actor": "B~02",
+            "index": "1",
+            "code": "011",
+            "note": "<NULL>"
+          },
+          "description": "Public rule group 3 preserves exact type, value, and ordering"
+        }
+      ],
+      "provenance": {
+        "sourceGroup": "nested-conversion:csv",
+        "sourcePack": "structured-contract-challenge-v1",
+        "method": "Independent local task construction; no official item copied"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "verified",
+    "goldSource": "local-derived-fixture-v1",
+    "goldVerifiedAt": "2026-09-26T12:00:00.000Z",
+    "tags": [
+      "structured-contract-challenge-v1",
+      "family:F",
+      "prospective_only"
+    ],
+    "scenarioHash": "041f56db0d95b236"
+  },
+  {
+    "id": "SOC3-F-XML",
+    "dimension": "structured_output",
+    "category": "contract_challenge_F",
+    "difficulty": "adversarial",
+    "language": "xml",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_validation",
+    "promptTemplate": "把嵌套输入展平为 XML。根元素 records，依次是 record；每条 record 子元素顺序严格为 actor,index,code,note。index 是组内 0 基序号的十进制字符串，code 保留前导零，文本按 XML 正确转义。note=null 用空元素 <note null=\"true\"/>，空串用不带属性的空 note 元素。禁止 DTD、实体声明、额外属性或嵌套字段。输入：[{\"actor\":\"A/01\",\"events\":[{\"code\":\"007\",\"note\":\"a,\\\"b\\\"\\n尾\"},{\"code\":\"008\",\"note\":\"\"}]},{\"actor\":\"B~02\",\"events\":[{\"code\":\"010\",\"note\":\"ON\"},{\"code\":\"011\",\"note\":null}]}]\n只输出一个完整 XML 原文，不要代码围栏、解释或修复性前后缀。对象键序不限。",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v2",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "xml",
+      "dialect": "2020-12",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "array",
+        "minItems": 4,
+        "maxItems": 4,
+        "items": {
+          "type": "object",
+          "properties": {
+            "actor": {
+              "type": "string"
+            },
+            "index": {
+              "type": "string"
+            },
+            "code": {
+              "type": "string"
+            },
+            "note": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "actor",
+            "index",
+            "code",
+            "note"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "formatAssertions": true,
+      "family": "F",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": [
+            {
+              "actor": "A/01",
+              "index": "0",
+              "code": "007",
+              "note": "a,\"b\"\n尾"
+            },
+            {
+              "actor": "A/01",
+              "index": "1",
+              "code": "008",
+              "note": ""
+            },
+            {
+              "actor": "B~02",
+              "index": "0",
+              "code": "010",
+              "note": "ON"
+            },
+            {
+              "actor": "B~02",
+              "index": "1",
+              "code": "011",
+              "note": null
+            }
+          ],
+          "description": "Entire public transformation, including absence of extra data"
+        },
+        {
+          "pointer": "/0",
+          "expected": {
+            "actor": "A/01",
+            "index": "0",
+            "code": "007",
+            "note": "a,\"b\"\n尾"
+          },
+          "description": "Public rule group 0 preserves exact type, value, and ordering"
+        },
+        {
+          "pointer": "/1",
+          "expected": {
+            "actor": "A/01",
+            "index": "1",
+            "code": "008",
+            "note": ""
+          },
+          "description": "Public rule group 1 preserves exact type, value, and ordering"
+        },
+        {
+          "pointer": "/2",
+          "expected": {
+            "actor": "B~02",
+            "index": "0",
+            "code": "010",
+            "note": "ON"
+          },
+          "description": "Public rule group 2 preserves exact type, value, and ordering"
+        },
+        {
+          "pointer": "/3",
+          "expected": {
+            "actor": "B~02",
+            "index": "1",
+            "code": "011",
+            "note": null
+          },
+          "description": "Public rule group 3 preserves exact type, value, and ordering"
+        }
+      ],
+      "provenance": {
+        "sourceGroup": "nested-conversion:xml",
+        "sourcePack": "structured-contract-challenge-v1",
+        "method": "Independent local task construction; no official item copied"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "verified",
+    "goldSource": "local-derived-fixture-v1",
+    "goldVerifiedAt": "2026-09-26T12:00:00.000Z",
+    "tags": [
+      "structured-contract-challenge-v1",
+      "family:F",
+      "prospective_only"
+    ],
+    "scenarioHash": "fde86beed2925314"
+  },
+  {
+    "id": "SOC3-G-AUTH",
+    "dimension": "structured_output",
+    "category": "contract_challenge_G",
+    "difficulty": "adversarial",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_validation",
+    "promptTemplate": "生成 JSON Schema 2020-12，准确表达以下全部规则。允许任何等价的标准 Schema 写法，不要求与参考答案文本相同。只允许本地 $ref，Schema 深度最多 64，禁止外部资源。\n顶层恰有 kind、id、auth，kind 为 token 或 pair；id 是两位十进制字符串。kind=token 时 auth 恰有一个非空字符串 token；kind=pair 时 auth 恰有字符串 user、password，二者可空。其他键禁止。\n输出须满足 JSON Schema：{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":[\"object\",\"boolean\"]}\n只输出一个完整 JSON 原文，不要代码围栏、解释或修复性前后缀。对象键序不限。",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v3",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "json",
+      "dialect": "2020-12",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": [
+          "object",
+          "boolean"
+        ]
+      },
+      "formatAssertions": true,
+      "family": "G",
+      "output_policy": "raw_only",
+      "generatedSchema": {
+        "cases": [
+          {
+            "data": {
+              "kind": "token",
+              "id": "00",
+              "auth": {
+                "token": "x"
+              }
+            },
+            "valid": true
+          },
+          {
+            "data": {
+              "kind": "token",
+              "id": "09",
+              "auth": {
+                "token": "a/b"
+              }
+            },
+            "valid": true
+          },
+          {
+            "data": {
+              "kind": "pair",
+              "id": "11",
+              "auth": {
+                "user": "",
+                "password": ""
+              }
+            },
+            "valid": true
+          },
+          {
+            "data": {
+              "kind": "pair",
+              "id": "99",
+              "auth": {
+                "user": "u",
+                "password": "p"
+              }
+            },
+            "valid": true
+          },
+          {
+            "data": {},
+            "valid": false
+          },
+          {
+            "data": {
+              "kind": "token",
+              "id": "00",
+              "auth": {
+                "token": ""
+              }
+            },
+            "valid": false
+          },
+          {
+            "data": {
+              "kind": "pair",
+              "id": "01",
+              "auth": {
+                "user": "u"
+              }
+            },
+            "valid": false
+          },
+          {
+            "data": {
+              "kind": "token",
+              "id": "1",
+              "auth": {
+                "token": "x"
+              }
+            },
+            "valid": false
+          },
+          {
+            "data": {
+              "kind": "pair",
+              "id": "11",
+              "auth": {
+                "user": "u",
+                "password": "p",
+                "extra": 0
+              }
+            },
+            "valid": false
+          },
+          {
+            "data": {
+              "kind": "token",
+              "id": "00",
+              "auth": {
+                "user": "u",
+                "password": "p"
+              }
+            },
+            "valid": false
+          },
+          {
+            "data": {
+              "kind": "pair",
+              "id": "11",
+              "auth": {
+                "token": "x"
+              }
+            },
+            "valid": false
+          },
+          {
+            "data": {
+              "kind": "token",
+              "id": "00",
+              "auth": {
+                "token": "x"
+              },
+              "extra": 1
+            },
+            "valid": false
+          },
+          {
+            "data": {
+              "kind": "pair",
+              "id": "11",
+              "auth": {
+                "user": null,
+                "password": "p"
+              }
+            },
+            "valid": false
+          },
+          {
+            "data": {
+              "kind": "token",
+              "id": "00",
+              "auth": {
+                "token": "x",
+                "user": "u"
+              }
+            },
+            "valid": false
+          },
+          {
+            "data": null,
+            "valid": false
+          },
+          {
+            "data": [],
+            "valid": false
+          }
+        ]
+      },
+      "provenance": {
+        "sourceGroup": "schema-behavior:AUTH",
+        "sourcePack": "structured-contract-challenge-v1",
+        "method": "Independent local task construction; no official item copied"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "verified",
+    "goldSource": "local-derived-fixture-v1",
+    "goldVerifiedAt": "2026-09-26T12:00:00.000Z",
+    "tags": [
+      "structured-contract-challenge-v1",
+      "family:G",
+      "prospective_only"
+    ],
+    "scenarioHash": "24f5c580f67d5ac5"
+  },
+  {
+    "id": "SOC3-G-ARRAY",
+    "dimension": "structured_output",
+    "category": "contract_challenge_G",
+    "difficulty": "adversarial",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_validation",
+    "promptTemplate": "生成 JSON Schema 2020-12，准确表达以下全部规则。允许任何等价的标准 Schema 写法，不要求与参考答案文本相同。只允许本地 $ref，Schema 深度最多 64，禁止外部资源。\n顶层是长度 2 至 4 的数组，每项恰含 key 与 value。key 是单个小写英文字母；value 是 0 至 3 的整数。同一 key 可重复。整个数组中不能出现 key=\"a\" 且 value=3 的项目。其他键禁止。\n输出须满足 JSON Schema：{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":[\"object\",\"boolean\"]}\n只输出一个完整 JSON 原文，不要代码围栏、解释或修复性前后缀。对象键序不限。",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v3",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "json",
+      "dialect": "2020-12",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": [
+          "object",
+          "boolean"
+        ]
+      },
+      "formatAssertions": true,
+      "family": "G",
+      "output_policy": "raw_only",
+      "generatedSchema": {
+        "cases": [
+          {
+            "data": [
+              {
+                "key": "a",
+                "value": 0
+              },
+              {
+                "key": "b",
+                "value": 2
+              }
+            ],
+            "valid": true
+          },
+          {
+            "data": [
+              {
+                "key": "x",
+                "value": 3
+              },
+              {
+                "key": "y",
+                "value": 1
+              },
+              {
+                "key": "z",
+                "value": 0
+              }
+            ],
+            "valid": true
+          },
+          {
+            "data": [
+              {
+                "key": "a",
+                "value": 1
+              },
+              {
+                "key": "b",
+                "value": 1
+              },
+              {
+                "key": "c",
+                "value": 1
+              },
+              {
+                "key": "d",
+                "value": 1
+              }
+            ],
+            "valid": true
+          },
+          {
+            "data": [
+              {
+                "key": "a",
+                "value": 1
+              },
+              {
+                "key": "a",
+                "value": 2
+              }
+            ],
+            "valid": true
+          },
+          {
+            "data": [],
+            "valid": false
+          },
+          {
+            "data": [
+              {
+                "key": "a",
+                "value": 1
+              }
+            ],
+            "valid": false
+          },
+          {
+            "data": [
+              {
+                "key": "a",
+                "value": 3
+              },
+              {
+                "key": "b",
+                "value": 1
+              }
+            ],
+            "valid": false
+          },
+          {
+            "data": [
+              {
+                "key": "a",
+                "value": -1
+              },
+              {
+                "key": "b",
+                "value": 2
+              }
+            ],
+            "valid": false
+          },
+          {
+            "data": [
+              {
+                "key": "a",
+                "value": 4
+              },
+              {
+                "key": "b",
+                "value": 0
+              }
+            ],
+            "valid": false
+          },
+          {
+            "data": [
+              {
+                "key": "a",
+                "value": 1
+              },
+              {
+                "key": "b",
+                "value": 1,
+                "extra": 0
+              }
+            ],
+            "valid": false
+          },
+          {
+            "data": [
+              {
+                "key": "a",
+                "value": 1
+              },
+              {
+                "key": "b",
+                "value": 1
+              },
+              {
+                "key": "c",
+                "value": 1
+              },
+              {
+                "key": "d",
+                "value": 1
+              },
+              {
+                "key": "e",
+                "value": 1
+              }
+            ],
+            "valid": false
+          },
+          {
+            "data": [
+              {
+                "key": "A",
+                "value": 1
+              },
+              {
+                "key": "b",
+                "value": 1
+              }
+            ],
+            "valid": false
+          },
+          {
+            "data": [
+              {
+                "key": "a",
+                "value": 1
+              },
+              {
+                "key": "b",
+                "value": 1
+              },
+              null
+            ],
+            "valid": false
+          },
+          {
+            "data": {},
+            "valid": false
+          },
+          {
+            "data": null,
+            "valid": false
+          }
+        ]
+      },
+      "provenance": {
+        "sourceGroup": "schema-behavior:ARRAY",
+        "sourcePack": "structured-contract-challenge-v1",
+        "method": "Independent local task construction; no official item copied"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "verified",
+    "goldSource": "local-derived-fixture-v1",
+    "goldVerifiedAt": "2026-09-26T12:00:00.000Z",
+    "tags": [
+      "structured-contract-challenge-v1",
+      "family:G",
+      "prospective_only"
+    ],
+    "scenarioHash": "2a8094befaa55918"
+  },
+  {
+    "id": "SOC3-H-BARS",
+    "dimension": "structured_output",
+    "category": "contract_challenge_H",
+    "difficulty": "adversarial",
+    "language": "svg",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_validation",
+    "promptTemplate": "根据数值生成可见柱状 SVG。画布 width=240、height=140、viewBox=\"0 0 240 140\"。每个索引 i=0,1,2 的 rect id=\"bar/i\"：x=20+70*i，y=110-12*value，width=36，height=12*value，填充色依次为 #e4572e、#3a86ff、#2a9d8f；其柱体在这些坐标实际可见，不得透明或遮挡。text id=\"label/i\"：x=20+70*i、y=130，文字是对应 label 原文，正确 XML 转义。允许等价颜色写法；禁止脚本、样式表、动画、foreignObject、外部资源与 DTD。\n数据：[{\"value\":3,\"label\":\"A&B\"},{\"value\":5,\"label\":\"C< D\"},{\"value\":2,\"label\":\"E\"}]\n只输出一个完整 SVG 原文，不要代码围栏、解释或修复性前后缀。对象键序不限。",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v2",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "svg",
+      "dialect": "2020-12",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "width": {
+            "type": "integer"
+          },
+          "height": {
+            "type": "integer"
+          },
+          "viewBox": {
+            "type": "array",
+            "minItems": 4,
+            "maxItems": 4,
+            "items": {
+              "type": "integer"
+            }
+          },
+          "nodes": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "width",
+          "height",
+          "viewBox",
+          "nodes"
+        ],
+        "additionalProperties": false
+      },
+      "formatAssertions": true,
+      "family": "H",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": {
+            "width": 240,
+            "height": 140,
+            "viewBox": [
+              0,
+              0,
+              240,
+              140
+            ],
+            "nodes": {
+              "bar/0": {
+                "tag": "rect",
+                "attrs": {
+                  "x": 20,
+                  "y": 74,
+                  "width": 36,
+                  "height": 36
+                }
+              },
+              "bar/1": {
+                "tag": "rect",
+                "attrs": {
+                  "x": 90,
+                  "y": 50,
+                  "width": 36,
+                  "height": 60
+                }
+              },
+              "bar/2": {
+                "tag": "rect",
+                "attrs": {
+                  "x": 160,
+                  "y": 86,
+                  "width": 36,
+                  "height": 24
+                }
+              },
+              "label/0": {
+                "tag": "text",
+                "attrs": {
+                  "x": 20,
+                  "y": 130
+                },
+                "text": "A&B"
+              },
+              "label/1": {
+                "tag": "text",
+                "attrs": {
+                  "x": 90,
+                  "y": 130
+                },
+                "text": "C< D"
+              },
+              "label/2": {
+                "tag": "text",
+                "attrs": {
+                  "x": 160,
+                  "y": 130
+                },
+                "text": "E"
+              }
+            }
+          },
+          "description": "Entire public transformation, including absence of extra data"
+        },
+        {
+          "pointer": "/width",
+          "expected": 240,
+          "description": "Public rule group width preserves exact type, value, and ordering"
+        },
+        {
+          "pointer": "/height",
+          "expected": 140,
+          "description": "Public rule group height preserves exact type, value, and ordering"
+        },
+        {
+          "pointer": "/viewBox",
+          "expected": [
+            0,
+            0,
+            240,
+            140
+          ],
+          "description": "Public rule group viewBox preserves exact type, value, and ordering"
+        },
+        {
+          "pointer": "/nodes",
+          "expected": {
+            "bar/0": {
+              "tag": "rect",
+              "attrs": {
+                "x": 20,
+                "y": 74,
+                "width": 36,
+                "height": 36
+              }
+            },
+            "bar/1": {
+              "tag": "rect",
+              "attrs": {
+                "x": 90,
+                "y": 50,
+                "width": 36,
+                "height": 60
+              }
+            },
+            "bar/2": {
+              "tag": "rect",
+              "attrs": {
+                "x": 160,
+                "y": 86,
+                "width": 36,
+                "height": 24
+              }
+            },
+            "label/0": {
+              "tag": "text",
+              "attrs": {
+                "x": 20,
+                "y": 130
+              },
+              "text": "A&B"
+            },
+            "label/1": {
+              "tag": "text",
+              "attrs": {
+                "x": 90,
+                "y": 130
+              },
+              "text": "C< D"
+            },
+            "label/2": {
+              "tag": "text",
+              "attrs": {
+                "x": 160,
+                "y": 130
+              },
+              "text": "E"
+            }
+          },
+          "description": "Public rule group nodes preserves exact type, value, and ordering"
+        }
+      ],
+      "svg": {
+        "width": 240,
+        "height": 140,
+        "elements": [
+          {
+            "id": "bar/0",
+            "tag": "rect",
+            "attrs": {
+              "x": 20,
+              "y": 74,
+              "width": 36,
+              "height": 36
+            }
+          },
+          {
+            "id": "bar/1",
+            "tag": "rect",
+            "attrs": {
+              "x": 90,
+              "y": 50,
+              "width": 36,
+              "height": 60
+            }
+          },
+          {
+            "id": "bar/2",
+            "tag": "rect",
+            "attrs": {
+              "x": 160,
+              "y": 86,
+              "width": 36,
+              "height": 24
+            }
+          },
+          {
+            "id": "label/0",
+            "tag": "text",
+            "attrs": {
+              "x": 20,
+              "y": 130
+            },
+            "text": "A&B"
+          },
+          {
+            "id": "label/1",
+            "tag": "text",
+            "attrs": {
+              "x": 90,
+              "y": 130
+            },
+            "text": "C< D"
+          },
+          {
+            "id": "label/2",
+            "tag": "text",
+            "attrs": {
+              "x": 160,
+              "y": 130
+            },
+            "text": "E"
+          }
+        ],
+        "samples": [
+          {
+            "x": 25,
+            "y": 105,
+            "rgba": [
+              228,
+              87,
+              46,
+              255
+            ]
+          },
+          {
+            "x": 95,
+            "y": 105,
+            "rgba": [
+              58,
+              134,
+              255,
+              255
+            ]
+          },
+          {
+            "x": 165,
+            "y": 105,
+            "rgba": [
+              42,
+              157,
+              143,
+              255
+            ]
+          }
+        ]
+      },
+      "provenance": {
+        "sourceGroup": "svg-derived:BARS",
+        "sourcePack": "structured-contract-challenge-v1",
+        "method": "Independent local task construction; no official item copied"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "verified",
+    "goldSource": "local-derived-fixture-v1",
+    "goldVerifiedAt": "2026-09-26T12:00:00.000Z",
+    "tags": [
+      "structured-contract-challenge-v1",
+      "family:H",
+      "prospective_only"
+    ],
+    "scenarioHash": "f7e61cab784ce82d"
+  },
+  {
+    "id": "SOC3-H-DELTA",
+    "dimension": "structured_output",
+    "category": "contract_challenge_H",
+    "difficulty": "adversarial",
+    "language": "svg",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_validation",
+    "promptTemplate": "根据数值生成可见柱状 SVG。画布 width=240、height=140、viewBox=\"0 0 240 140\"。每个索引 i=0,1,2 的 rect id=\"bar/i\"：x=20+70*i，y=110-12*value，width=36，height=12*value，填充色依次为 #e4572e、#3a86ff、#2a9d8f；其柱体在这些坐标实际可见，不得透明或遮挡。text id=\"label/i\"：x=20+70*i、y=130，文字是对应 label 原文，正确 XML 转义。允许等价颜色写法；禁止脚本、样式表、动画、foreignObject、外部资源与 DTD。\n数据：[{\"value\":4,\"label\":\"甲/乙\"},{\"value\":1,\"label\":\"x~y\"},{\"value\":6,\"label\":\"z\"}]\n只输出一个完整 SVG 原文，不要代码围栏、解释或修复性前后缀。对象键序不限。",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v2",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "svg",
+      "dialect": "2020-12",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "width": {
+            "type": "integer"
+          },
+          "height": {
+            "type": "integer"
+          },
+          "viewBox": {
+            "type": "array",
+            "minItems": 4,
+            "maxItems": 4,
+            "items": {
+              "type": "integer"
+            }
+          },
+          "nodes": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "width",
+          "height",
+          "viewBox",
+          "nodes"
+        ],
+        "additionalProperties": false
+      },
+      "formatAssertions": true,
+      "family": "H",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": {
+            "width": 240,
+            "height": 140,
+            "viewBox": [
+              0,
+              0,
+              240,
+              140
+            ],
+            "nodes": {
+              "bar/0": {
+                "tag": "rect",
+                "attrs": {
+                  "x": 20,
+                  "y": 62,
+                  "width": 36,
+                  "height": 48
+                }
+              },
+              "bar/1": {
+                "tag": "rect",
+                "attrs": {
+                  "x": 90,
+                  "y": 98,
+                  "width": 36,
+                  "height": 12
+                }
+              },
+              "bar/2": {
+                "tag": "rect",
+                "attrs": {
+                  "x": 160,
+                  "y": 38,
+                  "width": 36,
+                  "height": 72
+                }
+              },
+              "label/0": {
+                "tag": "text",
+                "attrs": {
+                  "x": 20,
+                  "y": 130
+                },
+                "text": "甲/乙"
+              },
+              "label/1": {
+                "tag": "text",
+                "attrs": {
+                  "x": 90,
+                  "y": 130
+                },
+                "text": "x~y"
+              },
+              "label/2": {
+                "tag": "text",
+                "attrs": {
+                  "x": 160,
+                  "y": 130
+                },
+                "text": "z"
+              }
+            }
+          },
+          "description": "Entire public transformation, including absence of extra data"
+        },
+        {
+          "pointer": "/width",
+          "expected": 240,
+          "description": "Public rule group width preserves exact type, value, and ordering"
+        },
+        {
+          "pointer": "/height",
+          "expected": 140,
+          "description": "Public rule group height preserves exact type, value, and ordering"
+        },
+        {
+          "pointer": "/viewBox",
+          "expected": [
+            0,
+            0,
+            240,
+            140
+          ],
+          "description": "Public rule group viewBox preserves exact type, value, and ordering"
+        },
+        {
+          "pointer": "/nodes",
+          "expected": {
+            "bar/0": {
+              "tag": "rect",
+              "attrs": {
+                "x": 20,
+                "y": 62,
+                "width": 36,
+                "height": 48
+              }
+            },
+            "bar/1": {
+              "tag": "rect",
+              "attrs": {
+                "x": 90,
+                "y": 98,
+                "width": 36,
+                "height": 12
+              }
+            },
+            "bar/2": {
+              "tag": "rect",
+              "attrs": {
+                "x": 160,
+                "y": 38,
+                "width": 36,
+                "height": 72
+              }
+            },
+            "label/0": {
+              "tag": "text",
+              "attrs": {
+                "x": 20,
+                "y": 130
+              },
+              "text": "甲/乙"
+            },
+            "label/1": {
+              "tag": "text",
+              "attrs": {
+                "x": 90,
+                "y": 130
+              },
+              "text": "x~y"
+            },
+            "label/2": {
+              "tag": "text",
+              "attrs": {
+                "x": 160,
+                "y": 130
+              },
+              "text": "z"
+            }
+          },
+          "description": "Public rule group nodes preserves exact type, value, and ordering"
+        }
+      ],
+      "svg": {
+        "width": 240,
+        "height": 140,
+        "elements": [
+          {
+            "id": "bar/0",
+            "tag": "rect",
+            "attrs": {
+              "x": 20,
+              "y": 62,
+              "width": 36,
+              "height": 48
+            }
+          },
+          {
+            "id": "bar/1",
+            "tag": "rect",
+            "attrs": {
+              "x": 90,
+              "y": 98,
+              "width": 36,
+              "height": 12
+            }
+          },
+          {
+            "id": "bar/2",
+            "tag": "rect",
+            "attrs": {
+              "x": 160,
+              "y": 38,
+              "width": 36,
+              "height": 72
+            }
+          },
+          {
+            "id": "label/0",
+            "tag": "text",
+            "attrs": {
+              "x": 20,
+              "y": 130
+            },
+            "text": "甲/乙"
+          },
+          {
+            "id": "label/1",
+            "tag": "text",
+            "attrs": {
+              "x": 90,
+              "y": 130
+            },
+            "text": "x~y"
+          },
+          {
+            "id": "label/2",
+            "tag": "text",
+            "attrs": {
+              "x": 160,
+              "y": 130
+            },
+            "text": "z"
+          }
+        ],
+        "samples": [
+          {
+            "x": 25,
+            "y": 105,
+            "rgba": [
+              228,
+              87,
+              46,
+              255
+            ]
+          },
+          {
+            "x": 95,
+            "y": 105,
+            "rgba": [
+              58,
+              134,
+              255,
+              255
+            ]
+          },
+          {
+            "x": 165,
+            "y": 105,
+            "rgba": [
+              42,
+              157,
+              143,
+              255
+            ]
+          }
+        ]
+      },
+      "provenance": {
+        "sourceGroup": "svg-derived:DELTA",
+        "sourcePack": "structured-contract-challenge-v1",
+        "method": "Independent local task construction; no official item copied"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "verified",
+    "goldSource": "local-derived-fixture-v1",
+    "goldVerifiedAt": "2026-09-26T12:00:00.000Z",
+    "tags": [
+      "structured-contract-challenge-v1",
+      "family:H",
+      "prospective_only"
+    ],
+    "scenarioHash": "578854ce069f5a7d"
+  }
+]

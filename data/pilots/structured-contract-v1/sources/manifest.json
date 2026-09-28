@@ -1,0 +1,26 @@
+[
+  {
+    "name": "github-workflow",
+    "url": "https://raw.githubusercontent.com/SchemaStore/schemastore/87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0/src/schemas/json/github-workflow.json",
+    "revision": "87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0",
+    "path": "sources/github-workflow.json"
+  },
+  {
+    "name": "dependabot-2.0",
+    "url": "https://raw.githubusercontent.com/SchemaStore/schemastore/87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0/src/schemas/json/dependabot-2.0.json",
+    "revision": "87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0",
+    "path": "sources/dependabot-2.0.json"
+  },
+  {
+    "name": "package",
+    "url": "https://raw.githubusercontent.com/SchemaStore/schemastore/87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0/src/schemas/json/package.json",
+    "revision": "87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0",
+    "path": "sources/package.json"
+  },
+  {
+    "name": "babelrc",
+    "url": "https://raw.githubusercontent.com/SchemaStore/schemastore/87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0/src/schemas/json/babelrc.json",
+    "revision": "87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0",
+    "path": "sources/babelrc.json"
+  }
+]

@@ -1,0 +1,39 @@
+[
+  {
+    "tool": "get_customer_info",
+    "args": {
+      "customer_id": "cust-27"
+    }
+  },
+  {
+    "tool": "query_orders",
+    "args": {
+      "customer_id": "cust-27",
+      "days": 30
+    }
+  },
+  {
+    "tool": "get_communication_history",
+    "args": {
+      "customer_id": "cust-27"
+    }
+  },
+  {
+    "tool": "search_news",
+    "args": {
+      "company_name": "North Star",
+      "days": 30
+    }
+  },
+  {
+    "tool": "create_document",
+    "args": {
+      "title": "客户会议简报",
+      "sections": [
+        "订单：PO-04、PO-05",
+        "沟通：上周讨论交付",
+        "新闻：宣布区域扩张"
+      ]
+    }
+  }
+]

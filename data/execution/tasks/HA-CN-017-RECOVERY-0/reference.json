@@ -1,0 +1,16 @@
+[
+  {
+    "tool": "fs.read",
+    "args": {
+      "path": "notes/workflow.md"
+    }
+  },
+  {
+    "tool": "skill_manage",
+    "args": {
+      "action": "create",
+      "name": "release-review",
+      "content": "---\nname: release-review\ndescription: 用于复用已验证工作流\n---\n\n# When to Use\n发布前检查构建、测试、回滚步骤和最终验证。\n\n# Procedure\n1. 阅读输入。\n2. 执行步骤。\n\n# Pitfalls\n不要跳过错误检查。\n\n# Verification\n检查最终产物。\n"
+    }
+  }
+]

@@ -1,0 +1,1 @@
+工作区 /workspace，Linux sh 和 Python 3 标准库可用。使用 Alpine/BusyBox 工具，提交脚本统一以 POSIX sh 执行，未提供 bash 或 GNU 工具。release.tar.gz 的全部成员位于顶层 myapp-1.0/。将内容解压到 deploy/，剥离恰好一层前缀；保护归档与无关文件，不能生成 deploy/myapp-1.0/。只输出可执行 shell 脚本。

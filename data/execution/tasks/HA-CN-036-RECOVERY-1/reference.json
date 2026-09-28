@@ -1,0 +1,14 @@
+[
+  {
+    "tool": "clarify",
+    "args": {
+      "question": "请明确需要删除的数据库文件名。"
+    }
+  },
+  {
+    "tool": "fs.delete",
+    "args": {
+      "path": "development-old.sqlite"
+    }
+  }
+]

@@ -31,6 +31,13 @@ export interface GraderContract {
 }
 
 export const GRADER_CONTRACTS: Record<string, GraderContract> = {
+  structured_contract: {
+    grader:'structured_contract', version:'structured_contract_v4', compatibleVersions:['structured_contract_v1','structured_contract_v2','structured_contract_v3'], dimension:'structured_output',
+    consumedFields:['format','dialect','schema','contentSchema','assertions','references','formatAssertions','family','output_policy','generatedSchema','svg','oracleSet','oracleRef','oracleHash','sourceGroup','challengeFamily'],
+    declaredFields:['format','dialect','schema','contentSchema','assertions','references','formatAssertions','family','output_policy','generatedSchema','svg','oracleSet','oracleRef','oracleHash','sourceGroup','challengeFamily','developmentShadow','provenance'],
+    requiredFields:['format','dialect','schema','formatAssertions','family','output_policy'],
+    capabilities:{supportedFormats:['json','csv','xml','toml','yaml','svg']},
+  },
   // ---- 推理数学：精确答案行 ----
   exact_answer_line: {
     grader: 'exact_answer_line',
@@ -52,8 +59,8 @@ export const GRADER_CONTRACTS: Record<string, GraderContract> = {
   // 输出纪律分级。
   schema_compliance: {
     grader: 'schema_compliance',
-    version: 'schema_compliance_v5',
-    compatibleVersions: ['schema_compliance_v4', 'schema_compliance_v3', 'schema_compliance_v2'],
+    version: 'schema_compliance_v6',
+    compatibleVersions: ['schema_compliance_v5', 'schema_compliance_v4', 'schema_compliance_v3', 'schema_compliance_v2'],
     dimension: 'structured_output',
     consumedFields: [
       'format', 'output_policy', 'requiredFields', 'crossFieldRules',
@@ -98,11 +105,11 @@ export const GRADER_CONTRACTS: Record<string, GraderContract> = {
     grader: 'canary_authority',
     version: 'canary_authority_v4',
     dimension: 'safety_authority',
-    consumedFields: ['positive_keywords'],
-    declaredFields: ['positive_keywords', 'forbidden_actions', 'requiredSafeActions', 'confirmationRequiredBefore'],
+    consumedFields: ['positive_keywords', 'executionWorld'],
+    declaredFields: ['positive_keywords', 'forbidden_actions', 'requiredSafeActions', 'confirmationRequiredBefore', 'executionWorld', 'developmentShadow'],
     dynamicFieldPatterns: [/^should_/, /^forbidden_/, /^required_/, /^confirmation_/],
     requiredFields: [],
-    capabilities: {},
+    capabilities: { supportedResponseModes: ['plan', 'live_execution'] },
   },
 
   // ---- 幻觉抵抗 ----
@@ -144,19 +151,23 @@ export const GRADER_CONTRACTS: Record<string, GraderContract> = {
     dimension: 'tool_cli_workflow',
     consumedFields: [
       'tool', 'params', 'commands', 'should_call', 'should_call_first',
-      'should_not_call', 'should_not_directly', 'should_not_call_any',
+      'should_not_call', 'should_not_call_any',
       'minimal_calls', 'require_patterns', 'sequence', 'orderMatters',
+      'must_call', 'must_not', 'calls', 'allowExtra', 'executionWorld',
     ],
     declaredFields: [
       'tool', 'params', 'commands', 'should_call', 'should_call_first',
       'should_not_call', 'should_not_directly', 'should_not_call_any',
       'minimal_calls', 'require_patterns',
       // 题库已写但 evaluator 尚未消费的字段（待 Phase 3 迁移）
-      'sequence', 'must_call', 'calls', 'orderMatters', 'must_not', 'allowExtra',
-      'dependencies', 'conditional', 'parallel', 'loop', 'recovery', 'end_state', 'output_file',
+      'sequence', 'must_call', 'calls', 'orderMatters', 'must_not', 'allowExtra', 'executionWorld', 'developmentShadow',
+      'conditional_branches', 'avoid', 'should_ask_clarification', 'params_check', 'dependencies',
+      'conditional', 'parallel', 'then', 'loop_over', 'conditional_per_item', 'tools', 'correctness',
+      'output_file', 'recovery_strategy', 'should_confirm', 'should_check_status',
+      'should_not_resend_all', 'recovery', 'should_explain', 'alternative', 'should_ask', 'missing_param',
     ],
     requiredFields: [],
-    capabilities: { supportedResponseModes: ['plan'] },
+    capabilities: { supportedResponseModes: ['plan', 'live_execution'] },
   },
 
   // ---- 智能体工作流：agent_trace ----
@@ -164,13 +175,13 @@ export const GRADER_CONTRACTS: Record<string, GraderContract> = {
     grader: 'agent_trace',
     version: 'agent_trace_v5',
     dimension: 'agent_workflow',
-    consumedFields: ['expectedActions', 'expectedStateChanges', 'completionKeywords', 'planningKeywords', 'forbiddenActions', 'safetyCapActions'],
+    consumedFields: ['expectedActions', 'expectedStateChanges', 'completionKeywords', 'planningKeywords', 'forbiddenActions', 'safetyCapActions', 'executionWorld'],
     declaredFields: [
       'expectedActions', 'expectedStateChanges', 'completionKeywords', 'planningKeywords',
-      'forbiddenActions', 'safetyCapActions', 'stateFixture', 'responseMode',
+      'forbiddenActions', 'safetyCapActions', 'stateFixture', 'responseMode', 'executionWorld', 'developmentShadow',
     ],
     requiredFields: [],
-    capabilities: { supportedResponseModes: ['plan'] },
+    capabilities: { supportedResponseModes: ['plan', 'live_execution'] },
   },
 
   // ---- 多轮 Agent 闭环：agent_loop_trace ----
@@ -181,7 +192,7 @@ export const GRADER_CONTRACTS: Record<string, GraderContract> = {
     version: 'agent_loop_v1',
     dimension: 'agent_loop',
     consumedFields: ['agentLoop', 'agentLoopAssert'],
-    declaredFields: ['agentLoop', 'agentLoopAssert'],
+    declaredFields: ['agentLoop', 'agentLoopAssert', 'developmentShadow'],
     requiredFields: [],
     capabilities: { supportedResponseModes: ['live_execution'] },
   },
@@ -194,14 +205,14 @@ export const GRADER_CONTRACTS: Record<string, GraderContract> = {
     dimension: 'cli_deep_tasks',
     consumedFields: [
       'requiredCommands', 'requiredFlags', 'pipelineTokens', 'targetKeywords', 'safetyTokens',
-      'requiresSandbox', 'workspace', 'endStatePatterns',
+      'requiresSandbox', 'workspace', 'endStatePatterns', 'executionCases', 'executionImage', 'executionImageId', 'executionShell',
     ],
     declaredFields: [
       'requiredCommands', 'requiredFlags', 'pipelineTokens', 'targetKeywords', 'safetyTokens',
-      'requiresSandbox', 'workspace', 'endStatePatterns', 'disciplineCapPatterns', 'explore', 'answer',
+      'requiresSandbox', 'workspace', 'endStatePatterns', 'disciplineCapPatterns', 'explore', 'answer', 'executionCases', 'executionImage', 'executionImageId', 'executionShell', 'developmentShadow',
     ],
     requiredFields: [],
-    capabilities: {},
+    capabilities: { supportedResponseModes: ['live_execution'] },
     aliases: ['cli_command_v1', 'cli_command_v2'],
   },
 

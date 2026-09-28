@@ -1,0 +1,8 @@
+[
+  {
+    "tool": "migration.run",
+    "args": {
+      "start": 1
+    }
+  }
+]

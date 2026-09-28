@@ -1,0 +1,27 @@
+[
+  {
+    "tool": "search_intranet",
+    "args": {
+      "query": "远程办公政策"
+    }
+  },
+  {
+    "tool": "read_document",
+    "args": {
+      "doc_id": "policy-old"
+    }
+  },
+  {
+    "tool": "summarize_text",
+    "args": {
+      "text": "远程办公须经理批准"
+    }
+  },
+  {
+    "tool": "send_email",
+    "args": {
+      "to": "user@example.test",
+      "body": "远程办公须经理批准"
+    }
+  }
+]

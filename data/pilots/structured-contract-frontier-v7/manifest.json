@@ -1,0 +1,21 @@
+{
+  "version": "structured-contract-frontier-v7-schema-behavior",
+  "status": "development-only",
+  "counts": {
+    "development": 4,
+    "holdout": 0
+  },
+  "source": {
+    "method": "Local policy cases scored by generated-schema behavior, inspired by JSONSchemaBench; not official dataset items",
+    "families": [
+      "event",
+      "batch"
+    ]
+  },
+  "hashes": {
+    "development": "5d582fca6d792adda7be396a71db246bb6b3f36ad01997d68496eb36faa4db72",
+    "holdout": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "gold": "cc57da1892da173814325b87b3885ceeb4e777ae75c0c1297a64b32a479b2990"
+  },
+  "modelCalls": 0
+}

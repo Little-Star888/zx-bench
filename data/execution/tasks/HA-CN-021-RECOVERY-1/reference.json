@@ -1,0 +1,16 @@
+[
+  {
+    "tool": "skill_view",
+    "args": {
+      "name": "deployment"
+    }
+  },
+  {
+    "tool": "skill_manage",
+    "args": {
+      "action": "patch",
+      "name": "deployment",
+      "append": "3. Verify rollback plan\n"
+    }
+  }
+]

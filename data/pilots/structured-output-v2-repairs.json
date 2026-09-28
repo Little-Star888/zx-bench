@@ -1,0 +1,204 @@
+[
+  {
+    "dimension": "structured_output",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "scenarioVersion": "4.0.0",
+    "scenarioHash": "b6bd1256d6b0b600",
+    "responseMode": null,
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null,
+    "id": "SO-CN-042",
+    "category": "json",
+    "difficulty": "hard",
+    "language": "json",
+    "promptTemplate": "下面是某店铺的 10 条订单原始流水（订单号,下单日期,用户ID,数量,单价）：\n\nA-1041,2026-03-04,u1,2,19.5\nA-1042,2026-03-04,u2,1,128.0\nA-1043,2026-03-02,u1,3,7.25\nA-1044,2026-03-01,u3,5,3.4\nA-1045,2026-02-28,u2,1,999.99\nA-1046,2026-02-27,u1,4,12.5\nA-1047,2026-02-27,u3,2,56.75\nA-1048,2026-02-25,u2,6,2.15\nA-1049,2026-02-24,u1,1,340.0\nA-1050,2026-02-20,u3,3,18.9\n\n用户表：u1=张三，u2=李四，u3=王五。\n\n请输出一个 JSON 对象，顶层键**恰好**为 generatedAt、users、orders、summary（不得多也不得少）：\n1. generatedAt：ISO 8601 日期时间字符串\n2. users：恰好 3 个元素，每个元素**恰好**含 id、name 两个键\n3. orders：恰好 10 个元素，每个元素**恰好**含 id、date、userId、qty、unitPrice、amount、tax、total 八个键，且键的出现顺序必须与上述一致\n   - amount = qty × unitPrice，四舍五入到 2 位小数\n   - tax = amount × 0.06，四舍五入到 2 位小数\n   - total = amount + tax（保留到分）\n   - 数组必须按 date 降序排列；date 相同时按 id 升序排列\n4. summary：**恰好**含 count、itemsTotal、taxTotal、grandTotal 四个键\n   - itemsTotal = 所有 amount 之和，taxTotal = 所有 tax 之和，grandTotal = 所有 total 之和\n5. orders 中每个 userId 都必须存在于 users 的 id 中\n6. 输出纯 JSON，不要 markdown 代码块，不要任何解释文字",
+    "requirements": {
+      "format": "json",
+      "output_policy": "raw_only",
+      "requiredFields": [
+        "generatedAt",
+        "users",
+        "orders",
+        "summary",
+        "summary.count",
+        "summary.itemsTotal",
+        "summary.taxTotal",
+        "summary.grandTotal",
+        "orders[0].amount",
+        "orders[0].tax",
+        "orders[0].total"
+      ],
+      "constraints": [
+        "keys:.=generatedAt,users,orders,summary",
+        "keysAll:orders[]=id,date,userId,qty,unitPrice,amount,tax,total",
+        "keyOrder:orders[0]=id,date,userId,qty,unitPrice,amount,tax,total",
+        "keysAll:users[]=id,name",
+        "unique:orders[].id",
+        "unique:users[].id",
+        "sorted:orders[]=date:desc,id:asc",
+        "reAll:orders[].id:^A-\\d{4}$",
+        "reAll:orders[].date:^\\d{4}-\\d{2}-\\d{2}$",
+        "ref:orders[].userId in users[].id",
+        "productEq:orders[].amount=qty*unitPrice:2",
+        "ratioEq:orders[].tax=amount*0.06:2",
+        "maxDecimals:orders[].total=2",
+        "length:orders=10",
+        "length:users=3",
+        "sumEq:orders[].amount=summary.itemsTotal",
+        "sumEq:orders[].tax=summary.taxTotal",
+        "sumEq:orders[].total=summary.grandTotal",
+        "jsonEq:users=[{\"id\":\"u1\",\"name\":\"张三\"},{\"id\":\"u2\",\"name\":\"李四\"},{\"id\":\"u3\",\"name\":\"王五\"}]",
+        "jsonEq:orders=[{\"id\":\"A-1041\",\"date\":\"2026-03-04\",\"userId\":\"u1\",\"qty\":2,\"unitPrice\":19.5,\"amount\":39,\"tax\":2.34,\"total\":41.34},{\"id\":\"A-1042\",\"date\":\"2026-03-04\",\"userId\":\"u2\",\"qty\":1,\"unitPrice\":128,\"amount\":128,\"tax\":7.68,\"total\":135.68},{\"id\":\"A-1043\",\"date\":\"2026-03-02\",\"userId\":\"u1\",\"qty\":3,\"unitPrice\":7.25,\"amount\":21.75,\"tax\":1.31,\"total\":23.06},{\"id\":\"A-1044\",\"date\":\"2026-03-01\",\"userId\":\"u3\",\"qty\":5,\"unitPrice\":3.4,\"amount\":17,\"tax\":1.02,\"total\":18.02},{\"id\":\"A-1045\",\"date\":\"2026-02-28\",\"userId\":\"u2\",\"qty\":1,\"unitPrice\":999.99,\"amount\":999.99,\"tax\":60,\"total\":1059.99},{\"id\":\"A-1046\",\"date\":\"2026-02-27\",\"userId\":\"u1\",\"qty\":4,\"unitPrice\":12.5,\"amount\":50,\"tax\":3,\"total\":53},{\"id\":\"A-1047\",\"date\":\"2026-02-27\",\"userId\":\"u3\",\"qty\":2,\"unitPrice\":56.75,\"amount\":113.5,\"tax\":6.81,\"total\":120.31},{\"id\":\"A-1048\",\"date\":\"2026-02-25\",\"userId\":\"u2\",\"qty\":6,\"unitPrice\":2.15,\"amount\":12.9,\"tax\":0.77,\"total\":13.67},{\"id\":\"A-1049\",\"date\":\"2026-02-24\",\"userId\":\"u1\",\"qty\":1,\"unitPrice\":340,\"amount\":340,\"tax\":20.4,\"total\":360.4},{\"id\":\"A-1050\",\"date\":\"2026-02-20\",\"userId\":\"u3\",\"qty\":3,\"unitPrice\":18.9,\"amount\":56.7,\"tax\":3.4,\"total\":60.1}]",
+        "valueEq:summary.count=10"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.05,
+        "schema_compliance": 0.1,
+        "field_constraints": 0.55,
+        "cross_field_consistency": 0.1,
+        "output_discipline": 0.15
+      },
+      "schema": {
+        "type": "object",
+        "required": [
+          "generatedAt",
+          "users",
+          "orders",
+          "summary"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "generatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "users": {
+            "type": "array"
+          },
+          "orders": {
+            "type": "array"
+          },
+          "summary": {
+            "type": "object",
+            "required": [
+              "count",
+              "itemsTotal",
+              "taxTotal",
+              "grandTotal"
+            ],
+            "properties": {
+              "count": {
+                "type": "integer"
+              },
+              "itemsTotal": {
+                "type": "number"
+              },
+              "taxTotal": {
+                "type": "number"
+              },
+              "grandTotal": {
+                "type": "number"
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      }
+    },
+    "tags": [
+      "json",
+      "derived-fields",
+      "rounding",
+      "sorting",
+      "referential-integrity",
+      "aggregation"
+    ]
+  },
+  {
+    "dimension": "structured_output",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "scenarioVersion": "4.0.0",
+    "scenarioHash": "c792b57c01fbc7df",
+    "responseMode": null,
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null,
+    "id": "SO-CN-047",
+    "category": "json",
+    "difficulty": "adversarial",
+    "language": "json",
+    "promptTemplate": "请输出一个 JSON 对象，顶层键**恰好**为 schema、config 两个，任何层级都**不得出现未声明的键**。\n\nconfig 描述「多环境部署配置」，其键**恰好**为 service、version、environments 三个：\n1. service：非空字符串；version：形如 1.2.3 的字符串\n2. environments：**恰好**含 dev、staging、prod 三个键\n3. dev / staging / prod 每个的值**恰好**含 replicas、image、env、resources 四个键\n4. replicas 为整数：dev 必须为 1，staging 必须为 2，prod 必须不小于 3\n5. image 为含冒号 tag 的字符串\n6. env **恰好**含 4 个键，键名为大写字母加下划线形式（如 DB_HOST、LOG_LEVEL）\n7. resources **恰好**含 cpu、memory 两个键，取值为字符串\n8. schema 必须在同一文档内描述上述全部约束（含 additionalProperties 为 false、pattern、enum、required、replicas 的整数上下界），且 config 必须满足 schema\n9. 输出纯 JSON，不要 markdown 代码块，不要任何解释文字",
+    "requirements": {
+      "format": "json",
+      "output_policy": "raw_only",
+      "requiredFields": [
+        "schema",
+        "config",
+        "config.environments",
+        "config.environments.prod.replicas"
+      ],
+      "constraints": [
+        "keys:.=schema,config",
+        "keys:config=service,version,environments",
+        "length:config.environments=3",
+        "keys:config.environments=dev,staging,prod",
+        "keys:config.environments.dev=replicas,image,env,resources",
+        "keys:config.environments.staging=replicas,image,env,resources",
+        "keys:config.environments.prod=replicas,image,env,resources",
+        "length:config.environments.dev.env=4",
+        "length:config.environments.staging.env=4",
+        "length:config.environments.prod.env=4",
+        "keys:config.environments.prod.resources=cpu,memory",
+        "type:config.environments.prod.replicas=number",
+        "schemaValidates:schema:config",
+        "type:schema.additionalProperties=boolean",
+        "valueEq:schema.additionalProperties=false"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.05,
+        "schema_compliance": 0.1,
+        "field_constraints": 0.55,
+        "cross_field_consistency": 0.1,
+        "output_discipline": 0.15
+      }
+    },
+    "tags": [
+      "json",
+      "exact-keys",
+      "trap",
+      "additional-properties",
+      "self-consistency"
+    ]
+  }
+]

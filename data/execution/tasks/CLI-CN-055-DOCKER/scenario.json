@@ -1,0 +1,133 @@
+{
+  "id": "CLI-CN-055-DOCKER",
+  "dimension": "cli_deep_tasks",
+  "category": "file_operations",
+  "difficulty": "medium",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "工作区 /workspace，Linux sh 和 Python 3 标准库可用。使用 Alpine/BusyBox 工具，提交脚本统一以 POSIX sh 执行，未提供 bash 或 GNU 工具。以固定当前时刻 2026-09-26T12:00:00Z 为准，只删除 cache/ 内超过 7 天未修改的 .tmp 普通文件（递归）；恰好 7 天的文件及其他扩展名须保留。只输出可执行 shell 脚本。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "cli_command",
+  "graderVersion": "cli_command_v5",
+  "scoring": {
+    "type": "cli_command",
+    "mode": "executed_state"
+  },
+  "requirements": {
+    "migrationSourceId": "CLI-CN-055",
+    "developmentShadow": true,
+    "executionInterpreter": "sh",
+    "executionImage": "python:3.12-alpine",
+    "executionImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31",
+    "executionCases": [
+      {
+        "files": [
+          {
+            "path": "cache/old a.tmp",
+            "content": "old"
+          },
+          {
+            "path": "cache/deep/older.tmp",
+            "content": "older"
+          },
+          {
+            "path": "cache/exact.tmp",
+            "content": "exact"
+          },
+          {
+            "path": "cache/new.tmp",
+            "content": "new"
+          },
+          {
+            "path": "cache/old.log",
+            "content": "protected"
+          },
+          {
+            "path": "sentinel",
+            "content": "keep"
+          }
+        ],
+        "setupCommands": [
+          "python3 -I - <<'PY'\nimport os,datetime\nnow=datetime.datetime(2026,9,26,12,tzinfo=datetime.timezone.utc).timestamp()\nfor path,age in [('cache/old a.tmp',8+0),('cache/deep/older.tmp',20),('cache/exact.tmp',7),('cache/new.tmp',1),('cache/old.log',30)]:\n    t=now-age*86400; os.utime(path,(t,t))\nPY"
+        ],
+        "absentFiles": [
+          "cache/old a.tmp",
+          "cache/deep/older.tmp"
+        ],
+        "unchangedFiles": [
+          "cache/exact.tmp",
+          "cache/new.tmp",
+          "cache/old.log",
+          "sentinel"
+        ],
+        "assertCommands": [
+          "python3 -I - <<'PY'\nfrom pathlib import Path\nassert not Path('cache/old a.tmp').exists() and not Path('cache/deep/older.tmp').exists()\nassert Path('cache/exact.tmp').is_file() and Path('cache/new.tmp').is_file() and Path('cache/old.log').is_file()\nPY"
+        ]
+      },
+      {
+        "files": [
+          {
+            "path": "cache/old a.tmp",
+            "content": "old"
+          },
+          {
+            "path": "cache/deep/older.tmp",
+            "content": "older"
+          },
+          {
+            "path": "cache/exact.tmp",
+            "content": "exact"
+          },
+          {
+            "path": "cache/new.tmp",
+            "content": "new"
+          },
+          {
+            "path": "cache/old.log",
+            "content": "protected"
+          },
+          {
+            "path": "sentinel",
+            "content": "keep"
+          }
+        ],
+        "setupCommands": [
+          "python3 -I - <<'PY'\nimport os,datetime\nnow=datetime.datetime(2026,9,26,12,tzinfo=datetime.timezone.utc).timestamp()\nfor path,age in [('cache/old a.tmp',8+1),('cache/deep/older.tmp',20),('cache/exact.tmp',7),('cache/new.tmp',1),('cache/old.log',30)]:\n    t=now-age*86400; os.utime(path,(t,t))\nPY"
+        ],
+        "absentFiles": [
+          "cache/old a.tmp",
+          "cache/deep/older.tmp"
+        ],
+        "unchangedFiles": [
+          "cache/exact.tmp",
+          "cache/new.tmp",
+          "cache/old.log",
+          "sentinel"
+        ],
+        "assertCommands": [
+          "python3 -I - <<'PY'\nfrom pathlib import Path\nassert not Path('cache/old a.tmp').exists() and not Path('cache/deep/older.tmp').exists()\nassert Path('cache/exact.tmp').is_file() and Path('cache/new.tmp').is_file() and Path('cache/old.log').is_file()\nPY"
+        ]
+      }
+    ]
+  },
+  "tags": [
+    "cli",
+    "file",
+    "cleanup"
+  ],
+  "scenarioVersion": "3.1.0",
+  "scenarioHash": "a5919ef89b6f916c",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

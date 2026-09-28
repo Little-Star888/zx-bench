@@ -1,0 +1,134 @@
+{
+  "id": "HA-CN-023-RECOVERY-1",
+  "dimension": "agent_workflow",
+  "category": "skills_procedural",
+  "difficulty": "hard",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "把踩过的坑补进现有 incident-review 技能。先查看原文，再用 skill_manage(action=patch) 增加 Pitfalls 与 Verification 节，保留原 Procedure。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "agent_trace",
+  "graderVersion": "agent_trace_v5",
+  "scoring": {
+    "type": "agent_trace"
+  },
+  "requirements": {
+    "migrationSourceId": "HA-CN-023",
+    "developmentShadow": true,
+    "executionWorld": {
+      "maxTurns": 8,
+      "scoreMode": "strict",
+      "initialState": {
+        "skills": {
+          "incident-review": "# incident-review\n## Procedure\n1. Do work\n",
+          "other": "# keep\n"
+        },
+        "viewed": false,
+        "patches": 0,
+        "rawWrites": 0
+      },
+      "tools": [
+        {
+          "name": "skill_view",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "name": "string"
+          },
+          "script": "if args['name']!='incident-review': raise ValueError('NOT_FOUND')\nstate['viewed']=True; result={'content':state['skills'][args['name']]}",
+          "description": "读取技能。"
+        },
+        {
+          "name": "skill_manage",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "action": "string",
+            "name": "string",
+            "content": "string"
+          },
+          "script": "if args['action']!='patch' or args['name']!='incident-review' or '## Pitfalls' not in args['content'] or '## Verification' not in args['content']: raise ValueError('MISSING_SECTIONS')\nstate['skills'][args['name']]+=args['content']; state['patches']+=1\nresult={'patched':True}",
+          "description": "追加陷阱与验证节。",
+          "requirePriorCall": {
+            "tool": "skill_view",
+            "sameArgs": [
+              "name"
+            ]
+          }
+        },
+        {
+          "name": "fs.write",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "path": "string",
+            "content": "string"
+          },
+          "script": "state['rawWrites']+=1; result={'written':True}",
+          "description": "绕过技能管理。"
+        }
+      ],
+      "requiredCalls": [
+        {
+          "tool": "skill_view",
+          "args": {
+            "name": "incident-review"
+          }
+        },
+        {
+          "tool": "skill_manage",
+          "args": {
+            "action": "patch",
+            "name": "incident-review"
+          }
+        }
+      ],
+      "forbiddenCalls": [
+        "fs.write"
+      ],
+      "expectedState": [
+        {
+          "path": "skills/incident-review",
+          "equals": "# incident-review\n## Procedure\n1. Do work\n## Pitfalls\n- 不要跳过失败。\n## Verification\n- 核对最终结果。\n"
+        },
+        {
+          "path": "viewed",
+          "equals": true
+        },
+        {
+          "path": "patches",
+          "equals": 1
+        },
+        {
+          "path": "rawWrites",
+          "equals": 0
+        }
+      ],
+      "unchangedState": [
+        "skills/other"
+      ],
+      "image": "python:3.12-alpine",
+      "expectedImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31"
+    }
+  },
+  "tags": [
+    "agent",
+    "skill",
+    "enrich-sections"
+  ],
+  "scenarioVersion": "3.0.0",
+  "scenarioHash": "e3350896dad06fd1",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

@@ -1,0 +1,67 @@
+{
+  "id": "CLI-CN-056-DOCKER",
+  "dimension": "cli_deep_tasks",
+  "category": "text_processing",
+  "difficulty": "medium",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "在 /workspace 中执行任务。环境为 Alpine/BusyBox，提供 POSIX sh 和 Python 3 标准库，不提供 bash 或 GNU 工具；提交脚本统一以 sh 执行。将 config.txt 中所有 foo 替换为 bar，直接保存到原文件。只输出可执行 shell 脚本。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "cli_command",
+  "graderVersion": "cli_command_v1",
+  "scoring": {
+    "type": "cli_command",
+    "mode": "executed_state"
+  },
+  "requirements": {
+    "executionImage": "python:3.12-alpine",
+    "executionImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31",
+    "executionInterpreter": "sh",
+    "executionCases": [
+      {
+        "files": [
+          {
+            "path": "config.txt",
+            "content": "foo=1\nfoobar\nfoo foo\n"
+          }
+        ],
+        "expectedFiles": {
+          "config.txt": "bar=1\nbarbar\nbar bar\n"
+        }
+      },
+      {
+        "files": [
+          {
+            "path": "config.txt",
+            "content": "prefix foo suffix\nfoofoo\nuntouched\n"
+          }
+        ],
+        "expectedFiles": {
+          "config.txt": "prefix bar suffix\nbarbar\nuntouched\n"
+        }
+      }
+    ],
+    "migrationSourceId": "CLI-CN-056",
+    "developmentShadow": true
+  },
+  "tags": [
+    "cli",
+    "text",
+    "in-place"
+  ],
+  "scenarioVersion": "2.1.0",
+  "scenarioHash": "3e4a507df0a8d862",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

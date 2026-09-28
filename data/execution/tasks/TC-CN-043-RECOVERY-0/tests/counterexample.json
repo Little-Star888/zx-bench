@@ -1,0 +1,12 @@
+[
+  {
+    "tool": "get_current_weather",
+    "args": {
+      "city": "上海"
+    }
+  },
+  {
+    "tool": "get_weather_forecast",
+    "args": {}
+  }
+]

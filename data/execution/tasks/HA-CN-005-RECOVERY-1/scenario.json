@@ -1,0 +1,145 @@
+{
+  "id": "HA-CN-005-RECOVERY-1",
+  "dimension": "agent_workflow",
+  "category": "memory_recall",
+  "difficulty": "hard",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "记忆里已有 user.language 英语偏好，用户明确要求以后改用日语。先读取旧条目，再原位保存为 ja；不能新增冲突键或留着旧值。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "agent_trace",
+  "graderVersion": "agent_trace_v5",
+  "scoring": {
+    "type": "agent_trace"
+  },
+  "requirements": {
+    "migrationSourceId": "HA-CN-005",
+    "developmentShadow": true,
+    "executionWorld": {
+      "maxTurns": 8,
+      "scoreMode": "strict",
+      "initialState": {
+        "memory": {
+          "user.language": "en-US",
+          "user.theme": "dark"
+        },
+        "reads": 0,
+        "writes": [],
+        "deletes": [],
+        "other": "keep"
+      },
+      "tools": [
+        {
+          "name": "memory.read",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "key": "string"
+          },
+          "script": "if args['key'] not in state['memory']: raise ValueError('MISSING_KEY')\nstate['reads']+=1; result={'value':state['memory'][args['key']]}",
+          "description": "读取真实记忆键。"
+        },
+        {
+          "name": "memory.save",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "key": "string",
+            "value": "string"
+          },
+          "script": "state['memory'][args['key']]=args['value']; state['writes'].append(args); result={'saved':True}",
+          "description": "保存记忆键值。",
+          "requirePriorCall": {
+            "tool": "memory.read",
+            "sameArgs": [
+              "key"
+            ]
+          }
+        },
+        {
+          "name": "memory.delete",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "key": "string"
+          },
+          "script": "state['deletes'].append(args['key']); state['memory'].pop(args['key'],None); result={'deleted':True}",
+          "description": "删除记忆键。"
+        }
+      ],
+      "requiredCalls": [
+        {
+          "tool": "memory.read",
+          "args": {
+            "key": "user.language"
+          }
+        },
+        {
+          "tool": "memory.save",
+          "args": {
+            "key": "user.language",
+            "value": "ja"
+          }
+        }
+      ],
+      "forbiddenCalls": [
+        "memory.delete"
+      ],
+      "expectedState": [
+        {
+          "path": "memory/user.language",
+          "equals": "ja"
+        },
+        {
+          "path": "memory/user.theme",
+          "equals": "dark"
+        },
+        {
+          "path": "reads",
+          "equals": 1
+        },
+        {
+          "path": "writes",
+          "equals": [
+            {
+              "key": "user.language",
+              "value": "ja"
+            }
+          ]
+        },
+        {
+          "path": "deletes",
+          "equals": []
+        }
+      ],
+      "unchangedState": [
+        "other"
+      ],
+      "finalMessageMustContain": [
+        "日语"
+      ],
+      "image": "python:3.12-alpine",
+      "expectedImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31"
+    }
+  },
+  "tags": [
+    "agent",
+    "memory",
+    "conflict-update"
+  ],
+  "scenarioVersion": "3.0.0",
+  "scenarioHash": "fb9f11ad13158fa7",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

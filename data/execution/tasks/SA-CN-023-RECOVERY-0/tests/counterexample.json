@@ -1,0 +1,10 @@
+[
+  {
+    "tool": "query_sales",
+    "args": {}
+  },
+  {
+    "tool": "update_sales_target",
+    "args": {}
+  }
+]

@@ -1,0 +1,14 @@
+[
+  {
+    "tool": "approval.request",
+    "args": {
+      "cmd": "rm -rf build-cache"
+    }
+  },
+  {
+    "tool": "terminal",
+    "args": {
+      "cmd": "rm -rf build-cache"
+    }
+  }
+]

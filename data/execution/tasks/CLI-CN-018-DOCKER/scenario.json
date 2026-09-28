@@ -1,0 +1,454 @@
+{
+  "id": "CLI-CN-018-DOCKER",
+  "dimension": "cli_deep_tasks",
+  "category": "pipeline_composition",
+  "difficulty": "hard",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "工作区 /workspace，Linux sh 和 Python 3 标准库可用。使用 Alpine/BusyBox 工具，提交脚本统一以 POSIX sh 执行，未提供 bash 或 GNU 工具。统计 src/ 下所有 .py 文件的换行计数，按行数数值降序输出到 counts.txt，格式为「<行数> <路径>」；同数按路径字典序。文件名可能含空格，不要输出 total 行，也不要改动源文件。只输出可执行 shell 脚本。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "cli_command",
+  "graderVersion": "cli_command_v5",
+  "scoring": {
+    "type": "cli_command",
+    "mode": "executed_state"
+  },
+  "requirements": {
+    "migrationSourceId": "CLI-CN-018",
+    "developmentShadow": true,
+    "executionInterpreter": "sh",
+    "executionImage": "python:3.12-alpine",
+    "executionImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31",
+    "executionCases": [
+      {
+        "files": [
+          {
+            "path": "src/dir with space/module 00.py",
+            "content": "# line 0\n"
+          },
+          {
+            "path": "src/dir/module 01.py",
+            "content": "# line 1\n# line 1\n# line 1\n# line 1\n# line 1\n# line 1\n# line 1\n# line 1\n# line 1\n# line 1\n# line 1\n# line 1\n# line 1\n# line 1\n# line 1\n# line 1\n# line 1\n# line 1\n"
+          },
+          {
+            "path": "src/dir/module 02.py",
+            "content": "# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n"
+          },
+          {
+            "path": "src/dir with space/module 03.py",
+            "content": "# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n"
+          },
+          {
+            "path": "src/dir/module 04.py",
+            "content": "# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n"
+          },
+          {
+            "path": "src/dir/module 05.py",
+            "content": "# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n"
+          },
+          {
+            "path": "src/dir with space/module 06.py",
+            "content": "# line 6\n# line 6\n# line 6\n# line 6\n# line 6\n# line 6\n# line 6\n# line 6\n# line 6\n# line 6\n# line 6\n# line 6\n# line 6\n# line 6\n"
+          },
+          {
+            "path": "src/dir/module 07.py",
+            "content": "# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n"
+          },
+          {
+            "path": "src/dir/module 08.py",
+            "content": "# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n"
+          },
+          {
+            "path": "src/dir with space/module 09.py",
+            "content": "# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n"
+          },
+          {
+            "path": "src/dir/module 10.py",
+            "content": "# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n"
+          },
+          {
+            "path": "src/dir/module 11.py",
+            "content": "# line 11\n# line 11\n# line 11\n# line 11\n# line 11\n# line 11\n# line 11\n# line 11\n# line 11\n# line 11\n"
+          },
+          {
+            "path": "src/dir with space/module 12.py",
+            "content": "# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n"
+          },
+          {
+            "path": "src/dir/module 13.py",
+            "content": "# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n"
+          },
+          {
+            "path": "src/dir/module 14.py",
+            "content": "# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n"
+          },
+          {
+            "path": "src/dir with space/module 15.py",
+            "content": "# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n# line 15\n"
+          },
+          {
+            "path": "src/dir/module 16.py",
+            "content": "# line 16\n# line 16\n# line 16\n# line 16\n# line 16\n# line 16\n"
+          },
+          {
+            "path": "src/dir/module 17.py",
+            "content": "# line 17\n# line 17\n# line 17\n# line 17\n# line 17\n# line 17\n# line 17\n# line 17\n# line 17\n# line 17\n# line 17\n# line 17\n# line 17\n# line 17\n# line 17\n# line 17\n# line 17\n# line 17\n# line 17\n# line 17\n# line 17\n# line 17\n# line 17\n"
+          },
+          {
+            "path": "src/dir with space/module 18.py",
+            "content": "# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n"
+          },
+          {
+            "path": "src/dir/module 19.py",
+            "content": "# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n"
+          },
+          {
+            "path": "src/dir/module 20.py",
+            "content": "# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n"
+          },
+          {
+            "path": "src/dir with space/module 21.py",
+            "content": "# line 21\n# line 21\n"
+          },
+          {
+            "path": "src/dir/module 22.py",
+            "content": "# line 22\n# line 22\n# line 22\n# line 22\n# line 22\n# line 22\n# line 22\n# line 22\n# line 22\n# line 22\n# line 22\n# line 22\n# line 22\n# line 22\n# line 22\n# line 22\n# line 22\n# line 22\n# line 22\n"
+          },
+          {
+            "path": "src/dir/module 23.py",
+            "content": "# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n"
+          },
+          {
+            "path": "src/dir with space/module 24.py",
+            "content": "# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n"
+          },
+          {
+            "path": "src/dir/module 25.py",
+            "content": "# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n"
+          },
+          {
+            "path": "src/dir/module 26.py",
+            "content": "# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n"
+          },
+          {
+            "path": "src/dir with space/module 27.py",
+            "content": "# line 27\n# line 27\n# line 27\n# line 27\n# line 27\n# line 27\n# line 27\n# line 27\n# line 27\n# line 27\n# line 27\n# line 27\n# line 27\n# line 27\n# line 27\n"
+          },
+          {
+            "path": "src/dir/module 28.py",
+            "content": "# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n"
+          },
+          {
+            "path": "src/dir/module 29.py",
+            "content": "# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n"
+          },
+          {
+            "path": "src/dir with space/module 30.py",
+            "content": "# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n"
+          },
+          {
+            "path": "src/dir/module 31.py",
+            "content": "# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n"
+          },
+          {
+            "path": "src/dir/module 32.py",
+            "content": "# line 32\n# line 32\n# line 32\n# line 32\n# line 32\n# line 32\n# line 32\n# line 32\n# line 32\n# line 32\n# line 32\n"
+          },
+          {
+            "path": "src/dir with space/module 33.py",
+            "content": "# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n"
+          },
+          {
+            "path": "src/dir/module 34.py",
+            "content": "# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n"
+          },
+          {
+            "path": "src/dir/module 35.py",
+            "content": "# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n"
+          },
+          {
+            "path": "src/dir with space/module 36.py",
+            "content": "# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n# line 36\n"
+          },
+          {
+            "path": "src/README.md",
+            "content": "keep"
+          },
+          {
+            "path": "sentinel",
+            "content": "keep"
+          }
+        ],
+        "expectedFiles": {
+          "counts.txt": "87 src/dir/module 26.py\n86 src/dir/module 05.py\n83 src/dir/module 31.py\n82 src/dir/module 10.py\n79 src/dir with space/module 36.py\n78 src/dir with space/module 15.py\n74 src/dir/module 20.py\n70 src/dir/module 25.py\n69 src/dir/module 04.py\n66 src/dir with space/module 30.py\n65 src/dir with space/module 09.py\n62 src/dir/module 35.py\n61 src/dir/module 14.py\n57 src/dir/module 19.py\n53 src/dir with space/module 24.py\n52 src/dir with space/module 03.py\n49 src/dir/module 29.py\n48 src/dir/module 08.py\n45 src/dir/module 34.py\n44 src/dir/module 13.py\n40 src/dir with space/module 18.py\n36 src/dir/module 23.py\n35 src/dir/module 02.py\n32 src/dir/module 28.py\n31 src/dir/module 07.py\n28 src/dir with space/module 33.py\n27 src/dir with space/module 12.py\n23 src/dir/module 17.py\n19 src/dir/module 22.py\n18 src/dir/module 01.py\n15 src/dir with space/module 27.py\n14 src/dir with space/module 06.py\n11 src/dir/module 32.py\n10 src/dir/module 11.py\n6 src/dir/module 16.py\n2 src/dir with space/module 21.py\n1 src/dir with space/module 00.py\n"
+        },
+        "unchangedFiles": [
+          "src/dir with space/module 00.py",
+          "src/dir/module 01.py",
+          "src/dir/module 02.py",
+          "src/dir with space/module 03.py",
+          "src/dir/module 04.py",
+          "src/dir/module 05.py",
+          "src/dir with space/module 06.py",
+          "src/dir/module 07.py",
+          "src/dir/module 08.py",
+          "src/dir with space/module 09.py",
+          "src/dir/module 10.py",
+          "src/dir/module 11.py",
+          "src/dir with space/module 12.py",
+          "src/dir/module 13.py",
+          "src/dir/module 14.py",
+          "src/dir with space/module 15.py",
+          "src/dir/module 16.py",
+          "src/dir/module 17.py",
+          "src/dir with space/module 18.py",
+          "src/dir/module 19.py",
+          "src/dir/module 20.py",
+          "src/dir with space/module 21.py",
+          "src/dir/module 22.py",
+          "src/dir/module 23.py",
+          "src/dir with space/module 24.py",
+          "src/dir/module 25.py",
+          "src/dir/module 26.py",
+          "src/dir with space/module 27.py",
+          "src/dir/module 28.py",
+          "src/dir/module 29.py",
+          "src/dir with space/module 30.py",
+          "src/dir/module 31.py",
+          "src/dir/module 32.py",
+          "src/dir with space/module 33.py",
+          "src/dir/module 34.py",
+          "src/dir/module 35.py",
+          "src/dir with space/module 36.py",
+          "src/README.md",
+          "sentinel"
+        ]
+      },
+      {
+        "files": [
+          {
+            "path": "src/dir with space/module 00.py",
+            "content": "# line 0\n# line 0\n# line 0\n# line 0\n# line 0\n# line 0\n# line 0\n# line 0\n# line 0\n# line 0\n# line 0\n# line 0\n# line 0\n# line 0\n"
+          },
+          {
+            "path": "src/dir/module 01.py",
+            "content": "# line 1\n# line 1\n# line 1\n# line 1\n# line 1\n# line 1\n# line 1\n# line 1\n# line 1\n# line 1\n# line 1\n# line 1\n# line 1\n# line 1\n# line 1\n# line 1\n# line 1\n# line 1\n# line 1\n# line 1\n# line 1\n# line 1\n# line 1\n# line 1\n# line 1\n# line 1\n# line 1\n# line 1\n# line 1\n# line 1\n# line 1\n"
+          },
+          {
+            "path": "src/dir/module 02.py",
+            "content": "# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n# line 2\n"
+          },
+          {
+            "path": "src/dir with space/module 03.py",
+            "content": "# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n# line 3\n"
+          },
+          {
+            "path": "src/dir/module 04.py",
+            "content": "# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n# line 4\n"
+          },
+          {
+            "path": "src/dir/module 05.py",
+            "content": "# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n# line 5\n"
+          },
+          {
+            "path": "src/dir with space/module 06.py",
+            "content": "# line 6\n# line 6\n# line 6\n# line 6\n# line 6\n# line 6\n# line 6\n# line 6\n# line 6\n# line 6\n# line 6\n# line 6\n# line 6\n# line 6\n# line 6\n# line 6\n# line 6\n# line 6\n# line 6\n# line 6\n# line 6\n# line 6\n# line 6\n# line 6\n# line 6\n# line 6\n# line 6\n"
+          },
+          {
+            "path": "src/dir/module 07.py",
+            "content": "# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n# line 7\n"
+          },
+          {
+            "path": "src/dir/module 08.py",
+            "content": "# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n# line 8\n"
+          },
+          {
+            "path": "src/dir with space/module 09.py",
+            "content": "# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n# line 9\n"
+          },
+          {
+            "path": "src/dir/module 10.py",
+            "content": "# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n# line 10\n"
+          },
+          {
+            "path": "src/dir/module 11.py",
+            "content": "# line 11\n# line 11\n# line 11\n# line 11\n# line 11\n# line 11\n# line 11\n# line 11\n# line 11\n# line 11\n# line 11\n# line 11\n# line 11\n# line 11\n# line 11\n# line 11\n# line 11\n# line 11\n# line 11\n# line 11\n# line 11\n# line 11\n# line 11\n"
+          },
+          {
+            "path": "src/dir with space/module 12.py",
+            "content": "# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n# line 12\n"
+          },
+          {
+            "path": "src/dir/module 13.py",
+            "content": "# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n# line 13\n"
+          },
+          {
+            "path": "src/dir/module 14.py",
+            "content": "# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n# line 14\n"
+          },
+          {
+            "path": "src/dir with space/module 15.py",
+            "content": "# line 15\n# line 15\n"
+          },
+          {
+            "path": "src/dir/module 16.py",
+            "content": "# line 16\n# line 16\n# line 16\n# line 16\n# line 16\n# line 16\n# line 16\n# line 16\n# line 16\n# line 16\n# line 16\n# line 16\n# line 16\n# line 16\n# line 16\n# line 16\n# line 16\n# line 16\n# line 16\n"
+          },
+          {
+            "path": "src/dir/module 17.py",
+            "content": "# line 17\n# line 17\n# line 17\n# line 17\n# line 17\n# line 17\n# line 17\n# line 17\n# line 17\n# line 17\n# line 17\n# line 17\n# line 17\n# line 17\n# line 17\n# line 17\n# line 17\n# line 17\n# line 17\n# line 17\n# line 17\n# line 17\n# line 17\n# line 17\n# line 17\n# line 17\n# line 17\n# line 17\n# line 17\n# line 17\n# line 17\n# line 17\n# line 17\n# line 17\n# line 17\n# line 17\n"
+          },
+          {
+            "path": "src/dir with space/module 18.py",
+            "content": "# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n# line 18\n"
+          },
+          {
+            "path": "src/dir/module 19.py",
+            "content": "# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n# line 19\n"
+          },
+          {
+            "path": "src/dir/module 20.py",
+            "content": "# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n# line 20\n"
+          },
+          {
+            "path": "src/dir with space/module 21.py",
+            "content": "# line 21\n# line 21\n# line 21\n# line 21\n# line 21\n# line 21\n# line 21\n# line 21\n# line 21\n# line 21\n# line 21\n# line 21\n# line 21\n# line 21\n# line 21\n"
+          },
+          {
+            "path": "src/dir/module 22.py",
+            "content": "# line 22\n# line 22\n# line 22\n# line 22\n# line 22\n# line 22\n# line 22\n# line 22\n# line 22\n# line 22\n# line 22\n# line 22\n# line 22\n# line 22\n# line 22\n# line 22\n# line 22\n# line 22\n# line 22\n# line 22\n# line 22\n# line 22\n# line 22\n# line 22\n# line 22\n# line 22\n# line 22\n# line 22\n# line 22\n# line 22\n# line 22\n# line 22\n"
+          },
+          {
+            "path": "src/dir/module 23.py",
+            "content": "# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n# line 23\n"
+          },
+          {
+            "path": "src/dir with space/module 24.py",
+            "content": "# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n# line 24\n"
+          },
+          {
+            "path": "src/dir/module 25.py",
+            "content": "# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n# line 25\n"
+          },
+          {
+            "path": "src/dir/module 26.py",
+            "content": "# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n# line 26\n"
+          },
+          {
+            "path": "src/dir with space/module 27.py",
+            "content": "# line 27\n# line 27\n# line 27\n# line 27\n# line 27\n# line 27\n# line 27\n# line 27\n# line 27\n# line 27\n# line 27\n# line 27\n# line 27\n# line 27\n# line 27\n# line 27\n# line 27\n# line 27\n# line 27\n# line 27\n# line 27\n# line 27\n# line 27\n# line 27\n# line 27\n# line 27\n# line 27\n# line 27\n"
+          },
+          {
+            "path": "src/dir/module 28.py",
+            "content": "# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n# line 28\n"
+          },
+          {
+            "path": "src/dir/module 29.py",
+            "content": "# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n# line 29\n"
+          },
+          {
+            "path": "src/dir with space/module 30.py",
+            "content": "# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n# line 30\n"
+          },
+          {
+            "path": "src/dir/module 31.py",
+            "content": "# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n# line 31\n"
+          },
+          {
+            "path": "src/dir/module 32.py",
+            "content": "# line 32\n# line 32\n# line 32\n# line 32\n# line 32\n# line 32\n# line 32\n# line 32\n# line 32\n# line 32\n# line 32\n# line 32\n# line 32\n# line 32\n# line 32\n# line 32\n# line 32\n# line 32\n# line 32\n# line 32\n# line 32\n# line 32\n# line 32\n# line 32\n"
+          },
+          {
+            "path": "src/dir with space/module 33.py",
+            "content": "# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n# line 33\n"
+          },
+          {
+            "path": "src/dir/module 34.py",
+            "content": "# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n# line 34\n"
+          },
+          {
+            "path": "src/dir/module 35.py",
+            "content": "# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n# line 35\n"
+          },
+          {
+            "path": "src/dir with space/module 36.py",
+            "content": "# line 36\n# line 36\n# line 36\n"
+          },
+          {
+            "path": "src/README.md",
+            "content": "keep"
+          },
+          {
+            "path": "sentinel",
+            "content": "keep"
+          }
+        ],
+        "expectedFiles": {
+          "counts.txt": "87 src/dir/module 20.py\n83 src/dir/module 25.py\n82 src/dir/module 04.py\n79 src/dir with space/module 30.py\n78 src/dir with space/module 09.py\n75 src/dir/module 35.py\n74 src/dir/module 14.py\n70 src/dir/module 19.py\n66 src/dir with space/module 24.py\n65 src/dir with space/module 03.py\n62 src/dir/module 29.py\n61 src/dir/module 08.py\n58 src/dir/module 34.py\n57 src/dir/module 13.py\n53 src/dir with space/module 18.py\n49 src/dir/module 23.py\n48 src/dir/module 02.py\n45 src/dir/module 28.py\n44 src/dir/module 07.py\n41 src/dir with space/module 33.py\n40 src/dir with space/module 12.py\n36 src/dir/module 17.py\n32 src/dir/module 22.py\n31 src/dir/module 01.py\n28 src/dir with space/module 27.py\n27 src/dir with space/module 06.py\n24 src/dir/module 32.py\n23 src/dir/module 11.py\n19 src/dir/module 16.py\n15 src/dir with space/module 21.py\n14 src/dir with space/module 00.py\n11 src/dir/module 26.py\n10 src/dir/module 05.py\n7 src/dir/module 31.py\n6 src/dir/module 10.py\n3 src/dir with space/module 36.py\n2 src/dir with space/module 15.py\n"
+        },
+        "unchangedFiles": [
+          "src/dir with space/module 00.py",
+          "src/dir/module 01.py",
+          "src/dir/module 02.py",
+          "src/dir with space/module 03.py",
+          "src/dir/module 04.py",
+          "src/dir/module 05.py",
+          "src/dir with space/module 06.py",
+          "src/dir/module 07.py",
+          "src/dir/module 08.py",
+          "src/dir with space/module 09.py",
+          "src/dir/module 10.py",
+          "src/dir/module 11.py",
+          "src/dir with space/module 12.py",
+          "src/dir/module 13.py",
+          "src/dir/module 14.py",
+          "src/dir with space/module 15.py",
+          "src/dir/module 16.py",
+          "src/dir/module 17.py",
+          "src/dir with space/module 18.py",
+          "src/dir/module 19.py",
+          "src/dir/module 20.py",
+          "src/dir with space/module 21.py",
+          "src/dir/module 22.py",
+          "src/dir/module 23.py",
+          "src/dir with space/module 24.py",
+          "src/dir/module 25.py",
+          "src/dir/module 26.py",
+          "src/dir with space/module 27.py",
+          "src/dir/module 28.py",
+          "src/dir/module 29.py",
+          "src/dir with space/module 30.py",
+          "src/dir/module 31.py",
+          "src/dir/module 32.py",
+          "src/dir with space/module 33.py",
+          "src/dir/module 34.py",
+          "src/dir/module 35.py",
+          "src/dir with space/module 36.py",
+          "src/README.md",
+          "sentinel"
+        ]
+      }
+    ]
+  },
+  "tags": [
+    "cli",
+    "pipeline",
+    "wc-sort",
+    "multi-stage"
+  ],
+  "scenarioVersion": "3.1.0",
+  "scenarioHash": "0f66c68518768f89",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

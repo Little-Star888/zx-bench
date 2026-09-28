@@ -1,0 +1,1447 @@
+[
+  {
+    "id": "SOC-A-H1",
+    "dimension": "structured_output",
+    "category": "contract_A",
+    "difficulty": "medium",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v1",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "607b996e4ffbd4d8",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "把注册中心列表变成以 id 为键的对象。kind 改名为 type，保留 url，把 auth 的键提升至注册中心对象。输入有 scope 时原样保留字符串或数组，没有则省略。仅输出这些字段。输入：[{\"id\":\"npm-public\",\"kind\":\"npm-registry\",\"url\":\"https://registry.example.test\",\"auth\":{\"token\":\"${{secrets.NPM_TOKEN}}\"},\"scope\":\"@red\"},{\"id\":\"containers\",\"kind\":\"docker-registry\",\"url\":\"https://images.example.test\",\"auth\":{\"username\":\"robot\",\"password\":\"${{secrets.IMAGE_PASSWORD}}\"}}]\n\n必须同时遵循以下 JSON Schema 和上面的内容规则；可省略的字段按题面决定。对象键序不限。只输出一个完整 JSON 值，不要围栏或解释。\n{\"$schema\":\"http://json-schema.org/draft-07/schema#\",\"type\":\"object\",\"additionalProperties\":{\"type\":\"object\",\"additionalProperties\":false,\"properties\":{\"type\":{\"enum\":[\"cargo-registry\",\"composer-repository\",\"docker-registry\",\"git\",\"goproxy-server\",\"hex-organization\",\"hex-repository\",\"helm-registry\",\"maven-repository\",\"npm-registry\",\"nuget-feed\",\"pub-repository\",\"python-index\",\"rubygems-server\",\"terraform-registry\"]},\"url\":{\"type\":\"string\"},\"username\":{\"type\":\"string\"},\"password\":{\"type\":\"string\"},\"key\":{\"type\":\"string\"},\"token\":{\"type\":\"string\"},\"replaces-base\":{\"type\":\"boolean\"},\"scope\":{\"oneOf\":[{\"type\":\"array\",\"items\":{\"type\":\"string\",\"minLength\":1},\"uniqueItems\":true,\"minItems\":1},{\"type\":\"string\",\"minLength\":1}]},\"organization\":{\"type\":\"string\"},\"repo\":{\"type\":\"string\"},\"auth-key\":{\"type\":\"string\"},\"public-key-fingerprint\":{\"type\":\"string\"},\"registry\":{\"type\":\"string\"},\"tenant-id\":{\"type\":\"string\"},\"client-id\":{\"type\":\"string\"},\"jfrog-oidc-provider-name\":{\"type\":\"string\"},\"identity-mapping-name\":{\"type\":\"string\"},\"audience\":{\"type\":\"string\"},\"aws-region\":{\"type\":\"string\"},\"account-id\":{\"type\":\"string\"},\"role-name\":{\"type\":\"string\"},\"domain\":{\"type\":\"string\"},\"domain-owner\":{\"type\":\"string\"}},\"required\":[\"type\",\"url\"]},\"minProperties\":1}",
+    "requirements": {
+      "format": "json",
+      "dialect": "draft-07",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "additionalProperties": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "enum": [
+                "cargo-registry",
+                "composer-repository",
+                "docker-registry",
+                "git",
+                "goproxy-server",
+                "hex-organization",
+                "hex-repository",
+                "helm-registry",
+                "maven-repository",
+                "npm-registry",
+                "nuget-feed",
+                "pub-repository",
+                "python-index",
+                "rubygems-server",
+                "terraform-registry"
+              ]
+            },
+            "url": {
+              "type": "string"
+            },
+            "username": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            },
+            "key": {
+              "type": "string"
+            },
+            "token": {
+              "type": "string"
+            },
+            "replaces-base": {
+              "type": "boolean"
+            },
+            "scope": {
+              "oneOf": [
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "uniqueItems": true,
+                  "minItems": 1
+                },
+                {
+                  "type": "string",
+                  "minLength": 1
+                }
+              ]
+            },
+            "organization": {
+              "type": "string"
+            },
+            "repo": {
+              "type": "string"
+            },
+            "auth-key": {
+              "type": "string"
+            },
+            "public-key-fingerprint": {
+              "type": "string"
+            },
+            "registry": {
+              "type": "string"
+            },
+            "tenant-id": {
+              "type": "string"
+            },
+            "client-id": {
+              "type": "string"
+            },
+            "jfrog-oidc-provider-name": {
+              "type": "string"
+            },
+            "identity-mapping-name": {
+              "type": "string"
+            },
+            "audience": {
+              "type": "string"
+            },
+            "aws-region": {
+              "type": "string"
+            },
+            "account-id": {
+              "type": "string"
+            },
+            "role-name": {
+              "type": "string"
+            },
+            "domain": {
+              "type": "string"
+            },
+            "domain-owner": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "type",
+            "url"
+          ]
+        },
+        "minProperties": 1
+      },
+      "formatAssertions": true,
+      "family": "A",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": {
+            "npm-public": {
+              "type": "npm-registry",
+              "url": "https://registry.example.test",
+              "token": "${{secrets.NPM_TOKEN}}",
+              "scope": "@red"
+            },
+            "containers": {
+              "type": "docker-registry",
+              "url": "https://images.example.test",
+              "username": "robot",
+              "password": "${{secrets.IMAGE_PASSWORD}}"
+            }
+          },
+          "description": "Exact content determined by the published input and transformation rules"
+        }
+      ],
+      "developmentShadow": true,
+      "provenance": {
+        "sourceUrl": "https://raw.githubusercontent.com/SchemaStore/schemastore/87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0/src/schemas/json/dependabot-2.0.json",
+        "sourceRevision": "87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0",
+        "sourceLicense": "Apache-2.0",
+        "originalSha256": "57efbbcba05d2c26ad8e00b2ab295f797931652174d4e7d5272615069ecea61f",
+        "fragment": "/definitions/registry",
+        "sourceGroup": "schemastore:dependabot-2.0",
+        "transformations": [
+          "selected fragment and transitive local definitions",
+          "removed documentation annotations",
+          "added explicit local task requirements"
+        ],
+        "upstreamBenchmark": "SchemaStore source; locally authored tasks, not official SchemaBench instances",
+        "split": "holdout",
+        "designLevel": 1,
+        "seed": "A:holdout:0",
+        "baseIds": []
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "deterministic-frozen-fixture-v1",
+    "tags": [
+      "structured-contract-v1",
+      "family:A",
+      "split:holdout"
+    ]
+  },
+  {
+    "id": "SOC-A-H2",
+    "dimension": "structured_output",
+    "category": "contract_A",
+    "difficulty": "medium",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v1",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "9a28f0505f2b4beb",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "把注册中心列表变成以 id 为键的对象。kind 改名为 type，保留 url，把 auth 的键提升至注册中心对象。输入有 scope 时原样保留字符串或数组，没有则省略。仅输出这些字段。输入：[{\"id\":\"npm-public\",\"kind\":\"npm-registry\",\"url\":\"https://registry.example.test\",\"auth\":{\"token\":\"${{secrets.NPM_TOKEN}}\"},\"scope\":[\"@red\",\"@blue\"]},{\"id\":\"containers\",\"kind\":\"docker-registry\",\"url\":\"https://images.example.test\",\"auth\":{\"username\":\"robot\",\"password\":\"${{secrets.IMAGE_PASSWORD}}\"}}]\n\n必须同时遵循以下 JSON Schema 和上面的内容规则；可省略的字段按题面决定。对象键序不限。只输出一个完整 JSON 值，不要围栏或解释。\n{\"$schema\":\"http://json-schema.org/draft-07/schema#\",\"type\":\"object\",\"additionalProperties\":{\"type\":\"object\",\"additionalProperties\":false,\"properties\":{\"type\":{\"enum\":[\"cargo-registry\",\"composer-repository\",\"docker-registry\",\"git\",\"goproxy-server\",\"hex-organization\",\"hex-repository\",\"helm-registry\",\"maven-repository\",\"npm-registry\",\"nuget-feed\",\"pub-repository\",\"python-index\",\"rubygems-server\",\"terraform-registry\"]},\"url\":{\"type\":\"string\"},\"username\":{\"type\":\"string\"},\"password\":{\"type\":\"string\"},\"key\":{\"type\":\"string\"},\"token\":{\"type\":\"string\"},\"replaces-base\":{\"type\":\"boolean\"},\"scope\":{\"oneOf\":[{\"type\":\"array\",\"items\":{\"type\":\"string\",\"minLength\":1},\"uniqueItems\":true,\"minItems\":1},{\"type\":\"string\",\"minLength\":1}]},\"organization\":{\"type\":\"string\"},\"repo\":{\"type\":\"string\"},\"auth-key\":{\"type\":\"string\"},\"public-key-fingerprint\":{\"type\":\"string\"},\"registry\":{\"type\":\"string\"},\"tenant-id\":{\"type\":\"string\"},\"client-id\":{\"type\":\"string\"},\"jfrog-oidc-provider-name\":{\"type\":\"string\"},\"identity-mapping-name\":{\"type\":\"string\"},\"audience\":{\"type\":\"string\"},\"aws-region\":{\"type\":\"string\"},\"account-id\":{\"type\":\"string\"},\"role-name\":{\"type\":\"string\"},\"domain\":{\"type\":\"string\"},\"domain-owner\":{\"type\":\"string\"}},\"required\":[\"type\",\"url\"]},\"minProperties\":1}",
+    "requirements": {
+      "format": "json",
+      "dialect": "draft-07",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "additionalProperties": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "enum": [
+                "cargo-registry",
+                "composer-repository",
+                "docker-registry",
+                "git",
+                "goproxy-server",
+                "hex-organization",
+                "hex-repository",
+                "helm-registry",
+                "maven-repository",
+                "npm-registry",
+                "nuget-feed",
+                "pub-repository",
+                "python-index",
+                "rubygems-server",
+                "terraform-registry"
+              ]
+            },
+            "url": {
+              "type": "string"
+            },
+            "username": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            },
+            "key": {
+              "type": "string"
+            },
+            "token": {
+              "type": "string"
+            },
+            "replaces-base": {
+              "type": "boolean"
+            },
+            "scope": {
+              "oneOf": [
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "uniqueItems": true,
+                  "minItems": 1
+                },
+                {
+                  "type": "string",
+                  "minLength": 1
+                }
+              ]
+            },
+            "organization": {
+              "type": "string"
+            },
+            "repo": {
+              "type": "string"
+            },
+            "auth-key": {
+              "type": "string"
+            },
+            "public-key-fingerprint": {
+              "type": "string"
+            },
+            "registry": {
+              "type": "string"
+            },
+            "tenant-id": {
+              "type": "string"
+            },
+            "client-id": {
+              "type": "string"
+            },
+            "jfrog-oidc-provider-name": {
+              "type": "string"
+            },
+            "identity-mapping-name": {
+              "type": "string"
+            },
+            "audience": {
+              "type": "string"
+            },
+            "aws-region": {
+              "type": "string"
+            },
+            "account-id": {
+              "type": "string"
+            },
+            "role-name": {
+              "type": "string"
+            },
+            "domain": {
+              "type": "string"
+            },
+            "domain-owner": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "type",
+            "url"
+          ]
+        },
+        "minProperties": 1
+      },
+      "formatAssertions": true,
+      "family": "A",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": {
+            "npm-public": {
+              "type": "npm-registry",
+              "url": "https://registry.example.test",
+              "token": "${{secrets.NPM_TOKEN}}",
+              "scope": [
+                "@red",
+                "@blue"
+              ]
+            },
+            "containers": {
+              "type": "docker-registry",
+              "url": "https://images.example.test",
+              "username": "robot",
+              "password": "${{secrets.IMAGE_PASSWORD}}"
+            }
+          },
+          "description": "Exact content determined by the published input and transformation rules"
+        }
+      ],
+      "developmentShadow": true,
+      "provenance": {
+        "sourceUrl": "https://raw.githubusercontent.com/SchemaStore/schemastore/87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0/src/schemas/json/dependabot-2.0.json",
+        "sourceRevision": "87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0",
+        "sourceLicense": "Apache-2.0",
+        "originalSha256": "57efbbcba05d2c26ad8e00b2ab295f797931652174d4e7d5272615069ecea61f",
+        "fragment": "/definitions/registry",
+        "sourceGroup": "schemastore:dependabot-2.0",
+        "transformations": [
+          "selected fragment and transitive local definitions",
+          "removed documentation annotations",
+          "added explicit local task requirements"
+        ],
+        "upstreamBenchmark": "SchemaStore source; locally authored tasks, not official SchemaBench instances",
+        "split": "holdout",
+        "designLevel": 2,
+        "seed": "A:holdout:1",
+        "baseIds": []
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "deterministic-frozen-fixture-v1",
+    "tags": [
+      "structured-contract-v1",
+      "family:A",
+      "split:holdout"
+    ]
+  },
+  {
+    "id": "SOC-B-H1",
+    "dimension": "structured_output",
+    "category": "contract_B",
+    "difficulty": "medium",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v1",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "321383752d182252",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "把前缀表达式转换为二叉 AST，不求值、不简化。整数转换为 {kind:\"literal\",value:原整数}；[运算,左,右] 转为 {kind:运算,left:左子树,right:右子树}。输入：[\"add\",7,[\"multiply\",3,4]]\n\n必须同时遵循以下 JSON Schema 和上面的内容规则；可省略的字段按题面决定。对象键序不限。只输出一个完整 JSON 值，不要围栏或解释。\n{\"$schema\":\"http://json-schema.org/draft-07/schema#\",\"$ref\":\"#/definitions/node\",\"definitions\":{\"node\":{\"oneOf\":[{\"type\":\"object\",\"properties\":{\"kind\":{\"const\":\"literal\"},\"value\":{\"type\":\"integer\"}},\"required\":[\"kind\",\"value\"],\"additionalProperties\":false},{\"type\":\"object\",\"properties\":{\"kind\":{\"enum\":[\"add\",\"multiply\"]},\"left\":{\"$ref\":\"#/definitions/node\"},\"right\":{\"$ref\":\"#/definitions/node\"}},\"required\":[\"kind\",\"left\",\"right\"],\"additionalProperties\":false}]}}}",
+    "requirements": {
+      "format": "json",
+      "dialect": "draft-07",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "$ref": "#/definitions/node",
+        "definitions": {
+          "node": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "const": "literal"
+                  },
+                  "value": {
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "kind",
+                  "value"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "enum": [
+                      "add",
+                      "multiply"
+                    ]
+                  },
+                  "left": {
+                    "$ref": "#/definitions/node"
+                  },
+                  "right": {
+                    "$ref": "#/definitions/node"
+                  }
+                },
+                "required": [
+                  "kind",
+                  "left",
+                  "right"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          }
+        }
+      },
+      "formatAssertions": true,
+      "family": "B",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": {
+            "kind": "add",
+            "left": {
+              "kind": "literal",
+              "value": 7
+            },
+            "right": {
+              "kind": "multiply",
+              "left": {
+                "kind": "literal",
+                "value": 3
+              },
+              "right": {
+                "kind": "literal",
+                "value": 4
+              }
+            }
+          },
+          "description": "Exact content determined by the published input and transformation rules"
+        }
+      ],
+      "developmentShadow": true,
+      "provenance": {
+        "sourceGroup": "authored:expression-ast",
+        "sourceLicense": "project license",
+        "transformations": [
+          "independent recursive AST contract, not an npm parameter variant"
+        ],
+        "upstreamBenchmark": "locally authored",
+        "split": "holdout",
+        "designLevel": 1,
+        "seed": "B:holdout:0",
+        "baseIds": []
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "deterministic-frozen-fixture-v1",
+    "tags": [
+      "structured-contract-v1",
+      "family:B",
+      "split:holdout"
+    ]
+  },
+  {
+    "id": "SOC-B-H2",
+    "dimension": "structured_output",
+    "category": "contract_B",
+    "difficulty": "medium",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v1",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "d42dfd1b09c5aebb",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "把前缀表达式转换为二叉 AST，不求值、不简化。整数转换为 {kind:\"literal\",value:原整数}；[运算,左,右] 转为 {kind:运算,left:左子树,right:右子树}。输入：[\"multiply\",[\"add\",-2,0],[\"add\",5,[\"multiply\",2,3]]]\n\n必须同时遵循以下 JSON Schema 和上面的内容规则；可省略的字段按题面决定。对象键序不限。只输出一个完整 JSON 值，不要围栏或解释。\n{\"$schema\":\"http://json-schema.org/draft-07/schema#\",\"$ref\":\"#/definitions/node\",\"definitions\":{\"node\":{\"oneOf\":[{\"type\":\"object\",\"properties\":{\"kind\":{\"const\":\"literal\"},\"value\":{\"type\":\"integer\"}},\"required\":[\"kind\",\"value\"],\"additionalProperties\":false},{\"type\":\"object\",\"properties\":{\"kind\":{\"enum\":[\"add\",\"multiply\"]},\"left\":{\"$ref\":\"#/definitions/node\"},\"right\":{\"$ref\":\"#/definitions/node\"}},\"required\":[\"kind\",\"left\",\"right\"],\"additionalProperties\":false}]}}}",
+    "requirements": {
+      "format": "json",
+      "dialect": "draft-07",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "$ref": "#/definitions/node",
+        "definitions": {
+          "node": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "const": "literal"
+                  },
+                  "value": {
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "kind",
+                  "value"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "enum": [
+                      "add",
+                      "multiply"
+                    ]
+                  },
+                  "left": {
+                    "$ref": "#/definitions/node"
+                  },
+                  "right": {
+                    "$ref": "#/definitions/node"
+                  }
+                },
+                "required": [
+                  "kind",
+                  "left",
+                  "right"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          }
+        }
+      },
+      "formatAssertions": true,
+      "family": "B",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": {
+            "kind": "multiply",
+            "left": {
+              "kind": "add",
+              "left": {
+                "kind": "literal",
+                "value": -2
+              },
+              "right": {
+                "kind": "literal",
+                "value": 0
+              }
+            },
+            "right": {
+              "kind": "add",
+              "left": {
+                "kind": "literal",
+                "value": 5
+              },
+              "right": {
+                "kind": "multiply",
+                "left": {
+                  "kind": "literal",
+                  "value": 2
+                },
+                "right": {
+                  "kind": "literal",
+                  "value": 3
+                }
+              }
+            }
+          },
+          "description": "Exact content determined by the published input and transformation rules"
+        }
+      ],
+      "developmentShadow": true,
+      "provenance": {
+        "sourceGroup": "authored:expression-ast",
+        "sourceLicense": "project license",
+        "transformations": [
+          "independent recursive AST contract, not an npm parameter variant"
+        ],
+        "upstreamBenchmark": "locally authored",
+        "split": "holdout",
+        "designLevel": 2,
+        "seed": "B:holdout:1",
+        "baseIds": []
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "deterministic-frozen-fixture-v1",
+    "tags": [
+      "structured-contract-v1",
+      "family:B",
+      "split:holdout"
+    ]
+  },
+  {
+    "id": "SOC-C-H1",
+    "dimension": "structured_output",
+    "category": "contract_C",
+    "difficulty": "medium",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v1",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "ed1168e1562082a9",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "输出 Babel 配置，键恰为 sourceMaps、comments、filename、auxiliaryCommentBefore。sourceMapMode 为 none 则 sourceMaps=false，否则保留原字符串；comments 与 filename 原样保留；将 note 按 UTF-8 编码为标准带填充 Base64，写入 auxiliaryCommentBefore。输入：{\"sourceMapMode\":\"inline\",\"comments\":true,\"filename\":\"src/a.js\",\"note\":\"汉字\"}\n\n必须同时遵循以下 JSON Schema 和上面的内容规则；可省略的字段按题面决定。对象键序不限。只输出一个完整 JSON 值，不要围栏或解释。\n{\"$schema\":\"http://json-schema.org/draft-07/schema#\",\"type\":\"object\",\"properties\":{\"ast\":{\"type\":\"boolean\"},\"auxiliaryCommentAfter\":{\"type\":\"string\"},\"auxiliaryCommentBefore\":{\"type\":\"string\"},\"code\":{\"type\":\"boolean\"},\"comments\":{\"type\":\"boolean\"},\"compact\":{\"anyOf\":[{\"const\":[\"auto\"],\"type\":\"string\"},{\"type\":\"boolean\"}]},\"extends\":{\"type\":\"string\"},\"filename\":{\"type\":\"string\"},\"filenameRelative\":{\"type\":\"string\"},\"highlightCode\":{\"type\":\"boolean\"},\"ignore\":{\"anyOf\":[{\"type\":\"string\"},{\"items\":{\"type\":\"string\"},\"type\":\"array\"}]},\"inputSourceMap\":{\"anyOf\":[{\"type\":\"boolean\"},{\"type\":\"object\"}]},\"keepModuleIdExtensions\":{\"type\":\"boolean\"},\"moduleId\":{\"type\":\"string\"},\"moduleIds\":{\"type\":\"string\"},\"moduleRoot\":{\"type\":\"string\"},\"only\":{\"anyOf\":[{\"type\":\"string\"},{\"items\":{\"type\":\"string\"},\"type\":\"array\"}]},\"plugins\":{\"type\":\"array\",\"items\":{\"anyOf\":[{\"type\":\"string\"},{\"items\":[{\"type\":\"string\"},{\"type\":\"object\"}],\"type\":\"array\",\"minItems\":2,\"additionalItems\":false}]}},\"presets\":{\"type\":\"array\",\"items\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"array\",\"items\":[{\"type\":\"string\"},{\"type\":\"object\"}],\"minItems\":2,\"additionalItems\":false}]}},\"retainLines\":{\"type\":\"boolean\"},\"sourceFileName\":{\"type\":\"string\"},\"sourceMaps\":{\"anyOf\":[{\"type\":\"string\",\"enum\":[\"both\",\"inline\"]},{\"type\":\"boolean\"}]},\"sourceMapTarget\":{\"type\":\"string\"},\"sourceRoot\":{\"type\":\"string\"}}}",
+    "requirements": {
+      "format": "json",
+      "dialect": "draft-07",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "ast": {
+            "type": "boolean"
+          },
+          "auxiliaryCommentAfter": {
+            "type": "string"
+          },
+          "auxiliaryCommentBefore": {
+            "type": "string"
+          },
+          "code": {
+            "type": "boolean"
+          },
+          "comments": {
+            "type": "boolean"
+          },
+          "compact": {
+            "anyOf": [
+              {
+                "const": [
+                  "auto"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "boolean"
+              }
+            ]
+          },
+          "extends": {
+            "type": "string"
+          },
+          "filename": {
+            "type": "string"
+          },
+          "filenameRelative": {
+            "type": "string"
+          },
+          "highlightCode": {
+            "type": "boolean"
+          },
+          "ignore": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            ]
+          },
+          "inputSourceMap": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "object"
+              }
+            ]
+          },
+          "keepModuleIdExtensions": {
+            "type": "boolean"
+          },
+          "moduleId": {
+            "type": "string"
+          },
+          "moduleIds": {
+            "type": "string"
+          },
+          "moduleRoot": {
+            "type": "string"
+          },
+          "only": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            ]
+          },
+          "plugins": {
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "items": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "object"
+                    }
+                  ],
+                  "type": "array",
+                  "minItems": 2,
+                  "additionalItems": false
+                }
+              ]
+            }
+          },
+          "presets": {
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "array",
+                  "items": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "object"
+                    }
+                  ],
+                  "minItems": 2,
+                  "additionalItems": false
+                }
+              ]
+            }
+          },
+          "retainLines": {
+            "type": "boolean"
+          },
+          "sourceFileName": {
+            "type": "string"
+          },
+          "sourceMaps": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "both",
+                  "inline"
+                ]
+              },
+              {
+                "type": "boolean"
+              }
+            ]
+          },
+          "sourceMapTarget": {
+            "type": "string"
+          },
+          "sourceRoot": {
+            "type": "string"
+          }
+        }
+      },
+      "formatAssertions": true,
+      "family": "C",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": {
+            "sourceMaps": "inline",
+            "comments": true,
+            "filename": "src/a.js",
+            "auxiliaryCommentBefore": "5rGJ5a2X"
+          },
+          "description": "Exact content determined by the published input and transformation rules"
+        }
+      ],
+      "developmentShadow": true,
+      "provenance": {
+        "sourceUrl": "https://raw.githubusercontent.com/SchemaStore/schemastore/87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0/src/schemas/json/babelrc.json",
+        "sourceRevision": "87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0",
+        "sourceLicense": "Apache-2.0",
+        "originalSha256": "2e4ff24f430107befd518a87bbc6fbbbe35f8e23de1cb7994775939df8fd492c",
+        "fragment": "/definitions/Options",
+        "sourceGroup": "schemastore:babelrc",
+        "transformations": [
+          "selected fragment and transitive local definitions",
+          "removed documentation annotations",
+          "added explicit local task requirements"
+        ],
+        "upstreamBenchmark": "SchemaStore source; locally authored tasks, not official SchemaBench instances",
+        "split": "holdout",
+        "designLevel": 1,
+        "seed": "C:holdout:0",
+        "baseIds": []
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "deterministic-frozen-fixture-v1",
+    "tags": [
+      "structured-contract-v1",
+      "family:C",
+      "split:holdout"
+    ]
+  },
+  {
+    "id": "SOC-C-H2",
+    "dimension": "structured_output",
+    "category": "contract_C",
+    "difficulty": "medium",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v1",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "0260a46658e28e0e",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "输出 Babel 配置，键恰为 sourceMaps、comments、filename、auxiliaryCommentBefore。sourceMapMode 为 none 则 sourceMaps=false，否则保留原字符串；comments 与 filename 原样保留；将 note 按 UTF-8 编码为标准带填充 Base64，写入 auxiliaryCommentBefore。输入：{\"sourceMapMode\":\"none\",\"comments\":false,\"filename\":\"src/编号02.js\",\"note\":\"空值:0\"}\n\n必须同时遵循以下 JSON Schema 和上面的内容规则；可省略的字段按题面决定。对象键序不限。只输出一个完整 JSON 值，不要围栏或解释。\n{\"$schema\":\"http://json-schema.org/draft-07/schema#\",\"type\":\"object\",\"properties\":{\"ast\":{\"type\":\"boolean\"},\"auxiliaryCommentAfter\":{\"type\":\"string\"},\"auxiliaryCommentBefore\":{\"type\":\"string\"},\"code\":{\"type\":\"boolean\"},\"comments\":{\"type\":\"boolean\"},\"compact\":{\"anyOf\":[{\"const\":[\"auto\"],\"type\":\"string\"},{\"type\":\"boolean\"}]},\"extends\":{\"type\":\"string\"},\"filename\":{\"type\":\"string\"},\"filenameRelative\":{\"type\":\"string\"},\"highlightCode\":{\"type\":\"boolean\"},\"ignore\":{\"anyOf\":[{\"type\":\"string\"},{\"items\":{\"type\":\"string\"},\"type\":\"array\"}]},\"inputSourceMap\":{\"anyOf\":[{\"type\":\"boolean\"},{\"type\":\"object\"}]},\"keepModuleIdExtensions\":{\"type\":\"boolean\"},\"moduleId\":{\"type\":\"string\"},\"moduleIds\":{\"type\":\"string\"},\"moduleRoot\":{\"type\":\"string\"},\"only\":{\"anyOf\":[{\"type\":\"string\"},{\"items\":{\"type\":\"string\"},\"type\":\"array\"}]},\"plugins\":{\"type\":\"array\",\"items\":{\"anyOf\":[{\"type\":\"string\"},{\"items\":[{\"type\":\"string\"},{\"type\":\"object\"}],\"type\":\"array\",\"minItems\":2,\"additionalItems\":false}]}},\"presets\":{\"type\":\"array\",\"items\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"array\",\"items\":[{\"type\":\"string\"},{\"type\":\"object\"}],\"minItems\":2,\"additionalItems\":false}]}},\"retainLines\":{\"type\":\"boolean\"},\"sourceFileName\":{\"type\":\"string\"},\"sourceMaps\":{\"anyOf\":[{\"type\":\"string\",\"enum\":[\"both\",\"inline\"]},{\"type\":\"boolean\"}]},\"sourceMapTarget\":{\"type\":\"string\"},\"sourceRoot\":{\"type\":\"string\"}}}",
+    "requirements": {
+      "format": "json",
+      "dialect": "draft-07",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "ast": {
+            "type": "boolean"
+          },
+          "auxiliaryCommentAfter": {
+            "type": "string"
+          },
+          "auxiliaryCommentBefore": {
+            "type": "string"
+          },
+          "code": {
+            "type": "boolean"
+          },
+          "comments": {
+            "type": "boolean"
+          },
+          "compact": {
+            "anyOf": [
+              {
+                "const": [
+                  "auto"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "boolean"
+              }
+            ]
+          },
+          "extends": {
+            "type": "string"
+          },
+          "filename": {
+            "type": "string"
+          },
+          "filenameRelative": {
+            "type": "string"
+          },
+          "highlightCode": {
+            "type": "boolean"
+          },
+          "ignore": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            ]
+          },
+          "inputSourceMap": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "object"
+              }
+            ]
+          },
+          "keepModuleIdExtensions": {
+            "type": "boolean"
+          },
+          "moduleId": {
+            "type": "string"
+          },
+          "moduleIds": {
+            "type": "string"
+          },
+          "moduleRoot": {
+            "type": "string"
+          },
+          "only": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            ]
+          },
+          "plugins": {
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "items": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "object"
+                    }
+                  ],
+                  "type": "array",
+                  "minItems": 2,
+                  "additionalItems": false
+                }
+              ]
+            }
+          },
+          "presets": {
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "array",
+                  "items": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "object"
+                    }
+                  ],
+                  "minItems": 2,
+                  "additionalItems": false
+                }
+              ]
+            }
+          },
+          "retainLines": {
+            "type": "boolean"
+          },
+          "sourceFileName": {
+            "type": "string"
+          },
+          "sourceMaps": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "both",
+                  "inline"
+                ]
+              },
+              {
+                "type": "boolean"
+              }
+            ]
+          },
+          "sourceMapTarget": {
+            "type": "string"
+          },
+          "sourceRoot": {
+            "type": "string"
+          }
+        }
+      },
+      "formatAssertions": true,
+      "family": "C",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": {
+            "sourceMaps": false,
+            "comments": false,
+            "filename": "src/编号02.js",
+            "auxiliaryCommentBefore": "56m65YC8OjA="
+          },
+          "description": "Exact content determined by the published input and transformation rules"
+        }
+      ],
+      "developmentShadow": true,
+      "provenance": {
+        "sourceUrl": "https://raw.githubusercontent.com/SchemaStore/schemastore/87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0/src/schemas/json/babelrc.json",
+        "sourceRevision": "87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0",
+        "sourceLicense": "Apache-2.0",
+        "originalSha256": "2e4ff24f430107befd518a87bbc6fbbbe35f8e23de1cb7994775939df8fd492c",
+        "fragment": "/definitions/Options",
+        "sourceGroup": "schemastore:babelrc",
+        "transformations": [
+          "selected fragment and transitive local definitions",
+          "removed documentation annotations",
+          "added explicit local task requirements"
+        ],
+        "upstreamBenchmark": "SchemaStore source; locally authored tasks, not official SchemaBench instances",
+        "split": "holdout",
+        "designLevel": 2,
+        "seed": "C:holdout:1",
+        "baseIds": []
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "deterministic-frozen-fixture-v1",
+    "tags": [
+      "structured-contract-v1",
+      "family:C",
+      "split:holdout"
+    ]
+  },
+  {
+    "id": "SOC-D-H1",
+    "dimension": "structured_output",
+    "category": "contract_D",
+    "difficulty": "medium",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v1",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "ab771b60383240ca",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "输出仅包含键 \"registry/a~b\" 的注册中心对象。其 type=\"npm-registry\"，url=\"https://registry.example.test\"。先把 inputText 的 JSON 字符串字面量解析为原文，构造 {\"note\":原文}，按 JavaScript JSON.stringify 的默认行为序列化一次后把结果作为 token 字符串值（中文原样保留，无额外空白）。这是虚构字符串保真测试，不是实际认证信息。不得增加字段。inputText=\"\\\"quoted\\\"\\\\slash\\n${{data}}\"\n\n必须同时遵循以下 JSON Schema 和上面的内容规则；可省略的字段按题面决定。对象键序不限。只输出一个完整 JSON 值，不要围栏或解释。\n{\"$schema\":\"http://json-schema.org/draft-07/schema#\",\"type\":\"object\",\"additionalProperties\":{\"type\":\"object\",\"additionalProperties\":false,\"properties\":{\"type\":{\"enum\":[\"cargo-registry\",\"composer-repository\",\"docker-registry\",\"git\",\"goproxy-server\",\"hex-organization\",\"hex-repository\",\"helm-registry\",\"maven-repository\",\"npm-registry\",\"nuget-feed\",\"pub-repository\",\"python-index\",\"rubygems-server\",\"terraform-registry\"]},\"url\":{\"type\":\"string\"},\"username\":{\"type\":\"string\"},\"password\":{\"type\":\"string\"},\"key\":{\"type\":\"string\"},\"token\":{\"type\":\"string\"},\"replaces-base\":{\"type\":\"boolean\"},\"scope\":{\"oneOf\":[{\"type\":\"array\",\"items\":{\"type\":\"string\",\"minLength\":1},\"uniqueItems\":true,\"minItems\":1},{\"type\":\"string\",\"minLength\":1}]},\"organization\":{\"type\":\"string\"},\"repo\":{\"type\":\"string\"},\"auth-key\":{\"type\":\"string\"},\"public-key-fingerprint\":{\"type\":\"string\"},\"registry\":{\"type\":\"string\"},\"tenant-id\":{\"type\":\"string\"},\"client-id\":{\"type\":\"string\"},\"jfrog-oidc-provider-name\":{\"type\":\"string\"},\"identity-mapping-name\":{\"type\":\"string\"},\"audience\":{\"type\":\"string\"},\"aws-region\":{\"type\":\"string\"},\"account-id\":{\"type\":\"string\"},\"role-name\":{\"type\":\"string\"},\"domain\":{\"type\":\"string\"},\"domain-owner\":{\"type\":\"string\"}},\"required\":[\"type\",\"url\"]},\"minProperties\":1}",
+    "requirements": {
+      "format": "json",
+      "dialect": "draft-07",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "additionalProperties": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "enum": [
+                "cargo-registry",
+                "composer-repository",
+                "docker-registry",
+                "git",
+                "goproxy-server",
+                "hex-organization",
+                "hex-repository",
+                "helm-registry",
+                "maven-repository",
+                "npm-registry",
+                "nuget-feed",
+                "pub-repository",
+                "python-index",
+                "rubygems-server",
+                "terraform-registry"
+              ]
+            },
+            "url": {
+              "type": "string"
+            },
+            "username": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            },
+            "key": {
+              "type": "string"
+            },
+            "token": {
+              "type": "string"
+            },
+            "replaces-base": {
+              "type": "boolean"
+            },
+            "scope": {
+              "oneOf": [
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "uniqueItems": true,
+                  "minItems": 1
+                },
+                {
+                  "type": "string",
+                  "minLength": 1
+                }
+              ]
+            },
+            "organization": {
+              "type": "string"
+            },
+            "repo": {
+              "type": "string"
+            },
+            "auth-key": {
+              "type": "string"
+            },
+            "public-key-fingerprint": {
+              "type": "string"
+            },
+            "registry": {
+              "type": "string"
+            },
+            "tenant-id": {
+              "type": "string"
+            },
+            "client-id": {
+              "type": "string"
+            },
+            "jfrog-oidc-provider-name": {
+              "type": "string"
+            },
+            "identity-mapping-name": {
+              "type": "string"
+            },
+            "audience": {
+              "type": "string"
+            },
+            "aws-region": {
+              "type": "string"
+            },
+            "account-id": {
+              "type": "string"
+            },
+            "role-name": {
+              "type": "string"
+            },
+            "domain": {
+              "type": "string"
+            },
+            "domain-owner": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "type",
+            "url"
+          ]
+        },
+        "minProperties": 1
+      },
+      "formatAssertions": true,
+      "family": "D",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": {
+            "registry/a~b": {
+              "type": "npm-registry",
+              "url": "https://registry.example.test",
+              "token": "{\"note\":\"\\\"quoted\\\"\\\\slash\\n${{data}}\"}"
+            }
+          },
+          "description": "Exact content determined by the published input and transformation rules"
+        }
+      ],
+      "developmentShadow": true,
+      "provenance": {
+        "sourceUrl": "https://raw.githubusercontent.com/SchemaStore/schemastore/87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0/src/schemas/json/dependabot-2.0.json",
+        "sourceRevision": "87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0",
+        "sourceLicense": "Apache-2.0",
+        "originalSha256": "57efbbcba05d2c26ad8e00b2ab295f797931652174d4e7d5272615069ecea61f",
+        "fragment": "/definitions/registry",
+        "sourceGroup": "schemastore:dependabot-2.0",
+        "transformations": [
+          "selected fragment and transitive local definitions",
+          "removed documentation annotations",
+          "added explicit local task requirements"
+        ],
+        "upstreamBenchmark": "SchemaStore source; locally authored tasks, not official SchemaBench instances",
+        "split": "holdout",
+        "designLevel": 1,
+        "seed": "D:holdout:0",
+        "baseIds": []
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "deterministic-frozen-fixture-v1",
+    "tags": [
+      "structured-contract-v1",
+      "family:D",
+      "split:holdout"
+    ]
+  },
+  {
+    "id": "SOC-D-H2",
+    "dimension": "structured_output",
+    "category": "contract_D",
+    "difficulty": "medium",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v1",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "51f8636b9749530f",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "输出仅包含键 \"registry/a~b\" 的注册中心对象。其 type=\"npm-registry\"，url=\"https://registry.example.test\"。先把 inputText 的 JSON 字符串字面量解析为原文，构造 {\"note\":原文}，按 JavaScript JSON.stringify 的默认行为序列化一次后把结果作为 token 字符串值（中文原样保留，无额外空白）。这是虚构字符串保真测试，不是实际认证信息。不得增加字段。inputText=\"用户名=\\\"甲\\\"\\r\\n路径=C:\\\\temp\\\\秘密\"\n\n必须同时遵循以下 JSON Schema 和上面的内容规则；可省略的字段按题面决定。对象键序不限。只输出一个完整 JSON 值，不要围栏或解释。\n{\"$schema\":\"http://json-schema.org/draft-07/schema#\",\"type\":\"object\",\"additionalProperties\":{\"type\":\"object\",\"additionalProperties\":false,\"properties\":{\"type\":{\"enum\":[\"cargo-registry\",\"composer-repository\",\"docker-registry\",\"git\",\"goproxy-server\",\"hex-organization\",\"hex-repository\",\"helm-registry\",\"maven-repository\",\"npm-registry\",\"nuget-feed\",\"pub-repository\",\"python-index\",\"rubygems-server\",\"terraform-registry\"]},\"url\":{\"type\":\"string\"},\"username\":{\"type\":\"string\"},\"password\":{\"type\":\"string\"},\"key\":{\"type\":\"string\"},\"token\":{\"type\":\"string\"},\"replaces-base\":{\"type\":\"boolean\"},\"scope\":{\"oneOf\":[{\"type\":\"array\",\"items\":{\"type\":\"string\",\"minLength\":1},\"uniqueItems\":true,\"minItems\":1},{\"type\":\"string\",\"minLength\":1}]},\"organization\":{\"type\":\"string\"},\"repo\":{\"type\":\"string\"},\"auth-key\":{\"type\":\"string\"},\"public-key-fingerprint\":{\"type\":\"string\"},\"registry\":{\"type\":\"string\"},\"tenant-id\":{\"type\":\"string\"},\"client-id\":{\"type\":\"string\"},\"jfrog-oidc-provider-name\":{\"type\":\"string\"},\"identity-mapping-name\":{\"type\":\"string\"},\"audience\":{\"type\":\"string\"},\"aws-region\":{\"type\":\"string\"},\"account-id\":{\"type\":\"string\"},\"role-name\":{\"type\":\"string\"},\"domain\":{\"type\":\"string\"},\"domain-owner\":{\"type\":\"string\"}},\"required\":[\"type\",\"url\"]},\"minProperties\":1}",
+    "requirements": {
+      "format": "json",
+      "dialect": "draft-07",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "additionalProperties": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "enum": [
+                "cargo-registry",
+                "composer-repository",
+                "docker-registry",
+                "git",
+                "goproxy-server",
+                "hex-organization",
+                "hex-repository",
+                "helm-registry",
+                "maven-repository",
+                "npm-registry",
+                "nuget-feed",
+                "pub-repository",
+                "python-index",
+                "rubygems-server",
+                "terraform-registry"
+              ]
+            },
+            "url": {
+              "type": "string"
+            },
+            "username": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            },
+            "key": {
+              "type": "string"
+            },
+            "token": {
+              "type": "string"
+            },
+            "replaces-base": {
+              "type": "boolean"
+            },
+            "scope": {
+              "oneOf": [
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "uniqueItems": true,
+                  "minItems": 1
+                },
+                {
+                  "type": "string",
+                  "minLength": 1
+                }
+              ]
+            },
+            "organization": {
+              "type": "string"
+            },
+            "repo": {
+              "type": "string"
+            },
+            "auth-key": {
+              "type": "string"
+            },
+            "public-key-fingerprint": {
+              "type": "string"
+            },
+            "registry": {
+              "type": "string"
+            },
+            "tenant-id": {
+              "type": "string"
+            },
+            "client-id": {
+              "type": "string"
+            },
+            "jfrog-oidc-provider-name": {
+              "type": "string"
+            },
+            "identity-mapping-name": {
+              "type": "string"
+            },
+            "audience": {
+              "type": "string"
+            },
+            "aws-region": {
+              "type": "string"
+            },
+            "account-id": {
+              "type": "string"
+            },
+            "role-name": {
+              "type": "string"
+            },
+            "domain": {
+              "type": "string"
+            },
+            "domain-owner": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "type",
+            "url"
+          ]
+        },
+        "minProperties": 1
+      },
+      "formatAssertions": true,
+      "family": "D",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": {
+            "registry/a~b": {
+              "type": "npm-registry",
+              "url": "https://registry.example.test",
+              "token": "{\"note\":\"用户名=\\\"甲\\\"\\r\\n路径=C:\\\\temp\\\\秘密\"}"
+            }
+          },
+          "description": "Exact content determined by the published input and transformation rules"
+        }
+      ],
+      "developmentShadow": true,
+      "provenance": {
+        "sourceUrl": "https://raw.githubusercontent.com/SchemaStore/schemastore/87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0/src/schemas/json/dependabot-2.0.json",
+        "sourceRevision": "87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0",
+        "sourceLicense": "Apache-2.0",
+        "originalSha256": "57efbbcba05d2c26ad8e00b2ab295f797931652174d4e7d5272615069ecea61f",
+        "fragment": "/definitions/registry",
+        "sourceGroup": "schemastore:dependabot-2.0",
+        "transformations": [
+          "selected fragment and transitive local definitions",
+          "removed documentation annotations",
+          "added explicit local task requirements"
+        ],
+        "upstreamBenchmark": "SchemaStore source; locally authored tasks, not official SchemaBench instances",
+        "split": "holdout",
+        "designLevel": 2,
+        "seed": "D:holdout:1",
+        "baseIds": []
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "deterministic-frozen-fixture-v1",
+    "tags": [
+      "structured-contract-v1",
+      "family:D",
+      "split:holdout"
+    ]
+  }
+]

@@ -1,0 +1,116 @@
+{
+  "id": "CLI-CN-025-DOCKER",
+  "dimension": "cli_deep_tasks",
+  "category": "diagnose_fix",
+  "difficulty": "hard",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "工作区 /workspace，Linux sh 和 Python 3 标准库可用。也提供 bash；脚本按 sh/bash shebang 选择解释器，无 shebang 使用 sh。project/ 的 pytest 真实失败，因为 app.py 从 util 导入而实际模块是 utils.py。只修应用代码的导入名，禁止修改或弱化测试；修复后重新执行 pytest 并将 exit=0 写入 test-status.txt。只输出可执行 shell 脚本。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "cli_command",
+  "graderVersion": "cli_command_v5",
+  "scoring": {
+    "type": "cli_command",
+    "mode": "executed_state"
+  },
+  "requirements": {
+    "migrationSourceId": "CLI-CN-025",
+    "developmentShadow": true,
+    "executionInterpreter": "shebang",
+    "executionImage": "benchlocal/cli-40-verifier:local",
+    "executionImageId": "sha256:2cde3ddc15a55504784cc1e45f37faec3ddb22957436a6bbac0bb03c8ef664ee",
+    "executionCases": [
+      {
+        "files": [
+          {
+            "path": "project/app.py",
+            "content": "from util import helper\n\ndef result():\n    return helper(4)\n"
+          },
+          {
+            "path": "project/utils.py",
+            "content": "def helper(x):\n    return x * 2\n"
+          },
+          {
+            "path": "project/test_app.py",
+            "content": "from app import result\n\ndef test_result():\n    assert result() == 8\n"
+          },
+          {
+            "path": "sentinel",
+            "content": "keep"
+          }
+        ],
+        "expectedFiles": {
+          "project/app.py": "from utils import helper\n\ndef result():\n    return helper(4)\n",
+          "test-status.txt": "exit=0\n"
+        },
+        "unchangedFiles": [
+          "project/utils.py",
+          "project/test_app.py",
+          "sentinel"
+        ],
+        "absentFiles": [
+          "project/util.py"
+        ],
+        "assertCommands": [
+          "python3 -I - <<'PY'\nimport subprocess\nr=subprocess.run(['pytest','-q','-p','no:cacheprovider'],cwd='project',capture_output=True,text=True)\nassert r.returncode==0 and '1 passed' in r.stdout\nPY"
+        ]
+      },
+      {
+        "files": [
+          {
+            "path": "project/app.py",
+            "content": "from util import helper\n\ndef result():\n    return helper(5)\n"
+          },
+          {
+            "path": "project/utils.py",
+            "content": "def helper(x):\n    return x * 2\n"
+          },
+          {
+            "path": "project/test_app.py",
+            "content": "from app import result\n\ndef test_result():\n    assert result() == 10\n"
+          },
+          {
+            "path": "sentinel",
+            "content": "keep"
+          }
+        ],
+        "expectedFiles": {
+          "project/app.py": "from utils import helper\n\ndef result():\n    return helper(5)\n",
+          "test-status.txt": "exit=0\n"
+        },
+        "unchangedFiles": [
+          "project/utils.py",
+          "project/test_app.py",
+          "sentinel"
+        ],
+        "absentFiles": [
+          "project/util.py"
+        ],
+        "assertCommands": [
+          "python3 -I - <<'PY'\nimport subprocess\nr=subprocess.run(['pytest','-q','-p','no:cacheprovider'],cwd='project',capture_output=True,text=True)\nassert r.returncode==0 and '1 passed' in r.stdout\nPY"
+        ]
+      }
+    ]
+  },
+  "tags": [
+    "cli",
+    "diagnose",
+    "python-import",
+    "root-cause"
+  ],
+  "scenarioVersion": "3.1.0",
+  "scenarioHash": "936d3bc7dea0d9cb",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

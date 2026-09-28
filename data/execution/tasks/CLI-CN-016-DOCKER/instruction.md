@@ -1,0 +1,1 @@
+工作区 /workspace，Linux sh 和 Python 3 标准库可用。也提供 bash；脚本按 sh/bash shebang 选择解释器，无 shebang 使用 sh。repo/ 是真实 Git 仓库。找出 src/config.py 中精确行 CRITICAL_TIMEOUT = 30 首次被引入的提交，将完整 SHA 与换行写入 answer.txt。历史可能包含后续无关修改、删除及重新引入，必须返回最初引入而非最近修改。不要改动仓库或无关文件。只输出可执行 shell 脚本。

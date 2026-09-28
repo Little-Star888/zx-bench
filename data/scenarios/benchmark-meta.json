@@ -1,26 +1,29 @@
 {
- "version": "1.47.0",
- "count": 815,
- "retiredCount": 112,
- "totalCount": 927,
+ "version": "1.59.0",
+ "count": 829,
+ "retiredCount": 63,
+ "totalCount": 970,
  "dimensions": {
   "agent_loop": 5,
   "agent_workflow": 45,
-  "cli_deep_tasks": 56,
+  "cli_deep_tasks": 52,
   "data_extraction": 104,
   "hallucination_resistance": 134,
   "instruction_following": 42,
   "program": 150,
   "reasoning_math": 115,
   "safety_authority": 50,
-  "structured_output": 58,
-  "tool_cli_workflow": 56
+  "structured_output": 77,
+  "tool_cli_workflow": 55
  },
  "retiredDimensions": {
-  "hallucination_resistance": 78
+  "hallucination_resistance": 78,
+  "cli_deep_tasks": 4,
+  "structured_output": 25,
+  "tool_cli_workflow": 1
  },
- "generatedAt": "2026-09-18T00:00:00.000Z",
- "validCount": 815,
+ "generatedAt": "2026-09-26T17:07:40.101Z",
+ "validCount": 829,
  "ambiguousCount": 0,
  "reviewCount": 0,
  "questionReview": "math-3.2-hallucination-5.0",
@@ -338,9 +341,9 @@
   "defaultRunEligible": true
  },
  "structuredOutputReview": {
-  "version": "schema-compliance-2026-09-16-v5.1",
-  "grader": "schema_compliance@schema_compliance_v5",
-  "count": 51,
+  "version": "schema-compliance-2026-09-26-v6",
+  "grader": "schema_compliance@schema_compliance_v6",
+  "count": 58,
   "discriminationBand": {
    "ids": [
     "SO-CN-042",
@@ -366,13 +369,125 @@
   },
   "ruleLanguage": [
    "required|type|valueEq|nonempty|count|keys|keyOrder|keysAll|reAll|maxDecimals|unique|sorted",
-   "length|chainEq|sumEq|productEq|ratioEq|runningTotal|ref|schemaValidates|schemaRejects|csvCell|order"
+   "length|chainEq|sumEq|productEq|ratioEq|runningTotal|ref|schemaValidates|schemaRejects|csvCell|order",
+   "jsonEq"
   ],
   "limitations": [
    "断言全部是结构/内部一致性不变量，不涉及外部事实抽取，故与 data_extraction 维度不重叠。",
    "JSON 数字不保留尾随零，因此小数位只能断言「不超过 n」而非「恰好 n」。",
    "order: 规则比较的是全文首次出现位置，对 buyer 等先出现的同名元素需谨慎选择锚点。"
-  ]
+  ],
+  "repairedQuestions": [
+   "SO-CN-042",
+   "SO-CN-047"
+  ],
+  "strictContractAudit": true,
+  "contractRepair": {
+   "version": "1.49.0",
+   "count": 12,
+   "ids": [
+    "SO-CN-001",
+    "SO-CN-002",
+    "SO-CN-004",
+    "SO-CN-005",
+    "SO-CN-011",
+    "SO-CN-031",
+    "SO-CN-043",
+    "SO-CN-047",
+    "SO-CN-053",
+    "SO-CN-054",
+    "SO-CN-055",
+    "SO-CN-056"
+   ],
+   "note": "Explicit constraints and external schema fixtures; SO-CN-053 ambiguity removed"
+  },
+  "contractRepairV2": {
+   "version": "1.50.0",
+   "count": 15,
+   "ids": [
+    "SO-CN-003",
+    "SO-CN-006",
+    "SO-CN-007",
+    "SO-CN-009",
+    "SO-CN-028",
+    "SO-CN-029",
+    "SO-CN-030",
+    "SO-CN-040",
+    "SO-CN-044",
+    "SO-CN-046",
+    "SO-CN-048",
+    "SO-CN-050",
+    "SO-CN-051",
+    "SO-CN-058",
+    "SO-CN-059"
+   ],
+   "note": "Fixed scorer coverage and two ambiguous prompt contracts; completed runs retain original scores"
+  },
+  "textStructure": {
+   "version": "1.51.2",
+   "count": 29,
+   "ids": [
+    "SO-CN-008",
+    "SO-CN-010",
+    "SO-CN-012",
+    "SO-CN-013",
+    "SO-CN-014",
+    "SO-CN-015",
+    "SO-CN-016",
+    "SO-CN-017",
+    "SO-CN-018",
+    "SO-CN-019",
+    "SO-CN-020",
+    "SO-CN-021",
+    "SO-CN-022",
+    "SO-CN-023",
+    "SO-CN-024",
+    "SO-CN-025",
+    "SO-CN-026",
+    "SO-CN-027",
+    "SO-CN-032",
+    "SO-CN-033",
+    "SO-CN-034",
+    "SO-CN-035",
+    "SO-CN-036",
+    "SO-CN-037",
+    "SO-CN-038",
+    "SO-CN-039",
+    "SO-CN-041",
+    "SO-CN-045",
+    "SO-CN-049"
+   ],
+   "note": "Bounded text contracts; PostgreSQL, MySQL, and Mermaid browser audits completed. Confirmed syntax defects feed versioned rules; browser layout observations are not scored beyond task requirements.",
+   "postgresRuntimeAudit": {
+    "ids": [
+     "SO-CN-013",
+     "SO-CN-034"
+    ],
+    "fixtures": [
+     "top users versus top orders",
+     "restock conflict invariance"
+    ],
+    "report": "data/pilots/structured-postgres-audit.json"
+   },
+   "mysqlRuntimeAudit": {
+    "id": "SO-CN-017",
+    "image": "mysql:8.4.11",
+    "report": "data/pilots/structured-mysql-audit.json"
+   },
+   "mermaidRenderAudit": {
+    "id": "SO-CN-024",
+    "version": "11.17.2",
+    "report": "data/pilots/structured-mermaid-render-audit.json"
+   },
+   "htmlMobileAudit": {
+    "viewports": [
+     390,
+     1280
+    ],
+    "report": "data/pilots/structured-html-mobile-audit.json",
+    "scored": false
+   }
+  }
  },
  "examHardGroups": {
   "version": "math-exam-expansion-2026-09-16-v15",
@@ -424,5 +539,385 @@
   "questionVersion": "ultra-math-2026-09-17-v4",
   "rubricVersion": "ultra-math-rubric-2026-09-17-v3",
   "note": "UMX-01（v3）与 UMX-02（v4）均已重写为可达版本；UMX 八题标 developmentShadow，只在人工/专用轨道使用。"
+ },
+ "executionCuration": {
+  "retiredIds": [
+   "CLI-CN-049",
+   "CLI-CN-051",
+   "CLI-CN-053",
+   "CLI-CN-052",
+   "TC-CN-028"
+  ],
+  "reason": "legacy_basic_score_saturation",
+  "evidence": "data/execution/retirement-evidence-batch2.json",
+  "evidenceFiles": [
+   "data/execution/retirement-evidence.json",
+   "data/execution/retirement-evidence-batch2.json"
+  ],
+  "historyPreserved": true
+ },
+ "structuredOutputCuration": {
+  "version": "1.53.0",
+  "retiredIds": [
+   "SO-CN-023",
+   "SO-CN-025",
+   "SO-CN-029",
+   "SO-CN-040",
+   "SO-CN-041",
+   "SO-CN-042",
+   "SO-CN-044",
+   "SO-CN-047",
+   "SO-CN-048",
+   "SO-CN-049",
+   "SO-CN-054",
+   "SO-CN-057"
+  ],
+  "retainedSaturatedAnchors": [
+   "SO-CN-001",
+   "SO-CN-019",
+   "SO-CN-033",
+   "SO-CN-035",
+   "SO-CN-038",
+   "SO-CN-043",
+   "SO-CN-055"
+  ],
+  "evidence": "analysis/structured-output-redesign/retirement-evidence.json",
+  "historyPreserved": true
+ },
+ "structuredContractDevelopment": {
+  "version": "1.54.0",
+  "releasedAt": "2026-09-26T11:18:52.557Z",
+  "backup": "logs/structured-development-release-1790421531651",
+  "modelCalls": 0,
+  "sourcePackHash": "edcd89204980381863c846fb2e135df841822ec4583aca359671f3db8f1d2d9f",
+  "count": 19,
+  "formalStructuredCount": 46,
+  "formalPromotions": 0,
+  "mixedIds": [
+   "SOC2-C-D-1",
+   "SOC-D-D1",
+   "SOC-D-D2",
+   "SOC-D-D3"
+  ],
+  "allPassIds": [
+   "SOC2-A-D-1",
+   "SOC2-A-D-2",
+   "SOC2-B-D-1",
+   "SOC2-B-D-2",
+   "SOC2-C-D-2",
+   "SOC2-E-D-simple",
+   "SOC2-E-D-complex",
+   "SOC2-F-D-csv",
+   "SOC2-F-D-xml",
+   "SOC2-F-D-yaml",
+   "SOC2-F-D-toml",
+   "SOC2-G-D-1",
+   "SOC2-G-D-2",
+   "SOC2-H-D-1",
+   "SOC2-H-D-2"
+  ],
+  "candidates": [
+   {
+    "id": "SOC2-A-D-1",
+    "scenarioHash": "8a934ad3a8ee2c1d",
+    "sourceCaseHash": "20bb87afd4c2855f",
+    "graderVersion": "structured_contract_v2"
+   },
+   {
+    "id": "SOC2-A-D-2",
+    "scenarioHash": "8679280e3b79cbd6",
+    "sourceCaseHash": "9ab7151ddf4353c5",
+    "graderVersion": "structured_contract_v2"
+   },
+   {
+    "id": "SOC2-B-D-1",
+    "scenarioHash": "ff773604dc67bb30",
+    "sourceCaseHash": "e11f14cdf83775af",
+    "graderVersion": "structured_contract_v2"
+   },
+   {
+    "id": "SOC2-B-D-2",
+    "scenarioHash": "080879de20c65231",
+    "sourceCaseHash": "d1992121e3d671aa",
+    "graderVersion": "structured_contract_v2"
+   },
+   {
+    "id": "SOC2-C-D-1",
+    "scenarioHash": "8af609e0aec7f57e",
+    "sourceCaseHash": "10fdeec58de965cf",
+    "graderVersion": "structured_contract_v2"
+   },
+   {
+    "id": "SOC2-C-D-2",
+    "scenarioHash": "c33cd07080408903",
+    "sourceCaseHash": "0dd9312225567e82",
+    "graderVersion": "structured_contract_v2"
+   },
+   {
+    "id": "SOC-D-D1",
+    "scenarioHash": "a8adb7f3fc317577",
+    "sourceCaseHash": "dadb4ae0c67520f5",
+    "graderVersion": "structured_contract_v1"
+   },
+   {
+    "id": "SOC-D-D2",
+    "scenarioHash": "b30cea56a85fd3b9",
+    "sourceCaseHash": "6d5dd9e47eca356c",
+    "graderVersion": "structured_contract_v1"
+   },
+   {
+    "id": "SOC-D-D3",
+    "scenarioHash": "96c093543691eaea",
+    "sourceCaseHash": "8e49f3c4cb335055",
+    "graderVersion": "structured_contract_v1"
+   },
+   {
+    "id": "SOC2-E-D-simple",
+    "scenarioHash": "d774ad71a0cd97ae",
+    "sourceCaseHash": "144fb1364ca3581e",
+    "graderVersion": "structured_contract_v2"
+   },
+   {
+    "id": "SOC2-E-D-complex",
+    "scenarioHash": "f666b2a885412db3",
+    "sourceCaseHash": "2c4e3672f631f6ad",
+    "graderVersion": "structured_contract_v2"
+   },
+   {
+    "id": "SOC2-F-D-csv",
+    "scenarioHash": "27266deef38b5c32",
+    "sourceCaseHash": "27798ca402e1cd72",
+    "graderVersion": "structured_contract_v2"
+   },
+   {
+    "id": "SOC2-F-D-xml",
+    "scenarioHash": "503afaa994f8c67a",
+    "sourceCaseHash": "8dc816d6f734ac10",
+    "graderVersion": "structured_contract_v2"
+   },
+   {
+    "id": "SOC2-F-D-yaml",
+    "scenarioHash": "f066fc7e699e4949",
+    "sourceCaseHash": "1b5983d2bd08c3c7",
+    "graderVersion": "structured_contract_v2"
+   },
+   {
+    "id": "SOC2-F-D-toml",
+    "scenarioHash": "23103dc6cee74aeb",
+    "sourceCaseHash": "0f5d0ec43cba1672",
+    "graderVersion": "structured_contract_v2"
+   },
+   {
+    "id": "SOC2-G-D-1",
+    "scenarioHash": "3aedb744a14577fb",
+    "sourceCaseHash": "b3bb8a73ebc02ddb",
+    "graderVersion": "structured_contract_v3"
+   },
+   {
+    "id": "SOC2-G-D-2",
+    "scenarioHash": "0ed70ac0b842bc4e",
+    "sourceCaseHash": "c50b0bd3ce4965c1",
+    "graderVersion": "structured_contract_v3"
+   },
+   {
+    "id": "SOC2-H-D-1",
+    "scenarioHash": "24adc3f16a4d27b6",
+    "sourceCaseHash": "ce58758deb9e3d0c",
+    "graderVersion": "structured_contract_v2"
+   },
+   {
+    "id": "SOC2-H-D-2",
+    "scenarioHash": "0303b34dd4dad2af",
+    "sourceCaseHash": "63e9cdaad247e801",
+    "graderVersion": "structured_contract_v2"
+   }
+  ],
+  "scoringChange": "Generated-schema tasks use v3 for future runs. Saved calibration scores remain the original v2 observations, not v3 scores.",
+  "holdout": {
+   "count": 15,
+   "hash": "abb81385cbc64e556ff1c2250883526550438d4354ae44ef31d64dc8c262bb65",
+   "modelCalls": 0,
+   "status": "frozen_unmeasured"
+  },
+  "policy": "Development-only explicit selection. No automatic evaluation, no historical score rewrites. Further calibration omitted per user request.",
+  "evidence": "analysis/structured-output-redesign/development-release.json"
+ },
+ "structuredContractChallenge": {
+  "version": "1.55.0",
+  "releasedAt": "2026-09-26T11:29:26.498Z",
+  "backup": "logs/structured-challenge-release-1790422165598",
+  "added": 14,
+  "oldFormalCount": 46,
+  "formalCount": 60,
+  "developmentShadowCount": 19,
+  "ids": [
+   "SOC3-A-POLICY",
+   "SOC3-A-ROUTE",
+   "SOC3-B-TREE",
+   "SOC3-B-FOREST",
+   "SOC3-C-UNICODE",
+   "SOC3-C-PATH",
+   "SOC3-E-SIMPLE",
+   "SOC3-E-LEDGER",
+   "SOC3-F-CSV",
+   "SOC3-F-XML",
+   "SOC3-G-AUTH",
+   "SOC3-G-ARRAY",
+   "SOC3-H-BARS",
+   "SOC3-H-DELTA"
+  ],
+  "families": {
+   "A": 2,
+   "B": 2,
+   "C": 2,
+   "E": 2,
+   "F": 2,
+   "G": 2,
+   "H": 2
+  },
+  "sourcePackHash": "44d12c2cc15763f71c52db22460003297e5f2d6c2b79b3a57d4bc7d3d39df2bb",
+  "goldHash": "b9055bcf81c3e9aacbce15ccaba81d95247dbf73f026865ec105a38c17b4c371",
+  "modelCalls": 0,
+  "scope": "Prospective formal tasks with deterministic local positive/negative gate; actual model discrimination not yet measured.",
+  "historicalResultsPreserved": true,
+  "evidence": "analysis/structured-output-redesign/challenge-release.json"
+ },
+ "structuredOutputReplacement": {
+  "version": "1.57.0",
+  "publishedAt": "2026-09-26T15:48:59.832Z",
+  "backup": "logs/structured-event-replacement-1790437739832",
+  "retiredId": "SO-CN-001",
+  "retiredOldHash": "fdac2d770cc31bd7",
+  "retiredNewHash": "b1b89d22cc01ce05",
+  "addedId": "SOC4-G-EVENT",
+  "addedHash": "4966928a2b686858",
+  "sourceCaseId": "SYN8-EVENT-STRUCTURED",
+  "sourcePackHash": "3287d7ad9e4acccb2911cfaaba55cb8989e9102a6d81dec2f1dbeb832e43cacd",
+  "formalBefore": 60,
+  "formalAfter": 60,
+  "modelCalls": 0,
+  "historyPreserved": true,
+  "reason": "Replace one eight-configuration saturated easy JSON item with a behaviorally scored conditional Schema task that showed a paired failure on Bonsai2.",
+  "evidence": {
+   "bonsai": "data/pilots/structured-contract-frontier-v8/calibration-development-ed16d154-f5e9-4650-b355-cf5418846b81-bonsai2-no-reason-order-control.json",
+   "qwen": "data/pilots/structured-contract-frontier-v8/calibration-development-05c8edd2-6ca6-4c95-9090-e6431b8ab415-qwen38-order-control.json"
+  },
+  "limitation": "Only one task family; no claim about overall bank-level ceiling or quantization causality.",
+  "evidencePath": "analysis/structured-output-redesign/event-schema-replacement.json"
+ },
+ "structuredOutputBatchReplacement": {
+  "version": "1.58.0",
+  "publishedAt": "2026-09-26T16:49:50.539Z",
+  "backup": "logs/structured-batch-replacement-1790441390539",
+  "retiredIds": [
+   "SO-CN-038",
+   "SO-CN-043",
+   "SO-CN-055"
+  ],
+  "promotedIds": [
+   "SOC2-C-D-1",
+   "SOC-D-D2"
+  ],
+  "addedId": "SOC4-G-BATCH",
+  "formalBefore": 60,
+  "formalAfter": 60,
+  "totalReplacedIncludingPreviousEvent": 4,
+  "modelCalls": 0,
+  "historyPreserved": true,
+  "prior": [
+   {
+    "id": "SO-CN-038",
+    "oldHash": "941afb1439ea1dbf"
+   },
+   {
+    "id": "SO-CN-043",
+    "oldHash": "ffb06c07e7734f80"
+   },
+   {
+    "id": "SO-CN-055",
+    "oldHash": "04bcf36d00a7d1dc"
+   },
+   {
+    "id": "SOC2-C-D-1",
+    "oldHash": "8af609e0aec7f57e"
+   },
+   {
+    "id": "SOC-D-D2",
+    "oldHash": "b30cea56a85fd3b9"
+   }
+  ],
+  "addedHash": "17a3bd35189b4407",
+  "sourcePackHash": "5d582fca6d792adda7be396a71db246bb6b3f36ad01997d68496eb36faa4db72",
+  "evidence": [
+   "analysis/structured-output-redesign/development-release.json",
+   "data/pilots/structured-contract-frontier-v7/local-gate.json"
+  ],
+  "limitation": "Promoted cases showed mixed development results; batch task has a verified local oracle, without certified model separation.",
+  "evidencePath": "analysis/structured-output-redesign/structured-batch-replacement.json"
+ },
+ "structuredOutputNearCeilingReplacement": {
+  "version": "1.59.0",
+  "publishedAt": "2026-09-26T17:07:40.101Z",
+  "backup": "logs/structured-near-ceiling-replacement-1790442460102",
+  "pairs": [
+   {
+    "retiredId": "SO-CN-003",
+    "addedId": "SOC2-A-H-route",
+    "historicalPass": 7,
+    "historicalTotal": 8
+   },
+   {
+    "retiredId": "SO-CN-030",
+    "addedId": "SOC2-B-H-tree",
+    "historicalPass": 7,
+    "historicalTotal": 8
+   },
+   {
+    "retiredId": "SO-CN-002",
+    "addedId": "SOC2-C-H-headers",
+    "historicalPass": 6,
+    "historicalTotal": 8
+   },
+   {
+    "retiredId": "SO-CN-005",
+    "addedId": "SOC-D-H1",
+    "historicalPass": 6,
+    "historicalTotal": 8
+   },
+   {
+    "retiredId": "SO-CN-050",
+    "addedId": "SOC2-E-H-complex",
+    "historicalPass": 7,
+    "historicalTotal": 8
+   },
+   {
+    "retiredId": "SO-CN-007",
+    "addedId": "SOC2-F-H-csv",
+    "historicalPass": 7,
+    "historicalTotal": 8
+   },
+   {
+    "retiredId": "SO-CN-008",
+    "addedId": "SOC2-F-H-yaml",
+    "historicalPass": 6,
+    "historicalTotal": 8
+   },
+   {
+    "retiredId": "SO-CN-004",
+    "addedId": "SOC2-G-H-1",
+    "historicalPass": 6,
+    "historicalTotal": 8
+   }
+  ],
+  "formalBefore": 60,
+  "formalAfter": 60,
+  "totalReplacedIncludingPriorBatches": 12,
+  "modelCalls": 0,
+  "historyPreserved": true,
+  "sourcePackHash": "abb81385cbc64e556ff1c2250883526550438d4354ae44ef31d64dc8c262bb65",
+  "sourceGoldHash": "e582aa00464e2f76dd9d0245945daabe9aa9b37b0ce9a98d0161f0a1583b2b5a",
+  "basis": "Former frozen holdout cases have deterministic gold, correct/incorrect local gates and independent JSON Schema gate. Old cases passed 6-7 of 8 historical configurations.",
+  "limitation": "No new model calibration. The v2 development analogs were all-pass in screened configurations; these replacements strengthen contract specificity but are not proven to lower the score ceiling. Former holdout cases must no longer be treated as an independent holdout.",
+  "evidencePath": "analysis/structured-output-redesign/near-ceiling-batch-replacement.json"
  }
 }

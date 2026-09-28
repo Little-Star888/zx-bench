@@ -1,0 +1,9 @@
+[
+  {
+    "tool": "file_write",
+    "args": {
+      "path": "skills/deploy/SKILL.md",
+      "content": "# Deploy\nimage: ghcr.io/team-b/service\nverify: ghcr.io/team-b/service\nnotes: preserve\n"
+    }
+  }
+]

@@ -1,0 +1,86 @@
+{
+  "id": "CLI-CN-016-DOCKER",
+  "dimension": "cli_deep_tasks",
+  "category": "pipeline_composition",
+  "difficulty": "adversarial",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "工作区 /workspace，Linux sh 和 Python 3 标准库可用。也提供 bash；脚本按 sh/bash shebang 选择解释器，无 shebang 使用 sh。repo/ 是真实 Git 仓库。找出 src/config.py 中精确行 CRITICAL_TIMEOUT = 30 首次被引入的提交，将完整 SHA 与换行写入 answer.txt。历史可能包含后续无关修改、删除及重新引入，必须返回最初引入而非最近修改。不要改动仓库或无关文件。只输出可执行 shell 脚本。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "cli_command",
+  "graderVersion": "cli_command_v5",
+  "scoring": {
+    "type": "cli_command",
+    "mode": "executed_state"
+  },
+  "requirements": {
+    "migrationSourceId": "CLI-CN-016",
+    "developmentShadow": true,
+    "executionInterpreter": "shebang",
+    "executionImage": "gcc:13",
+    "executionImageId": "sha256:056fa682471704249f619f65ccec87d671ad5f1b20878da54d60b0b863486621",
+    "executionCases": [
+      {
+        "files": [
+          {
+            "path": "sentinel",
+            "content": "keep"
+          }
+        ],
+        "setupCommands": [
+          "python3 -I - <<'PY'\nfrom pathlib import Path\nimport json, base64, subprocess, os\ncontents=json.loads(base64.b64decode('WyIjIGNvbmZpZyAwXG5DUklUSUNBTF9USU1FT1VUID0gMTBcbiIsIiMgY29uZmlnIDBcbkNSSVRJQ0FMX1RJTUVPVVQgPSAzMFxuIiwiIyByZWZhY3RvciAwXG5DUklUSUNBTF9USU1FT1VUID0gMzBcbk9USEVSID0gMVxuIiwiIyB0ZW1wb3JhcnkgMFxuQ1JJVElDQUxfVElNRU9VVCA9IDYwXG4iLCIjIHJlc3RvcmVkIDBcbkNSSVRJQ0FMX1RJTUVPVVQgPSAzMFxuIl0='))\nPath('repo/src').mkdir(parents=True)\ndef git(*args,env=None): return subprocess.run(['git','-C','repo',*args],check=True,stdout=subprocess.DEVNULL,env=env)\ngit('init','-q'); git('config','core.autocrlf','false'); git('config','commit.gpgsign','false')\nfor i,content in enumerate(contents):\n    Path('repo/src/config.py').write_text(content)\n    git('add','src/config.py')\n    env={**os.environ,'GIT_AUTHOR_NAME':'Bench','GIT_AUTHOR_EMAIL':'bench@example.test','GIT_COMMITTER_NAME':'Bench','GIT_COMMITTER_EMAIL':'bench@example.test','GIT_AUTHOR_DATE':str(1700000000+i+0)+' +0000','GIT_COMMITTER_DATE':str(1700000000+i+0)+' +0000'}\n    git('commit','-q','-m','step-'+str(i),env=env)\nPY"
+        ],
+        "unchangedFiles": [
+          "sentinel"
+        ],
+        "expectedFiles": {
+          "answer.txt": "2f8631472568e2d3efaa75206a6618b30b0d026a\n"
+        },
+        "assertCommands": [
+          "python3 -I - <<'PY'\nimport subprocess\nassert subprocess.check_output(['git','-C','repo','rev-parse','HEAD'],text=True).strip()=='630ce997b3d7e3de95ede5631305a521301d6630'\nassert subprocess.check_output(['git','-C','repo','status','--porcelain'],text=True)==''\nPY"
+        ]
+      },
+      {
+        "files": [
+          {
+            "path": "sentinel",
+            "content": "keep"
+          }
+        ],
+        "setupCommands": [
+          "python3 -I - <<'PY'\nfrom pathlib import Path\nimport json, base64, subprocess, os\ncontents=json.loads(base64.b64decode('WyIjIGNvbmZpZyAxXG5DUklUSUNBTF9USU1FT1VUID0gMTBcbiIsIiMgY29uZmlnIDFcbkNSSVRJQ0FMX1RJTUVPVVQgPSAzMFxuIiwiIyByZWZhY3RvciAxXG5DUklUSUNBTF9USU1FT1VUID0gMzBcbk9USEVSID0gMVxuIiwiIyB0ZW1wb3JhcnkgMVxuQ1JJVElDQUxfVElNRU9VVCA9IDYwXG4iLCIjIHJlc3RvcmVkIDFcbkNSSVRJQ0FMX1RJTUVPVVQgPSAzMFxuIl0='))\nPath('repo/src').mkdir(parents=True)\ndef git(*args,env=None): return subprocess.run(['git','-C','repo',*args],check=True,stdout=subprocess.DEVNULL,env=env)\ngit('init','-q'); git('config','core.autocrlf','false'); git('config','commit.gpgsign','false')\nfor i,content in enumerate(contents):\n    Path('repo/src/config.py').write_text(content)\n    git('add','src/config.py')\n    env={**os.environ,'GIT_AUTHOR_NAME':'Bench','GIT_AUTHOR_EMAIL':'bench@example.test','GIT_COMMITTER_NAME':'Bench','GIT_COMMITTER_EMAIL':'bench@example.test','GIT_AUTHOR_DATE':str(1700000000+i+100)+' +0000','GIT_COMMITTER_DATE':str(1700000000+i+100)+' +0000'}\n    git('commit','-q','-m','step-'+str(i),env=env)\nPY"
+        ],
+        "unchangedFiles": [
+          "sentinel"
+        ],
+        "expectedFiles": {
+          "answer.txt": "9307830e6ad4350df15c0c74dec469867f052a18\n"
+        },
+        "assertCommands": [
+          "python3 -I - <<'PY'\nimport subprocess\nassert subprocess.check_output(['git','-C','repo','rev-parse','HEAD'],text=True).strip()=='6e3ae1f31ffad8e81fb7b62541d173bd1e607c97'\nassert subprocess.check_output(['git','-C','repo','status','--porcelain'],text=True)==''\nPY"
+        ]
+      }
+    ]
+  },
+  "tags": [
+    "cli",
+    "pipeline",
+    "git-log-S",
+    "trap"
+  ],
+  "scenarioVersion": "3.1.0",
+  "scenarioHash": "3a7f0ed599ce3ab8",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

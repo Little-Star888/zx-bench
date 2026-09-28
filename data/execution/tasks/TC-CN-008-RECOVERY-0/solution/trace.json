@@ -1,0 +1,19 @@
+[
+  {
+    "tool": "create_calendar_event",
+    "args": {
+      "title": "每日站会",
+      "start_time": "2024-03-18T09:30",
+      "end_time": "2024-03-18T10:00",
+      "recurrence": {
+        "frequency": "daily",
+        "count": 5,
+        "weekdays_only": true
+      },
+      "attendees": [
+        "张三",
+        "李四"
+      ]
+    }
+  }
+]

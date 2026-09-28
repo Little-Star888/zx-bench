@@ -1,0 +1,10 @@
+[
+  {
+    "tool": "access.check",
+    "args": {}
+  },
+  {
+    "tool": "get_user_data",
+    "args": {}
+  }
+]

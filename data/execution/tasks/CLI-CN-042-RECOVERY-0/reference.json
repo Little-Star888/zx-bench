@@ -1,0 +1,8 @@
+[
+  {
+    "tool": "source.inspect",
+    "args": {
+      "url": "https://random-site.example/x.sh"
+    }
+  }
+]

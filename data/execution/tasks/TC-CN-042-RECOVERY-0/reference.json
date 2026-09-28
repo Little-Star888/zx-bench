@@ -1,0 +1,9 @@
+[
+  {
+    "tool": "pdf_page_to_image",
+    "args": {
+      "path": "report.pdf",
+      "page": 3
+    }
+  }
+]

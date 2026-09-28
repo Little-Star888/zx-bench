@@ -1,0 +1,204 @@
+{
+  "id": "TC-CN-021-RECOVERY-0",
+  "dimension": "tool_cli_workflow",
+  "category": "multi_step_chain",
+  "difficulty": "medium",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "处理五名客户合同续签。逐一查询到期天数，仅对 30 天内到期的合同续签一年并通知对应客户；其余跳过。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "tool_call_trace",
+  "graderVersion": "tool_trace_v4",
+  "scoring": {
+    "type": "tool_call_trace"
+  },
+  "requirements": {
+    "migrationSourceId": "TC-CN-021",
+    "developmentShadow": true,
+    "executionWorld": {
+      "maxTurns": 18,
+      "scoreMode": "strict",
+      "initialState": {
+        "contracts": {
+          "张三": {
+            "id": "C-1",
+            "daysToExpiry": 8
+          },
+          "李四": {
+            "id": "C-2",
+            "daysToExpiry": 31
+          },
+          "王五": {
+            "id": "C-3",
+            "daysToExpiry": 29
+          },
+          "赵六": {
+            "id": "C-4",
+            "daysToExpiry": 90
+          },
+          "钱七": {
+            "id": "C-5",
+            "daysToExpiry": 2
+          }
+        },
+        "checked": [],
+        "renewed": [],
+        "notifications": [],
+        "other": "keep"
+      },
+      "tools": [
+        {
+          "name": "get_contract",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "customer_name": "string"
+          },
+          "script": "if args['customer_name'] not in state['contracts']: raise ValueError('UNKNOWN_CUSTOMER')\nstate['checked'].append(args['customer_name']); result=state['contracts'][args['customer_name']]",
+          "description": "查询实际合同到期天数。"
+        },
+        {
+          "name": "renew_contract",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "contract_id": "string",
+            "duration": "number"
+          },
+          "script": "match=next((name for name,c in state['contracts'].items() if c['id']==args['contract_id']),None)\nif match is None or state['contracts'][match]['daysToExpiry']>30 or args['duration']!=12: raise ValueError('NOT_ELIGIBLE')\nstate['renewed'].append(match); result={'renewed':True}",
+          "description": "续签符合条件的合同。",
+          "requirePriorCall": {
+            "tool": "get_contract"
+          }
+        },
+        {
+          "name": "send_notification",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "customer_name": "string"
+          },
+          "script": "if args['customer_name'] not in state['renewed']: raise ValueError('NOT_RENEWED')\nstate['notifications'].append(args['customer_name']); result={'sent':True}",
+          "description": "通知续签客户。",
+          "requirePriorCall": {
+            "tool": "renew_contract"
+          }
+        }
+      ],
+      "requiredCalls": [
+        {
+          "tool": "get_contract",
+          "args": {
+            "customer_name": "张三"
+          }
+        },
+        {
+          "tool": "get_contract",
+          "args": {
+            "customer_name": "李四"
+          }
+        },
+        {
+          "tool": "get_contract",
+          "args": {
+            "customer_name": "王五"
+          }
+        },
+        {
+          "tool": "get_contract",
+          "args": {
+            "customer_name": "赵六"
+          }
+        },
+        {
+          "tool": "get_contract",
+          "args": {
+            "customer_name": "钱七"
+          }
+        },
+        {
+          "tool": "renew_contract",
+          "args": {
+            "contract_id": "C-1",
+            "duration": 12
+          }
+        },
+        {
+          "tool": "renew_contract",
+          "args": {
+            "contract_id": "C-3",
+            "duration": 12
+          }
+        },
+        {
+          "tool": "renew_contract",
+          "args": {
+            "contract_id": "C-5",
+            "duration": 12
+          }
+        },
+        {
+          "tool": "send_notification",
+          "args": {
+            "customer_name": "张三"
+          }
+        },
+        {
+          "tool": "send_notification",
+          "args": {
+            "customer_name": "王五"
+          }
+        },
+        {
+          "tool": "send_notification",
+          "args": {
+            "customer_name": "钱七"
+          }
+        }
+      ],
+      "expectedState": [
+        {
+          "path": "checked/length",
+          "equals": 5
+        },
+        {
+          "path": "renewed/length",
+          "equals": 3
+        },
+        {
+          "path": "notifications/length",
+          "equals": 3
+        }
+      ],
+      "unchangedState": [
+        "contracts",
+        "other"
+      ],
+      "finalMessageMustContain": [
+        "3"
+      ],
+      "image": "python:3.12-alpine",
+      "expectedImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31"
+    }
+  },
+  "tags": [
+    "chinese",
+    "multi-step",
+    "loop-processing"
+  ],
+  "scenarioVersion": "3.0.0",
+  "scenarioHash": "bb9bbdb963581ac7",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

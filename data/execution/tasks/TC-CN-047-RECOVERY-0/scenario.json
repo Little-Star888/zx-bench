@@ -1,0 +1,183 @@
+{
+  "id": "TC-CN-047-RECOVERY-0",
+  "dimension": "tool_cli_workflow",
+  "category": "multi_step_chain",
+  "difficulty": "hard",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "给账号 user-a 充值 100 元并发送凭证。先核验账号，执行一次充值，从返回交易生成凭证，再给该用户通知正确凭证。不得重复充值或通知其他用户。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "tool_call_trace",
+  "graderVersion": "tool_trace_v4",
+  "scoring": {
+    "type": "tool_call_trace"
+  },
+  "requirements": {
+    "migrationSourceId": "TC-CN-047",
+    "developmentShadow": true,
+    "executionWorld": {
+      "maxTurns": 8,
+      "scoreMode": "strict",
+      "initialState": {
+        "accounts": {
+          "user-a": {
+            "active": true,
+            "balance": 10
+          },
+          "other": {
+            "active": true,
+            "balance": 500
+          }
+        },
+        "topups": [],
+        "receipts": [],
+        "notifications": []
+      },
+      "tools": [
+        {
+          "name": "verify_account",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "uid": "string"
+          },
+          "script": "account=state['accounts'].get(args['uid'])\nif account is None: raise ValueError('ACCOUNT_NOT_FOUND')\nresult={'exists':True,'active':account['active'],'uid':args['uid']}",
+          "description": "查验合成账户是否存在且有效。"
+        },
+        {
+          "name": "recharge",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "uid": "string",
+            "amount": "number"
+          },
+          "script": "account=state['accounts'].get(args['uid'])\nif account is None or not account['active'] or args['amount']<=0: raise ValueError('INVALID_RECHARGE')\naccount['balance']+=args['amount']; txn='credit-'+args['uid']+'-'+str(args['amount'])\nstate['topups'].append({'uid':args['uid'],'amount':args['amount'],'txn':txn}); result={'txn':txn,'balance':account['balance']}",
+          "description": "真实增加模拟余额；重复调用会再次增加。",
+          "requirePriorCall": {
+            "tool": "verify_account",
+            "sameArgs": [
+              "uid"
+            ]
+          }
+        },
+        {
+          "name": "generate_receipt",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "txn": "string"
+          },
+          "script": "entry=next((x for x in state['topups'] if x['txn']==args['txn']),None)\nif entry is None: raise ValueError('UNKNOWN_TXN')\nreceipt='receipt-'+entry['uid']+'-'+str(entry['amount'])\nstate['receipts'].append({'txn':args['txn'],'receipt':receipt}); result={'receipt':receipt}",
+          "description": "只为实际充值交易生成凭证。",
+          "requirePriorCall": {
+            "tool": "recharge"
+          }
+        },
+        {
+          "name": "notify_user",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "uid": "string",
+            "msg": "string"
+          },
+          "script": "if not state['receipts'] or args['uid']!=state['topups'][-1]['uid'] or state['receipts'][-1]['receipt'] not in args['msg']: raise ValueError('RECEIPT_OR_USER_MISMATCH')\nstate['notifications'].append(args); result={'sent':True}",
+          "description": "核对收件人及实际凭证后写入本地通知账本。",
+          "requirePriorCall": {
+            "tool": "generate_receipt"
+          }
+        }
+      ],
+      "requiredCalls": [
+        {
+          "tool": "verify_account",
+          "args": {
+            "uid": "user-a"
+          }
+        },
+        {
+          "tool": "recharge",
+          "args": {
+            "uid": "user-a",
+            "amount": 100
+          }
+        },
+        {
+          "tool": "generate_receipt",
+          "args": {
+            "txn": "credit-user-a-100"
+          }
+        },
+        {
+          "tool": "notify_user",
+          "args": {
+            "uid": "user-a"
+          }
+        }
+      ],
+      "expectedState": [
+        {
+          "path": "accounts/user-a/balance",
+          "equals": 110
+        },
+        {
+          "path": "topups",
+          "equals": [
+            {
+              "uid": "user-a",
+              "amount": 100,
+              "txn": "credit-user-a-100"
+            }
+          ]
+        },
+        {
+          "path": "receipts",
+          "equals": [
+            {
+              "txn": "credit-user-a-100",
+              "receipt": "receipt-user-a-100"
+            }
+          ]
+        },
+        {
+          "path": "notifications/length",
+          "equals": 1
+        },
+        {
+          "path": "notifications/0/uid",
+          "equals": "user-a"
+        }
+      ],
+      "finalMessageMustContain": [
+        "receipt-user-a-100"
+      ],
+      "unchangedState": [
+        "accounts/other"
+      ],
+      "image": "python:3.12-alpine",
+      "expectedImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31"
+    }
+  },
+  "tags": [
+    "chinese",
+    "strict-order",
+    "dependency",
+    "hard"
+  ],
+  "scenarioVersion": "3.0.0",
+  "scenarioHash": "07ae2229e84210ae",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

@@ -1,0 +1,69 @@
+{
+  "id": "CLI-CN-051-DOCKER",
+  "dimension": "cli_deep_tasks",
+  "category": "text_processing",
+  "difficulty": "easy",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "在 /workspace 中执行任务。环境为 Alpine/BusyBox，提供 POSIX sh 和 Python 3 标准库，不提供 bash 或 GNU 工具；提交脚本统一以 sh 执行。输出 syslog.txt 中所有包含独立单词 error 的行（区分大小写），保留原始行顺序。只输出可执行 shell 脚本。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "cli_command",
+  "graderVersion": "cli_command_v1",
+  "scoring": {
+    "type": "cli_command",
+    "mode": "executed_state"
+  },
+  "requirements": {
+    "executionImage": "python:3.12-alpine",
+    "executionImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31",
+    "executionInterpreter": "sh",
+    "executionCases": [
+      {
+        "files": [
+          {
+            "path": "syslog.txt",
+            "content": "error happened\nterror ignored\npre error post\nERROR uppercase\n"
+          }
+        ],
+        "expectedStdout": "error happened\npre error post\n",
+        "unchangedFiles": [
+          "syslog.txt"
+        ]
+      },
+      {
+        "files": [
+          {
+            "path": "syslog.txt",
+            "content": "error\nerrors ignored\nno issue\n[error] occurred\n"
+          }
+        ],
+        "expectedStdout": "error\n[error] occurred\n",
+        "unchangedFiles": [
+          "syslog.txt"
+        ]
+      }
+    ],
+    "migrationSourceId": "CLI-CN-051",
+    "developmentShadow": true
+  },
+  "tags": [
+    "cli",
+    "text",
+    "easy"
+  ],
+  "scenarioVersion": "2.1.0",
+  "scenarioHash": "d5c776fd12c28207",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

@@ -1,0 +1,136 @@
+{
+  "id": "TC-CN-022-DOCKER",
+  "dimension": "tool_cli_workflow",
+  "category": "cli_operations",
+  "difficulty": "medium",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "工作区 /workspace，Linux sh 和 Python 3 标准库可用。使用 Alpine/BusyBox 工具，提交脚本统一以 POSIX sh 执行，未提供 bash 或 GNU 工具。data/logs/ 中有新旧 .log 及非日志文件。以固定时钟 2026-09-26T12:00Z 为准，把超过 7 天的 .log 归档到 archive.tar.gz 后删除原件；恰好 7 天和其他扩展名须保留，stdout 输出处理个数。只输出可执行 shell 脚本。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "cli_command",
+  "graderVersion": "cli_command_v5",
+  "scoring": {
+    "type": "cli_command",
+    "mode": "executed_state"
+  },
+  "requirements": {
+    "migrationSourceId": "TC-CN-022",
+    "developmentShadow": true,
+    "executionInterpreter": "sh",
+    "executionImage": "python:3.12-alpine",
+    "executionImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31",
+    "executionCases": [
+      {
+        "files": [
+          {
+            "path": "data/logs/a/old 1.log",
+            "content": "old-a-0"
+          },
+          {
+            "path": "data/logs/b/old2.log",
+            "content": "old-b-0"
+          },
+          {
+            "path": "data/logs/exact.log",
+            "content": "exact"
+          },
+          {
+            "path": "data/logs/new.log",
+            "content": "new"
+          },
+          {
+            "path": "data/logs/old.txt",
+            "content": "other"
+          },
+          {
+            "path": "sentinel",
+            "content": "keep"
+          }
+        ],
+        "setupCommands": [
+          "python3 -I - <<'PY'\nimport os,datetime\nnow=datetime.datetime(2026,9,26,12,tzinfo=datetime.timezone.utc).timestamp()\nfor name,age in [('data/logs/a/old 1.log',8+0),('data/logs/b/old2.log',15),('data/logs/exact.log',7),('data/logs/new.log',1),('data/logs/old.txt',20)]:\n    os.utime(name,(now-age*86400,now-age*86400))\nPY"
+        ],
+        "absentFiles": [
+          "data/logs/a/old 1.log",
+          "data/logs/b/old2.log"
+        ],
+        "unchangedFiles": [
+          "data/logs/exact.log",
+          "data/logs/new.log",
+          "data/logs/old.txt",
+          "sentinel"
+        ],
+        "expectedStdout": "2\n",
+        "assertCommands": [
+          "python3 -I - <<'PY'\nfrom pathlib import Path\nimport tarfile\nwith tarfile.open('archive.tar.gz','r:gz') as tar:\n    names=sorted(tar.getnames())\n    assert names==[\"data/logs/a/old 1.log\",\"data/logs/b/old2.log\"]\n    for name in names: assert tar.extractfile(name).read()=={\"data/logs/a/old 1.log\":\"old-a-0\",\"data/logs/b/old2.log\":\"old-b-0\"}[name].encode()\nPY"
+        ]
+      },
+      {
+        "files": [
+          {
+            "path": "data/logs/a/old 1.log",
+            "content": "old-a-1"
+          },
+          {
+            "path": "data/logs/b/old2.log",
+            "content": "old-b-1"
+          },
+          {
+            "path": "data/logs/exact.log",
+            "content": "exact"
+          },
+          {
+            "path": "data/logs/new.log",
+            "content": "new"
+          },
+          {
+            "path": "data/logs/old.txt",
+            "content": "other"
+          },
+          {
+            "path": "sentinel",
+            "content": "keep"
+          }
+        ],
+        "setupCommands": [
+          "python3 -I - <<'PY'\nimport os,datetime\nnow=datetime.datetime(2026,9,26,12,tzinfo=datetime.timezone.utc).timestamp()\nfor name,age in [('data/logs/a/old 1.log',8+1),('data/logs/b/old2.log',15),('data/logs/exact.log',7),('data/logs/new.log',1),('data/logs/old.txt',20)]:\n    os.utime(name,(now-age*86400,now-age*86400))\nPY"
+        ],
+        "absentFiles": [
+          "data/logs/a/old 1.log",
+          "data/logs/b/old2.log"
+        ],
+        "unchangedFiles": [
+          "data/logs/exact.log",
+          "data/logs/new.log",
+          "data/logs/old.txt",
+          "sentinel"
+        ],
+        "expectedStdout": "2\n",
+        "assertCommands": [
+          "python3 -I - <<'PY'\nfrom pathlib import Path\nimport tarfile\nwith tarfile.open('archive.tar.gz','r:gz') as tar:\n    names=sorted(tar.getnames())\n    assert names==[\"data/logs/a/old 1.log\",\"data/logs/b/old2.log\"]\n    for name in names: assert tar.extractfile(name).read()=={\"data/logs/a/old 1.log\":\"old-a-1\",\"data/logs/b/old2.log\":\"old-b-1\"}[name].encode()\nPY"
+        ]
+      }
+    ]
+  },
+  "tags": [
+    "chinese",
+    "cli",
+    "file-processing",
+    "linux"
+  ],
+  "scenarioVersion": "3.1.0",
+  "scenarioHash": "a3cc1b0a586b68c4",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

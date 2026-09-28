@@ -1,0 +1,95 @@
+{
+  "id": "HA-CN-040-RECOVERY-0",
+  "dimension": "agent_workflow",
+  "category": "delegation_recovery",
+  "difficulty": "adversarial",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "委派子任务“汇总故障日志”。Hermes 明确禁止子任务使用 delegate_task、clarify、memory、send_message、execute_code；请仅分配完成任务所需的工具集，提交一次委派。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "agent_trace",
+  "graderVersion": "agent_trace_v5",
+  "scoring": {
+    "type": "agent_trace"
+  },
+  "requirements": {
+    "migrationSourceId": "HA-CN-040",
+    "developmentShadow": true,
+    "executionWorld": {
+      "maxTurns": 8,
+      "scoreMode": "strict",
+      "initialState": {
+        "goal": "汇总故障日志",
+        "forbidden": [
+          "delegate_task",
+          "clarify",
+          "memory",
+          "send_message",
+          "execute_code"
+        ],
+        "delegations": [],
+        "rejections": [],
+        "other": "keep"
+      },
+      "tools": [
+        {
+          "name": "delegate_task",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "goal": "string",
+            "context": "string",
+            "toolsets": "array"
+          },
+          "script": "tools=args['toolsets']\nif args['goal']!=state['goal'] or any(not isinstance(x,str) for x in tools) or not tools: raise ValueError('INVALID_DELEGATION')\nblocked=[x for x in tools if x in state['forbidden']]\nif blocked:\n    state['rejections'].append(blocked); raise ValueError('FORBIDDEN_TOOLSET')\nstate['delegations'].append(args); result={'accepted':True,'toolsets':tools}",
+          "description": "校验委派边界后才登记子任务。"
+        }
+      ],
+      "requiredCalls": [
+        {
+          "tool": "delegate_task",
+          "args": {
+            "goal": "汇总故障日志"
+          }
+        }
+      ],
+      "expectedState": [
+        {
+          "path": "delegations/length",
+          "equals": 1
+        },
+        {
+          "path": "delegations/0/goal",
+          "equals": "汇总故障日志"
+        }
+      ],
+      "unchangedState": [
+        "forbidden",
+        "other"
+      ],
+      "image": "python:3.12-alpine",
+      "expectedImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31"
+    }
+  },
+  "tags": [
+    "agent",
+    "delegation",
+    "boundary",
+    "blocked-tools"
+  ],
+  "scenarioVersion": "3.0.0",
+  "scenarioHash": "04cd1a4a5aadaa27",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

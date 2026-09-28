@@ -1,0 +1,95 @@
+{
+  "id": "CLI-CN-048-DOCKER",
+  "dimension": "cli_deep_tasks",
+  "category": "error_recovery",
+  "difficulty": "hard",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "工作区 /workspace，Linux sh 和 Python 3 标准库可用。也提供 bash；脚本按 sh/bash shebang 选择解释器，无 shebang 使用 sh。mytool 已安装在 workspace/opt/mytool/bin，但当前 bash 会话找不到。写 session.sh：把该目录加入当前 PATH，刷新 shell 命令缓存，再运行 mytool；实际执行脚本并将工具输出保存到 output.txt。只输出可执行 shell 脚本。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "cli_command",
+  "graderVersion": "cli_command_v5",
+  "scoring": {
+    "type": "cli_command",
+    "mode": "executed_state"
+  },
+  "requirements": {
+    "migrationSourceId": "CLI-CN-048",
+    "developmentShadow": true,
+    "executionInterpreter": "shebang",
+    "executionImage": "benchlocal/cli-40-verifier:local",
+    "executionImageId": "sha256:2cde3ddc15a55504784cc1e45f37faec3ddb22957436a6bbac0bb03c8ef664ee",
+    "executionCases": [
+      {
+        "files": [
+          {
+            "path": "opt/mytool/bin/mytool",
+            "content": "#!/bin/sh\necho tool-0\n"
+          },
+          {
+            "path": "sentinel",
+            "content": "keep"
+          }
+        ],
+        "setupCommands": [
+          "chmod 755 opt/mytool/bin/mytool"
+        ],
+        "expectedFiles": {
+          "output.txt": "tool-0\n"
+        },
+        "unchangedFiles": [
+          "opt/mytool/bin/mytool",
+          "sentinel"
+        ],
+        "assertCommands": [
+          "python3 -I - <<'PY'\nimport subprocess\nr=subprocess.run(['bash','-x','session.sh'],capture_output=True,text=True)\nassert any(line.lstrip('+ ').strip()=='hash -r' for line in r.stderr.splitlines())\nassert any(line.lstrip('+ ').strip()=='mytool' for line in r.stderr.splitlines())\nassert r.returncode==0 and r.stdout==\"tool-0\\n\"\nPY"
+        ]
+      },
+      {
+        "files": [
+          {
+            "path": "opt/mytool/bin/mytool",
+            "content": "#!/bin/sh\necho tool-1\n"
+          },
+          {
+            "path": "sentinel",
+            "content": "keep"
+          }
+        ],
+        "setupCommands": [
+          "chmod 755 opt/mytool/bin/mytool"
+        ],
+        "expectedFiles": {
+          "output.txt": "tool-1\n"
+        },
+        "unchangedFiles": [
+          "opt/mytool/bin/mytool",
+          "sentinel"
+        ],
+        "assertCommands": [
+          "python3 -I - <<'PY'\nimport subprocess\nr=subprocess.run(['bash','-x','session.sh'],capture_output=True,text=True)\nassert any(line.lstrip('+ ').strip()=='hash -r' for line in r.stderr.splitlines())\nassert any(line.lstrip('+ ').strip()=='mytool' for line in r.stderr.splitlines())\nassert r.returncode==0 and r.stdout==\"tool-1\\n\"\nPY"
+        ]
+      }
+    ]
+  },
+  "tags": [
+    "cli",
+    "recovery",
+    "path-hash"
+  ],
+  "scenarioVersion": "3.1.0",
+  "scenarioHash": "e83de2932430ac02",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

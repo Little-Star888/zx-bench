@@ -1,0 +1,27 @@
+[
+  {
+    "tool": "fs.glob",
+    "args": {
+      "pattern": "src/*.js"
+    }
+  },
+  {
+    "tool": "fs.read",
+    "args": {
+      "path": "src/a.js"
+    }
+  },
+  {
+    "tool": "fs.patch",
+    "args": {
+      "path": "src/a.js",
+      "content": "const a = 4;\nmodule.exports = a;\n"
+    }
+  },
+  {
+    "tool": "terminal",
+    "args": {
+      "cmd": "node test.js"
+    }
+  }
+]

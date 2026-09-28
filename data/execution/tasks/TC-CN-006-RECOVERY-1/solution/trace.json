@@ -1,0 +1,27 @@
+[
+  {
+    "tool": "search_intranet",
+    "args": {
+      "query": "远程办公政策"
+    }
+  },
+  {
+    "tool": "read_document",
+    "args": {
+      "doc_id": "policy-25"
+    }
+  },
+  {
+    "tool": "summarize_text",
+    "args": {
+      "text": "远程办公每周最多三天，需提前申请"
+    }
+  },
+  {
+    "tool": "send_email",
+    "args": {
+      "to": "user@example.test",
+      "body": "远程办公每周最多三天，需提前申请"
+    }
+  }
+]

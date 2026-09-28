@@ -1,0 +1,14 @@
+{
+  "status": "passed",
+  "counts": {
+    "positive": 2,
+    "negative": 2
+  },
+  "hashes": {
+    "development": "3287d7ad9e4acccb2911cfaaba55cb8989e9102a6d81dec2f1dbeb832e43cacd",
+    "holdout": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "gold": "3bfcbffa5fa58ab612aee98dc3d7b9976367a126b033fa2a84e340bfda8b1958"
+  },
+  "checkedAt": "2026-09-26T15:40:56.397Z",
+  "scope": "Frozen witnesses and directed negatives; no model calls."
+}

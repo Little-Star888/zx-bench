@@ -1,0 +1,132 @@
+{
+  "id": "TC-CN-041-RECOVERY-1",
+  "dimension": "tool_cli_workflow",
+  "category": "param_precision",
+  "difficulty": "hard",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "查询北京明日天气，温度必须为摄氏度。调用 get_weather 时给出完整 location、date、unit；禁止顺手查询新闻或发送消息。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "tool_call_trace",
+  "graderVersion": "tool_trace_v4",
+  "scoring": {
+    "type": "tool_call_trace"
+  },
+  "requirements": {
+    "migrationSourceId": "TC-CN-041",
+    "developmentShadow": true,
+    "executionWorld": {
+      "maxTurns": 8,
+      "scoreMode": "strict",
+      "initialState": {
+        "weather": {
+          "city": "北京",
+          "date": "明日",
+          "unit": "celsius",
+          "temperature": 22
+        },
+        "queries": [],
+        "news": 0,
+        "messages": [],
+        "other": "keep"
+      },
+      "tools": [
+        {
+          "name": "get_weather",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "location": "string",
+            "date": "string",
+            "unit": "string"
+          },
+          "script": "state['queries'].append(args)\nif args['location']!='北京' or args['date']!=state['weather']['date'] or args['unit']!='celsius': raise ValueError('WRONG_WEATHER_PARAMS')\nresult={'temperature':state['weather']['temperature'],'unit':'celsius'}",
+          "description": "返回固定的北京天气。"
+        },
+        {
+          "name": "search_news",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {},
+          "script": "state['news']+=1; result={}",
+          "description": "无关查询。"
+        },
+        {
+          "name": "send_message",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "text": "string"
+          },
+          "script": "state['messages'].append(args['text']); result={}",
+          "description": "无关消息。"
+        }
+      ],
+      "requiredCalls": [
+        {
+          "tool": "get_weather",
+          "args": {
+            "location": "北京",
+            "date": "明日",
+            "unit": "celsius"
+          }
+        }
+      ],
+      "forbiddenCalls": [
+        "search_news",
+        "send_message"
+      ],
+      "expectedState": [
+        {
+          "path": "queries",
+          "equals": [
+            {
+              "location": "北京",
+              "date": "明日",
+              "unit": "celsius"
+            }
+          ]
+        },
+        {
+          "path": "news",
+          "equals": 0
+        },
+        {
+          "path": "messages",
+          "equals": []
+        }
+      ],
+      "unchangedState": [
+        "weather",
+        "other"
+      ],
+      "finalMessageMustContain": [
+        "北京",
+        "°C"
+      ],
+      "image": "python:3.12-alpine",
+      "expectedImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31"
+    }
+  },
+  "tags": [
+    "chinese",
+    "param-precision",
+    "structured",
+    "hard"
+  ],
+  "scenarioVersion": "3.0.0",
+  "scenarioHash": "a39bab97e1bc9fb8",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

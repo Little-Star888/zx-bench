@@ -1,0 +1,104 @@
+{
+  "id": "CLI-CN-028-DOCKER",
+  "dimension": "cli_deep_tasks",
+  "category": "diagnose_fix",
+  "difficulty": "adversarial",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "工作区 /workspace，Linux sh 和 Python 3 标准库可用。也提供 bash；脚本按 sh/bash shebang 选择解释器，无 shebang 使用 sh。code/ 中真实 make build 因 Makefile 把 Main.c 写成 main.c 而失败。只修 Makefile 的文件名引用，之后重跑 make build 并执行产物；不能创建符号链接或复制源码。只输出可执行 shell 脚本。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "cli_command",
+  "graderVersion": "cli_command_v5",
+  "scoring": {
+    "type": "cli_command",
+    "mode": "executed_state"
+  },
+  "requirements": {
+    "migrationSourceId": "CLI-CN-028",
+    "developmentShadow": true,
+    "executionInterpreter": "shebang",
+    "executionImage": "gcc:13",
+    "executionImageId": "sha256:056fa682471704249f619f65ccec87d671ad5f1b20878da54d60b0b863486621",
+    "executionCases": [
+      {
+        "files": [
+          {
+            "path": "code/Makefile",
+            "content": "build:\n\tcc -o app main.c\n"
+          },
+          {
+            "path": "code/Main.c",
+            "content": "#include <stdio.h>\nint main(void){ puts(\"version-0\"); return 0; }\n"
+          },
+          {
+            "path": "sentinel",
+            "content": "keep"
+          }
+        ],
+        "expectedFiles": {
+          "code/Makefile": "build:\n\tcc -o app Main.c\n"
+        },
+        "unchangedFiles": [
+          "code/Main.c",
+          "sentinel"
+        ],
+        "absentFiles": [
+          "code/main.c"
+        ],
+        "assertCommands": [
+          "python3 -I - <<'PY'\nimport subprocess\nassert subprocess.check_output(['./app'],cwd='code',text=True)==\"version-0\\n\"\nPY"
+        ]
+      },
+      {
+        "files": [
+          {
+            "path": "code/Makefile",
+            "content": "build:\n\tcc -o app main.c\n"
+          },
+          {
+            "path": "code/Main.c",
+            "content": "#include <stdio.h>\nint main(void){ puts(\"version-1\"); return 0; }\n"
+          },
+          {
+            "path": "sentinel",
+            "content": "keep"
+          }
+        ],
+        "expectedFiles": {
+          "code/Makefile": "build:\n\tcc -o app Main.c\n"
+        },
+        "unchangedFiles": [
+          "code/Main.c",
+          "sentinel"
+        ],
+        "absentFiles": [
+          "code/main.c"
+        ],
+        "assertCommands": [
+          "python3 -I - <<'PY'\nimport subprocess\nassert subprocess.check_output(['./app'],cwd='code',text=True)==\"version-1\\n\"\nPY"
+        ]
+      }
+    ]
+  },
+  "tags": [
+    "cli",
+    "diagnose",
+    "case-sensitive",
+    "trap"
+  ],
+  "scenarioVersion": "3.1.0",
+  "scenarioHash": "7994e0ab6d4d95ee",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

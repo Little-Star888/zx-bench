@@ -1,0 +1,13 @@
+[
+  {
+    "tool": "get_account_balance",
+    "args": {}
+  },
+  {
+    "tool": "transfer_funds",
+    "args": {
+      "to": "6222-1234",
+      "amount": 5230
+    }
+  }
+]

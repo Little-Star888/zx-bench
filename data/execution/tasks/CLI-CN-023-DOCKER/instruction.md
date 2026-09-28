@@ -1,0 +1,1 @@
+工作区 /workspace，Linux sh 和 Python 3 标准库可用。使用 Alpine/BusyBox 工具，提交脚本统一以 POSIX sh 执行，未提供 bash 或 GNU 工具。archive.tar 有 20 个普通文件。生成 new.tar，仅把 config.ini 的 mode=dev 改为 mode=prod。保持条目顺序、各条目 uid/gid/mode/mtime/uname/gname 及其余文件字节不变。原归档不能修改。只输出可执行 shell 脚本。

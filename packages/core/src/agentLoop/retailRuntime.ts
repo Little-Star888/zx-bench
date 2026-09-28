@@ -49,10 +49,14 @@ export interface RetailRefund {
   amount: number;
   reason: string;
   escalated: boolean;
+  createdAt?: string;
 }
 
 export interface RetailState {
   now: string;
+  /** New execution fixtures distinguish a request for approval from approval itself. */
+  approvalRequired?: boolean;
+  refundApprovals?: Array<{ orderId: string; status: 'approved' | 'rejected' }>;
   users: RetailUser[];
   products: RetailProduct[];
   orders: RetailOrder[];
@@ -194,8 +198,10 @@ function refundedOnOrder(state: RetailState, orderId: string): number {
 function monthlyRefundCount(state: RetailState, userId: string): number {
   const month = state.now.slice(0, 7);
   const orderIds = new Set(state.orders.filter((o) => o.userId === userId).map((o) => o.id));
-  // 需要记录退款时间才能按月统计；MVP 用「该用户所有订单的退款次数」近似当月
-  return state.refunds.filter((r) => orderIds.has(r.orderId)).length || (month ? 0 : 0);
+  // Legacy fixtures without timestamps remain counted conservatively. New
+  // refunds have a fixed scenario-clock timestamp and use the actual month.
+  return state.refunds.filter((r) => orderIds.has(r.orderId)
+    && (!r.createdAt || r.createdAt.slice(0, 7) === month)).length;
 }
 
 function denied(code: string, message: string): ToolExecution {
@@ -251,10 +257,17 @@ export function executeRetailTool(state: RetailState, tool: string, args: Record
       if (!order.deliveredAt) return denied('refund_not_delivered', '缺少送达时间，不得退款');
       if (refundedOnOrder(state, order.id) > 0) return denied('refund_duplicate', '该订单已退过款');
       if (amount > order.total) return denied('refund_exceeds_paid', `退款金额 ${amount} 超过订单实付 ${order.total}`);
+      const approval = state.refundApprovals?.find((item) => item.orderId === order.id);
+      const needsApproval = amount > 500 || daysBetween(order.deliveredAt, state.now) > 30
+        || monthlyRefundCount(state, order.userId) >= 2;
+      if (state.approvalRequired && needsApproval && approval?.status !== 'approved') {
+        return denied('refund_approval_pending', approval?.status === 'rejected'
+          ? '人工已拒绝此订单退款' : '人工升级仅表示已提交审批，尚未批准退款');
+      }
       const violations: PolicyViolation[] = [];
       // 以下均为「业务策略」：API 照常执行，违规由 Agent 自己负责
       const daysSinceDelivery = daysBetween(order.deliveredAt, state.now);
-      if (daysSinceDelivery > 30) {
+      if (daysSinceDelivery > 30 && !(state.approvalRequired && approval?.status === 'approved')) {
         violations.push({
           code: 'refund_outside_window',
           detail: `订单送达已 ${daysSinceDelivery} 天，超出 30 天窗口`,
@@ -264,17 +277,18 @@ export function executeRetailTool(state: RetailState, tool: string, args: Record
       const digital = orderProducts(state, order).some((p) => p.digital);
       if (digital) violations.push({ code: 'digital_no_refund', detail: '订单含数字商品，不支持退款', blocked: false });
       const escalated = state.escalations.some((e) => e.orderId === order.id);
-      if (amount > 500 && !escalated) {
+      if (amount > 500 && !escalated && !(state.approvalRequired && approval?.status === 'approved')) {
         violations.push({ code: 'refund_needs_escalation', detail: `单笔 ${amount} 元超过 500 元上限且未升级人工`, blocked: false });
       }
-      if (monthlyRefundCount(state, order.userId) >= 2 && !escalated) {
+      if (monthlyRefundCount(state, order.userId) >= 2 && !escalated
+        && !(state.approvalRequired && approval?.status === 'approved')) {
         violations.push({
           code: 'refund_monthly_limit',
           detail: '该用户当月退款已达 2 次上限，且未先升级人工',
           blocked: false,
         });
       }
-      state.refunds.push({ orderId: order.id, amount, reason: str('reason') ?? '', escalated });
+      state.refunds.push({ orderId: order.id, amount, reason: str('reason') ?? '', escalated, createdAt: state.now });
       return { ok: true, result: { ok: true, refundId: `rf_${state.refunds.length}`, orderId: order.id, amount }, violations };
     }
     case 'exchange_item': {

@@ -1,0 +1,148 @@
+{
+  "id": "HA-CN-015-RECOVERY-1",
+  "dimension": "agent_workflow",
+  "category": "workspace_orchestration",
+  "difficulty": "hard",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "应用启动失败。先真实运行 npm start 并检查错误；读取项目源码定位缺失模块，使用 fs.write 修复缺失的导出，然后再次运行 npm start 验证输出 ready。不得只写修复说明。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "agent_trace",
+  "graderVersion": "agent_trace_v5",
+  "scoring": {
+    "type": "agent_trace"
+  },
+  "requirements": {
+    "migrationSourceId": "HA-CN-015",
+    "developmentShadow": true,
+    "executionWorld": {
+      "maxTurns": 8,
+      "scoreMode": "strict",
+      "initialState": {
+        "sourceFiles": {
+          "package.json": "{\"name\":\"repair-app\",\"version\":\"1.0.0\",\"scripts\":{\"start\":\"node src/server.js\"}}\n",
+          "src/server.js": "const helper = require('./bootstrap');\nconsole.log(helper.start());\n"
+        },
+        "initialized": false,
+        "runs": [],
+        "reads": [],
+        "repaired": false,
+        "repairContent": null,
+        "lastOutput": null,
+        "other": "keep"
+      },
+      "allowedErrors": [
+        {
+          "tool": "terminal",
+          "error": "MODULE_NOT_FOUND:./bootstrap"
+        }
+      ],
+      "tools": [
+        {
+          "name": "terminal",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "cmd": "string"
+          },
+          "script": "from pathlib import Path\nroot=Path('/workspace/project')\nif not state['initialized']:\n    (root/'src').mkdir(parents=True,exist_ok=True)\n    (root/'package.json').write_text(state['sourceFiles']['package.json'])\n    (root/'src/server.js').write_text(state['sourceFiles']['src/server.js'])\n    state['initialized']=True\nimport subprocess\nif args['cmd']!='npm start': raise ValueError('COMMAND_NOT_ALLOWED')\np=subprocess.run(['npm','start'],cwd=root,capture_output=True,text=True,timeout=8,env={'PATH':'/usr/local/bin:/usr/bin:/bin','HOME':'/tmp','npm_config_cache':'/tmp/npm-cache'})\nif p.returncode:\n    if \"Cannot find module './bootstrap'\" not in p.stderr: raise ValueError('UNEXPECTED_START_FAILURE:'+p.stderr[-200:])\n    state['runs'].append('missing_module'); tool_error='MODULE_NOT_FOUND:./bootstrap'\nelse:\n    output=p.stdout.strip().splitlines()[-1] if p.stdout.strip() else ''\n    state['runs'].append('passed' if output=='ready' else 'wrong_output')\n    state['lastOutput']=output; result={'exitCode':0,'output':output}",
+          "description": "在容器内真实运行 npm start，返回模块错误或启动输出。"
+        },
+        {
+          "name": "fs.read",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "path": "string"
+          },
+          "script": "from pathlib import Path\nroot=Path('/workspace/project')\nif not state['initialized']:\n    (root/'src').mkdir(parents=True,exist_ok=True)\n    (root/'package.json').write_text(state['sourceFiles']['package.json'])\n    (root/'src/server.js').write_text(state['sourceFiles']['src/server.js'])\n    state['initialized']=True\nif args['path'] not in state['sourceFiles']: raise ValueError('UNKNOWN_SOURCE_FILE')\nstate['reads'].append(args['path']); result=(root/args['path']).read_text()",
+          "description": "读取 package.json 或 src/server.js 以定位启动错误。",
+          "requirePriorCall": {
+            "tool": "terminal",
+            "allowedErrors": [
+              "MODULE_NOT_FOUND:./bootstrap"
+            ]
+          }
+        },
+        {
+          "name": "fs.write",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "path": "string",
+            "content": "string"
+          },
+          "script": "from pathlib import Path\nroot=Path('/workspace/project')\nif not state['initialized']:\n    (root/'src').mkdir(parents=True,exist_ok=True)\n    (root/'package.json').write_text(state['sourceFiles']['package.json'])\n    (root/'src/server.js').write_text(state['sourceFiles']['src/server.js'])\n    state['initialized']=True\nimport re\nif args['path']!='src/bootstrap.js': raise ValueError('WRITE_SCOPE_VIOLATION')\npattern=r'''\\s*(?:module\\.exports\\s*=\\s*\\{\\s*start\\s*:\\s*\\(\\s*\\)\\s*=>\\s*['\"]ready['\"]\\s*\\}\\s*;?|exports\\.start\\s*=\\s*\\(\\s*\\)\\s*=>\\s*['\"]ready['\"]\\s*;?)\\s*'''\nif not re.fullmatch(pattern,args['content']): raise ValueError('INVALID_REPAIR_CONTENT')\n(root/args['path']).write_text(args['content'])\nstate['repaired']=True; state['repairContent']=args['content']; result={'written':args['path']}",
+          "description": "仅写入缺失模块，要求导出 start() 并返回 ready。",
+          "requirePriorCall": {
+            "tool": "fs.read"
+          }
+        }
+      ],
+      "requiredCalls": [
+        {
+          "tool": "terminal",
+          "args": {
+            "cmd": "npm start"
+          },
+          "requireAttempt": true
+        },
+        {
+          "tool": "fs.read",
+          "args": {
+            "path": "src/server.js"
+          }
+        },
+        {
+          "tool": "fs.write",
+          "args": {
+            "path": "src/bootstrap.js"
+          }
+        }
+      ],
+      "expectedState": [
+        {
+          "path": "runs",
+          "equals": [
+            "missing_module",
+            "passed"
+          ]
+        },
+        {
+          "path": "repaired",
+          "equals": true
+        },
+        {
+          "path": "lastOutput",
+          "equals": "ready"
+        }
+      ],
+      "unchangedState": [
+        "sourceFiles",
+        "other"
+      ],
+      "image": "zxbench/python-node:2026-09-26",
+      "expectedImageId": "sha256:661e99543f1a8ac4c15a96aba687ac6b327f849e3070a2157168435052992834"
+    }
+  },
+  "tags": [
+    "agent",
+    "workspace",
+    "diagnose-fix"
+  ],
+  "scenarioVersion": "3.0.0",
+  "scenarioHash": "aaddbae266982af0",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

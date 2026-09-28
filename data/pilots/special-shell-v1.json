@@ -1,0 +1,117 @@
+[
+  {
+    "id": "CLI-CN-031-SHELL-PILOT",
+    "dimension": "cli_deep_tasks",
+    "category": "investigation",
+    "difficulty": "hard",
+    "language": "general",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "promptTemplate": "/workspace/data/ 目录树下有唯一的一个明显最大的文件。请调查并确定它是哪个，最后用一行「ANSWER: <绝对路径>」给出该文件的绝对路径。请先展示你用 find/du 排查的过程。",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "cli_command",
+    "graderVersion": "cli_command_v5",
+    "scoring": {
+      "type": "cli_command",
+      "mode": "executed_investigation"
+    },
+    "requirements": {
+      "executionShell": {
+        "image": "node:22-alpine",
+        "files": [
+          {
+            "path": "data/readme.md",
+            "content": "# Data Archive\n\n目录内数据文件按用途归档。"
+          },
+          {
+            "path": "__zx_size_setup.mjs",
+            "content": "import fs from 'node:fs'; import path from 'node:path';\nfor (const item of [{\"path\":\"data/logs/app-2025-01.log\",\"size\":12583},{\"path\":\"data/logs/app-2025-02.log\",\"size\":11796},{\"path\":\"data/reports/q3-summary.pdf\",\"size\":88080},{\"path\":\"data/archive/biggest.dat\",\"size\":5242880},{\"path\":\"data/archive/old-backup.tar.gz\",\"size\":1342177},{\"path\":\"data/tmp/cache-1.bin\",\"size\":167772}]) { fs.mkdirSync(path.dirname(item.path), {recursive:true}); fs.writeFileSync(item.path, Buffer.alloc(item.size)); }\n"
+          }
+        ],
+        "setupCommands": [
+          "node __zx_size_setup.mjs && rm __zx_size_setup.mjs"
+        ],
+        "answer": "/workspace/data/archive/biggest.dat",
+        "maxTurns": 5,
+        "minCommands": 1,
+        "expectedImageId": "sha256:c610fcdfb1d5b4740dd70c284ed3cb16bb857e0f7166196e36a5501df7a3aa32"
+      },
+      "developmentShadow": true
+    },
+    "tags": [
+      "cli",
+      "investigation",
+      "largest-file"
+    ],
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "7c69f6de23cddbb8",
+    "responseMode": "live_execution",
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null
+  },
+  {
+    "id": "CLI-CN-032-SHELL-PILOT",
+    "dimension": "cli_deep_tasks",
+    "category": "investigation",
+    "difficulty": "adversarial",
+    "language": "general",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "promptTemplate": "/workspace/repo/ 是一个 git 仓库。请调查其历史中有多少位唯一作者（按作者 email 去重，而非按名字——名字相同 email 不同算不同人，且不要计入 committer 字段）。最后用一行「ANSWER: <整数>」给出数量。请展示你用 git log --format='%ae' 排查的过程。",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "cli_command",
+    "graderVersion": "cli_command_v5",
+    "scoring": {
+      "type": "cli_command",
+      "mode": "executed_investigation"
+    },
+    "requirements": {
+      "executionShell": {
+        "image": "gcc:13",
+        "files": [
+          {
+            "path": "__zx_git_setup.py",
+            "content": "import base64, json, os, pathlib, subprocess\nrepo = json.loads(base64.b64decode('eyJwYXRoIjoicmVwbyIsImNvbW1pdHMiOlt7ImF1dGhvck5hbWUiOiJBbGljZSBDaGVuIiwiYXV0aG9yRW1haWwiOiJhbGljZUBleGFtcGxlLmNvbSIsIm1lc3NhZ2UiOiJpbml0OiBzY2FmZm9sZCBwcm9qZWN0IiwiZmlsZXMiOlt7InBhdGgiOiJSRUFETUUubWQiLCJjb250ZW50IjoiIyByZXBvXG4ifV19LHsiYXV0aG9yTmFtZSI6IkJvYiBMaXUiLCJhdXRob3JFbWFpbCI6ImJvYkBleGFtcGxlLmNvbSIsIm1lc3NhZ2UiOiJmZWF0OiBhZGQgY29yZSBtb2R1bGUiLCJmaWxlcyI6W3sicGF0aCI6InNyYy9jb3JlLnRzIiwiY29udGVudCI6ImV4cG9ydCBjb25zdCBWRVJTSU9OID0gXCIxLjAuMFwiO1xuIn1dfSx7ImF1dGhvck5hbWUiOiJBbGljZSBDaGVuIiwiYXV0aG9yRW1haWwiOiJhbGljZUBleGFtcGxlLmNvbSIsIm1lc3NhZ2UiOiJmaXg6IGNvcnJlY3QgdHlwbyBpbiBkb2NzIiwiZmlsZXMiOlt7InBhdGgiOiJSRUFETUUubWQiLCJjb250ZW50IjoiIyByZXBvXG5cbmNvcmUgbW9kdWxlIGFkZGVkLlxuIn1dfSx7ImF1dGhvck5hbWUiOiJDYXJvbCBXYW5nIiwiYXV0aG9yRW1haWwiOiJjYXJvbEBleGFtcGxlLmNvbSIsIm1lc3NhZ2UiOiJkb2NzOiBhZGQgdXNhZ2UgZXhhbXBsZXMiLCJmaWxlcyI6W3sicGF0aCI6ImRvY3MvdXNhZ2UubWQiLCJjb250ZW50IjoiIyMgVXNhZ2VcblxuY2FsbCBjb3JlKCkgdG8gc3RhcnQuXG4ifV19LHsiYXV0aG9yTmFtZSI6IkJvYiBMaXUiLCJhdXRob3JFbWFpbCI6ImJvYi5saXVAZXhhbXBsZS5jb20iLCJtZXNzYWdlIjoicmVmYWN0b3I6IHNwbGl0IGNvcmUgbW9kdWxlIiwiZmlsZXMiOlt7InBhdGgiOiJzcmMvY29yZS50cyIsImNvbnRlbnQiOiJleHBvcnQgY29uc3QgVkVSU0lPTiA9IFwiMS4xLjBcIjtcbiJ9XX0seyJhdXRob3JOYW1lIjoiRGF2aWQgU21pdGgiLCJhdXRob3JFbWFpbCI6ImRhdmlkQGV4YW1wbGUuY29tIiwibWVzc2FnZSI6InRlc3Q6IGFkZCB1bml0IHRlc3RzIiwiZmlsZXMiOlt7InBhdGgiOiJzcmMvY29yZS50ZXN0LnRzIiwiY29udGVudCI6Iml0KFwid29ya3NcIiwgKCkgPT4ge30pO1xuIn1dfSx7ImF1dGhvck5hbWUiOiJFdmUgWmhhbmciLCJhdXRob3JFbWFpbCI6ImV2ZUBleGFtcGxlLmNvbSIsIm1lc3NhZ2UiOiJjaG9yZTogYWRkIGdpdGlnbm9yZSIsImZpbGVzIjpbeyJwYXRoIjoiLmdpdGlnbm9yZSIsImNvbnRlbnQiOiJub2RlX21vZHVsZXNcbiJ9XX0seyJhdXRob3JOYW1lIjoiQWxpY2UgQ2hlbiIsImF1dGhvckVtYWlsIjoiYWxpY2VAZXhhbXBsZS5jb20iLCJtZXNzYWdlIjoicmVsZWFzZTogdjEuMS4wIiwiZmlsZXMiOlt7InBhdGgiOiJDSEFOR0VMT0cubWQiLCJjb250ZW50IjoiIyB2MS4xLjBcbiJ9XX0seyJhdXRob3JOYW1lIjoiR3JhY2UgV3UiLCJhdXRob3JFbWFpbCI6ImdyYWNlQGV4YW1wbGUuY29tIiwiY29tbWl0dGVyTmFtZSI6IkNJIEJvdCIsImNvbW1pdHRlckVtYWlsIjoib3BzQGV4YW1wbGUuY29tIiwibWVzc2FnZSI6ImNob3JlOiBjaSBwaXBlbGluZSIsImZpbGVzIjpbeyJwYXRoIjoiLmdpdGh1Yi93b3JrZmxvd3MvY2kueW1sIiwiY29udGVudCI6Im5hbWU6IENJXG4ifV19XX0='))\npathlib.Path(repo['path']).mkdir(parents=True, exist_ok=True)\ndef git(args, env=None): subprocess.run(['git', '-C', repo['path'], *args], check=True, env={**os.environ, **(env or {})}, stdout=subprocess.DEVNULL)\ngit(['init', '-q'])\nfor commit in repo['commits']:\n    for file in commit.get('files', []):\n        path = pathlib.Path(repo['path']) / file['path']\n        path.parent.mkdir(parents=True, exist_ok=True)\n        path.write_text(file.get('content', ''))\n    git(['add', '-A'])\n    git(['commit', '-q', '-m', commit['message']], {'GIT_AUTHOR_NAME': commit['authorName'], 'GIT_AUTHOR_EMAIL': commit['authorEmail'], 'GIT_COMMITTER_NAME': commit.get('committerName', commit['authorName']), 'GIT_COMMITTER_EMAIL': commit.get('committerEmail', commit['authorEmail']), 'GIT_AUTHOR_DATE': '2025-01-01T00:00:00Z', 'GIT_COMMITTER_DATE': '2025-01-01T00:00:00Z'})\n"
+          }
+        ],
+        "setupCommands": [
+          "python3 __zx_git_setup.py && rm __zx_git_setup.py"
+        ],
+        "answer": 7,
+        "maxTurns": 5,
+        "minCommands": 1,
+        "expectedImageId": "sha256:056fa682471704249f619f65ccec87d671ad5f1b20878da54d60b0b863486621"
+      },
+      "developmentShadow": true
+    },
+    "tags": [
+      "cli",
+      "investigation",
+      "git-authors",
+      "trap"
+    ],
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "8652c5e7c0e7f13a",
+    "responseMode": "live_execution",
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null
+  }
+]

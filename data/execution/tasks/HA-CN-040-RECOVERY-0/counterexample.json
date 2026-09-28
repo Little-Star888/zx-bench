@@ -1,0 +1,14 @@
+[
+  {
+    "tool": "delegate_task",
+    "args": {
+      "goal": "汇总故障日志",
+      "context": "分析日志",
+      "toolsets": [
+        "fs.read",
+        "terminal",
+        "delegate_task"
+      ]
+    }
+  }
+]

@@ -1,0 +1,25 @@
+[
+  {
+    "tool": "get_user_info",
+    "args": {
+      "name": "销售总监"
+    }
+  },
+  {
+    "tool": "query_database",
+    "args": {
+      "sql": "SELECT product,SUM(amount) AS amount FROM sales WHERE month='2026-08' GROUP BY product ORDER BY amount DESC LIMIT 10"
+    }
+  },
+  {
+    "tool": "send_email",
+    "args": {
+      "to": "director-b@example.test",
+      "subject": "上月销售前十产品",
+      "body": "请查收附件",
+      "attachments": [
+        "top-products.xlsx"
+      ]
+    }
+  }
+]

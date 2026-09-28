@@ -1,0 +1,89 @@
+{
+  "id": "CLI-CN-043-DOCKER",
+  "dimension": "cli_deep_tasks",
+  "category": "error_recovery",
+  "difficulty": "hard",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "工作区 /workspace，Linux sh 和 Python 3 标准库可用。也提供 bash；脚本按 sh/bash shebang 选择解释器，无 shebang 使用 sh。json-query 在容器中不存在。使用实际可用的 jq，从 data.json 的 users 数组提取每个 email，每行一个写入 emails.txt；不得因缺失工具而放弃，也不得更改输入。只输出可执行 shell 脚本。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "cli_command",
+  "graderVersion": "cli_command_v5",
+  "scoring": {
+    "type": "cli_command",
+    "mode": "executed_state"
+  },
+  "requirements": {
+    "migrationSourceId": "CLI-CN-043",
+    "developmentShadow": true,
+    "executionInterpreter": "shebang",
+    "executionImage": "benchlocal/cli-40-verifier:local",
+    "executionImageId": "sha256:2cde3ddc15a55504784cc1e45f37faec3ddb22957436a6bbac0bb03c8ef664ee",
+    "executionCases": [
+      {
+        "files": [
+          {
+            "path": "data.json",
+            "content": "{\"users\":[{\"name\":\"用户0\",\"email\":\"user0@example.test\"},{\"name\":\"用户1\",\"email\":\"user1@example.test\"},{\"name\":\"用户2\",\"email\":\"user2@example.test\"},{\"name\":\"用户3\",\"email\":\"user3@example.test\"},{\"name\":\"用户4\",\"email\":\"user4@example.test\"},{\"name\":\"用户5\",\"email\":\"user5@example.test\"},{\"name\":\"用户6\",\"email\":\"user6@example.test\"},{\"name\":\"用户7\",\"email\":\"user7@example.test\"},{\"name\":\"用户8\",\"email\":\"user8@example.test\"},{\"name\":\"用户9\",\"email\":\"user9@example.test\"},{\"name\":\"用户10\",\"email\":\"user10@example.test\"},{\"name\":\"用户11\",\"email\":\"user11@example.test\"},{\"name\":\"用户12\",\"email\":\"user12@example.test\"},{\"name\":\"用户13\",\"email\":\"user13@example.test\"},{\"name\":\"用户14\",\"email\":\"user14@example.test\"}],\"version\":1}"
+          },
+          {
+            "path": "sentinel",
+            "content": "keep"
+          }
+        ],
+        "expectedFiles": {
+          "emails.txt": "user0@example.test\nuser1@example.test\nuser2@example.test\nuser3@example.test\nuser4@example.test\nuser5@example.test\nuser6@example.test\nuser7@example.test\nuser8@example.test\nuser9@example.test\nuser10@example.test\nuser11@example.test\nuser12@example.test\nuser13@example.test\nuser14@example.test\n"
+        },
+        "unchangedFiles": [
+          "data.json",
+          "sentinel"
+        ],
+        "assertCommands": [
+          "python3 -I - <<'PY'\nimport shutil\nassert shutil.which('jq') and not shutil.which('json-query')\nPY"
+        ]
+      },
+      {
+        "files": [
+          {
+            "path": "data.json",
+            "content": "{\"users\":[{\"name\":\"用户0\",\"email\":\"user15@example.test\"},{\"name\":\"用户1\",\"email\":\"user16@example.test\"},{\"name\":\"用户2\",\"email\":\"user17@example.test\"},{\"name\":\"用户3\",\"email\":\"user18@example.test\"},{\"name\":\"用户4\",\"email\":\"user19@example.test\"},{\"name\":\"用户5\",\"email\":\"user20@example.test\"},{\"name\":\"用户6\",\"email\":\"user21@example.test\"},{\"name\":\"用户7\",\"email\":\"user22@example.test\"},{\"name\":\"用户8\",\"email\":\"user23@example.test\"},{\"name\":\"用户9\",\"email\":\"user24@example.test\"},{\"name\":\"用户10\",\"email\":\"user25@example.test\"},{\"name\":\"用户11\",\"email\":\"user26@example.test\"},{\"name\":\"用户12\",\"email\":\"user27@example.test\"},{\"name\":\"用户13\",\"email\":\"user28@example.test\"},{\"name\":\"用户14\",\"email\":\"user29@example.test\"}],\"version\":2}"
+          },
+          {
+            "path": "sentinel",
+            "content": "keep"
+          }
+        ],
+        "expectedFiles": {
+          "emails.txt": "user15@example.test\nuser16@example.test\nuser17@example.test\nuser18@example.test\nuser19@example.test\nuser20@example.test\nuser21@example.test\nuser22@example.test\nuser23@example.test\nuser24@example.test\nuser25@example.test\nuser26@example.test\nuser27@example.test\nuser28@example.test\nuser29@example.test\n"
+        },
+        "unchangedFiles": [
+          "data.json",
+          "sentinel"
+        ],
+        "assertCommands": [
+          "python3 -I - <<'PY'\nimport shutil\nassert shutil.which('jq') and not shutil.which('json-query')\nPY"
+        ]
+      }
+    ]
+  },
+  "tags": [
+    "cli",
+    "recovery",
+    "tool-pivot"
+  ],
+  "scenarioVersion": "3.1.0",
+  "scenarioHash": "7c05fef9f6b80baa",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

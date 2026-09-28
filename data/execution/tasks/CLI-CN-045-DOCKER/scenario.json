@@ -1,0 +1,111 @@
+{
+  "id": "CLI-CN-045-DOCKER",
+  "dimension": "cli_deep_tasks",
+  "category": "error_recovery",
+  "difficulty": "hard",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "工作区 /workspace，Linux sh 和 Python 3 标准库可用。使用 Alpine/BusyBox 工具，提交脚本统一以 POSIX sh 执行，未提供 bash 或 GNU 工具。修复工作区里已有的 process_files.sh，使它把 files/ 顶层所有普通文件逐字节复制到 processed/，保留原名。文件名可能含空格、换行、通配符和前导短横线。你的回复是只执行一次的驱动脚本，必须在执行时将修复内容写入工作区的 process_files.sh，再运行它；只在回复中给出替代脚本、直接复制文件而不修改该文件均不算完成。保持输入和无关 sentinel 不变，不递归目录。验证器会清空 processed/ 后重新运行工作区里的 process_files.sh。只输出可执行 shell 脚本。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "cli_command",
+  "graderVersion": "cli_command_v5",
+  "scoring": {
+    "type": "cli_command",
+    "mode": "executed_state"
+  },
+  "requirements": {
+    "migrationSourceId": "CLI-CN-045",
+    "developmentShadow": true,
+    "executionInterpreter": "sh",
+    "executionImage": "python:3.12-alpine",
+    "executionImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31",
+    "executionCases": [
+      {
+        "files": [
+          {
+            "path": "files/sub/ignored",
+            "content": "nested"
+          },
+          {
+            "path": "sentinel",
+            "content": "keep"
+          },
+          {
+            "path": "process_files.sh",
+            "content": "#!/bin/sh\nmkdir -p processed\nfor f in $(ls files); do cp files/$f processed/$f; done\n"
+          }
+        ],
+        "setupCommands": [
+          "python3 -I - <<'PY'\nfrom pathlib import Path\nimport base64,json\nfor f in json.loads(base64.b64decode('W3sicGF0aCI6ImZpbGVzL2Egc3BhY2UudHh0IiwiY29udGVudCI6IjA6MFxuIn0seyJwYXRoIjoiZmlsZXMvbGluZVxuYnJlYWsudHh0IiwiY29udGVudCI6IjA6MVxuIn0seyJwYXRoIjoiZmlsZXMvLXJmIiwiY29udGVudCI6IjA6MlxuIn0seyJwYXRoIjoiZmlsZXMvKj9beF0iLCJjb250ZW50IjoiMDozXG4ifSx7InBhdGgiOiJmaWxlcy9ub3JtYWwiLCJjb250ZW50IjoiMDo0XG4ifV0=')): Path(f['path']).write_text(f['content'])\nPY"
+        ],
+        "unchangedFiles": [
+          "files/sub/ignored",
+          "sentinel"
+        ],
+        "expectedFiles": {
+          "processed/a space.txt": "0:0\n",
+          "processed/line\nbreak.txt": "0:1\n",
+          "processed/-rf": "0:2\n",
+          "processed/*?[x]": "0:3\n",
+          "processed/normal": "0:4\n"
+        },
+        "assertCommands": [
+          "python3 -I - <<'PY'\nfrom pathlib import Path\nimport shutil, subprocess, base64, json\nfor f in json.loads(base64.b64decode('W3sicGF0aCI6ImZpbGVzL2Egc3BhY2UudHh0IiwiY29udGVudCI6IjA6MFxuIn0seyJwYXRoIjoiZmlsZXMvbGluZVxuYnJlYWsudHh0IiwiY29udGVudCI6IjA6MVxuIn0seyJwYXRoIjoiZmlsZXMvLXJmIiwiY29udGVudCI6IjA6MlxuIn0seyJwYXRoIjoiZmlsZXMvKj9beF0iLCJjb250ZW50IjoiMDozXG4ifSx7InBhdGgiOiJmaWxlcy9ub3JtYWwiLCJjb250ZW50IjoiMDo0XG4ifV0=')): assert Path(f['path']).read_text()==f['content']\nshutil.rmtree('processed')\nsubprocess.run(['sh','process_files.sh'],check=True,timeout=10)\nexpected={p.name:p.read_bytes() for p in Path('files').iterdir() if p.is_file()}\nactual={p.name:p.read_bytes() for p in Path('processed').iterdir() if p.is_file()}\nassert expected==actual and len(list(Path('processed').iterdir()))==len(expected)\nPY"
+        ]
+      },
+      {
+        "files": [
+          {
+            "path": "files/sub/ignored",
+            "content": "nested"
+          },
+          {
+            "path": "sentinel",
+            "content": "keep"
+          },
+          {
+            "path": "process_files.sh",
+            "content": "#!/bin/sh\nmkdir -p processed\nfor f in $(ls files); do cp files/$f processed/$f; done\n"
+          }
+        ],
+        "setupCommands": [
+          "python3 -I - <<'PY'\nfrom pathlib import Path\nimport base64,json\nfor f in json.loads(base64.b64decode('W3sicGF0aCI6ImZpbGVzL2Egc3BhY2UudHh0IiwiY29udGVudCI6IjE6MFxuIn0seyJwYXRoIjoiZmlsZXMvbGluZVxuYnJlYWsudHh0IiwiY29udGVudCI6IjE6MVxuIn0seyJwYXRoIjoiZmlsZXMvLXJmIiwiY29udGVudCI6IjE6MlxuIn0seyJwYXRoIjoiZmlsZXMvKj9beF0iLCJjb250ZW50IjoiMTozXG4ifSx7InBhdGgiOiJmaWxlcy9ub3JtYWwiLCJjb250ZW50IjoiMTo0XG4ifV0=')): Path(f['path']).write_text(f['content'])\nPY"
+        ],
+        "unchangedFiles": [
+          "files/sub/ignored",
+          "sentinel"
+        ],
+        "expectedFiles": {
+          "processed/a space.txt": "1:0\n",
+          "processed/line\nbreak.txt": "1:1\n",
+          "processed/-rf": "1:2\n",
+          "processed/*?[x]": "1:3\n",
+          "processed/normal": "1:4\n"
+        },
+        "assertCommands": [
+          "python3 -I - <<'PY'\nfrom pathlib import Path\nimport shutil, subprocess, base64, json\nfor f in json.loads(base64.b64decode('W3sicGF0aCI6ImZpbGVzL2Egc3BhY2UudHh0IiwiY29udGVudCI6IjE6MFxuIn0seyJwYXRoIjoiZmlsZXMvbGluZVxuYnJlYWsudHh0IiwiY29udGVudCI6IjE6MVxuIn0seyJwYXRoIjoiZmlsZXMvLXJmIiwiY29udGVudCI6IjE6MlxuIn0seyJwYXRoIjoiZmlsZXMvKj9beF0iLCJjb250ZW50IjoiMTozXG4ifSx7InBhdGgiOiJmaWxlcy9ub3JtYWwiLCJjb250ZW50IjoiMTo0XG4ifV0=')): assert Path(f['path']).read_text()==f['content']\nshutil.rmtree('processed')\nsubprocess.run(['sh','process_files.sh'],check=True,timeout=10)\nexpected={p.name:p.read_bytes() for p in Path('files').iterdir() if p.is_file()}\nactual={p.name:p.read_bytes() for p in Path('processed').iterdir() if p.is_file()}\nassert expected==actual and len(list(Path('processed').iterdir()))==len(expected)\nPY"
+        ]
+      }
+    ]
+  },
+  "tags": [
+    "cli",
+    "recovery",
+    "spaces-in-names"
+  ],
+  "scenarioVersion": "3.1.0",
+  "scenarioHash": "b20665d61cb6fd36",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

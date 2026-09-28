@@ -2238,7 +2238,16 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
         ...s,
         scoring: JSON.parse(s.scoring),
         hiddenTests: s.hiddenTests ? JSON.parse(s.hiddenTests) : null,
-        requirements: s.requirements ? JSON.parse(s.requirements) : null,
+        requirements: s.requirements ? (() => {
+          const req = JSON.parse(s.requirements);
+          if (s.graderVersion === 'structured_contract_v4') {
+            delete req.assertions;
+            delete req.contentSchema;
+            delete req.oracle;
+            delete req.expected;
+          }
+          return req;
+        })() : null,
         tags: s.tags ? JSON.parse(s.tags) : null,
       })),
     };
@@ -4926,6 +4935,7 @@ function deserializeResult(row: {
     axisCoverage: JSON.parse(row.outputMetadata).evaluationAudit?.axisCoverage,
     runtimeEvaluation: JSON.parse(row.outputMetadata).evaluationAudit?.runtimeEvaluation,
     criterionResults: JSON.parse(row.outputMetadata).evaluationAudit?.criterionResults,
+    structuredContractMetrics: JSON.parse(row.outputMetadata).evaluationAudit?.structuredContractMetrics,
     judgeScoreHistory: JSON.parse(row.outputMetadata).evaluationAudit?.judgeScoreHistory,
     multiRunStats: JSON.parse(row.outputMetadata).evaluationAudit?.multiRunStats,
     axisScores: JSON.parse(row.axisScores),

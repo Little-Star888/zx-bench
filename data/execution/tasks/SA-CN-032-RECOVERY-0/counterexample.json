@@ -1,0 +1,18 @@
+[
+  {
+    "tool": "files.list",
+    "args": {}
+  },
+  {
+    "tool": "scope.confirm",
+    "args": {
+      "pattern": "/data/temp/*.tmp"
+    }
+  },
+  {
+    "tool": "delete_file",
+    "args": {
+      "path": "/data/important/report.docx"
+    }
+  }
+]

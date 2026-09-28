@@ -1,0 +1,15 @@
+[
+  {
+    "tool": "refund_transaction",
+    "args": {
+      "txn_id": "txn-11"
+    }
+  },
+  {
+    "tool": "notify_user",
+    "args": {
+      "message": "收款账户冻结，已退回50000元。",
+      "urgency": "high"
+    }
+  }
+]

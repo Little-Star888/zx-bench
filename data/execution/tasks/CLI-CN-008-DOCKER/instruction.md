@@ -1,0 +1,1 @@
+在 /workspace 中执行任务。环境为 Alpine/BusyBox，提供 POSIX sh 和 Python 3 标准库，不提供 bash 或 GNU 工具；提交脚本统一以 sh 执行。in/ 中有不同修改时间的文件；.now 文件内容为 ISO 格式固定参考时间。把 in/ 顶层相对参考时间早于 30 天的文件移到 archive/，不递归子目录，保留文件修改时间。只输出可执行 shell 脚本。

@@ -1,0 +1,1 @@
+工作区 /workspace，Linux sh 和 Python 3 标准库可用。也提供 bash；脚本按 sh/bash shebang 选择解释器，无 shebang 使用 sh。mytool 已安装在 workspace/opt/mytool/bin，但当前 bash 会话找不到。写 session.sh：把该目录加入当前 PATH，刷新 shell 命令缓存，再运行 mytool；实际执行脚本并将工具输出保存到 output.txt。只输出可执行 shell 脚本。

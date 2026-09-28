@@ -1,0 +1,88 @@
+{
+  "id": "HA-CN-042-RECOVERY-0",
+  "dimension": "agent_workflow",
+  "category": "tool_selection",
+  "difficulty": "easy",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "明天上午10点添加团队会议到日历并回复。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "agent_trace",
+  "graderVersion": "agent_trace_v5",
+  "scoring": {
+    "type": "agent_trace"
+  },
+  "requirements": {
+    "migrationSourceId": "HA-CN-042",
+    "developmentShadow": true,
+    "executionWorld": {
+      "maxTurns": 8,
+      "scoreMode": "strict",
+      "initialState": {
+        "calls": [],
+        "other": "keep"
+      },
+      "tools": [
+        {
+          "name": "calendar.add",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "title": "string",
+            "time": "string"
+          },
+          "script": "expected={\"title\":\"团队会议\",\"time\":\"2026-09-27T10:00\"}\nif args!=expected: raise ValueError('WRONG_PARAMS')\nstate['calls'].append(args); result={'status':\"已添加\"}",
+          "description": "执行原题对应动作并记录参数。"
+        }
+      ],
+      "requiredCalls": [
+        {
+          "tool": "calendar.add",
+          "args": {
+            "title": "团队会议",
+            "time": "2026-09-27T10:00"
+          }
+        }
+      ],
+      "expectedState": [
+        {
+          "path": "calls",
+          "equals": [
+            {
+              "title": "团队会议",
+              "time": "2026-09-27T10:00"
+            }
+          ]
+        }
+      ],
+      "unchangedState": [
+        "other"
+      ],
+      "finalMessageMustContain": [
+        "团队会议"
+      ],
+      "image": "python:3.12-alpine",
+      "expectedImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31"
+    }
+  },
+  "tags": [
+    "agent",
+    "tool-selection",
+    "easy"
+  ],
+  "scenarioVersion": "3.0.0",
+  "scenarioHash": "fb9bd28371d09d07",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

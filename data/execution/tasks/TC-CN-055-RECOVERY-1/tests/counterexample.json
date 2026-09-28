@@ -1,0 +1,14 @@
+[
+  {
+    "tool": "query_order",
+    "args": {
+      "id": "67890"
+    }
+  },
+  {
+    "tool": "cancel_order",
+    "args": {
+      "id": "67890"
+    }
+  }
+]

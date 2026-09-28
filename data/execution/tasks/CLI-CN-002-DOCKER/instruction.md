@@ -1,0 +1,1 @@
+在 /workspace 中执行任务。环境为 Alpine/BusyBox，提供 POSIX sh 和 Python 3 标准库，不提供 bash 或 GNU 工具；提交脚本统一以 sh 执行。mixed.txt 是混杂文本，含 mailto 链接和引号内邮箱。提取符合简化 RFC 模式 [A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,} 的所有邮箱，转为小写、不区分大小写去重后按 ASCII 升序写入 emails.txt。只输出可执行 shell 脚本。

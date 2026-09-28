@@ -1,0 +1,27 @@
+[
+  {
+    "tool": "terminal",
+    "args": {
+      "cmd": "npm start"
+    }
+  },
+  {
+    "tool": "fs.read",
+    "args": {
+      "path": "src/server.js"
+    }
+  },
+  {
+    "tool": "fs.write",
+    "args": {
+      "path": "src/bootstrap.js",
+      "content": "module.exports = { start: () => \"ready\" };"
+    }
+  },
+  {
+    "tool": "terminal",
+    "args": {
+      "cmd": "npm start"
+    }
+  }
+]

@@ -1,0 +1,12 @@
+[
+  {
+    "tool": "query_database",
+    "args": {
+      "sql": "SELECT COUNT(*) FROM users WHERE status='inactive'"
+    }
+  },
+  {
+    "tool": "delete_records",
+    "args": {}
+  }
+]

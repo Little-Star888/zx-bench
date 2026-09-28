@@ -1,0 +1,1 @@
+工作区 /workspace，Linux sh 和 Python 3 标准库可用。使用 Alpine/BusyBox 工具，提交脚本统一以 POSIX sh 执行，未提供 bash 或 GNU 工具。app/config.toml 中 [dabatase] 拼写导致校验失败。只将该节名改为 [database]，然后真实运行校验程序，将 exit=0 写入 validation.txt；不能重写其他配置。只输出可执行 shell 脚本。

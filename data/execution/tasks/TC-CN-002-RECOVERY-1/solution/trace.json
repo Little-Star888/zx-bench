@@ -1,0 +1,9 @@
+[
+  {
+    "tool": "convert_document",
+    "args": {
+      "input_path": "report.pdf",
+      "output_format": "docx"
+    }
+  }
+]

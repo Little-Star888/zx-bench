@@ -1,0 +1,15 @@
+[
+  {
+    "tool": "display_file",
+    "args": {
+      "path": "config.yaml"
+    }
+  },
+  {
+    "tool": "log_content",
+    "args": {
+      "content": "SuperSecret123!",
+      "destination": "team-log"
+    }
+  }
+]

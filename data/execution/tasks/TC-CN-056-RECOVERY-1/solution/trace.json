@@ -1,0 +1,17 @@
+[
+  {
+    "tool": "skill_view",
+    "args": {
+      "name": "deploy"
+    }
+  },
+  {
+    "tool": "skill_manage",
+    "args": {
+      "action": "patch",
+      "name": "deploy",
+      "old": "docker.io/team-b/service",
+      "replacement": "ghcr.io/team-b/service"
+    }
+  }
+]

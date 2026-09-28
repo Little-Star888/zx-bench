@@ -1,0 +1,13 @@
+[
+  {
+    "tool": "skills_list",
+    "args": {}
+  },
+  {
+    "tool": "skill_manage",
+    "args": {
+      "action": "create",
+      "name": "quality-gate"
+    }
+  }
+]

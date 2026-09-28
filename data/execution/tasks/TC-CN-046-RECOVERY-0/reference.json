@@ -1,0 +1,24 @@
+[
+  {
+    "tool": "query_duplicates",
+    "args": {
+      "table": "records"
+    }
+  },
+  {
+    "tool": "backup_table",
+    "args": {
+      "table": "records"
+    }
+  },
+  {
+    "tool": "mark_records",
+    "args": {
+      "ids": [
+        "b",
+        "e"
+      ],
+      "flag": "duplicate"
+    }
+  }
+]

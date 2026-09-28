@@ -1,0 +1,89 @@
+{
+  "id": "CLI-CN-014-DOCKER",
+  "dimension": "cli_deep_tasks",
+  "category": "pipeline_composition",
+  "difficulty": "hard",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "在 /workspace 中执行任务。环境为 Alpine/BusyBox，提供 POSIX sh 和 Python 3 标准库，不提供 bash 或 GNU 工具；提交脚本统一以 sh 执行。logs/ 下有若干 .log 文件。提取以 ERROR 开头的行写入 errors.txt；每行格式为「文件名:原始行」，按文件名排序，同一文件内保持原始顺序。只输出可执行 shell 脚本。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "cli_command",
+  "graderVersion": "cli_command_v1",
+  "scoring": {
+    "type": "cli_command",
+    "mode": "executed_state"
+  },
+  "requirements": {
+    "executionImage": "python:3.12-alpine",
+    "executionImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31",
+    "executionInterpreter": "sh",
+    "executionCases": [
+      {
+        "files": [
+          {
+            "path": "logs/a.log",
+            "content": "ERROR first\nINFO skip\nERROR second\n"
+          },
+          {
+            "path": "logs/b.log",
+            "content": "WARN ERROR middle\nERROR third\n"
+          },
+          {
+            "path": "logs/ignore.txt",
+            "content": "ERROR ignored\n"
+          }
+        ],
+        "expectedFiles": {
+          "errors.txt": "a.log:ERROR first\na.log:ERROR second\nb.log:ERROR third\n"
+        },
+        "unchangedFiles": [
+          "logs/a.log",
+          "logs/b.log",
+          "logs/ignore.txt"
+        ]
+      },
+      {
+        "files": [
+          {
+            "path": "logs/z.log",
+            "content": "ERROR last\n"
+          },
+          {
+            "path": "logs/a.log",
+            "content": "ERROR start\nerror lowercase\n"
+          }
+        ],
+        "expectedFiles": {
+          "errors.txt": "a.log:ERROR start\nz.log:ERROR last\n"
+        },
+        "unchangedFiles": [
+          "logs/z.log",
+          "logs/a.log"
+        ]
+      }
+    ],
+    "migrationSourceId": "CLI-CN-014",
+    "developmentShadow": true
+  },
+  "tags": [
+    "cli",
+    "pipeline",
+    "cross-log",
+    "trap"
+  ],
+  "scenarioVersion": "2.1.0",
+  "scenarioHash": "c37391f24b64c4c3",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

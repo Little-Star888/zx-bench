@@ -1,0 +1,458 @@
+{
+  "SOC4-F-HANDOFF": {
+    "expected": {
+      "records": [
+        {
+          "seed": "R-07",
+          "terminal": "Z-18",
+          "owner": "柳岚",
+          "budget": 61,
+          "sourceIds": [
+            "F-U3P4PC",
+            "F-TBCCSI",
+            "F-1U1VCQS",
+            "F-1830WT2",
+            "F-MEZF5P",
+            "F-1TY4YBB"
+          ]
+        },
+        {
+          "seed": "R-007",
+          "terminal": "Z-21",
+          "owner": "郑宁",
+          "budget": 47,
+          "sourceIds": [
+            "F-168MKRU",
+            "F-E65ZZG",
+            "F-JWDYF2",
+            "F-BWALI8",
+            "F-1OUCXMN",
+            "F-XBY955"
+          ]
+        },
+        {
+          "seed": "R-O7",
+          "terminal": "Z-19",
+          "owner": "宋乔",
+          "budget": 58,
+          "sourceIds": [
+            "F-1IYQGLW",
+            "F-1RJOWRQ",
+            "F-3NRKEG",
+            "F-1XS8QRE",
+            "F-1GX46FL",
+            "F-RDCBMZ"
+          ]
+        },
+        {
+          "seed": "R-70",
+          "terminal": "Z-20",
+          "owner": "费雨",
+          "budget": 40,
+          "sourceIds": [
+            "F-GBRJNY",
+            "F-JJOS6O",
+            "F-1A14WV6",
+            "F-1LD37J8",
+            "F-1N2PVXV",
+            "F-1CVICV1"
+          ]
+        }
+      ],
+      "totalBudget": 206
+    },
+    "sources": {
+      "F-1U1VCQS": "交接簿称「M-42」第 2 版后续项目为「V-16」；这是该节点最新版本。",
+      "F-1H6DDQ0": "项目「Z-18」的第 1 版核准预算为 45 万元。",
+      "F-BWALI8": "交接簿称「V-10」第 2 版后续项目为「Z-21」；这是该节点最新版本。",
+      "F-1RJOWRQ": "交接簿称「R-O7」第 2 版后续项目为「M-46」；这是该节点最新版本。",
+      "F-U3P4PC": "本轮需追踪的起点是「R-07」。",
+      "X1": "归档说明：R-07 和 R-007 是不同编号，字母 O 与数字 0 不可互换。",
+      "F-XBY955": "项目「Z-21」的第 2 版核准预算为 47 万元，覆盖同项目更早版本。",
+      "F-E65ZZG": "交接簿称「R-007」第 2 版后续项目为「M-49」；这是该节点最新版本。",
+      "F-1IYQGLW": "本轮需追踪的起点是「R-O7」。",
+      "F-168MKRU": "本轮需追踪的起点是「R-007」。",
+      "F-1LD37J8": "交接簿称「V-11」第 2 版后续项目为「Z-20」；这是该节点最新版本。",
+      "F-1XS8QRE": "交接簿称「V-13」第 2 版后续项目为「Z-19」；这是该节点最新版本。",
+      "F-TT2P21": "交接簿称「V-11」第 1 版后续项目为「Z-19」；这是保留的旧版本。",
+      "F-6LPGHX": "交接簿称「V-10」第 1 版后续项目为「Z-18」；这是保留的旧版本。",
+      "F-5MA56K": "项目「Z-19」的第 1 版核准预算为 59 万元。",
+      "F-1GBTDL9": "交接簿称「M-46」第 1 版后续项目为「V-16」；这是保留的旧版本。",
+      "F-TBCCSI": "交接簿称「R-07」第 2 版后续项目为「M-42」；这是该节点最新版本。",
+      "F-MEZF5P": "项目「Z-18」的负责人员记录为「柳岚」。",
+      "F-1GIYG2J": "交接簿称「M-49」第 1 版后续项目为「V-11」；这是保留的旧版本。",
+      "F-1GX46FL": "项目「Z-19」的负责人员记录为「宋乔」。",
+      "F-CVJHYU": "项目「Z-20」的第 1 版核准预算为 33 万元。",
+      "F-JJOS6O": "交接簿称「R-70」第 2 版后续项目为「M-40」；这是该节点最新版本。",
+      "F-JWDYF2": "交接簿称「M-49」第 2 版后续项目为「V-10」；这是该节点最新版本。",
+      "F-1TY4YBB": "项目「Z-18」的第 2 版核准预算为 61 万元，覆盖同项目更早版本。",
+      "F-1CVICV1": "项目「Z-20」的第 2 版核准预算为 40 万元，覆盖同项目更早版本。",
+      "F-1JLUCWJ": "交接簿称「V-16」第 1 版后续项目为「Z-20」；这是保留的旧版本。",
+      "F-5PDR4I": "项目「Z-21」的第 1 版核准预算为 54 万元。",
+      "F-1B09W0L": "交接簿称「R-70」第 1 版后续项目为「M-42」；这是保留的旧版本。",
+      "F-3NRKEG": "交接簿称「M-46」第 2 版后续项目为「V-13」；这是该节点最新版本。",
+      "F-9R1IBL": "交接簿称「R-007」第 1 版后续项目为「M-46」；这是保留的旧版本。",
+      "F-1830WT2": "交接簿称「V-16」第 2 版后续项目为「Z-18」；这是该节点最新版本。",
+      "F-1FV069Z": "交接簿称「V-13」第 1 版后续项目为「Z-21」；这是保留的旧版本。",
+      "X3": "预算单位统一为万元，不需要币种换算。",
+      "F-1N2PVXV": "项目「Z-20」的负责人员记录为「费雨」。",
+      "F-GBRJNY": "本轮需追踪的起点是「R-70」。",
+      "X2": "旧版交接记录保留用于审计，不表示该记录仍为当前路线。",
+      "F-1A6AWY7": "交接簿称「M-40」第 1 版后续项目为「V-10」；这是保留的旧版本。",
+      "F-1ORQHPR": "交接簿称「R-07」第 1 版后续项目为「M-49」；这是保留的旧版本。",
+      "F-13KZSJD": "交接簿称「M-42」第 1 版后续项目为「V-13」；这是保留的旧版本。",
+      "F-1OUCXMN": "项目「Z-21」的负责人员记录为「郑宁」。",
+      "F-1A14WV6": "交接簿称「M-40」第 2 版后续项目为「V-11」；这是该节点最新版本。",
+      "F-136XD5V": "交接簿称「R-O7」第 1 版后续项目为「M-40」；这是保留的旧版本。",
+      "F-RDCBMZ": "项目「Z-19」的第 2 版核准预算为 58 万元，覆盖同项目更早版本。"
+    },
+    "provenance": {
+      "/records/0/seed": [
+        "F-U3P4PC",
+        "F-TBCCSI",
+        "F-1U1VCQS",
+        "F-1830WT2",
+        "F-MEZF5P",
+        "F-1TY4YBB"
+      ],
+      "/records/0/terminal": [
+        "F-U3P4PC",
+        "F-TBCCSI",
+        "F-1U1VCQS",
+        "F-1830WT2",
+        "F-MEZF5P",
+        "F-1TY4YBB"
+      ],
+      "/records/0/owner": [
+        "F-U3P4PC",
+        "F-TBCCSI",
+        "F-1U1VCQS",
+        "F-1830WT2",
+        "F-MEZF5P",
+        "F-1TY4YBB"
+      ],
+      "/records/0/budget": [
+        "F-U3P4PC",
+        "F-TBCCSI",
+        "F-1U1VCQS",
+        "F-1830WT2",
+        "F-MEZF5P",
+        "F-1TY4YBB"
+      ],
+      "/records/0/sourceIds/0": [
+        "F-U3P4PC",
+        "F-TBCCSI",
+        "F-1U1VCQS",
+        "F-1830WT2",
+        "F-MEZF5P",
+        "F-1TY4YBB"
+      ],
+      "/records/0/sourceIds/1": [
+        "F-U3P4PC",
+        "F-TBCCSI",
+        "F-1U1VCQS",
+        "F-1830WT2",
+        "F-MEZF5P",
+        "F-1TY4YBB"
+      ],
+      "/records/0/sourceIds/2": [
+        "F-U3P4PC",
+        "F-TBCCSI",
+        "F-1U1VCQS",
+        "F-1830WT2",
+        "F-MEZF5P",
+        "F-1TY4YBB"
+      ],
+      "/records/0/sourceIds/3": [
+        "F-U3P4PC",
+        "F-TBCCSI",
+        "F-1U1VCQS",
+        "F-1830WT2",
+        "F-MEZF5P",
+        "F-1TY4YBB"
+      ],
+      "/records/0/sourceIds/4": [
+        "F-U3P4PC",
+        "F-TBCCSI",
+        "F-1U1VCQS",
+        "F-1830WT2",
+        "F-MEZF5P",
+        "F-1TY4YBB"
+      ],
+      "/records/0/sourceIds/5": [
+        "F-U3P4PC",
+        "F-TBCCSI",
+        "F-1U1VCQS",
+        "F-1830WT2",
+        "F-MEZF5P",
+        "F-1TY4YBB"
+      ],
+      "/records/1/seed": [
+        "F-168MKRU",
+        "F-E65ZZG",
+        "F-JWDYF2",
+        "F-BWALI8",
+        "F-1OUCXMN",
+        "F-XBY955"
+      ],
+      "/records/1/terminal": [
+        "F-168MKRU",
+        "F-E65ZZG",
+        "F-JWDYF2",
+        "F-BWALI8",
+        "F-1OUCXMN",
+        "F-XBY955"
+      ],
+      "/records/1/owner": [
+        "F-168MKRU",
+        "F-E65ZZG",
+        "F-JWDYF2",
+        "F-BWALI8",
+        "F-1OUCXMN",
+        "F-XBY955"
+      ],
+      "/records/1/budget": [
+        "F-168MKRU",
+        "F-E65ZZG",
+        "F-JWDYF2",
+        "F-BWALI8",
+        "F-1OUCXMN",
+        "F-XBY955"
+      ],
+      "/records/1/sourceIds/0": [
+        "F-168MKRU",
+        "F-E65ZZG",
+        "F-JWDYF2",
+        "F-BWALI8",
+        "F-1OUCXMN",
+        "F-XBY955"
+      ],
+      "/records/1/sourceIds/1": [
+        "F-168MKRU",
+        "F-E65ZZG",
+        "F-JWDYF2",
+        "F-BWALI8",
+        "F-1OUCXMN",
+        "F-XBY955"
+      ],
+      "/records/1/sourceIds/2": [
+        "F-168MKRU",
+        "F-E65ZZG",
+        "F-JWDYF2",
+        "F-BWALI8",
+        "F-1OUCXMN",
+        "F-XBY955"
+      ],
+      "/records/1/sourceIds/3": [
+        "F-168MKRU",
+        "F-E65ZZG",
+        "F-JWDYF2",
+        "F-BWALI8",
+        "F-1OUCXMN",
+        "F-XBY955"
+      ],
+      "/records/1/sourceIds/4": [
+        "F-168MKRU",
+        "F-E65ZZG",
+        "F-JWDYF2",
+        "F-BWALI8",
+        "F-1OUCXMN",
+        "F-XBY955"
+      ],
+      "/records/1/sourceIds/5": [
+        "F-168MKRU",
+        "F-E65ZZG",
+        "F-JWDYF2",
+        "F-BWALI8",
+        "F-1OUCXMN",
+        "F-XBY955"
+      ],
+      "/records/2/seed": [
+        "F-1IYQGLW",
+        "F-1RJOWRQ",
+        "F-3NRKEG",
+        "F-1XS8QRE",
+        "F-1GX46FL",
+        "F-RDCBMZ"
+      ],
+      "/records/2/terminal": [
+        "F-1IYQGLW",
+        "F-1RJOWRQ",
+        "F-3NRKEG",
+        "F-1XS8QRE",
+        "F-1GX46FL",
+        "F-RDCBMZ"
+      ],
+      "/records/2/owner": [
+        "F-1IYQGLW",
+        "F-1RJOWRQ",
+        "F-3NRKEG",
+        "F-1XS8QRE",
+        "F-1GX46FL",
+        "F-RDCBMZ"
+      ],
+      "/records/2/budget": [
+        "F-1IYQGLW",
+        "F-1RJOWRQ",
+        "F-3NRKEG",
+        "F-1XS8QRE",
+        "F-1GX46FL",
+        "F-RDCBMZ"
+      ],
+      "/records/2/sourceIds/0": [
+        "F-1IYQGLW",
+        "F-1RJOWRQ",
+        "F-3NRKEG",
+        "F-1XS8QRE",
+        "F-1GX46FL",
+        "F-RDCBMZ"
+      ],
+      "/records/2/sourceIds/1": [
+        "F-1IYQGLW",
+        "F-1RJOWRQ",
+        "F-3NRKEG",
+        "F-1XS8QRE",
+        "F-1GX46FL",
+        "F-RDCBMZ"
+      ],
+      "/records/2/sourceIds/2": [
+        "F-1IYQGLW",
+        "F-1RJOWRQ",
+        "F-3NRKEG",
+        "F-1XS8QRE",
+        "F-1GX46FL",
+        "F-RDCBMZ"
+      ],
+      "/records/2/sourceIds/3": [
+        "F-1IYQGLW",
+        "F-1RJOWRQ",
+        "F-3NRKEG",
+        "F-1XS8QRE",
+        "F-1GX46FL",
+        "F-RDCBMZ"
+      ],
+      "/records/2/sourceIds/4": [
+        "F-1IYQGLW",
+        "F-1RJOWRQ",
+        "F-3NRKEG",
+        "F-1XS8QRE",
+        "F-1GX46FL",
+        "F-RDCBMZ"
+      ],
+      "/records/2/sourceIds/5": [
+        "F-1IYQGLW",
+        "F-1RJOWRQ",
+        "F-3NRKEG",
+        "F-1XS8QRE",
+        "F-1GX46FL",
+        "F-RDCBMZ"
+      ],
+      "/records/3/seed": [
+        "F-GBRJNY",
+        "F-JJOS6O",
+        "F-1A14WV6",
+        "F-1LD37J8",
+        "F-1N2PVXV",
+        "F-1CVICV1"
+      ],
+      "/records/3/terminal": [
+        "F-GBRJNY",
+        "F-JJOS6O",
+        "F-1A14WV6",
+        "F-1LD37J8",
+        "F-1N2PVXV",
+        "F-1CVICV1"
+      ],
+      "/records/3/owner": [
+        "F-GBRJNY",
+        "F-JJOS6O",
+        "F-1A14WV6",
+        "F-1LD37J8",
+        "F-1N2PVXV",
+        "F-1CVICV1"
+      ],
+      "/records/3/budget": [
+        "F-GBRJNY",
+        "F-JJOS6O",
+        "F-1A14WV6",
+        "F-1LD37J8",
+        "F-1N2PVXV",
+        "F-1CVICV1"
+      ],
+      "/records/3/sourceIds/0": [
+        "F-GBRJNY",
+        "F-JJOS6O",
+        "F-1A14WV6",
+        "F-1LD37J8",
+        "F-1N2PVXV",
+        "F-1CVICV1"
+      ],
+      "/records/3/sourceIds/1": [
+        "F-GBRJNY",
+        "F-JJOS6O",
+        "F-1A14WV6",
+        "F-1LD37J8",
+        "F-1N2PVXV",
+        "F-1CVICV1"
+      ],
+      "/records/3/sourceIds/2": [
+        "F-GBRJNY",
+        "F-JJOS6O",
+        "F-1A14WV6",
+        "F-1LD37J8",
+        "F-1N2PVXV",
+        "F-1CVICV1"
+      ],
+      "/records/3/sourceIds/3": [
+        "F-GBRJNY",
+        "F-JJOS6O",
+        "F-1A14WV6",
+        "F-1LD37J8",
+        "F-1N2PVXV",
+        "F-1CVICV1"
+      ],
+      "/records/3/sourceIds/4": [
+        "F-GBRJNY",
+        "F-JJOS6O",
+        "F-1A14WV6",
+        "F-1LD37J8",
+        "F-1N2PVXV",
+        "F-1CVICV1"
+      ],
+      "/records/3/sourceIds/5": [
+        "F-GBRJNY",
+        "F-JJOS6O",
+        "F-1A14WV6",
+        "F-1LD37J8",
+        "F-1N2PVXV",
+        "F-1CVICV1"
+      ],
+      "/totalBudget": [
+        "F-U3P4PC",
+        "F-TBCCSI",
+        "F-1U1VCQS",
+        "F-1830WT2",
+        "F-MEZF5P",
+        "F-1TY4YBB",
+        "F-168MKRU",
+        "F-E65ZZG",
+        "F-JWDYF2",
+        "F-BWALI8",
+        "F-1OUCXMN",
+        "F-XBY955",
+        "F-1IYQGLW",
+        "F-1RJOWRQ",
+        "F-3NRKEG",
+        "F-1XS8QRE",
+        "F-1GX46FL",
+        "F-RDCBMZ",
+        "F-GBRJNY",
+        "F-JJOS6O",
+        "F-1A14WV6",
+        "F-1LD37J8",
+        "F-1N2PVXV",
+        "F-1CVICV1"
+      ]
+    }
+  }
+}

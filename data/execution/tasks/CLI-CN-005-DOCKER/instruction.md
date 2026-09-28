@@ -1,0 +1,1 @@
+工作区 /workspace，Linux sh 和 Python 3 标准库可用。使用 Alpine/BusyBox 工具，提交脚本统一以 POSIX sh 执行，未提供 bash 或 GNU 工具。将 data.tsv 的 500 行（含表头）转换成 data.json。首行作为键，所有值是字符串，输出单个两空格缩进的 JSON 数组；正确处理 TSV 引号及字段中的制表符，保持源文件不变。只输出可执行 shell 脚本。

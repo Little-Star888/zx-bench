@@ -1,0 +1,1 @@
+工作区 /workspace，Linux sh 和 Python 3 标准库可用。使用 Alpine/BusyBox 工具，提交脚本统一以 POSIX sh 执行，未提供 bash 或 GNU 工具。分析真实 access.log：统计日期为 2026-09-26 的前 10 个 IP 访问次数，计算当天平均响应毫秒，列出当天所有 5xx 原始日志行。写 tmp/report.txt；不要把前一天记录混入。输入文件为 /workspace/var/log/app/access.log。报告格式：首行 TOP_IPS，随后 10 行 IP 和次数（空格分隔）；次数降序，同次数按 IP 字符串升序。再写 AVG_MS 加空格和保留两位小数的均值；下一行 ERROR_5XX，随后按输入顺序原样列出匹配日志行。文件以换行结尾。只输出可执行 shell 脚本。

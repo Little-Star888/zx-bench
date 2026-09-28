@@ -1,0 +1,196 @@
+{
+  "id": "TC-CN-016-RECOVERY-1",
+  "dimension": "tool_cli_workflow",
+  "category": "multi_step_chain",
+  "difficulty": "medium",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "准备 cust-84 明日会议简报。先取客户资料，再查最近订单、历史沟通和公司新闻，三类材料齐备后生成文档。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "tool_call_trace",
+  "graderVersion": "tool_trace_v4",
+  "scoring": {
+    "type": "tool_call_trace"
+  },
+  "requirements": {
+    "migrationSourceId": "TC-CN-016",
+    "developmentShadow": true,
+    "executionWorld": {
+      "maxTurns": 8,
+      "scoreMode": "strict",
+      "initialState": {
+        "customer": "cust-84",
+        "company": "Blue River",
+        "orders": [
+          "PO-11",
+          "PO-12"
+        ],
+        "history": "上月讨论续约",
+        "news": "宣布新产品发布",
+        "infoRead": false,
+        "orderRead": false,
+        "historyRead": false,
+        "newsRead": false,
+        "documents": [],
+        "other": "keep"
+      },
+      "tools": [
+        {
+          "name": "get_customer_info",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "customer_id": "string"
+          },
+          "script": "if args['customer_id']!=state['customer']: raise ValueError('WRONG_CUSTOMER')\nstate['infoRead']=True; result={'company':state['company']}",
+          "description": "返回客户公司。"
+        },
+        {
+          "name": "query_orders",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "customer_id": "string",
+            "days": "number"
+          },
+          "script": "if args['customer_id']!=state['customer'] or args['days']!=30: raise ValueError('WRONG_ORDER_QUERY')\nstate['orderRead']=True; result={'orders':state['orders']}",
+          "description": "查询近 30 天订单。",
+          "requirePriorCall": {
+            "tool": "get_customer_info"
+          }
+        },
+        {
+          "name": "get_communication_history",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "customer_id": "string"
+          },
+          "script": "if args['customer_id']!=state['customer']: raise ValueError('WRONG_CUSTOMER')\nstate['historyRead']=True; result={'summary':state['history']}",
+          "description": "读取沟通历史。",
+          "requirePriorCall": {
+            "tool": "get_customer_info"
+          }
+        },
+        {
+          "name": "search_news",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "company_name": "string",
+            "days": "number"
+          },
+          "script": "if args['company_name']!=state['company'] or args['days']!=30: raise ValueError('WRONG_NEWS_QUERY')\nstate['newsRead']=True; result={'headline':state['news']}",
+          "description": "搜索公司近 30 天新闻。",
+          "requirePriorCall": {
+            "tool": "get_customer_info"
+          }
+        },
+        {
+          "name": "create_document",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "title": "string",
+            "sections": "array"
+          },
+          "script": "if not all(state[k] for k in ['orderRead','historyRead','newsRead']) or args['sections']!=[\"订单：PO-11、PO-12\",\"沟通：上月讨论续约\",\"新闻：宣布新产品发布\"]: raise ValueError('INCOMPLETE_BRIEF')\nfrom pathlib import Path\np=Path('/workspace/brief.md'); p.write_text('# '+args['title']+'\\n'+'\\n'.join(args['sections']))\nstate['documents'].append(args); result={'path':'brief.md'}",
+          "description": "在容器中生成真实 Markdown 简报。",
+          "requirePriorCall": {
+            "tool": "search_news"
+          }
+        }
+      ],
+      "requiredCalls": [
+        {
+          "tool": "get_customer_info",
+          "args": {
+            "customer_id": "cust-84"
+          }
+        },
+        {
+          "tool": "query_orders",
+          "args": {
+            "customer_id": "cust-84",
+            "days": 30
+          }
+        },
+        {
+          "tool": "get_communication_history",
+          "args": {
+            "customer_id": "cust-84"
+          }
+        },
+        {
+          "tool": "search_news",
+          "args": {
+            "company_name": "Blue River",
+            "days": 30
+          }
+        },
+        {
+          "tool": "create_document",
+          "args": {
+            "sections": [
+              "订单：PO-11、PO-12",
+              "沟通：上月讨论续约",
+              "新闻：宣布新产品发布"
+            ]
+          }
+        }
+      ],
+      "expectedState": [
+        {
+          "path": "infoRead",
+          "equals": true
+        },
+        {
+          "path": "orderRead",
+          "equals": true
+        },
+        {
+          "path": "historyRead",
+          "equals": true
+        },
+        {
+          "path": "newsRead",
+          "equals": true
+        },
+        {
+          "path": "documents/length",
+          "equals": 1
+        }
+      ],
+      "unchangedState": [
+        "customer",
+        "company",
+        "orders",
+        "history",
+        "news",
+        "other"
+      ],
+      "image": "python:3.12-alpine",
+      "expectedImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31"
+    }
+  },
+  "tags": [
+    "chinese",
+    "multi-step",
+    "information-aggregation"
+  ],
+  "scenarioVersion": "3.0.0",
+  "scenarioHash": "e38ae2ed92ae41a6",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

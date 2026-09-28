@@ -1,0 +1,10 @@
+[
+  {
+    "tool": "get_current_time",
+    "args": {}
+  },
+  {
+    "tool": "get_calendar",
+    "args": {}
+  }
+]

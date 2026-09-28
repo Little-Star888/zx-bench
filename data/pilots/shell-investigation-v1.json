@@ -1,0 +1,265 @@
+[
+  {
+    "id": "CLI-CN-033-SHELL-PILOT",
+    "dimension": "cli_deep_tasks",
+    "category": "investigation",
+    "difficulty": "adversarial",
+    "language": "general",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "promptTemplate": "/workspace/service/ 有多个不同格式（YAML/TOML/INI）的配置文件，只有一个指定了启动脚本实际读取的监听端口。请调查启动脚本实际使用哪个端口，最后用一行「ANSWER: <整数>」给出。注意：不要抓取你看到的第一个端口，要读启动脚本确定它实际加载哪个配置。",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "cli_command",
+    "graderVersion": "cli_command_v5",
+    "scoring": {
+      "type": "cli_command",
+      "mode": "executed_investigation"
+    },
+    "requirements": {
+      "executionShell": {
+        "files": [
+          {
+            "path": "service/config.yaml",
+            "content": "server:\n  host: 0.0.0.0\n  port: 8080\n"
+          },
+          {
+            "path": "service/config.toml",
+            "content": "[server]\nhost = \"0.0.0.0\"\nport = 8443\n"
+          },
+          {
+            "path": "service/config.ini",
+            "content": "[server]\nhost=0.0.0.0\nport=9090\n"
+          },
+          {
+            "path": "service/app.py",
+            "content": "import sys\n\n# 按启动脚本传入的 --config 读取配置文件（按后缀解析）\nif \"--config\" in sys.argv:\n    config_file = sys.argv[sys.argv.index(\"--config\") + 1]\nelse:\n    config_file = \"config.yaml\"\n\nif config_file.endswith(\".toml\"):\n    import tomllib\n    with open(config_file, \"rb\") as f:\n        cfg = tomllib.load(f)\n    port = cfg[\"server\"][\"port\"]\nelif config_file.endswith(\".yaml\"):\n    import yaml\n    with open(config_file, \"r\") as f:\n        cfg = yaml.safe_load(f)\n    port = cfg[\"server\"][\"port\"]\nelse:\n    import configparser\n    cp = configparser.ConfigParser()\n    cp.read(config_file)\n    port = cp.getint(\"server\", \"port\")\n\nprint(f\"listening on 0.0.0.0:{port}\")\n"
+          },
+          {
+            "path": "service/start.sh",
+            "content": "#!/bin/sh\n# 服务实际加载 TOML 配置\nCONFIG_FILE=config.toml\npython app.py --config \"$CONFIG_FILE\"\n",
+            "executable": true
+          }
+        ],
+        "answer": 8443,
+        "maxTurns": 5,
+        "minCommands": 2,
+        "maxCommandsPerTurn": 8,
+        "expectedImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31"
+      },
+      "developmentShadow": true
+    },
+    "tags": [
+      "cli",
+      "investigation",
+      "config-resolution",
+      "trap"
+    ],
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "f4aae47a8a6f5168",
+    "responseMode": "live_execution",
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null
+  },
+  {
+    "id": "CLI-CN-034-SHELL-PILOT",
+    "dimension": "cli_deep_tasks",
+    "category": "investigation",
+    "difficulty": "hard",
+    "language": "general",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "promptTemplate": "/workspace/proj/ 的 requirements.txt、pyproject.toml 和 README.md 对 requests 库的版本说法不一。请调查实际被 pin 使用的那个版本，最后用一行「ANSWER: <版本字符串>」给出（如 2.31.0）。注意：requirements.txt 才是实际安装使用的。",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "cli_command",
+    "graderVersion": "cli_command_v5",
+    "scoring": {
+      "type": "cli_command",
+      "mode": "executed_investigation"
+    },
+    "requirements": {
+      "executionShell": {
+        "files": [
+          {
+            "path": "proj/requirements.txt",
+            "content": "requests==2.31.0\n"
+          },
+          {
+            "path": "proj/pyproject.toml",
+            "content": "[project]\nname = \"proj\"\nversion = \"0.1.0\"\ndependencies = [\"requests>=2.28.1,<3.0\"]\n"
+          },
+          {
+            "path": "proj/README.md",
+            "content": "# proj\n\n## Dependencies\n本项目使用 requests 3.0 的新接口（session/stream 等）。\n"
+          },
+          {
+            "path": "proj/app.py",
+            "content": "import requests\n\nprint(requests.__version__)\n"
+          }
+        ],
+        "answer": "2.31.0",
+        "maxTurns": 5,
+        "minCommands": 2,
+        "expectedImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31"
+      },
+      "developmentShadow": true
+    },
+    "tags": [
+      "cli",
+      "investigation",
+      "pinned-version"
+    ],
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "313e8d6530c952f7",
+    "responseMode": "live_execution",
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null
+  },
+  {
+    "id": "CLI-CN-035-SHELL-PILOT",
+    "dimension": "cli_deep_tasks",
+    "category": "investigation",
+    "difficulty": "adversarial",
+    "language": "general",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "promptTemplate": "/workspace/app/ 下三个配置文件对 database.host 的值互不一致。应用的启动脚本按特定顺序加载它们，且后加载的覆盖先加载的。请调查应用启动时实际使用哪个 host，最后用一行「ANSWER: <host>」给出。注意：不要按文件 mtime 或字典序猜，要读启动脚本的加载顺序（后者生效）。",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "cli_command",
+    "graderVersion": "cli_command_v5",
+    "scoring": {
+      "type": "cli_command",
+      "mode": "executed_investigation"
+    },
+    "requirements": {
+      "executionShell": {
+        "files": [
+          {
+            "path": "app/config.a.yaml",
+            "content": "database:\n  host: db-dev.local\n"
+          },
+          {
+            "path": "app/config.b.yaml",
+            "content": "database:\n  host: db-prod-3.internal\n"
+          },
+          {
+            "path": "app/config.c.yaml",
+            "content": "database:\n  host: db-staging.internal\n"
+          },
+          {
+            "path": "app/app.py",
+            "content": "import sys\n\n# 按传入顺序合并配置，后加载的覆盖先加载的\nmerged = {}\nargs = sys.argv[1:]\ni = 0\nwhile i < len(args):\n    if args[i] == \"-c\":\n        # 简化：直接读取 yaml 中的 host\n        with open(args[i + 1]) as f:\n            for line in f:\n                if \"host:\" in line:\n                    merged[\"host\"] = line.split(\":\", 1)[1].strip()\n        i += 2\n    else:\n        i += 1\nprint(\"db host: \" + merged[\"host\"])\n"
+          },
+          {
+            "path": "app/start.sh",
+            "content": "#!/bin/sh\n# 依次加载配置，后加载的覆盖先加载的（a → c → b）\npython app.py -c config.a.yaml -c config.c.yaml -c config.b.yaml\n",
+            "executable": true
+          }
+        ],
+        "answer": "db-prod-3.internal",
+        "maxTurns": 5,
+        "minCommands": 2,
+        "maxCommandsPerTurn": 8,
+        "expectedImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31"
+      },
+      "developmentShadow": true
+    },
+    "tags": [
+      "cli",
+      "investigation",
+      "load-order",
+      "trap"
+    ],
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "9f4cb11c04771ce8",
+    "responseMode": "live_execution",
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null
+  },
+  {
+    "id": "CLI-CN-036-SHELL-PILOT",
+    "dimension": "cli_deep_tasks",
+    "category": "investigation",
+    "difficulty": "hard",
+    "language": "general",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "promptTemplate": "/workspace/svc/ 的 config.yaml 设了 timeout: 30，但启动脚本 start.sh 中 export TIMEOUT=60 后再运行程序（环境变量优先于配置文件）。请调查程序运行时实际生效的超时值，最后用一行「ANSWER: <整数>」给出。请展示你阅读 start.sh 与 config.yaml 并判断优先级的过程。",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "cli_command",
+    "graderVersion": "cli_command_v5",
+    "scoring": {
+      "type": "cli_command",
+      "mode": "executed_investigation"
+    },
+    "requirements": {
+      "executionShell": {
+        "files": [
+          {
+            "path": "svc/config.yaml",
+            "content": "timeout: 30\n"
+          },
+          {
+            "path": "svc/app.py",
+            "content": "import os\n\n# 环境变量优先于配置文件\ntimeout = int(os.environ.get(\"TIMEOUT\", 30))\nprint(f\"timeout={timeout}\")\n"
+          },
+          {
+            "path": "svc/start.sh",
+            "content": "#!/bin/sh\n# 环境变量优先于配置文件\nexport TIMEOUT=60\npython app.py\n",
+            "executable": true
+          }
+        ],
+        "answer": 60,
+        "maxTurns": 7,
+        "minCommands": 2,
+        "expectedImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31"
+      },
+      "developmentShadow": true
+    },
+    "tags": [
+      "cli",
+      "investigation",
+      "env-override"
+    ],
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "04952b8edeb7a668",
+    "responseMode": "live_execution",
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null
+  }
+]

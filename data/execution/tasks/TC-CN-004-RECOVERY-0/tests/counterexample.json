@@ -1,0 +1,15 @@
+[
+  {
+    "tool": "check_server_status",
+    "args": {
+      "server_id": "srv-a"
+    }
+  },
+  {
+    "tool": "send_notification",
+    "args": {
+      "user": "requester",
+      "message": "已处理"
+    }
+  }
+]

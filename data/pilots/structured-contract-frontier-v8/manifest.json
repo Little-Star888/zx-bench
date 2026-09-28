@@ -1,0 +1,40 @@
+{
+  "version": "structured-contract-frontier-v8-order-control",
+  "status": "development-only",
+  "counts": {
+    "development": 2,
+    "holdout": 0
+  },
+  "source": {
+    "derivedFrom": "structured-contract-frontier-v7/SYN7-EVENT",
+    "caseOrder": [
+      6,
+      0,
+      7,
+      8,
+      1,
+      9,
+      10,
+      2,
+      11,
+      12,
+      3,
+      13,
+      14,
+      4,
+      15,
+      16,
+      5,
+      17,
+      18,
+      19
+    ],
+    "purpose": "Finite-case label interleaving prevents contiguous-prefix shortcut; schema task unchanged except test order."
+  },
+  "hashes": {
+    "development": "3287d7ad9e4acccb2911cfaaba55cb8989e9102a6d81dec2f1dbeb832e43cacd",
+    "holdout": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "gold": "3bfcbffa5fa58ab612aee98dc3d7b9976367a126b033fa2a84e340bfda8b1958"
+  },
+  "modelCalls": 0
+}

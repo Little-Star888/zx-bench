@@ -10,7 +10,9 @@
 //    未实现的关键字一律跳过（不臆断）；
 //  * schema 轴改为按覆盖率折算计分（违规数 / 实际执行的约束数），
 //    避免约束多的题被一刀切扣成 0；证据里回显约束总数以便审计覆盖率。
-//  行为变更，故版本号从 v4 提升到 v5，v2/v3/v4 作为兼容版本保留。
+// v6：逐条记录结构化约束，另算完整通过率；修复 XSD 类型值误扣；
+//     jsonEq 支持固定输入题的顺序无关对象比较。
+//  这些行为变更均通过版本号与历史题包快照隔离，v2-v5 作为兼容版本保留。
 //
 // v4 修复（09-13 结构化输出维度评审）：
 //  1. 字段检查不再依赖 parsed 的 JS 类型。旧实现用 `typeof parsed === 'string'`
@@ -28,7 +30,7 @@
 //  6. 输出纪律分级：围栏语言白名单 + 尾部冗余文本，不再一律 0/100。
 // ============================================================
 
-import type { AxisEvidence, ModelResponse, OutputMetadata, Scenario, ScenarioResult } from '@zxbench/types';
+import type { AxisEvidence, CriterionResult, ModelResponse, OutputMetadata, Scenario, ScenarioResult } from '@zxbench/types';
 import type { Evaluator } from './index.js';
 import {
   countSchemaViolations,
@@ -37,6 +39,7 @@ import {
   parseByFormat,
   type SupportedFormat,
 } from '../parsers/index.js';
+import { evaluateStructuredTextContract } from './structuredTextContracts.js';
 
 type Requirements = {
   format?: SupportedFormat;
@@ -44,6 +47,7 @@ type Requirements = {
   crossFieldRules?: string[];
   constraints?: string[];
   schema?: Record<string, unknown>;
+  text_contract?: 'v1' | 'v2';
   output_policy?: 'raw_only' | 'fenced_allowed';
   outputPolicy?: 'raw_only' | 'fenced_allowed';
   allowed_fence_languages?: string[];
@@ -75,8 +79,8 @@ const OBJECT_FORMATS = new Set<SupportedFormat>(['json', 'csv']);
 
 export const structuredOutputEvaluator: Evaluator = {
   name: 'schema_compliance',
-  version: 'schema_compliance_v5',
-  compatibleVersions: ['schema_compliance_v4', 'schema_compliance_v3', 'schema_compliance_v2'],
+  version: 'schema_compliance_v6',
+  compatibleVersions: ['schema_compliance_v5', 'schema_compliance_v4', 'schema_compliance_v3', 'schema_compliance_v2'],
   aliases: ['structured_output_v2'],
 
   async evaluate(
@@ -87,6 +91,7 @@ export const structuredOutputEvaluator: Evaluator = {
   ): Promise<Partial<ScenarioResult>> {
     const axisScores: Record<string, number> = {};
     const axisEvidence: Record<string, AxisEvidence> = {};
+    const criterionResults: CriterionResult[] = [];
     const evidence: string[] = [];
     const requirements = readRequirements(scenario);
     const format = detectFormat(scenario, requirements);
@@ -105,6 +110,7 @@ export const structuredOutputEvaluator: Evaluator = {
     const payload = extractFormatPayload(format, modelOutput);
     const textCorpus = payload.text;
     const syntaxErrors = parsed.violations.filter(isSyntaxViolation);
+    criterionResults.push(contractCriterion('syntax', 'Format parses without structural errors', syntaxErrors.length === 0));
 
     // -------- 语法轴：与内容约束无关 --------
     axisScores.syntax_parse = syntaxErrors.length === 0
@@ -125,6 +131,7 @@ export const structuredOutputEvaluator: Evaluator = {
         (v) => v.type === 'schema_mismatch' || v.type === 'missing_required',
       );
       const schemaChecks = parsed.schemaChecks ?? 0;
+      criterionResults.push(contractCriterion('schema', 'Declared schema accepts the output', schemaViolations.length === 0 && schemaChecks > 0));
       // 按覆盖率折算计分：约束多的题不应因命中 4 条就被一刀切到 0 分。
       axisScores.schema_compliance = schemaViolations.length === 0
         ? 100
@@ -143,7 +150,7 @@ export const structuredOutputEvaluator: Evaluator = {
     // -------- 声明字段 / 约束轴 --------
     const declaredFields = requirements.requiredFields ?? [];
     const declaredConstraints = readConstraints(scenario, requirements);
-    const checks = [
+    const baseChecks = [
       ...declaredFields.map((field) => ({
         label: `required field ${field}`,
         pass: checkDeclaredField(format, parsed.parsed, textCorpus, field),
@@ -153,9 +160,21 @@ export const structuredOutputEvaluator: Evaluator = {
         pass: evaluateConstraint(constraint, parsed.parsed, textCorpus),
       })),
     ];
+    const textChecks = (requirements.text_contract === 'v1' || requirements.text_contract === 'v2')
+      ? evaluateStructuredTextContract(scenario.id, format, textCorpus, requirements.text_contract).map(check => ({
+        label: `text structure ${check.label}`, pass: check.pass,
+      })) : [];
+    const checks = [...baseChecks, ...textChecks];
+    for (const [index, check] of checks.entries()) {
+      criterionResults.push(contractCriterion(`field_${index}`, check.label, check.pass));
+    }
     if (checks.length > 0) {
       const passCount = checks.filter((check) => check.pass).length;
-      axisScores.field_constraints = Math.round((passCount / checks.length) * 100);
+      // Preserve the old contract's failures when adding deeper checks: pooling all
+      // checks would raise a partially wrong answer's score by diluting old failures.
+      const baseRate = baseChecks.length ? baseChecks.filter(check => check.pass).length / baseChecks.length : 1;
+      const textRate = textChecks.length ? textChecks.filter(check => check.pass).length / textChecks.length : 1;
+      axisScores.field_constraints = Math.round(Math.min(baseRate, textRate) * 100);
       axisEvidence.field_constraints = 'rule';
       const failures = checks.filter((check) => !check.pass).map((check) => check.label);
       evidence.push(`Declared fields/constraints: ${passCount}/${checks.length} passed`);
@@ -167,7 +186,12 @@ export const structuredOutputEvaluator: Evaluator = {
     // -------- 跨字段一致性轴 --------
     const crossRules = requirements.crossFieldRules ?? [];
     if (crossRules.length > 0) {
-      const passCount = crossRules.filter((rule) => evaluateCrossFieldRule(rule, parsed.parsed)).length;
+      const crossChecks = crossRules.map((rule, index) => {
+        const pass = evaluateCrossFieldRule(rule, parsed.parsed);
+        criterionResults.push(contractCriterion(`cross_${index}`, `cross-field rule ${rule}`, pass));
+        return pass;
+      });
+      const passCount = crossChecks.filter(Boolean).length;
       axisScores.cross_field_consistency = Math.round((passCount / crossRules.length) * 100);
       axisEvidence.cross_field_consistency = 'rule';
       evidence.push(`Cross-field rules: ${passCount}/${crossRules.length} passed`);
@@ -192,6 +216,7 @@ export const structuredOutputEvaluator: Evaluator = {
       requirements.allowedFenceLanguages ?? requirements.allowed_fence_languages ?? [],
       wrappedOrTrailing,
     );
+    criterionResults.push(contractCriterion('output_discipline', 'Output follows the declared wrapping policy', axisScores.output_discipline === 100));
     axisEvidence.output_discipline = 'rule';
     if (axisScores.output_discipline < 100) {
       evidence.push(wrappedOrTrailing
@@ -199,11 +224,20 @@ export const structuredOutputEvaluator: Evaluator = {
         : 'Output contains a fence or non-format text forbidden by raw_only policy');
     }
 
-    const totalScore = weightedMeasuredScore(axisScores, axisEvidence, weights);
+    const weightedScore = weightedMeasuredScore(axisScores, axisEvidence, weights);
+    // A rounded partial score must not advertise a failed contract as a perfect 100.
+    const strictPass = criterionResults.every((criterion) => criterion.status === 'pass');
+    const totalScore = strictPass ? weightedScore : Math.min(99, weightedScore);
+    if (!strictPass) evidence.push('STRICT_CONTRACT_FAIL: one or more declared checks failed');
 
-    return { axisScores, axisEvidence, totalScore, safetyLevel: 'safe', evidence };
+    return { axisScores, axisEvidence, criterionResults, totalScore, safetyLevel: 'safe', evidence };
   },
 };
+
+function contractCriterion(id: string, description: string, pass: boolean): CriterionResult {
+  return { id: `structured_${id}`, description, status: pass ? 'pass' : 'fail', critical: true,
+    source: 'rule', evidence: pass ? 'passed' : 'failed' };
+}
 
 function readRequirements(scenario: Scenario): Requirements {
   const raw = scenario.requirements as unknown;
@@ -310,6 +344,10 @@ function checkSingleField(
     case 'xml':
       // `xml` 字段对 XML 题指的是 XML 声明 `<?xml ... ?>`，不是同名标签
       if (field.toLowerCase() === 'xml') return /<\?xml/i.test(text);
+      // XSD built-in types appear as values of type="xs:...", not as tag names.
+      if (/^(?:[\w.-]+:)?(?:positiveInteger|nonNegativeInteger|integer|decimal|boolean|string|date|dateTime)$/.test(field)) {
+        return new RegExp(`\\b(?:type|base)\\s*=\\s*["']${escaped}["']`, 'i').test(text);
+      }
       return new RegExp(`<(?:[\\w.-]+:)?${escaped}(?:\\s|>|/)`, 'i').test(text)
         || new RegExp(`\\s(?:[\\w.-]+:)?${escaped}\\s*=`, 'i').test(text);
     case 'html':
@@ -428,6 +466,40 @@ function getPathAny(data: unknown, spec: string): unknown {
  *   uniqueCharsAll:<path>.<field>                每个元素的字符串内字符互不重复（words）
  *   charCount:<path>.<field>=<c>:<op><n>         某字符在全部元素中的出现总次数（count）
  *   deepEq:<path>=<jsonLiteral>                  与 JSON 字面量逐字节相等（copy）
+ *   jsonEq:<path>=<jsonLiteral>                  JSON 值相等（对象键序无关、数组有序）
+ *   matches:<path>:<regex>                       标量字符串符合正则表达式
+ *   minLength:<path>=<n>                         数组最少 n 项
+ *   minProperties:<path>=<n>                     对象至少 n 个键
+ *   someStringContainsAll:<path>=<jsonArray>     子树中某个字符串同时包含指定字符
+ *   csvSomeCell:<column>:<regex>                 CSV 某列至少一个数据单元匹配
+ *   csvAllCell:<column>:<regex>                  CSV 某列全部数据单元匹配
+ *   csvColumnSetEq:<column>=<jsonArray>          CSV 一列的多重集完全相等
+ *   csvCellCount:<column>:<value>:>=<n>         CSV 指定值出现次数下界
+ *   csvNumericRange:<column>:<min>:<max>        CSV 一列数字落在闭区间内
+ *   csvSalesFixture                              固定销售转换题的逐行及汇总校验
+ *   regexPatternFixtures                         五类正则在外部正反样例上的功能校验
+ *   arrayLookupEq:<path>.<key>=<jsonObject>      按键查找数组元素并核对指定字段
+ *   arraySequence:<path>.<field>=<jsonArray>     数组字段序列精确相等
+ *   arrayMappedCode:<path>.<code>=<source>:<prefix>:<width> 根据数字字段生成零填充代码
+ *   minAll:<path>.<field>=<number>                数组每项数字字段下界
+ *   notValueAll:<path>.<field>=<literal>         数组每项字段不得等于指定值
+ *   differenceEq:<path>.<target>=<a>-<b>        数组每项的差值恒等式
+ *   schemaValidatesAll:<schemaPath>:<arrayPath>  输出 Schema 接受数组的全部元素
+ *   embeddedCsvHeaders:<path>=<jsonArray>        JSON 内嵌 CSV 的表头
+ *   embeddedCsvRows:<path>=<n>                   JSON 内嵌 CSV 的数据行数
+ *   atLeast:<path>=<number>                      数值下界
+ *   jsonSetEq:<path>=<jsonArray>                  数组元素作为多重集相等
+ *   arrayContainsAll:<path>=<jsonArray>          数组包含所有指定值
+ *   nestedLength:<outer>[].<child>=<n>           每个父记录的子数组长度
+ *   nestedFields:<outer>[].<child>=a,b           每个子记录的精确键集
+ *   nestedSequence:<outer>[].<child>.<field>=<jsonArray> 每组子记录的字段顺序
+ *   nestedSum:<outer>[].<child>.<field>=<target> 每组子记录求和
+ *   nestedDifference:<outer>[].<child>.<target>=<a>-<b> 每个子记录的差值
+ *   nestedPositive:<outer>[].<child>.<field>     每个子记录的正数约束
+ *   nestedMaxDecimals:<outer>[].<child>.<field>=<n> 每个子记录的小数位上限
+ *   nestedOptionalMatch:<outer>[].<child>.<field>:<regex> 若字段存在则必须匹配
+ *   schemaAccepts:<schemaPath>=<jsonLiteral>     生成的 JSON Schema 接受固定样本
+ *   schemaRejectsLiteral:<schemaPath>=<jsonLiteral> 生成的 JSON Schema 拒绝固定样本
  *   jsonPointer:<pathToPointer>=<jsonLiteral>    文档内声明的 RFC6901 指针必须解析到该值（copy/format）
  *   sumEq 的目标可以是路径，也可以是字面量数字（用于校验回显数据与题面一致）
  */
@@ -442,6 +514,308 @@ function evaluateConstraint(constraint: string, data: unknown, corpus: string): 
   if (constraint.startsWith('nonempty:')) {
     const value = getPathAny(data, constraint.slice(9));
     return value !== undefined && value !== null && value !== '';
+  }
+
+  const matches = constraint.match(/^matches:([^:]+):(.+)$/);
+  if (matches) {
+    const value = getPathAny(data, matches[1].trim());
+    if (typeof value !== 'string') return false;
+    try { return new RegExp(matches[2], 'u').test(value); }
+    catch { return false; }
+  }
+
+  const minLength = constraint.match(/^minLength:([^=]+)=(\d+)$/);
+  if (minLength) {
+    const value = getPathAny(data, minLength[1].trim());
+    return Array.isArray(value) && value.length >= Number(minLength[2]);
+  }
+
+  const minProperties = constraint.match(/^minProperties:([^=]+)=(\d+)$/);
+  if (minProperties) {
+    const value = getPathAny(data, minProperties[1].trim());
+    return value !== null && typeof value === 'object' && !Array.isArray(value)
+      && Object.keys(value).length >= Number(minProperties[2]);
+  }
+
+  const someStringContainsAll = constraint.match(/^someStringContainsAll:([^=]+)=(.+)$/);
+  if (someStringContainsAll) {
+    const scope = someStringContainsAll[1].trim();
+    const root = scope === '.' ? data : getPathAny(data, scope);
+    try {
+      const fragments = JSON.parse(someStringContainsAll[2]);
+      if (!Array.isArray(fragments) || !fragments.every(x => typeof x === 'string')) return false;
+      const visit = (value: unknown): boolean => typeof value === 'string'
+        ? fragments.every(fragment => value.includes(fragment))
+        : value !== null && typeof value === 'object'
+          && Object.values(value).some(visit);
+      return visit(root);
+    } catch { return false; }
+  }
+
+  const arrayLookup = constraint.match(/^arrayLookupEq:([^=]+)=(.+)$/);
+  if (arrayLookup) {
+    const [arrayPath, key] = splitFieldPath(arrayLookup[1]);
+    const rows = asArray(getPathAny(data, arrayPath));
+    if (!rows || !key) return false;
+    try {
+      const expected = JSON.parse(arrayLookup[2]) as Record<string, Record<string, unknown>>;
+      if (!expected || typeof expected !== 'object' || Array.isArray(expected)) return false;
+      return rows.length === Object.keys(expected).length && Object.entries(expected).every(([name, fields]) => {
+        const matches = rows.filter(row => pick(row, key) === name);
+        return matches.length === 1 && fields && typeof fields === 'object'
+          && Object.entries(fields).every(([field, value]) => sameJsonValue(pick(matches[0], field), value));
+      });
+    } catch { return false; }
+  }
+
+  const arraySequence = constraint.match(/^arraySequence:([^=]+)=(.+)$/);
+  if (arraySequence) {
+    const [arrayPath, field] = splitFieldPath(arraySequence[1]);
+    const rows = asArray(getPathAny(data, arrayPath));
+    if (!rows) return false;
+    try { return sameJsonValue(rows.map(row => pick(row, field)), JSON.parse(arraySequence[2])); }
+    catch { return false; }
+  }
+
+  const arrayMappedCode = constraint.match(/^arrayMappedCode:([^=]+)=([^:]+):([^:]*):(\d+)$/);
+  if (arrayMappedCode) {
+    const [arrayPath, field] = splitFieldPath(arrayMappedCode[1]);
+    const rows = asArray(getPathAny(data, arrayPath));
+    return Boolean(rows?.length) && rows!.every(row => {
+      const source = pick(row, arrayMappedCode[2]);
+      return Number.isInteger(source) && pick(row, field) === `${arrayMappedCode[3]}${String(source).padStart(Number(arrayMappedCode[4]), '0')}`;
+    });
+  }
+
+  const minAll = constraint.match(/^minAll:([^=]+)=(-?\d+(?:\.\d+)?)$/);
+  if (minAll) {
+    const [arrayPath, field] = splitFieldPath(minAll[1]);
+    const rows = asArray(getPathAny(data, arrayPath));
+    return Boolean(rows?.length) && rows!.every(row => typeof pick(row, field) === 'number'
+      && (pick(row, field) as number) >= Number(minAll[2]));
+  }
+
+  const notValueAll = constraint.match(/^notValueAll:([^=]+)=(.+)$/);
+  if (notValueAll) {
+    const [arrayPath, field] = splitFieldPath(notValueAll[1]);
+    const rows = asArray(getPathAny(data, arrayPath));
+    const forbidden = coerceLiteral(notValueAll[2]);
+    return Boolean(rows?.length) && rows!.every(row => pick(row, field) !== undefined && !sameJsonValue(pick(row, field), forbidden));
+  }
+
+  const differenceEq = constraint.match(/^differenceEq:([^=]+)=([\w]+)-([\w]+)$/);
+  if (differenceEq) {
+    const [arrayPath, field] = splitFieldPath(differenceEq[1]);
+    const rows = asArray(getPathAny(data, arrayPath));
+    return Boolean(rows?.length) && rows!.every(row => {
+      const target = pick(row, field), left = pick(row, differenceEq[2]), right = pick(row, differenceEq[3]);
+      return typeof target === 'number' && typeof left === 'number' && typeof right === 'number'
+        && Math.abs(target - (left - right)) <= 0.001;
+    });
+  }
+
+  const schemaValidatesAll = constraint.match(/^schemaValidatesAll:([^:]+):(.+)$/);
+  if (schemaValidatesAll) {
+    const schema = getPathAny(data, schemaValidatesAll[1].trim());
+    const rows = getPathAny(data, schemaValidatesAll[2].trim());
+    return Boolean(schema && typeof schema === 'object' && !Array.isArray(schema)
+      && Array.isArray(rows) && rows.length > 0
+      && rows.every(row => countSchemaViolations(row, schema as Record<string, unknown>) === 0));
+  }
+
+  const atLeast = constraint.match(/^atLeast:([^=]+)=(-?\d+(?:\.\d+)?)$/);
+  if (atLeast) {
+    const value = getPathAny(data, atLeast[1].trim());
+    return typeof value === 'number' && Number.isFinite(value) && value >= Number(atLeast[2]);
+  }
+
+  const arraySet = constraint.match(/^(jsonSetEq|arrayContainsAll):([^=]+)=(.+)$/);
+  if (arraySet) {
+    const actual = getPathAny(data, arraySet[2].trim());
+    if (!Array.isArray(actual)) return false;
+    try {
+      const expected = JSON.parse(arraySet[3]);
+      if (!Array.isArray(expected)) return false;
+      if (arraySet[1] === 'jsonSetEq' && actual.length !== expected.length) return false;
+      const pool = [...actual];
+      for (const value of expected) {
+        const index = pool.findIndex(item => sameJsonValue(item, value));
+        if (index < 0) return false;
+        pool.splice(index, 1);
+      }
+      return true;
+    } catch { return false; }
+  }
+
+  const nested = constraint.match(/^(nestedLength|nestedFields|nestedSequence|nestedSum|nestedDifference|nestedPositive|nestedMaxDecimals):([^[]+)\[\]\.([^=]+?)(?:=(.+))?$/);
+  if (nested) {
+    const parents = getPathAny(data, nested[2].trim());
+    if (!Array.isArray(parents) || parents.length === 0) return false;
+    const kind = nested[1], path = nested[3].trim(), expected = nested[4];
+    const parts = path.split('.');
+    const childName = parts[0], field = parts.slice(1).join('.');
+    return parents.every(parent => {
+      const children = pick(parent, childName);
+      if (!Array.isArray(children) || children.length === 0) return false;
+      if (kind === 'nestedLength') return children.length === Number(expected);
+      if (kind === 'nestedFields') {
+        const keys = (expected ?? '').split(',').map(x => x.trim()).sort();
+        return children.every(child => child !== null && typeof child === 'object' && !Array.isArray(child)
+          && sameJsonValue(Object.keys(child as object).sort(), keys));
+      }
+      if (!field) return false;
+      if (kind === 'nestedSequence') {
+        try { return sameJsonValue(children.map(child => pick(child, field)), JSON.parse(expected ?? '')); }
+        catch { return false; }
+      }
+      if (kind === 'nestedPositive') return children.every(child => {
+        const value = pick(child, field);
+        return typeof value === 'number' && value > 0;
+      });
+      if (kind === 'nestedMaxDecimals') return children.every(child => {
+        const value = pick(child, field);
+        return typeof value === 'number' && countDecimals(value) >= 0 && countDecimals(value) <= Number(expected);
+      });
+      if (kind === 'nestedSum') {
+        const values = children.map(child => pick(child, field));
+        const target = pick(parent, expected?.trim() ?? '');
+        return values.every(x => typeof x === 'number') && typeof target === 'number'
+          && Math.abs((values as number[]).reduce((a, b) => a + b, 0) - target) <= 0.001;
+      }
+      if (kind === 'nestedDifference') {
+        const terms = expected?.match(/^([\w]+)-([\w]+)$/);
+        return Boolean(terms) && children.every(child => {
+          const target = pick(child, field), left = pick(child, terms![1]), right = pick(child, terms![2]);
+          return typeof target === 'number' && typeof left === 'number' && typeof right === 'number'
+            && Math.abs(target - (left - right)) <= 0.001;
+        });
+      }
+      return false;
+    });
+  }
+
+  const nestedOptionalMatch = constraint.match(/^nestedOptionalMatch:([^[]+)\[\]\.([^:]+):(.+)$/);
+  if (nestedOptionalMatch) {
+    const parents = getPathAny(data, nestedOptionalMatch[1].trim());
+    const [childName, ...fieldParts] = nestedOptionalMatch[2].split('.');
+    const field = fieldParts.join('.');
+    if (!Array.isArray(parents) || !parents.length || !childName || !field) return false;
+    try {
+      const pattern = new RegExp(nestedOptionalMatch[3]);
+      return parents.every(parent => {
+        const children = pick(parent, childName);
+        return Array.isArray(children) && children.every(child => {
+          const value = pick(child, field);
+          return value === undefined || typeof value === 'string' && pattern.test(value);
+        });
+      });
+    } catch { return false; }
+  }
+
+  const embeddedCsv = constraint.match(/^(embeddedCsvHeaders|embeddedCsvRows):([^=]+)=(.+)$/);
+  if (embeddedCsv) {
+    const value = getPathAny(data, embeddedCsv[2].trim());
+    if (typeof value !== 'string') return false;
+    const parsedCsv = parseByFormat('csv', value);
+    if (parsedCsv.violations.some(isSyntaxViolation)) return false;
+    const csv = parsedCsv.parsed as { headers?: unknown; rows?: unknown } | undefined;
+    if (embeddedCsv[1] === 'embeddedCsvRows')
+      return Array.isArray(csv?.rows) && csv.rows.length === Number(embeddedCsv[3]);
+    try { return sameJsonValue(csv?.headers, JSON.parse(embeddedCsv[3])); }
+    catch { return false; }
+  }
+
+  const csvColumn = constraint.match(/^(csvSomeCell|csvAllCell):(\d+):(.+)$/);
+  if (csvColumn) {
+    const rows = (data as { rows?: unknown } | null)?.rows;
+    if (!Array.isArray(rows) || rows.length === 0) return false;
+    try {
+      const pattern = new RegExp(csvColumn[3], 's');
+      const hits = rows.map(row => Array.isArray(row) && typeof row[Number(csvColumn[2])] === 'string'
+        && pattern.test(row[Number(csvColumn[2])]));
+      return csvColumn[1] === 'csvAllCell' ? hits.every(Boolean) : hits.some(Boolean);
+    } catch { return false; }
+  }
+
+  const csvRows = (data as { rows?: unknown } | null)?.rows;
+  const csvColumnSet = constraint.match(/^csvColumnSetEq:(\d+)=(.+)$/);
+  if (csvColumnSet) {
+    if (!Array.isArray(csvRows)) return false;
+    try {
+      const expected = JSON.parse(csvColumnSet[2]);
+      if (!Array.isArray(expected) || csvRows.length !== expected.length) return false;
+      const actual = csvRows.map(row => Array.isArray(row) ? row[Number(csvColumnSet[1])] : undefined);
+      return expected.every(value => {
+        const index = actual.findIndex(item => item === value);
+        if (index < 0) return false;
+        actual.splice(index, 1);
+        return true;
+      });
+    } catch { return false; }
+  }
+
+  const csvCellCount = constraint.match(/^csvCellCount:(\d+):([^:]+):>=(\d+)$/);
+  if (csvCellCount) return Array.isArray(csvRows)
+    && csvRows.filter(row => Array.isArray(row) && row[Number(csvCellCount[1])] === csvCellCount[2]).length >= Number(csvCellCount[3]);
+
+  const csvNumericRange = constraint.match(/^csvNumericRange:(\d+):(-?\d+(?:\.\d+)?):(-?\d+(?:\.\d+)?)$/);
+  if (csvNumericRange) return Array.isArray(csvRows) && csvRows.length > 0 && csvRows.every(row => {
+    const raw = Array.isArray(row) ? row[Number(csvNumericRange[1])] : undefined;
+    if (typeof raw !== 'string' || !/^-?\d+(?:\.\d+)?$/.test(raw)) return false;
+    const number = Number(raw);
+    return number >= Number(csvNumericRange[2]) && number <= Number(csvNumericRange[3]);
+  });
+
+  if (constraint === 'csvSalesFixture') {
+    const headers = (data as { headers?: unknown } | null)?.headers;
+    if (!sameJsonValue(headers, ['区域','产品','数量','单价','小计']) || !Array.isArray(csvRows) || csvRows.length !== 10) return false;
+    const quantities: Record<string, number[]> = { 北京: [150,80,45], 上海: [200,120,60], 广州: [100,60,30] };
+    const prices = [299,599,1299];
+    const expected = Object.entries(quantities).flatMap(([region, counts]) => counts.map((qty, index) =>
+      [region, `产品${'ABC'[index]}`, qty, prices[index], qty * prices[index]]));
+    const money = (value: unknown) => typeof value === 'string' ? Number(value.replace(/[¥￥,\s]/g, '')) : NaN;
+    const actual = csvRows.slice(0, 9).map(row => Array.isArray(row) && row.length === 5
+      ? [typeof row[0] === 'string' ? row[0].replace(/区$/, '') : row[0], row[1], money(row[2]), money(row[3]), money(row[4])] : null);
+    if (!expected.every(want => {
+      const index = actual.findIndex(got => sameJsonValue(got, want));
+      if (index < 0) return false;
+      actual.splice(index, 1);
+      return true;
+    })) return false;
+    const total = csvRows[9];
+    return Array.isArray(total) && total.length === 5 && total[0] === '合计'
+      && (total[2] === '' || money(total[2]) === 845) && money(total[4]) === 465655;
+  }
+
+  if (constraint === 'regexPatternFixtures') {
+    const patterns = (data as { patterns?: unknown } | null)?.patterns;
+    if (!Array.isArray(patterns) || patterns.length !== 5) return false;
+    const fixtures: { name: RegExp; yes: string[]; no: string[] }[] = [
+      { name: /手机|电话/, yes: ['13812345678','14712345678','16612345678','19912345678'], no: ['12812345678','23812345678','1381234567'] },
+      { name: /身份/, yes: ['11010119900307123X','440305198712120012'], no: ['11010119900307123','11010119901307123X'] },
+      { name: /车牌/, yes: ['京A12345','沪AD12345','粤B12345'], no: ['京A1234','AA12345'] },
+      { name: /金额|人民币/, yes: ['¥1,234,567.89','99.9','¥100'], no: ['¥1,23,456.78','¥1234.567'] },
+      { name: /日期/, yes: ['2024年3月15日','二〇二四年三月十五日'], no: ['2024/3/15','2024年3月'] },
+    ];
+    return fixtures.every(fixture => {
+      const hits = patterns.filter(item => item && typeof item === 'object'
+        && typeof item.name === 'string' && fixture.name.test(item.name));
+      if (hits.length !== 1 || typeof hits[0].regex !== 'string') return false;
+      try {
+        const re = new RegExp(hits[0].regex);
+        return fixture.yes.every(sample => re.test(sample)) && fixture.no.every(sample => !re.test(sample));
+      } catch { return false; }
+    });
+  }
+
+  const schemaFixture = constraint.match(/^(schemaAccepts|schemaRejectsLiteral):([^=]+)=(.+)$/);
+  if (schemaFixture) {
+    const schema = schemaFixture[2].trim() === '.' ? data : getPathAny(data, schemaFixture[2].trim());
+    if (!schema || typeof schema !== 'object' || Array.isArray(schema)) return false;
+    try {
+      const violations = countSchemaViolations(JSON.parse(schemaFixture[3]), schema as Record<string, unknown>);
+      return schemaFixture[1] === 'schemaAccepts' ? violations === 0 : violations > 0;
+    } catch { return false; }
   }
 
   const count = constraint.match(/^count:(.+):(>=|<=|==)(\d+)$/);
@@ -1024,6 +1398,15 @@ function evaluateNovelConstraint(constraint: string, data: unknown): boolean {
     return jsonEquivalent(actual, deepEq[2]);
   }
 
+  // Exact fixture values with JSON object key order ignored. Arrays remain ordered.
+  const jsonEq = constraint.match(/^jsonEq:([^=]+)=(.+)$/);
+  if (jsonEq) {
+    const actual = getPathAny(data, jsonEq[1].trim());
+    if (actual === undefined) return false;
+    try { return sameJsonValue(actual, JSON.parse(jsonEq[2])); }
+    catch { return false; }
+  }
+
   // 嵌在 JSON 字段里的 CSV 字符串：解析该子串后再断言单元格（RFC4180 往返）
   const csvField = constraint.match(/^csvField:([^:]+):(\d+):(\d+):(.+)$/);
   if (csvField) {
@@ -1066,6 +1449,22 @@ function jsonEquivalent(actual: unknown, literal: string): boolean {
     expected = literal;
   }
   return JSON.stringify(actual) === JSON.stringify(expected);
+}
+
+function sameJsonValue(actual: unknown, expected: unknown): boolean {
+  if (Array.isArray(actual) || Array.isArray(expected)) {
+    return Array.isArray(actual) && Array.isArray(expected)
+      && actual.length === expected.length && actual.every((item, index) => sameJsonValue(item, expected[index]));
+  }
+  if (actual !== null && expected !== null && typeof actual === 'object' && typeof expected === 'object') {
+    const left = actual as Record<string, unknown>;
+    const right = expected as Record<string, unknown>;
+    const leftKeys = Object.keys(left);
+    const rightKeys = Object.keys(right);
+    return leftKeys.length === rightKeys.length && leftKeys.every((key) =>
+      Object.hasOwn(right, key) && sameJsonValue(left[key], right[key]));
+  }
+  return actual === expected;
 }
 
 /** RFC 6901 JSON Pointer 解析（`~1` → `/`，`~0` → `~`，空串指向根）。 */

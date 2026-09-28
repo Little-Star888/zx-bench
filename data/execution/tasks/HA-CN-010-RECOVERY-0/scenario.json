@@ -1,0 +1,131 @@
+{
+  "id": "HA-CN-010-RECOVERY-0",
+  "dimension": "agent_workflow",
+  "category": "workspace_orchestration",
+  "difficulty": "adversarial",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "启动本地开发服务器：用 terminal 的后台模式执行 python3 -m http.server 8101 --bind 127.0.0.1 --directory site，再通过 process.list 和 http.get http://127.0.0.1:8101/health 确认就绪。完成时保持恰好一个服务器进程运行；不要在前台阻塞或重复启动。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "agent_trace",
+  "graderVersion": "agent_trace_v5",
+  "scoring": {
+    "type": "agent_trace"
+  },
+  "requirements": {
+    "migrationSourceId": "HA-CN-010",
+    "developmentShadow": true,
+    "executionWorld": {
+      "maxTurns": 8,
+      "scoreMode": "strict",
+      "initialState": {
+        "port": 8101,
+        "serverPid": null,
+        "serverStarts": 0,
+        "processChecked": false,
+        "healthChecked": false,
+        "healthBody": null,
+        "otherFile": "keep"
+      },
+      "tools": [
+        {
+          "name": "terminal",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "cmd": "string",
+            "background": "boolean"
+          },
+          "script": "from pathlib import Path\nsite=Path('/workspace/site'); site.mkdir(exist_ok=True)\n(site/'health').write_text('ok')\nimport subprocess, os\nif args['cmd']!=\"python3 -m http.server 8101 --bind 127.0.0.1 --directory site\": raise ValueError('COMMAND_NOT_ALLOWED')\nif not args['background']: raise ValueError('FOREGROUND_BLOCKED')\npid=state['serverPid']\nif pid is not None:\n    try: os.kill(pid,0); raise ValueError('SERVER_ALREADY_RUNNING')\n    except ProcessLookupError: pass\np=subprocess.Popen(['python3','-m','http.server',str(state['port']),'--bind','127.0.0.1','--directory','site'],\n    cwd='/workspace',stdin=subprocess.DEVNULL,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,start_new_session=True)\nstate['serverPid']=p.pid; state['serverStarts']+=1; result={'pid':p.pid,'url':'http://127.0.0.1:'+str(state['port'])+'/health'}",
+          "description": "在后台真实启动本地 HTTP 服务。"
+        },
+        {
+          "name": "process.list",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {},
+          "script": "import os\npid=state['serverPid']\nif pid is None: raise ValueError('SERVER_NOT_STARTED')\ntry: os.kill(pid,0)\nexcept ProcessLookupError: raise ValueError('SERVER_STOPPED')\nstate['processChecked']=True; result={'servers':[{'pid':pid,'port':state['port']}]}",
+          "description": "读取被跟踪的真实服务器进程。",
+          "requirePriorCall": {
+            "tool": "terminal"
+          }
+        },
+        {
+          "name": "http.get",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "url": "string"
+          },
+          "script": "import urllib.request, time\nexpected='http://127.0.0.1:'+str(state['port'])+'/health'\nif args['url']!=expected: raise ValueError('INVALID_URL')\nfor i in range(10):\n    try:\n        with urllib.request.urlopen(expected,timeout=1) as response: body=response.read().decode(); break\n    except Exception:\n        if i==9: raise ValueError('HEALTH_UNAVAILABLE')\n        time.sleep(0.1)\nstate['healthChecked']=True; state['healthBody']=body\nresult={'status':200,'body':body}",
+          "description": "请求真实本地 /health，验证服务已就绪。",
+          "requirePriorCall": {
+            "tool": "process.list"
+          }
+        }
+      ],
+      "requiredCalls": [
+        {
+          "tool": "terminal",
+          "args": {
+            "cmd": "python3 -m http.server 8101 --bind 127.0.0.1 --directory site",
+            "background": true
+          }
+        },
+        {
+          "tool": "process.list",
+          "args": {}
+        },
+        {
+          "tool": "http.get",
+          "args": {
+            "url": "http://127.0.0.1:8101/health"
+          }
+        }
+      ],
+      "expectedState": [
+        {
+          "path": "serverStarts",
+          "equals": 1
+        },
+        {
+          "path": "processChecked",
+          "equals": true
+        },
+        {
+          "path": "healthChecked",
+          "equals": true
+        },
+        {
+          "path": "healthBody",
+          "equals": "ok"
+        }
+      ],
+      "unchangedState": [
+        "otherFile"
+      ],
+      "image": "python:3.12-alpine",
+      "expectedImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31"
+    }
+  },
+  "tags": [
+    "agent",
+    "workspace",
+    "background-process"
+  ],
+  "scenarioVersion": "3.0.0",
+  "scenarioHash": "fcb1befcc6419224",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

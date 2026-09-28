@@ -102,6 +102,47 @@ export function validateScenario(
     }
   }
 
+  // An executable label is a promise that the grader has a real environment
+  // and at least one independently checkable outcome. Reject empty shells.
+  if (scenario.responseMode === 'live_execution') {
+    if (scenario.grader === 'cli_command') {
+      const cases = requirements.executionCases;
+      const shell = requirements.executionShell as Record<string, unknown> | undefined;
+      const validShell = shell && Array.isArray(shell.files) && shell.files.length > 0
+        && shell.answer !== undefined && Number.isInteger(shell.maxTurns) && Number(shell.maxTurns) > 0;
+      if (!validShell && (!Array.isArray(cases) || cases.length === 0 || cases.some((item) => {
+        const c = item as Record<string, unknown> | null;
+        return !c || !Array.isArray(c.files) || !(
+          c.expectedStdout !== undefined
+          || c.expectedStdoutPattern !== undefined
+          || (Array.isArray(c.assertCommands) && c.assertCommands.length > 0
+            && c.assertCommands.every(command => typeof command === 'string' && command.trim().length > 0))
+          || Object.keys((c.expectedFiles as Record<string, unknown> | undefined) ?? {}).length > 0);
+      }))) push('error', 'EXECUTION_CASES_REQUIRED', 'CLI 执行题需要可验证的 executionCases 或 executionShell', 'requirements.executionCases');
+      if (Array.isArray(cases)) cases.forEach((item, index) => {
+        const pattern = (item as Record<string, unknown> | null)?.expectedStdoutPattern;
+        if (pattern === undefined) return;
+        try { if (typeof pattern !== 'string') throw new Error('pattern must be a string'); new RegExp(pattern); }
+        catch { push('error', 'EXECUTION_STDOUT_PATTERN_INVALID', 'CLI 输出断言正则无效', `requirements.executionCases.${index}.expectedStdoutPattern`); }
+      });
+    } else if (['tool_call_trace', 'agent_trace', 'canary_authority'].includes(scenario.grader)) {
+      const world = requirements.executionWorld as Record<string, unknown> | undefined;
+      if (!world || !world.initialState || !Array.isArray(world.tools)
+        || !Number.isInteger(world.maxTurns) || Number(world.maxTurns) < 1
+        || ![world.requiredCalls, world.forbiddenCalls, world.expectedState, world.unchangedState]
+          .some((value) => Array.isArray(value) && value.length > 0)) {
+        push('error', 'EXECUTION_WORLD_REQUIRED', '工具执行题需要环境、轮次和至少一项独立断言', 'requirements.executionWorld');
+      }
+    } else if (scenario.grader === 'agent_loop_trace') {
+      const loop = requirements.agentLoop as Record<string, unknown> | undefined;
+      const checks = requirements.agentLoopAssert as Record<string, unknown> | undefined;
+      if (!loop?.state || !Number.isInteger(loop.maxTurns) || Number(loop.maxTurns) < 1
+        || !checks?.expectedOutcome) {
+        push('error', 'AGENT_LOOP_CONTRACT_REQUIRED', '闭环执行题需要初态、轮次和预期结果断言', 'requirements.agentLoop');
+      }
+    }
+  }
+
   // 4b. 数据抽取 v3 的金标与类型契约必须完整、自洽并显式冻结。
   if (scenario.grader === 'json_atomic_fields' && scenario.graderVersion === 'json_atomic_v3') {
     if (!Object.hasOwn(requirements, 'expected')) push('error', 'DE_EXPECTED_MISSING', 'data extraction v3 缺少冻结 expected', 'requirements.expected');
@@ -128,6 +169,15 @@ export function validateScenario(
   }
 
   // 5. format 支持（structured_output）
+  if (scenario.grader === 'structured_contract') {
+    if (!['draft-07','2020-12'].includes(String(requirements.dialect))
+      || typeof requirements.formatAssertions !== 'boolean' || requirements.output_policy !== 'raw_only'
+      || typeof requirements.family !== 'string' || !requirements.family
+      || !(typeof requirements.schema === 'boolean' || requirements.schema && typeof requirements.schema === 'object' && !Array.isArray(requirements.schema))) {
+      push('error','STRUCTURED_CONTRACT_INVALID','标准结构化题必须声明方言、schema、format 策略、题族及 raw_only 输出','requirements');
+    }
+  }
+
   if (contract.capabilities.supportedFormats && requirements.format != null) {
     const fmt = String(requirements.format);
     if (!contract.capabilities.supportedFormats.includes(fmt)) {

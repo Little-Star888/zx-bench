@@ -12,6 +12,7 @@ import type { Evaluator } from './index.js';
 import { callContainsPattern, callHasParam, findToolCalls, getStructuredToolCalls } from './callMatch.js';
 import { weightedScoreByCoverage } from './scoreAggregate.js';
 import { formatValidScore } from './responseState.js';
+import { evaluateWorldTrace } from './worldTrace.js';
 
 interface AgentAction {
   tool?: string;
@@ -38,8 +39,11 @@ export const agentTraceEvaluator: Evaluator = {
     scenario: Scenario,
     modelOutput: string,
     outputMetadata: OutputMetadata,
-    _modelResponse?: ModelResponse,
+    modelResponse?: ModelResponse,
   ): Promise<Partial<ScenarioResult>> {
+    if ((scenario.requirements as Record<string, unknown> | undefined)?.executionWorld) {
+      return evaluateWorldTrace(scenario, modelResponse);
+    }
     const axisScores: Record<string, number> = {};
     const axisEvidence: Record<string, AxisEvidence> = {};
     const evidence: string[] = [];
@@ -81,7 +85,7 @@ export const agentTraceEvaluator: Evaluator = {
         if (!toolName) { actionHits++; continue; }
 
         // 只接受可归属的实际调用；参数也必须落在同一调用中。
-        const candidateCalls = findToolCalls(modelOutput, toolName).filter((call) => call.index > lastIdx);
+        const candidateCalls = findToolCalls(modelOutput, toolName).filter((call) => (call.ordinal ?? call.index) > lastIdx);
         if (candidateCalls.length === 0) {
           evidence.push(`Action not called: ${toolName}`);
           continue;
@@ -96,7 +100,7 @@ export const agentTraceEvaluator: Evaluator = {
           evidence.push(`Action called but required params missing in call: ${toolName}`);
           continue;
         }
-        lastIdx = call.index;
+        lastIdx = call.ordinal ?? call.index;
         actionHits++;
       }
 

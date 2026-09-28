@@ -1,0 +1,15 @@
+[
+  {
+    "tool": "calendar.list",
+    "args": {
+      "date": "today"
+    }
+  },
+  {
+    "tool": "calendar.add",
+    "args": {
+      "title": "新会议",
+      "time": "16:00"
+    }
+  }
+]

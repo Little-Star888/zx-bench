@@ -1,0 +1,1 @@
+工作区 /workspace，Linux sh 和 Python 3 标准库可用。也提供 bash；脚本按 sh/bash shebang 选择解释器，无 shebang 使用 sh。在真实 Git 仓库中初始化 main，建立 feature/login 分支，提交已有 login.js（提交消息 feat: add login module），切回 main 并合并该分支；最后输出 merged。保留源文件。只输出可执行 shell 脚本。

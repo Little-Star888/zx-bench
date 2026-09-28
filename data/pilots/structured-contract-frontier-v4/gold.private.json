@@ -1,0 +1,74 @@
+[
+  {
+    "id": "SOC4-SOB-055",
+    "split": "development",
+    "raw": "{\"person_name\":\"Pamela Nicholson\",\"company_name\":\"Enterprise Rent-A-Car\",\"company_type\":\"car rental company\",\"headquarters_location\":{\"city\":\"Clayton\",\"state\":\"Missouri\",\"country\":\"United States\"}}",
+    "recordId": "77cd2201e790157c0dcd0fc152ecc90495b34cb95813f1ed28b1618ac3aa3aa3"
+  },
+  {
+    "id": "SOC4-SOB-002",
+    "split": "development",
+    "raw": "{\"coach_name\":\"Lionel Hollins\",\"previous_team\":\"Memphis Grizzlies\",\"subsequent_team\":\"Brooklyn Nets\",\"subsequent_team_details\":{\"league\":\"National Basketball Association\",\"coaching_role\":\"head coach\",\"firing_date_from_subsequent_team\":\"January 2016\"}}",
+    "recordId": "8e7b861ce32932d34105e1cc689784b20e66d158ccf6a957220fddb2e288981f"
+  },
+  {
+    "id": "SOC4-SOB-007",
+    "split": "development",
+    "raw": "{\"triggering_event\":{\"name\":\"Tunisian Revolution\",\"start_date\":\"17 December 2010\",\"location\":\"Tunisia\"},\"revolutionary_wave\":{\"name\":\"Arab Spring\",\"description\":\"revolutionary wave\"},\"inspired_movement\":{\"name\":\"Occupy Wall Street\"}}",
+    "recordId": "88871f947845405117f3efe2fb1772551a388abb2c6ff847225dd37a9be849fe"
+  },
+  {
+    "id": "SOC4-SOB-009",
+    "split": "development",
+    "raw": "{\"film_title\":\"Bedknobs and Broomsticks\",\"film_year\":1971,\"film_genre\":[\"musical\",\"fantasy\"],\"film_origin_countries\":[\"British\",\"American\"],\"actress_name\":\"Cindy O'Callaghan\",\"role_name\":\"Carrie Rawlins\",\"source_material\":{\"type\":\"books\",\"author_name\":\"Mary Norton\",\"book_titles\":[\"The Magic Bedknob; or, How to Become a Witch in Ten Easy Lessons\",\"Bonfires and Broomsticks\"]}}",
+    "recordId": "1e5aa99d449587dd66eb6f038eea2205827cd531337eb53d344477bd61743d84"
+  },
+  {
+    "id": "SOC4-SOB-027",
+    "split": "development",
+    "raw": "{\"poem_title\":\"Hugh Selwyn Mauberley\",\"author\":\"Ezra Pound\",\"publication_year\":1920,\"related_person\":{\"name\":\"T.S. Eliot\",\"event_description\":\"moved to England\",\"event_year\":1914,\"years_after_event\":6}}",
+    "recordId": "ff99bdbccd0b7aaf5c5e5934edd8a9bdc6a90d98858285cc0f0eda4624b0f643"
+  },
+  {
+    "id": "SOC4-SOB-028",
+    "split": "development",
+    "raw": "{\"person_name\":\"William P. Baker\",\"university_attended\":{\"name\":\"San Jose State University\",\"location\":\"San Jose, California, United States\"},\"founding_system\":{\"name\":\"California State University (CSU) system\",\"campus_count\":23}}",
+    "recordId": "918f821b87eb652a1c1e7cbf31bf56c409481df9c79ec4a999b45c376143d386"
+  },
+  {
+    "id": "SOC4-SOB-029",
+    "split": "development",
+    "raw": "{\"song_title\":\"City of Stars\",\"award_details\":{\"award_name\":\"Academy Award\",\"award_category\":\"Best Original Song\",\"award_ceremony\":89},\"performers\":[\"Ryan Gosling\",\"Emma Stone\"],\"film_title\":\"La La Land\"}",
+    "recordId": "ed5e42f4b1c1b3fc595df1889b031270c42a9a251da37505ee05ab8452889f87"
+  },
+  {
+    "id": "SOC4-SOB-051",
+    "split": "development",
+    "raw": "{\"entity_name\":\"Oberon\",\"role_in_play\":\"King of the fairies and Consort to Titania, Queen of the Fairies\",\"opera_details\":{\"composer\":\"Carl Maria von Weber\",\"source_material\":\"Oberon\",\"source_material_author\":\"Christoph Martin Wieland\"}}",
+    "recordId": "030536aa3cc5acc447f6d11030ffd9b8c0bd9f61089c2bbf245034368108e9d3"
+  },
+  {
+    "id": "SOC4-SOB-090",
+    "split": "holdout",
+    "raw": "{\"actor_name\":\"Benji Gregory\",\"character_name\":\"Brian Tanner\",\"tv_series_details\":{\"title\":\"ALF\",\"genre\":\"American sitcom\",\"air_start_year\":1986,\"air_end_year\":1990}}",
+    "recordId": "13ffb445cc1d814762709746b608ff48d39e8ed74fbb7686da005acf46ac69ad"
+  },
+  {
+    "id": "SOC4-SOB-096",
+    "split": "holdout",
+    "raw": "{\"person_a_details\":{\"name\":\"Stephan Elliott\",\"birth_year\":1964,\"birth_month\":\"August\",\"birth_day\":27},\"person_b_details\":{\"name\":\"Philippe Garrel\",\"birth_year\":1948,\"birth_month\":\"April\",\"birth_day\":6},\"earlier_born_person_name\":\"Philippe Garrel\",\"earlier_born_person_birth_year\":1948,\"comparison_summary\":\"Philippe Garrel was born earlier than Stephan Elliott.\"}",
+    "recordId": "1f34119f0239a5338cc43887cef21a5f513f717654f55d0147d9392810498636"
+  },
+  {
+    "id": "SOC4-SOB-098",
+    "split": "holdout",
+    "raw": "{\"fort_name\":\"South Channel Fort\",\"location_details\":{\"distance_from_town_km\":6,\"direction_from_town\":\"north-east\",\"town_name\":\"Sorrento\",\"port_name\":\"Port Phillip\"},\"port_location_description\":\"southern Port Phillip, Victoria, Australia\"}",
+    "recordId": "19c3d8eaf67aa667fef187e57beaa8c0ed04e50af540731f6fe8f101b679ce1a"
+  },
+  {
+    "id": "SOC4-SOB-032",
+    "split": "holdout",
+    "raw": "{\"entity_type\":\"brand and buying group\",\"entity_name\":\"Nisa Retail Limited\",\"location\":\"United Kingdom\",\"member_company\":\"Filco Foods\",\"member_company_store_count\":8}",
+    "recordId": "e1cd196dcff15328ff827fbe07b0c881f8ed1c6211477e1f24f2158f1040c987"
+  }
+]

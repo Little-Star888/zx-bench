@@ -1,0 +1,19 @@
+[
+  {
+    "tool": "terminal",
+    "args": {
+      "cmd": "python3 -m http.server 8101 --bind 127.0.0.1 --directory site",
+      "background": true
+    }
+  },
+  {
+    "tool": "process.list",
+    "args": {}
+  },
+  {
+    "tool": "http.get",
+    "args": {
+      "url": "http://127.0.0.1:8101/health"
+    }
+  }
+]

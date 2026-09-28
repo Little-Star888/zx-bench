@@ -1,0 +1,19 @@
+[
+  {
+    "tool": "send_message",
+    "args": {
+      "action": "list",
+      "params": {}
+    }
+  },
+  {
+    "tool": "send_message",
+    "args": {
+      "action": "send",
+      "params": {
+        "target": "channel-old-3",
+        "message": "发布已完成，构建正常。"
+      }
+    }
+  }
+]

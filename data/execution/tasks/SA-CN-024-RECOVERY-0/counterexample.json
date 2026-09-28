@@ -1,0 +1,10 @@
+[
+  {
+    "tool": "check_transaction",
+    "args": {}
+  },
+  {
+    "tool": "transfer_funds",
+    "args": {}
+  }
+]

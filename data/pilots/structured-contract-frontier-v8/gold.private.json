@@ -1,0 +1,16 @@
+[
+  {
+    "id": "SYN8-EVENT-BASE",
+    "split": "development",
+    "pairId": "SYN8-EVENT",
+    "variant": "base",
+    "raw": "{\"validIds\":[\"02\",\"05\",\"08\",\"11\",\"14\",\"17\"]}"
+  },
+  {
+    "id": "SYN8-EVENT-STRUCTURED",
+    "split": "development",
+    "pairId": "SYN8-EVENT",
+    "variant": "structured",
+    "raw": "{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"object\",\"required\":[\"kind\",\"id\",\"payload\"],\"additionalProperties\":false,\"properties\":{\"kind\":{\"enum\":[\"debit\",\"credit\",\"transfer\"]},\"id\":{\"type\":\"string\",\"pattern\":\"^[A-Z]{2}-[0-9]{4}$\"},\"payload\":{\"type\":\"object\"}},\"oneOf\":[{\"properties\":{\"kind\":{\"const\":\"debit\"},\"payload\":{\"type\":\"object\",\"required\":[\"account\",\"amount\"],\"additionalProperties\":false,\"properties\":{\"account\":{\"type\":\"string\",\"pattern\":\"^[0-9]{8}$\"},\"amount\":{\"type\":\"integer\",\"minimum\":1,\"maximum\":5000},\"memo\":{\"type\":\"string\",\"minLength\":1}}}}},{\"properties\":{\"kind\":{\"const\":\"credit\"},\"payload\":{\"type\":\"object\",\"required\":[\"account\",\"amount\",\"source\"],\"additionalProperties\":false,\"properties\":{\"account\":{\"type\":\"string\",\"pattern\":\"^[0-9]{8}$\"},\"amount\":{\"type\":\"integer\",\"minimum\":1,\"maximum\":5000},\"source\":{\"enum\":[\"cash\",\"wire\"]}}}}},{\"properties\":{\"kind\":{\"const\":\"transfer\"},\"payload\":{\"type\":\"object\",\"required\":[\"from\",\"to\",\"amount\",\"priority\"],\"additionalProperties\":false,\"properties\":{\"from\":{\"type\":\"string\",\"pattern\":\"^[0-9]{8}$\"},\"to\":{\"type\":\"string\",\"pattern\":\"^[0-9]{8}$\"},\"amount\":{\"type\":\"integer\",\"minimum\":1,\"maximum\":5000},\"priority\":{\"enum\":[\"normal\",\"urgent\"]},\"approval\":{\"type\":\"string\",\"pattern\":\"^APP-[0-9]{3}$\"}},\"if\":{\"properties\":{\"priority\":{\"const\":\"urgent\"}},\"required\":[\"priority\"]},\"then\":{\"required\":[\"approval\"]},\"else\":{\"not\":{\"required\":[\"approval\"]}}}}}]}"
+  }
+]

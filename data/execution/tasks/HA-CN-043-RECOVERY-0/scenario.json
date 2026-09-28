@@ -1,0 +1,88 @@
+{
+  "id": "HA-CN-043-RECOVERY-0",
+  "dimension": "agent_workflow",
+  "category": "memory_recall",
+  "difficulty": "easy",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "记住用户喜欢的编程语言是 Python。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "agent_trace",
+  "graderVersion": "agent_trace_v5",
+  "scoring": {
+    "type": "agent_trace"
+  },
+  "requirements": {
+    "migrationSourceId": "HA-CN-043",
+    "developmentShadow": true,
+    "executionWorld": {
+      "maxTurns": 8,
+      "scoreMode": "strict",
+      "initialState": {
+        "calls": [],
+        "other": "keep"
+      },
+      "tools": [
+        {
+          "name": "memory.save",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "key": "string",
+            "value": "string"
+          },
+          "script": "expected={\"key\":\"favorite.language\",\"value\":\"Python\"}\nif args!=expected: raise ValueError('WRONG_PARAMS')\nstate['calls'].append(args); result={'status':\"已保存\"}",
+          "description": "执行原题对应动作并记录参数。"
+        }
+      ],
+      "requiredCalls": [
+        {
+          "tool": "memory.save",
+          "args": {
+            "key": "favorite.language",
+            "value": "Python"
+          }
+        }
+      ],
+      "expectedState": [
+        {
+          "path": "calls",
+          "equals": [
+            {
+              "key": "favorite.language",
+              "value": "Python"
+            }
+          ]
+        }
+      ],
+      "unchangedState": [
+        "other"
+      ],
+      "finalMessageMustContain": [
+        "Python"
+      ],
+      "image": "python:3.12-alpine",
+      "expectedImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31"
+    }
+  },
+  "tags": [
+    "agent",
+    "memory",
+    "easy"
+  ],
+  "scenarioVersion": "3.0.0",
+  "scenarioHash": "f2f0eb852eadb2ff",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

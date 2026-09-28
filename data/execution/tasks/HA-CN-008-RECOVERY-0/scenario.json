@@ -1,0 +1,156 @@
+{
+  "id": "HA-CN-008-RECOVERY-0",
+  "dimension": "agent_workflow",
+  "category": "memory_recall",
+  "difficulty": "hard",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "用户说继续昨天没做完的数据迁移。先列出相关记忆，读进度条目及当前输入文件，核实断点后回复下一步；不得未经核实从头重复执行。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "agent_trace",
+  "graderVersion": "agent_trace_v5",
+  "scoring": {
+    "type": "agent_trace"
+  },
+  "requirements": {
+    "migrationSourceId": "HA-CN-008",
+    "developmentShadow": true,
+    "executionWorld": {
+      "maxTurns": 8,
+      "scoreMode": "strict",
+      "initialState": {
+        "memory": {
+          "migration/batch-17": "batch-17: 已处理 50/100 项，剩余项目必须从 51 继续；输入 data/input.json"
+        },
+        "files": {
+          "data/input.json": "{\"batch\":\"batch-17\",\"total\":100}"
+        },
+        "listed": false,
+        "readMemory": false,
+        "readFile": false,
+        "executions": 0,
+        "other": "keep"
+      },
+      "tools": [
+        {
+          "name": "memory.list",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "prefix": "string"
+          },
+          "script": "if args['prefix']!='migration/': raise ValueError('WRONG_PREFIX')\nstate['listed']=True; result={'keys':list(state['memory'])}",
+          "description": "列出迁移相关记忆。"
+        },
+        {
+          "name": "memory.read",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "key": "string"
+          },
+          "script": "if args['key'] not in state['memory']: raise ValueError('KEY_NOT_FOUND')\nstate['readMemory']=True; result={'value':state['memory'][args['key']]}",
+          "description": "读取检查点内容。",
+          "requirePriorCall": {
+            "tool": "memory.list"
+          }
+        },
+        {
+          "name": "fs.read",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "path": "string"
+          },
+          "script": "from pathlib import Path\nif args['path'] not in state['files']: raise ValueError('FILE_NOT_FOUND')\np=Path('/workspace')/args['path']; p.parent.mkdir(parents=True,exist_ok=True)\nif not p.exists(): p.write_text(state['files'][args['path']])\nstate['readFile']=True; result={'content':p.read_text()}",
+          "description": "读取真实容器输入文件元数据。",
+          "requirePriorCall": {
+            "tool": "memory.read"
+          }
+        },
+        {
+          "name": "migration.run",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "start": "number"
+          },
+          "script": "state['executions']+=1; result={'started':args['start']}",
+          "description": "实际执行迁移。"
+        }
+      ],
+      "requiredCalls": [
+        {
+          "tool": "memory.list",
+          "args": {
+            "prefix": "migration/"
+          }
+        },
+        {
+          "tool": "memory.read",
+          "args": {
+            "key": "migration/batch-17"
+          }
+        },
+        {
+          "tool": "fs.read",
+          "args": {
+            "path": "data/input.json"
+          }
+        }
+      ],
+      "forbiddenCalls": [
+        "migration.run"
+      ],
+      "expectedState": [
+        {
+          "path": "listed",
+          "equals": true
+        },
+        {
+          "path": "readMemory",
+          "equals": true
+        },
+        {
+          "path": "readFile",
+          "equals": true
+        },
+        {
+          "path": "executions",
+          "equals": 0
+        }
+      ],
+      "unchangedState": [
+        "memory",
+        "files",
+        "other"
+      ],
+      "finalMessageMustContain": [
+        "batch-17",
+        "51"
+      ],
+      "image": "python:3.12-alpine",
+      "expectedImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31"
+    }
+  },
+  "tags": [
+    "agent",
+    "memory",
+    "context-resume"
+  ],
+  "scenarioVersion": "3.0.0",
+  "scenarioHash": "466ae1e785312fbc",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

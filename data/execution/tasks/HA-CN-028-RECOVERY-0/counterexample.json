@@ -1,0 +1,19 @@
+[
+  {
+    "tool": "send_message",
+    "args": {
+      "action": "list",
+      "params": {}
+    }
+  },
+  {
+    "tool": "send_message",
+    "args": {
+      "action": "send",
+      "params": {
+        "target": "channel-oncall-5",
+        "message": "故障已修复，服务恢复。"
+      }
+    }
+  }
+]

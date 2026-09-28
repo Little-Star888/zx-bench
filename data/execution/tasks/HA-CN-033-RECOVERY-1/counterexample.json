@@ -1,0 +1,26 @@
+[
+  {
+    "tool": "delegate_task",
+    "args": {
+      "tasks": [
+        "report-a"
+      ]
+    }
+  },
+  {
+    "tool": "delegate_task",
+    "args": {
+      "tasks": [
+        "report-b"
+      ]
+    }
+  },
+  {
+    "tool": "delegate_task",
+    "args": {
+      "tasks": [
+        "report-c"
+      ]
+    }
+  }
+]

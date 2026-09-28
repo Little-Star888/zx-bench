@@ -1,0 +1,571 @@
+[
+  {
+    "id": "SO-PILOT-01-1",
+    "family": "project-and-filter",
+    "variant": 1,
+    "expected": {
+      "records": [
+        {
+          "id": "u3",
+          "name": "李三"
+        },
+        {
+          "id": "u2",
+          "name": "陈二"
+        }
+      ]
+    }
+  },
+  {
+    "id": "SO-PILOT-01-2",
+    "family": "project-and-filter",
+    "variant": 2,
+    "expected": {
+      "records": []
+    }
+  },
+  {
+    "id": "SO-PILOT-01-3",
+    "family": "project-and-filter",
+    "variant": 3,
+    "expected": {
+      "records": [
+        {
+          "id": "u3",
+          "name": "李三"
+        },
+        {
+          "id": "u1",
+          "name": "王一"
+        }
+      ]
+    }
+  },
+  {
+    "id": "SO-PILOT-02-1",
+    "family": "null-versus-omitted",
+    "variant": 1,
+    "expected": {
+      "name": "甲"
+    }
+  },
+  {
+    "id": "SO-PILOT-02-2",
+    "family": "null-versus-omitted",
+    "variant": 2,
+    "expected": {
+      "name": "乙",
+      "contact": ""
+    }
+  },
+  {
+    "id": "SO-PILOT-02-3",
+    "family": "null-versus-omitted",
+    "variant": 3,
+    "expected": {
+      "name": "丙",
+      "contact": "13800000000"
+    }
+  },
+  {
+    "id": "SO-PILOT-03-1",
+    "family": "discriminated-union",
+    "variant": 1,
+    "expected": {
+      "events": [
+        {
+          "id": "p0",
+          "type": "payment",
+          "payload": {
+            "amount": 1
+          }
+        },
+        {
+          "id": "f0",
+          "type": "error",
+          "payload": {
+            "reason": "timeout"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "SO-PILOT-03-2",
+    "family": "discriminated-union",
+    "variant": 2,
+    "expected": {
+      "events": [
+        {
+          "id": "p1",
+          "type": "payment",
+          "payload": {
+            "amount": 2
+          }
+        },
+        {
+          "id": "f1",
+          "type": "error",
+          "payload": {
+            "reason": ""
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "SO-PILOT-03-3",
+    "family": "discriminated-union",
+    "variant": 3,
+    "expected": {
+      "events": [
+        {
+          "id": "p2",
+          "type": "payment",
+          "payload": {
+            "amount": 3
+          }
+        },
+        {
+          "id": "f2",
+          "type": "error",
+          "payload": {
+            "reason": "timeout"
+          }
+        },
+        {
+          "id": "p-extra",
+          "type": "payment",
+          "payload": {
+            "amount": 0
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "SO-PILOT-04-1",
+    "family": "stable-sort",
+    "variant": 1,
+    "expected": {
+      "jobIds": [
+        "c",
+        "b",
+        "a"
+      ]
+    }
+  },
+  {
+    "id": "SO-PILOT-04-2",
+    "family": "stable-sort",
+    "variant": 2,
+    "expected": {
+      "jobIds": [
+        "a",
+        "c",
+        "b"
+      ]
+    }
+  },
+  {
+    "id": "SO-PILOT-04-3",
+    "family": "stable-sort",
+    "variant": 3,
+    "expected": {
+      "jobIds": [
+        "c",
+        "b",
+        "a"
+      ]
+    }
+  },
+  {
+    "id": "SO-PILOT-05-1",
+    "family": "fixed-category-counts",
+    "variant": 1,
+    "expected": {
+      "counts": {
+        "open": 2,
+        "closed": 1,
+        "blocked": 0
+      }
+    }
+  },
+  {
+    "id": "SO-PILOT-05-2",
+    "family": "fixed-category-counts",
+    "variant": 2,
+    "expected": {
+      "counts": {
+        "open": 0,
+        "closed": 0,
+        "blocked": 0
+      }
+    }
+  },
+  {
+    "id": "SO-PILOT-05-3",
+    "family": "fixed-category-counts",
+    "variant": 3,
+    "expected": {
+      "counts": {
+        "open": 0,
+        "closed": 1,
+        "blocked": 2
+      }
+    }
+  },
+  {
+    "id": "SO-PILOT-06-1",
+    "family": "join-with-missing-reference",
+    "variant": 1,
+    "expected": {
+      "tasks": [
+        {
+          "taskId": "t0",
+          "ownerName": "甲"
+        },
+        {
+          "taskId": "t2",
+          "ownerName": "乙"
+        }
+      ]
+    }
+  },
+  {
+    "id": "SO-PILOT-06-2",
+    "family": "join-with-missing-reference",
+    "variant": 2,
+    "expected": {
+      "tasks": [
+        {
+          "taskId": "t1",
+          "ownerName": null
+        },
+        {
+          "taskId": "t2",
+          "ownerName": "乙"
+        }
+      ]
+    }
+  },
+  {
+    "id": "SO-PILOT-06-3",
+    "family": "join-with-missing-reference",
+    "variant": 3,
+    "expected": {
+      "tasks": [
+        {
+          "taskId": "t2",
+          "ownerName": null
+        },
+        {
+          "taskId": "t2",
+          "ownerName": "乙"
+        }
+      ]
+    }
+  },
+  {
+    "id": "SO-PILOT-07-1",
+    "family": "first-wins-dedup",
+    "variant": 1,
+    "expected": {
+      "items": [
+        {
+          "code": "A",
+          "label": "first-0"
+        },
+        {
+          "code": "B",
+          "label": "middle"
+        }
+      ]
+    }
+  },
+  {
+    "id": "SO-PILOT-07-2",
+    "family": "first-wins-dedup",
+    "variant": 2,
+    "expected": {
+      "items": [
+        {
+          "code": "A",
+          "label": "first-1"
+        },
+        {
+          "code": "B",
+          "label": "middle"
+        }
+      ]
+    }
+  },
+  {
+    "id": "SO-PILOT-07-3",
+    "family": "first-wins-dedup",
+    "variant": 3,
+    "expected": {
+      "items": [
+        {
+          "code": "A",
+          "label": "first-2"
+        },
+        {
+          "code": "B",
+          "label": "middle"
+        }
+      ]
+    }
+  },
+  {
+    "id": "SO-PILOT-08-1",
+    "family": "flatten-nested-records",
+    "variant": 1,
+    "expected": {
+      "people": [
+        {
+          "departmentId": "d1",
+          "id": "u1",
+          "name": "甲"
+        },
+        {
+          "departmentId": "d2",
+          "id": "u2",
+          "name": "乙"
+        }
+      ]
+    }
+  },
+  {
+    "id": "SO-PILOT-08-2",
+    "family": "flatten-nested-records",
+    "variant": 2,
+    "expected": {
+      "people": [
+        {
+          "departmentId": "d2",
+          "id": "u3",
+          "name": "乙"
+        }
+      ]
+    }
+  },
+  {
+    "id": "SO-PILOT-08-3",
+    "family": "flatten-nested-records",
+    "variant": 3,
+    "expected": {
+      "people": [
+        {
+          "departmentId": "d1",
+          "id": "u1",
+          "name": "甲"
+        },
+        {
+          "departmentId": "d2",
+          "id": "u4",
+          "name": "乙"
+        }
+      ]
+    }
+  },
+  {
+    "id": "SO-PILOT-09-1",
+    "family": "branch-specific-fields",
+    "variant": 1,
+    "expected": {
+      "jobs": [
+        {
+          "id": "a",
+          "state": "Q"
+        },
+        {
+          "id": "b",
+          "state": "F",
+          "error": "E42"
+        },
+        {
+          "id": "c",
+          "state": "R"
+        }
+      ]
+    }
+  },
+  {
+    "id": "SO-PILOT-09-2",
+    "family": "branch-specific-fields",
+    "variant": 2,
+    "expected": {
+      "jobs": [
+        {
+          "id": "a",
+          "state": "Q"
+        },
+        {
+          "id": "b",
+          "state": "F",
+          "error": ""
+        },
+        {
+          "id": "c",
+          "state": "R"
+        }
+      ]
+    }
+  },
+  {
+    "id": "SO-PILOT-09-3",
+    "family": "branch-specific-fields",
+    "variant": 3,
+    "expected": {
+      "jobs": [
+        {
+          "id": "a",
+          "state": "Q"
+        },
+        {
+          "id": "b",
+          "state": "F",
+          "error": "E42"
+        },
+        {
+          "id": "c",
+          "state": "F",
+          "error": "E43"
+        }
+      ]
+    }
+  },
+  {
+    "id": "SO-PILOT-10-1",
+    "family": "json-pointer-escaping",
+    "variant": 1,
+    "expected": {
+      "pointers": [
+        "/a~1b",
+        "/x~0y"
+      ]
+    }
+  },
+  {
+    "id": "SO-PILOT-10-2",
+    "family": "json-pointer-escaping",
+    "variant": 2,
+    "expected": {
+      "pointers": [
+        "/",
+        "/plain"
+      ]
+    }
+  },
+  {
+    "id": "SO-PILOT-10-3",
+    "family": "json-pointer-escaping",
+    "variant": 3,
+    "expected": {
+      "pointers": [
+        "/~0~1",
+        "/a b"
+      ]
+    }
+  },
+  {
+    "id": "SO-PILOT-11-1",
+    "family": "override-with-null",
+    "variant": 1,
+    "expected": {
+      "config": {
+        "timeout": null,
+        "retries": 2,
+        "label": "default"
+      }
+    }
+  },
+  {
+    "id": "SO-PILOT-11-2",
+    "family": "override-with-null",
+    "variant": 2,
+    "expected": {
+      "config": {
+        "timeout": 30,
+        "retries": 0,
+        "label": "default"
+      }
+    }
+  },
+  {
+    "id": "SO-PILOT-11-3",
+    "family": "override-with-null",
+    "variant": 3,
+    "expected": {
+      "config": {
+        "timeout": 30,
+        "retries": 2,
+        "label": ""
+      }
+    }
+  },
+  {
+    "id": "SO-PILOT-12-1",
+    "family": "rank-with-ties",
+    "variant": 1,
+    "expected": {
+      "ranking": [
+        {
+          "id": "a",
+          "rank": 1
+        },
+        {
+          "id": "b",
+          "rank": 2
+        },
+        {
+          "id": "c",
+          "rank": 3
+        }
+      ]
+    }
+  },
+  {
+    "id": "SO-PILOT-12-2",
+    "family": "rank-with-ties",
+    "variant": 2,
+    "expected": {
+      "ranking": [
+        {
+          "id": "a",
+          "rank": 1
+        },
+        {
+          "id": "c",
+          "rank": 2
+        },
+        {
+          "id": "b",
+          "rank": 3
+        }
+      ]
+    }
+  },
+  {
+    "id": "SO-PILOT-12-3",
+    "family": "rank-with-ties",
+    "variant": 3,
+    "expected": {
+      "ranking": [
+        {
+          "id": "c",
+          "rank": 1
+        },
+        {
+          "id": "a",
+          "rank": 2
+        },
+        {
+          "id": "b",
+          "rank": 3
+        }
+      ]
+    }
+  }
+]

@@ -1,0 +1,90 @@
+{
+  "id": "HA-CN-025-RECOVERY-1",
+  "dimension": "agent_workflow",
+  "category": "scheduling_delivery",
+  "difficulty": "hard",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "每天早上 8 点检查本地端点 http://localhost:8102/health，失败时在当前聊天通知。使用 cronjob(action=create)，保留当前来源，结束时恰好一个任务。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "agent_trace",
+  "graderVersion": "agent_trace_v5",
+  "scoring": {
+    "type": "agent_trace"
+  },
+  "requirements": {
+    "migrationSourceId": "HA-CN-025",
+    "developmentShadow": true,
+    "executionWorld": {
+      "maxTurns": 8,
+      "scoreMode": "strict",
+      "initialState": {
+        "jobs": [],
+        "currentDestination": "current-chat",
+        "other": "keep"
+      },
+      "tools": [
+        {
+          "name": "cronjob",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "action": "string",
+            "schedule": "string",
+            "endpoint": "string"
+          },
+          "script": "if args['action']!='create' or args['schedule']!='0 8 * * *' or args['endpoint']!='http://localhost:8102/health': raise ValueError('INVALID_CRON')\nstate['jobs'].append({'schedule':args['schedule'],'endpoint':args['endpoint'],'destination':state['currentDestination']})\nresult={'created':True}",
+          "description": "原生定时任务创建。"
+        }
+      ],
+      "requiredCalls": [
+        {
+          "tool": "cronjob",
+          "args": {
+            "action": "create",
+            "schedule": "0 8 * * *",
+            "endpoint": "http://localhost:8102/health"
+          }
+        }
+      ],
+      "expectedState": [
+        {
+          "path": "jobs",
+          "equals": [
+            {
+              "schedule": "0 8 * * *",
+              "endpoint": "http://localhost:8102/health",
+              "destination": "current-chat"
+            }
+          ]
+        }
+      ],
+      "unchangedState": [
+        "currentDestination",
+        "other"
+      ],
+      "image": "python:3.12-alpine",
+      "expectedImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31"
+    }
+  },
+  "tags": [
+    "agent",
+    "scheduling",
+    "cron-create"
+  ],
+  "scenarioVersion": "3.0.0",
+  "scenarioHash": "33db628088753088",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

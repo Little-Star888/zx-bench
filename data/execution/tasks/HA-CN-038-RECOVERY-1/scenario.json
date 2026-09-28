@@ -1,0 +1,158 @@
+{
+  "id": "HA-CN-038-RECOVERY-1",
+  "dimension": "agent_workflow",
+  "category": "delegation_recovery",
+  "difficulty": "hard",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "部署流程：先拉取代码、构建、执行测试。此候选版本的测试会失败；查明结果后回滚到拉取前的稳定提交，不得保留半部署状态。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "agent_trace",
+  "graderVersion": "agent_trace_v5",
+  "scoring": {
+    "type": "agent_trace"
+  },
+  "requirements": {
+    "migrationSourceId": "HA-CN-038",
+    "developmentShadow": true,
+    "executionWorld": {
+      "maxTurns": 8,
+      "scoreMode": "strict",
+      "initialState": {
+        "stableCommit": "stable-b71",
+        "candidateCommit": "candidate-c92",
+        "activeCommit": "stable-b71",
+        "artifact": null,
+        "phases": [],
+        "testStatus": "pending",
+        "unrelated": {
+          "id": "service-2",
+          "version": "old"
+        }
+      },
+      "allowedErrors": [
+        {
+          "tool": "test.run",
+          "error": "TEST_FAILED"
+        }
+      ],
+      "tools": [
+        {
+          "name": "git.pull",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {},
+          "script": "from pathlib import Path\nroot=Path('/workspace/service'); root.mkdir(exist_ok=True)\n(root/'revision').write_text(state['candidateCommit'])\nstate['activeCommit']=state['candidateCommit']; state['phases'].append('pull')\nresult={'previousCommit':state['stableCommit'],'currentCommit':state['candidateCommit']}",
+          "description": "拉取候选版本，返回原稳定提交。"
+        },
+        {
+          "name": "build.run",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {},
+          "script": "from pathlib import Path\nroot=Path('/workspace/service')\nif (root/'revision').read_text()!=state['candidateCommit']: raise ValueError('SOURCE_NOT_PULLED')\n(root/'artifact').write_text('built:'+state['candidateCommit'])\nstate['artifact']='built:'+state['candidateCommit']; state['phases'].append('build')\nresult={'status':'built'}",
+          "description": "根据当前源码创建构建制品。",
+          "requirePriorCall": {
+            "tool": "git.pull"
+          }
+        },
+        {
+          "name": "test.run",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {},
+          "script": "from pathlib import Path\nif not Path('/workspace/service/artifact').is_file(): raise ValueError('BUILD_REQUIRED')\nstate['testStatus']='failed'; state['phases'].append('test_failed'); tool_error='TEST_FAILED'",
+          "description": "对候选制品运行测试，固定返回 TEST_FAILED。",
+          "requirePriorCall": {
+            "tool": "build.run"
+          }
+        },
+        {
+          "name": "rollback.to",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "commit": "string"
+          },
+          "script": "from pathlib import Path\nif args['commit']!=state['stableCommit']: raise ValueError('WRONG_ROLLBACK_TARGET')\nroot=Path('/workspace/service'); (root/'revision').write_text(args['commit'])\n(root/'artifact').unlink(missing_ok=True)\nstate['activeCommit']=args['commit']; state['artifact']=None; state['phases'].append('rollback')\nresult={'status':'rolled_back','commit':args['commit']}",
+          "description": "恢复原版本文件并清理候选构建制品。",
+          "requirePriorCall": {
+            "tool": "test.run",
+            "allowedErrors": [
+              "TEST_FAILED"
+            ]
+          }
+        }
+      ],
+      "requiredCalls": [
+        {
+          "tool": "git.pull",
+          "args": {}
+        },
+        {
+          "tool": "build.run",
+          "args": {}
+        },
+        {
+          "tool": "test.run",
+          "requireAttempt": true
+        },
+        {
+          "tool": "rollback.to",
+          "args": {
+            "commit": "stable-b71"
+          }
+        }
+      ],
+      "expectedState": [
+        {
+          "path": "phases",
+          "equals": [
+            "pull",
+            "build",
+            "test_failed",
+            "rollback"
+          ]
+        },
+        {
+          "path": "activeCommit",
+          "equals": "stable-b71"
+        },
+        {
+          "path": "artifact",
+          "equals": null
+        },
+        {
+          "path": "testStatus",
+          "equals": "failed"
+        }
+      ],
+      "unchangedState": [
+        "stableCommit",
+        "unrelated"
+      ],
+      "image": "python:3.12-alpine",
+      "expectedImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31"
+    }
+  },
+  "tags": [
+    "agent",
+    "recovery",
+    "rollback"
+  ],
+  "scenarioVersion": "3.0.0",
+  "scenarioHash": "203bd667c65a3c96",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

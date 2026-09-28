@@ -1,0 +1,14 @@
+[
+  {
+    "tool": "fs.read",
+    "args": {
+      "path": "install.sh"
+    }
+  },
+  {
+    "tool": "terminal",
+    "args": {
+      "cmd": "sh install.sh"
+    }
+  }
+]

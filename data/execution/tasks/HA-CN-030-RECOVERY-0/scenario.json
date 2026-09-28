@@ -1,0 +1,117 @@
+{
+  "id": "HA-CN-030-RECOVERY-0",
+  "dimension": "agent_workflow",
+  "category": "scheduling_delivery",
+  "difficulty": "hard",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "增加每天凌晨清理日志的定时任务。先调用 cronjob 的 list 动作检查是否已有相同调度；已有则复用，未有才创建。最终恰好一个此任务，保持无关任务原样。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "agent_trace",
+  "graderVersion": "agent_trace_v5",
+  "scoring": {
+    "type": "agent_trace"
+  },
+  "requirements": {
+    "migrationSourceId": "HA-CN-030",
+    "developmentShadow": true,
+    "executionWorld": {
+      "maxTurns": 8,
+      "scoreMode": "strict",
+      "initialState": {
+        "jobs": {},
+        "listed": false,
+        "operations": [],
+        "otherJob": {
+          "id": "weekly-health",
+          "schedule": "0 0 * * 0"
+        }
+      },
+      "tools": [
+        {
+          "name": "cronjob",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "action": "string",
+            "params": "object"
+          },
+          "script": "action=args['action']; params=args['params']\nif action=='list':\n    state['listed']=True; state['operations'].append('list'); result={'jobs':list(state['jobs'].values())}\nelif action=='create':\n    if not state['listed']: raise ValueError('LIST_REQUIRED')\n    id='daily-log-clean' if 'daily-log-clean' not in state['jobs'] else 'daily-log-clean-copy'\n    state['jobs'][id]={**params,'id':id}\n    state['operations'].append('create'); result=state['jobs'][id]\nelif action=='update':\n    if not state['listed'] or params.get('id') not in state['jobs']: raise ValueError('LIST_OR_JOB_REQUIRED')\n    state['jobs'][params['id']].update(params); state['operations'].append('update'); result=state['jobs'][params['id']]\nelse: raise ValueError('INVALID_ACTION')",
+          "description": "list/create/update 均真实作用于容器内任务登记册。"
+        }
+      ],
+      "requiredCalls": [
+        {
+          "tool": "cronjob",
+          "args": {
+            "action": "list",
+            "params": {}
+          }
+        },
+        {
+          "tool": "cronjob",
+          "args": {
+            "action": "create",
+            "params": {
+              "id": "daily-log-clean",
+              "name": "cleanup-logs",
+              "schedule": "0 0 * * *",
+              "command": "clean logs",
+              "createdAt": "2026-01-01"
+            }
+          }
+        }
+      ],
+      "expectedState": [
+        {
+          "path": "jobs",
+          "equals": {
+            "daily-log-clean": {
+              "id": "daily-log-clean",
+              "name": "cleanup-logs",
+              "schedule": "0 0 * * *",
+              "command": "clean logs",
+              "createdAt": "2026-01-01"
+            }
+          }
+        },
+        {
+          "path": "operations",
+          "equals": [
+            "list",
+            "create"
+          ]
+        },
+        {
+          "path": "listed",
+          "equals": true
+        }
+      ],
+      "unchangedState": [
+        "otherJob"
+      ],
+      "image": "python:3.12-alpine",
+      "expectedImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31"
+    }
+  },
+  "tags": [
+    "agent",
+    "scheduling",
+    "cron-dedup"
+  ],
+  "scenarioVersion": "3.0.0",
+  "scenarioHash": "d29f4091685e425d",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

@@ -1,0 +1,15 @@
+[
+  {
+    "tool": "check_server_status",
+    "args": {
+      "server_id": "srv-b"
+    }
+  },
+  {
+    "tool": "restart_service",
+    "args": {
+      "server_id": "srv-b",
+      "service_name": "web"
+    }
+  }
+]

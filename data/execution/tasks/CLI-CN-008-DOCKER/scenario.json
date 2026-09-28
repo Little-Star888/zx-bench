@@ -1,0 +1,115 @@
+{
+  "id": "CLI-CN-008-DOCKER",
+  "dimension": "cli_deep_tasks",
+  "category": "filesystem_ops",
+  "difficulty": "adversarial",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "在 /workspace 中执行任务。环境为 Alpine/BusyBox，提供 POSIX sh 和 Python 3 标准库，不提供 bash 或 GNU 工具；提交脚本统一以 sh 执行。in/ 中有不同修改时间的文件；.now 文件内容为 ISO 格式固定参考时间。把 in/ 顶层相对参考时间早于 30 天的文件移到 archive/，不递归子目录，保留文件修改时间。只输出可执行 shell 脚本。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "cli_command",
+  "graderVersion": "cli_command_v1",
+  "scoring": {
+    "type": "cli_command",
+    "mode": "executed_state"
+  },
+  "requirements": {
+    "executionImage": "python:3.12-alpine",
+    "executionImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31",
+    "executionInterpreter": "sh",
+    "executionCases": [
+      {
+        "files": [
+          {
+            "path": ".now",
+            "content": "2026-01-01T00:00:00Z\n"
+          },
+          {
+            "path": "in/old.txt",
+            "content": "old"
+          },
+          {
+            "path": "in/new.txt",
+            "content": "new"
+          },
+          {
+            "path": "in/sub/very-old.txt",
+            "content": "nested"
+          }
+        ],
+        "setupCommands": [
+          "python3 - <<'PY'\nimport os\nfrom datetime import datetime, timezone\nfor path, iso in [[\"in/old.txt\",\"2025-11-01T00:00:00Z\"],[\"in/new.txt\",\"2025-12-15T00:00:00Z\"],[\"in/sub/very-old.txt\",\"2025-10-01T00:00:00Z\"]]:\n    timestamp = datetime.fromisoformat(iso.replace('Z', '+00:00')).timestamp()\n    os.utime(path, (timestamp, timestamp))\nPY"
+        ],
+        "expectedFiles": {
+          "archive/old.txt": "old"
+        },
+        "absentFiles": [
+          "in/old.txt"
+        ],
+        "unchangedFiles": [
+          ".now",
+          "in/new.txt",
+          "in/sub/very-old.txt"
+        ],
+        "assertCommands": [
+          "python3 -c \"import os; assert int(os.stat('archive/old.txt').st_mtime) == 1761955200\""
+        ]
+      },
+      {
+        "files": [
+          {
+            "path": ".now",
+            "content": "2026-03-01T00:00:00Z\n"
+          },
+          {
+            "path": "in/stale.txt",
+            "content": "stale"
+          },
+          {
+            "path": "in/fresh.txt",
+            "content": "fresh"
+          }
+        ],
+        "setupCommands": [
+          "python3 - <<'PY'\nimport os\nfrom datetime import datetime, timezone\nfor path, iso in [[\"in/stale.txt\",\"2026-01-01T00:00:00Z\"],[\"in/fresh.txt\",\"2026-02-15T00:00:00Z\"]]:\n    timestamp = datetime.fromisoformat(iso.replace('Z', '+00:00')).timestamp()\n    os.utime(path, (timestamp, timestamp))\nPY"
+        ],
+        "expectedFiles": {
+          "archive/stale.txt": "stale"
+        },
+        "absentFiles": [
+          "in/stale.txt"
+        ],
+        "unchangedFiles": [
+          ".now",
+          "in/fresh.txt"
+        ],
+        "assertCommands": [
+          "python3 -c \"import os; assert int(os.stat('archive/stale.txt').st_mtime) == 1767225600\""
+        ]
+      }
+    ],
+    "migrationSourceId": "CLI-CN-008",
+    "developmentShadow": true
+  },
+  "tags": [
+    "cli",
+    "fs",
+    "archive-by-age",
+    "trap"
+  ],
+  "scenarioVersion": "2.1.0",
+  "scenarioHash": "e6e9c6fae429b3ac",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

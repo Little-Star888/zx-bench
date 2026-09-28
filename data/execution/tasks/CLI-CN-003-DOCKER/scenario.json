@@ -1,0 +1,84 @@
+{
+  "id": "CLI-CN-003-DOCKER",
+  "dimension": "cli_deep_tasks",
+  "category": "text_processing",
+  "difficulty": "adversarial",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "在 /workspace 中执行任务。环境为 Alpine/BusyBox，提供 POSIX sh 和 Python 3 标准库，不提供 bash 或 GNU 工具；提交脚本统一以 sh 执行。a.txt 和 b.txt 已在工作区。将出现在 a.txt 但不在 b.txt 的行按 a.txt 原始顺序写入 only_in_a.txt，并保留符合条件的重复行。只输出可执行 shell 脚本。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "cli_command",
+  "graderVersion": "cli_command_v1",
+  "scoring": {
+    "type": "cli_command",
+    "mode": "executed_state"
+  },
+  "requirements": {
+    "executionImage": "python:3.12-alpine",
+    "executionImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31",
+    "executionInterpreter": "sh",
+    "executionCases": [
+      {
+        "files": [
+          {
+            "path": "a.txt",
+            "content": "apple\nshared\napple\nzebra\nshared\ntail\n"
+          },
+          {
+            "path": "b.txt",
+            "content": "shared\nother\n"
+          }
+        ],
+        "expectedFiles": {
+          "only_in_a.txt": "apple\napple\nzebra\ntail\n"
+        },
+        "unchangedFiles": [
+          "a.txt",
+          "b.txt"
+        ]
+      },
+      {
+        "files": [
+          {
+            "path": "a.txt",
+            "content": "x y\nsame\nx y\nlast\nsame\n"
+          },
+          {
+            "path": "b.txt",
+            "content": "same\n"
+          }
+        ],
+        "expectedFiles": {
+          "only_in_a.txt": "x y\nx y\nlast\n"
+        },
+        "unchangedFiles": [
+          "a.txt",
+          "b.txt"
+        ]
+      }
+    ],
+    "migrationSourceId": "CLI-CN-003",
+    "developmentShadow": true
+  },
+  "tags": [
+    "cli",
+    "text",
+    "set-difference",
+    "trap"
+  ],
+  "scenarioVersion": "2.1.0",
+  "scenarioHash": "e7d9f2ed15ca5cf2",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

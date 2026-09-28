@@ -1,0 +1,9 @@
+[
+  {
+    "tool": "cronjob_create",
+    "args": {
+      "schedule": "0 8 * * *",
+      "task": "check http://localhost:8100/health"
+    }
+  }
+]

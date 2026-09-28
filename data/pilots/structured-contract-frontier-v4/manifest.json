@@ -1,0 +1,45 @@
+{
+  "version": "structured-contract-frontier-v4-sob",
+  "status": "development-only",
+  "counts": {
+    "development": 8,
+    "holdout": 4
+  },
+  "source": {
+    "dataset": "interfaze-ai/sob",
+    "url": "https://huggingface.co/datasets/interfaze-ai/sob",
+    "split": "test",
+    "sourceDataset": "HotpotQA",
+    "license": "CC-BY-SA-4.0",
+    "sobCodeLicense": "MIT",
+    "downloadedRows": "0-99",
+    "downloadSha256": "5085e9e20cccef5d2f491fcc3745d384150658cf56f1d8a86890c46cedd0e62b",
+    "rowIndices": {
+      "development": [
+        55,
+        2,
+        7,
+        9,
+        27,
+        28,
+        29,
+        51
+      ],
+      "holdout": [
+        90,
+        96,
+        98,
+        32
+      ]
+    }
+  },
+  "splitPolicy": "Distinct original HotpotQA source_id across selected rows; public benchmark may be contaminated in model training. Fixed indices selected before model calls.",
+  "goldPolicy": "Official ground_truth values, exact leaf scoring with one adjudicated company_type alias for row 55. This row was used to repair the rubric and is not unbiased discrimination evidence. Further aliases require versioned manual adjudication before promotion.",
+  "hashes": {
+    "development": "462f49e4c2a407aff2aab737fa335d0378b8c649b587524b4d2fbcadc488293a",
+    "holdout": "38cb3a829b5293710f618e1d881dfbc7f2cd49bdc193db94cbac9dc212a85f6d",
+    "oracle": "d2cda636453062ca490827f284462267cbed76d7e45a394abc2bff705d51d8ab",
+    "gold": "4e9247267b718eb7669cd22cc620ce651d65b94d46be1d8f3a5cbcd2efda6380"
+  },
+  "modelCalls": 0
+}

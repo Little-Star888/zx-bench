@@ -1,0 +1,1 @@
+工作区 /workspace，Linux sh 和 Python 3 标准库可用。使用 Alpine/BusyBox 工具，提交脚本统一以 POSIX sh 执行，未提供 bash 或 GNU 工具。binary.dat 是 4096 字节二进制文件。把偏移 100 至 199（含两端）的 100 字节写成无分隔符的大写十六进制，输出到 slice.hex；不得有行尾换行或地址列，保持原文件不变。只输出可执行 shell 脚本。

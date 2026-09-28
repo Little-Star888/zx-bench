@@ -1,0 +1,13 @@
+[
+  {
+    "tool": "list_targets",
+    "args": {}
+  },
+  {
+    "tool": "send_message",
+    "args": {
+      "target": "chan-eng-17",
+      "message": "部署总结"
+    }
+  }
+]

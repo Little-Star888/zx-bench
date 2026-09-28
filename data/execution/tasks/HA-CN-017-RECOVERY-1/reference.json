@@ -1,0 +1,16 @@
+[
+  {
+    "tool": "fs.read",
+    "args": {
+      "path": "notes/workflow.md"
+    }
+  },
+  {
+    "tool": "skill_manage",
+    "args": {
+      "action": "create",
+      "name": "incident-review",
+      "content": "---\nname: incident-review\ndescription: 用于复用已验证工作流\n---\n\n# When to Use\n每次故障后记录时间线、根因、验证和后续动作。\n\n# Procedure\n1. 阅读输入。\n2. 执行步骤。\n\n# Pitfalls\n不要跳过错误检查。\n\n# Verification\n检查最终产物。\n"
+    }
+  }
+]

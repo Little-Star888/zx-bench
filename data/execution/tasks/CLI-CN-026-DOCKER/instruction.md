@@ -1,0 +1,1 @@
+工作区 /workspace，Linux sh 和 Python 3 标准库可用。使用 Alpine/BusyBox 工具，提交脚本统一以 POSIX sh 执行，未提供 bash 或 GNU 工具。count.sh 真实运行时只输出 3 行，原因是 for 循环上界写错。精确把 1 2 3 改为 1 2 3 4 5，保持其他内容和无关文件不变；修复后运行脚本并将输出写入 output.txt，禁止追加 echo 凑数。以磁盘实际文件为准：当前循环是 for i in 1 2 3；将枚举范围改为 1 2 3 4 5。只输出可执行 shell 脚本。

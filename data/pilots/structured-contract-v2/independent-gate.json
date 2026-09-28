@@ -1,0 +1,220 @@
+{
+  "status": "passed",
+  "validator": "python-jsonschema@4.26.0",
+  "modelCalls": 0,
+  "packHashes": {
+    "development": "edcd89204980381863c846fb2e135df841822ec4583aca359671f3db8f1d2d9f",
+    "holdout": "abb81385cbc64e556ff1c2250883526550438d4354ae44ef31d64dc8c262bb65"
+  },
+  "goldHashes": {
+    "development": "20007c00acee4c7fe6e881e8cb748ebdef4f11667d65b107505a16971a42d99d",
+    "holdout": "e582aa00464e2f76dd9d0245945daabe9aa9b37b0ce9a98d0161f0a1583b2b5a"
+  },
+  "rows": [
+    {
+      "id": "SOC2-A-D-1",
+      "goldSchemaValid": true,
+      "generatedSchemaCases": 0,
+      "independentContentMapping": false
+    },
+    {
+      "id": "SOC2-A-D-2",
+      "goldSchemaValid": true,
+      "generatedSchemaCases": 0,
+      "independentContentMapping": false
+    },
+    {
+      "id": "SOC2-B-D-1",
+      "goldSchemaValid": true,
+      "generatedSchemaCases": 0,
+      "independentContentMapping": false
+    },
+    {
+      "id": "SOC2-B-D-2",
+      "goldSchemaValid": true,
+      "generatedSchemaCases": 0,
+      "independentContentMapping": false
+    },
+    {
+      "id": "SOC2-C-D-1",
+      "goldSchemaValid": true,
+      "generatedSchemaCases": 0,
+      "independentContentMapping": true
+    },
+    {
+      "id": "SOC2-C-D-2",
+      "goldSchemaValid": true,
+      "generatedSchemaCases": 0,
+      "independentContentMapping": true
+    },
+    {
+      "id": "SOC-D-D1",
+      "goldSchemaValid": true,
+      "generatedSchemaCases": 0,
+      "independentContentMapping": false
+    },
+    {
+      "id": "SOC-D-D2",
+      "goldSchemaValid": true,
+      "generatedSchemaCases": 0,
+      "independentContentMapping": false
+    },
+    {
+      "id": "SOC-D-D3",
+      "goldSchemaValid": true,
+      "generatedSchemaCases": 0,
+      "independentContentMapping": false
+    },
+    {
+      "id": "SOC2-E-D-simple",
+      "goldSchemaValid": true,
+      "generatedSchemaCases": 0,
+      "independentContentMapping": true
+    },
+    {
+      "id": "SOC2-E-D-complex",
+      "goldSchemaValid": true,
+      "generatedSchemaCases": 0,
+      "independentContentMapping": true
+    },
+    {
+      "id": "SOC2-F-D-csv",
+      "goldSchemaValid": true,
+      "generatedSchemaCases": 0,
+      "independentContentMapping": true
+    },
+    {
+      "id": "SOC2-F-D-xml",
+      "goldSchemaValid": true,
+      "generatedSchemaCases": 0,
+      "independentContentMapping": true
+    },
+    {
+      "id": "SOC2-F-D-yaml",
+      "goldSchemaValid": true,
+      "generatedSchemaCases": 0,
+      "independentContentMapping": true
+    },
+    {
+      "id": "SOC2-F-D-toml",
+      "goldSchemaValid": true,
+      "generatedSchemaCases": 0,
+      "independentContentMapping": true
+    },
+    {
+      "id": "SOC2-G-D-1",
+      "goldSchemaValid": true,
+      "generatedSchemaCases": 15,
+      "independentContentMapping": false
+    },
+    {
+      "id": "SOC2-G-D-2",
+      "goldSchemaValid": true,
+      "generatedSchemaCases": 21,
+      "independentContentMapping": false
+    },
+    {
+      "id": "SOC2-H-D-1",
+      "goldSchemaValid": true,
+      "generatedSchemaCases": 0,
+      "independentContentMapping": false
+    },
+    {
+      "id": "SOC2-H-D-2",
+      "goldSchemaValid": true,
+      "generatedSchemaCases": 0,
+      "independentContentMapping": false
+    },
+    {
+      "id": "SOC2-A-H-route",
+      "goldSchemaValid": true,
+      "generatedSchemaCases": 0,
+      "independentContentMapping": false
+    },
+    {
+      "id": "SOC2-B-H-tree",
+      "goldSchemaValid": true,
+      "generatedSchemaCases": 0,
+      "independentContentMapping": false
+    },
+    {
+      "id": "SOC2-C-H-headers",
+      "goldSchemaValid": true,
+      "generatedSchemaCases": 0,
+      "independentContentMapping": false
+    },
+    {
+      "id": "SOC-D-H1",
+      "goldSchemaValid": true,
+      "generatedSchemaCases": 0,
+      "independentContentMapping": false
+    },
+    {
+      "id": "SOC-D-H2",
+      "goldSchemaValid": true,
+      "generatedSchemaCases": 0,
+      "independentContentMapping": false
+    },
+    {
+      "id": "SOC2-E-H-simple",
+      "goldSchemaValid": true,
+      "generatedSchemaCases": 0,
+      "independentContentMapping": true
+    },
+    {
+      "id": "SOC2-E-H-complex",
+      "goldSchemaValid": true,
+      "generatedSchemaCases": 0,
+      "independentContentMapping": true
+    },
+    {
+      "id": "SOC2-F-H-csv",
+      "goldSchemaValid": true,
+      "generatedSchemaCases": 0,
+      "independentContentMapping": true
+    },
+    {
+      "id": "SOC2-F-H-xml",
+      "goldSchemaValid": true,
+      "generatedSchemaCases": 0,
+      "independentContentMapping": true
+    },
+    {
+      "id": "SOC2-F-H-yaml",
+      "goldSchemaValid": true,
+      "generatedSchemaCases": 0,
+      "independentContentMapping": true
+    },
+    {
+      "id": "SOC2-F-H-toml",
+      "goldSchemaValid": true,
+      "generatedSchemaCases": 0,
+      "independentContentMapping": true
+    },
+    {
+      "id": "SOC2-G-H-1",
+      "goldSchemaValid": true,
+      "generatedSchemaCases": 13,
+      "independentContentMapping": false
+    },
+    {
+      "id": "SOC2-G-H-2",
+      "goldSchemaValid": true,
+      "generatedSchemaCases": 15,
+      "independentContentMapping": false
+    },
+    {
+      "id": "SOC2-H-H-1",
+      "goldSchemaValid": true,
+      "generatedSchemaCases": 0,
+      "independentContentMapping": false
+    },
+    {
+      "id": "SOC2-H-H-2",
+      "goldSchemaValid": true,
+      "generatedSchemaCases": 0,
+      "independentContentMapping": false
+    }
+  ],
+  "contentScope": "Independent mapping checks cover C-development, E and F; remaining reference content reviewed as explicit hand-sized witnesses, not claimed independently generated."
+}

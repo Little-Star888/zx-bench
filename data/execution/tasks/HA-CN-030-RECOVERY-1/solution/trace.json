@@ -1,0 +1,9 @@
+[
+  {
+    "tool": "cronjob",
+    "args": {
+      "action": "list",
+      "params": {}
+    }
+  }
+]

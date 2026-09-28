@@ -1,0 +1,17 @@
+[
+  {
+    "tool": "fs.read",
+    "args": {
+      "path": "supplied/validate.sh"
+    }
+  },
+  {
+    "tool": "skill_manage",
+    "args": {
+      "action": "write_file",
+      "name": "deploy-skill",
+      "path": "scripts/validate.sh",
+      "content": "#!/bin/sh\nset -eu\ntest -f package.json\n"
+    }
+  }
+]

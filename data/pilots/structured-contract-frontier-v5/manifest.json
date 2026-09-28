@@ -1,0 +1,45 @@
+{
+  "version": "structured-contract-frontier-v5-t2s-paired",
+  "status": "development-only",
+  "counts": {
+    "development": 16,
+    "holdout": 8,
+    "pairsDevelopment": 8,
+    "pairsHoldout": 4
+  },
+  "source": {
+    "dataset": "T2S-Bench-MR",
+    "url": "https://huggingface.co/datasets/T2SBench/T2S-Bench-MR",
+    "split": "train",
+    "license": "Apache-2.0",
+    "downloadedRows": "0-99",
+    "downloadSha256": "aa591c4be778f1fa26b5289dd28990ec089815919327c141f4d6c8a251d72b60",
+    "rowIndices": {
+      "development": [
+        0,
+        1,
+        20,
+        23,
+        29,
+        38,
+        60,
+        87
+      ],
+      "holdout": [
+        40,
+        42,
+        45,
+        63
+      ]
+    }
+  },
+  "pairPolicy": "Every base/structured pair uses identical source and question. Pairs, not individual variants, are split by paper. No model calls before freeze.",
+  "scoringPolicy": "Official selected letters become the shared objective gold. Base tests answer correctness; structured adds per-option booleans and count. Only base-pass/structured-fail is a candidate structured-specific miss.",
+  "hashes": {
+    "development": "6e7c210ec00db4180c9858d4f2039ae8c698f1126bd03ebf95b66e54341b3c83",
+    "holdout": "2e64df66ea50b4c3682469c8b25cfb2dfc1f463a6d91df4943ce11d77b1191c5",
+    "oracle": "b4e20cf5b12d5c76c90964f308ce8e85e38ac59561deedcedfd82aac1eab2540",
+    "gold": "37e3243a1a46a7b6cb6c729408f6c4fe0c818a1b6a02e129c592d72f9819197f"
+  },
+  "modelCalls": 0
+}

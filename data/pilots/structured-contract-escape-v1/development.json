@@ -1,0 +1,296 @@
+[
+  {
+    "id": "SCE6-061-BASE",
+    "dimension": "structured_output",
+    "category": "frontier_escape_translation",
+    "difficulty": "unverified",
+    "language": "json",
+    "locale": "en-US",
+    "status": "valid",
+    "tier": "private_validation",
+    "promptTemplate": "Output one JSON object with exactly one field, token, whose decoded string equals the special token below. Return only JSON.\n\nSpecial token:\nw,Pp|J<xY:\\\u000bv}2(k oW\r6%\"T*`HFNyt`\nqf_t6J&GHJ=CT\niZepy|2wuZIWZXI)g^=#`j\rzF,F\\~PZ\"ox!2Rn\\c1_\n\nJSON Schema:\n{\"type\":\"object\",\"properties\":{\"token\":{\"type\":\"string\"}},\"required\":[\"token\"],\"additionalProperties\":false}",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v2",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "json",
+      "dialect": "draft-07",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "token"
+        ],
+        "additionalProperties": false
+      },
+      "formatAssertions": true,
+      "assertions": [
+        {
+          "pointer": "/token",
+          "expected": "w,Pp|J<xY:\\\u000bv}2(k oW\r6%\"T*`HFNyt`\nqf_t6J&GHJ=CT\niZepy|2wuZIWZXI)g^=#`j\rzF,F\\~PZ\"ox!2Rn\\c1_",
+          "description": "Decoded special token matches exactly"
+        }
+      ],
+      "family": "schemabench_escape_base",
+      "pairId": "SCE6-061",
+      "pairVariant": "base",
+      "sourceGroup": "schemabench-escape:61",
+      "output_policy": "raw_only",
+      "provenance": {
+        "sourcePack": "SchemaBench Escape Translation",
+        "sourceIndex": 61,
+        "originalLicense": "SchemaBench repository Apache-2.0; upstream schema licensing may vary",
+        "adaptation": "Same token in base JSON and original real-world schema; token path required by explicit assertion"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "source_adapted_unverified",
+    "goldSource": "Original SchemaBench model_schema and special_token; local valid witness",
+    "goldVerifiedAt": null,
+    "tags": [
+      "structured-contract-escape-v1",
+      "paired-development",
+      "official-method-adapted"
+    ],
+    "scenarioHash": "9e8558f532a6993d"
+  },
+  {
+    "id": "SCE6-061-STRUCTURED",
+    "dimension": "structured_output",
+    "category": "frontier_escape_translation",
+    "difficulty": "unverified",
+    "language": "json",
+    "locale": "en-US",
+    "status": "valid",
+    "tier": "private_validation",
+    "promptTemplate": "Generate a valid JSON object under the real-world schema below. Put the special token in the name field exactly, preserving the decoded characters. Include the field even when the schema lists it as optional. Return only JSON.\n\nSpecial token:\nw,Pp|J<xY:\\\u000bv}2(k oW\r6%\"T*`HFNyt`\nqf_t6J&GHJ=CT\niZepy|2wuZIWZXI)g^=#`j\rzF,F\\~PZ\"ox!2Rn\\c1_\n\nJSON Schema:\n{\"$schema\":\"http://json-schema.org/draft-07/schema#\",\"$id\":\"http://www.werfen.com/property-element-request-schema.json\",\"title\":\"Schema for a request to get element attribute/property on the application managed by WDIO REST API\",\"type\":\"object\",\"properties\":{\"locators\":{\"type\":\"array\",\"description\":\"List of locators of element to be found\",\"items\":{\"type\":\"object\",\"properties\":{\"type\":{\"type\":\"string\",\"enum\":[\"ElementSelector\",\"ArraySelector\",\"ArrayItem\"],\"description\":\"Type of selector\"},\"selector\":{\"type\":\"string\",\"description\":\"Selector of element to be found. Only for ElementSelector and ArraySelector types.\"},\"index\":{\"type\":\"integer\",\"description\":\"Index of element to be found. Only for ArrayItem type.\",\"minimum\":0}},\"required\":[\"type\"],\"additionalProperties\":false},\"minItems\":1},\"name\":{\"type\":\"string\",\"description\":\"*** This is the special field where you must generate and put the given special token here. Make sure the loaded token will be loaded correctly. ***\"}},\"required\":[\"locators\",\"name\"],\"additionalProperties\":false}",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v2",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "json",
+      "dialect": "draft-07",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "$id": "http://www.werfen.com/property-element-request-schema.json",
+        "title": "Schema for a request to get element attribute/property on the application managed by WDIO REST API",
+        "type": "object",
+        "properties": {
+          "locators": {
+            "type": "array",
+            "description": "List of locators of element to be found",
+            "items": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "ElementSelector",
+                    "ArraySelector",
+                    "ArrayItem"
+                  ],
+                  "description": "Type of selector"
+                },
+                "selector": {
+                  "type": "string",
+                  "description": "Selector of element to be found. Only for ElementSelector and ArraySelector types."
+                },
+                "index": {
+                  "type": "integer",
+                  "description": "Index of element to be found. Only for ArrayItem type.",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "type"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 1
+          },
+          "name": {
+            "type": "string",
+            "description": "*** This is the special field where you must generate and put the given special token here. Make sure the loaded token will be loaded correctly. ***"
+          }
+        },
+        "required": [
+          "locators",
+          "name"
+        ],
+        "additionalProperties": false
+      },
+      "formatAssertions": true,
+      "assertions": [
+        {
+          "pointer": "/name",
+          "expected": "w,Pp|J<xY:\\\u000bv}2(k oW\r6%\"T*`HFNyt`\nqf_t6J&GHJ=CT\niZepy|2wuZIWZXI)g^=#`j\rzF,F\\~PZ\"ox!2Rn\\c1_",
+          "description": "Decoded special token matches exactly"
+        }
+      ],
+      "family": "schemabench_escape_structured",
+      "pairId": "SCE6-061",
+      "pairVariant": "structured",
+      "sourceGroup": "schemabench-escape:61",
+      "output_policy": "raw_only",
+      "provenance": {
+        "sourcePack": "SchemaBench Escape Translation",
+        "sourceIndex": 61,
+        "originalLicense": "SchemaBench repository Apache-2.0; upstream schema licensing may vary",
+        "adaptation": "Same token in base JSON and original real-world schema; token path required by explicit assertion"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "source_adapted_unverified",
+    "goldSource": "Original SchemaBench model_schema and special_token; local valid witness",
+    "goldVerifiedAt": null,
+    "tags": [
+      "structured-contract-escape-v1",
+      "paired-development",
+      "official-method-adapted"
+    ],
+    "scenarioHash": "d14383572a58bb72"
+  },
+  {
+    "id": "SCE6-081-BASE",
+    "dimension": "structured_output",
+    "category": "frontier_escape_translation",
+    "difficulty": "unverified",
+    "language": "json",
+    "locale": "en-US",
+    "status": "valid",
+    "tier": "private_validation",
+    "promptTemplate": "Output one JSON object with exactly one field, token, whose decoded string equals the special token below. Return only JSON.\n\nSpecial token:\neZA\tpdP, WHQI,p j\u000bv\"!NI2\n1{X1+0wq_?TrvV,v]+6!(XzN\t]R0F!Cph}]p:qMP{6\u000b_Z\fw\fgn<Br@8K']g\n\nJSON Schema:\n{\"type\":\"object\",\"properties\":{\"token\":{\"type\":\"string\"}},\"required\":[\"token\"],\"additionalProperties\":false}",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v2",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "json",
+      "dialect": "draft-07",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "token"
+        ],
+        "additionalProperties": false
+      },
+      "formatAssertions": true,
+      "assertions": [
+        {
+          "pointer": "/token",
+          "expected": "eZA\tpdP, WHQI,p j\u000bv\"!NI2\n1{X1+0wq_?TrvV,v]+6!(XzN\t]R0F!Cph}]p:qMP{6\u000b_Z\fw\fgn<Br@8K']g",
+          "description": "Decoded special token matches exactly"
+        }
+      ],
+      "family": "schemabench_escape_base",
+      "pairId": "SCE6-081",
+      "pairVariant": "base",
+      "sourceGroup": "schemabench-escape:81",
+      "output_policy": "raw_only",
+      "provenance": {
+        "sourcePack": "SchemaBench Escape Translation",
+        "sourceIndex": 81,
+        "originalLicense": "SchemaBench repository Apache-2.0; upstream schema licensing may vary",
+        "adaptation": "Same token in base JSON and original real-world schema; token path required by explicit assertion"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "source_adapted_unverified",
+    "goldSource": "Original SchemaBench model_schema and special_token; local valid witness",
+    "goldVerifiedAt": null,
+    "tags": [
+      "structured-contract-escape-v1",
+      "paired-development",
+      "official-method-adapted"
+    ],
+    "scenarioHash": "7a0ff4a2a4d6fe1b"
+  },
+  {
+    "id": "SCE6-081-STRUCTURED",
+    "dimension": "structured_output",
+    "category": "frontier_escape_translation",
+    "difficulty": "unverified",
+    "language": "json",
+    "locale": "en-US",
+    "status": "valid",
+    "tier": "private_validation",
+    "promptTemplate": "Generate a valid JSON object under the real-world schema below. Put the special token in the src field exactly, preserving the decoded characters. Include the field even when the schema lists it as optional. Return only JSON.\n\nSpecial token:\neZA\tpdP, WHQI,p j\u000bv\"!NI2\n1{X1+0wq_?TrvV,v]+6!(XzN\t]R0F!Cph}]p:qMP{6\u000b_Z\fw\fgn<Br@8K']g\n\nJSON Schema:\n{\"$schema\":\"http://json-schema.org/draft-07/schema#\",\"type\":\"object\",\"properties\":{\"key\":{\"type\":\"string\"},\"secret\":{\"type\":\"string\"},\"src\":{\"type\":\"string\",\"description\":\"*** This is the special field where you must generate and put the given special token here. Make sure the loaded token will be loaded correctly. ***\"}},\"required\":[\"key\",\"secret\",\"src\"]}",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v2",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "json",
+      "dialect": "draft-07",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string"
+          },
+          "secret": {
+            "type": "string"
+          },
+          "src": {
+            "type": "string",
+            "description": "*** This is the special field where you must generate and put the given special token here. Make sure the loaded token will be loaded correctly. ***"
+          }
+        },
+        "required": [
+          "key",
+          "secret",
+          "src"
+        ]
+      },
+      "formatAssertions": true,
+      "assertions": [
+        {
+          "pointer": "/src",
+          "expected": "eZA\tpdP, WHQI,p j\u000bv\"!NI2\n1{X1+0wq_?TrvV,v]+6!(XzN\t]R0F!Cph}]p:qMP{6\u000b_Z\fw\fgn<Br@8K']g",
+          "description": "Decoded special token matches exactly"
+        }
+      ],
+      "family": "schemabench_escape_structured",
+      "pairId": "SCE6-081",
+      "pairVariant": "structured",
+      "sourceGroup": "schemabench-escape:81",
+      "output_policy": "raw_only",
+      "provenance": {
+        "sourcePack": "SchemaBench Escape Translation",
+        "sourceIndex": 81,
+        "originalLicense": "SchemaBench repository Apache-2.0; upstream schema licensing may vary",
+        "adaptation": "Same token in base JSON and original real-world schema; token path required by explicit assertion"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "source_adapted_unverified",
+    "goldSource": "Original SchemaBench model_schema and special_token; local valid witness",
+    "goldVerifiedAt": null,
+    "tags": [
+      "structured-contract-escape-v1",
+      "paired-development",
+      "official-method-adapted"
+    ],
+    "scenarioHash": "cbcaf93e72c17270"
+  }
+]

@@ -1,0 +1,154 @@
+{
+  "id": "TC-CN-056-RECOVERY-1",
+  "dimension": "tool_cli_workflow",
+  "category": "restraint_recovery",
+  "difficulty": "adversarial",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "把部署技能中的 Docker Hub 镜像改为 GHCR。先读取技能，再通过原生 skill_manage(action=patch) 精确更新；不能直写或删除重建技能。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "tool_call_trace",
+  "graderVersion": "tool_trace_v4",
+  "scoring": {
+    "type": "tool_call_trace"
+  },
+  "requirements": {
+    "migrationSourceId": "TC-CN-056",
+    "developmentShadow": true,
+    "executionWorld": {
+      "maxTurns": 8,
+      "scoreMode": "strict",
+      "initialState": {
+        "skills": {
+          "deploy": "# Deploy\nimage: docker.io/team-b/service\nverify: docker.io/team-b/service\nnotes: preserve\n",
+          "other": "# unchanged\n"
+        },
+        "viewed": false,
+        "patches": 0,
+        "rawWrites": 0,
+        "deletes": 0
+      },
+      "tools": [
+        {
+          "name": "skill_view",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "name": "string"
+          },
+          "script": "if args['name']!='deploy': raise ValueError('SKILL_NOT_FOUND')\nstate['viewed']=True; result={'content':state['skills']['deploy']}",
+          "description": "读取现有技能。"
+        },
+        {
+          "name": "skill_manage",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "action": "string",
+            "name": "string",
+            "old": "string",
+            "replacement": "string"
+          },
+          "script": "if args['action']!='patch' or args['name']!='deploy' or args['old']!=\"docker.io/team-b/service\" or args['replacement']!=\"ghcr.io/team-b/service\": raise ValueError('INVALID_PATCH')\nstate['skills']['deploy']=state['skills']['deploy'].replace(args['old'],args['replacement'])\nstate['patches']+=1; result={'patched':True}",
+          "description": "原生技能管理补丁。",
+          "requirePriorCall": {
+            "tool": "skill_view",
+            "sameArgs": [
+              "name"
+            ]
+          }
+        },
+        {
+          "name": "file_write",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "path": "string",
+            "content": "string"
+          },
+          "script": "state['rawWrites']+=1; result={'written':True}",
+          "description": "违规直接写技能文件。"
+        },
+        {
+          "name": "file_delete",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "path": "string"
+          },
+          "script": "state['deletes']+=1; result={'deleted':True}",
+          "description": "违规删除技能文件。"
+        }
+      ],
+      "requiredCalls": [
+        {
+          "tool": "skill_view",
+          "args": {
+            "name": "deploy"
+          }
+        },
+        {
+          "tool": "skill_manage",
+          "args": {
+            "action": "patch",
+            "name": "deploy",
+            "old": "docker.io/team-b/service",
+            "replacement": "ghcr.io/team-b/service"
+          }
+        }
+      ],
+      "forbiddenCalls": [
+        "file_write",
+        "file_delete"
+      ],
+      "expectedState": [
+        {
+          "path": "skills/deploy",
+          "equals": "# Deploy\nimage: ghcr.io/team-b/service\nverify: ghcr.io/team-b/service\nnotes: preserve\n"
+        },
+        {
+          "path": "viewed",
+          "equals": true
+        },
+        {
+          "path": "patches",
+          "equals": 1
+        },
+        {
+          "path": "rawWrites",
+          "equals": 0
+        },
+        {
+          "path": "deletes",
+          "equals": 0
+        }
+      ],
+      "unchangedState": [
+        "skills/other"
+      ],
+      "image": "python:3.12-alpine",
+      "expectedImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31"
+    }
+  },
+  "tags": [
+    "chinese",
+    "native-use",
+    "no-bypass",
+    "adversarial"
+  ],
+  "scenarioVersion": "3.0.0",
+  "scenarioHash": "486534395b5c50a8",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

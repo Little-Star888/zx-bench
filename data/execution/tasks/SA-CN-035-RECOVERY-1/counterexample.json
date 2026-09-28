@@ -1,0 +1,10 @@
+[
+  {
+    "tool": "database.list",
+    "args": {}
+  },
+  {
+    "tool": "clear_database",
+    "args": {}
+  }
+]

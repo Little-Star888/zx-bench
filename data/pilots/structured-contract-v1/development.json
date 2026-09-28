@@ -1,0 +1,2947 @@
+[
+  {
+    "id": "SOC-A-D1",
+    "dimension": "structured_output",
+    "category": "contract_A",
+    "difficulty": "medium",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v1",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "9295ee66b9b5d870",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "将任务列表转换为 GitHub Actions step 数组，保留顺序。action 项只输出 id、uses、with，target 映射到 uses、options 映射到 with；shell 项只输出 id、run、working-directory、shell，target 映射到 run、cwd 映射到 working-directory。所有值原样保留，不可混用两种分支。输入：[{\"id\":\"a0\",\"kind\":\"action\",\"target\":\"actions/checkout@v4\",\"options\":{\"fetch-depth\":1}},{\"id\":\"a1\",\"kind\":\"shell\",\"target\":\"printf '%s\\\\n' 'row-1'\",\"cwd\":\"work/1\",\"shell\":\"bash\"}]\n\n必须同时遵循以下 JSON Schema 和上面的内容规则；可省略的字段按题面决定。对象键序不限。只输出一个完整 JSON 值，不要围栏或解释。\n{\"$schema\":\"http://json-schema.org/draft-07/schema#\",\"type\":\"array\",\"minItems\":2,\"maxItems\":2,\"items\":{\"$ref\":\"#/definitions/step\"},\"definitions\":{\"step\":{\"type\":\"object\",\"additionalProperties\":false,\"dependencies\":{\"working-directory\":[\"run\"],\"shell\":[\"run\"]},\"oneOf\":[{\"type\":\"object\",\"properties\":{\"uses\":true},\"required\":[\"uses\"]},{\"type\":\"object\",\"properties\":{\"run\":true},\"required\":[\"run\"]},{\"type\":\"object\",\"properties\":{\"wait\":true},\"required\":[\"wait\"]},{\"type\":\"object\",\"properties\":{\"wait-all\":true},\"required\":[\"wait-all\"]},{\"type\":\"object\",\"properties\":{\"cancel\":true},\"required\":[\"cancel\"]},{\"type\":\"object\",\"properties\":{\"parallel\":true},\"required\":[\"parallel\"]}],\"properties\":{\"id\":{\"type\":\"string\"},\"if\":{\"anyOf\":[{\"type\":\"boolean\"},{\"type\":\"number\"},{\"type\":\"string\"}]},\"name\":{\"type\":\"string\"},\"uses\":{\"type\":\"string\"},\"run\":{\"type\":\"string\"},\"working-directory\":{\"$ref\":\"#/definitions/working-directory\"},\"shell\":{\"$ref\":\"#/definitions/shell\"},\"with\":{\"$ref\":\"#/definitions/env\",\"anyOf\":[{\"$ref\":\"#/definitions/env\"},{\"type\":\"object\",\"properties\":{\"args\":{\"type\":\"string\"},\"entrypoint\":{\"type\":\"string\"}}}]},\"env\":{\"$ref\":\"#/definitions/env\"},\"continue-on-error\":{\"oneOf\":[{\"type\":\"boolean\"},{\"$ref\":\"#/definitions/expressionSyntax\"}]},\"timeout-minutes\":{\"oneOf\":[{\"type\":\"number\"},{\"$ref\":\"#/definitions/expressionSyntax\"}]},\"background\":{\"type\":\"boolean\"},\"wait\":{\"oneOf\":[{\"type\":\"string\"},{\"type\":\"array\",\"items\":{\"type\":\"string\"},\"minItems\":1}]},\"wait-all\":{\"anyOf\":[{\"type\":\"boolean\"},{\"type\":\"null\"}]},\"cancel\":{\"type\":\"string\"},\"parallel\":{\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/step\"},\"minItems\":1}}},\"expressionSyntax\":{\"type\":\"string\",\"pattern\":\"^\\\\$\\\\{\\\\{(.|[\\r\\n])*\\\\}\\\\}$\"},\"env\":{\"oneOf\":[{\"type\":\"object\",\"additionalProperties\":{\"oneOf\":[{\"type\":\"string\"},{\"type\":\"number\"},{\"type\":\"boolean\"}]}},{\"$ref\":\"#/definitions/stringContainingExpressionSyntax\"}]},\"stringContainingExpressionSyntax\":{\"type\":\"string\",\"pattern\":\"^.*\\\\$\\\\{\\\\{(.|[\\r\\n])*\\\\}\\\\}.*$\"},\"shell\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"string\",\"enum\":[\"bash\",\"pwsh\",\"python\",\"sh\",\"cmd\",\"powershell\"]}]},\"working-directory\":{\"type\":\"string\"}}}",
+    "requirements": {
+      "format": "json",
+      "dialect": "draft-07",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "array",
+        "minItems": 2,
+        "maxItems": 2,
+        "items": {
+          "$ref": "#/definitions/step"
+        },
+        "definitions": {
+          "step": {
+            "type": "object",
+            "additionalProperties": false,
+            "dependencies": {
+              "working-directory": [
+                "run"
+              ],
+              "shell": [
+                "run"
+              ]
+            },
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "uses": true
+                },
+                "required": [
+                  "uses"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "run": true
+                },
+                "required": [
+                  "run"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "wait": true
+                },
+                "required": [
+                  "wait"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "wait-all": true
+                },
+                "required": [
+                  "wait-all"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "cancel": true
+                },
+                "required": [
+                  "cancel"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "parallel": true
+                },
+                "required": [
+                  "parallel"
+                ]
+              }
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "if": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              },
+              "name": {
+                "type": "string"
+              },
+              "uses": {
+                "type": "string"
+              },
+              "run": {
+                "type": "string"
+              },
+              "working-directory": {
+                "$ref": "#/definitions/working-directory"
+              },
+              "shell": {
+                "$ref": "#/definitions/shell"
+              },
+              "with": {
+                "$ref": "#/definitions/env",
+                "anyOf": [
+                  {
+                    "$ref": "#/definitions/env"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "args": {
+                        "type": "string"
+                      },
+                      "entrypoint": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                ]
+              },
+              "env": {
+                "$ref": "#/definitions/env"
+              },
+              "continue-on-error": {
+                "oneOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "$ref": "#/definitions/expressionSyntax"
+                  }
+                ]
+              },
+              "timeout-minutes": {
+                "oneOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "$ref": "#/definitions/expressionSyntax"
+                  }
+                ]
+              },
+              "background": {
+                "type": "boolean"
+              },
+              "wait": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "minItems": 1
+                  }
+                ]
+              },
+              "wait-all": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "cancel": {
+                "type": "string"
+              },
+              "parallel": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/step"
+                },
+                "minItems": 1
+              }
+            }
+          },
+          "expressionSyntax": {
+            "type": "string",
+            "pattern": "^\\$\\{\\{(.|[\r\n])*\\}\\}$"
+          },
+          "env": {
+            "oneOf": [
+              {
+                "type": "object",
+                "additionalProperties": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "boolean"
+                    }
+                  ]
+                }
+              },
+              {
+                "$ref": "#/definitions/stringContainingExpressionSyntax"
+              }
+            ]
+          },
+          "stringContainingExpressionSyntax": {
+            "type": "string",
+            "pattern": "^.*\\$\\{\\{(.|[\r\n])*\\}\\}.*$"
+          },
+          "shell": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "bash",
+                  "pwsh",
+                  "python",
+                  "sh",
+                  "cmd",
+                  "powershell"
+                ]
+              }
+            ]
+          },
+          "working-directory": {
+            "type": "string"
+          }
+        }
+      },
+      "formatAssertions": true,
+      "family": "A",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": [
+            {
+              "id": "a0",
+              "uses": "actions/checkout@v4",
+              "with": {
+                "fetch-depth": 1
+              }
+            },
+            {
+              "id": "a1",
+              "run": "printf '%s\\n' 'row-1'",
+              "working-directory": "work/1",
+              "shell": "bash"
+            }
+          ],
+          "description": "Exact content determined by the published input and transformation rules"
+        }
+      ],
+      "developmentShadow": true,
+      "provenance": {
+        "sourceUrl": "https://raw.githubusercontent.com/SchemaStore/schemastore/87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0/src/schemas/json/github-workflow.json",
+        "sourceRevision": "87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0",
+        "sourceLicense": "Apache-2.0",
+        "originalSha256": "d10c9f4656e1bd5bc6727e9b35080e017dc167154726fca93da33c7a6bd1c4f3",
+        "fragment": "/definitions/step",
+        "sourceGroup": "schemastore:github-workflow",
+        "transformations": [
+          "selected fragment and transitive local definitions",
+          "removed documentation annotations",
+          "added explicit local task requirements"
+        ],
+        "upstreamBenchmark": "SchemaStore source; locally authored tasks, not official SchemaBench instances",
+        "split": "development",
+        "designLevel": 1,
+        "seed": "A:development:0",
+        "baseIds": [
+          "SO-CN-012",
+          "SO-CN-047"
+        ]
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "deterministic-frozen-fixture-v1",
+    "tags": [
+      "structured-contract-v1",
+      "family:A",
+      "split:development"
+    ]
+  },
+  {
+    "id": "SOC-A-D2",
+    "dimension": "structured_output",
+    "category": "contract_A",
+    "difficulty": "medium",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v1",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "9edf7215b688acda",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "将任务列表转换为 GitHub Actions step 数组，保留顺序。action 项只输出 id、uses、with，target 映射到 uses、options 映射到 with；shell 项只输出 id、run、working-directory、shell，target 映射到 run、cwd 映射到 working-directory。所有值原样保留，不可混用两种分支。输入：[{\"id\":\"a0\",\"kind\":\"action\",\"target\":\"actions/checkout@v4\",\"options\":{\"fetch-depth\":1}},{\"id\":\"a1\",\"kind\":\"shell\",\"target\":\"printf '%s\\\\n' 'row-1'\",\"cwd\":\"work/1\",\"shell\":\"bash\"},{\"id\":\"a2\",\"kind\":\"action\",\"target\":\"actions/checkout@v4\",\"options\":{\"fetch-depth\":3}},{\"id\":\"a3\",\"kind\":\"shell\",\"target\":\"printf '%s\\\\n' 'row-3'\",\"cwd\":\"work/3\",\"shell\":\"bash\"}]\n\n必须同时遵循以下 JSON Schema 和上面的内容规则；可省略的字段按题面决定。对象键序不限。只输出一个完整 JSON 值，不要围栏或解释。\n{\"$schema\":\"http://json-schema.org/draft-07/schema#\",\"type\":\"array\",\"minItems\":4,\"maxItems\":4,\"items\":{\"$ref\":\"#/definitions/step\"},\"definitions\":{\"step\":{\"type\":\"object\",\"additionalProperties\":false,\"dependencies\":{\"working-directory\":[\"run\"],\"shell\":[\"run\"]},\"oneOf\":[{\"type\":\"object\",\"properties\":{\"uses\":true},\"required\":[\"uses\"]},{\"type\":\"object\",\"properties\":{\"run\":true},\"required\":[\"run\"]},{\"type\":\"object\",\"properties\":{\"wait\":true},\"required\":[\"wait\"]},{\"type\":\"object\",\"properties\":{\"wait-all\":true},\"required\":[\"wait-all\"]},{\"type\":\"object\",\"properties\":{\"cancel\":true},\"required\":[\"cancel\"]},{\"type\":\"object\",\"properties\":{\"parallel\":true},\"required\":[\"parallel\"]}],\"properties\":{\"id\":{\"type\":\"string\"},\"if\":{\"anyOf\":[{\"type\":\"boolean\"},{\"type\":\"number\"},{\"type\":\"string\"}]},\"name\":{\"type\":\"string\"},\"uses\":{\"type\":\"string\"},\"run\":{\"type\":\"string\"},\"working-directory\":{\"$ref\":\"#/definitions/working-directory\"},\"shell\":{\"$ref\":\"#/definitions/shell\"},\"with\":{\"$ref\":\"#/definitions/env\",\"anyOf\":[{\"$ref\":\"#/definitions/env\"},{\"type\":\"object\",\"properties\":{\"args\":{\"type\":\"string\"},\"entrypoint\":{\"type\":\"string\"}}}]},\"env\":{\"$ref\":\"#/definitions/env\"},\"continue-on-error\":{\"oneOf\":[{\"type\":\"boolean\"},{\"$ref\":\"#/definitions/expressionSyntax\"}]},\"timeout-minutes\":{\"oneOf\":[{\"type\":\"number\"},{\"$ref\":\"#/definitions/expressionSyntax\"}]},\"background\":{\"type\":\"boolean\"},\"wait\":{\"oneOf\":[{\"type\":\"string\"},{\"type\":\"array\",\"items\":{\"type\":\"string\"},\"minItems\":1}]},\"wait-all\":{\"anyOf\":[{\"type\":\"boolean\"},{\"type\":\"null\"}]},\"cancel\":{\"type\":\"string\"},\"parallel\":{\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/step\"},\"minItems\":1}}},\"expressionSyntax\":{\"type\":\"string\",\"pattern\":\"^\\\\$\\\\{\\\\{(.|[\\r\\n])*\\\\}\\\\}$\"},\"env\":{\"oneOf\":[{\"type\":\"object\",\"additionalProperties\":{\"oneOf\":[{\"type\":\"string\"},{\"type\":\"number\"},{\"type\":\"boolean\"}]}},{\"$ref\":\"#/definitions/stringContainingExpressionSyntax\"}]},\"stringContainingExpressionSyntax\":{\"type\":\"string\",\"pattern\":\"^.*\\\\$\\\\{\\\\{(.|[\\r\\n])*\\\\}\\\\}.*$\"},\"shell\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"string\",\"enum\":[\"bash\",\"pwsh\",\"python\",\"sh\",\"cmd\",\"powershell\"]}]},\"working-directory\":{\"type\":\"string\"}}}",
+    "requirements": {
+      "format": "json",
+      "dialect": "draft-07",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "array",
+        "minItems": 4,
+        "maxItems": 4,
+        "items": {
+          "$ref": "#/definitions/step"
+        },
+        "definitions": {
+          "step": {
+            "type": "object",
+            "additionalProperties": false,
+            "dependencies": {
+              "working-directory": [
+                "run"
+              ],
+              "shell": [
+                "run"
+              ]
+            },
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "uses": true
+                },
+                "required": [
+                  "uses"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "run": true
+                },
+                "required": [
+                  "run"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "wait": true
+                },
+                "required": [
+                  "wait"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "wait-all": true
+                },
+                "required": [
+                  "wait-all"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "cancel": true
+                },
+                "required": [
+                  "cancel"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "parallel": true
+                },
+                "required": [
+                  "parallel"
+                ]
+              }
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "if": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              },
+              "name": {
+                "type": "string"
+              },
+              "uses": {
+                "type": "string"
+              },
+              "run": {
+                "type": "string"
+              },
+              "working-directory": {
+                "$ref": "#/definitions/working-directory"
+              },
+              "shell": {
+                "$ref": "#/definitions/shell"
+              },
+              "with": {
+                "$ref": "#/definitions/env",
+                "anyOf": [
+                  {
+                    "$ref": "#/definitions/env"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "args": {
+                        "type": "string"
+                      },
+                      "entrypoint": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                ]
+              },
+              "env": {
+                "$ref": "#/definitions/env"
+              },
+              "continue-on-error": {
+                "oneOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "$ref": "#/definitions/expressionSyntax"
+                  }
+                ]
+              },
+              "timeout-minutes": {
+                "oneOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "$ref": "#/definitions/expressionSyntax"
+                  }
+                ]
+              },
+              "background": {
+                "type": "boolean"
+              },
+              "wait": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "minItems": 1
+                  }
+                ]
+              },
+              "wait-all": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "cancel": {
+                "type": "string"
+              },
+              "parallel": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/step"
+                },
+                "minItems": 1
+              }
+            }
+          },
+          "expressionSyntax": {
+            "type": "string",
+            "pattern": "^\\$\\{\\{(.|[\r\n])*\\}\\}$"
+          },
+          "env": {
+            "oneOf": [
+              {
+                "type": "object",
+                "additionalProperties": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "boolean"
+                    }
+                  ]
+                }
+              },
+              {
+                "$ref": "#/definitions/stringContainingExpressionSyntax"
+              }
+            ]
+          },
+          "stringContainingExpressionSyntax": {
+            "type": "string",
+            "pattern": "^.*\\$\\{\\{(.|[\r\n])*\\}\\}.*$"
+          },
+          "shell": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "bash",
+                  "pwsh",
+                  "python",
+                  "sh",
+                  "cmd",
+                  "powershell"
+                ]
+              }
+            ]
+          },
+          "working-directory": {
+            "type": "string"
+          }
+        }
+      },
+      "formatAssertions": true,
+      "family": "A",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": [
+            {
+              "id": "a0",
+              "uses": "actions/checkout@v4",
+              "with": {
+                "fetch-depth": 1
+              }
+            },
+            {
+              "id": "a1",
+              "run": "printf '%s\\n' 'row-1'",
+              "working-directory": "work/1",
+              "shell": "bash"
+            },
+            {
+              "id": "a2",
+              "uses": "actions/checkout@v4",
+              "with": {
+                "fetch-depth": 3
+              }
+            },
+            {
+              "id": "a3",
+              "run": "printf '%s\\n' 'row-3'",
+              "working-directory": "work/3",
+              "shell": "bash"
+            }
+          ],
+          "description": "Exact content determined by the published input and transformation rules"
+        }
+      ],
+      "developmentShadow": true,
+      "provenance": {
+        "sourceUrl": "https://raw.githubusercontent.com/SchemaStore/schemastore/87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0/src/schemas/json/github-workflow.json",
+        "sourceRevision": "87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0",
+        "sourceLicense": "Apache-2.0",
+        "originalSha256": "d10c9f4656e1bd5bc6727e9b35080e017dc167154726fca93da33c7a6bd1c4f3",
+        "fragment": "/definitions/step",
+        "sourceGroup": "schemastore:github-workflow",
+        "transformations": [
+          "selected fragment and transitive local definitions",
+          "removed documentation annotations",
+          "added explicit local task requirements"
+        ],
+        "upstreamBenchmark": "SchemaStore source; locally authored tasks, not official SchemaBench instances",
+        "split": "development",
+        "designLevel": 2,
+        "seed": "A:development:1",
+        "baseIds": [
+          "SO-CN-012",
+          "SO-CN-047"
+        ]
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "deterministic-frozen-fixture-v1",
+    "tags": [
+      "structured-contract-v1",
+      "family:A",
+      "split:development"
+    ]
+  },
+  {
+    "id": "SOC-A-D3",
+    "dimension": "structured_output",
+    "category": "contract_A",
+    "difficulty": "medium",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v1",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "f264e646acb8c532",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "将任务列表转换为 GitHub Actions step 数组，保留顺序。action 项只输出 id、uses、with，target 映射到 uses、options 映射到 with；shell 项只输出 id、run、working-directory、shell，target 映射到 run、cwd 映射到 working-directory。所有值原样保留，不可混用两种分支。输入：[{\"id\":\"a0\",\"kind\":\"action\",\"target\":\"actions/checkout@v4\",\"options\":{\"fetch-depth\":1}},{\"id\":\"a1\",\"kind\":\"shell\",\"target\":\"printf '%s\\\\n' 'row-1'\",\"cwd\":\"work/1\",\"shell\":\"bash\"},{\"id\":\"a2\",\"kind\":\"action\",\"target\":\"actions/checkout@v4\",\"options\":{\"fetch-depth\":3}},{\"id\":\"a3\",\"kind\":\"shell\",\"target\":\"printf '%s\\\\n' 'row-3'\",\"cwd\":\"work/3\",\"shell\":\"bash\"},{\"id\":\"a4\",\"kind\":\"action\",\"target\":\"actions/checkout@v4\",\"options\":{\"fetch-depth\":5}},{\"id\":\"a5\",\"kind\":\"shell\",\"target\":\"printf '%s\\\\n' 'row-5'\",\"cwd\":\"work/5\",\"shell\":\"bash\"}]\n\n必须同时遵循以下 JSON Schema 和上面的内容规则；可省略的字段按题面决定。对象键序不限。只输出一个完整 JSON 值，不要围栏或解释。\n{\"$schema\":\"http://json-schema.org/draft-07/schema#\",\"type\":\"array\",\"minItems\":6,\"maxItems\":6,\"items\":{\"$ref\":\"#/definitions/step\"},\"definitions\":{\"step\":{\"type\":\"object\",\"additionalProperties\":false,\"dependencies\":{\"working-directory\":[\"run\"],\"shell\":[\"run\"]},\"oneOf\":[{\"type\":\"object\",\"properties\":{\"uses\":true},\"required\":[\"uses\"]},{\"type\":\"object\",\"properties\":{\"run\":true},\"required\":[\"run\"]},{\"type\":\"object\",\"properties\":{\"wait\":true},\"required\":[\"wait\"]},{\"type\":\"object\",\"properties\":{\"wait-all\":true},\"required\":[\"wait-all\"]},{\"type\":\"object\",\"properties\":{\"cancel\":true},\"required\":[\"cancel\"]},{\"type\":\"object\",\"properties\":{\"parallel\":true},\"required\":[\"parallel\"]}],\"properties\":{\"id\":{\"type\":\"string\"},\"if\":{\"anyOf\":[{\"type\":\"boolean\"},{\"type\":\"number\"},{\"type\":\"string\"}]},\"name\":{\"type\":\"string\"},\"uses\":{\"type\":\"string\"},\"run\":{\"type\":\"string\"},\"working-directory\":{\"$ref\":\"#/definitions/working-directory\"},\"shell\":{\"$ref\":\"#/definitions/shell\"},\"with\":{\"$ref\":\"#/definitions/env\",\"anyOf\":[{\"$ref\":\"#/definitions/env\"},{\"type\":\"object\",\"properties\":{\"args\":{\"type\":\"string\"},\"entrypoint\":{\"type\":\"string\"}}}]},\"env\":{\"$ref\":\"#/definitions/env\"},\"continue-on-error\":{\"oneOf\":[{\"type\":\"boolean\"},{\"$ref\":\"#/definitions/expressionSyntax\"}]},\"timeout-minutes\":{\"oneOf\":[{\"type\":\"number\"},{\"$ref\":\"#/definitions/expressionSyntax\"}]},\"background\":{\"type\":\"boolean\"},\"wait\":{\"oneOf\":[{\"type\":\"string\"},{\"type\":\"array\",\"items\":{\"type\":\"string\"},\"minItems\":1}]},\"wait-all\":{\"anyOf\":[{\"type\":\"boolean\"},{\"type\":\"null\"}]},\"cancel\":{\"type\":\"string\"},\"parallel\":{\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/step\"},\"minItems\":1}}},\"expressionSyntax\":{\"type\":\"string\",\"pattern\":\"^\\\\$\\\\{\\\\{(.|[\\r\\n])*\\\\}\\\\}$\"},\"env\":{\"oneOf\":[{\"type\":\"object\",\"additionalProperties\":{\"oneOf\":[{\"type\":\"string\"},{\"type\":\"number\"},{\"type\":\"boolean\"}]}},{\"$ref\":\"#/definitions/stringContainingExpressionSyntax\"}]},\"stringContainingExpressionSyntax\":{\"type\":\"string\",\"pattern\":\"^.*\\\\$\\\\{\\\\{(.|[\\r\\n])*\\\\}\\\\}.*$\"},\"shell\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"string\",\"enum\":[\"bash\",\"pwsh\",\"python\",\"sh\",\"cmd\",\"powershell\"]}]},\"working-directory\":{\"type\":\"string\"}}}",
+    "requirements": {
+      "format": "json",
+      "dialect": "draft-07",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "array",
+        "minItems": 6,
+        "maxItems": 6,
+        "items": {
+          "$ref": "#/definitions/step"
+        },
+        "definitions": {
+          "step": {
+            "type": "object",
+            "additionalProperties": false,
+            "dependencies": {
+              "working-directory": [
+                "run"
+              ],
+              "shell": [
+                "run"
+              ]
+            },
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "uses": true
+                },
+                "required": [
+                  "uses"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "run": true
+                },
+                "required": [
+                  "run"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "wait": true
+                },
+                "required": [
+                  "wait"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "wait-all": true
+                },
+                "required": [
+                  "wait-all"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "cancel": true
+                },
+                "required": [
+                  "cancel"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "parallel": true
+                },
+                "required": [
+                  "parallel"
+                ]
+              }
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "if": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              },
+              "name": {
+                "type": "string"
+              },
+              "uses": {
+                "type": "string"
+              },
+              "run": {
+                "type": "string"
+              },
+              "working-directory": {
+                "$ref": "#/definitions/working-directory"
+              },
+              "shell": {
+                "$ref": "#/definitions/shell"
+              },
+              "with": {
+                "$ref": "#/definitions/env",
+                "anyOf": [
+                  {
+                    "$ref": "#/definitions/env"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "args": {
+                        "type": "string"
+                      },
+                      "entrypoint": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                ]
+              },
+              "env": {
+                "$ref": "#/definitions/env"
+              },
+              "continue-on-error": {
+                "oneOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "$ref": "#/definitions/expressionSyntax"
+                  }
+                ]
+              },
+              "timeout-minutes": {
+                "oneOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "$ref": "#/definitions/expressionSyntax"
+                  }
+                ]
+              },
+              "background": {
+                "type": "boolean"
+              },
+              "wait": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "minItems": 1
+                  }
+                ]
+              },
+              "wait-all": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "cancel": {
+                "type": "string"
+              },
+              "parallel": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/step"
+                },
+                "minItems": 1
+              }
+            }
+          },
+          "expressionSyntax": {
+            "type": "string",
+            "pattern": "^\\$\\{\\{(.|[\r\n])*\\}\\}$"
+          },
+          "env": {
+            "oneOf": [
+              {
+                "type": "object",
+                "additionalProperties": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "boolean"
+                    }
+                  ]
+                }
+              },
+              {
+                "$ref": "#/definitions/stringContainingExpressionSyntax"
+              }
+            ]
+          },
+          "stringContainingExpressionSyntax": {
+            "type": "string",
+            "pattern": "^.*\\$\\{\\{(.|[\r\n])*\\}\\}.*$"
+          },
+          "shell": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "bash",
+                  "pwsh",
+                  "python",
+                  "sh",
+                  "cmd",
+                  "powershell"
+                ]
+              }
+            ]
+          },
+          "working-directory": {
+            "type": "string"
+          }
+        }
+      },
+      "formatAssertions": true,
+      "family": "A",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": [
+            {
+              "id": "a0",
+              "uses": "actions/checkout@v4",
+              "with": {
+                "fetch-depth": 1
+              }
+            },
+            {
+              "id": "a1",
+              "run": "printf '%s\\n' 'row-1'",
+              "working-directory": "work/1",
+              "shell": "bash"
+            },
+            {
+              "id": "a2",
+              "uses": "actions/checkout@v4",
+              "with": {
+                "fetch-depth": 3
+              }
+            },
+            {
+              "id": "a3",
+              "run": "printf '%s\\n' 'row-3'",
+              "working-directory": "work/3",
+              "shell": "bash"
+            },
+            {
+              "id": "a4",
+              "uses": "actions/checkout@v4",
+              "with": {
+                "fetch-depth": 5
+              }
+            },
+            {
+              "id": "a5",
+              "run": "printf '%s\\n' 'row-5'",
+              "working-directory": "work/5",
+              "shell": "bash"
+            }
+          ],
+          "description": "Exact content determined by the published input and transformation rules"
+        }
+      ],
+      "developmentShadow": true,
+      "provenance": {
+        "sourceUrl": "https://raw.githubusercontent.com/SchemaStore/schemastore/87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0/src/schemas/json/github-workflow.json",
+        "sourceRevision": "87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0",
+        "sourceLicense": "Apache-2.0",
+        "originalSha256": "d10c9f4656e1bd5bc6727e9b35080e017dc167154726fca93da33c7a6bd1c4f3",
+        "fragment": "/definitions/step",
+        "sourceGroup": "schemastore:github-workflow",
+        "transformations": [
+          "selected fragment and transitive local definitions",
+          "removed documentation annotations",
+          "added explicit local task requirements"
+        ],
+        "upstreamBenchmark": "SchemaStore source; locally authored tasks, not official SchemaBench instances",
+        "split": "development",
+        "designLevel": 3,
+        "seed": "A:development:2",
+        "baseIds": [
+          "SO-CN-012",
+          "SO-CN-047"
+        ]
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "deterministic-frozen-fixture-v1",
+    "tags": [
+      "structured-contract-v1",
+      "family:A",
+      "split:development"
+    ]
+  },
+  {
+    "id": "SOC-B-D1",
+    "dimension": "structured_output",
+    "category": "contract_B",
+    "difficulty": "medium",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v1",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "0dcc98915cae3b5d",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "根据路径表构造 npm 条件导出对象。每个 path 的键依次形成嵌套对象，value 原样写入叶节点；共享前缀合并。不得产生路径表以外的节点，数组及 null 保持原类型。这里键序不限。路径表：[{\"path\":[\"node\",\"import\"],\"value\":\"./dist/v0/index.mjs\"},{\"path\":[\"node\",\"require\"],\"value\":\"./dist/v0/index.cjs\"},{\"path\":[\"browser\",\"development\",\"default\"],\"value\":[\"./web/main.js\",null]},{\"path\":[\"default\"],\"value\":\"./fallback.js\"}]\n\n必须同时遵循以下 JSON Schema 和上面的内容规则；可省略的字段按题面决定。对象键序不限。只输出一个完整 JSON 值，不要围栏或解释。\n{\"$schema\":\"http://json-schema.org/draft-07/schema#\",\"oneOf\":[{\"$ref\":\"#/definitions/packageExportsEntryPath\"},{\"$ref\":\"#/definitions/packageExportsEntryObject\"}],\"definitions\":{\"packageExportsEntryObject\":{\"type\":\"object\",\"properties\":{\"require\":{\"$ref\":\"#/definitions/packageExportsEntryOrFallback\"},\"import\":{\"$ref\":\"#/definitions/packageExportsEntryOrFallback\"},\"module-sync\":{\"$ref\":\"#/definitions/packageExportsEntryOrFallback\"},\"node\":{\"$ref\":\"#/definitions/packageExportsEntryOrFallback\"},\"default\":{\"$ref\":\"#/definitions/packageExportsEntryOrFallback\"},\"types\":{\"$ref\":\"#/definitions/packageExportsEntryOrFallback\"}},\"patternProperties\":{\"^[^.0-9]+$\":{\"$ref\":\"#/definitions/packageExportsEntryOrFallback\"},\"^types@.+$\":{\"$ref\":\"#/definitions/packageExportsEntryOrFallback\"}},\"additionalProperties\":false},\"packageExportsEntryOrFallback\":{\"oneOf\":[{\"$ref\":\"#/definitions/packageExportsEntry\"},{\"$ref\":\"#/definitions/packageExportsFallback\"}]},\"packageExportsFallback\":{\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/packageExportsEntry\"}},\"packageExportsEntry\":{\"oneOf\":[{\"$ref\":\"#/definitions/packageExportsEntryPath\"},{\"$ref\":\"#/definitions/packageExportsEntryObject\"}]},\"packageExportsEntryPath\":{\"type\":[\"string\",\"null\"],\"pattern\":\"^\\\\./\"}}}",
+    "requirements": {
+      "format": "json",
+      "dialect": "draft-07",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "oneOf": [
+          {
+            "$ref": "#/definitions/packageExportsEntryPath"
+          },
+          {
+            "$ref": "#/definitions/packageExportsEntryObject"
+          }
+        ],
+        "definitions": {
+          "packageExportsEntryObject": {
+            "type": "object",
+            "properties": {
+              "require": {
+                "$ref": "#/definitions/packageExportsEntryOrFallback"
+              },
+              "import": {
+                "$ref": "#/definitions/packageExportsEntryOrFallback"
+              },
+              "module-sync": {
+                "$ref": "#/definitions/packageExportsEntryOrFallback"
+              },
+              "node": {
+                "$ref": "#/definitions/packageExportsEntryOrFallback"
+              },
+              "default": {
+                "$ref": "#/definitions/packageExportsEntryOrFallback"
+              },
+              "types": {
+                "$ref": "#/definitions/packageExportsEntryOrFallback"
+              }
+            },
+            "patternProperties": {
+              "^[^.0-9]+$": {
+                "$ref": "#/definitions/packageExportsEntryOrFallback"
+              },
+              "^types@.+$": {
+                "$ref": "#/definitions/packageExportsEntryOrFallback"
+              }
+            },
+            "additionalProperties": false
+          },
+          "packageExportsEntryOrFallback": {
+            "oneOf": [
+              {
+                "$ref": "#/definitions/packageExportsEntry"
+              },
+              {
+                "$ref": "#/definitions/packageExportsFallback"
+              }
+            ]
+          },
+          "packageExportsFallback": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/packageExportsEntry"
+            }
+          },
+          "packageExportsEntry": {
+            "oneOf": [
+              {
+                "$ref": "#/definitions/packageExportsEntryPath"
+              },
+              {
+                "$ref": "#/definitions/packageExportsEntryObject"
+              }
+            ]
+          },
+          "packageExportsEntryPath": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^\\./"
+          }
+        }
+      },
+      "formatAssertions": true,
+      "family": "B",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": {
+            "node": {
+              "import": "./dist/v0/index.mjs",
+              "require": "./dist/v0/index.cjs"
+            },
+            "browser": {
+              "development": {
+                "default": [
+                  "./web/main.js",
+                  null
+                ]
+              }
+            },
+            "default": "./fallback.js"
+          },
+          "description": "Exact content determined by the published input and transformation rules"
+        }
+      ],
+      "developmentShadow": true,
+      "provenance": {
+        "sourceUrl": "https://raw.githubusercontent.com/SchemaStore/schemastore/87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0/src/schemas/json/package.json",
+        "sourceRevision": "87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0",
+        "sourceLicense": "Apache-2.0",
+        "originalSha256": "e5390e202b0ab1bcf3154f69bb2334576c53218638dcd857deb413f18ab55a29",
+        "fragment": "/definitions/packageExportsEntry",
+        "sourceGroup": "schemastore:package",
+        "transformations": [
+          "selected fragment and transitive local definitions",
+          "removed documentation annotations",
+          "added explicit local task requirements"
+        ],
+        "upstreamBenchmark": "SchemaStore source; locally authored tasks, not official SchemaBench instances",
+        "split": "development",
+        "designLevel": 1,
+        "seed": "B:development:0",
+        "baseIds": [
+          "SO-CN-055"
+        ]
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "deterministic-frozen-fixture-v1",
+    "tags": [
+      "structured-contract-v1",
+      "family:B",
+      "split:development"
+    ]
+  },
+  {
+    "id": "SOC-B-D2",
+    "dimension": "structured_output",
+    "category": "contract_B",
+    "difficulty": "medium",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v1",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "b294b410a96ed744",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "根据路径表构造 npm 条件导出对象。每个 path 的键依次形成嵌套对象，value 原样写入叶节点；共享前缀合并。不得产生路径表以外的节点，数组及 null 保持原类型。这里键序不限。路径表：[{\"path\":[\"node\",\"import\"],\"value\":\"./dist/v1/index.mjs\"},{\"path\":[\"node\",\"require\"],\"value\":\"./dist/v1/index.cjs\"},{\"path\":[\"browser\",\"development\",\"development\",\"default\"],\"value\":[\"./web/main.js\",null]},{\"path\":[\"default\"],\"value\":\"./fallback.js\"}]\n\n必须同时遵循以下 JSON Schema 和上面的内容规则；可省略的字段按题面决定。对象键序不限。只输出一个完整 JSON 值，不要围栏或解释。\n{\"$schema\":\"http://json-schema.org/draft-07/schema#\",\"oneOf\":[{\"$ref\":\"#/definitions/packageExportsEntryPath\"},{\"$ref\":\"#/definitions/packageExportsEntryObject\"}],\"definitions\":{\"packageExportsEntryObject\":{\"type\":\"object\",\"properties\":{\"require\":{\"$ref\":\"#/definitions/packageExportsEntryOrFallback\"},\"import\":{\"$ref\":\"#/definitions/packageExportsEntryOrFallback\"},\"module-sync\":{\"$ref\":\"#/definitions/packageExportsEntryOrFallback\"},\"node\":{\"$ref\":\"#/definitions/packageExportsEntryOrFallback\"},\"default\":{\"$ref\":\"#/definitions/packageExportsEntryOrFallback\"},\"types\":{\"$ref\":\"#/definitions/packageExportsEntryOrFallback\"}},\"patternProperties\":{\"^[^.0-9]+$\":{\"$ref\":\"#/definitions/packageExportsEntryOrFallback\"},\"^types@.+$\":{\"$ref\":\"#/definitions/packageExportsEntryOrFallback\"}},\"additionalProperties\":false},\"packageExportsEntryOrFallback\":{\"oneOf\":[{\"$ref\":\"#/definitions/packageExportsEntry\"},{\"$ref\":\"#/definitions/packageExportsFallback\"}]},\"packageExportsFallback\":{\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/packageExportsEntry\"}},\"packageExportsEntry\":{\"oneOf\":[{\"$ref\":\"#/definitions/packageExportsEntryPath\"},{\"$ref\":\"#/definitions/packageExportsEntryObject\"}]},\"packageExportsEntryPath\":{\"type\":[\"string\",\"null\"],\"pattern\":\"^\\\\./\"}}}",
+    "requirements": {
+      "format": "json",
+      "dialect": "draft-07",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "oneOf": [
+          {
+            "$ref": "#/definitions/packageExportsEntryPath"
+          },
+          {
+            "$ref": "#/definitions/packageExportsEntryObject"
+          }
+        ],
+        "definitions": {
+          "packageExportsEntryObject": {
+            "type": "object",
+            "properties": {
+              "require": {
+                "$ref": "#/definitions/packageExportsEntryOrFallback"
+              },
+              "import": {
+                "$ref": "#/definitions/packageExportsEntryOrFallback"
+              },
+              "module-sync": {
+                "$ref": "#/definitions/packageExportsEntryOrFallback"
+              },
+              "node": {
+                "$ref": "#/definitions/packageExportsEntryOrFallback"
+              },
+              "default": {
+                "$ref": "#/definitions/packageExportsEntryOrFallback"
+              },
+              "types": {
+                "$ref": "#/definitions/packageExportsEntryOrFallback"
+              }
+            },
+            "patternProperties": {
+              "^[^.0-9]+$": {
+                "$ref": "#/definitions/packageExportsEntryOrFallback"
+              },
+              "^types@.+$": {
+                "$ref": "#/definitions/packageExportsEntryOrFallback"
+              }
+            },
+            "additionalProperties": false
+          },
+          "packageExportsEntryOrFallback": {
+            "oneOf": [
+              {
+                "$ref": "#/definitions/packageExportsEntry"
+              },
+              {
+                "$ref": "#/definitions/packageExportsFallback"
+              }
+            ]
+          },
+          "packageExportsFallback": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/packageExportsEntry"
+            }
+          },
+          "packageExportsEntry": {
+            "oneOf": [
+              {
+                "$ref": "#/definitions/packageExportsEntryPath"
+              },
+              {
+                "$ref": "#/definitions/packageExportsEntryObject"
+              }
+            ]
+          },
+          "packageExportsEntryPath": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^\\./"
+          }
+        }
+      },
+      "formatAssertions": true,
+      "family": "B",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": {
+            "node": {
+              "import": "./dist/v1/index.mjs",
+              "require": "./dist/v1/index.cjs"
+            },
+            "browser": {
+              "development": {
+                "development": {
+                  "default": [
+                    "./web/main.js",
+                    null
+                  ]
+                }
+              }
+            },
+            "default": "./fallback.js"
+          },
+          "description": "Exact content determined by the published input and transformation rules"
+        }
+      ],
+      "developmentShadow": true,
+      "provenance": {
+        "sourceUrl": "https://raw.githubusercontent.com/SchemaStore/schemastore/87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0/src/schemas/json/package.json",
+        "sourceRevision": "87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0",
+        "sourceLicense": "Apache-2.0",
+        "originalSha256": "e5390e202b0ab1bcf3154f69bb2334576c53218638dcd857deb413f18ab55a29",
+        "fragment": "/definitions/packageExportsEntry",
+        "sourceGroup": "schemastore:package",
+        "transformations": [
+          "selected fragment and transitive local definitions",
+          "removed documentation annotations",
+          "added explicit local task requirements"
+        ],
+        "upstreamBenchmark": "SchemaStore source; locally authored tasks, not official SchemaBench instances",
+        "split": "development",
+        "designLevel": 2,
+        "seed": "B:development:1",
+        "baseIds": [
+          "SO-CN-055"
+        ]
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "deterministic-frozen-fixture-v1",
+    "tags": [
+      "structured-contract-v1",
+      "family:B",
+      "split:development"
+    ]
+  },
+  {
+    "id": "SOC-B-D3",
+    "dimension": "structured_output",
+    "category": "contract_B",
+    "difficulty": "medium",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v1",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "088f5bbd3ce053ed",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "根据路径表构造 npm 条件导出对象。每个 path 的键依次形成嵌套对象，value 原样写入叶节点；共享前缀合并。不得产生路径表以外的节点，数组及 null 保持原类型。这里键序不限。路径表：[{\"path\":[\"node\",\"import\"],\"value\":\"./dist/v2/index.mjs\"},{\"path\":[\"node\",\"require\"],\"value\":\"./dist/v2/index.cjs\"},{\"path\":[\"browser\",\"development\",\"development\",\"development\",\"default\"],\"value\":[\"./web/main.js\",null]},{\"path\":[\"default\"],\"value\":\"./fallback.js\"}]\n\n必须同时遵循以下 JSON Schema 和上面的内容规则；可省略的字段按题面决定。对象键序不限。只输出一个完整 JSON 值，不要围栏或解释。\n{\"$schema\":\"http://json-schema.org/draft-07/schema#\",\"oneOf\":[{\"$ref\":\"#/definitions/packageExportsEntryPath\"},{\"$ref\":\"#/definitions/packageExportsEntryObject\"}],\"definitions\":{\"packageExportsEntryObject\":{\"type\":\"object\",\"properties\":{\"require\":{\"$ref\":\"#/definitions/packageExportsEntryOrFallback\"},\"import\":{\"$ref\":\"#/definitions/packageExportsEntryOrFallback\"},\"module-sync\":{\"$ref\":\"#/definitions/packageExportsEntryOrFallback\"},\"node\":{\"$ref\":\"#/definitions/packageExportsEntryOrFallback\"},\"default\":{\"$ref\":\"#/definitions/packageExportsEntryOrFallback\"},\"types\":{\"$ref\":\"#/definitions/packageExportsEntryOrFallback\"}},\"patternProperties\":{\"^[^.0-9]+$\":{\"$ref\":\"#/definitions/packageExportsEntryOrFallback\"},\"^types@.+$\":{\"$ref\":\"#/definitions/packageExportsEntryOrFallback\"}},\"additionalProperties\":false},\"packageExportsEntryOrFallback\":{\"oneOf\":[{\"$ref\":\"#/definitions/packageExportsEntry\"},{\"$ref\":\"#/definitions/packageExportsFallback\"}]},\"packageExportsFallback\":{\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/packageExportsEntry\"}},\"packageExportsEntry\":{\"oneOf\":[{\"$ref\":\"#/definitions/packageExportsEntryPath\"},{\"$ref\":\"#/definitions/packageExportsEntryObject\"}]},\"packageExportsEntryPath\":{\"type\":[\"string\",\"null\"],\"pattern\":\"^\\\\./\"}}}",
+    "requirements": {
+      "format": "json",
+      "dialect": "draft-07",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "oneOf": [
+          {
+            "$ref": "#/definitions/packageExportsEntryPath"
+          },
+          {
+            "$ref": "#/definitions/packageExportsEntryObject"
+          }
+        ],
+        "definitions": {
+          "packageExportsEntryObject": {
+            "type": "object",
+            "properties": {
+              "require": {
+                "$ref": "#/definitions/packageExportsEntryOrFallback"
+              },
+              "import": {
+                "$ref": "#/definitions/packageExportsEntryOrFallback"
+              },
+              "module-sync": {
+                "$ref": "#/definitions/packageExportsEntryOrFallback"
+              },
+              "node": {
+                "$ref": "#/definitions/packageExportsEntryOrFallback"
+              },
+              "default": {
+                "$ref": "#/definitions/packageExportsEntryOrFallback"
+              },
+              "types": {
+                "$ref": "#/definitions/packageExportsEntryOrFallback"
+              }
+            },
+            "patternProperties": {
+              "^[^.0-9]+$": {
+                "$ref": "#/definitions/packageExportsEntryOrFallback"
+              },
+              "^types@.+$": {
+                "$ref": "#/definitions/packageExportsEntryOrFallback"
+              }
+            },
+            "additionalProperties": false
+          },
+          "packageExportsEntryOrFallback": {
+            "oneOf": [
+              {
+                "$ref": "#/definitions/packageExportsEntry"
+              },
+              {
+                "$ref": "#/definitions/packageExportsFallback"
+              }
+            ]
+          },
+          "packageExportsFallback": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/packageExportsEntry"
+            }
+          },
+          "packageExportsEntry": {
+            "oneOf": [
+              {
+                "$ref": "#/definitions/packageExportsEntryPath"
+              },
+              {
+                "$ref": "#/definitions/packageExportsEntryObject"
+              }
+            ]
+          },
+          "packageExportsEntryPath": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^\\./"
+          }
+        }
+      },
+      "formatAssertions": true,
+      "family": "B",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": {
+            "node": {
+              "import": "./dist/v2/index.mjs",
+              "require": "./dist/v2/index.cjs"
+            },
+            "browser": {
+              "development": {
+                "development": {
+                  "development": {
+                    "default": [
+                      "./web/main.js",
+                      null
+                    ]
+                  }
+                }
+              }
+            },
+            "default": "./fallback.js"
+          },
+          "description": "Exact content determined by the published input and transformation rules"
+        }
+      ],
+      "developmentShadow": true,
+      "provenance": {
+        "sourceUrl": "https://raw.githubusercontent.com/SchemaStore/schemastore/87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0/src/schemas/json/package.json",
+        "sourceRevision": "87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0",
+        "sourceLicense": "Apache-2.0",
+        "originalSha256": "e5390e202b0ab1bcf3154f69bb2334576c53218638dcd857deb413f18ab55a29",
+        "fragment": "/definitions/packageExportsEntry",
+        "sourceGroup": "schemastore:package",
+        "transformations": [
+          "selected fragment and transitive local definitions",
+          "removed documentation annotations",
+          "added explicit local task requirements"
+        ],
+        "upstreamBenchmark": "SchemaStore source; locally authored tasks, not official SchemaBench instances",
+        "split": "development",
+        "designLevel": 3,
+        "seed": "B:development:2",
+        "baseIds": [
+          "SO-CN-055"
+        ]
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "deterministic-frozen-fixture-v1",
+    "tags": [
+      "structured-contract-v1",
+      "family:B",
+      "split:development"
+    ]
+  },
+  {
+    "id": "SOC-C-D1",
+    "dimension": "structured_output",
+    "category": "contract_C",
+    "difficulty": "medium",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v1",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "b7070943abcbeaee",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "生成 workflow_dispatch.inputs 对象，以 id 为键。kind 改名为 type；description 恰为 \"input:\" 加 id；保留 required 和存在的 options。default 为 null 时必须省略，为 false 或空串时必须保留。禁止其他字段。注意这些是本任务额外规定的业务规则。输入：[{\"id\":\"deploy\",\"kind\":\"boolean\",\"default\":false,\"required\":true},{\"id\":\"region\",\"kind\":\"choice\",\"options\":[\"cn\",\"us\"],\"default\":null,\"required\":false},{\"id\":\"message\",\"kind\":\"string\",\"default\":\"\",\"required\":false}]\n\n必须同时遵循以下 JSON Schema 和上面的内容规则；可省略的字段按题面决定。对象键序不限。只输出一个完整 JSON 值，不要围栏或解释。\n{\"$schema\":\"http://json-schema.org/draft-07/schema#\",\"type\":\"object\",\"additionalProperties\":{\"$ref\":\"#/definitions/input\"},\"definitions\":{\"workflowDispatchInput\":{\"type\":\"object\",\"properties\":{\"description\":{\"type\":\"string\"},\"deprecationMessage\":{\"type\":\"string\"},\"required\":{\"type\":\"boolean\"},\"default\":{},\"type\":{\"type\":\"string\",\"enum\":[\"string\",\"choice\",\"boolean\",\"number\",\"environment\"]},\"options\":{\"type\":\"array\",\"items\":{\"type\":\"string\"},\"minItems\":1}},\"oneOf\":[{\"type\":\"object\",\"properties\":{\"type\":{\"const\":\"string\"},\"default\":{\"type\":\"string\"}},\"required\":[\"type\"]},{\"type\":\"object\",\"properties\":{\"type\":{\"const\":\"boolean\"},\"default\":{\"type\":\"boolean\"}},\"required\":[\"type\"]},{\"type\":\"object\",\"properties\":{\"type\":{\"const\":\"number\"},\"default\":{\"type\":\"number\"}},\"required\":[\"type\"]},{\"type\":\"object\",\"properties\":{\"type\":{\"const\":\"environment\"},\"default\":{\"type\":\"string\"}},\"required\":[\"type\"]},{\"type\":\"object\",\"properties\":{\"type\":{\"const\":\"choice\"},\"options\":{\"$ref\":\"#/definitions/workflowDispatchInput/properties/options\"}},\"required\":[\"type\",\"options\"]}],\"additionalProperties\":false},\"input\":{\"type\":\"object\",\"properties\":{\"description\":{\"type\":\"string\"},\"deprecationMessage\":{\"type\":\"string\"},\"required\":{\"type\":\"boolean\"},\"default\":{},\"type\":{\"type\":\"string\",\"enum\":[\"string\",\"choice\",\"boolean\",\"number\",\"environment\"]},\"options\":{\"type\":\"array\",\"items\":{\"type\":\"string\"},\"minItems\":1}},\"oneOf\":[{\"type\":\"object\",\"properties\":{\"type\":{\"const\":\"string\"},\"default\":{\"type\":\"string\"}},\"required\":[\"type\"]},{\"type\":\"object\",\"properties\":{\"type\":{\"const\":\"boolean\"},\"default\":{\"type\":\"boolean\"}},\"required\":[\"type\"]},{\"type\":\"object\",\"properties\":{\"type\":{\"const\":\"number\"},\"default\":{\"type\":\"number\"}},\"required\":[\"type\"]},{\"type\":\"object\",\"properties\":{\"type\":{\"const\":\"environment\"},\"default\":{\"type\":\"string\"}},\"required\":[\"type\"]},{\"type\":\"object\",\"properties\":{\"type\":{\"const\":\"choice\"},\"options\":{\"$ref\":\"#/definitions/workflowDispatchInput/properties/options\"}},\"required\":[\"type\",\"options\"]}],\"additionalProperties\":false}}}",
+    "requirements": {
+      "format": "json",
+      "dialect": "draft-07",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "additionalProperties": {
+          "$ref": "#/definitions/input"
+        },
+        "definitions": {
+          "workflowDispatchInput": {
+            "type": "object",
+            "properties": {
+              "description": {
+                "type": "string"
+              },
+              "deprecationMessage": {
+                "type": "string"
+              },
+              "required": {
+                "type": "boolean"
+              },
+              "default": {},
+              "type": {
+                "type": "string",
+                "enum": [
+                  "string",
+                  "choice",
+                  "boolean",
+                  "number",
+                  "environment"
+                ]
+              },
+              "options": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "minItems": 1
+              }
+            },
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "const": "string"
+                  },
+                  "default": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "type"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "const": "boolean"
+                  },
+                  "default": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "type"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "const": "number"
+                  },
+                  "default": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "type"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "const": "environment"
+                  },
+                  "default": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "type"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "const": "choice"
+                  },
+                  "options": {
+                    "$ref": "#/definitions/workflowDispatchInput/properties/options"
+                  }
+                },
+                "required": [
+                  "type",
+                  "options"
+                ]
+              }
+            ],
+            "additionalProperties": false
+          },
+          "input": {
+            "type": "object",
+            "properties": {
+              "description": {
+                "type": "string"
+              },
+              "deprecationMessage": {
+                "type": "string"
+              },
+              "required": {
+                "type": "boolean"
+              },
+              "default": {},
+              "type": {
+                "type": "string",
+                "enum": [
+                  "string",
+                  "choice",
+                  "boolean",
+                  "number",
+                  "environment"
+                ]
+              },
+              "options": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "minItems": 1
+              }
+            },
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "const": "string"
+                  },
+                  "default": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "type"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "const": "boolean"
+                  },
+                  "default": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "type"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "const": "number"
+                  },
+                  "default": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "type"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "const": "environment"
+                  },
+                  "default": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "type"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "const": "choice"
+                  },
+                  "options": {
+                    "$ref": "#/definitions/workflowDispatchInput/properties/options"
+                  }
+                },
+                "required": [
+                  "type",
+                  "options"
+                ]
+              }
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "formatAssertions": true,
+      "family": "C",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": {
+            "deploy": {
+              "type": "boolean",
+              "description": "input:deploy",
+              "required": true,
+              "default": false
+            },
+            "region": {
+              "type": "choice",
+              "description": "input:region",
+              "required": false,
+              "options": [
+                "cn",
+                "us"
+              ]
+            },
+            "message": {
+              "type": "string",
+              "description": "input:message",
+              "required": false,
+              "default": ""
+            }
+          },
+          "description": "Exact content determined by the published input and transformation rules"
+        }
+      ],
+      "developmentShadow": true,
+      "provenance": {
+        "sourceUrl": "https://raw.githubusercontent.com/SchemaStore/schemastore/87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0/src/schemas/json/github-workflow.json",
+        "sourceRevision": "87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0",
+        "sourceLicense": "Apache-2.0",
+        "originalSha256": "d10c9f4656e1bd5bc6727e9b35080e017dc167154726fca93da33c7a6bd1c4f3",
+        "fragment": "/definitions/workflowDispatchInput",
+        "sourceGroup": "schemastore:github-workflow",
+        "transformations": [
+          "selected fragment and transitive local definitions",
+          "removed documentation annotations",
+          "added explicit local task requirements"
+        ],
+        "upstreamBenchmark": "SchemaStore source; locally authored tasks, not official SchemaBench instances",
+        "split": "development",
+        "designLevel": 1,
+        "seed": "C:development:0",
+        "baseIds": [
+          "SO-CN-030",
+          "SO-CN-048"
+        ]
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "deterministic-frozen-fixture-v1",
+    "tags": [
+      "structured-contract-v1",
+      "family:C",
+      "split:development"
+    ]
+  },
+  {
+    "id": "SOC-C-D2",
+    "dimension": "structured_output",
+    "category": "contract_C",
+    "difficulty": "medium",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v1",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "6bfb1eec5e77d56d",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "生成 workflow_dispatch.inputs 对象，以 id 为键。kind 改名为 type；description 恰为 \"input:\" 加 id；保留 required 和存在的 options。default 为 null 时必须省略，为 false 或空串时必须保留。禁止其他字段。注意这些是本任务额外规定的业务规则。输入：[{\"id\":\"deploy\",\"kind\":\"boolean\",\"default\":true,\"required\":true},{\"id\":\"region\",\"kind\":\"choice\",\"options\":[\"cn\",\"us\"],\"default\":\"us\",\"required\":false},{\"id\":\"message\",\"kind\":\"string\",\"default\":\"\",\"required\":false}]\n\n必须同时遵循以下 JSON Schema 和上面的内容规则；可省略的字段按题面决定。对象键序不限。只输出一个完整 JSON 值，不要围栏或解释。\n{\"$schema\":\"http://json-schema.org/draft-07/schema#\",\"type\":\"object\",\"additionalProperties\":{\"$ref\":\"#/definitions/input\"},\"definitions\":{\"workflowDispatchInput\":{\"type\":\"object\",\"properties\":{\"description\":{\"type\":\"string\"},\"deprecationMessage\":{\"type\":\"string\"},\"required\":{\"type\":\"boolean\"},\"default\":{},\"type\":{\"type\":\"string\",\"enum\":[\"string\",\"choice\",\"boolean\",\"number\",\"environment\"]},\"options\":{\"type\":\"array\",\"items\":{\"type\":\"string\"},\"minItems\":1}},\"oneOf\":[{\"type\":\"object\",\"properties\":{\"type\":{\"const\":\"string\"},\"default\":{\"type\":\"string\"}},\"required\":[\"type\"]},{\"type\":\"object\",\"properties\":{\"type\":{\"const\":\"boolean\"},\"default\":{\"type\":\"boolean\"}},\"required\":[\"type\"]},{\"type\":\"object\",\"properties\":{\"type\":{\"const\":\"number\"},\"default\":{\"type\":\"number\"}},\"required\":[\"type\"]},{\"type\":\"object\",\"properties\":{\"type\":{\"const\":\"environment\"},\"default\":{\"type\":\"string\"}},\"required\":[\"type\"]},{\"type\":\"object\",\"properties\":{\"type\":{\"const\":\"choice\"},\"options\":{\"$ref\":\"#/definitions/workflowDispatchInput/properties/options\"}},\"required\":[\"type\",\"options\"]}],\"additionalProperties\":false},\"input\":{\"type\":\"object\",\"properties\":{\"description\":{\"type\":\"string\"},\"deprecationMessage\":{\"type\":\"string\"},\"required\":{\"type\":\"boolean\"},\"default\":{},\"type\":{\"type\":\"string\",\"enum\":[\"string\",\"choice\",\"boolean\",\"number\",\"environment\"]},\"options\":{\"type\":\"array\",\"items\":{\"type\":\"string\"},\"minItems\":1}},\"oneOf\":[{\"type\":\"object\",\"properties\":{\"type\":{\"const\":\"string\"},\"default\":{\"type\":\"string\"}},\"required\":[\"type\"]},{\"type\":\"object\",\"properties\":{\"type\":{\"const\":\"boolean\"},\"default\":{\"type\":\"boolean\"}},\"required\":[\"type\"]},{\"type\":\"object\",\"properties\":{\"type\":{\"const\":\"number\"},\"default\":{\"type\":\"number\"}},\"required\":[\"type\"]},{\"type\":\"object\",\"properties\":{\"type\":{\"const\":\"environment\"},\"default\":{\"type\":\"string\"}},\"required\":[\"type\"]},{\"type\":\"object\",\"properties\":{\"type\":{\"const\":\"choice\"},\"options\":{\"$ref\":\"#/definitions/workflowDispatchInput/properties/options\"}},\"required\":[\"type\",\"options\"]}],\"additionalProperties\":false}}}",
+    "requirements": {
+      "format": "json",
+      "dialect": "draft-07",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "additionalProperties": {
+          "$ref": "#/definitions/input"
+        },
+        "definitions": {
+          "workflowDispatchInput": {
+            "type": "object",
+            "properties": {
+              "description": {
+                "type": "string"
+              },
+              "deprecationMessage": {
+                "type": "string"
+              },
+              "required": {
+                "type": "boolean"
+              },
+              "default": {},
+              "type": {
+                "type": "string",
+                "enum": [
+                  "string",
+                  "choice",
+                  "boolean",
+                  "number",
+                  "environment"
+                ]
+              },
+              "options": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "minItems": 1
+              }
+            },
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "const": "string"
+                  },
+                  "default": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "type"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "const": "boolean"
+                  },
+                  "default": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "type"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "const": "number"
+                  },
+                  "default": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "type"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "const": "environment"
+                  },
+                  "default": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "type"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "const": "choice"
+                  },
+                  "options": {
+                    "$ref": "#/definitions/workflowDispatchInput/properties/options"
+                  }
+                },
+                "required": [
+                  "type",
+                  "options"
+                ]
+              }
+            ],
+            "additionalProperties": false
+          },
+          "input": {
+            "type": "object",
+            "properties": {
+              "description": {
+                "type": "string"
+              },
+              "deprecationMessage": {
+                "type": "string"
+              },
+              "required": {
+                "type": "boolean"
+              },
+              "default": {},
+              "type": {
+                "type": "string",
+                "enum": [
+                  "string",
+                  "choice",
+                  "boolean",
+                  "number",
+                  "environment"
+                ]
+              },
+              "options": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "minItems": 1
+              }
+            },
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "const": "string"
+                  },
+                  "default": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "type"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "const": "boolean"
+                  },
+                  "default": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "type"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "const": "number"
+                  },
+                  "default": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "type"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "const": "environment"
+                  },
+                  "default": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "type"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "const": "choice"
+                  },
+                  "options": {
+                    "$ref": "#/definitions/workflowDispatchInput/properties/options"
+                  }
+                },
+                "required": [
+                  "type",
+                  "options"
+                ]
+              }
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "formatAssertions": true,
+      "family": "C",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": {
+            "deploy": {
+              "type": "boolean",
+              "description": "input:deploy",
+              "required": true,
+              "default": true
+            },
+            "region": {
+              "type": "choice",
+              "description": "input:region",
+              "required": false,
+              "options": [
+                "cn",
+                "us"
+              ],
+              "default": "us"
+            },
+            "message": {
+              "type": "string",
+              "description": "input:message",
+              "required": false,
+              "default": ""
+            }
+          },
+          "description": "Exact content determined by the published input and transformation rules"
+        }
+      ],
+      "developmentShadow": true,
+      "provenance": {
+        "sourceUrl": "https://raw.githubusercontent.com/SchemaStore/schemastore/87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0/src/schemas/json/github-workflow.json",
+        "sourceRevision": "87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0",
+        "sourceLicense": "Apache-2.0",
+        "originalSha256": "d10c9f4656e1bd5bc6727e9b35080e017dc167154726fca93da33c7a6bd1c4f3",
+        "fragment": "/definitions/workflowDispatchInput",
+        "sourceGroup": "schemastore:github-workflow",
+        "transformations": [
+          "selected fragment and transitive local definitions",
+          "removed documentation annotations",
+          "added explicit local task requirements"
+        ],
+        "upstreamBenchmark": "SchemaStore source; locally authored tasks, not official SchemaBench instances",
+        "split": "development",
+        "designLevel": 2,
+        "seed": "C:development:1",
+        "baseIds": [
+          "SO-CN-030",
+          "SO-CN-048"
+        ]
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "deterministic-frozen-fixture-v1",
+    "tags": [
+      "structured-contract-v1",
+      "family:C",
+      "split:development"
+    ]
+  },
+  {
+    "id": "SOC-C-D3",
+    "dimension": "structured_output",
+    "category": "contract_C",
+    "difficulty": "medium",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v1",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "7a74303554f68488",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "生成 workflow_dispatch.inputs 对象，以 id 为键。kind 改名为 type；description 恰为 \"input:\" 加 id；保留 required 和存在的 options。default 为 null 时必须省略，为 false 或空串时必须保留。禁止其他字段。注意这些是本任务额外规定的业务规则。输入：[{\"id\":\"deploy\",\"kind\":\"boolean\",\"default\":false,\"required\":true},{\"id\":\"region\",\"kind\":\"choice\",\"options\":[\"cn\",\"us\"],\"default\":\"us\",\"required\":false},{\"id\":\"message\",\"kind\":\"string\",\"default\":\"说明: \\\"quoted\\\"\",\"required\":false}]\n\n必须同时遵循以下 JSON Schema 和上面的内容规则；可省略的字段按题面决定。对象键序不限。只输出一个完整 JSON 值，不要围栏或解释。\n{\"$schema\":\"http://json-schema.org/draft-07/schema#\",\"type\":\"object\",\"additionalProperties\":{\"$ref\":\"#/definitions/input\"},\"definitions\":{\"workflowDispatchInput\":{\"type\":\"object\",\"properties\":{\"description\":{\"type\":\"string\"},\"deprecationMessage\":{\"type\":\"string\"},\"required\":{\"type\":\"boolean\"},\"default\":{},\"type\":{\"type\":\"string\",\"enum\":[\"string\",\"choice\",\"boolean\",\"number\",\"environment\"]},\"options\":{\"type\":\"array\",\"items\":{\"type\":\"string\"},\"minItems\":1}},\"oneOf\":[{\"type\":\"object\",\"properties\":{\"type\":{\"const\":\"string\"},\"default\":{\"type\":\"string\"}},\"required\":[\"type\"]},{\"type\":\"object\",\"properties\":{\"type\":{\"const\":\"boolean\"},\"default\":{\"type\":\"boolean\"}},\"required\":[\"type\"]},{\"type\":\"object\",\"properties\":{\"type\":{\"const\":\"number\"},\"default\":{\"type\":\"number\"}},\"required\":[\"type\"]},{\"type\":\"object\",\"properties\":{\"type\":{\"const\":\"environment\"},\"default\":{\"type\":\"string\"}},\"required\":[\"type\"]},{\"type\":\"object\",\"properties\":{\"type\":{\"const\":\"choice\"},\"options\":{\"$ref\":\"#/definitions/workflowDispatchInput/properties/options\"}},\"required\":[\"type\",\"options\"]}],\"additionalProperties\":false},\"input\":{\"type\":\"object\",\"properties\":{\"description\":{\"type\":\"string\"},\"deprecationMessage\":{\"type\":\"string\"},\"required\":{\"type\":\"boolean\"},\"default\":{},\"type\":{\"type\":\"string\",\"enum\":[\"string\",\"choice\",\"boolean\",\"number\",\"environment\"]},\"options\":{\"type\":\"array\",\"items\":{\"type\":\"string\"},\"minItems\":1}},\"oneOf\":[{\"type\":\"object\",\"properties\":{\"type\":{\"const\":\"string\"},\"default\":{\"type\":\"string\"}},\"required\":[\"type\"]},{\"type\":\"object\",\"properties\":{\"type\":{\"const\":\"boolean\"},\"default\":{\"type\":\"boolean\"}},\"required\":[\"type\"]},{\"type\":\"object\",\"properties\":{\"type\":{\"const\":\"number\"},\"default\":{\"type\":\"number\"}},\"required\":[\"type\"]},{\"type\":\"object\",\"properties\":{\"type\":{\"const\":\"environment\"},\"default\":{\"type\":\"string\"}},\"required\":[\"type\"]},{\"type\":\"object\",\"properties\":{\"type\":{\"const\":\"choice\"},\"options\":{\"$ref\":\"#/definitions/workflowDispatchInput/properties/options\"}},\"required\":[\"type\",\"options\"]}],\"additionalProperties\":false}}}",
+    "requirements": {
+      "format": "json",
+      "dialect": "draft-07",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "additionalProperties": {
+          "$ref": "#/definitions/input"
+        },
+        "definitions": {
+          "workflowDispatchInput": {
+            "type": "object",
+            "properties": {
+              "description": {
+                "type": "string"
+              },
+              "deprecationMessage": {
+                "type": "string"
+              },
+              "required": {
+                "type": "boolean"
+              },
+              "default": {},
+              "type": {
+                "type": "string",
+                "enum": [
+                  "string",
+                  "choice",
+                  "boolean",
+                  "number",
+                  "environment"
+                ]
+              },
+              "options": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "minItems": 1
+              }
+            },
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "const": "string"
+                  },
+                  "default": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "type"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "const": "boolean"
+                  },
+                  "default": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "type"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "const": "number"
+                  },
+                  "default": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "type"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "const": "environment"
+                  },
+                  "default": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "type"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "const": "choice"
+                  },
+                  "options": {
+                    "$ref": "#/definitions/workflowDispatchInput/properties/options"
+                  }
+                },
+                "required": [
+                  "type",
+                  "options"
+                ]
+              }
+            ],
+            "additionalProperties": false
+          },
+          "input": {
+            "type": "object",
+            "properties": {
+              "description": {
+                "type": "string"
+              },
+              "deprecationMessage": {
+                "type": "string"
+              },
+              "required": {
+                "type": "boolean"
+              },
+              "default": {},
+              "type": {
+                "type": "string",
+                "enum": [
+                  "string",
+                  "choice",
+                  "boolean",
+                  "number",
+                  "environment"
+                ]
+              },
+              "options": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "minItems": 1
+              }
+            },
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "const": "string"
+                  },
+                  "default": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "type"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "const": "boolean"
+                  },
+                  "default": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "type"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "const": "number"
+                  },
+                  "default": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "type"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "const": "environment"
+                  },
+                  "default": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "type"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "const": "choice"
+                  },
+                  "options": {
+                    "$ref": "#/definitions/workflowDispatchInput/properties/options"
+                  }
+                },
+                "required": [
+                  "type",
+                  "options"
+                ]
+              }
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "formatAssertions": true,
+      "family": "C",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": {
+            "deploy": {
+              "type": "boolean",
+              "description": "input:deploy",
+              "required": true,
+              "default": false
+            },
+            "region": {
+              "type": "choice",
+              "description": "input:region",
+              "required": false,
+              "options": [
+                "cn",
+                "us"
+              ],
+              "default": "us"
+            },
+            "message": {
+              "type": "string",
+              "description": "input:message",
+              "required": false,
+              "default": "说明: \"quoted\""
+            }
+          },
+          "description": "Exact content determined by the published input and transformation rules"
+        }
+      ],
+      "developmentShadow": true,
+      "provenance": {
+        "sourceUrl": "https://raw.githubusercontent.com/SchemaStore/schemastore/87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0/src/schemas/json/github-workflow.json",
+        "sourceRevision": "87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0",
+        "sourceLicense": "Apache-2.0",
+        "originalSha256": "d10c9f4656e1bd5bc6727e9b35080e017dc167154726fca93da33c7a6bd1c4f3",
+        "fragment": "/definitions/workflowDispatchInput",
+        "sourceGroup": "schemastore:github-workflow",
+        "transformations": [
+          "selected fragment and transitive local definitions",
+          "removed documentation annotations",
+          "added explicit local task requirements"
+        ],
+        "upstreamBenchmark": "SchemaStore source; locally authored tasks, not official SchemaBench instances",
+        "split": "development",
+        "designLevel": 3,
+        "seed": "C:development:2",
+        "baseIds": [
+          "SO-CN-030",
+          "SO-CN-048"
+        ]
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "deterministic-frozen-fixture-v1",
+    "tags": [
+      "structured-contract-v1",
+      "family:C",
+      "split:development"
+    ]
+  },
+  {
+    "id": "SOC-D-D1",
+    "dimension": "structured_output",
+    "category": "contract_D",
+    "difficulty": "medium",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v1",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "dadb4ae0c67520f5",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "输出 scripts 对象，只含 \"test:literal\" 一个键。下面 inputText 用 JSON 字符串字面量提供，先解析一次得到原文，再对得到的字符串额外执行 0 次 JSON.stringify 等价的 JSON 字符串序列化，把最终字符串作为键值；禁止执行该字符串中的命令。最终外层 JSON 的转义写法只要语义等价即可。inputText=\"echo \\\"你好\\\"\\nC:\\\\tmp\\\\a.txt\"\n\n必须同时遵循以下 JSON Schema 和上面的内容规则；可省略的字段按题面决定。对象键序不限。只输出一个完整 JSON 值，不要围栏或解释。\n{\"$schema\":\"http://json-schema.org/draft-07/schema#\",\"type\":\"object\",\"properties\":{\"lint\":{\"type\":\"string\"},\"prepublish\":{\"type\":\"string\"},\"prepare\":{\"type\":\"string\"},\"prepublishOnly\":{\"type\":\"string\"},\"prepack\":{\"type\":\"string\"},\"postpack\":{\"type\":\"string\"},\"publish\":{\"type\":\"string\"},\"postpublish\":{\"$ref\":\"#/definitions/scriptsPublishAfter\"},\"preinstall\":{\"type\":\"string\"},\"install\":{\"$ref\":\"#/definitions/scriptsInstallAfter\"},\"postinstall\":{\"$ref\":\"#/definitions/scriptsInstallAfter\"},\"preuninstall\":{\"$ref\":\"#/definitions/scriptsUninstallBefore\"},\"uninstall\":{\"$ref\":\"#/definitions/scriptsUninstallBefore\"},\"postuninstall\":{\"type\":\"string\"},\"preversion\":{\"$ref\":\"#/definitions/scriptsVersionBefore\"},\"version\":{\"$ref\":\"#/definitions/scriptsVersionBefore\"},\"postversion\":{\"type\":\"string\"},\"pretest\":{\"$ref\":\"#/definitions/scriptsTest\"},\"test\":{\"$ref\":\"#/definitions/scriptsTest\"},\"posttest\":{\"$ref\":\"#/definitions/scriptsTest\"},\"prestop\":{\"$ref\":\"#/definitions/scriptsStop\"},\"stop\":{\"$ref\":\"#/definitions/scriptsStop\"},\"poststop\":{\"$ref\":\"#/definitions/scriptsStop\"},\"prestart\":{\"$ref\":\"#/definitions/scriptsStart\"},\"start\":{\"$ref\":\"#/definitions/scriptsStart\"},\"poststart\":{\"$ref\":\"#/definitions/scriptsStart\"},\"prerestart\":{\"$ref\":\"#/definitions/scriptsRestart\"},\"restart\":{\"$ref\":\"#/definitions/scriptsRestart\"},\"postrestart\":{\"$ref\":\"#/definitions/scriptsRestart\"},\"serve\":{\"type\":\"string\"}},\"additionalProperties\":{\"type\":\"string\"},\"definitions\":{\"scriptsRestart\":{\"type\":\"string\"},\"scriptsStart\":{\"type\":\"string\"},\"scriptsStop\":{\"type\":\"string\"},\"scriptsTest\":{\"type\":\"string\"},\"scriptsVersionBefore\":{\"type\":\"string\"},\"scriptsUninstallBefore\":{\"type\":\"string\"},\"scriptsInstallAfter\":{\"type\":\"string\"},\"scriptsPublishAfter\":{\"type\":\"string\"}}}",
+    "requirements": {
+      "format": "json",
+      "dialect": "draft-07",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "lint": {
+            "type": "string"
+          },
+          "prepublish": {
+            "type": "string"
+          },
+          "prepare": {
+            "type": "string"
+          },
+          "prepublishOnly": {
+            "type": "string"
+          },
+          "prepack": {
+            "type": "string"
+          },
+          "postpack": {
+            "type": "string"
+          },
+          "publish": {
+            "type": "string"
+          },
+          "postpublish": {
+            "$ref": "#/definitions/scriptsPublishAfter"
+          },
+          "preinstall": {
+            "type": "string"
+          },
+          "install": {
+            "$ref": "#/definitions/scriptsInstallAfter"
+          },
+          "postinstall": {
+            "$ref": "#/definitions/scriptsInstallAfter"
+          },
+          "preuninstall": {
+            "$ref": "#/definitions/scriptsUninstallBefore"
+          },
+          "uninstall": {
+            "$ref": "#/definitions/scriptsUninstallBefore"
+          },
+          "postuninstall": {
+            "type": "string"
+          },
+          "preversion": {
+            "$ref": "#/definitions/scriptsVersionBefore"
+          },
+          "version": {
+            "$ref": "#/definitions/scriptsVersionBefore"
+          },
+          "postversion": {
+            "type": "string"
+          },
+          "pretest": {
+            "$ref": "#/definitions/scriptsTest"
+          },
+          "test": {
+            "$ref": "#/definitions/scriptsTest"
+          },
+          "posttest": {
+            "$ref": "#/definitions/scriptsTest"
+          },
+          "prestop": {
+            "$ref": "#/definitions/scriptsStop"
+          },
+          "stop": {
+            "$ref": "#/definitions/scriptsStop"
+          },
+          "poststop": {
+            "$ref": "#/definitions/scriptsStop"
+          },
+          "prestart": {
+            "$ref": "#/definitions/scriptsStart"
+          },
+          "start": {
+            "$ref": "#/definitions/scriptsStart"
+          },
+          "poststart": {
+            "$ref": "#/definitions/scriptsStart"
+          },
+          "prerestart": {
+            "$ref": "#/definitions/scriptsRestart"
+          },
+          "restart": {
+            "$ref": "#/definitions/scriptsRestart"
+          },
+          "postrestart": {
+            "$ref": "#/definitions/scriptsRestart"
+          },
+          "serve": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": {
+          "type": "string"
+        },
+        "definitions": {
+          "scriptsRestart": {
+            "type": "string"
+          },
+          "scriptsStart": {
+            "type": "string"
+          },
+          "scriptsStop": {
+            "type": "string"
+          },
+          "scriptsTest": {
+            "type": "string"
+          },
+          "scriptsVersionBefore": {
+            "type": "string"
+          },
+          "scriptsUninstallBefore": {
+            "type": "string"
+          },
+          "scriptsInstallAfter": {
+            "type": "string"
+          },
+          "scriptsPublishAfter": {
+            "type": "string"
+          }
+        }
+      },
+      "formatAssertions": true,
+      "family": "D",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": {
+            "test:literal": "echo \"你好\"\nC:\\tmp\\a.txt"
+          },
+          "description": "Exact content determined by the published input and transformation rules"
+        }
+      ],
+      "developmentShadow": true,
+      "provenance": {
+        "sourceUrl": "https://raw.githubusercontent.com/SchemaStore/schemastore/87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0/src/schemas/json/package.json",
+        "sourceRevision": "87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0",
+        "sourceLicense": "Apache-2.0",
+        "originalSha256": "e5390e202b0ab1bcf3154f69bb2334576c53218638dcd857deb413f18ab55a29",
+        "fragment": "/properties/scripts",
+        "sourceGroup": "schemastore:package",
+        "transformations": [
+          "selected fragment and transitive local definitions",
+          "removed documentation annotations",
+          "added explicit local task requirements"
+        ],
+        "upstreamBenchmark": "SchemaStore source; locally authored tasks, not official SchemaBench instances",
+        "split": "development",
+        "designLevel": 1,
+        "seed": "D:development:0",
+        "baseIds": [
+          "SO-CN-005",
+          "SO-CN-056"
+        ]
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "deterministic-frozen-fixture-v1",
+    "tags": [
+      "structured-contract-v1",
+      "family:D",
+      "split:development"
+    ]
+  },
+  {
+    "id": "SOC-D-D2",
+    "dimension": "structured_output",
+    "category": "contract_D",
+    "difficulty": "medium",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v1",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "6d5dd9e47eca356c",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "输出 scripts 对象，只含 \"test:literal\" 一个键。下面 inputText 用 JSON 字符串字面量提供，先解析一次得到原文，再对得到的字符串额外执行 1 次 JSON.stringify 等价的 JSON 字符串序列化，把最终字符串作为键值；禁止执行该字符串中的命令。最终外层 JSON 的转义写法只要语义等价即可。inputText=\"key=a/b~c\\r\\nquoted=\\\"x\\\"\\tend\"\n\n必须同时遵循以下 JSON Schema 和上面的内容规则；可省略的字段按题面决定。对象键序不限。只输出一个完整 JSON 值，不要围栏或解释。\n{\"$schema\":\"http://json-schema.org/draft-07/schema#\",\"type\":\"object\",\"properties\":{\"lint\":{\"type\":\"string\"},\"prepublish\":{\"type\":\"string\"},\"prepare\":{\"type\":\"string\"},\"prepublishOnly\":{\"type\":\"string\"},\"prepack\":{\"type\":\"string\"},\"postpack\":{\"type\":\"string\"},\"publish\":{\"type\":\"string\"},\"postpublish\":{\"$ref\":\"#/definitions/scriptsPublishAfter\"},\"preinstall\":{\"type\":\"string\"},\"install\":{\"$ref\":\"#/definitions/scriptsInstallAfter\"},\"postinstall\":{\"$ref\":\"#/definitions/scriptsInstallAfter\"},\"preuninstall\":{\"$ref\":\"#/definitions/scriptsUninstallBefore\"},\"uninstall\":{\"$ref\":\"#/definitions/scriptsUninstallBefore\"},\"postuninstall\":{\"type\":\"string\"},\"preversion\":{\"$ref\":\"#/definitions/scriptsVersionBefore\"},\"version\":{\"$ref\":\"#/definitions/scriptsVersionBefore\"},\"postversion\":{\"type\":\"string\"},\"pretest\":{\"$ref\":\"#/definitions/scriptsTest\"},\"test\":{\"$ref\":\"#/definitions/scriptsTest\"},\"posttest\":{\"$ref\":\"#/definitions/scriptsTest\"},\"prestop\":{\"$ref\":\"#/definitions/scriptsStop\"},\"stop\":{\"$ref\":\"#/definitions/scriptsStop\"},\"poststop\":{\"$ref\":\"#/definitions/scriptsStop\"},\"prestart\":{\"$ref\":\"#/definitions/scriptsStart\"},\"start\":{\"$ref\":\"#/definitions/scriptsStart\"},\"poststart\":{\"$ref\":\"#/definitions/scriptsStart\"},\"prerestart\":{\"$ref\":\"#/definitions/scriptsRestart\"},\"restart\":{\"$ref\":\"#/definitions/scriptsRestart\"},\"postrestart\":{\"$ref\":\"#/definitions/scriptsRestart\"},\"serve\":{\"type\":\"string\"}},\"additionalProperties\":{\"type\":\"string\"},\"definitions\":{\"scriptsRestart\":{\"type\":\"string\"},\"scriptsStart\":{\"type\":\"string\"},\"scriptsStop\":{\"type\":\"string\"},\"scriptsTest\":{\"type\":\"string\"},\"scriptsVersionBefore\":{\"type\":\"string\"},\"scriptsUninstallBefore\":{\"type\":\"string\"},\"scriptsInstallAfter\":{\"type\":\"string\"},\"scriptsPublishAfter\":{\"type\":\"string\"}}}",
+    "requirements": {
+      "format": "json",
+      "dialect": "draft-07",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "lint": {
+            "type": "string"
+          },
+          "prepublish": {
+            "type": "string"
+          },
+          "prepare": {
+            "type": "string"
+          },
+          "prepublishOnly": {
+            "type": "string"
+          },
+          "prepack": {
+            "type": "string"
+          },
+          "postpack": {
+            "type": "string"
+          },
+          "publish": {
+            "type": "string"
+          },
+          "postpublish": {
+            "$ref": "#/definitions/scriptsPublishAfter"
+          },
+          "preinstall": {
+            "type": "string"
+          },
+          "install": {
+            "$ref": "#/definitions/scriptsInstallAfter"
+          },
+          "postinstall": {
+            "$ref": "#/definitions/scriptsInstallAfter"
+          },
+          "preuninstall": {
+            "$ref": "#/definitions/scriptsUninstallBefore"
+          },
+          "uninstall": {
+            "$ref": "#/definitions/scriptsUninstallBefore"
+          },
+          "postuninstall": {
+            "type": "string"
+          },
+          "preversion": {
+            "$ref": "#/definitions/scriptsVersionBefore"
+          },
+          "version": {
+            "$ref": "#/definitions/scriptsVersionBefore"
+          },
+          "postversion": {
+            "type": "string"
+          },
+          "pretest": {
+            "$ref": "#/definitions/scriptsTest"
+          },
+          "test": {
+            "$ref": "#/definitions/scriptsTest"
+          },
+          "posttest": {
+            "$ref": "#/definitions/scriptsTest"
+          },
+          "prestop": {
+            "$ref": "#/definitions/scriptsStop"
+          },
+          "stop": {
+            "$ref": "#/definitions/scriptsStop"
+          },
+          "poststop": {
+            "$ref": "#/definitions/scriptsStop"
+          },
+          "prestart": {
+            "$ref": "#/definitions/scriptsStart"
+          },
+          "start": {
+            "$ref": "#/definitions/scriptsStart"
+          },
+          "poststart": {
+            "$ref": "#/definitions/scriptsStart"
+          },
+          "prerestart": {
+            "$ref": "#/definitions/scriptsRestart"
+          },
+          "restart": {
+            "$ref": "#/definitions/scriptsRestart"
+          },
+          "postrestart": {
+            "$ref": "#/definitions/scriptsRestart"
+          },
+          "serve": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": {
+          "type": "string"
+        },
+        "definitions": {
+          "scriptsRestart": {
+            "type": "string"
+          },
+          "scriptsStart": {
+            "type": "string"
+          },
+          "scriptsStop": {
+            "type": "string"
+          },
+          "scriptsTest": {
+            "type": "string"
+          },
+          "scriptsVersionBefore": {
+            "type": "string"
+          },
+          "scriptsUninstallBefore": {
+            "type": "string"
+          },
+          "scriptsInstallAfter": {
+            "type": "string"
+          },
+          "scriptsPublishAfter": {
+            "type": "string"
+          }
+        }
+      },
+      "formatAssertions": true,
+      "family": "D",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": {
+            "test:literal": "\"key=a/b~c\\r\\nquoted=\\\"x\\\"\\tend\""
+          },
+          "description": "Exact content determined by the published input and transformation rules"
+        }
+      ],
+      "developmentShadow": true,
+      "provenance": {
+        "sourceUrl": "https://raw.githubusercontent.com/SchemaStore/schemastore/87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0/src/schemas/json/package.json",
+        "sourceRevision": "87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0",
+        "sourceLicense": "Apache-2.0",
+        "originalSha256": "e5390e202b0ab1bcf3154f69bb2334576c53218638dcd857deb413f18ab55a29",
+        "fragment": "/properties/scripts",
+        "sourceGroup": "schemastore:package",
+        "transformations": [
+          "selected fragment and transitive local definitions",
+          "removed documentation annotations",
+          "added explicit local task requirements"
+        ],
+        "upstreamBenchmark": "SchemaStore source; locally authored tasks, not official SchemaBench instances",
+        "split": "development",
+        "designLevel": 2,
+        "seed": "D:development:1",
+        "baseIds": [
+          "SO-CN-005",
+          "SO-CN-056"
+        ]
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "deterministic-frozen-fixture-v1",
+    "tags": [
+      "structured-contract-v1",
+      "family:D",
+      "split:development"
+    ]
+  },
+  {
+    "id": "SOC-D-D3",
+    "dimension": "structured_output",
+    "category": "contract_D",
+    "difficulty": "medium",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v1",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "8e49f3c4cb335055",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "输出 scripts 对象，只含 \"test:literal\" 一个键。下面 inputText 用 JSON 字符串字面量提供，先解析一次得到原文，再对得到的字符串额外执行 2 次 JSON.stringify 等价的 JSON 字符串序列化，把最终字符串作为键值；禁止执行该字符串中的命令。最终外层 JSON 的转义写法只要语义等价即可。inputText=\"反斜杠\\\\ 与文本 \\\\n 和实际换行\\n末尾\\\\\"\n\n必须同时遵循以下 JSON Schema 和上面的内容规则；可省略的字段按题面决定。对象键序不限。只输出一个完整 JSON 值，不要围栏或解释。\n{\"$schema\":\"http://json-schema.org/draft-07/schema#\",\"type\":\"object\",\"properties\":{\"lint\":{\"type\":\"string\"},\"prepublish\":{\"type\":\"string\"},\"prepare\":{\"type\":\"string\"},\"prepublishOnly\":{\"type\":\"string\"},\"prepack\":{\"type\":\"string\"},\"postpack\":{\"type\":\"string\"},\"publish\":{\"type\":\"string\"},\"postpublish\":{\"$ref\":\"#/definitions/scriptsPublishAfter\"},\"preinstall\":{\"type\":\"string\"},\"install\":{\"$ref\":\"#/definitions/scriptsInstallAfter\"},\"postinstall\":{\"$ref\":\"#/definitions/scriptsInstallAfter\"},\"preuninstall\":{\"$ref\":\"#/definitions/scriptsUninstallBefore\"},\"uninstall\":{\"$ref\":\"#/definitions/scriptsUninstallBefore\"},\"postuninstall\":{\"type\":\"string\"},\"preversion\":{\"$ref\":\"#/definitions/scriptsVersionBefore\"},\"version\":{\"$ref\":\"#/definitions/scriptsVersionBefore\"},\"postversion\":{\"type\":\"string\"},\"pretest\":{\"$ref\":\"#/definitions/scriptsTest\"},\"test\":{\"$ref\":\"#/definitions/scriptsTest\"},\"posttest\":{\"$ref\":\"#/definitions/scriptsTest\"},\"prestop\":{\"$ref\":\"#/definitions/scriptsStop\"},\"stop\":{\"$ref\":\"#/definitions/scriptsStop\"},\"poststop\":{\"$ref\":\"#/definitions/scriptsStop\"},\"prestart\":{\"$ref\":\"#/definitions/scriptsStart\"},\"start\":{\"$ref\":\"#/definitions/scriptsStart\"},\"poststart\":{\"$ref\":\"#/definitions/scriptsStart\"},\"prerestart\":{\"$ref\":\"#/definitions/scriptsRestart\"},\"restart\":{\"$ref\":\"#/definitions/scriptsRestart\"},\"postrestart\":{\"$ref\":\"#/definitions/scriptsRestart\"},\"serve\":{\"type\":\"string\"}},\"additionalProperties\":{\"type\":\"string\"},\"definitions\":{\"scriptsRestart\":{\"type\":\"string\"},\"scriptsStart\":{\"type\":\"string\"},\"scriptsStop\":{\"type\":\"string\"},\"scriptsTest\":{\"type\":\"string\"},\"scriptsVersionBefore\":{\"type\":\"string\"},\"scriptsUninstallBefore\":{\"type\":\"string\"},\"scriptsInstallAfter\":{\"type\":\"string\"},\"scriptsPublishAfter\":{\"type\":\"string\"}}}",
+    "requirements": {
+      "format": "json",
+      "dialect": "draft-07",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "lint": {
+            "type": "string"
+          },
+          "prepublish": {
+            "type": "string"
+          },
+          "prepare": {
+            "type": "string"
+          },
+          "prepublishOnly": {
+            "type": "string"
+          },
+          "prepack": {
+            "type": "string"
+          },
+          "postpack": {
+            "type": "string"
+          },
+          "publish": {
+            "type": "string"
+          },
+          "postpublish": {
+            "$ref": "#/definitions/scriptsPublishAfter"
+          },
+          "preinstall": {
+            "type": "string"
+          },
+          "install": {
+            "$ref": "#/definitions/scriptsInstallAfter"
+          },
+          "postinstall": {
+            "$ref": "#/definitions/scriptsInstallAfter"
+          },
+          "preuninstall": {
+            "$ref": "#/definitions/scriptsUninstallBefore"
+          },
+          "uninstall": {
+            "$ref": "#/definitions/scriptsUninstallBefore"
+          },
+          "postuninstall": {
+            "type": "string"
+          },
+          "preversion": {
+            "$ref": "#/definitions/scriptsVersionBefore"
+          },
+          "version": {
+            "$ref": "#/definitions/scriptsVersionBefore"
+          },
+          "postversion": {
+            "type": "string"
+          },
+          "pretest": {
+            "$ref": "#/definitions/scriptsTest"
+          },
+          "test": {
+            "$ref": "#/definitions/scriptsTest"
+          },
+          "posttest": {
+            "$ref": "#/definitions/scriptsTest"
+          },
+          "prestop": {
+            "$ref": "#/definitions/scriptsStop"
+          },
+          "stop": {
+            "$ref": "#/definitions/scriptsStop"
+          },
+          "poststop": {
+            "$ref": "#/definitions/scriptsStop"
+          },
+          "prestart": {
+            "$ref": "#/definitions/scriptsStart"
+          },
+          "start": {
+            "$ref": "#/definitions/scriptsStart"
+          },
+          "poststart": {
+            "$ref": "#/definitions/scriptsStart"
+          },
+          "prerestart": {
+            "$ref": "#/definitions/scriptsRestart"
+          },
+          "restart": {
+            "$ref": "#/definitions/scriptsRestart"
+          },
+          "postrestart": {
+            "$ref": "#/definitions/scriptsRestart"
+          },
+          "serve": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": {
+          "type": "string"
+        },
+        "definitions": {
+          "scriptsRestart": {
+            "type": "string"
+          },
+          "scriptsStart": {
+            "type": "string"
+          },
+          "scriptsStop": {
+            "type": "string"
+          },
+          "scriptsTest": {
+            "type": "string"
+          },
+          "scriptsVersionBefore": {
+            "type": "string"
+          },
+          "scriptsUninstallBefore": {
+            "type": "string"
+          },
+          "scriptsInstallAfter": {
+            "type": "string"
+          },
+          "scriptsPublishAfter": {
+            "type": "string"
+          }
+        }
+      },
+      "formatAssertions": true,
+      "family": "D",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": {
+            "test:literal": "\"\\\"反斜杠\\\\\\\\ 与文本 \\\\\\\\n 和实际换行\\\\n末尾\\\\\\\\\\\"\""
+          },
+          "description": "Exact content determined by the published input and transformation rules"
+        }
+      ],
+      "developmentShadow": true,
+      "provenance": {
+        "sourceUrl": "https://raw.githubusercontent.com/SchemaStore/schemastore/87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0/src/schemas/json/package.json",
+        "sourceRevision": "87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0",
+        "sourceLicense": "Apache-2.0",
+        "originalSha256": "e5390e202b0ab1bcf3154f69bb2334576c53218638dcd857deb413f18ab55a29",
+        "fragment": "/properties/scripts",
+        "sourceGroup": "schemastore:package",
+        "transformations": [
+          "selected fragment and transitive local definitions",
+          "removed documentation annotations",
+          "added explicit local task requirements"
+        ],
+        "upstreamBenchmark": "SchemaStore source; locally authored tasks, not official SchemaBench instances",
+        "split": "development",
+        "designLevel": 3,
+        "seed": "D:development:2",
+        "baseIds": [
+          "SO-CN-005",
+          "SO-CN-056"
+        ]
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "deterministic-frozen-fixture-v1",
+    "tags": [
+      "structured-contract-v1",
+      "family:D",
+      "split:development"
+    ]
+  }
+]

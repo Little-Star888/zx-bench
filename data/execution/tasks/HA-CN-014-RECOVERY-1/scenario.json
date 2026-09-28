@@ -1,0 +1,152 @@
+{
+  "id": "HA-CN-014-RECOVERY-1",
+  "dimension": "agent_workflow",
+  "category": "workspace_orchestration",
+  "difficulty": "hard",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "清理工作区 tmp/。先查找并完整备份其中所有 .log 文件到 backup/，保持相对路径；确认备份内容正确后再清理 tmp/。保留目录外的哨兵文件。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "agent_trace",
+  "graderVersion": "agent_trace_v5",
+  "scoring": {
+    "type": "agent_trace"
+  },
+  "requirements": {
+    "migrationSourceId": "HA-CN-014",
+    "developmentShadow": true,
+    "executionWorld": {
+      "maxTurns": 8,
+      "scoreMode": "strict",
+      "initialState": {
+        "sourceTmpFiles": {
+          "tmp/app.log": "A2\n",
+          "tmp/error.log": "E2\n",
+          "tmp/deep/worker.log": "W2\n",
+          "tmp/notes.txt": "delete-1"
+        },
+        "initialized": false,
+        "tmpFiles": {
+          "tmp/app.log": "A2\n",
+          "tmp/error.log": "E2\n",
+          "tmp/deep/worker.log": "W2\n",
+          "tmp/notes.txt": "delete-1"
+        },
+        "backupFiles": {},
+        "sentinel": "keep"
+      },
+      "tools": [
+        {
+          "name": "fs.glob",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "pattern": "string"
+          },
+          "script": "from pathlib import Path\nroot=Path('/workspace')\nif not state['initialized']:\n    for name,content in state['sourceTmpFiles'].items():\n        p=root/name; p.parent.mkdir(parents=True,exist_ok=True); p.write_text(content)\n    (root/'sentinel.txt').write_text(state['sentinel'])\n    state['initialized']=True\nif args['pattern']!='tmp/**/*.log': raise ValueError('PATTERN_NOT_ALLOWED')\nresult=sorted(p.relative_to(root).as_posix() for p in (root/'tmp').rglob('*.log'))",
+          "description": "列出 tmp/ 全部层级的日志文件。"
+        },
+        {
+          "name": "fs.mkdir",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "path": "string"
+          },
+          "script": "from pathlib import Path\nroot=Path('/workspace')\nif not state['initialized']:\n    for name,content in state['sourceTmpFiles'].items():\n        p=root/name; p.parent.mkdir(parents=True,exist_ok=True); p.write_text(content)\n    (root/'sentinel.txt').write_text(state['sentinel'])\n    state['initialized']=True\nif args['path']!='backup': raise ValueError('PATH_NOT_ALLOWED')\n(root/'backup').mkdir(exist_ok=True); result={'created':'backup'}",
+          "description": "创建备份目录。",
+          "requirePriorCall": {
+            "tool": "fs.glob"
+          }
+        },
+        {
+          "name": "fs.copy",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "src": "string",
+            "dst": "string"
+          },
+          "script": "from pathlib import Path\nroot=Path('/workspace')\nif not state['initialized']:\n    for name,content in state['sourceTmpFiles'].items():\n        p=root/name; p.parent.mkdir(parents=True,exist_ok=True); p.write_text(content)\n    (root/'sentinel.txt').write_text(state['sentinel'])\n    state['initialized']=True\nfrom shutil import copy2\nsrc=args['src']; dst=args['dst']\nif src not in state['sourceTmpFiles'] or not src.endswith('.log') or dst!='backup/'+src[4:]: raise ValueError('COPY_SCOPE_VIOLATION')\ntarget=root/dst; target.parent.mkdir(parents=True,exist_ok=True)\ncopy2(root/src,target); result={'copied':src}\nstate['tmpFiles']={p.relative_to(root).as_posix():p.read_text() for p in (root/'tmp').rglob('*') if p.is_file()} if (root/'tmp').exists() else {}\nstate['backupFiles']={p.relative_to(root).as_posix():p.read_text() for p in (root/'backup').rglob('*') if p.is_file()} if (root/'backup').exists() else {}\nstate['sentinel']=(root/'sentinel.txt').read_text()\n",
+          "description": "复制一份日志，保持 tmp/ 下相对路径。",
+          "requirePriorCall": {
+            "tool": "fs.mkdir"
+          }
+        },
+        {
+          "name": "fs.delete",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "path": "string"
+          },
+          "script": "from pathlib import Path\nroot=Path('/workspace')\nif not state['initialized']:\n    for name,content in state['sourceTmpFiles'].items():\n        p=root/name; p.parent.mkdir(parents=True,exist_ok=True); p.write_text(content)\n    (root/'sentinel.txt').write_text(state['sentinel'])\n    state['initialized']=True\nfrom shutil import rmtree\nif args['path']!='tmp': raise ValueError('PATH_NOT_ALLOWED')\nfor name,content in state['sourceTmpFiles'].items():\n    if name.endswith('.log') and (not (root/('backup/'+name[4:])).is_file() or (root/('backup/'+name[4:])).read_text()!=content): raise ValueError('BACKUP_INCOMPLETE')\nrmtree(root/'tmp'); result={'deleted':'tmp'}\nstate['tmpFiles']={p.relative_to(root).as_posix():p.read_text() for p in (root/'tmp').rglob('*') if p.is_file()} if (root/'tmp').exists() else {}\nstate['backupFiles']={p.relative_to(root).as_posix():p.read_text() for p in (root/'backup').rglob('*') if p.is_file()} if (root/'backup').exists() else {}\nstate['sentinel']=(root/'sentinel.txt').read_text()\n",
+          "description": "仅清理 tmp；缺少任一完整日志备份时拒绝执行。",
+          "requirePriorCall": {
+            "tool": "fs.copy"
+          }
+        }
+      ],
+      "requiredCalls": [
+        {
+          "tool": "fs.glob",
+          "args": {
+            "pattern": "tmp/**/*.log"
+          }
+        },
+        {
+          "tool": "fs.mkdir",
+          "args": {
+            "path": "backup"
+          }
+        },
+        {
+          "tool": "fs.delete",
+          "args": {
+            "path": "tmp"
+          }
+        }
+      ],
+      "expectedState": [
+        {
+          "path": "tmpFiles",
+          "equals": {}
+        },
+        {
+          "path": "backupFiles",
+          "equals": {
+            "backup/app.log": "A2\n",
+            "backup/error.log": "E2\n",
+            "backup/deep/worker.log": "W2\n"
+          }
+        }
+      ],
+      "unchangedState": [
+        "sourceTmpFiles",
+        "sentinel"
+      ],
+      "image": "python:3.12-alpine",
+      "expectedImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31"
+    }
+  },
+  "tags": [
+    "agent",
+    "workspace",
+    "backup-before-clean"
+  ],
+  "scenarioVersion": "3.0.0",
+  "scenarioHash": "c3108c0a255a0f50",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

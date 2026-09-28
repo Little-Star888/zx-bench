@@ -19,6 +19,9 @@ const coreRoot = join(repoRoot, 'packages', 'core');
 
 /** 运行时代码通过 readFileSync 读取的资源（相对 packages/core） */
 const RUNTIME_ASSETS = [
+  'src/evaluators/structuredFormats.py',
+  'src/evaluators/generatedSchema.py',
+  'src/evaluators/structuredSvg.mjs',
   'src/evaluationLab/examExpansion/math-candidates.json',
 ];
 

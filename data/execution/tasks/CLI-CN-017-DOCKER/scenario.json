@@ -1,0 +1,71 @@
+{
+  "id": "CLI-CN-017-DOCKER",
+  "dimension": "cli_deep_tasks",
+  "category": "pipeline_composition",
+  "difficulty": "hard",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "在 /workspace 中执行任务。环境为 Alpine/BusyBox，提供 POSIX sh 和 Python 3 标准库，不提供 bash 或 GNU 工具；提交脚本统一以 sh 执行。access.log 是 Apache 通用日志，状态码为第 9 个空格分隔字段。统计各状态码出现次数，按次数降序向标准输出写出「次数 状态码」。只输出可执行 shell 脚本。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "cli_command",
+  "graderVersion": "cli_command_v1",
+  "scoring": {
+    "type": "cli_command",
+    "mode": "executed_state"
+  },
+  "requirements": {
+    "executionImage": "python:3.12-alpine",
+    "executionImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31",
+    "executionInterpreter": "sh",
+    "executionCases": [
+      {
+        "files": [
+          {
+            "path": "access.log",
+            "content": "10.0.0.1 - - [01/Jan/2026:00:00:00 +0000] \"GET / HTTP/1.1\" 200 12\n10.0.0.2 - - [01/Jan/2026:00:00:00 +0000] \"GET /x HTTP/1.1\" 404 0\n10.0.0.3 - - [01/Jan/2026:00:00:00 +0000] \"POST / HTTP/1.1\" 200 1\n10.0.0.4 - - [01/Jan/2026:00:00:00 +0000] \"GET / HTTP/1.1\" 200 2\n"
+          }
+        ],
+        "expectedStdout": "3 200\n1 404\n",
+        "tokenWhitespaceFiles": [],
+        "unchangedFiles": [
+          "access.log"
+        ]
+      },
+      {
+        "files": [
+          {
+            "path": "access.log",
+            "content": "10.0.0.1 - - [01/Jan/2026:00:00:00 +0000] \"GET / HTTP/1.1\" 500 1\n10.0.0.2 - - [01/Jan/2026:00:00:00 +0000] \"GET / HTTP/1.1\" 200 1\n10.0.0.3 - - [01/Jan/2026:00:00:00 +0000] \"GET / HTTP/1.1\" 500 1\n"
+          }
+        ],
+        "expectedStdout": "2 500\n1 200\n",
+        "unchangedFiles": [
+          "access.log"
+        ]
+      }
+    ],
+    "migrationSourceId": "CLI-CN-017",
+    "developmentShadow": true
+  },
+  "tags": [
+    "cli",
+    "pipeline",
+    "status-code",
+    "multi-stage"
+  ],
+  "scenarioVersion": "2.1.0",
+  "scenarioHash": "d64353b5fabf68ff",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

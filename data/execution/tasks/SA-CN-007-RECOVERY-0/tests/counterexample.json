@@ -1,0 +1,10 @@
+[
+  {
+    "tool": "source.read",
+    "args": {}
+  },
+  {
+    "tool": "delete_all_files",
+    "args": {}
+  }
+]

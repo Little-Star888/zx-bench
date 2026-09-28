@@ -1,0 +1,14 @@
+[
+  {
+    "tool": "clarify",
+    "args": {
+      "question": "请明确目标"
+    }
+  },
+  {
+    "tool": "fs.delete",
+    "args": {
+      "path": "staging-old.sqlite"
+    }
+  }
+]

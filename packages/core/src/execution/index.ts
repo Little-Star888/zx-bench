@@ -7,6 +7,15 @@ export {
   getImageDigest,
   CONTAINER_IMAGES,
 } from './containerRunner.js';
+export { DockerSession } from './sessionRunner.js';
+export type { SessionOptions, SessionCommandResult, SessionFile } from './sessionRunner.js';
+export { DockerToolWorld } from './toolWorld.js';
+export type { WorldTool, WorldEvent } from './toolWorld.js';
+export { runWorldLoop } from './worldLoop.js';
+export type { WorldConfig, WorldTrace, WorldTurn } from './worldLoop.js';
+export { DockerRetailRuntime } from './retailDocker.js';
+export { runShellLoop } from './shellLoop.js';
+export type { ShellConfig, ShellTrace, ShellEvent } from './shellLoop.js';
 export type { ContainerRunOptions, ContainerRunResult, ContainerFile } from './containerRunner.js';
 export { buildGoTestHarness, runGoTestsInContainer, runGoProgramInContainer } from './goRunner.js';
 export { buildJavaHarness, runJavaTestsInContainer, stripMavenEntrypointNoise } from './javaRunner.js';

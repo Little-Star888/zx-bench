@@ -1,0 +1,22 @@
+[
+  {
+    "tool": "check_budget",
+    "args": {
+      "department": "engineering",
+      "amount": 1800
+    }
+  },
+  {
+    "tool": "create_purchase_order",
+    "args": {
+      "total": 1800,
+      "reason": "设备采购"
+    }
+  },
+  {
+    "tool": "notify_finance",
+    "args": {
+      "po_id": "PO-1"
+    }
+  }
+]

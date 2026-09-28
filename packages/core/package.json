@@ -17,10 +17,12 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
+    "@jitl/quickjs-wasmfile-release-sync": "0.32.0",
     "@zxbench/types": "workspace:*",
     "@zxbench/utils": "workspace:*",
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1",
     "quickjs-emscripten-core": "0.32.0",
-    "@jitl/quickjs-wasmfile-release-sync": "0.32.0",
     "typescript": "^5.4.0"
   },
   "devDependencies": {

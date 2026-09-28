@@ -1,0 +1,95 @@
+{
+  "id": "CLI-CN-030-DOCKER",
+  "dimension": "cli_deep_tasks",
+  "category": "diagnose_fix",
+  "difficulty": "hard",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "工作区 /workspace，Linux sh 和 Python 3 标准库可用。也提供 bash；脚本按 sh/bash shebang 选择解释器，无 shebang 使用 sh。run.sh 首行缺少 shebang，导致直接执行失败。只在第 1 行前插入 #!/bin/bash，赋予执行位后以 ./run.sh 直接运行并把输出保存到 run-output.txt；保留原有脚本正文。只输出可执行 shell 脚本。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "cli_command",
+  "graderVersion": "cli_command_v5",
+  "scoring": {
+    "type": "cli_command",
+    "mode": "executed_state"
+  },
+  "requirements": {
+    "migrationSourceId": "CLI-CN-030",
+    "developmentShadow": true,
+    "executionInterpreter": "shebang",
+    "executionImage": "gcc:13",
+    "executionImageId": "sha256:056fa682471704249f619f65ccec87d671ad5f1b20878da54d60b0b863486621",
+    "executionCases": [
+      {
+        "files": [
+          {
+            "path": "run.sh",
+            "content": "echo \"release-0\"\n"
+          },
+          {
+            "path": "sentinel",
+            "content": "keep"
+          }
+        ],
+        "setupCommands": [
+          "chmod 755 run.sh"
+        ],
+        "expectedFiles": {
+          "run.sh": "#!/bin/bash\necho \"release-0\"\n",
+          "run-output.txt": "release-0\n"
+        },
+        "unchangedFiles": [
+          "sentinel"
+        ],
+        "assertCommands": [
+          "python3 -I - <<'PY'\nimport subprocess\nassert subprocess.check_output(['./run.sh'],text=True)==\"release-0\\n\"\nPY"
+        ]
+      },
+      {
+        "files": [
+          {
+            "path": "run.sh",
+            "content": "echo \"release-1\"\n"
+          },
+          {
+            "path": "sentinel",
+            "content": "keep"
+          }
+        ],
+        "setupCommands": [
+          "chmod 755 run.sh"
+        ],
+        "expectedFiles": {
+          "run.sh": "#!/bin/bash\necho \"release-1\"\n",
+          "run-output.txt": "release-1\n"
+        },
+        "unchangedFiles": [
+          "sentinel"
+        ],
+        "assertCommands": [
+          "python3 -I - <<'PY'\nimport subprocess\nassert subprocess.check_output(['./run.sh'],text=True)==\"release-1\\n\"\nPY"
+        ]
+      }
+    ]
+  },
+  "tags": [
+    "cli",
+    "diagnose",
+    "shebang"
+  ],
+  "scenarioVersion": "3.1.0",
+  "scenarioHash": "0d0c66d6a744303c",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

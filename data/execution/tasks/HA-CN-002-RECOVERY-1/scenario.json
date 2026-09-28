@@ -1,0 +1,159 @@
+{
+  "id": "HA-CN-002-RECOVERY-1",
+  "dimension": "agent_workflow",
+  "category": "memory_recall",
+  "difficulty": "adversarial",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "记忆接近 100 字符容量上限。用户要求保存三个部署事实：service=alpha、env=staging、registry=ghcr。先列出并读取相关记忆；压缩为一条不丢信息的新记忆，清除已过时的重复部署记录，保持总用量不超限。保护 notes。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "agent_trace",
+  "graderVersion": "agent_trace_v5",
+  "scoring": {
+    "type": "agent_trace"
+  },
+  "requirements": {
+    "migrationSourceId": "HA-CN-002",
+    "developmentShadow": true,
+    "executionWorld": {
+      "maxTurns": 8,
+      "scoreMode": "strict",
+      "initialState": {
+        "memory": {
+          "notes": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+          "deploy/old-duplicate-b": "duplicate-deployment-facts-0123456"
+        },
+        "used": 87,
+        "capacity": 100,
+        "history": []
+      },
+      "tools": [
+        {
+          "name": "memory.list",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "prefix": "string"
+          },
+          "script": "result={'keys':[k for k in state['memory'] if k.startswith(args['prefix'])],'used':state['used'],'capacity':state['capacity']}",
+          "description": "列出指定前缀的记忆和容量。"
+        },
+        {
+          "name": "memory.read",
+          "path": "memory/{key}",
+          "requiredArgs": {
+            "key": "string"
+          },
+          "description": "读取指定条目。",
+          "kind": "read",
+          "requirePriorCall": {
+            "tool": "memory.list"
+          }
+        },
+        {
+          "name": "memory.delete",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "key": "string"
+          },
+          "script": "key=args['key']\nif key not in state['memory']: raise ValueError('NOT_FOUND')\nvalue=state['memory'].pop(key); state['used']-=len(value)\nstate['history'].append('delete:'+key); result={'deleted':key}",
+          "description": "删除确认为冗余的记忆条目。",
+          "requirePriorCall": {
+            "tool": "memory.read",
+            "sameArgs": [
+              "key"
+            ]
+          }
+        },
+        {
+          "name": "memory.save",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "key": "string",
+            "value": "string"
+          },
+          "script": "key=args['key']; value=args['value']\nnext_used=state['used']-len(state['memory'].get(key,''))+len(value)\nif next_used>state['capacity']: raise ValueError('MEMORY_CAPACITY_EXCEEDED')\nstate['memory'][key]=value; state['used']=next_used\nstate['history'].append('save:'+key); result={'used':next_used}",
+          "description": "容量检查后才持久化；超限不写入。",
+          "requirePriorCall": {
+            "tool": "memory.list"
+          }
+        }
+      ],
+      "requiredCalls": [
+        {
+          "tool": "memory.list",
+          "args": {
+            "prefix": "deploy"
+          }
+        },
+        {
+          "tool": "memory.read",
+          "args": {
+            "key": "deploy/old-duplicate-b"
+          }
+        },
+        {
+          "tool": "memory.delete",
+          "args": {
+            "key": "deploy/old-duplicate-b"
+          }
+        },
+        {
+          "tool": "memory.save",
+          "args": {
+            "key": "deploy/current",
+            "value": "service=alpha;env=staging;registry=ghcr"
+          }
+        }
+      ],
+      "expectedState": [
+        {
+          "path": "memory",
+          "equals": {
+            "notes": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+            "deploy/current": "service=alpha;env=staging;registry=ghcr"
+          }
+        },
+        {
+          "path": "used",
+          "equals": 92
+        },
+        {
+          "path": "history",
+          "equals": [
+            "delete:deploy/old-duplicate-b",
+            "save:deploy/current"
+          ]
+        }
+      ],
+      "unchangedState": [
+        "memory/notes",
+        "capacity"
+      ],
+      "image": "python:3.12-alpine",
+      "expectedImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31"
+    }
+  },
+  "tags": [
+    "agent",
+    "memory",
+    "capacity-dedup"
+  ],
+  "scenarioVersion": "3.0.0",
+  "scenarioHash": "dd56c046b83f8889",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

@@ -1,0 +1,28 @@
+[
+  {
+    "tool": "verify_account",
+    "args": {
+      "uid": "user-a"
+    }
+  },
+  {
+    "tool": "recharge",
+    "args": {
+      "uid": "user-a",
+      "amount": 100
+    }
+  },
+  {
+    "tool": "generate_receipt",
+    "args": {
+      "txn": "wrong-txn"
+    }
+  },
+  {
+    "tool": "notify_user",
+    "args": {
+      "uid": "user-a",
+      "msg": "充值 100 元成功，凭证 receipt-user-a-100，交易 credit-user-a-100。"
+    }
+  }
+]

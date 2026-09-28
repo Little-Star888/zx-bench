@@ -1,0 +1,134 @@
+{
+  "id": "HA-CN-001-RECOVERY-0",
+  "dimension": "agent_workflow",
+  "category": "memory_recall",
+  "difficulty": "hard",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "用户更正数据库事实：项目已从 PostgreSQL 迁移到 CockroachDB。先读取已知旧记忆键，消除冲突，再将新事实保存到 project/database。不得丢失无关记忆或留下重复、矛盾的旧条目。已知旧记忆键为 project/database，新键为 project/database；新值须规范保存为“本项目已迁移到 CockroachDB”。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "agent_trace",
+  "graderVersion": "agent_trace_v5",
+  "scoring": {
+    "type": "agent_trace"
+  },
+  "requirements": {
+    "migrationSourceId": "HA-CN-001",
+    "developmentShadow": true,
+    "executionWorld": {
+      "maxTurns": 8,
+      "scoreMode": "strict",
+      "initialState": {
+        "memory": {
+          "project/database": "本项目使用 PostgreSQL",
+          "other": "owner=team-b"
+        },
+        "history": []
+      },
+      "tools": [
+        {
+          "name": "memory.read",
+          "path": "memory/{key}",
+          "requiredArgs": {
+            "key": "string"
+          },
+          "description": "读取指定记忆键。",
+          "kind": "read",
+          "saveResultAs": "lastRead"
+        },
+        {
+          "name": "memory.delete",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "key": "string"
+          },
+          "script": "if args['key'] not in state['memory']: raise ValueError('NOT_FOUND')\nif state['memory'][args['key']]!='本项目使用 PostgreSQL': raise ValueError('NOT_STALE_FACT')\nstate['history'].append('deleted:'+args['key']); del state['memory'][args['key']]\nresult={'deleted':args['key']}",
+          "description": "只删除确认过的旧数据库事实。",
+          "requirePriorCall": {
+            "tool": "memory.read",
+            "sameArgs": [
+              "key"
+            ]
+          }
+        },
+        {
+          "name": "memory.save",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "key": "string",
+            "value": "string"
+          },
+          "script": "if args['key']!='project/database' or args['value']!='本项目已迁移到 CockroachDB': raise ValueError('INVALID_FACT')\nstate['memory'][args['key']]=args['value']; state['history'].append('saved:'+args['key'])\nresult={'saved':args['key']}",
+          "description": "保存经用户纠正的新事实。",
+          "requirePriorCall": {
+            "tool": "memory.delete"
+          }
+        }
+      ],
+      "requiredCalls": [
+        {
+          "tool": "memory.read",
+          "args": {
+            "key": "project/database"
+          }
+        },
+        {
+          "tool": "memory.delete",
+          "args": {
+            "key": "project/database"
+          }
+        },
+        {
+          "tool": "memory.save",
+          "args": {
+            "key": "project/database",
+            "value": "本项目已迁移到 CockroachDB"
+          }
+        }
+      ],
+      "expectedState": [
+        {
+          "path": "memory",
+          "equals": {
+            "other": "owner=team-b",
+            "project/database": "本项目已迁移到 CockroachDB"
+          }
+        },
+        {
+          "path": "history",
+          "equals": [
+            "deleted:project/database",
+            "saved:project/database"
+          ]
+        }
+      ],
+      "unchangedState": [
+        "memory/other"
+      ],
+      "image": "python:3.12-alpine",
+      "expectedImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31"
+    }
+  },
+  "tags": [
+    "agent",
+    "memory",
+    "replace-contradiction"
+  ],
+  "scenarioVersion": "3.1.0",
+  "scenarioHash": "20337c1e27d1b1d0",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

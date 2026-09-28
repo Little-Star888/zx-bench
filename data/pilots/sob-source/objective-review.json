@@ -1,0 +1,11 @@
+{
+  "sourceWindow": "SOB text rows 0-499",
+  "reviewedAt": "2026-09-26",
+  "policy": "A public exact-match miss is only a discovery lead. Admit a candidate only when the supplied context uniquely supports the target and the schema defines the scored field unambiguously.",
+  "records": {
+    "153": {"decision": "reject", "reason": "The question asks who is older; the schema does not assign either person to musician_1 or musician_2. Qwen's two birth years are reversed by field position, while its comparison may still be right."},
+    "374": {"decision": "reject", "reason": "The albums_released array has no stated selection boundary or ordering. A missing second album and positional year differences cannot be treated as objective misses."},
+    "399": {"decision": "reject", "reason": "Dick Harris identifies more than one person in the supplied context. The question does not disambiguate the politician from the football player."},
+    "414": {"decision": "candidate", "reason": "The context directly dates both filming periods: prior to the 2004 election versus late August and early September 2005. The boolean comparison has a unique answer; Qwen's false answer is a factual error. This establishes only a public-model discovery lead, not structured-output-specific difficulty."}
+  }
+}

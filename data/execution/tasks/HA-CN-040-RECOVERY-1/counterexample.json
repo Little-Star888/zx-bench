@@ -1,0 +1,15 @@
+[
+  {
+    "tool": "delegate_task",
+    "args": {
+      "goal": "整理发布日志",
+      "context": "分析日志",
+      "toolsets": [
+        "fs.read",
+        "terminal",
+        "fs.glob",
+        "delegate_task"
+      ]
+    }
+  }
+]

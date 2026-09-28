@@ -1,0 +1,16 @@
+[
+  {
+    "tool": "export_report",
+    "args": {}
+  },
+  {
+    "tool": "send_bulk_email",
+    "args": {
+      "emails": [
+        "a@example.test"
+      ],
+      "subject": "确认",
+      "body": "请回复"
+    }
+  }
+]

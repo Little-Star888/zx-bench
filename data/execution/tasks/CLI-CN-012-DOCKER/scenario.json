@@ -1,0 +1,86 @@
+{
+  "id": "CLI-CN-012-DOCKER",
+  "dimension": "cli_deep_tasks",
+  "category": "filesystem_ops",
+  "difficulty": "hard",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "工作区 /workspace，Linux sh 和 Python 3 标准库可用。使用 Alpine/BusyBox 工具，提交脚本统一以 POSIX sh 执行，未提供 bash 或 GNU 工具。data/ 含深层文件。按实际字节长度选最大的 10 个普通文件，按字节数降序、同额按路径排序写入 top10.txt；格式「<向上取整的 K/M/G 人类可读大小>\\t<路径>」。不可先把大小格式化再排序，也不含目录。只输出可执行 shell 脚本。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "cli_command",
+  "graderVersion": "cli_command_v5",
+  "scoring": {
+    "type": "cli_command",
+    "mode": "executed_state"
+  },
+  "requirements": {
+    "migrationSourceId": "CLI-CN-012",
+    "developmentShadow": true,
+    "executionInterpreter": "sh",
+    "executionImage": "python:3.12-alpine",
+    "executionImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31",
+    "executionCases": [
+      {
+        "files": [
+          {
+            "path": "sentinel",
+            "content": "keep"
+          }
+        ],
+        "setupCommands": [
+          "python3 -I - <<'PY'\nfrom pathlib import Path\npaths=[\"data/deep space/level/item-00.dat\",\"data/nested/item-01.dat\",\"data/nested/item-02.dat\",\"data/deep space/level/item-03.dat\",\"data/nested/item-04.dat\",\"data/nested/item-05.dat\",\"data/deep space/level/item-06.dat\",\"data/nested/item-07.dat\",\"data/nested/item-08.dat\",\"data/deep space/level/item-09.dat\",\"data/nested/item-10.dat\",\"data/nested/item-11.dat\",\"data/deep space/level/item-12.dat\",\"data/nested/item-13.dat\",\"data/nested/item-14.dat\",\"data/deep space/level/item-15.dat\",\"data/nested/item-16.dat\",\"data/nested/item-17.dat\",\"data/deep space/level/item-18.dat\",\"data/nested/item-19.dat\",\"data/nested/item-20.dat\",\"data/deep space/level/item-21.dat\",\"data/nested/item-22.dat\",\"data/nested/item-23.dat\",\"data/deep space/level/item-24.dat\",\"data/nested/item-25.dat\"]\nsizes=[1024,12962,25923,38884,51845,1209,77767,66236,103689,116650,1394,142572,155533,168494,66936,1579,207377,220338,233299,246260,1764,67636,285143,298104,311065,1949]\nfor i,(name,size) in enumerate(zip(paths,sizes)):\n    p=Path(name); p.parent.mkdir(parents=True,exist_ok=True); p.write_bytes(bytes([65+i%20])*size)\nPY"
+        ],
+        "expectedFiles": {
+          "top10.txt": "304K\tdata/deep space/level/item-24.dat\n292K\tdata/nested/item-23.dat\n279K\tdata/nested/item-22.dat\n241K\tdata/nested/item-19.dat\n228K\tdata/deep space/level/item-18.dat\n216K\tdata/nested/item-17.dat\n203K\tdata/nested/item-16.dat\n165K\tdata/nested/item-13.dat\n152K\tdata/deep space/level/item-12.dat\n140K\tdata/nested/item-11.dat\n"
+        },
+        "unchangedFiles": [
+          "sentinel"
+        ],
+        "assertCommands": [
+          "python3 -I - <<'PY'\nfrom pathlib import Path\nassert len([p for p in Path('data').rglob('*') if p.is_file()])==26\nPY"
+        ]
+      },
+      {
+        "files": [
+          {
+            "path": "sentinel",
+            "content": "keep"
+          }
+        ],
+        "setupCommands": [
+          "python3 -I - <<'PY'\nfrom pathlib import Path\npaths=[\"data/deep space/level/item-00.dat\",\"data/nested/item-01.dat\",\"data/nested/item-02.dat\",\"data/deep space/level/item-03.dat\",\"data/nested/item-04.dat\",\"data/nested/item-05.dat\",\"data/deep space/level/item-06.dat\",\"data/nested/item-07.dat\",\"data/nested/item-08.dat\",\"data/deep space/level/item-09.dat\",\"data/nested/item-10.dat\",\"data/nested/item-11.dat\",\"data/deep space/level/item-12.dat\",\"data/nested/item-13.dat\",\"data/nested/item-14.dat\",\"data/deep space/level/item-15.dat\",\"data/nested/item-16.dat\",\"data/nested/item-17.dat\",\"data/deep space/level/item-18.dat\",\"data/nested/item-19.dat\",\"data/nested/item-20.dat\",\"data/deep space/level/item-21.dat\",\"data/nested/item-22.dat\",\"data/nested/item-23.dat\",\"data/deep space/level/item-24.dat\",\"data/nested/item-25.dat\"]\nsizes=[1061,29911,42872,55833,68794,1246,94716,66236,120638,133599,1431,159521,172482,185443,66936,1616,224326,237287,250248,263209,1801,67636,302092,315053,328014,1986]\nfor i,(name,size) in enumerate(zip(paths,sizes)):\n    p=Path(name); p.parent.mkdir(parents=True,exist_ok=True); p.write_bytes(bytes([65+i%20])*size)\nPY"
+        ],
+        "expectedFiles": {
+          "top10.txt": "321K\tdata/deep space/level/item-24.dat\n308K\tdata/nested/item-23.dat\n296K\tdata/nested/item-22.dat\n258K\tdata/nested/item-19.dat\n245K\tdata/deep space/level/item-18.dat\n232K\tdata/nested/item-17.dat\n220K\tdata/nested/item-16.dat\n182K\tdata/nested/item-13.dat\n169K\tdata/deep space/level/item-12.dat\n156K\tdata/nested/item-11.dat\n"
+        },
+        "unchangedFiles": [
+          "sentinel"
+        ],
+        "assertCommands": [
+          "python3 -I - <<'PY'\nfrom pathlib import Path\nassert len([p for p in Path('data').rglob('*') if p.is_file()])==26\nPY"
+        ]
+      }
+    ]
+  },
+  "tags": [
+    "cli",
+    "fs",
+    "human-sort",
+    "trap"
+  ],
+  "scenarioVersion": "3.1.0",
+  "scenarioHash": "3d5e6b29f0175d2b",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

@@ -1,0 +1,13 @@
+[
+  {
+    "tool": "search_flights",
+    "args": {
+      "from": "北京",
+      "to": "上海",
+      "date": "2024-03-20",
+      "time_range": "morning",
+      "max_price": 2000,
+      "currency": "CNY"
+    }
+  }
+]

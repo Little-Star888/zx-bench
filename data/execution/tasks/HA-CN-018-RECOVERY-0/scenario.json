@@ -1,0 +1,150 @@
+{
+  "id": "HA-CN-018-RECOVERY-0",
+  "dimension": "agent_workflow",
+  "category": "skills_procedural",
+  "difficulty": "adversarial",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "已有相关技能预载。先 skills_list 并 skill_view，再按现有技能流程写本次输出；不修改任何技能文件或创建重复技能。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "agent_trace",
+  "graderVersion": "agent_trace_v5",
+  "scoring": {
+    "type": "agent_trace"
+  },
+  "requirements": {
+    "migrationSourceId": "HA-CN-018",
+    "developmentShadow": true,
+    "executionWorld": {
+      "maxTurns": 8,
+      "scoreMode": "strict",
+      "initialState": {
+        "skills": {
+          "release-check": "# release-check\n写 notes/release.txt 并核对发布清单\n",
+          "other": "# keep\n"
+        },
+        "listed": false,
+        "viewed": false,
+        "files": {},
+        "writes": [],
+        "skillChanges": 0,
+        "other": "keep"
+      },
+      "tools": [
+        {
+          "name": "skills_list",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {},
+          "script": "state['listed']=True; result={'names':list(state['skills'])}",
+          "description": "列出预载技能。"
+        },
+        {
+          "name": "skill_view",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "name": "string"
+          },
+          "script": "if args['name']!='release-check': raise ValueError('SKILL_NOT_FOUND')\nstate['viewed']=True; result={'content':state['skills'][args['name']]}",
+          "description": "查看相关技能步骤。",
+          "requirePriorCall": {
+            "tool": "skills_list"
+          }
+        },
+        {
+          "name": "fs.write",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "path": "string",
+            "content": "string"
+          },
+          "script": "if args['path']!='notes/release.txt' or not state['viewed']: raise ValueError('PROCEDURE_NOT_FOLLOWED')\nfrom pathlib import Path\np=Path('/workspace')/args['path']; p.parent.mkdir(parents=True,exist_ok=True); p.write_text(args['content'])\nstate['files'][args['path']]=args['content']; state['writes'].append(args['path']); result={'written':True}",
+          "description": "写本次工作产物，不写技能目录。",
+          "requirePriorCall": {
+            "tool": "skill_view"
+          }
+        },
+        {
+          "name": "skill_manage",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "action": "string"
+          },
+          "script": "state['skillChanges']+=1; result={'changed':True}",
+          "description": "修改预载技能；本题禁止。"
+        }
+      ],
+      "requiredCalls": [
+        {
+          "tool": "skills_list",
+          "args": {}
+        },
+        {
+          "tool": "skill_view",
+          "args": {
+            "name": "release-check"
+          }
+        },
+        {
+          "tool": "fs.write",
+          "args": {
+            "path": "notes/release.txt"
+          }
+        }
+      ],
+      "forbiddenCalls": [
+        "skill_manage"
+      ],
+      "expectedState": [
+        {
+          "path": "listed",
+          "equals": true
+        },
+        {
+          "path": "viewed",
+          "equals": true
+        },
+        {
+          "path": "writes",
+          "equals": [
+            "notes/release.txt"
+          ]
+        },
+        {
+          "path": "skillChanges",
+          "equals": 0
+        }
+      ],
+      "unchangedState": [
+        "skills",
+        "other"
+      ],
+      "image": "python:3.12-alpine",
+      "expectedImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31"
+    }
+  },
+  "tags": [
+    "agent",
+    "skill",
+    "discover-apply",
+    "no-mutation"
+  ],
+  "scenarioVersion": "3.0.0",
+  "scenarioHash": "e626af36d50d5f36",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "format": "zxbench-execution-task-v1",
+  "id": "TC-CN-055-RECOVERY-0",
+  "sourceId": "TC-CN-055",
+  "scenarioVersion": "3.0.0",
+  "scenarioHash": "d1f08eaebd97e3f8",
+  "track": "development",
+  "readiness": "reference_witnesses_available_model_calibration_pending",
+  "contract": {
+    "version": 1,
+    "interactionHash": "41b016ee0d366b4fbbafc9ae889ef1d8f650b33c5dff89dde6c0401283be46d4",
+    "verifierHash": "53e94ff22ea95ec6c3b8a8226cf507a2a0849f5f64667165a140cbf1630f7288"
+  },
+  "environment": {
+    "image": "python:3.12-alpine",
+    "imageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31",
+    "network": "none",
+    "workspaceMb": 64,
+    "timeoutMs": 60000
+  },
+  "inputCases": 1,
+  "reference": "solution/trace.json",
+  "counterexample": "tests/counterexample.json",
+  "runner": "node scripts/check-recovery-world-docker.mjs --task=TC-CN-055-RECOVERY-0"
+}

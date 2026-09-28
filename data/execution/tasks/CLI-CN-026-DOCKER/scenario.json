@@ -1,0 +1,84 @@
+{
+  "id": "CLI-CN-026-DOCKER",
+  "dimension": "cli_deep_tasks",
+  "category": "diagnose_fix",
+  "difficulty": "hard",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "工作区 /workspace，Linux sh 和 Python 3 标准库可用。使用 Alpine/BusyBox 工具，提交脚本统一以 POSIX sh 执行，未提供 bash 或 GNU 工具。count.sh 真实运行时只输出 3 行，原因是 for 循环上界写错。精确把 1 2 3 改为 1 2 3 4 5，保持其他内容和无关文件不变；修复后运行脚本并将输出写入 output.txt，禁止追加 echo 凑数。以磁盘实际文件为准：当前循环是 for i in 1 2 3；将枚举范围改为 1 2 3 4 5。只输出可执行 shell 脚本。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "cli_command",
+  "graderVersion": "cli_command_v5",
+  "scoring": {
+    "type": "cli_command",
+    "mode": "executed_state"
+  },
+  "requirements": {
+    "migrationSourceId": "CLI-CN-026",
+    "developmentShadow": true,
+    "executionInterpreter": "sh",
+    "executionImage": "python:3.12-alpine",
+    "executionImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31",
+    "executionCases": [
+      {
+        "files": [
+          {
+            "path": "count.sh",
+            "content": "#!/bin/sh\n# job=0\nfor i in 1 2 3; do\n  echo \"item-$i\"\ndone\n"
+          },
+          {
+            "path": "sentinel",
+            "content": "keep"
+          }
+        ],
+        "expectedFiles": {
+          "count.sh": "#!/bin/sh\n# job=0\nfor i in 1 2 3 4 5; do\n  echo \"item-$i\"\ndone\n",
+          "output.txt": "item-1\nitem-2\nitem-3\nitem-4\nitem-5\n"
+        },
+        "unchangedFiles": [
+          "sentinel"
+        ]
+      },
+      {
+        "files": [
+          {
+            "path": "count.sh",
+            "content": "#!/bin/sh\n# job=1\nfor i in 1 2 3; do\n  echo \"item-$i\"\ndone\n"
+          },
+          {
+            "path": "sentinel",
+            "content": "keep"
+          }
+        ],
+        "expectedFiles": {
+          "count.sh": "#!/bin/sh\n# job=1\nfor i in 1 2 3 4 5; do\n  echo \"item-$i\"\ndone\n",
+          "output.txt": "item-1\nitem-2\nitem-3\nitem-4\nitem-5\n"
+        },
+        "unchangedFiles": [
+          "sentinel"
+        ]
+      }
+    ]
+  },
+  "tags": [
+    "cli",
+    "diagnose",
+    "loop-bound",
+    "root-cause"
+  ],
+  "scenarioVersion": "3.1.0",
+  "scenarioHash": "964e68fb5ab70d32",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

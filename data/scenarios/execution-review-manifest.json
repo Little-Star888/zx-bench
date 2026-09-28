@@ -62,20 +62,20 @@
     "packages/core/package.json": "2bb7fb980cee709b3569cfb03e1b22d15b2e82c1c1c68198b6ad982423b47923",
     "pnpm-lock.yaml": "9fde2ddb791d115402ab8b92fa0453d753ed175d77b91baf1a31e1ee1f23ff8d",
     "docs/execution-all-single-file-v4.14.md": "bd1aa05cd3e544c6fb11cbf4a4282eb493814a60de19a9d7e4599b9d3b20b0eb",
-    "packages/core/src/contracts/registry.ts": "b0dc2a75db0f48b381ed8bccbe7ce9f4fea0d581fc5eca1c7e744fe2ef321fa6",
+    "packages/core/src/contracts/registry.ts": "16bac1372189385ba715d6a91c03166abbe02b75508fe4ee4e53d86fe627d994",
     "packages/core/src/contracts/canonicalize.ts": "ccd64df33206ed620043981fc974e34313b60703d6b121080e571bd56359bdf6",
     "scripts/upgrade-execution-review-v2.mjs": "6db3b5cb82ed70f46944573cf49035a601f5e5063b110a406a8c19ba6c044248",
     "scripts/sync-reviewed-question-contracts.mjs": "267ab1ed6070aea2bbfb1dcbc5902aed60227eb5fcd4740e2538e8679fae287a",
     "scripts/test-containers.mjs": "51179d56761f73ef7ed8d53fa95c8627abc2e3f98ccc949b10a9baca51ca3318",
-    "packages/core/src/orchestrator.ts": "71dcc63021ead672227e363e0329b09a602c21f4aca04639826bde897b524263",
-    "apps/server/src/routes/index.ts": "a2eb49c7109b507e0bd82a1971b1fd821052b3632ab517213a131fc47e0dee0a",
+    "packages/core/src/orchestrator.ts": "37c7d512f07924927ae0643d966fa928bdd2a06220847f1b6e21c06a2dabd62e",
+    "apps/server/src/routes/index.ts": "f73c652a6cbc258a02bc7ee501c44f8bda73bf952dc264996c5678c4cacabc60",
     "packages/core/src/evaluationLab/deepAdversarial.ts": "6e3592c0b01c8a76f5c357d35fb8d1b6fa9385d0b658c3e8907a2081516728fe",
-    "packages/core/src/evaluators/codeRepair.ts": "56d61329e0a537c9b52aa1e5734012407efa272ef435dbbacced40071c13a2dc",
+    "packages/core/src/evaluators/codeRepair.ts": "250072b8eace926955e56b7f2d1ef600bb81f44b27d14b53b77ac13ad74a7f2a",
     "packages/core/src/evaluators/instructionChecklist.ts": "c4409c61447e661d6c9c106096f0406869eeecba3ac48e5f1b25ebd28e11f6d5",
     "packages/core/src/evaluators/llmJudge.ts": "b58d0747966c78958b1888836814f61efead4954705a37f3df9207024d41f63b",
     "packages/core/src/sandbox/index.ts": "8e6ab5ca35186c43232e3d579bcd06cb99ab4a7687c963e0b6f74a61c090dcdd",
     "packages/core/src/execution/completion.ts": "bcf8833bd2eb9ecfced4f326ef0cc67294ab6311067e6cd610cdd326944edcb5",
-    "packages/core/src/execution/containerRunner.ts": "1ce87cc0d1f1238151c4daccc3b9e4410b1f64160750f233bc33ec0cfc5a8f8f",
+    "packages/core/src/execution/containerRunner.ts": "228ae0d22031b59f5b7da923d3c3d68e7287c721673d706c029f0d08cdd6668e",
     "packages/core/src/execution/phpRunner.ts": "5b1202ccb3345679dd874ec96b502ed19ac545e80caf23c28e0a45ffc4ace1b1",
     "packages/core/src/execution/bashRunner.ts": "fdffce118f87ff1d63c12ece13aeafbc25eee7e104becee4d5cf9d3b51344399",
     "packages/core/src/execution/cRunner.ts": "bbb4e9eca7e47a00be76e99ae1577a380f8d4d0dd6f1b6f0b6c910bfb061cbfe",
@@ -1127,5 +1127,13 @@
       "PR-ELITE-012",
       "PR-ELITE-013"
     ]
-  }
+  },
+  "previousSourceHashes": {
+    "packages/core/src/contracts/registry.ts": "b0dc2a75db0f48b381ed8bccbe7ce9f4fea0d581fc5eca1c7e744fe2ef321fa6",
+    "packages/core/src/orchestrator.ts": "71dcc63021ead672227e363e0329b09a602c21f4aca04639826bde897b524263",
+    "apps/server/src/routes/index.ts": "a2eb49c7109b507e0bd82a1971b1fd821052b3632ab517213a131fc47e0dee0a",
+    "packages/core/src/evaluators/codeRepair.ts": "56d61329e0a537c9b52aa1e5734012407efa272ef435dbbacced40071c13a2dc",
+    "packages/core/src/execution/containerRunner.ts": "1ce87cc0d1f1238151c4daccc3b9e4410b1f64160750f233bc33ec0cfc5a8f8f"
+  },
+  "sourceHashesRefreshedAt": "2026-09-26"
 }

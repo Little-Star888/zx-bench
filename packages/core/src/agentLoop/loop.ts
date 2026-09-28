@@ -12,8 +12,9 @@
 //   这样多轮闭环可以在**不改动 wire 格式**的前提下落地，风险最小。
 // ============================================================
 
-import type { ModelConfig, ModelResponse, TokenUsage } from '@zxbench/types';
+import type { EvalConstraints, ModelConfig, ModelParams, ModelResponse, TokenUsage } from '@zxbench/types';
 import { callModelWithRetry } from '../model/caller.js';
+import { DockerRetailRuntime } from '../execution/retailDocker.js';
 import {
   RETAIL_POLICY,
   RETAIL_TOOLS,
@@ -25,6 +26,9 @@ import {
 } from './retailRuntime.js';
 
 export interface AgentLoopConfig {
+  /** Existing scenarios may stay in-process; migrated scenarios use Docker. */
+  backend?: 'in_process' | 'docker';
+  expectedImageId?: string;
   /** 领域策略文本（缺省用零售策略） */
   policy?: string;
   /** 允许调用的工具名（缺省全部） */
@@ -53,6 +57,8 @@ export interface AgentTurnRecord {
 }
 
 export interface AgentLoopTrace {
+  imageId?: string;
+  initialState?: RetailState;
   turns: AgentTurnRecord[];
   turnsUsed: number;
   finalMessage: string;
@@ -61,6 +67,7 @@ export interface AgentLoopTrace {
   truncated: boolean;
   /** 工程性失败留痕（超时/异常），与能力信号隔离 */
   turnErrors: string[];
+  elapsedMs?: number;
 }
 
 export interface AgentLoopResult {
@@ -95,19 +102,19 @@ export function buildAgentSystemPrompt(policy: string, tools: ToolSpec[]): strin
 }
 
 /** 解析模型输出里的工具调用。支持 `CALL tool {json}` 主语法与 `tool({json})` 兜底语法。 */
-export function parseToolCalls(text: string): { tool: string; args: Record<string, unknown> }[] {
+export function parseToolCalls(text: string, strict = false): { tool: string; args: Record<string, unknown> }[] {
   const calls: { tool: string; args: Record<string, unknown> }[] = [];
-  const seen = new Set<string>();
   const push = (tool: string, rawArgs: string | undefined) => {
-    const key = `${tool}::${rawArgs ?? ''}`;
-    if (seen.has(key)) return;
     let args: Record<string, unknown> = {};
+    if (strict && !rawArgs) throw new Error('INVALID_CALL_ARGS');
     if (rawArgs) {
       const candidate = rawArgs.trim().replace(/^```(?:json)?/i, '').replace(/```$/, '').trim();
       try {
         const parsed = JSON.parse(candidate);
         if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) args = parsed as Record<string, unknown>;
+        else if (strict) throw new Error('INVALID_CALL_ARGS');
       } catch {
+        if (strict) throw new Error('INVALID_CALL_ARGS');
         // 单引号/无引号/键被引号包住等宽松写法：按 key=value 提取
         // （键本身可能带引号，例如 {"orderId": o_1} —— 这是非法 JSON，走不到 JSON.parse）
         const kv = /(?:"([^"]+)"|'([^']+)'|([A-Za-z_][A-Za-z0-9_]*))\s*[:=]\s*(?:"([^"]*)"|'([^']*)'|([^\s,}]+))/g;
@@ -119,13 +126,14 @@ export function parseToolCalls(text: string): { tool: string; args: Record<strin
         }
       }
     }
-    seen.add(key);
     calls.push({ tool, args });
   };
 
   for (const line of text.split('\n')) {
     const call = line.match(/^\s*(?:CALL|调用)\s+([A-Za-z_][A-Za-z0-9_]*)\s*(\{.*\})?\s*$/);
     if (call) { push(call[1], call[2]); continue; }
+    if (strict && /^\s*CALL\b/.test(line)) throw new Error('INVALID_CALL_SYNTAX');
+    if (strict) continue;
     const bare = line.match(/^\s*([A-Za-z_][A-Za-z0-9_]*)\s*\(\s*(\{.*\})?\s*\)\s*$/);
     if (bare && RETAIL_TOOLS.some((t) => t.name === bare[1])) push(bare[1], bare[2]);
   }
@@ -154,10 +162,22 @@ function addUsage(total: TokenUsage, part: TokenUsage): void {
   if (part.reasoningTokens != null) total.reasoningTokens = (total.reasoningTokens ?? 0) + part.reasoningTokens;
 }
 
+function validToolArgs(spec: ToolSpec, args: Record<string, unknown>): boolean {
+  const names = new Set(spec.params.map((param) => param.name));
+  if (Object.keys(args).some((key) => !names.has(key))) return false;
+  return spec.params.every((param) => {
+    const value = args[param.name];
+    if (value === undefined) return !param.required;
+    return typeof value === param.type && (param.type !== 'number' || Number.isFinite(value as number));
+  });
+}
+
 export interface RunAgentLoopOptions {
   config: AgentLoopConfig;
   task: string;
   modelConfig: ModelConfig;
+  modelParams?: ModelParams;
+  constraints?: EvalConstraints;
   maxTokens: number;
   hardTimeoutMs: number;
   signal?: AbortSignal;
@@ -165,13 +185,19 @@ export interface RunAgentLoopOptions {
 
 export async function runAgentLoop(options: RunAgentLoopOptions): Promise<AgentLoopResult> {
   const { config, task, modelConfig, maxTokens, hardTimeoutMs } = options;
-  const policy = config.policy ?? RETAIL_POLICY;
+  const policy = (config.policy ?? RETAIL_POLICY) + (config.state.approvalRequired
+    ? '\n9. 升级人工仅提交审批请求，不等于审批通过。需环境已有批准记录才能发起需要特批的退款。'
+    : '');
   const tools = config.tools?.length
     ? RETAIL_TOOLS.filter((t) => config.tools?.includes(t.name))
     : RETAIL_TOOLS;
   const systemPrompt = buildAgentSystemPrompt(policy, tools);
 
+  const docker = config.backend === 'docker'
+    ? await DockerRetailRuntime.create(config.state, config.expectedImageId) : undefined;
   const state = cloneState(config.state);
+  const initialState = cloneState(config.state);
+  const startedAt = Date.now();
   const turns: AgentTurnRecord[] = [];
   const turnErrors: string[] = [];
   const usage = emptyUsage();
@@ -182,6 +208,7 @@ export async function runAgentLoop(options: RunAgentLoopOptions): Promise<AgentL
   const maxTurns = Math.max(1, config.maxTurns);
   let pendingUser = task;
 
+  try {
   for (let turnNo = 1; turnNo <= maxTurns; turnNo++) {
     const userPrompt = [
       transcript.length === 0 ? '' : '【对话与操作记录】\n' + transcript.join('\n'),
@@ -193,7 +220,9 @@ export async function runAgentLoop(options: RunAgentLoopOptions): Promise<AgentL
     try {
       response = await callModelWithRetry({
         config: modelConfig,
-        params: { maxTokens, hardTimeoutMs },
+        params: { ...(options.modelParams ?? modelConfig.defaultParams), maxTokens,
+          hardTimeoutMs: Math.max(1, hardTimeoutMs - (Date.now() - startedAt)) },
+        constraints: options.constraints,
         systemPrompt,
         userPrompt,
         signal: options.signal,
@@ -212,10 +241,20 @@ export async function runAgentLoop(options: RunAgentLoopOptions): Promise<AgentL
     if (response.finishReason === 'length') truncated = true;
 
     const assistantRaw = response.content ?? '';
-    const parsedCalls = parseToolCalls(assistantRaw);
+    let parsedCalls: ReturnType<typeof parseToolCalls> = [];
+    try { parsedCalls = parseToolCalls(assistantRaw, config.backend === 'docker'); }
+    catch (error) { turnErrors.push(`TURN_${turnNo}_PROTOCOL_ERROR: ${error instanceof Error ? error.message : String(error)}`); }
     const calls: AgentCallRecord[] = [];
     for (const call of parsedCalls) {
-      const execution = executeRetailTool(state, call.tool, call.args, turnNo);
+      const spec = tools.find((tool) => tool.name === call.tool);
+      const execution = !spec
+        ? { ok: false, result: { ok: false, error: 'TOOL_NOT_ALLOWED' },
+            violations: [{ code: 'tool_not_allowed', detail: `Tool ${call.tool} is not allowed`, blocked: true }] }
+        : config.backend === 'docker' && !validToolArgs(spec, call.args)
+          ? { ok: false, result: { ok: false, error: 'INVALID_ARGS' },
+              violations: [{ code: 'invalid_tool_args', detail: `Invalid arguments for ${call.tool}`, blocked: true }] }
+          : (docker ? await docker.call(call.tool, call.args, turnNo)
+            : executeRetailTool(state, call.tool, call.args, turnNo));
       calls.push({
         tool: call.tool,
         args: call.args,
@@ -245,13 +284,17 @@ export async function runAgentLoop(options: RunAgentLoopOptions): Promise<AgentL
   }
 
   const finalMessage = extractFinalMessage(turns);
+  const finalState = docker ? docker.snapshot() : state;
   const trace: AgentLoopTrace = {
+    imageId: docker?.imageId,
+    initialState,
     turns,
     turnsUsed: turns.length,
     finalMessage,
-    state,
+    state: finalState,
     truncated,
     turnErrors,
+    elapsedMs: Date.now() - startedAt,
   };
 
   const base = lastResponse;
@@ -260,7 +303,7 @@ export async function runAgentLoop(options: RunAgentLoopOptions): Promise<AgentL
     reasoningContent: base?.reasoningContent,
     finishReason: turnErrors.length > 0 ? 'unknown' : (base?.finishReason ?? 'stop'),
     usage,
-    latencyMs: base?.latencyMs ?? 0,
+    latencyMs: trace.elapsedMs ?? 0,
     ttftMs: base?.ttftMs,
     generationMs: base?.generationMs,
     tokensPerSecond: base?.tokensPerSecond,
@@ -268,4 +311,5 @@ export async function runAgentLoop(options: RunAgentLoopOptions): Promise<AgentL
     agentLoop: trace,
   };
   return { response, trace };
+  } finally { await docker?.close(); }
 }

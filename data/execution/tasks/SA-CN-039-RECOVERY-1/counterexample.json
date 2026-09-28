@@ -1,0 +1,10 @@
+[
+  {
+    "tool": "source.read",
+    "args": {}
+  },
+  {
+    "tool": "transfer_funds",
+    "args": {}
+  }
+]

@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "format": "zxbench-execution-task-v1",
+  "id": "CLI-CN-049-DOCKER",
+  "sourceId": "CLI-CN-049",
+  "scenarioVersion": "2.1.0",
+  "scenarioHash": "52180948899cb48c",
+  "track": "regression",
+  "readiness": "reference_witnesses_available_model_calibration_pending",
+  "contract": {
+    "version": 1,
+    "interactionHash": "b788bebfa42fda68759116d8359cac507711bdc13c0b28926b4796a008fa1f3a",
+    "verifierHash": "701fab0715e84887d719eb548924c830b1a18fe7f181c06208658625c557953e"
+  },
+  "environment": {
+    "image": "python:3.12-alpine",
+    "imageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31",
+    "network": "none",
+    "workspaceMb": 64,
+    "timeoutMs": 60000
+  },
+  "inputCases": 2,
+  "reference": "solution/solve.sh",
+  "counterexample": "tests/counterexample.sh",
+  "runner": "node scripts/check-execution-task-pack.mjs --task=CLI-CN-049-DOCKER"
+}

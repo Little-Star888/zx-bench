@@ -1,0 +1,14 @@
+{
+  "status": "passed",
+  "counts": {
+    "positive": 4,
+    "negative": 4
+  },
+  "hashes": {
+    "development": "67a2a04ec86bce8efede81f7f273978a06a0701d69a9f88385eea90fdb676ce1",
+    "holdout": "ea4c42da11cde35ac839efe02e88ef2624fedac968e1286e6c910853d9da87e0",
+    "gold": "1cdeed6d147076bdf07a35ec260ab00264b25baac715445bf70eaaf1e32b38b1"
+  },
+  "checkedAt": "2026-09-26T13:25:46.735Z",
+  "scope": "Frozen witnesses and one wrong token per scenario. No model calls."
+}

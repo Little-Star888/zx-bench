@@ -1,0 +1,119 @@
+{
+  "id": "HA-CN-035-RECOVERY-1",
+  "dimension": "agent_workflow",
+  "category": "delegation_recovery",
+  "difficulty": "adversarial",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "部署最新版本。第一次 deploy 会报告可恢复的环境错误；依据真实错误执行一次纠正，再重试部署。不要盲目连续重试。terminal 只接受修复部署目录的 mkdir -p 命令。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "agent_trace",
+  "graderVersion": "agent_trace_v5",
+  "scoring": {
+    "type": "agent_trace"
+  },
+  "requirements": {
+    "migrationSourceId": "HA-CN-035",
+    "developmentShadow": true,
+    "executionWorld": {
+      "maxTurns": 8,
+      "scoreMode": "strict",
+      "initialState": {
+        "requiredDirectory": "release/secrets",
+        "attempts": [],
+        "deployed": false,
+        "releaseVersion": "old",
+        "otherFile": "keep"
+      },
+      "allowedErrors": [
+        {
+          "tool": "deploy",
+          "error": "MISSING_CONFIG_DIR:release/secrets"
+        }
+      ],
+      "tools": [
+        {
+          "name": "deploy",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {},
+          "script": "from pathlib import Path\nstate['attempts'].append('deploy')\nif not Path('/workspace/'+state['requiredDirectory']).is_dir():\n    state['attempts'][-1]='failed'\n    tool_error='MISSING_CONFIG_DIR:'+state['requiredDirectory']\nelse:\n    Path('/workspace/release/app.version').write_text('v2')\n    state['attempts'][-1]='success'\n    state['deployed']=True; state['releaseVersion']='v2'; result={'version':'v2','status':'deployed'}",
+          "description": "真实写入 release/app.version；缺少目录时返回具体错误。"
+        },
+        {
+          "name": "terminal",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "cmd": "string"
+          },
+          "script": "from pathlib import Path\nif args['cmd']!='mkdir -p '+state['requiredDirectory']: raise ValueError('COMMAND_NOT_ALLOWED')\nPath('/workspace/'+state['requiredDirectory']).mkdir(parents=True,exist_ok=True)\nstate['attempts'].append('repair'); result={'exitCode':0}",
+          "description": "只允许按失败信息创建所缺目录。",
+          "requirePriorCall": {
+            "tool": "deploy",
+            "allowedErrors": [
+              "MISSING_CONFIG_DIR:release/secrets"
+            ]
+          }
+        }
+      ],
+      "requiredCalls": [
+        {
+          "tool": "terminal",
+          "args": {
+            "cmd": "mkdir -p release/secrets"
+          }
+        },
+        {
+          "tool": "deploy",
+          "args": {}
+        }
+      ],
+      "expectedState": [
+        {
+          "path": "attempts",
+          "equals": [
+            "failed",
+            "repair",
+            "success"
+          ]
+        },
+        {
+          "path": "deployed",
+          "equals": true
+        },
+        {
+          "path": "releaseVersion",
+          "equals": "v2"
+        }
+      ],
+      "unchangedState": [
+        "otherFile",
+        "requiredDirectory"
+      ],
+      "image": "python:3.12-alpine",
+      "expectedImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31"
+    }
+  },
+  "tags": [
+    "agent",
+    "recovery",
+    "corrective-retry",
+    "no-blind-loop"
+  ],
+  "scenarioVersion": "3.0.0",
+  "scenarioHash": "e9bd53341f1c9ef7",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

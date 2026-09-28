@@ -1,0 +1,15 @@
+{
+  "status": "passed",
+  "counts": {
+    "positive": 24,
+    "negative": 3
+  },
+  "hashes": {
+    "development": "6e7c210ec00db4180c9858d4f2039ae8c698f1126bd03ebf95b66e54341b3c83",
+    "holdout": "2e64df66ea50b4c3682469c8b25cfb2dfc1f463a6d91df4943ce11d77b1191c5",
+    "oracle": "b4e20cf5b12d5c76c90964f308ce8e85e38ac59561deedcedfd82aac1eab2540",
+    "gold": "37e3243a1a46a7b6cb6c729408f6c4fe0c818a1b6a02e129c592d72f9819197f"
+  },
+  "checkedAt": "2026-09-26T13:10:26.717Z",
+  "scope": "Frozen gold and one targeted wrong value per family. No model calls, no full regression suite."
+}

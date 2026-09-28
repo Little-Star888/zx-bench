@@ -1,0 +1,74 @@
+[
+  {
+    "tool": "get_user_info",
+    "args": {
+      "name": "销售总监"
+    }
+  },
+  {
+    "tool": "query_database",
+    "args": {
+      "sql": "SELECT product,SUM(amount) AS amount FROM sales WHERE month='2026-08' GROUP BY product ORDER BY amount DESC LIMIT 10"
+    }
+  },
+  {
+    "tool": "create_excel",
+    "args": {
+      "data": [
+        {
+          "product": "Product-15",
+          "amount": 101890
+        },
+        {
+          "product": "Product-14",
+          "amount": 98190
+        },
+        {
+          "product": "Product-13",
+          "amount": 94490
+        },
+        {
+          "product": "Product-12",
+          "amount": 90790
+        },
+        {
+          "product": "Product-11",
+          "amount": 87090
+        },
+        {
+          "product": "Product-10",
+          "amount": 83390
+        },
+        {
+          "product": "Product-09",
+          "amount": 79690
+        },
+        {
+          "product": "Product-08",
+          "amount": 75990
+        },
+        {
+          "product": "Product-07",
+          "amount": 72290
+        },
+        {
+          "product": "Product-06",
+          "amount": 68590
+        }
+      ],
+      "filename": "top-products.xlsx",
+      "template": "sales"
+    }
+  },
+  {
+    "tool": "send_email",
+    "args": {
+      "to": "director-b@example.test",
+      "subject": "上月销售前十产品",
+      "body": "请查收附件",
+      "attachments": [
+        "top-products.xlsx"
+      ]
+    }
+  }
+]

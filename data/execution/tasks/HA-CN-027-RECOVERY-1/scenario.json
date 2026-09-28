@@ -1,0 +1,120 @@
+{
+  "id": "HA-CN-027-RECOVERY-1",
+  "dimension": "agent_workflow",
+  "category": "scheduling_delivery",
+  "difficulty": "adversarial",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "现在把已配置的每日报告任务运行一次。定时任务会自动交付到原有目标；不要再发送重复消息。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "agent_trace",
+  "graderVersion": "agent_trace_v5",
+  "scoring": {
+    "type": "agent_trace"
+  },
+  "requirements": {
+    "migrationSourceId": "HA-CN-027",
+    "developmentShadow": true,
+    "executionWorld": {
+      "maxTurns": 8,
+      "scoreMode": "strict",
+      "initialState": {
+        "jobs": {
+          "daily-report-b": {
+            "name": "daily-report",
+            "target": "channel-reports-b",
+            "result": "报告 B 已生成"
+          }
+        },
+        "runs": 0,
+        "deliveries": [],
+        "messages": [],
+        "other": "keep"
+      },
+      "tools": [
+        {
+          "name": "cronjob",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "action": "string",
+            "params": "object"
+          },
+          "script": "if args['action']!='run' or args['params'].get('name')!='daily-report': raise ValueError('INVALID_ACTION')\njob=next((x for x in state['jobs'].values() if x['name']=='daily-report'),None)\nif job is None: raise ValueError('JOB_NOT_FOUND')\nstate['runs']+=1; state['deliveries'].append({'target':job['target'],'message':job['result']})\nresult={'status':'completed','delivered':True,'target':job['target']}",
+          "description": "实际运行任务并由本地适配器自动交付一次。"
+        },
+        {
+          "name": "send_message",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "target": "string",
+            "message": "string"
+          },
+          "script": "state['messages'].append(args); state['deliveries'].append(args)\nresult={'sent':True}",
+          "description": "手工发送会在账本中形成第二次交付。"
+        }
+      ],
+      "requiredCalls": [
+        {
+          "tool": "cronjob",
+          "args": {
+            "action": "run",
+            "params": {
+              "name": "daily-report"
+            }
+          }
+        }
+      ],
+      "forbiddenCalls": [
+        "send_message"
+      ],
+      "expectedState": [
+        {
+          "path": "runs",
+          "equals": 1
+        },
+        {
+          "path": "deliveries",
+          "equals": [
+            {
+              "target": "channel-reports-b",
+              "message": "报告 B 已生成"
+            }
+          ]
+        },
+        {
+          "path": "messages",
+          "equals": []
+        }
+      ],
+      "unchangedState": [
+        "jobs",
+        "other"
+      ],
+      "image": "python:3.12-alpine",
+      "expectedImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31"
+    }
+  },
+  "tags": [
+    "agent",
+    "scheduling",
+    "cron-run",
+    "no-redundant-send"
+  ],
+  "scenarioVersion": "3.0.0",
+  "scenarioHash": "da591cf815022901",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

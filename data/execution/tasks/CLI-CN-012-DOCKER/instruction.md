@@ -1,0 +1,1 @@
+工作区 /workspace，Linux sh 和 Python 3 标准库可用。使用 Alpine/BusyBox 工具，提交脚本统一以 POSIX sh 执行，未提供 bash 或 GNU 工具。data/ 含深层文件。按实际字节长度选最大的 10 个普通文件，按字节数降序、同额按路径排序写入 top10.txt；格式「<向上取整的 K/M/G 人类可读大小>\t<路径>」。不可先把大小格式化再排序，也不含目录。只输出可执行 shell 脚本。

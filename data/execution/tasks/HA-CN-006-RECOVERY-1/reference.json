@@ -1,0 +1,14 @@
+[
+  {
+    "tool": "memory.read",
+    "args": {
+      "key": "favorite.language"
+    }
+  },
+  {
+    "tool": "search",
+    "args": {
+      "query": "Rust"
+    }
+  }
+]

@@ -1,0 +1,1 @@
+工作区 /workspace，Linux sh 和 Python 3 标准库可用。使用 Alpine/BusyBox 工具，提交脚本统一以 POSIX sh 执行，未提供 bash 或 GNU 工具。sales.csv 含表头 date,category,amount_usd 和 10000 条数据。按 category 汇总金额，精确到分；写 totals.csv，表头 category,total_usd，金额保留两位小数，按金额数值降序、同额按 category 字典序。支持 CSV 引号、逗号和字段内换行，不能修改输入。只输出可执行 shell 脚本。

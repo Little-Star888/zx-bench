@@ -1,0 +1,1 @@
+工作区 /workspace，Linux sh 和 Python 3 标准库可用。使用 Alpine/BusyBox 工具，提交脚本统一以 POSIX sh 执行，未提供 bash 或 GNU 工具。src/ 含 50 个文件。创建 out.tar.gz，并保存可重复执行的构建程序 build_archive.py（python3 -I build_archive.py）。仅归档普通文件，名称保留 src/ 前缀并按字典序；规范化 tar mtime/uid/gid 为 0、uname/gname 为空、mode 为 0644；gzip mtime 为 0，不保存文件名。源文件内容不变时，即使源 mtime 改变，重复构建必须字节相同。不要修改源文件。只输出可执行 shell 脚本。

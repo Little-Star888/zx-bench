@@ -1,0 +1,137 @@
+{
+  "id": "HA-CN-026-RECOVERY-1",
+  "dimension": "agent_workflow",
+  "category": "scheduling_delivery",
+  "difficulty": "adversarial",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "将已有的健康检查定时任务改为每 30 分钟执行一次，并挂上现有 healthcheck 技能。先查询技能和现有任务，再原位 update；保留原任务 ID 和创建时间，不得新建或删除重建。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "agent_trace",
+  "graderVersion": "agent_trace_v5",
+  "scoring": {
+    "type": "agent_trace"
+  },
+  "requirements": {
+    "migrationSourceId": "HA-CN-026",
+    "developmentShadow": true,
+    "executionWorld": {
+      "maxTurns": 8,
+      "scoreMode": "strict",
+      "initialState": {
+        "jobs": {
+          "health-58": {
+            "id": "health-58",
+            "name": "health-check",
+            "schedule": "0 8 * * *",
+            "skill": null,
+            "createdAt": "2026-01-01T00:00:00Z"
+          }
+        },
+        "skills": [
+          "healthcheck"
+        ],
+        "operations": [],
+        "otherJob": {
+          "id": "archive-1",
+          "schedule": "0 0 * * *"
+        }
+      },
+      "tools": [
+        {
+          "name": "skills_list",
+          "path": "skills",
+          "requiredArgs": {},
+          "description": "列出已存在的技能。",
+          "kind": "read"
+        },
+        {
+          "name": "cronjob",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "action": "string",
+            "params": "object"
+          },
+          "script": "action=args['action']; params=args['params']\nif action=='list':\n    if params: raise ValueError('INVALID_LIST_PARAMS')\n    state['operations'].append('list'); result={'jobs':list(state['jobs'].values())}\nelif action=='update':\n    id=params.get('id'); job=state['jobs'].get(id)\n    if job is None or params.get('schedule')!='*/30 * * * *' or params.get('skill') not in state['skills']: raise ValueError('INVALID_UPDATE')\n    job['schedule']=params['schedule']; job['skill']=params['skill']\n    state['operations'].append('update'); result=job\nelif action=='create':\n    id='duplicate-'+str(len(state['jobs']))\n    state['jobs'][id]={'id':id,**params}; state['operations'].append('create'); result=state['jobs'][id]\nelse: raise ValueError('ACTION_NOT_ALLOWED')",
+          "description": "支持 list/update/create；create 会真的新增一个合成任务。",
+          "requirePriorCall": {
+            "tool": "skills_list"
+          }
+        }
+      ],
+      "requiredCalls": [
+        {
+          "tool": "skills_list",
+          "args": {}
+        },
+        {
+          "tool": "cronjob",
+          "args": {
+            "action": "list",
+            "params": {}
+          }
+        },
+        {
+          "tool": "cronjob",
+          "args": {
+            "action": "update",
+            "params": {
+              "id": "health-58",
+              "schedule": "*/30 * * * *",
+              "skill": "healthcheck"
+            }
+          }
+        }
+      ],
+      "expectedState": [
+        {
+          "path": "jobs",
+          "equals": {
+            "health-58": {
+              "id": "health-58",
+              "name": "health-check",
+              "schedule": "*/30 * * * *",
+              "skill": "healthcheck",
+              "createdAt": "2026-01-01T00:00:00Z"
+            }
+          }
+        },
+        {
+          "path": "operations",
+          "equals": [
+            "list",
+            "update"
+          ]
+        }
+      ],
+      "unchangedState": [
+        "skills",
+        "otherJob"
+      ],
+      "image": "python:3.12-alpine",
+      "expectedImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31"
+    }
+  },
+  "tags": [
+    "agent",
+    "scheduling",
+    "cron-update",
+    "not-recreate"
+  ],
+  "scenarioVersion": "3.0.0",
+  "scenarioHash": "47f13ae71ac66f52",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

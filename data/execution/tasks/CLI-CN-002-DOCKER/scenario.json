@@ -1,0 +1,74 @@
+{
+  "id": "CLI-CN-002-DOCKER",
+  "dimension": "cli_deep_tasks",
+  "category": "text_processing",
+  "difficulty": "hard",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "在 /workspace 中执行任务。环境为 Alpine/BusyBox，提供 POSIX sh 和 Python 3 标准库，不提供 bash 或 GNU 工具；提交脚本统一以 sh 执行。mixed.txt 是混杂文本，含 mailto 链接和引号内邮箱。提取符合简化 RFC 模式 [A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,} 的所有邮箱，转为小写、不区分大小写去重后按 ASCII 升序写入 emails.txt。只输出可执行 shell 脚本。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "cli_command",
+  "graderVersion": "cli_command_v1",
+  "scoring": {
+    "type": "cli_command",
+    "mode": "executed_state"
+  },
+  "requirements": {
+    "executionImage": "python:3.12-alpine",
+    "executionImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31",
+    "executionInterpreter": "sh",
+    "executionCases": [
+      {
+        "files": [
+          {
+            "path": "mixed.txt",
+            "content": "mailto:Alice.Example+tag@Example.COM, alice.example+TAG@example.com; CSV,\"bob_2@sub.test.org\"; x@y.co!\n"
+          }
+        ],
+        "expectedFiles": {
+          "emails.txt": "alice.example+tag@example.com\nbob_2@sub.test.org\nx@y.co\n"
+        },
+        "unchangedFiles": [
+          "mixed.txt"
+        ]
+      },
+      {
+        "files": [
+          {
+            "path": "mixed.txt",
+            "content": "NOPE, \"Z@A.IO\" / z@a.io; a.b+1@EXAMPLE.net.\n"
+          }
+        ],
+        "expectedFiles": {
+          "emails.txt": "a.b+1@example.net\nz@a.io\n"
+        },
+        "unchangedFiles": [
+          "mixed.txt"
+        ]
+      }
+    ],
+    "migrationSourceId": "CLI-CN-002",
+    "developmentShadow": true
+  },
+  "tags": [
+    "cli",
+    "text",
+    "regex",
+    "dedup"
+  ],
+  "scenarioVersion": "2.1.0",
+  "scenarioHash": "e1d1cf9ef2d3b824",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

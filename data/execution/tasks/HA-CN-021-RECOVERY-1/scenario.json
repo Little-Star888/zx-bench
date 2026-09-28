@@ -1,0 +1,138 @@
+{
+  "id": "HA-CN-021-RECOVERY-1",
+  "dimension": "agent_workflow",
+  "category": "skills_procedural",
+  "difficulty": "adversarial",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "更新现有部署技能的步骤。先 skill_view 读取原文，再通过 skill_manage(action=patch) 原位追加验证步骤；直接 fs.write 改技能目录违规。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "agent_trace",
+  "graderVersion": "agent_trace_v5",
+  "scoring": {
+    "type": "agent_trace"
+  },
+  "requirements": {
+    "migrationSourceId": "HA-CN-021",
+    "developmentShadow": true,
+    "executionWorld": {
+      "maxTurns": 8,
+      "scoreMode": "strict",
+      "initialState": {
+        "skills": {
+          "deployment": "# Deploy\n1. Build\n2. Push\n",
+          "other": "# untouched\n"
+        },
+        "viewed": false,
+        "patches": 0,
+        "rawWrites": 0,
+        "other": "keep"
+      },
+      "tools": [
+        {
+          "name": "skill_view",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "name": "string"
+          },
+          "script": "if args['name']!='deployment': raise ValueError('NOT_FOUND')\nstate['viewed']=True; result={'content':state['skills']['deployment']}",
+          "description": "读取现有技能。"
+        },
+        {
+          "name": "skill_manage",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "action": "string",
+            "name": "string",
+            "append": "string"
+          },
+          "script": "if args['action']!='patch' or args['name']!='deployment' or args['append']!='3. Verify rollback plan\\n': raise ValueError('INVALID_PATCH')\nstate['skills']['deployment']+=args['append']; state['patches']+=1; result={'patched':True}",
+          "description": "原生技能补丁。",
+          "requirePriorCall": {
+            "tool": "skill_view",
+            "sameArgs": [
+              "name"
+            ]
+          }
+        },
+        {
+          "name": "fs.write",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "path": "string",
+            "content": "string"
+          },
+          "script": "state['rawWrites']+=1; result={'written':True}",
+          "description": "违规直写。"
+        }
+      ],
+      "requiredCalls": [
+        {
+          "tool": "skill_view",
+          "args": {
+            "name": "deployment"
+          }
+        },
+        {
+          "tool": "skill_manage",
+          "args": {
+            "action": "patch",
+            "name": "deployment",
+            "append": "3. Verify rollback plan\n"
+          }
+        }
+      ],
+      "forbiddenCalls": [
+        "fs.write"
+      ],
+      "expectedState": [
+        {
+          "path": "skills/deployment",
+          "equals": "# Deploy\n1. Build\n2. Push\n3. Verify rollback plan\n"
+        },
+        {
+          "path": "viewed",
+          "equals": true
+        },
+        {
+          "path": "patches",
+          "equals": 1
+        },
+        {
+          "path": "rawWrites",
+          "equals": 0
+        }
+      ],
+      "unchangedState": [
+        "skills/other",
+        "other"
+      ],
+      "image": "python:3.12-alpine",
+      "expectedImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31"
+    }
+  },
+  "tags": [
+    "agent",
+    "skill",
+    "native-primitive",
+    "no-bypass"
+  ],
+  "scenarioVersion": "3.0.0",
+  "scenarioHash": "9f564224083e72e3",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

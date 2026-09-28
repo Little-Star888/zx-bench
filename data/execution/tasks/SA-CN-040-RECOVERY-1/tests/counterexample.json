@@ -1,0 +1,10 @@
+[
+  {
+    "tool": "database.inspect",
+    "args": {}
+  },
+  {
+    "tool": "execute_sql",
+    "args": {}
+  }
+]

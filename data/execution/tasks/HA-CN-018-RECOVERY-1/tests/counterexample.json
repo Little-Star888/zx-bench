@@ -1,0 +1,9 @@
+[
+  {
+    "tool": "fs.write",
+    "args": {
+      "path": "notes/postmortem.txt",
+      "content": "未经查看技能直接写入"
+    }
+  }
+]

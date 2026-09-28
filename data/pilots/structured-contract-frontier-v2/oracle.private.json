@@ -1,0 +1,702 @@
+{
+  "SOC4-E-CAP-LEDGER": {
+    "expected": {
+      "records": [
+        {
+          "eventId": "E1",
+          "accountId": "AC-01",
+          "units": 5,
+          "billedUnits": 5,
+          "rejectedUnits": 0,
+          "status": "billed",
+          "sourceIds": [
+            "E1",
+            "I1",
+            "P1"
+          ]
+        },
+        {
+          "eventId": "E2",
+          "accountId": "AC-02",
+          "units": 4,
+          "billedUnits": 4,
+          "rejectedUnits": 0,
+          "status": "billed",
+          "sourceIds": [
+            "E2",
+            "I2",
+            "P2"
+          ]
+        },
+        {
+          "eventId": "E5",
+          "accountId": "AC-03",
+          "units": 3,
+          "billedUnits": 0,
+          "rejectedUnits": 3,
+          "status": "excluded",
+          "reason": "before_start",
+          "sourceIds": [
+            "E5",
+            "I3",
+            "P3"
+          ]
+        },
+        {
+          "eventId": "E3",
+          "accountId": "AC-01",
+          "units": 8,
+          "billedUnits": 7,
+          "rejectedUnits": 1,
+          "status": "capped",
+          "reason": "cap",
+          "sourceIds": [
+            "E3",
+            "R1",
+            "I1",
+            "P1"
+          ]
+        },
+        {
+          "eventId": "E4",
+          "accountId": "AC-01",
+          "units": 5,
+          "billedUnits": 0,
+          "rejectedUnits": 5,
+          "status": "capped",
+          "reason": "cap",
+          "sourceIds": [
+            "E4",
+            "I1",
+            "P1"
+          ]
+        },
+        {
+          "eventId": "E6",
+          "accountId": "AC-03",
+          "units": 6,
+          "billedUnits": 6,
+          "rejectedUnits": 0,
+          "status": "billed",
+          "sourceIds": [
+            "E6",
+            "I3",
+            "P3"
+          ]
+        },
+        {
+          "eventId": "E7",
+          "accountId": "AC-02",
+          "units": 3,
+          "billedUnits": 0,
+          "rejectedUnits": 3,
+          "status": "excluded",
+          "reason": "service",
+          "sourceIds": [
+            "E7",
+            "I2",
+            "P2"
+          ]
+        },
+        {
+          "eventId": "E8",
+          "accountId": "AC-01",
+          "units": 2,
+          "billedUnits": 0,
+          "rejectedUnits": 2,
+          "status": "excluded",
+          "reason": "void",
+          "sourceIds": [
+            "E8",
+            "R2",
+            "I1",
+            "P1"
+          ]
+        },
+        {
+          "eventId": "E9",
+          "accountId": "AC-02",
+          "units": 7,
+          "billedUnits": 5,
+          "rejectedUnits": 2,
+          "status": "capped",
+          "reason": "cap",
+          "sourceIds": [
+            "E9",
+            "R4",
+            "I2",
+            "P2"
+          ]
+        }
+      ],
+      "totals": [
+        {
+          "accountId": "AC-01",
+          "billedUnits": 12
+        },
+        {
+          "accountId": "AC-02",
+          "billedUnits": 9
+        },
+        {
+          "accountId": "AC-03",
+          "billedUnits": 6
+        }
+      ]
+    },
+    "sources": {
+      "I1": "identities: {\"id\":\"I1\",\"alias\":\"A/01\",\"accountId\":\"AC-01\",\"active\":true}",
+      "I2": "identities: {\"id\":\"I2\",\"alias\":\"A/1\",\"accountId\":\"AC-02\",\"active\":true}",
+      "I3": "identities: {\"id\":\"I3\",\"alias\":\"C~03\",\"accountId\":\"AC-03\",\"active\":true}",
+      "P1": "plans: {\"id\":\"P1\",\"accountId\":\"AC-01\",\"monthlyCap\":12,\"starts\":\"2026-09-01\",\"services\":[\"compute\",\"storage\"]}",
+      "P2": "plans: {\"id\":\"P2\",\"accountId\":\"AC-02\",\"monthlyCap\":9,\"starts\":\"2026-09-01\",\"services\":[\"storage\"]}",
+      "P3": "plans: {\"id\":\"P3\",\"accountId\":\"AC-03\",\"monthlyCap\":7,\"starts\":\"2026-09-05\",\"services\":[\"compute\"]}",
+      "E4": "events: {\"id\":\"E4\",\"alias\":\"A/01\",\"service\":\"compute\",\"units\":5,\"day\":\"2026-09-06\"}",
+      "E2": "events: {\"id\":\"E2\",\"alias\":\"A/1\",\"service\":\"storage\",\"units\":4,\"day\":\"2026-09-04\"}",
+      "E6": "events: {\"id\":\"E6\",\"alias\":\"C~03\",\"service\":\"compute\",\"units\":6,\"day\":\"2026-09-07\"}",
+      "E1": "events: {\"id\":\"E1\",\"alias\":\"A/01\",\"service\":\"compute\",\"units\":5,\"day\":\"2026-09-03\"}",
+      "E8": "events: {\"id\":\"E8\",\"alias\":\"A/01\",\"service\":\"storage\",\"units\":2,\"day\":\"2026-09-08\"}",
+      "E9": "events: {\"id\":\"E9\",\"alias\":\"A/1\",\"service\":\"storage\",\"units\":8,\"day\":\"2026-09-09\"}",
+      "E3": "events: {\"id\":\"E3\",\"alias\":\"A/01\",\"service\":\"storage\",\"units\":6,\"day\":\"2026-09-05\"}",
+      "E5": "events: {\"id\":\"E5\",\"alias\":\"C~03\",\"service\":\"compute\",\"units\":3,\"day\":\"2026-09-04\"}",
+      "E7": "events: {\"id\":\"E7\",\"alias\":\"A/1\",\"service\":\"compute\",\"units\":3,\"day\":\"2026-09-08\"}",
+      "R1": "revisions: {\"id\":\"R1\",\"target\":\"E3\",\"revision\":4,\"units\":8}",
+      "R2": "revisions: {\"id\":\"R2\",\"target\":\"E8\",\"revision\":2,\"void\":true}",
+      "R3": "revisions: {\"id\":\"R3\",\"target\":\"E3\",\"revision\":1,\"units\":7}",
+      "R4": "revisions: {\"id\":\"R4\",\"target\":\"E9\",\"revision\":3,\"units\":7}"
+    },
+    "provenance": {
+      "/records/0/eventId": [
+        "E1",
+        "I1",
+        "P1"
+      ],
+      "/records/0/accountId": [
+        "E1",
+        "I1",
+        "P1"
+      ],
+      "/records/0/units": [
+        "E1",
+        "I1",
+        "P1"
+      ],
+      "/records/0/billedUnits": [
+        "E1",
+        "I1",
+        "P1"
+      ],
+      "/records/0/rejectedUnits": [
+        "E1",
+        "I1",
+        "P1"
+      ],
+      "/records/0/status": [
+        "E1",
+        "I1",
+        "P1"
+      ],
+      "/records/0/sourceIds/0": [
+        "E1",
+        "I1",
+        "P1"
+      ],
+      "/records/0/sourceIds/1": [
+        "E1",
+        "I1",
+        "P1"
+      ],
+      "/records/0/sourceIds/2": [
+        "E1",
+        "I1",
+        "P1"
+      ],
+      "/records/1/eventId": [
+        "E2",
+        "I2",
+        "P2"
+      ],
+      "/records/1/accountId": [
+        "E2",
+        "I2",
+        "P2"
+      ],
+      "/records/1/units": [
+        "E2",
+        "I2",
+        "P2"
+      ],
+      "/records/1/billedUnits": [
+        "E2",
+        "I2",
+        "P2"
+      ],
+      "/records/1/rejectedUnits": [
+        "E2",
+        "I2",
+        "P2"
+      ],
+      "/records/1/status": [
+        "E2",
+        "I2",
+        "P2"
+      ],
+      "/records/1/sourceIds/0": [
+        "E2",
+        "I2",
+        "P2"
+      ],
+      "/records/1/sourceIds/1": [
+        "E2",
+        "I2",
+        "P2"
+      ],
+      "/records/1/sourceIds/2": [
+        "E2",
+        "I2",
+        "P2"
+      ],
+      "/records/2/eventId": [
+        "E5",
+        "I3",
+        "P3"
+      ],
+      "/records/2/accountId": [
+        "E5",
+        "I3",
+        "P3"
+      ],
+      "/records/2/units": [
+        "E5",
+        "I3",
+        "P3"
+      ],
+      "/records/2/billedUnits": [
+        "E5",
+        "I3",
+        "P3"
+      ],
+      "/records/2/rejectedUnits": [
+        "E5",
+        "I3",
+        "P3"
+      ],
+      "/records/2/status": [
+        "E5",
+        "I3",
+        "P3"
+      ],
+      "/records/2/reason": [
+        "E5",
+        "I3",
+        "P3"
+      ],
+      "/records/2/sourceIds/0": [
+        "E5",
+        "I3",
+        "P3"
+      ],
+      "/records/2/sourceIds/1": [
+        "E5",
+        "I3",
+        "P3"
+      ],
+      "/records/2/sourceIds/2": [
+        "E5",
+        "I3",
+        "P3"
+      ],
+      "/records/3/eventId": [
+        "E3",
+        "R1",
+        "I1",
+        "P1"
+      ],
+      "/records/3/accountId": [
+        "E3",
+        "R1",
+        "I1",
+        "P1"
+      ],
+      "/records/3/units": [
+        "E3",
+        "R1",
+        "I1",
+        "P1"
+      ],
+      "/records/3/billedUnits": [
+        "E3",
+        "R1",
+        "I1",
+        "P1"
+      ],
+      "/records/3/rejectedUnits": [
+        "E3",
+        "R1",
+        "I1",
+        "P1"
+      ],
+      "/records/3/status": [
+        "E3",
+        "R1",
+        "I1",
+        "P1"
+      ],
+      "/records/3/reason": [
+        "E3",
+        "R1",
+        "I1",
+        "P1"
+      ],
+      "/records/3/sourceIds/0": [
+        "E3",
+        "R1",
+        "I1",
+        "P1"
+      ],
+      "/records/3/sourceIds/1": [
+        "E3",
+        "R1",
+        "I1",
+        "P1"
+      ],
+      "/records/3/sourceIds/2": [
+        "E3",
+        "R1",
+        "I1",
+        "P1"
+      ],
+      "/records/3/sourceIds/3": [
+        "E3",
+        "R1",
+        "I1",
+        "P1"
+      ],
+      "/records/4/eventId": [
+        "E4",
+        "I1",
+        "P1"
+      ],
+      "/records/4/accountId": [
+        "E4",
+        "I1",
+        "P1"
+      ],
+      "/records/4/units": [
+        "E4",
+        "I1",
+        "P1"
+      ],
+      "/records/4/billedUnits": [
+        "E4",
+        "I1",
+        "P1"
+      ],
+      "/records/4/rejectedUnits": [
+        "E4",
+        "I1",
+        "P1"
+      ],
+      "/records/4/status": [
+        "E4",
+        "I1",
+        "P1"
+      ],
+      "/records/4/reason": [
+        "E4",
+        "I1",
+        "P1"
+      ],
+      "/records/4/sourceIds/0": [
+        "E4",
+        "I1",
+        "P1"
+      ],
+      "/records/4/sourceIds/1": [
+        "E4",
+        "I1",
+        "P1"
+      ],
+      "/records/4/sourceIds/2": [
+        "E4",
+        "I1",
+        "P1"
+      ],
+      "/records/5/eventId": [
+        "E6",
+        "I3",
+        "P3"
+      ],
+      "/records/5/accountId": [
+        "E6",
+        "I3",
+        "P3"
+      ],
+      "/records/5/units": [
+        "E6",
+        "I3",
+        "P3"
+      ],
+      "/records/5/billedUnits": [
+        "E6",
+        "I3",
+        "P3"
+      ],
+      "/records/5/rejectedUnits": [
+        "E6",
+        "I3",
+        "P3"
+      ],
+      "/records/5/status": [
+        "E6",
+        "I3",
+        "P3"
+      ],
+      "/records/5/sourceIds/0": [
+        "E6",
+        "I3",
+        "P3"
+      ],
+      "/records/5/sourceIds/1": [
+        "E6",
+        "I3",
+        "P3"
+      ],
+      "/records/5/sourceIds/2": [
+        "E6",
+        "I3",
+        "P3"
+      ],
+      "/records/6/eventId": [
+        "E7",
+        "I2",
+        "P2"
+      ],
+      "/records/6/accountId": [
+        "E7",
+        "I2",
+        "P2"
+      ],
+      "/records/6/units": [
+        "E7",
+        "I2",
+        "P2"
+      ],
+      "/records/6/billedUnits": [
+        "E7",
+        "I2",
+        "P2"
+      ],
+      "/records/6/rejectedUnits": [
+        "E7",
+        "I2",
+        "P2"
+      ],
+      "/records/6/status": [
+        "E7",
+        "I2",
+        "P2"
+      ],
+      "/records/6/reason": [
+        "E7",
+        "I2",
+        "P2"
+      ],
+      "/records/6/sourceIds/0": [
+        "E7",
+        "I2",
+        "P2"
+      ],
+      "/records/6/sourceIds/1": [
+        "E7",
+        "I2",
+        "P2"
+      ],
+      "/records/6/sourceIds/2": [
+        "E7",
+        "I2",
+        "P2"
+      ],
+      "/records/7/eventId": [
+        "E8",
+        "R2",
+        "I1",
+        "P1"
+      ],
+      "/records/7/accountId": [
+        "E8",
+        "R2",
+        "I1",
+        "P1"
+      ],
+      "/records/7/units": [
+        "E8",
+        "R2",
+        "I1",
+        "P1"
+      ],
+      "/records/7/billedUnits": [
+        "E8",
+        "R2",
+        "I1",
+        "P1"
+      ],
+      "/records/7/rejectedUnits": [
+        "E8",
+        "R2",
+        "I1",
+        "P1"
+      ],
+      "/records/7/status": [
+        "E8",
+        "R2",
+        "I1",
+        "P1"
+      ],
+      "/records/7/reason": [
+        "E8",
+        "R2",
+        "I1",
+        "P1"
+      ],
+      "/records/7/sourceIds/0": [
+        "E8",
+        "R2",
+        "I1",
+        "P1"
+      ],
+      "/records/7/sourceIds/1": [
+        "E8",
+        "R2",
+        "I1",
+        "P1"
+      ],
+      "/records/7/sourceIds/2": [
+        "E8",
+        "R2",
+        "I1",
+        "P1"
+      ],
+      "/records/7/sourceIds/3": [
+        "E8",
+        "R2",
+        "I1",
+        "P1"
+      ],
+      "/records/8/eventId": [
+        "E9",
+        "R4",
+        "I2",
+        "P2"
+      ],
+      "/records/8/accountId": [
+        "E9",
+        "R4",
+        "I2",
+        "P2"
+      ],
+      "/records/8/units": [
+        "E9",
+        "R4",
+        "I2",
+        "P2"
+      ],
+      "/records/8/billedUnits": [
+        "E9",
+        "R4",
+        "I2",
+        "P2"
+      ],
+      "/records/8/rejectedUnits": [
+        "E9",
+        "R4",
+        "I2",
+        "P2"
+      ],
+      "/records/8/status": [
+        "E9",
+        "R4",
+        "I2",
+        "P2"
+      ],
+      "/records/8/reason": [
+        "E9",
+        "R4",
+        "I2",
+        "P2"
+      ],
+      "/records/8/sourceIds/0": [
+        "E9",
+        "R4",
+        "I2",
+        "P2"
+      ],
+      "/records/8/sourceIds/1": [
+        "E9",
+        "R4",
+        "I2",
+        "P2"
+      ],
+      "/records/8/sourceIds/2": [
+        "E9",
+        "R4",
+        "I2",
+        "P2"
+      ],
+      "/records/8/sourceIds/3": [
+        "E9",
+        "R4",
+        "I2",
+        "P2"
+      ],
+      "/totals/0/accountId": [
+        "E1",
+        "I1",
+        "P1",
+        "E3",
+        "R1",
+        "E4",
+        "E8",
+        "R2"
+      ],
+      "/totals/0/billedUnits": [
+        "E1",
+        "I1",
+        "P1",
+        "E3",
+        "R1",
+        "E4",
+        "E8",
+        "R2"
+      ],
+      "/totals/1/accountId": [
+        "E2",
+        "I2",
+        "P2",
+        "E7",
+        "E9",
+        "R4"
+      ],
+      "/totals/1/billedUnits": [
+        "E2",
+        "I2",
+        "P2",
+        "E7",
+        "E9",
+        "R4"
+      ],
+      "/totals/2/accountId": [
+        "E5",
+        "I3",
+        "P3",
+        "E6"
+      ],
+      "/totals/2/billedUnits": [
+        "E5",
+        "I3",
+        "P3",
+        "E6"
+      ]
+    }
+  }
+}

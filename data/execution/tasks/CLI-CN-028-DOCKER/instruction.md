@@ -1,0 +1,1 @@
+工作区 /workspace，Linux sh 和 Python 3 标准库可用。也提供 bash；脚本按 sh/bash shebang 选择解释器，无 shebang 使用 sh。code/ 中真实 make build 因 Makefile 把 Main.c 写成 main.c 而失败。只修 Makefile 的文件名引用，之后重跑 make build 并执行产物；不能创建符号链接或复制源码。只输出可执行 shell 脚本。

@@ -1,0 +1,15 @@
+[
+  {
+    "tool": "get_server_metrics",
+    "args": {
+      "host": "node-b"
+    }
+  },
+  {
+    "tool": "scale_up_cluster",
+    "args": {
+      "host": "node-b",
+      "n": 1
+    }
+  }
+]

@@ -1,0 +1,19 @@
+[
+  {
+    "tool": "skills_list",
+    "args": {}
+  },
+  {
+    "tool": "skill_view",
+    "args": {
+      "name": "postmortem"
+    }
+  },
+  {
+    "tool": "fs.write",
+    "args": {
+      "path": "notes/postmortem.txt",
+      "content": "已按技能流程完成核对。"
+    }
+  }
+]

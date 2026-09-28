@@ -1,0 +1,9 @@
+[
+  {
+    "tool": "memory_save",
+    "args": {
+      "key": "proj-b.database",
+      "value": "CockroachDB"
+    }
+  }
+]

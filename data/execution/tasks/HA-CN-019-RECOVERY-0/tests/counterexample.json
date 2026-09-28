@@ -1,0 +1,24 @@
+[
+  {
+    "tool": "skill_view",
+    "args": {
+      "name": "deployment"
+    }
+  },
+  {
+    "tool": "skill_manage",
+    "args": {
+      "action": "delete",
+      "params": {}
+    }
+  },
+  {
+    "tool": "skill_manage",
+    "args": {
+      "action": "create",
+      "params": {
+        "content": "# new\n"
+      }
+    }
+  }
+]

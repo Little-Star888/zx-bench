@@ -1,0 +1,11 @@
+[
+  {
+    "tool": "cronjob",
+    "args": {
+      "action": "run",
+      "params": {
+        "name": "daily-report"
+      }
+    }
+  }
+]

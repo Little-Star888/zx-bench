@@ -1,0 +1,189 @@
+{
+  "id": "TC-CN-013-RECOVERY-1",
+  "dimension": "tool_cli_workflow",
+  "category": "parameter_precision",
+  "difficulty": "hard",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "查询 2026 年 8 月上海、杭州、南京销售额超过 10 万元的客户，按金额数值降序取前 20。使用真实只读 SQLite 查询，避免把上上月订单混入。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "tool_call_trace",
+  "graderVersion": "tool_trace_v4",
+  "scoring": {
+    "type": "tool_call_trace"
+  },
+  "requirements": {
+    "migrationSourceId": "TC-CN-013",
+    "developmentShadow": true,
+    "executionWorld": {
+      "maxTurns": 8,
+      "scoreMode": "strict",
+      "initialState": {
+        "initialized": false,
+        "queries": [],
+        "rows": null,
+        "other": "keep"
+      },
+      "tools": [
+        {
+          "name": "query_database",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "database": "string",
+            "sql": "string"
+          },
+          "script": "import sqlite3\nfrom pathlib import Path\ndb=Path('/workspace/sales-query.db')\nif not state['initialized']:\n    con=sqlite3.connect(db)\n    con.executescript('CREATE TABLE customers(id INTEGER PRIMARY KEY,name TEXT,city TEXT); CREATE TABLE orders(id INTEGER PRIMARY KEY,customer_id INTEGER,amount INTEGER,created_at TEXT);')\n    for i in range(38):\n        city=['上海','杭州','南京','北京'][i%4]\n        con.execute('INSERT INTO customers VALUES(?,?,?)',(i+1,'customer-'+str(i+1),city))\n        con.execute('INSERT INTO orders(customer_id,amount,created_at) VALUES(?,?,?)',(i+1,105000+i*3100+50,'2026-08-15'))\n        if i<5: con.execute('INSERT INTO orders(customer_id,amount,created_at) VALUES(?,?,?)',(i+1,500000,'2026-07-15'))\n    con.commit(); con.close(); state['initialized']=True\nif args['database']!='sales' or not args['sql'].lstrip().upper().startswith('SELECT'): raise ValueError('READ_ONLY_QUERY_REQUIRED')\ncon=sqlite3.connect('file:'+str(db)+'?mode=ro',uri=True)\ntry: rows=[{'id':r[0],'name':r[1],'total':r[2]} for r in con.execute(args['sql']).fetchall()]\nfinally: con.close()\nstate['queries'].append(args['sql']); state['rows']=rows; result={'rows':rows}",
+          "description": "在只读 SQLite 连接中实际执行 SQL。"
+        }
+      ],
+      "requiredCalls": [
+        {
+          "tool": "query_database",
+          "args": {
+            "database": "sales"
+          }
+        }
+      ],
+      "expectedState": [
+        {
+          "path": "queries/length",
+          "equals": 1
+        },
+        {
+          "path": "rows",
+          "equals": [
+            {
+              "id": 38,
+              "name": "customer-38",
+              "total": 219750
+            },
+            {
+              "id": 37,
+              "name": "customer-37",
+              "total": 216650
+            },
+            {
+              "id": 35,
+              "name": "customer-35",
+              "total": 210450
+            },
+            {
+              "id": 34,
+              "name": "customer-34",
+              "total": 207350
+            },
+            {
+              "id": 33,
+              "name": "customer-33",
+              "total": 204250
+            },
+            {
+              "id": 31,
+              "name": "customer-31",
+              "total": 198050
+            },
+            {
+              "id": 30,
+              "name": "customer-30",
+              "total": 194950
+            },
+            {
+              "id": 29,
+              "name": "customer-29",
+              "total": 191850
+            },
+            {
+              "id": 27,
+              "name": "customer-27",
+              "total": 185650
+            },
+            {
+              "id": 26,
+              "name": "customer-26",
+              "total": 182550
+            },
+            {
+              "id": 25,
+              "name": "customer-25",
+              "total": 179450
+            },
+            {
+              "id": 23,
+              "name": "customer-23",
+              "total": 173250
+            },
+            {
+              "id": 22,
+              "name": "customer-22",
+              "total": 170150
+            },
+            {
+              "id": 21,
+              "name": "customer-21",
+              "total": 167050
+            },
+            {
+              "id": 19,
+              "name": "customer-19",
+              "total": 160850
+            },
+            {
+              "id": 18,
+              "name": "customer-18",
+              "total": 157750
+            },
+            {
+              "id": 17,
+              "name": "customer-17",
+              "total": 154650
+            },
+            {
+              "id": 15,
+              "name": "customer-15",
+              "total": 148450
+            },
+            {
+              "id": 14,
+              "name": "customer-14",
+              "total": 145350
+            },
+            {
+              "id": 13,
+              "name": "customer-13",
+              "total": 142250
+            }
+          ]
+        }
+      ],
+      "unchangedState": [
+        "other"
+      ],
+      "finalMessageMustContain": [
+        "customer-38"
+      ],
+      "image": "python:3.12-alpine",
+      "expectedImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31"
+    }
+  },
+  "tags": [
+    "chinese",
+    "parameter-precision",
+    "sql-construction"
+  ],
+  "scenarioVersion": "3.0.0",
+  "scenarioHash": "a0dd81c675bb5435",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

@@ -1,0 +1,8 @@
+[
+  {
+    "tool": "calendar.list",
+    "args": {
+      "date": "today"
+    }
+  }
+]

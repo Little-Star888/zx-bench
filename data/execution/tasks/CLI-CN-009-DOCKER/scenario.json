@@ -1,0 +1,116 @@
+{
+  "id": "CLI-CN-009-DOCKER",
+  "dimension": "cli_deep_tasks",
+  "category": "filesystem_ops",
+  "difficulty": "adversarial",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "在 /workspace 中执行任务。环境为 Alpine/BusyBox，提供 POSIX sh 和 Python 3 标准库，不提供 bash 或 GNU 工具；提交脚本统一以 sh 执行。files/ 中有内容相同的文件。按 SHA-256 对内容分组，每组只保留修改时间最旧的一个，删除同组其余文件，内容唯一的文件不动。只输出可执行 shell 脚本。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "cli_command",
+  "graderVersion": "cli_command_v1",
+  "scoring": {
+    "type": "cli_command",
+    "mode": "executed_state"
+  },
+  "requirements": {
+    "executionImage": "python:3.12-alpine",
+    "executionImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31",
+    "executionInterpreter": "sh",
+    "executionCases": [
+      {
+        "files": [
+          {
+            "path": "files/old.txt",
+            "content": "same"
+          },
+          {
+            "path": "files/new.txt",
+            "content": "same"
+          },
+          {
+            "path": "files/unique.txt",
+            "content": "unique"
+          }
+        ],
+        "setupCommands": [
+          "python3 - <<'PY'\nimport os\nfrom datetime import datetime, timezone\nfor path, iso in [[\"files/old.txt\",\"2025-01-01T00:00:00Z\"],[\"files/new.txt\",\"2025-02-01T00:00:00Z\"],[\"files/unique.txt\",\"2025-03-01T00:00:00Z\"]]:\n    timestamp = datetime.fromisoformat(iso.replace('Z', '+00:00')).timestamp()\n    os.utime(path, (timestamp, timestamp))\nPY"
+        ],
+        "expectedFiles": {
+          "files/old.txt": "same",
+          "files/unique.txt": "unique"
+        },
+        "unchangedFiles": [
+          "files/old.txt",
+          "files/unique.txt"
+        ],
+        "absentFiles": [
+          "files/new.txt"
+        ]
+      },
+      {
+        "files": [
+          {
+            "path": "files/a.txt",
+            "content": "group1"
+          },
+          {
+            "path": "files/b.txt",
+            "content": "group1"
+          },
+          {
+            "path": "files/c.txt",
+            "content": "group1"
+          },
+          {
+            "path": "files/d.txt",
+            "content": "group2"
+          },
+          {
+            "path": "files/e.txt",
+            "content": "group2"
+          }
+        ],
+        "setupCommands": [
+          "python3 - <<'PY'\nimport os\nfrom datetime import datetime, timezone\nfor path, iso in [[\"files/a.txt\",\"2025-03-01T00:00:00Z\"],[\"files/b.txt\",\"2025-01-01T00:00:00Z\"],[\"files/c.txt\",\"2025-02-01T00:00:00Z\"],[\"files/d.txt\",\"2025-04-01T00:00:00Z\"],[\"files/e.txt\",\"2025-05-01T00:00:00Z\"]]:\n    timestamp = datetime.fromisoformat(iso.replace('Z', '+00:00')).timestamp()\n    os.utime(path, (timestamp, timestamp))\nPY"
+        ],
+        "expectedFiles": {
+          "files/b.txt": "group1",
+          "files/d.txt": "group2"
+        },
+        "unchangedFiles": [
+          "files/b.txt",
+          "files/d.txt"
+        ],
+        "absentFiles": [
+          "files/a.txt",
+          "files/c.txt",
+          "files/e.txt"
+        ]
+      }
+    ],
+    "migrationSourceId": "CLI-CN-009",
+    "developmentShadow": true
+  },
+  "tags": [
+    "cli",
+    "fs",
+    "dedup-hash",
+    "trap"
+  ],
+  "scenarioVersion": "2.1.0",
+  "scenarioHash": "7c82c4cff2968e45",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

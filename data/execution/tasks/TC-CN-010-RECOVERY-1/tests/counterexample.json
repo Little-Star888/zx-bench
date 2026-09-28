@@ -1,0 +1,28 @@
+[
+  {
+    "tool": "create_promotion",
+    "args": {
+      "config": {
+        "name": "618大促-B",
+        "start_date": "2026-06-01",
+        "end_date": "2026-06-18",
+        "rules": [
+          {
+            "threshold": 300,
+            "discount": 50
+          },
+          {
+            "threshold": 600,
+            "discount": 120
+          },
+          {
+            "threshold": 1000,
+            "discount": 250
+          }
+        ],
+        "daily_limit_per_user": 30,
+        "channel": "APP"
+      }
+    }
+  }
+]

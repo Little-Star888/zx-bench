@@ -1,0 +1,14 @@
+[
+  {
+    "tool": "fs.list",
+    "args": {
+      "pattern": "data/*.json"
+    }
+  },
+  {
+    "tool": "execute_code",
+    "args": {
+      "program": "import json\nfrom pathlib import Path\nfrom collections import Counter\nrows=[json.loads(p.read_text()) for p in sorted(Path('data').glob('*.json'))[:20]]\nids=Counter(r['id'] for r in rows)\nissues=Counter(r['issue'] for r in rows)\nreport={'total_amount':sum(r['amount'] for r in rows),'top_issue':issues.most_common(1)[0][0],'duplicate_ids':sorted(k for k,v in ids.items() if v>1)}\nPath('report.json').write_text(json.dumps(report))\n"
+    }
+  }
+]

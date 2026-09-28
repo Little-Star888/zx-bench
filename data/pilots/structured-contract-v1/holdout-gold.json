@@ -1,0 +1,245 @@
+[
+  {
+    "id": "SOC-A-H1",
+    "expected": {
+      "npm-public": {
+        "type": "npm-registry",
+        "url": "https://registry.example.test",
+        "token": "${{secrets.NPM_TOKEN}}",
+        "scope": "@red"
+      },
+      "containers": {
+        "type": "docker-registry",
+        "url": "https://images.example.test",
+        "username": "robot",
+        "password": "${{secrets.IMAGE_PASSWORD}}"
+      }
+    },
+    "negative": {
+      "npm-public": {
+        "type": "npm-registry",
+        "url": "https://registry.example.test",
+        "token": "${{secrets.NPM_TOKEN}}",
+        "scope": 0
+      },
+      "containers": {
+        "type": "docker-registry",
+        "url": "https://images.example.test",
+        "username": "robot",
+        "password": "${{secrets.IMAGE_PASSWORD}}"
+      }
+    },
+    "sourceGroup": "schemastore:dependabot-2.0"
+  },
+  {
+    "id": "SOC-A-H2",
+    "expected": {
+      "npm-public": {
+        "type": "npm-registry",
+        "url": "https://registry.example.test",
+        "token": "${{secrets.NPM_TOKEN}}",
+        "scope": [
+          "@red",
+          "@blue"
+        ]
+      },
+      "containers": {
+        "type": "docker-registry",
+        "url": "https://images.example.test",
+        "username": "robot",
+        "password": "${{secrets.IMAGE_PASSWORD}}"
+      }
+    },
+    "negative": {
+      "npm-public": {
+        "type": "npm-registry",
+        "url": "https://registry.example.test",
+        "token": "${{secrets.NPM_TOKEN}}",
+        "scope": 0
+      },
+      "containers": {
+        "type": "docker-registry",
+        "url": "https://images.example.test",
+        "username": "robot",
+        "password": "${{secrets.IMAGE_PASSWORD}}"
+      }
+    },
+    "sourceGroup": "schemastore:dependabot-2.0"
+  },
+  {
+    "id": "SOC-B-H1",
+    "expected": {
+      "kind": "add",
+      "left": {
+        "kind": "literal",
+        "value": 7
+      },
+      "right": {
+        "kind": "multiply",
+        "left": {
+          "kind": "literal",
+          "value": 3
+        },
+        "right": {
+          "kind": "literal",
+          "value": 4
+        }
+      }
+    },
+    "negative": {
+      "kind": "add",
+      "left": {
+        "kind": "literal",
+        "value": 7
+      },
+      "right": {
+        "kind": "literal",
+        "left": {
+          "kind": "literal",
+          "value": 3
+        },
+        "right": {
+          "kind": "literal",
+          "value": 4
+        }
+      }
+    },
+    "sourceGroup": "authored:expression-ast"
+  },
+  {
+    "id": "SOC-B-H2",
+    "expected": {
+      "kind": "multiply",
+      "left": {
+        "kind": "add",
+        "left": {
+          "kind": "literal",
+          "value": -2
+        },
+        "right": {
+          "kind": "literal",
+          "value": 0
+        }
+      },
+      "right": {
+        "kind": "add",
+        "left": {
+          "kind": "literal",
+          "value": 5
+        },
+        "right": {
+          "kind": "multiply",
+          "left": {
+            "kind": "literal",
+            "value": 2
+          },
+          "right": {
+            "kind": "literal",
+            "value": 3
+          }
+        }
+      }
+    },
+    "negative": {
+      "kind": "multiply",
+      "left": {
+        "kind": "add",
+        "left": {
+          "kind": "literal",
+          "value": -2
+        },
+        "right": {
+          "kind": "literal",
+          "value": 0
+        }
+      },
+      "right": {
+        "kind": "literal",
+        "left": {
+          "kind": "literal",
+          "value": 5
+        },
+        "right": {
+          "kind": "multiply",
+          "left": {
+            "kind": "literal",
+            "value": 2
+          },
+          "right": {
+            "kind": "literal",
+            "value": 3
+          }
+        }
+      }
+    },
+    "sourceGroup": "authored:expression-ast"
+  },
+  {
+    "id": "SOC-C-H1",
+    "expected": {
+      "sourceMaps": "inline",
+      "comments": true,
+      "filename": "src/a.js",
+      "auxiliaryCommentBefore": "5rGJ5a2X"
+    },
+    "negative": {
+      "sourceMaps": "inline",
+      "comments": true,
+      "filename": "src/a.js",
+      "auxiliaryCommentBefore": "汉字"
+    },
+    "sourceGroup": "schemastore:babelrc"
+  },
+  {
+    "id": "SOC-C-H2",
+    "expected": {
+      "sourceMaps": false,
+      "comments": false,
+      "filename": "src/编号02.js",
+      "auxiliaryCommentBefore": "56m65YC8OjA="
+    },
+    "negative": {
+      "sourceMaps": false,
+      "comments": false,
+      "filename": "src/编号02.js",
+      "auxiliaryCommentBefore": "空值:0"
+    },
+    "sourceGroup": "schemastore:babelrc"
+  },
+  {
+    "id": "SOC-D-H1",
+    "expected": {
+      "registry/a~b": {
+        "type": "npm-registry",
+        "url": "https://registry.example.test",
+        "token": "{\"note\":\"\\\"quoted\\\"\\\\slash\\n${{data}}\"}"
+      }
+    },
+    "negative": {
+      "registry/a~b": {
+        "type": "npm-registry",
+        "url": "https://registry.example.test",
+        "token": "\"quoted\"\\slash\n${{data}}"
+      }
+    },
+    "sourceGroup": "schemastore:dependabot-2.0"
+  },
+  {
+    "id": "SOC-D-H2",
+    "expected": {
+      "registry/a~b": {
+        "type": "npm-registry",
+        "url": "https://registry.example.test",
+        "token": "{\"note\":\"用户名=\\\"甲\\\"\\r\\n路径=C:\\\\temp\\\\秘密\"}"
+      }
+    },
+    "negative": {
+      "registry/a~b": {
+        "type": "npm-registry",
+        "url": "https://registry.example.test",
+        "token": "用户名=\"甲\"\r\n路径=C:\\temp\\秘密"
+      }
+    },
+    "sourceGroup": "schemastore:dependabot-2.0"
+  }
+]

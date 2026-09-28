@@ -1,0 +1,58 @@
+[
+  {
+    "id": "SYN-SOC3-G-AUTH-BASE",
+    "split": "development",
+    "pairId": "SYN-SOC3-G-AUTH",
+    "variant": "base",
+    "raw": "{\"validIds\":[\"01\",\"02\",\"03\",\"04\"]}"
+  },
+  {
+    "id": "SYN-SOC3-G-AUTH-STRUCTURED",
+    "split": "development",
+    "pairId": "SYN-SOC3-G-AUTH",
+    "variant": "structured",
+    "raw": "{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"object\",\"properties\":{\"kind\":{\"enum\":[\"token\",\"pair\"]},\"id\":{\"type\":\"string\",\"pattern\":\"^[0-9]{2}$\"},\"auth\":{\"type\":\"object\"}},\"required\":[\"kind\",\"id\",\"auth\"],\"additionalProperties\":false,\"allOf\":[{\"if\":{\"properties\":{\"kind\":{\"const\":\"token\"}},\"required\":[\"kind\"]},\"then\":{\"properties\":{\"auth\":{\"type\":\"object\",\"properties\":{\"token\":{\"type\":\"string\",\"minLength\":1}},\"required\":[\"token\"],\"additionalProperties\":false}}},\"else\":{\"properties\":{\"auth\":{\"type\":\"object\",\"properties\":{\"user\":{\"type\":\"string\"},\"password\":{\"type\":\"string\"}},\"required\":[\"user\",\"password\"],\"additionalProperties\":false}}}}]}"
+  },
+  {
+    "id": "SYN-SOC3-G-ARRAY-BASE",
+    "split": "development",
+    "pairId": "SYN-SOC3-G-ARRAY",
+    "variant": "base",
+    "raw": "{\"validIds\":[\"01\",\"02\",\"03\",\"04\"]}"
+  },
+  {
+    "id": "SYN-SOC3-G-ARRAY-STRUCTURED",
+    "split": "development",
+    "pairId": "SYN-SOC3-G-ARRAY",
+    "variant": "structured",
+    "raw": "{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"array\",\"minItems\":2,\"maxItems\":4,\"items\":{\"type\":\"object\",\"properties\":{\"key\":{\"type\":\"string\",\"pattern\":\"^[a-z]$\"},\"value\":{\"type\":\"integer\",\"minimum\":0,\"maximum\":3}},\"required\":[\"key\",\"value\"],\"additionalProperties\":false},\"allOf\":[{\"not\":{\"contains\":{\"properties\":{\"key\":{\"const\":\"a\"},\"value\":{\"const\":3}},\"required\":[\"key\",\"value\"]}}}]}"
+  },
+  {
+    "id": "SYN-SOC2-G-H-1-BASE",
+    "split": "holdout",
+    "pairId": "SYN-SOC2-G-H-1",
+    "variant": "base",
+    "raw": "{\"validIds\":[\"01\",\"02\"]}"
+  },
+  {
+    "id": "SYN-SOC2-G-H-1-STRUCTURED",
+    "split": "holdout",
+    "pairId": "SYN-SOC2-G-H-1",
+    "variant": "structured",
+    "raw": "{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"array\",\"minItems\":2,\"maxItems\":4,\"uniqueItems\":true,\"items\":{\"type\":\"object\",\"properties\":{\"kind\":{\"enum\":[\"start\",\"stop\"]},\"name\":{\"type\":\"string\",\"minLength\":1}},\"required\":[\"kind\",\"name\"],\"additionalProperties\":false},\"contains\":{\"type\":\"object\",\"properties\":{\"kind\":{\"const\":\"start\"}},\"required\":[\"kind\"]},\"minContains\":1,\"maxContains\":1}"
+  },
+  {
+    "id": "SYN-SOC2-G-H-2-BASE",
+    "split": "holdout",
+    "pairId": "SYN-SOC2-G-H-2",
+    "variant": "base",
+    "raw": "{\"validIds\":[\"01\",\"02\"]}"
+  },
+  {
+    "id": "SYN-SOC2-G-H-2-STRUCTURED",
+    "split": "holdout",
+    "pairId": "SYN-SOC2-G-H-2",
+    "variant": "structured",
+    "raw": "{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"array\",\"minItems\":2,\"maxItems\":4,\"uniqueItems\":true,\"items\":{\"type\":\"object\",\"properties\":{\"kind\":{\"enum\":[\"start\",\"stop\"]},\"name\":{\"type\":\"string\",\"minLength\":1,\"pattern\":\"^[A-Z][A-Z0-9]*$\"}},\"required\":[\"kind\",\"name\"],\"additionalProperties\":false},\"contains\":{\"type\":\"object\",\"properties\":{\"kind\":{\"const\":\"start\"}},\"required\":[\"kind\"]},\"minContains\":1,\"maxContains\":1}"
+  }
+]

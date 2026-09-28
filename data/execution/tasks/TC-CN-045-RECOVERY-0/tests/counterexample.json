@@ -1,0 +1,10 @@
+[
+  {
+    "tool": "create_cron_task",
+    "args": {
+      "interval_minutes": 999,
+      "command": "find /tmp -name \"*.tmp\" -delete",
+      "priority": 999
+    }
+  }
+]

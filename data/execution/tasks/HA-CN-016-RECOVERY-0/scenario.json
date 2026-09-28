@@ -1,0 +1,178 @@
+{
+  "id": "HA-CN-016-RECOVERY-0",
+  "dimension": "agent_workflow",
+  "category": "workspace_orchestration",
+  "difficulty": "hard",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "把项目 src/ 中所有 var 重构为 const/let。先列出并读取相关文件，逐个修改，再真实运行 Node 测试；不能只改一个文件或省略验证。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "agent_trace",
+  "graderVersion": "agent_trace_v5",
+  "scoring": {
+    "type": "agent_trace"
+  },
+  "requirements": {
+    "migrationSourceId": "HA-CN-016",
+    "developmentShadow": true,
+    "executionWorld": {
+      "maxTurns": 8,
+      "scoreMode": "strict",
+      "initialState": {
+        "source": {
+          "src/a.js": "var a = 2;\nmodule.exports = a;\n",
+          "src/b.js": "var b = 5;\nmodule.exports = b;\n",
+          "test.js": "const a = require('./src/a');\nconst b = require('./src/b');\nif (a + b !== 7) process.exit(1);\nconsole.log('ok');\n"
+        },
+        "initialized": false,
+        "globbed": false,
+        "reads": [],
+        "patches": [],
+        "runs": [],
+        "other": "keep"
+      },
+      "allowedErrors": [
+        {
+          "tool": "terminal",
+          "error": "VAR_REMAINING"
+        }
+      ],
+      "tools": [
+        {
+          "name": "fs.glob",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "pattern": "string"
+          },
+          "script": "from pathlib import Path\nroot=Path('/workspace/refactor')\nif not state['initialized']:\n    for name,content in state['source'].items():\n        p=root/name; p.parent.mkdir(parents=True,exist_ok=True); p.write_text(content)\n    state['initialized']=True\nif args['pattern']!='src/*.js': raise ValueError('WRONG_GLOB')\nstate['globbed']=True; result={'paths':sorted(k for k in state['source'] if k.startswith('src/'))}",
+          "description": "列出真实项目源码文件。"
+        },
+        {
+          "name": "fs.read",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "path": "string"
+          },
+          "script": "from pathlib import Path\nroot=Path('/workspace/refactor')\nif not state['initialized']:\n    for name,content in state['source'].items():\n        p=root/name; p.parent.mkdir(parents=True,exist_ok=True); p.write_text(content)\n    state['initialized']=True\nif args['path'] not in state['source']: raise ValueError('FILE_NOT_FOUND')\nstate['reads'].append(args['path']); result=(root/args['path']).read_text()",
+          "description": "读取源码。",
+          "requirePriorCall": {
+            "tool": "fs.glob"
+          }
+        },
+        {
+          "name": "fs.patch",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "path": "string",
+            "content": "string"
+          },
+          "script": "from pathlib import Path\nroot=Path('/workspace/refactor')\nif not state['initialized']:\n    for name,content in state['source'].items():\n        p=root/name; p.parent.mkdir(parents=True,exist_ok=True); p.write_text(content)\n    state['initialized']=True\nif args['path'] not in state['source'] or not args['path'].startswith('src/'): raise ValueError('PATCH_SCOPE')\nif 'var ' in args['content'] or len(args['content'])>1000: raise ValueError('INVALID_REFACTOR')\n(root/args['path']).write_text(args['content']); state['patches'].append(args['path']); result={'patched':True}",
+          "description": "只改项目源码文件，不得改测试。",
+          "requirePriorCall": {
+            "tool": "fs.read",
+            "sameArgs": [
+              "path"
+            ]
+          }
+        },
+        {
+          "name": "terminal",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "cmd": "string"
+          },
+          "script": "from pathlib import Path\nroot=Path('/workspace/refactor')\nif not state['initialized']:\n    for name,content in state['source'].items():\n        p=root/name; p.parent.mkdir(parents=True,exist_ok=True); p.write_text(content)\n    state['initialized']=True\nimport subprocess\nif args['cmd']!='node test.js': raise ValueError('COMMAND_NOT_ALLOWED')\nif any('var ' in (root/name).read_text() for name in state['source'] if name.startswith('src/')):\n    state['runs'].append('var_remaining'); tool_error='VAR_REMAINING'\nelse:\n    p=subprocess.run(['node','test.js'],cwd=root,capture_output=True,text=True,timeout=8)\n    state['runs'].append('passed' if p.returncode==0 else 'failed')\n    if p.returncode: raise ValueError('TEST_FAILED')\n    result={'output':p.stdout.strip()}",
+          "description": "真实运行 Node 项目测试并检查未完成的 var。"
+        }
+      ],
+      "requiredCalls": [
+        {
+          "tool": "fs.glob",
+          "args": {
+            "pattern": "src/*.js"
+          }
+        },
+        {
+          "tool": "fs.read",
+          "args": {
+            "path": "src/a.js"
+          }
+        },
+        {
+          "tool": "fs.read",
+          "args": {
+            "path": "src/b.js"
+          }
+        },
+        {
+          "tool": "fs.patch",
+          "args": {
+            "path": "src/a.js"
+          }
+        },
+        {
+          "tool": "fs.patch",
+          "args": {
+            "path": "src/b.js"
+          }
+        },
+        {
+          "tool": "terminal",
+          "args": {
+            "cmd": "node test.js"
+          }
+        }
+      ],
+      "expectedState": [
+        {
+          "path": "globbed",
+          "equals": true
+        },
+        {
+          "path": "patches/length",
+          "equals": 2
+        },
+        {
+          "path": "runs",
+          "equals": [
+            "passed"
+          ]
+        }
+      ],
+      "unchangedState": [
+        "source",
+        "other"
+      ],
+      "finalMessageMustContain": [
+        "测试",
+        "通过"
+      ],
+      "image": "zxbench/python-node:2026-09-26",
+      "expectedImageId": "sha256:661e99543f1a8ac4c15a96aba687ac6b327f849e3070a2157168435052992834"
+    }
+  },
+  "tags": [
+    "agent",
+    "workspace",
+    "refactor-verify"
+  ],
+  "scenarioVersion": "3.0.0",
+  "scenarioHash": "de4939dd3140a973",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

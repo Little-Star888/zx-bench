@@ -1,0 +1,572 @@
+[
+  {
+    "id": "SYN-SOC2-G-H-1-BASE",
+    "dimension": "structured_output",
+    "category": "schema_synthesis_pair",
+    "difficulty": "unverified",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v2",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "按以下规则判断每个样本是否有效。只输出一个 JSON 对象，validIds 为有效样本的两位编号数组，按编号升序排列。不要解释。\n\n规则：\n生成 JSON Schema 2020-12：顶层数组，长度 2 至 4，所有数组元素按完整 JSON 值去重。每个元素只能有必需的 kind、name；kind 是 start/stop，name 是非空字符串。整个数组恰有一个 kind=start 的元素。name 不要求在不同元素间唯一，不能额外限制。 可以自由选择等价的标准 Schema 写法；只允许本地引用，不允许外部引用；Schema 嵌套深度不超过 64。使用这些有界题目时验证器会限制编译/验证资源。\n\n样本：\n01: [{\"kind\":\"start\",\"name\":\"A\"},{\"kind\":\"stop\",\"name\":\"B\"}]\n02: [{\"kind\":\"stop\",\"name\":\"A\"},{\"kind\":\"start\",\"name\":\"B\"},{\"kind\":\"stop\",\"name\":\"C\"}]\n03: null\n04: {}\n05: []\n06: [{\"kind\":\"start\",\"name\":\"A\"}]\n07: [{\"kind\":\"start\",\"name\":\"A\"},{\"kind\":\"start\",\"name\":\"A\"}]\n08: [{\"kind\":\"start\",\"name\":\"A\"},{\"kind\":\"start\",\"name\":\"B\"}]\n09: [{\"kind\":\"stop\",\"name\":\"A\"},{\"kind\":\"stop\",\"name\":\"B\"}]\n10: [{\"kind\":\"start\",\"name\":\"\"},{\"kind\":\"stop\",\"name\":\"B\"}]\n11: [{\"kind\":\"start\",\"name\":\"A\",\"extra\":1},{\"kind\":\"stop\",\"name\":\"B\"}]\n12: [{\"kind\":\"start\",\"name\":1},{\"kind\":\"stop\",\"name\":\"B\"}]\n13: [{\"kind\":\"start\",\"name\":\"A\"},{\"kind\":\"stop\",\"name\":\"B\"},{\"kind\":\"stop\",\"name\":\"C\"},{\"kind\":\"stop\",\"name\":\"D\"},{\"kind\":\"stop\",\"name\":\"E\"}]\n\n输出 Schema：{\"type\":\"object\",\"properties\":{\"validIds\":{\"type\":\"array\",\"items\":{\"type\":\"string\",\"pattern\":\"^[0-9]{2}$\"},\"uniqueItems\":true}},\"required\":[\"validIds\"],\"additionalProperties\":false}",
+    "requirements": {
+      "format": "json",
+      "dialect": "2020-12",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "validIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[0-9]{2}$"
+            },
+            "uniqueItems": true
+          }
+        },
+        "required": [
+          "validIds"
+        ],
+        "additionalProperties": false
+      },
+      "formatAssertions": true,
+      "assertions": [
+        {
+          "pointer": "/validIds",
+          "expected": [
+            "01",
+            "02"
+          ],
+          "description": "All finite examples classified exactly"
+        }
+      ],
+      "family": "schema_synthesis_policy_base",
+      "pairId": "SYN-SOC2-G-H-1",
+      "pairVariant": "base",
+      "sourceGroup": "SOC2-G-H-1",
+      "output_policy": "raw_only",
+      "provenance": {
+        "sourceScenario": "SOC2-G-H-1",
+        "adaptation": "Finite-case classification of the same policy; no schema synthesis"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "paired_probe_unverified",
+    "goldSource": "frozen-derived-fixture-v2",
+    "tags": [
+      "schema-synthesis-paired",
+      "base"
+    ],
+    "scenarioHash": "9448ed44c9e7fba6"
+  },
+  {
+    "id": "SYN-SOC2-G-H-1-STRUCTURED",
+    "dimension": "structured_output",
+    "category": "schema_synthesis_pair",
+    "difficulty": "unverified",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v2",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "生成 JSON Schema 2020-12：顶层数组，长度 2 至 4，所有数组元素按完整 JSON 值去重。每个元素只能有必需的 kind、name；kind 是 start/stop，name 是非空字符串。整个数组恰有一个 kind=start 的元素。name 不要求在不同元素间唯一，不能额外限制。 可以自由选择等价的标准 Schema 写法；只允许本地引用，不允许外部引用；Schema 嵌套深度不超过 64。使用这些有界题目时验证器会限制编译/验证资源。\n输出必须遵循这个 Schema：{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":[\"object\",\"boolean\"]}\n只输出完整 JSON 原文，不要围栏或解释。对象键序不限。响应最多 131072 个字符。",
+    "requirements": {
+      "format": "json",
+      "dialect": "2020-12",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": [
+          "object",
+          "boolean"
+        ]
+      },
+      "formatAssertions": true,
+      "family": "schema_synthesis_policy_structured",
+      "output_policy": "raw_only",
+      "generatedSchema": {
+        "cases": [
+          {
+            "data": [
+              {
+                "kind": "start",
+                "name": "A"
+              },
+              {
+                "kind": "stop",
+                "name": "B"
+              }
+            ],
+            "valid": true
+          },
+          {
+            "data": [
+              {
+                "kind": "stop",
+                "name": "A"
+              },
+              {
+                "kind": "start",
+                "name": "B"
+              },
+              {
+                "kind": "stop",
+                "name": "C"
+              }
+            ],
+            "valid": true
+          },
+          {
+            "data": null,
+            "valid": false
+          },
+          {
+            "data": {},
+            "valid": false
+          },
+          {
+            "data": [],
+            "valid": false
+          },
+          {
+            "data": [
+              {
+                "kind": "start",
+                "name": "A"
+              }
+            ],
+            "valid": false
+          },
+          {
+            "data": [
+              {
+                "kind": "start",
+                "name": "A"
+              },
+              {
+                "kind": "start",
+                "name": "A"
+              }
+            ],
+            "valid": false
+          },
+          {
+            "data": [
+              {
+                "kind": "start",
+                "name": "A"
+              },
+              {
+                "kind": "start",
+                "name": "B"
+              }
+            ],
+            "valid": false
+          },
+          {
+            "data": [
+              {
+                "kind": "stop",
+                "name": "A"
+              },
+              {
+                "kind": "stop",
+                "name": "B"
+              }
+            ],
+            "valid": false
+          },
+          {
+            "data": [
+              {
+                "kind": "start",
+                "name": ""
+              },
+              {
+                "kind": "stop",
+                "name": "B"
+              }
+            ],
+            "valid": false
+          },
+          {
+            "data": [
+              {
+                "kind": "start",
+                "name": "A",
+                "extra": 1
+              },
+              {
+                "kind": "stop",
+                "name": "B"
+              }
+            ],
+            "valid": false
+          },
+          {
+            "data": [
+              {
+                "kind": "start",
+                "name": 1
+              },
+              {
+                "kind": "stop",
+                "name": "B"
+              }
+            ],
+            "valid": false
+          },
+          {
+            "data": [
+              {
+                "kind": "start",
+                "name": "A"
+              },
+              {
+                "kind": "stop",
+                "name": "B"
+              },
+              {
+                "kind": "stop",
+                "name": "C"
+              },
+              {
+                "kind": "stop",
+                "name": "D"
+              },
+              {
+                "kind": "stop",
+                "name": "E"
+              }
+            ],
+            "valid": false
+          }
+        ]
+      },
+      "developmentShadow": true,
+      "provenance": {
+        "sourceScenario": "SOC2-G-H-1",
+        "adaptation": "Original executable-schema synthesis and behavioral oracle"
+      },
+      "pairId": "SYN-SOC2-G-H-1",
+      "pairVariant": "structured",
+      "sourceGroup": "SOC2-G-H-1"
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "paired_probe_unverified",
+    "goldSource": "frozen-derived-fixture-v2",
+    "tags": [
+      "schema-synthesis-paired",
+      "structured"
+    ],
+    "scenarioHash": "fac0b20e907e1340"
+  },
+  {
+    "id": "SYN-SOC2-G-H-2-BASE",
+    "dimension": "structured_output",
+    "category": "schema_synthesis_pair",
+    "difficulty": "unverified",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v2",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "按以下规则判断每个样本是否有效。只输出一个 JSON 对象，validIds 为有效样本的两位编号数组，按编号升序排列。不要解释。\n\n规则：\n生成 JSON Schema 2020-12：顶层数组，长度 2 至 4，所有数组元素按完整 JSON 值去重。每个元素只能有必需的 kind、name；kind 是 start/stop，name 是非空字符串。整个数组恰有一个 kind=start 的元素。name 不要求在不同元素间唯一，不能额外限制。name 另外必须以一个大写 ASCII 字母开头，之后只有大写 ASCII 字母或数字；不限制长度上界。 可以自由选择等价的标准 Schema 写法；只允许本地引用，不允许外部引用；Schema 嵌套深度不超过 64。使用这些有界题目时验证器会限制编译/验证资源。\n\n样本：\n01: [{\"kind\":\"start\",\"name\":\"A\"},{\"kind\":\"stop\",\"name\":\"B\"}]\n02: [{\"kind\":\"stop\",\"name\":\"A\"},{\"kind\":\"start\",\"name\":\"B\"},{\"kind\":\"stop\",\"name\":\"C\"}]\n03: null\n04: {}\n05: []\n06: [{\"kind\":\"start\",\"name\":\"A\"}]\n07: [{\"kind\":\"start\",\"name\":\"A\"},{\"kind\":\"start\",\"name\":\"A\"}]\n08: [{\"kind\":\"start\",\"name\":\"A\"},{\"kind\":\"start\",\"name\":\"B\"}]\n09: [{\"kind\":\"stop\",\"name\":\"A\"},{\"kind\":\"stop\",\"name\":\"B\"}]\n10: [{\"kind\":\"start\",\"name\":\"\"},{\"kind\":\"stop\",\"name\":\"B\"}]\n11: [{\"kind\":\"start\",\"name\":\"A\",\"extra\":1},{\"kind\":\"stop\",\"name\":\"B\"}]\n12: [{\"kind\":\"start\",\"name\":1},{\"kind\":\"stop\",\"name\":\"B\"}]\n13: [{\"kind\":\"start\",\"name\":\"A\"},{\"kind\":\"stop\",\"name\":\"B\"},{\"kind\":\"stop\",\"name\":\"C\"},{\"kind\":\"stop\",\"name\":\"D\"},{\"kind\":\"stop\",\"name\":\"E\"}]\n14: [{\"kind\":\"start\",\"name\":\"a\"},{\"kind\":\"stop\",\"name\":\"B\"}]\n15: [{\"kind\":\"start\",\"name\":\"A-\"},{\"kind\":\"stop\",\"name\":\"B\"}]\n\n输出 Schema：{\"type\":\"object\",\"properties\":{\"validIds\":{\"type\":\"array\",\"items\":{\"type\":\"string\",\"pattern\":\"^[0-9]{2}$\"},\"uniqueItems\":true}},\"required\":[\"validIds\"],\"additionalProperties\":false}",
+    "requirements": {
+      "format": "json",
+      "dialect": "2020-12",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "validIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[0-9]{2}$"
+            },
+            "uniqueItems": true
+          }
+        },
+        "required": [
+          "validIds"
+        ],
+        "additionalProperties": false
+      },
+      "formatAssertions": true,
+      "assertions": [
+        {
+          "pointer": "/validIds",
+          "expected": [
+            "01",
+            "02"
+          ],
+          "description": "All finite examples classified exactly"
+        }
+      ],
+      "family": "schema_synthesis_policy_base",
+      "pairId": "SYN-SOC2-G-H-2",
+      "pairVariant": "base",
+      "sourceGroup": "SOC2-G-H-2",
+      "output_policy": "raw_only",
+      "provenance": {
+        "sourceScenario": "SOC2-G-H-2",
+        "adaptation": "Finite-case classification of the same policy; no schema synthesis"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "paired_probe_unverified",
+    "goldSource": "frozen-derived-fixture-v2",
+    "tags": [
+      "schema-synthesis-paired",
+      "base"
+    ],
+    "scenarioHash": "b340aa8b33b0ec12"
+  },
+  {
+    "id": "SYN-SOC2-G-H-2-STRUCTURED",
+    "dimension": "structured_output",
+    "category": "schema_synthesis_pair",
+    "difficulty": "unverified",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v2",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "生成 JSON Schema 2020-12：顶层数组，长度 2 至 4，所有数组元素按完整 JSON 值去重。每个元素只能有必需的 kind、name；kind 是 start/stop，name 是非空字符串。整个数组恰有一个 kind=start 的元素。name 不要求在不同元素间唯一，不能额外限制。name 另外必须以一个大写 ASCII 字母开头，之后只有大写 ASCII 字母或数字；不限制长度上界。 可以自由选择等价的标准 Schema 写法；只允许本地引用，不允许外部引用；Schema 嵌套深度不超过 64。使用这些有界题目时验证器会限制编译/验证资源。\n输出必须遵循这个 Schema：{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":[\"object\",\"boolean\"]}\n只输出完整 JSON 原文，不要围栏或解释。对象键序不限。响应最多 131072 个字符。",
+    "requirements": {
+      "format": "json",
+      "dialect": "2020-12",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": [
+          "object",
+          "boolean"
+        ]
+      },
+      "formatAssertions": true,
+      "family": "schema_synthesis_policy_structured",
+      "output_policy": "raw_only",
+      "generatedSchema": {
+        "cases": [
+          {
+            "data": [
+              {
+                "kind": "start",
+                "name": "A"
+              },
+              {
+                "kind": "stop",
+                "name": "B"
+              }
+            ],
+            "valid": true
+          },
+          {
+            "data": [
+              {
+                "kind": "stop",
+                "name": "A"
+              },
+              {
+                "kind": "start",
+                "name": "B"
+              },
+              {
+                "kind": "stop",
+                "name": "C"
+              }
+            ],
+            "valid": true
+          },
+          {
+            "data": null,
+            "valid": false
+          },
+          {
+            "data": {},
+            "valid": false
+          },
+          {
+            "data": [],
+            "valid": false
+          },
+          {
+            "data": [
+              {
+                "kind": "start",
+                "name": "A"
+              }
+            ],
+            "valid": false
+          },
+          {
+            "data": [
+              {
+                "kind": "start",
+                "name": "A"
+              },
+              {
+                "kind": "start",
+                "name": "A"
+              }
+            ],
+            "valid": false
+          },
+          {
+            "data": [
+              {
+                "kind": "start",
+                "name": "A"
+              },
+              {
+                "kind": "start",
+                "name": "B"
+              }
+            ],
+            "valid": false
+          },
+          {
+            "data": [
+              {
+                "kind": "stop",
+                "name": "A"
+              },
+              {
+                "kind": "stop",
+                "name": "B"
+              }
+            ],
+            "valid": false
+          },
+          {
+            "data": [
+              {
+                "kind": "start",
+                "name": ""
+              },
+              {
+                "kind": "stop",
+                "name": "B"
+              }
+            ],
+            "valid": false
+          },
+          {
+            "data": [
+              {
+                "kind": "start",
+                "name": "A",
+                "extra": 1
+              },
+              {
+                "kind": "stop",
+                "name": "B"
+              }
+            ],
+            "valid": false
+          },
+          {
+            "data": [
+              {
+                "kind": "start",
+                "name": 1
+              },
+              {
+                "kind": "stop",
+                "name": "B"
+              }
+            ],
+            "valid": false
+          },
+          {
+            "data": [
+              {
+                "kind": "start",
+                "name": "A"
+              },
+              {
+                "kind": "stop",
+                "name": "B"
+              },
+              {
+                "kind": "stop",
+                "name": "C"
+              },
+              {
+                "kind": "stop",
+                "name": "D"
+              },
+              {
+                "kind": "stop",
+                "name": "E"
+              }
+            ],
+            "valid": false
+          },
+          {
+            "data": [
+              {
+                "kind": "start",
+                "name": "a"
+              },
+              {
+                "kind": "stop",
+                "name": "B"
+              }
+            ],
+            "valid": false
+          },
+          {
+            "data": [
+              {
+                "kind": "start",
+                "name": "A-"
+              },
+              {
+                "kind": "stop",
+                "name": "B"
+              }
+            ],
+            "valid": false
+          }
+        ]
+      },
+      "developmentShadow": true,
+      "provenance": {
+        "sourceScenario": "SOC2-G-H-2",
+        "adaptation": "Original executable-schema synthesis and behavioral oracle"
+      },
+      "pairId": "SYN-SOC2-G-H-2",
+      "pairVariant": "structured",
+      "sourceGroup": "SOC2-G-H-2"
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "paired_probe_unverified",
+    "goldSource": "frozen-derived-fixture-v2",
+    "tags": [
+      "schema-synthesis-paired",
+      "structured"
+    ],
+    "scenarioHash": "5a7712f1b17930a8"
+  }
+]

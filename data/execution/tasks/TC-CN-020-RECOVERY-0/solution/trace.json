@@ -1,0 +1,15 @@
+[
+  {
+    "tool": "lookup_contact",
+    "args": {
+      "name": "张三"
+    }
+  },
+  {
+    "tool": "send_sms",
+    "args": {
+      "phone": "13800001234",
+      "message": "明天会议改到下午3点"
+    }
+  }
+]

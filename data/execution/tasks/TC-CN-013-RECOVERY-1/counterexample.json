@@ -1,0 +1,9 @@
+[
+  {
+    "tool": "query_database",
+    "args": {
+      "database": "sales",
+      "sql": "SELECT c.id,c.name,SUM(o.amount) AS total FROM customers c JOIN orders o ON o.customer_id=c.id WHERE c.city IN ('上海','杭州','南京') GROUP BY c.id,c.name HAVING SUM(o.amount)>100000 ORDER BY total DESC,c.id ASC LIMIT 20"
+    }
+  }
+]

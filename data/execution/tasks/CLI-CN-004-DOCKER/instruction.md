@@ -1,0 +1,1 @@
+在 /workspace 中执行任务。环境为 Alpine/BusyBox，提供 POSIX sh 和 Python 3 标准库，不提供 bash 或 GNU 工具；提交脚本统一以 sh 执行。report.txt 含多个由 ---BEGIN NOTE--- 和 ---END NOTE--- 界定的多行块。将每个完整块（含标记）替换为单行 [REDACTED]，写入 redacted.txt。只输出可执行 shell 脚本。

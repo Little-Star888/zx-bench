@@ -1,0 +1,148 @@
+{
+  "status": "passed",
+  "modelCalls": 0,
+  "count": 14,
+  "responses": 28,
+  "hashes": {
+    "development": "44d12c2cc15763f71c52db22460003297e5f2d6c2b79b3a57d4bc7d3d39df2bb",
+    "gold": "b9055bcf81c3e9aacbce15ccaba81d95247dbf73f026865ec105a38c17b4c371"
+  },
+  "rows": [
+    {
+      "id": "SOC3-A-POLICY",
+      "family": "A",
+      "positive": 100,
+      "negative": 0,
+      "negativeFailures": [
+        "structured_content_0",
+        "structured_content_1"
+      ]
+    },
+    {
+      "id": "SOC3-A-ROUTE",
+      "family": "A",
+      "positive": 100,
+      "negative": 0,
+      "negativeFailures": [
+        "structured_content_0",
+        "structured_content_1"
+      ]
+    },
+    {
+      "id": "SOC3-B-TREE",
+      "family": "B",
+      "positive": 100,
+      "negative": 0,
+      "negativeFailures": [
+        "structured_content_0",
+        "structured_content_2"
+      ]
+    },
+    {
+      "id": "SOC3-B-FOREST",
+      "family": "B",
+      "positive": 100,
+      "negative": 0,
+      "negativeFailures": [
+        "structured_content_0",
+        "structured_content_2"
+      ]
+    },
+    {
+      "id": "SOC3-C-UNICODE",
+      "family": "C",
+      "positive": 100,
+      "negative": 0,
+      "negativeFailures": [
+        "structured_content_0",
+        "structured_content_1"
+      ]
+    },
+    {
+      "id": "SOC3-C-PATH",
+      "family": "C",
+      "positive": 100,
+      "negative": 0,
+      "negativeFailures": [
+        "structured_content_0",
+        "structured_content_1"
+      ]
+    },
+    {
+      "id": "SOC3-E-SIMPLE",
+      "family": "E",
+      "positive": 100,
+      "negative": 0,
+      "negativeFailures": [
+        "structured_content_0",
+        "structured_content_2"
+      ]
+    },
+    {
+      "id": "SOC3-E-LEDGER",
+      "family": "E",
+      "positive": 100,
+      "negative": 0,
+      "negativeFailures": [
+        "structured_content_0",
+        "structured_content_1"
+      ]
+    },
+    {
+      "id": "SOC3-F-CSV",
+      "family": "F",
+      "positive": 100,
+      "negative": 0,
+      "negativeFailures": [
+        "structured_content_0",
+        "structured_content_1"
+      ]
+    },
+    {
+      "id": "SOC3-F-XML",
+      "family": "F",
+      "positive": 100,
+      "negative": 0,
+      "negativeFailures": [
+        "structured_content_0",
+        "structured_content_4"
+      ]
+    },
+    {
+      "id": "SOC3-G-AUTH",
+      "family": "G",
+      "positive": 100,
+      "negative": 0,
+      "negativeFailures": [
+        "structured_schema_behavior"
+      ]
+    },
+    {
+      "id": "SOC3-G-ARRAY",
+      "family": "G",
+      "positive": 100,
+      "negative": 0,
+      "negativeFailures": [
+        "structured_schema_behavior"
+      ]
+    },
+    {
+      "id": "SOC3-H-BARS",
+      "family": "H",
+      "positive": 100,
+      "negative": 0,
+      "negativeFailures": [
+        "structured_rendering"
+      ]
+    },
+    {
+      "id": "SOC3-H-DELTA",
+      "family": "H",
+      "positive": 100,
+      "negative": 0,
+      "negativeFailures": [
+        "structured_rendering"
+      ]
+    }
+  ]
+}

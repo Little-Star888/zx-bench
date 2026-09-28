@@ -1,0 +1,18 @@
+[
+  {
+    "tool": "query_attendance",
+    "args": {
+      "department": "engineering",
+      "month": "2026-09",
+      "type": "overtime"
+    }
+  },
+  {
+    "tool": "send_email",
+    "args": {
+      "to": "hr@example.test",
+      "subject": "本月加班汇总",
+      "body": "总加班 99 小时"
+    }
+  }
+]

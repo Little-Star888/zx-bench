@@ -40,6 +40,7 @@ export default function EvalCreate() {
   const navigate = useNavigate();
   const { t } = useLanguage();
   const answerFirstEnabled = Form.useWatch('answerFirst', form);
+  const structuredPack = Form.useWatch('structuredPack', form);
 
   useEffect(() => {
     fetch('/api/models')
@@ -67,6 +68,29 @@ export default function EvalCreate() {
   const onFinish = async (values: Record<string, unknown>) => {
     setLoading(true);
     try {
+      let scenarioIds: string[] | undefined;
+      const useStructuredPack = values.structuredPack === 'mixed' || values.structuredPack === 'all';
+      const useMigrationPack = values.structuredPack === 'migration-189';
+      const useSpecialPack = useStructuredPack || useMigrationPack;
+      if (useSpecialPack) {
+        const response = await fetch(useMigrationPack
+          ? '/api/scenarios?status=valid'
+          : '/api/scenarios?dimension=structured_output&status=valid');
+        const catalog = await response.json();
+        if (!response.ok || !catalog.success || !Array.isArray(catalog.data)) throw new Error('无法读取专项题组');
+        const selectedIds: string[] = useMigrationPack
+          ? catalog.data.filter((s: { id: string; requirements?: { developmentShadow?: boolean; migrationSourceId?: string } }) =>
+            s.requirements?.developmentShadow === true
+            && (Boolean(s.requirements.migrationSourceId) || s.id.endsWith('PILOT') || s.id.startsWith('CLI-PILOT-')),
+          ).map((s: { id: string }) => s.id)
+          : catalog.data.filter((s: { tags?: string[] }) =>
+            s.tags?.includes('structured-contract-development-release')
+            && (values.structuredPack !== 'mixed' || s.tags.includes('screening:mixed')),
+          ).map((s: { id: string }) => s.id);
+        if (useMigrationPack && selectedIds.length !== 306) throw new Error(`迁移执行题组不完整：${selectedIds.length}/306`);
+        if (!selectedIds.length) throw new Error('专项题组尚未发布');
+        scenarioIds = selectedIds;
+      }
       // 思考/输出约束（反拖尾）：任一约束项开启时组装 constraints
       const constraints: Record<string, unknown> = {};
       if (values.answerFirst) {
@@ -91,6 +115,10 @@ export default function EvalCreate() {
         parallelism: values.parallelism ?? 4,
         parallelMode: values.parallelMode || 'global',
         ...(Object.keys(constraints).length > 0 ? { constraints } : {}),
+        ...(useSpecialPack ? {
+          scenarioIds, evaluationMode: 'development', runsPerQuestion: 1,
+          judgeEnabled: false, escalationEnabled: false, structuredOutputEnabled: false,
+        } : {}),
       };
 
       if (mode === 'batch') {
@@ -107,7 +135,7 @@ export default function EvalCreate() {
             name: values.name || undefined,
             modelConfigIds,
             judgeModelConfigId: values.judgeModelConfigId || undefined,
-            dimensionIds: (values.dimensionIds as string[]) || [],
+            dimensionIds: useStructuredPack ? ['structured_output'] : useMigrationPack ? [] : (values.dimensionIds as string[]) || [],
             config,
           }),
         });
@@ -126,7 +154,7 @@ export default function EvalCreate() {
             name: values.name,
             modelConfigId: values.modelConfigId,
             judgeModelConfigId: values.judgeModelConfigId || undefined,
-            dimensionIds: (values.dimensionIds as string[]) || [],
+            dimensionIds: useStructuredPack ? ['structured_output'] : useMigrationPack ? [] : (values.dimensionIds as string[]) || [],
             config,
           }),
         });
@@ -138,8 +166,8 @@ export default function EvalCreate() {
           message.error(data.error || '创建失败');
         }
       }
-    } catch {
-      message.error('请求失败');
+    } catch (error) {
+      message.error(error instanceof Error ? error.message : '请求失败');
     } finally {
       setLoading(false);
     }
@@ -247,6 +275,21 @@ export default function EvalCreate() {
           )}
 
           {/* ===== 评测维度选择 ===== */}
+          <Form.Item label="专项题组" name="structuredPack" initialValue="default">
+            <Select options={[
+              { value: 'default', label: '使用常规题库和下方维度选择' },
+              { value: 'mixed', label: '开发题组：已有通过与失败差异的 4 题' },
+              { value: 'all', label: '开发题组：全部 19 题（八类任务）' },
+              { value: 'migration-189', label: '新迁移执行题组：189 道源题、306 个执行实例' },
+            ]} />
+          </Form.Item>
+          {structuredPack && structuredPack !== 'default' && (
+            <Alert type="info" showIcon style={{ marginBottom: 16 }}
+              message={structuredPack === 'migration-189'
+                ? '本次评测 189 道源题对应的 306 个执行实例，每个实例生成一次并按执行结果判分。'
+                : '本次只评测所选结构化输出开发题组，每题生成一次，使用规则判分。'}
+              description="专项题组在开发评测中显式启用；下方维度、发布模式和重复次数将由题组设置覆盖。" />
+          )}
           <Form.Item
             label={t('eval.dimensions')}
             name="dimensionIds"

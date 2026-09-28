@@ -1,0 +1,1 @@
+工作区 /workspace，Linux sh 和 Python 3 标准库可用。使用 Alpine/BusyBox 工具，提交脚本统一以 POSIX sh 执行，未提供 bash 或 GNU 工具。bundle.tar.gz 含 500 个文件，仅将 deep/nested/target.conf 解压到 extracted/，最终路径为 extracted/deep/nested/target.conf，保留前缀。其他文件不得解压；工作区空间不足以容纳整个归档。只输出可执行 shell 脚本。

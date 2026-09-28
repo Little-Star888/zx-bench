@@ -1,0 +1,534 @@
+[
+  {
+    "id": "SOC3-A-POLICY",
+    "sourceGroup": "policy:POLICY",
+    "raw": "{\"results\":[{\"id\":\"r1\",\"account\":\"07\",\"scope\":\"read:open\",\"decision\":\"allow\",\"reason\":\"allowed\"},{\"id\":\"r2\",\"account\":\"07\",\"scope\":\"write:sealed\",\"decision\":\"deny\",\"reason\":\"denied\"},{\"id\":\"r3\",\"account\":\"08\",\"scope\":\"delete:open\",\"decision\":\"deny\",\"reason\":\"inactive\"},{\"id\":\"r4\",\"account\":\"09\",\"scope\":\"write:open\",\"decision\":\"deny\",\"reason\":\"missing_role\"},{\"id\":\"r5\",\"account\":\"09\",\"scope\":\"read:sealed\",\"decision\":\"allow\",\"reason\":\"allowed\"}],\"allowedCount\":2,\"deniedCount\":3}",
+    "negative": "{\"results\":[{\"id\":\"r1\",\"account\":\"07\",\"scope\":\"read:open\",\"decision\":\"allow\",\"reason\":\"allowed\"},{\"id\":\"r2\",\"account\":\"07\",\"scope\":\"write:sealed\",\"decision\":\"deny\",\"reason\":\"denied\"},{\"id\":\"r3\",\"account\":\"08\",\"scope\":\"delete:open\",\"decision\":\"allow\",\"reason\":\"inactive\"},{\"id\":\"r4\",\"account\":\"09\",\"scope\":\"write:open\",\"decision\":\"deny\",\"reason\":\"missing_role\"},{\"id\":\"r5\",\"account\":\"09\",\"scope\":\"read:sealed\",\"decision\":\"allow\",\"reason\":\"allowed\"}],\"allowedCount\":2,\"deniedCount\":3}",
+    "expected": {
+      "results": [
+        {
+          "id": "r1",
+          "account": "07",
+          "scope": "read:open",
+          "decision": "allow",
+          "reason": "allowed"
+        },
+        {
+          "id": "r2",
+          "account": "07",
+          "scope": "write:sealed",
+          "decision": "deny",
+          "reason": "denied"
+        },
+        {
+          "id": "r3",
+          "account": "08",
+          "scope": "delete:open",
+          "decision": "deny",
+          "reason": "inactive"
+        },
+        {
+          "id": "r4",
+          "account": "09",
+          "scope": "write:open",
+          "decision": "deny",
+          "reason": "missing_role"
+        },
+        {
+          "id": "r5",
+          "account": "09",
+          "scope": "read:sealed",
+          "decision": "allow",
+          "reason": "allowed"
+        }
+      ],
+      "allowedCount": 2,
+      "deniedCount": 3
+    }
+  },
+  {
+    "id": "SOC3-A-ROUTE",
+    "sourceGroup": "policy:ROUTE",
+    "raw": "{\"results\":[{\"id\":\"q1\",\"account\":\"00\",\"scope\":\"deploy:dev\",\"decision\":\"allow\",\"reason\":\"allowed\"},{\"id\":\"q2\",\"account\":\"00\",\"scope\":\"deploy:prod\",\"decision\":\"allow\",\"reason\":\"allowed\"},{\"id\":\"q3\",\"account\":\"11\",\"scope\":\"deploy:prod\",\"decision\":\"deny\",\"reason\":\"denied\"},{\"id\":\"q4\",\"account\":\"11\",\"scope\":\"read:prod\",\"decision\":\"allow\",\"reason\":\"allowed\"},{\"id\":\"q5\",\"account\":\"12\",\"scope\":\"read:dev\",\"decision\":\"deny\",\"reason\":\"inactive\"}],\"allowedCount\":3,\"deniedCount\":2}",
+    "negative": "{\"results\":[{\"id\":\"q1\",\"account\":\"00\",\"scope\":\"deploy:dev\",\"decision\":\"allow\",\"reason\":\"allowed\"},{\"id\":\"q2\",\"account\":\"00\",\"scope\":\"deploy:prod\",\"decision\":\"allow\",\"reason\":\"allowed\"},{\"id\":\"q3\",\"account\":\"11\",\"scope\":\"deploy:prod\",\"decision\":\"allow\",\"reason\":\"denied\"},{\"id\":\"q4\",\"account\":\"11\",\"scope\":\"read:prod\",\"decision\":\"allow\",\"reason\":\"allowed\"},{\"id\":\"q5\",\"account\":\"12\",\"scope\":\"read:dev\",\"decision\":\"deny\",\"reason\":\"inactive\"}],\"allowedCount\":3,\"deniedCount\":2}",
+    "expected": {
+      "results": [
+        {
+          "id": "q1",
+          "account": "00",
+          "scope": "deploy:dev",
+          "decision": "allow",
+          "reason": "allowed"
+        },
+        {
+          "id": "q2",
+          "account": "00",
+          "scope": "deploy:prod",
+          "decision": "allow",
+          "reason": "allowed"
+        },
+        {
+          "id": "q3",
+          "account": "11",
+          "scope": "deploy:prod",
+          "decision": "deny",
+          "reason": "denied"
+        },
+        {
+          "id": "q4",
+          "account": "11",
+          "scope": "read:prod",
+          "decision": "allow",
+          "reason": "allowed"
+        },
+        {
+          "id": "q5",
+          "account": "12",
+          "scope": "read:dev",
+          "decision": "deny",
+          "reason": "inactive"
+        }
+      ],
+      "allowedCount": 3,
+      "deniedCount": 2
+    }
+  },
+  {
+    "id": "SOC3-B-TREE",
+    "sourceGroup": "tree-edit:TREE",
+    "raw": "{\"id\":\"root\",\"children\":[{\"id\":\"a\",\"value\":\"007\",\"children\":[]},{\"id\":\"b\",\"value\":\"keep\",\"children\":[{\"id\":\"a2\",\"value\":\"x\"},{\"id\":\"b1\",\"value\":\"\"}]}]}",
+    "negative": "{\"id\":\"root\",\"children\":[{\"id\":\"a\",\"value\":\"007\",\"children\":[]},{\"id\":\"b\",\"value\":\"wrong\",\"children\":[{\"id\":\"a2\",\"value\":\"x\"},{\"id\":\"b1\",\"value\":\"\"}]}]}",
+    "expected": {
+      "id": "root",
+      "children": [
+        {
+          "id": "a",
+          "value": "007",
+          "children": []
+        },
+        {
+          "id": "b",
+          "value": "keep",
+          "children": [
+            {
+              "id": "a2",
+              "value": "x"
+            },
+            {
+              "id": "b1",
+              "value": ""
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "SOC3-B-FOREST",
+    "sourceGroup": "tree-edit:FOREST",
+    "raw": "{\"id\":\"root\",\"children\":[{\"id\":\"left\",\"value\":\"0\",\"children\":[{\"id\":\"leaf\",\"value\":\"L\\nR\"},{\"id\":\"r0\",\"value\":\"R0\"}]},{\"id\":\"right\",\"value\":null,\"children\":[]}]}",
+    "negative": "{\"id\":\"root\",\"children\":[{\"id\":\"left\",\"value\":\"0\",\"children\":[{\"id\":\"leaf\",\"value\":\"L\\nR\"},{\"id\":\"r0\",\"value\":\"R0\"}]},{\"id\":\"right\",\"value\":\"wrong\",\"children\":[]}]}",
+    "expected": {
+      "id": "root",
+      "children": [
+        {
+          "id": "left",
+          "value": "0",
+          "children": [
+            {
+              "id": "leaf",
+              "value": "L\nR"
+            },
+            {
+              "id": "r0",
+              "value": "R0"
+            }
+          ]
+        },
+        {
+          "id": "right",
+          "value": null,
+          "children": []
+        }
+      ]
+    }
+  },
+  {
+    "id": "SOC3-C-UNICODE",
+    "sourceGroup": "unicode:UNICODE",
+    "raw": "[{\"id\":\"001\",\"enabled\":false,\"present\":true,\"raw\":\"Café/猫~\",\"nfc\":\"Café/猫~\",\"pointerKey\":\"Café~1猫~0\",\"bytes\":\"Q2Fmw6kv54yrfg\"},{\"id\":\"002\",\"enabled\":true,\"present\":true,\"raw\":\"%25+\\r\\n\",\"nfc\":\"%25+\\r\\n\",\"pointerKey\":\"%25+\\r\\n\",\"bytes\":\"JTI1Kw0K\"},{\"id\":\"003\",\"enabled\":false,\"present\":false}]",
+    "negative": "[{\"id\":\"001\",\"enabled\":false,\"present\":true,\"raw\":\"Café/猫~\",\"nfc\":\"Café/猫~\",\"pointerKey\":\"Café~1猫~0\",\"bytes\":\"Q2Fmw6kv54yrfg\"},{\"id\":\"002\",\"enabled\":true,\"present\":true,\"raw\":\"%25+\\r\\n\",\"nfc\":\"%25+\\r\\n\",\"pointerKey\":\"%25+\\r\\n\",\"bytes\":\"JTI1Kw0K\"},{\"id\":\"003\",\"enabled\":false,\"present\":false}]",
+    "expected": [
+      {
+        "id": "001",
+        "enabled": false,
+        "present": true,
+        "raw": "Café/猫~",
+        "nfc": "Café/猫~",
+        "pointerKey": "Café~1猫~0",
+        "bytes": "Q2Fmw6kv54yrfg"
+      },
+      {
+        "id": "002",
+        "enabled": true,
+        "present": true,
+        "raw": "%25+\r\n",
+        "nfc": "%25+\r\n",
+        "pointerKey": "%25+\r\n",
+        "bytes": "JTI1Kw0K"
+      },
+      {
+        "id": "003",
+        "enabled": false,
+        "present": false
+      }
+    ]
+  },
+  {
+    "id": "SOC3-C-PATH",
+    "sourceGroup": "unicode:PATH",
+    "raw": "[{\"id\":\"010\",\"enabled\":true,\"present\":true,\"raw\":\"é/甲\",\"nfc\":\"é/甲\",\"pointerKey\":\"é~1甲\",\"bytes\":\"w6kv55Sy\"},{\"id\":\"011\",\"enabled\":false,\"present\":true,\"raw\":\"a~b/c\",\"nfc\":\"a~b/c\",\"pointerKey\":\"a~0b~1c\",\"bytes\":\"YX5iL2M\"},{\"id\":\"012\",\"enabled\":true,\"present\":true,\"raw\":\"\",\"nfc\":\"\",\"pointerKey\":\"\",\"bytes\":\"\"}]",
+    "negative": "[{\"id\":\"010\",\"enabled\":true,\"present\":true,\"raw\":\"é/甲\",\"nfc\":\"é/甲\",\"pointerKey\":\"é~1甲\",\"bytes\":\"w6kv55Sy\"},{\"id\":\"011\",\"enabled\":false,\"present\":true,\"raw\":\"a~b/c\",\"nfc\":\"a~b/c\",\"pointerKey\":\"a~0b~1c\",\"bytes\":\"YX5iL2M\"},{\"id\":\"012\",\"enabled\":true,\"present\":true,\"raw\":\"\",\"nfc\":\"\",\"pointerKey\":\"\",\"bytes\":\"\"}]",
+    "expected": [
+      {
+        "id": "010",
+        "enabled": true,
+        "present": true,
+        "raw": "é/甲",
+        "nfc": "é/甲",
+        "pointerKey": "é~1甲",
+        "bytes": "w6kv55Sy"
+      },
+      {
+        "id": "011",
+        "enabled": false,
+        "present": true,
+        "raw": "a~b/c",
+        "nfc": "a~b/c",
+        "pointerKey": "a~0b~1c",
+        "bytes": "YX5iL2M"
+      },
+      {
+        "id": "012",
+        "enabled": true,
+        "present": true,
+        "raw": "",
+        "nfc": "",
+        "pointerKey": "",
+        "bytes": ""
+      }
+    ]
+  },
+  {
+    "id": "SOC3-E-SIMPLE",
+    "sourceGroup": "event-ledger:paired",
+    "raw": "[{\"id\":\"a\",\"kind\":\"open\",\"amount\":0,\"note\":\"\"},{\"id\":\"b\",\"kind\":\"charge\",\"amount\":7,\"note\":\"x\\\\y\"},{\"id\":\"c\",\"kind\":\"charge\",\"amount\":4,\"note\":\"\\n\"},{\"id\":\"d\",\"kind\":\"refund\",\"amount\":3,\"note\":null},{\"id\":\"e\",\"kind\":\"close\",\"amount\":0,\"note\":\"\"}]",
+    "negative": "[{\"id\":\"a\",\"kind\":\"open\",\"amount\":0,\"note\":\"\"},{\"id\":\"b\",\"kind\":\"charge\",\"amount\":7,\"note\":\"xy\"},{\"id\":\"c\",\"kind\":\"charge\",\"amount\":4,\"note\":\"\\n\"},{\"id\":\"d\",\"kind\":\"refund\",\"amount\":3,\"note\":null},{\"id\":\"e\",\"kind\":\"close\",\"amount\":0,\"note\":\"\"}]",
+    "expected": [
+      {
+        "id": "a",
+        "kind": "open",
+        "amount": 0,
+        "note": ""
+      },
+      {
+        "id": "b",
+        "kind": "charge",
+        "amount": 7,
+        "note": "x\\y"
+      },
+      {
+        "id": "c",
+        "kind": "charge",
+        "amount": 4,
+        "note": "\n"
+      },
+      {
+        "id": "d",
+        "kind": "refund",
+        "amount": 3,
+        "note": null
+      },
+      {
+        "id": "e",
+        "kind": "close",
+        "amount": 0,
+        "note": ""
+      }
+    ]
+  },
+  {
+    "id": "SOC3-E-LEDGER",
+    "sourceGroup": "event-ledger:paired",
+    "raw": "{\"entries\":[{\"seq\":1,\"id\":\"a\",\"entry\":{\"open\":true},\"balance\":0},{\"seq\":2,\"id\":\"b\",\"entry\":{\"charge\":{\"amount\":7,\"note\":\"x\\\\y\"}},\"balance\":7},{\"seq\":3,\"id\":\"c\",\"entry\":{\"charge\":{\"amount\":4,\"note\":\"\\n\"}},\"balance\":11},{\"seq\":4,\"id\":\"d\",\"entry\":{\"refund\":{\"amount\":3,\"note\":null}},\"balance\":8},{\"seq\":5,\"id\":\"e\",\"entry\":{\"close\":true},\"balance\":8}],\"finalBalance\":8}",
+    "negative": "{\"entries\":[{\"seq\":1,\"id\":\"a\",\"entry\":{\"open\":true},\"balance\":0},{\"seq\":2,\"id\":\"b\",\"entry\":{\"charge\":{\"amount\":7,\"note\":\"x\\\\y\"}},\"balance\":7},{\"seq\":3,\"id\":\"c\",\"entry\":{\"charge\":{\"amount\":4,\"note\":\"\\n\"}},\"balance\":11},{\"seq\":4,\"id\":\"d\",\"entry\":{\"refund\":{\"amount\":3,\"note\":null}},\"balance\":9},{\"seq\":5,\"id\":\"e\",\"entry\":{\"close\":true},\"balance\":8}],\"finalBalance\":8}",
+    "expected": {
+      "entries": [
+        {
+          "seq": 1,
+          "id": "a",
+          "entry": {
+            "open": true
+          },
+          "balance": 0
+        },
+        {
+          "seq": 2,
+          "id": "b",
+          "entry": {
+            "charge": {
+              "amount": 7,
+              "note": "x\\y"
+            }
+          },
+          "balance": 7
+        },
+        {
+          "seq": 3,
+          "id": "c",
+          "entry": {
+            "charge": {
+              "amount": 4,
+              "note": "\n"
+            }
+          },
+          "balance": 11
+        },
+        {
+          "seq": 4,
+          "id": "d",
+          "entry": {
+            "refund": {
+              "amount": 3,
+              "note": null
+            }
+          },
+          "balance": 8
+        },
+        {
+          "seq": 5,
+          "id": "e",
+          "entry": {
+            "close": true
+          },
+          "balance": 8
+        }
+      ],
+      "finalBalance": 8
+    }
+  },
+  {
+    "id": "SOC3-F-CSV",
+    "sourceGroup": "nested-conversion:csv",
+    "raw": "actor,index,code,note\r\nA/01,0,007,\"a,\"\"b\"\"\n尾\"\r\nA/01,1,008,\r\nB~02,0,010,ON\r\nB~02,1,011,<NULL>\r\n",
+    "negative": "actor,index,code,note\r\nA/01,0,007,\"a,\"\"b\"\"\\n尾\"\r\nA/01,1,008,\r\nB~02,0,010,ON\r\nB~02,1,011,<NULL>\r\n",
+    "expected": [
+      {
+        "actor": "A/01",
+        "index": "0",
+        "code": "007",
+        "note": "a,\"b\"\n尾"
+      },
+      {
+        "actor": "A/01",
+        "index": "1",
+        "code": "008",
+        "note": ""
+      },
+      {
+        "actor": "B~02",
+        "index": "0",
+        "code": "010",
+        "note": "ON"
+      },
+      {
+        "actor": "B~02",
+        "index": "1",
+        "code": "011",
+        "note": "<NULL>"
+      }
+    ]
+  },
+  {
+    "id": "SOC3-F-XML",
+    "sourceGroup": "nested-conversion:xml",
+    "raw": "<records><record><actor>A/01</actor><index>0</index><code>007</code><note>a,\"b\"\n尾</note></record><record><actor>A/01</actor><index>1</index><code>008</code><note></note></record><record><actor>B~02</actor><index>0</index><code>010</code><note>ON</note></record><record><actor>B~02</actor><index>1</index><code>011</code><note null=\"true\"/></record></records>",
+    "negative": "<records><record><actor>A/01</actor><index>0</index><code>007</code><note>a,\"b\"\n尾</note></record><record><actor>A/01</actor><index>1</index><code>008</code><note></note></record><record><actor>B~02</actor><index>0</index><code>010</code><note>ON</note></record><record><actor>B~02</actor><index>1</index><code>011</code><note/></record></records>",
+    "expected": [
+      {
+        "actor": "A/01",
+        "index": "0",
+        "code": "007",
+        "note": "a,\"b\"\n尾"
+      },
+      {
+        "actor": "A/01",
+        "index": "1",
+        "code": "008",
+        "note": ""
+      },
+      {
+        "actor": "B~02",
+        "index": "0",
+        "code": "010",
+        "note": "ON"
+      },
+      {
+        "actor": "B~02",
+        "index": "1",
+        "code": "011",
+        "note": null
+      }
+    ]
+  },
+  {
+    "id": "SOC3-G-AUTH",
+    "sourceGroup": "schema-behavior:AUTH",
+    "raw": "{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"object\",\"properties\":{\"kind\":{\"enum\":[\"token\",\"pair\"]},\"id\":{\"type\":\"string\",\"pattern\":\"^[0-9]{2}$\"},\"auth\":{\"type\":\"object\"}},\"required\":[\"kind\",\"id\",\"auth\"],\"additionalProperties\":false,\"allOf\":[{\"if\":{\"properties\":{\"kind\":{\"const\":\"token\"}},\"required\":[\"kind\"]},\"then\":{\"properties\":{\"auth\":{\"type\":\"object\",\"properties\":{\"token\":{\"type\":\"string\",\"minLength\":1}},\"required\":[\"token\"],\"additionalProperties\":false}}},\"else\":{\"properties\":{\"auth\":{\"type\":\"object\",\"properties\":{\"user\":{\"type\":\"string\"},\"password\":{\"type\":\"string\"}},\"required\":[\"user\",\"password\"],\"additionalProperties\":false}}}}]}",
+    "negative": "{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"object\",\"properties\":{\"kind\":{\"enum\":[\"token\",\"pair\"]},\"id\":{\"type\":\"string\",\"pattern\":\"^[0-9]{2}$\"},\"auth\":{\"type\":\"object\"}},\"required\":[\"kind\",\"id\",\"auth\"],\"additionalProperties\":true,\"allOf\":[{\"if\":{\"properties\":{\"kind\":{\"const\":\"token\"}},\"required\":[\"kind\"]},\"then\":{\"properties\":{\"auth\":{\"type\":\"object\",\"properties\":{\"token\":{\"type\":\"string\",\"minLength\":1}},\"required\":[\"token\"],\"additionalProperties\":false}}},\"else\":{\"properties\":{\"auth\":{\"type\":\"object\",\"properties\":{\"user\":{\"type\":\"string\"},\"password\":{\"type\":\"string\"}},\"required\":[\"user\",\"password\"],\"additionalProperties\":false}}}}]}"
+  },
+  {
+    "id": "SOC3-G-ARRAY",
+    "sourceGroup": "schema-behavior:ARRAY",
+    "raw": "{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"array\",\"minItems\":2,\"maxItems\":4,\"items\":{\"type\":\"object\",\"properties\":{\"key\":{\"type\":\"string\",\"pattern\":\"^[a-z]$\"},\"value\":{\"type\":\"integer\",\"minimum\":0,\"maximum\":3}},\"required\":[\"key\",\"value\"],\"additionalProperties\":false},\"allOf\":[{\"not\":{\"contains\":{\"properties\":{\"key\":{\"const\":\"a\"},\"value\":{\"const\":3}},\"required\":[\"key\",\"value\"]}}}]}",
+    "negative": "{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"array\",\"minItems\":2,\"maxItems\":5,\"items\":{\"type\":\"object\",\"properties\":{\"key\":{\"type\":\"string\",\"pattern\":\"^[a-z]$\"},\"value\":{\"type\":\"integer\",\"minimum\":0,\"maximum\":3}},\"required\":[\"key\",\"value\"],\"additionalProperties\":false},\"allOf\":[{\"not\":{\"contains\":{\"properties\":{\"key\":{\"const\":\"a\"},\"value\":{\"const\":3}},\"required\":[\"key\",\"value\"]}}}]}"
+  },
+  {
+    "id": "SOC3-H-BARS",
+    "sourceGroup": "svg-derived:BARS",
+    "raw": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"240\" height=\"140\" viewBox=\"0 0 240 140\"><rect id=\"bar/0\" x=\"20\" y=\"74\" width=\"36\" height=\"36\" fill=\"#e4572e\"/><rect id=\"bar/1\" x=\"90\" y=\"50\" width=\"36\" height=\"60\" fill=\"#3a86ff\"/><rect id=\"bar/2\" x=\"160\" y=\"86\" width=\"36\" height=\"24\" fill=\"#2a9d8f\"/><text id=\"label/0\" x=\"20\" y=\"130\">A&amp;B</text><text id=\"label/1\" x=\"90\" y=\"130\">C&lt; D</text><text id=\"label/2\" x=\"160\" y=\"130\">E</text></svg>",
+    "negative": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"240\" height=\"140\" viewBox=\"0 0 240 140\"><rect id=\"bar/0\" x=\"20\" y=\"74\" width=\"36\" height=\"36\" fill=\"#e4572e\"/><rect id=\"bar/1\" x=\"90\" y=\"50\" width=\"36\" height=\"60\" fill=\"#000000\"/><rect id=\"bar/2\" x=\"160\" y=\"86\" width=\"36\" height=\"24\" fill=\"#2a9d8f\"/><text id=\"label/0\" x=\"20\" y=\"130\">A&amp;B</text><text id=\"label/1\" x=\"90\" y=\"130\">C&lt; D</text><text id=\"label/2\" x=\"160\" y=\"130\">E</text></svg>",
+    "expected": {
+      "width": 240,
+      "height": 140,
+      "viewBox": [
+        0,
+        0,
+        240,
+        140
+      ],
+      "nodes": {
+        "bar/0": {
+          "tag": "rect",
+          "attrs": {
+            "x": 20,
+            "y": 74,
+            "width": 36,
+            "height": 36
+          }
+        },
+        "bar/1": {
+          "tag": "rect",
+          "attrs": {
+            "x": 90,
+            "y": 50,
+            "width": 36,
+            "height": 60
+          }
+        },
+        "bar/2": {
+          "tag": "rect",
+          "attrs": {
+            "x": 160,
+            "y": 86,
+            "width": 36,
+            "height": 24
+          }
+        },
+        "label/0": {
+          "tag": "text",
+          "attrs": {
+            "x": 20,
+            "y": 130
+          },
+          "text": "A&B"
+        },
+        "label/1": {
+          "tag": "text",
+          "attrs": {
+            "x": 90,
+            "y": 130
+          },
+          "text": "C< D"
+        },
+        "label/2": {
+          "tag": "text",
+          "attrs": {
+            "x": 160,
+            "y": 130
+          },
+          "text": "E"
+        }
+      }
+    }
+  },
+  {
+    "id": "SOC3-H-DELTA",
+    "sourceGroup": "svg-derived:DELTA",
+    "raw": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"240\" height=\"140\" viewBox=\"0 0 240 140\"><rect id=\"bar/0\" x=\"20\" y=\"62\" width=\"36\" height=\"48\" fill=\"#e4572e\"/><rect id=\"bar/1\" x=\"90\" y=\"98\" width=\"36\" height=\"12\" fill=\"#3a86ff\"/><rect id=\"bar/2\" x=\"160\" y=\"38\" width=\"36\" height=\"72\" fill=\"#2a9d8f\"/><text id=\"label/0\" x=\"20\" y=\"130\">甲/乙</text><text id=\"label/1\" x=\"90\" y=\"130\">x~y</text><text id=\"label/2\" x=\"160\" y=\"130\">z</text></svg>",
+    "negative": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"240\" height=\"140\" viewBox=\"0 0 240 140\"><rect id=\"bar/0\" x=\"20\" y=\"62\" width=\"36\" height=\"48\" fill=\"#e4572e\"/><rect id=\"bar/1\" x=\"90\" y=\"98\" width=\"36\" height=\"12\" fill=\"#000000\"/><rect id=\"bar/2\" x=\"160\" y=\"38\" width=\"36\" height=\"72\" fill=\"#2a9d8f\"/><text id=\"label/0\" x=\"20\" y=\"130\">甲/乙</text><text id=\"label/1\" x=\"90\" y=\"130\">x~y</text><text id=\"label/2\" x=\"160\" y=\"130\">z</text></svg>",
+    "expected": {
+      "width": 240,
+      "height": 140,
+      "viewBox": [
+        0,
+        0,
+        240,
+        140
+      ],
+      "nodes": {
+        "bar/0": {
+          "tag": "rect",
+          "attrs": {
+            "x": 20,
+            "y": 62,
+            "width": 36,
+            "height": 48
+          }
+        },
+        "bar/1": {
+          "tag": "rect",
+          "attrs": {
+            "x": 90,
+            "y": 98,
+            "width": 36,
+            "height": 12
+          }
+        },
+        "bar/2": {
+          "tag": "rect",
+          "attrs": {
+            "x": 160,
+            "y": 38,
+            "width": 36,
+            "height": 72
+          }
+        },
+        "label/0": {
+          "tag": "text",
+          "attrs": {
+            "x": 20,
+            "y": 130
+          },
+          "text": "甲/乙"
+        },
+        "label/1": {
+          "tag": "text",
+          "attrs": {
+            "x": 90,
+            "y": 130
+          },
+          "text": "x~y"
+        },
+        "label/2": {
+          "tag": "text",
+          "attrs": {
+            "x": 160,
+            "y": 130
+          },
+          "text": "z"
+        }
+      }
+    }
+  }
+]

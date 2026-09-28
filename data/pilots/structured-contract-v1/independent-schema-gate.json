@@ -1,0 +1,113 @@
+{
+  "validator": "python-jsonschema@4.26.0",
+  "status": "passed",
+  "modelCalls": 0,
+  "scenarios": 20,
+  "scope": "Independent schema compliance cross-check; content fixture correctness is not independently proven by this check.",
+  "packHashes": {
+    "development": "cb86a64567d29dc38305acc082a576eefd899d65cad1c350480575f9687c27d7",
+    "holdout": "a176dd8b4f9cae07db82fcbbb4573d243194681d430339df374a6b77d229add1"
+  },
+  "rows": [
+    {
+      "id": "SOC-A-D1",
+      "goldSchemaValid": true,
+      "mutationSchemaValid": false
+    },
+    {
+      "id": "SOC-A-D2",
+      "goldSchemaValid": true,
+      "mutationSchemaValid": false
+    },
+    {
+      "id": "SOC-A-D3",
+      "goldSchemaValid": true,
+      "mutationSchemaValid": false
+    },
+    {
+      "id": "SOC-B-D1",
+      "goldSchemaValid": true,
+      "mutationSchemaValid": false
+    },
+    {
+      "id": "SOC-B-D2",
+      "goldSchemaValid": true,
+      "mutationSchemaValid": false
+    },
+    {
+      "id": "SOC-B-D3",
+      "goldSchemaValid": true,
+      "mutationSchemaValid": false
+    },
+    {
+      "id": "SOC-C-D1",
+      "goldSchemaValid": true,
+      "mutationSchemaValid": true
+    },
+    {
+      "id": "SOC-C-D2",
+      "goldSchemaValid": true,
+      "mutationSchemaValid": true
+    },
+    {
+      "id": "SOC-C-D3",
+      "goldSchemaValid": true,
+      "mutationSchemaValid": true
+    },
+    {
+      "id": "SOC-D-D1",
+      "goldSchemaValid": true,
+      "mutationSchemaValid": true
+    },
+    {
+      "id": "SOC-D-D2",
+      "goldSchemaValid": true,
+      "mutationSchemaValid": true
+    },
+    {
+      "id": "SOC-D-D3",
+      "goldSchemaValid": true,
+      "mutationSchemaValid": true
+    },
+    {
+      "id": "SOC-A-H1",
+      "goldSchemaValid": true,
+      "mutationSchemaValid": false
+    },
+    {
+      "id": "SOC-A-H2",
+      "goldSchemaValid": true,
+      "mutationSchemaValid": false
+    },
+    {
+      "id": "SOC-B-H1",
+      "goldSchemaValid": true,
+      "mutationSchemaValid": false
+    },
+    {
+      "id": "SOC-B-H2",
+      "goldSchemaValid": true,
+      "mutationSchemaValid": false
+    },
+    {
+      "id": "SOC-C-H1",
+      "goldSchemaValid": true,
+      "mutationSchemaValid": true
+    },
+    {
+      "id": "SOC-C-H2",
+      "goldSchemaValid": true,
+      "mutationSchemaValid": true
+    },
+    {
+      "id": "SOC-D-H1",
+      "goldSchemaValid": true,
+      "mutationSchemaValid": true
+    },
+    {
+      "id": "SOC-D-H2",
+      "goldSchemaValid": true,
+      "mutationSchemaValid": true
+    }
+  ]
+}

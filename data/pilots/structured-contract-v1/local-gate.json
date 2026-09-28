@@ -1,0 +1,176 @@
+{
+  "status": "passed",
+  "modelCalls": 0,
+  "scenarios": 20,
+  "checkedResponses": 40,
+  "packHashes": {
+    "development": "cb86a64567d29dc38305acc082a576eefd899d65cad1c350480575f9687c27d7",
+    "holdout": "a176dd8b4f9cae07db82fcbbb4573d243194681d430339df374a6b77d229add1"
+  },
+  "goldHashes": {
+    "development": "86fbe361991aaacbda7a9c659a1d43da5d6884de0d0dce2d0dc63a7dae958b0f",
+    "holdout": "e8a100e714679be0f96d50f788d9b9f28ad22bc2575a4c709e28ac006ded829f"
+  },
+  "rows": [
+    {
+      "id": "SOC-A-D1",
+      "split": "development",
+      "correct": 100,
+      "incorrect": 0,
+      "correctSchema": true,
+      "incorrectSchema": false
+    },
+    {
+      "id": "SOC-A-D2",
+      "split": "development",
+      "correct": 100,
+      "incorrect": 0,
+      "correctSchema": true,
+      "incorrectSchema": false
+    },
+    {
+      "id": "SOC-A-D3",
+      "split": "development",
+      "correct": 100,
+      "incorrect": 0,
+      "correctSchema": true,
+      "incorrectSchema": false
+    },
+    {
+      "id": "SOC-B-D1",
+      "split": "development",
+      "correct": 100,
+      "incorrect": 0,
+      "correctSchema": true,
+      "incorrectSchema": false
+    },
+    {
+      "id": "SOC-B-D2",
+      "split": "development",
+      "correct": 100,
+      "incorrect": 0,
+      "correctSchema": true,
+      "incorrectSchema": false
+    },
+    {
+      "id": "SOC-B-D3",
+      "split": "development",
+      "correct": 100,
+      "incorrect": 0,
+      "correctSchema": true,
+      "incorrectSchema": false
+    },
+    {
+      "id": "SOC-C-D1",
+      "split": "development",
+      "correct": 100,
+      "incorrect": 0,
+      "correctSchema": true,
+      "incorrectSchema": true
+    },
+    {
+      "id": "SOC-C-D2",
+      "split": "development",
+      "correct": 100,
+      "incorrect": 0,
+      "correctSchema": true,
+      "incorrectSchema": true
+    },
+    {
+      "id": "SOC-C-D3",
+      "split": "development",
+      "correct": 100,
+      "incorrect": 0,
+      "correctSchema": true,
+      "incorrectSchema": true
+    },
+    {
+      "id": "SOC-D-D1",
+      "split": "development",
+      "correct": 100,
+      "incorrect": 0,
+      "correctSchema": true,
+      "incorrectSchema": true
+    },
+    {
+      "id": "SOC-D-D2",
+      "split": "development",
+      "correct": 100,
+      "incorrect": 0,
+      "correctSchema": true,
+      "incorrectSchema": true
+    },
+    {
+      "id": "SOC-D-D3",
+      "split": "development",
+      "correct": 100,
+      "incorrect": 0,
+      "correctSchema": true,
+      "incorrectSchema": true
+    },
+    {
+      "id": "SOC-A-H1",
+      "split": "holdout",
+      "correct": 100,
+      "incorrect": 0,
+      "correctSchema": true,
+      "incorrectSchema": false
+    },
+    {
+      "id": "SOC-A-H2",
+      "split": "holdout",
+      "correct": 100,
+      "incorrect": 0,
+      "correctSchema": true,
+      "incorrectSchema": false
+    },
+    {
+      "id": "SOC-B-H1",
+      "split": "holdout",
+      "correct": 100,
+      "incorrect": 0,
+      "correctSchema": true,
+      "incorrectSchema": false
+    },
+    {
+      "id": "SOC-B-H2",
+      "split": "holdout",
+      "correct": 100,
+      "incorrect": 0,
+      "correctSchema": true,
+      "incorrectSchema": false
+    },
+    {
+      "id": "SOC-C-H1",
+      "split": "holdout",
+      "correct": 100,
+      "incorrect": 0,
+      "correctSchema": true,
+      "incorrectSchema": true
+    },
+    {
+      "id": "SOC-C-H2",
+      "split": "holdout",
+      "correct": 100,
+      "incorrect": 0,
+      "correctSchema": true,
+      "incorrectSchema": true
+    },
+    {
+      "id": "SOC-D-H1",
+      "split": "holdout",
+      "correct": 100,
+      "incorrect": 0,
+      "correctSchema": true,
+      "incorrectSchema": true
+    },
+    {
+      "id": "SOC-D-H2",
+      "split": "holdout",
+      "correct": 100,
+      "incorrect": 0,
+      "correctSchema": true,
+      "incorrectSchema": true
+    }
+  ]
+}

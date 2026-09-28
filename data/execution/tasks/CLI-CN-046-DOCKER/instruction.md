@@ -1,0 +1,1 @@
+工作区 /workspace，Linux sh 和 Python 3 标准库可用。使用 Alpine/BusyBox 工具，提交脚本统一以 POSIX sh 执行，未提供 bash 或 GNU 工具。data/reports/q4/summary.txt 访问失败。排查各级目录权限后，只给阻断路径 data/reports/q4 增加必要的执行权限，使文件可读并把内容输出到 stdout。保留其他目录和文件权限及内容，禁止递归 chmod。只输出可执行 shell 脚本。

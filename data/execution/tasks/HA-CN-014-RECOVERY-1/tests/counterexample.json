@@ -1,0 +1,27 @@
+[
+  {
+    "tool": "fs.glob",
+    "args": {
+      "pattern": "tmp/**/*.log"
+    }
+  },
+  {
+    "tool": "fs.mkdir",
+    "args": {
+      "path": "backup"
+    }
+  },
+  {
+    "tool": "fs.copy",
+    "args": {
+      "src": "tmp/app.log",
+      "dst": "backup/app.log"
+    }
+  },
+  {
+    "tool": "fs.delete",
+    "args": {
+      "path": "tmp"
+    }
+  }
+]

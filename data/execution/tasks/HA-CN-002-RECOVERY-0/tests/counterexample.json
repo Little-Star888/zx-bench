@@ -1,0 +1,15 @@
+[
+  {
+    "tool": "memory.list",
+    "args": {
+      "prefix": "deploy"
+    }
+  },
+  {
+    "tool": "memory.save",
+    "args": {
+      "key": "deploy/current",
+      "value": "service=alpha;env=staging;registry=ghcr"
+    }
+  }
+]

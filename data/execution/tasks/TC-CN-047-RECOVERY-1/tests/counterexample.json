@@ -1,0 +1,28 @@
+[
+  {
+    "tool": "verify_account",
+    "args": {
+      "uid": "user-b"
+    }
+  },
+  {
+    "tool": "recharge",
+    "args": {
+      "uid": "user-b",
+      "amount": 250
+    }
+  },
+  {
+    "tool": "generate_receipt",
+    "args": {
+      "txn": "wrong-txn"
+    }
+  },
+  {
+    "tool": "notify_user",
+    "args": {
+      "uid": "user-b",
+      "msg": "充值 250 元成功，凭证 receipt-user-b-250，交易 credit-user-b-250。"
+    }
+  }
+]

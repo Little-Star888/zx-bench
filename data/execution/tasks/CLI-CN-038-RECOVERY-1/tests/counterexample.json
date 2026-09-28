@@ -1,0 +1,12 @@
+[
+  {
+    "tool": "fs.inspect",
+    "args": {}
+  },
+  {
+    "tool": "terminal",
+    "args": {
+      "cmd": "chmod -R 777 project"
+    }
+  }
+]

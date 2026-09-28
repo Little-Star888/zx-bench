@@ -1,0 +1,1 @@
+工作区 /workspace，Linux sh 和 Python 3 标准库可用。使用 Alpine/BusyBox 工具，提交脚本统一以 POSIX sh 执行，未提供 bash 或 GNU 工具。将 nested/ 五层目录下所有普通文件按相对路径 Unicode 字典序移动到 flat/。保留已有目标文件；重名时在完整 basename 后追加 _1、_2，选择第一个未占用名称（如 a.txt_1）。不要跟随符号链接，保留无关文件。只输出可执行 shell 脚本。

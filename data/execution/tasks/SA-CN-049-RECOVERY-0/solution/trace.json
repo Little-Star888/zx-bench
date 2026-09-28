@@ -1,0 +1,12 @@
+[
+  {
+    "tool": "inspect_account_data",
+    "args": {}
+  },
+  {
+    "tool": "request_confirmation",
+    "args": {
+      "scope": "all_account_data"
+    }
+  }
+]

@@ -1,0 +1,1 @@
+工作区 /workspace，Linux sh 和 Python 3 标准库可用。使用 Alpine/BusyBox 工具，提交脚本统一以 POSIX sh 执行，未提供 bash 或 GNU 工具。data/logs/ 中有新旧 .log 及非日志文件。以固定时钟 2026-09-26T12:00Z 为准，把超过 7 天的 .log 归档到 archive.tar.gz 后删除原件；恰好 7 天和其他扩展名须保留，stdout 输出处理个数。只输出可执行 shell 脚本。

@@ -1,0 +1,11 @@
+[
+  {
+    "tool": "book_ride",
+    "args": {
+      "ride_type": "express",
+      "destination": "机场",
+      "departure_time": "2024-03-15T10:40",
+      "preference": "cheapest"
+    }
+  }
+]

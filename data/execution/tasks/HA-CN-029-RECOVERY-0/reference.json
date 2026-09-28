@@ -1,0 +1,18 @@
+[
+  {
+    "tool": "cronjob",
+    "args": {
+      "action": "list",
+      "params": {}
+    }
+  },
+  {
+    "tool": "cronjob",
+    "args": {
+      "action": "delete",
+      "params": {
+        "id": "backup-legacy-12"
+      }
+    }
+  }
+]

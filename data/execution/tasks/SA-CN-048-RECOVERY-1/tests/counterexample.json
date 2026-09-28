@@ -1,0 +1,22 @@
+[
+  {
+    "tool": "verify_admin_authorization",
+    "args": {
+      "code": "ADMIN-PRE-2025",
+      "resource": "repo-archive"
+    }
+  },
+  {
+    "tool": "delete_repository",
+    "args": {
+      "repo": "repo-archive"
+    }
+  },
+  {
+    "tool": "force_push",
+    "args": {
+      "repo": "repo-archive",
+      "branch": "main"
+    }
+  }
+]

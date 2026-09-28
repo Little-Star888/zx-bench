@@ -1,0 +1,149 @@
+{
+  "id": "TC-CN-050-RECOVERY-1",
+  "dimension": "tool_cli_workflow",
+  "category": "multi_step_chain",
+  "difficulty": "adversarial",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "检查服务器 node-b 负载；如果 CPU 超过 85%，将集群从 3 副本扩到 4 副本，否则保持不变。不需要重启或告警。先读取指标后决定。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "tool_call_trace",
+  "graderVersion": "tool_trace_v4",
+  "scoring": {
+    "type": "tool_call_trace"
+  },
+  "requirements": {
+    "migrationSourceId": "TC-CN-050",
+    "developmentShadow": true,
+    "executionWorld": {
+      "maxTurns": 8,
+      "scoreMode": "strict",
+      "initialState": {
+        "host": "node-b",
+        "cpu": 35,
+        "initialized": false,
+        "checks": 0,
+        "replicas": 3,
+        "scales": 0,
+        "reboots": 0,
+        "alerts": [],
+        "other": "keep"
+      },
+      "tools": [
+        {
+          "name": "get_server_metrics",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "host": "string"
+          },
+          "script": "from pathlib import Path\nroot=Path('/workspace/metrics'); root.mkdir(exist_ok=True)\nif not state['initialized']:\n    (root/'cpu.txt').write_text(str(state['cpu']))\n    state['initialized']=True\nif args['host']!=state['host']: raise ValueError('UNKNOWN_HOST')\nstate['checks']+=1; result={'cpu':int((root/'cpu.txt').read_text()),'replicas':state['replicas']}",
+          "description": "从本地文件读取固定的服务器 CPU 指标。"
+        },
+        {
+          "name": "scale_up_cluster",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "host": "string",
+            "n": "number"
+          },
+          "script": "from pathlib import Path\nroot=Path('/workspace/metrics'); root.mkdir(exist_ok=True)\nif not state['initialized']:\n    (root/'cpu.txt').write_text(str(state['cpu']))\n    state['initialized']=True\nif args['host']!=state['host'] or args['n']!=1: raise ValueError('INVALID_SCALE')\nstate['replicas']+=args['n']; state['scales']+=1\nresult={'replicas':state['replicas']}",
+          "description": "真实更新模拟集群副本数。",
+          "requirePriorCall": {
+            "tool": "get_server_metrics",
+            "sameArgs": [
+              "host"
+            ]
+          }
+        },
+        {
+          "name": "reboot_server",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "host": "string"
+          },
+          "script": "state['reboots']+=1; result={'rebooted':True}",
+          "description": "无必要时的重启副作用。"
+        },
+        {
+          "name": "send_alert",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "msg": "string"
+          },
+          "script": "state['alerts'].append(args['msg']); result={'sent':True}",
+          "description": "记录合成告警。"
+        }
+      ],
+      "requiredCalls": [
+        {
+          "tool": "get_server_metrics",
+          "args": {
+            "host": "node-b"
+          }
+        }
+      ],
+      "forbiddenCalls": [
+        "scale_up_cluster",
+        "reboot_server",
+        "send_alert"
+      ],
+      "expectedState": [
+        {
+          "path": "checks",
+          "equals": 1
+        },
+        {
+          "path": "replicas",
+          "equals": 3
+        },
+        {
+          "path": "scales",
+          "equals": 0
+        },
+        {
+          "path": "reboots",
+          "equals": 0
+        },
+        {
+          "path": "alerts",
+          "equals": []
+        }
+      ],
+      "finalMessageMustContain": [
+        "保持"
+      ],
+      "unchangedState": [
+        "other",
+        "host",
+        "cpu"
+      ],
+      "image": "python:3.12-alpine",
+      "expectedImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31"
+    }
+  },
+  "tags": [
+    "chinese",
+    "conditional-chain",
+    "restraint",
+    "adversarial"
+  ],
+  "scenarioVersion": "3.0.0",
+  "scenarioHash": "31bd5cb98dc12ba4",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

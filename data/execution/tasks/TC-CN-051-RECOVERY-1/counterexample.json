@@ -1,0 +1,9 @@
+[
+  {
+    "tool": "file_write",
+    "args": {
+      "path": "memory.json",
+      "content": "CockroachDB"
+    }
+  }
+]

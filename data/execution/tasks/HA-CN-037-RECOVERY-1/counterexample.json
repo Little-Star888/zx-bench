@@ -1,0 +1,21 @@
+[
+  {
+    "tool": "state.read",
+    "args": {
+      "key": "progress"
+    }
+  },
+  {
+    "tool": "file.process",
+    "args": {
+      "i": 1
+    }
+  },
+  {
+    "tool": "state.save",
+    "args": {
+      "key": "progress",
+      "value": 100
+    }
+  }
+]

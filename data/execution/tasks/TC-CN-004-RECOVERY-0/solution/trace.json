@@ -1,0 +1,22 @@
+[
+  {
+    "tool": "check_server_status",
+    "args": {
+      "server_id": "srv-a"
+    }
+  },
+  {
+    "tool": "restart_service",
+    "args": {
+      "server_id": "srv-a",
+      "service_name": "web"
+    }
+  },
+  {
+    "tool": "send_notification",
+    "args": {
+      "user": "requester",
+      "message": "web 异常已重启"
+    }
+  }
+]

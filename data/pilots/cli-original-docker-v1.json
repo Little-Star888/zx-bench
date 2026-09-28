@@ -1,0 +1,1178 @@
+[
+  {
+    "id": "CLI-CN-002-DOCKER",
+    "dimension": "cli_deep_tasks",
+    "category": "text_processing",
+    "difficulty": "hard",
+    "language": "general",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "promptTemplate": "在 /workspace 中执行任务。环境为 Alpine/BusyBox，提供 POSIX sh 和 Python 3 标准库，不提供 bash 或 GNU 工具；提交脚本统一以 sh 执行。mixed.txt 是混杂文本，含 mailto 链接和引号内邮箱。提取符合简化 RFC 模式 [A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,} 的所有邮箱，转为小写、不区分大小写去重后按 ASCII 升序写入 emails.txt。只输出可执行 shell 脚本。",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "cli_command",
+    "graderVersion": "cli_command_v1",
+    "scoring": {
+      "type": "cli_command",
+      "mode": "executed_state"
+    },
+    "requirements": {
+      "executionImage": "python:3.12-alpine",
+      "executionImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31",
+      "executionInterpreter": "sh",
+      "executionCases": [
+        {
+          "files": [
+            {
+              "path": "mixed.txt",
+              "content": "mailto:Alice.Example+tag@Example.COM, alice.example+TAG@example.com; CSV,\"bob_2@sub.test.org\"; x@y.co!\n"
+            }
+          ],
+          "expectedFiles": {
+            "emails.txt": "alice.example+tag@example.com\nbob_2@sub.test.org\nx@y.co\n"
+          },
+          "unchangedFiles": [
+            "mixed.txt"
+          ]
+        },
+        {
+          "files": [
+            {
+              "path": "mixed.txt",
+              "content": "NOPE, \"Z@A.IO\" / z@a.io; a.b+1@EXAMPLE.net.\n"
+            }
+          ],
+          "expectedFiles": {
+            "emails.txt": "a.b+1@example.net\nz@a.io\n"
+          },
+          "unchangedFiles": [
+            "mixed.txt"
+          ]
+        }
+      ],
+      "migrationSourceId": "CLI-CN-002",
+      "developmentShadow": true
+    },
+    "tags": [
+      "cli",
+      "text",
+      "regex",
+      "dedup"
+    ],
+    "scenarioVersion": "2.1.0",
+    "scenarioHash": "e1d1cf9ef2d3b824",
+    "responseMode": "live_execution",
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null
+  },
+  {
+    "id": "CLI-CN-003-DOCKER",
+    "dimension": "cli_deep_tasks",
+    "category": "text_processing",
+    "difficulty": "adversarial",
+    "language": "general",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "promptTemplate": "在 /workspace 中执行任务。环境为 Alpine/BusyBox，提供 POSIX sh 和 Python 3 标准库，不提供 bash 或 GNU 工具；提交脚本统一以 sh 执行。a.txt 和 b.txt 已在工作区。将出现在 a.txt 但不在 b.txt 的行按 a.txt 原始顺序写入 only_in_a.txt，并保留符合条件的重复行。只输出可执行 shell 脚本。",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "cli_command",
+    "graderVersion": "cli_command_v1",
+    "scoring": {
+      "type": "cli_command",
+      "mode": "executed_state"
+    },
+    "requirements": {
+      "executionImage": "python:3.12-alpine",
+      "executionImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31",
+      "executionInterpreter": "sh",
+      "executionCases": [
+        {
+          "files": [
+            {
+              "path": "a.txt",
+              "content": "apple\nshared\napple\nzebra\nshared\ntail\n"
+            },
+            {
+              "path": "b.txt",
+              "content": "shared\nother\n"
+            }
+          ],
+          "expectedFiles": {
+            "only_in_a.txt": "apple\napple\nzebra\ntail\n"
+          },
+          "unchangedFiles": [
+            "a.txt",
+            "b.txt"
+          ]
+        },
+        {
+          "files": [
+            {
+              "path": "a.txt",
+              "content": "x y\nsame\nx y\nlast\nsame\n"
+            },
+            {
+              "path": "b.txt",
+              "content": "same\n"
+            }
+          ],
+          "expectedFiles": {
+            "only_in_a.txt": "x y\nx y\nlast\n"
+          },
+          "unchangedFiles": [
+            "a.txt",
+            "b.txt"
+          ]
+        }
+      ],
+      "migrationSourceId": "CLI-CN-003",
+      "developmentShadow": true
+    },
+    "tags": [
+      "cli",
+      "text",
+      "set-difference",
+      "trap"
+    ],
+    "scenarioVersion": "2.1.0",
+    "scenarioHash": "e7d9f2ed15ca5cf2",
+    "responseMode": "live_execution",
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null
+  },
+  {
+    "id": "CLI-CN-004-DOCKER",
+    "dimension": "cli_deep_tasks",
+    "category": "text_processing",
+    "difficulty": "adversarial",
+    "language": "general",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "promptTemplate": "在 /workspace 中执行任务。环境为 Alpine/BusyBox，提供 POSIX sh 和 Python 3 标准库，不提供 bash 或 GNU 工具；提交脚本统一以 sh 执行。report.txt 含多个由 ---BEGIN NOTE--- 和 ---END NOTE--- 界定的多行块。将每个完整块（含标记）替换为单行 [REDACTED]，写入 redacted.txt。只输出可执行 shell 脚本。",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "cli_command",
+    "graderVersion": "cli_command_v1",
+    "scoring": {
+      "type": "cli_command",
+      "mode": "executed_state"
+    },
+    "requirements": {
+      "executionImage": "python:3.12-alpine",
+      "executionImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31",
+      "executionInterpreter": "sh",
+      "executionCases": [
+        {
+          "files": [
+            {
+              "path": "report.txt",
+              "content": "head\n---BEGIN NOTE---\nsecret 1\nsecret 2\n---END NOTE---\nmiddle\n---BEGIN NOTE---\nsecret 3\n---END NOTE---\ntail\n"
+            }
+          ],
+          "expectedFiles": {
+            "redacted.txt": "head\n[REDACTED]\nmiddle\n[REDACTED]\ntail\n"
+          },
+          "unchangedFiles": [
+            "report.txt"
+          ]
+        },
+        {
+          "files": [
+            {
+              "path": "report.txt",
+              "content": "---BEGIN NOTE---\nx\n---END NOTE---\nkeep\n---BEGIN NOTE---\ny\nz\n---END NOTE---\n"
+            }
+          ],
+          "expectedFiles": {
+            "redacted.txt": "[REDACTED]\nkeep\n[REDACTED]\n"
+          },
+          "unchangedFiles": [
+            "report.txt"
+          ]
+        }
+      ],
+      "migrationSourceId": "CLI-CN-004",
+      "developmentShadow": true
+    },
+    "tags": [
+      "cli",
+      "text",
+      "multiline",
+      "sed-range"
+    ],
+    "scenarioVersion": "2.1.0",
+    "scenarioHash": "07d882e2386065da",
+    "responseMode": "live_execution",
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null
+  },
+  {
+    "id": "CLI-CN-006-DOCKER",
+    "dimension": "cli_deep_tasks",
+    "category": "text_processing",
+    "difficulty": "hard",
+    "language": "general",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "promptTemplate": "在 /workspace 中执行任务。环境为 Alpine/BusyBox，提供 POSIX sh 和 Python 3 标准库，不提供 bash 或 GNU 工具；提交脚本统一以 sh 执行。scores.txt 每行格式为 name score。按第 2 字段的数值降序将完整行输出到标准输出。只输出可执行 shell 脚本。",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "cli_command",
+    "graderVersion": "cli_command_v1",
+    "scoring": {
+      "type": "cli_command",
+      "mode": "executed_state"
+    },
+    "requirements": {
+      "executionImage": "python:3.12-alpine",
+      "executionImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31",
+      "executionInterpreter": "sh",
+      "executionCases": [
+        {
+          "files": [
+            {
+              "path": "scores.txt",
+              "content": "amy 9\nbob 100\ncam 12\ndan 2\n"
+            }
+          ],
+          "expectedStdout": "bob 100\ncam 12\namy 9\ndan 2\n",
+          "unchangedFiles": [
+            "scores.txt"
+          ]
+        },
+        {
+          "files": [
+            {
+              "path": "scores.txt",
+              "content": "x 30\ny 4\nz 200\nq 15\n"
+            }
+          ],
+          "expectedStdout": "z 200\nx 30\nq 15\ny 4\n",
+          "unchangedFiles": [
+            "scores.txt"
+          ]
+        }
+      ],
+      "migrationSourceId": "CLI-CN-006",
+      "developmentShadow": true
+    },
+    "tags": [
+      "cli",
+      "text",
+      "field-sort",
+      "trap"
+    ],
+    "scenarioVersion": "2.1.0",
+    "scenarioHash": "db08aab963409f28",
+    "responseMode": "live_execution",
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null
+  },
+  {
+    "id": "CLI-CN-007-DOCKER",
+    "dimension": "cli_deep_tasks",
+    "category": "filesystem_ops",
+    "difficulty": "hard",
+    "language": "general",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "promptTemplate": "在 /workspace 中执行任务。环境为 Alpine/BusyBox，提供 POSIX sh 和 Python 3 标准库，不提供 bash 或 GNU 工具；提交脚本统一以 sh 执行。递归查找 /workspace 下扩展名为 .jpeg 的文件并重命名为 .jpg。保留目录结构和其他文件；若对应 .jpg 已存在，不覆盖它，也不删除原 .jpeg。只输出可执行 shell 脚本。",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "cli_command",
+    "graderVersion": "cli_command_v1",
+    "scoring": {
+      "type": "cli_command",
+      "mode": "executed_state"
+    },
+    "requirements": {
+      "executionImage": "python:3.12-alpine",
+      "executionImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31",
+      "executionInterpreter": "sh",
+      "executionCases": [
+        {
+          "files": [
+            {
+              "path": "a/cat.jpeg",
+              "content": "cat"
+            },
+            {
+              "path": "a/dog.jpeg",
+              "content": "dog"
+            },
+            {
+              "path": "a/dog.jpg",
+              "content": "existing"
+            },
+            {
+              "path": "a/file.jpeg.backup",
+              "content": "keep"
+            },
+            {
+              "path": "b/deep/bird.jpeg",
+              "content": "bird"
+            }
+          ],
+          "expectedFiles": {
+            "a/cat.jpg": "cat",
+            "a/dog.jpg": "existing",
+            "b/deep/bird.jpg": "bird"
+          },
+          "unchangedFiles": [
+            "a/dog.jpeg",
+            "a/dog.jpg",
+            "a/file.jpeg.backup"
+          ],
+          "absentFiles": [
+            "a/cat.jpeg",
+            "b/deep/bird.jpeg"
+          ]
+        },
+        {
+          "files": [
+            {
+              "path": "x/nested/one.jpeg",
+              "content": "one"
+            },
+            {
+              "path": "x/nested/two.jpeg",
+              "content": "two"
+            },
+            {
+              "path": "x/nested/two.jpg",
+              "content": "protected"
+            },
+            {
+              "path": "x/nested/name.jpeg.txt",
+              "content": "other"
+            }
+          ],
+          "expectedFiles": {
+            "x/nested/one.jpg": "one",
+            "x/nested/two.jpg": "protected"
+          },
+          "unchangedFiles": [
+            "x/nested/two.jpeg",
+            "x/nested/two.jpg",
+            "x/nested/name.jpeg.txt"
+          ],
+          "absentFiles": [
+            "x/nested/one.jpeg"
+          ]
+        }
+      ],
+      "migrationSourceId": "CLI-CN-007",
+      "developmentShadow": true
+    },
+    "tags": [
+      "cli",
+      "fs",
+      "recursive-rename"
+    ],
+    "scenarioVersion": "2.1.0",
+    "scenarioHash": "8a5e088f28e27a15",
+    "responseMode": "live_execution",
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null
+  },
+  {
+    "id": "CLI-CN-008-DOCKER",
+    "dimension": "cli_deep_tasks",
+    "category": "filesystem_ops",
+    "difficulty": "adversarial",
+    "language": "general",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "promptTemplate": "在 /workspace 中执行任务。环境为 Alpine/BusyBox，提供 POSIX sh 和 Python 3 标准库，不提供 bash 或 GNU 工具；提交脚本统一以 sh 执行。in/ 中有不同修改时间的文件；.now 文件内容为 ISO 格式固定参考时间。把 in/ 顶层相对参考时间早于 30 天的文件移到 archive/，不递归子目录，保留文件修改时间。只输出可执行 shell 脚本。",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "cli_command",
+    "graderVersion": "cli_command_v1",
+    "scoring": {
+      "type": "cli_command",
+      "mode": "executed_state"
+    },
+    "requirements": {
+      "executionImage": "python:3.12-alpine",
+      "executionImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31",
+      "executionInterpreter": "sh",
+      "executionCases": [
+        {
+          "files": [
+            {
+              "path": ".now",
+              "content": "2026-01-01T00:00:00Z\n"
+            },
+            {
+              "path": "in/old.txt",
+              "content": "old"
+            },
+            {
+              "path": "in/new.txt",
+              "content": "new"
+            },
+            {
+              "path": "in/sub/very-old.txt",
+              "content": "nested"
+            }
+          ],
+          "setupCommands": [
+            "python3 - <<'PY'\nimport os\nfrom datetime import datetime, timezone\nfor path, iso in [[\"in/old.txt\",\"2025-11-01T00:00:00Z\"],[\"in/new.txt\",\"2025-12-15T00:00:00Z\"],[\"in/sub/very-old.txt\",\"2025-10-01T00:00:00Z\"]]:\n    timestamp = datetime.fromisoformat(iso.replace('Z', '+00:00')).timestamp()\n    os.utime(path, (timestamp, timestamp))\nPY"
+          ],
+          "expectedFiles": {
+            "archive/old.txt": "old"
+          },
+          "absentFiles": [
+            "in/old.txt"
+          ],
+          "unchangedFiles": [
+            ".now",
+            "in/new.txt",
+            "in/sub/very-old.txt"
+          ],
+          "assertCommands": [
+            "python3 -c \"import os; assert int(os.stat('archive/old.txt').st_mtime) == 1761955200\""
+          ]
+        },
+        {
+          "files": [
+            {
+              "path": ".now",
+              "content": "2026-03-01T00:00:00Z\n"
+            },
+            {
+              "path": "in/stale.txt",
+              "content": "stale"
+            },
+            {
+              "path": "in/fresh.txt",
+              "content": "fresh"
+            }
+          ],
+          "setupCommands": [
+            "python3 - <<'PY'\nimport os\nfrom datetime import datetime, timezone\nfor path, iso in [[\"in/stale.txt\",\"2026-01-01T00:00:00Z\"],[\"in/fresh.txt\",\"2026-02-15T00:00:00Z\"]]:\n    timestamp = datetime.fromisoformat(iso.replace('Z', '+00:00')).timestamp()\n    os.utime(path, (timestamp, timestamp))\nPY"
+          ],
+          "expectedFiles": {
+            "archive/stale.txt": "stale"
+          },
+          "absentFiles": [
+            "in/stale.txt"
+          ],
+          "unchangedFiles": [
+            ".now",
+            "in/fresh.txt"
+          ],
+          "assertCommands": [
+            "python3 -c \"import os; assert int(os.stat('archive/stale.txt').st_mtime) == 1767225600\""
+          ]
+        }
+      ],
+      "migrationSourceId": "CLI-CN-008",
+      "developmentShadow": true
+    },
+    "tags": [
+      "cli",
+      "fs",
+      "archive-by-age",
+      "trap"
+    ],
+    "scenarioVersion": "2.1.0",
+    "scenarioHash": "e6e9c6fae429b3ac",
+    "responseMode": "live_execution",
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null
+  },
+  {
+    "id": "CLI-CN-009-DOCKER",
+    "dimension": "cli_deep_tasks",
+    "category": "filesystem_ops",
+    "difficulty": "adversarial",
+    "language": "general",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "promptTemplate": "在 /workspace 中执行任务。环境为 Alpine/BusyBox，提供 POSIX sh 和 Python 3 标准库，不提供 bash 或 GNU 工具；提交脚本统一以 sh 执行。files/ 中有内容相同的文件。按 SHA-256 对内容分组，每组只保留修改时间最旧的一个，删除同组其余文件，内容唯一的文件不动。只输出可执行 shell 脚本。",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "cli_command",
+    "graderVersion": "cli_command_v1",
+    "scoring": {
+      "type": "cli_command",
+      "mode": "executed_state"
+    },
+    "requirements": {
+      "executionImage": "python:3.12-alpine",
+      "executionImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31",
+      "executionInterpreter": "sh",
+      "executionCases": [
+        {
+          "files": [
+            {
+              "path": "files/old.txt",
+              "content": "same"
+            },
+            {
+              "path": "files/new.txt",
+              "content": "same"
+            },
+            {
+              "path": "files/unique.txt",
+              "content": "unique"
+            }
+          ],
+          "setupCommands": [
+            "python3 - <<'PY'\nimport os\nfrom datetime import datetime, timezone\nfor path, iso in [[\"files/old.txt\",\"2025-01-01T00:00:00Z\"],[\"files/new.txt\",\"2025-02-01T00:00:00Z\"],[\"files/unique.txt\",\"2025-03-01T00:00:00Z\"]]:\n    timestamp = datetime.fromisoformat(iso.replace('Z', '+00:00')).timestamp()\n    os.utime(path, (timestamp, timestamp))\nPY"
+          ],
+          "expectedFiles": {
+            "files/old.txt": "same",
+            "files/unique.txt": "unique"
+          },
+          "unchangedFiles": [
+            "files/old.txt",
+            "files/unique.txt"
+          ],
+          "absentFiles": [
+            "files/new.txt"
+          ]
+        },
+        {
+          "files": [
+            {
+              "path": "files/a.txt",
+              "content": "group1"
+            },
+            {
+              "path": "files/b.txt",
+              "content": "group1"
+            },
+            {
+              "path": "files/c.txt",
+              "content": "group1"
+            },
+            {
+              "path": "files/d.txt",
+              "content": "group2"
+            },
+            {
+              "path": "files/e.txt",
+              "content": "group2"
+            }
+          ],
+          "setupCommands": [
+            "python3 - <<'PY'\nimport os\nfrom datetime import datetime, timezone\nfor path, iso in [[\"files/a.txt\",\"2025-03-01T00:00:00Z\"],[\"files/b.txt\",\"2025-01-01T00:00:00Z\"],[\"files/c.txt\",\"2025-02-01T00:00:00Z\"],[\"files/d.txt\",\"2025-04-01T00:00:00Z\"],[\"files/e.txt\",\"2025-05-01T00:00:00Z\"]]:\n    timestamp = datetime.fromisoformat(iso.replace('Z', '+00:00')).timestamp()\n    os.utime(path, (timestamp, timestamp))\nPY"
+          ],
+          "expectedFiles": {
+            "files/b.txt": "group1",
+            "files/d.txt": "group2"
+          },
+          "unchangedFiles": [
+            "files/b.txt",
+            "files/d.txt"
+          ],
+          "absentFiles": [
+            "files/a.txt",
+            "files/c.txt",
+            "files/e.txt"
+          ]
+        }
+      ],
+      "migrationSourceId": "CLI-CN-009",
+      "developmentShadow": true
+    },
+    "tags": [
+      "cli",
+      "fs",
+      "dedup-hash",
+      "trap"
+    ],
+    "scenarioVersion": "2.1.0",
+    "scenarioHash": "7c82c4cff2968e45",
+    "responseMode": "live_execution",
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null
+  },
+  {
+    "id": "CLI-CN-014-DOCKER",
+    "dimension": "cli_deep_tasks",
+    "category": "pipeline_composition",
+    "difficulty": "hard",
+    "language": "general",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "promptTemplate": "在 /workspace 中执行任务。环境为 Alpine/BusyBox，提供 POSIX sh 和 Python 3 标准库，不提供 bash 或 GNU 工具；提交脚本统一以 sh 执行。logs/ 下有若干 .log 文件。提取以 ERROR 开头的行写入 errors.txt；每行格式为「文件名:原始行」，按文件名排序，同一文件内保持原始顺序。只输出可执行 shell 脚本。",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "cli_command",
+    "graderVersion": "cli_command_v1",
+    "scoring": {
+      "type": "cli_command",
+      "mode": "executed_state"
+    },
+    "requirements": {
+      "executionImage": "python:3.12-alpine",
+      "executionImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31",
+      "executionInterpreter": "sh",
+      "executionCases": [
+        {
+          "files": [
+            {
+              "path": "logs/a.log",
+              "content": "ERROR first\nINFO skip\nERROR second\n"
+            },
+            {
+              "path": "logs/b.log",
+              "content": "WARN ERROR middle\nERROR third\n"
+            },
+            {
+              "path": "logs/ignore.txt",
+              "content": "ERROR ignored\n"
+            }
+          ],
+          "expectedFiles": {
+            "errors.txt": "a.log:ERROR first\na.log:ERROR second\nb.log:ERROR third\n"
+          },
+          "unchangedFiles": [
+            "logs/a.log",
+            "logs/b.log",
+            "logs/ignore.txt"
+          ]
+        },
+        {
+          "files": [
+            {
+              "path": "logs/z.log",
+              "content": "ERROR last\n"
+            },
+            {
+              "path": "logs/a.log",
+              "content": "ERROR start\nerror lowercase\n"
+            }
+          ],
+          "expectedFiles": {
+            "errors.txt": "a.log:ERROR start\nz.log:ERROR last\n"
+          },
+          "unchangedFiles": [
+            "logs/z.log",
+            "logs/a.log"
+          ]
+        }
+      ],
+      "migrationSourceId": "CLI-CN-014",
+      "developmentShadow": true
+    },
+    "tags": [
+      "cli",
+      "pipeline",
+      "cross-log",
+      "trap"
+    ],
+    "scenarioVersion": "2.1.0",
+    "scenarioHash": "c37391f24b64c4c3",
+    "responseMode": "live_execution",
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null
+  },
+  {
+    "id": "CLI-CN-017-DOCKER",
+    "dimension": "cli_deep_tasks",
+    "category": "pipeline_composition",
+    "difficulty": "hard",
+    "language": "general",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "promptTemplate": "在 /workspace 中执行任务。环境为 Alpine/BusyBox，提供 POSIX sh 和 Python 3 标准库，不提供 bash 或 GNU 工具；提交脚本统一以 sh 执行。access.log 是 Apache 通用日志，状态码为第 9 个空格分隔字段。统计各状态码出现次数，按次数降序向标准输出写出「次数 状态码」。只输出可执行 shell 脚本。",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "cli_command",
+    "graderVersion": "cli_command_v1",
+    "scoring": {
+      "type": "cli_command",
+      "mode": "executed_state"
+    },
+    "requirements": {
+      "executionImage": "python:3.12-alpine",
+      "executionImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31",
+      "executionInterpreter": "sh",
+      "executionCases": [
+        {
+          "files": [
+            {
+              "path": "access.log",
+              "content": "10.0.0.1 - - [01/Jan/2026:00:00:00 +0000] \"GET / HTTP/1.1\" 200 12\n10.0.0.2 - - [01/Jan/2026:00:00:00 +0000] \"GET /x HTTP/1.1\" 404 0\n10.0.0.3 - - [01/Jan/2026:00:00:00 +0000] \"POST / HTTP/1.1\" 200 1\n10.0.0.4 - - [01/Jan/2026:00:00:00 +0000] \"GET / HTTP/1.1\" 200 2\n"
+            }
+          ],
+          "expectedStdout": "3 200\n1 404\n",
+          "tokenWhitespaceFiles": [],
+          "unchangedFiles": [
+            "access.log"
+          ]
+        },
+        {
+          "files": [
+            {
+              "path": "access.log",
+              "content": "10.0.0.1 - - [01/Jan/2026:00:00:00 +0000] \"GET / HTTP/1.1\" 500 1\n10.0.0.2 - - [01/Jan/2026:00:00:00 +0000] \"GET / HTTP/1.1\" 200 1\n10.0.0.3 - - [01/Jan/2026:00:00:00 +0000] \"GET / HTTP/1.1\" 500 1\n"
+            }
+          ],
+          "expectedStdout": "2 500\n1 200\n",
+          "unchangedFiles": [
+            "access.log"
+          ]
+        }
+      ],
+      "migrationSourceId": "CLI-CN-017",
+      "developmentShadow": true
+    },
+    "tags": [
+      "cli",
+      "pipeline",
+      "status-code",
+      "multi-stage"
+    ],
+    "scenarioVersion": "2.1.0",
+    "scenarioHash": "d64353b5fabf68ff",
+    "responseMode": "live_execution",
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null
+  },
+  {
+    "id": "CLI-CN-049-DOCKER",
+    "dimension": "cli_deep_tasks",
+    "category": "file_operations",
+    "difficulty": "easy",
+    "language": "general",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "promptTemplate": "在 /workspace 中执行任务。环境为 Alpine/BusyBox，提供 POSIX sh 和 Python 3 标准库，不提供 bash 或 GNU 工具；提交脚本统一以 sh 执行。显示 app.log 的最后 10 行到标准输出。只输出可执行 shell 脚本。",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "cli_command",
+    "graderVersion": "cli_command_v1",
+    "scoring": {
+      "type": "cli_command",
+      "mode": "executed_state"
+    },
+    "requirements": {
+      "executionImage": "python:3.12-alpine",
+      "executionImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31",
+      "executionInterpreter": "sh",
+      "executionCases": [
+        {
+          "files": [
+            {
+              "path": "app.log",
+              "content": "line-1\nline-2\nline-3\nline-4\nline-5\nline-6\nline-7\nline-8\nline-9\nline-10\nline-11\nline-12\nline-13\nline-14\n"
+            }
+          ],
+          "expectedStdout": "line-5\nline-6\nline-7\nline-8\nline-9\nline-10\nline-11\nline-12\nline-13\nline-14\n",
+          "unchangedFiles": [
+            "app.log"
+          ]
+        },
+        {
+          "files": [
+            {
+              "path": "app.log",
+              "content": "event-1\nevent-2\nevent-3\nevent-4\nevent-5\nevent-6\nevent-7\nevent-8\nevent-9\nevent-10\nevent-11\n"
+            }
+          ],
+          "expectedStdout": "event-2\nevent-3\nevent-4\nevent-5\nevent-6\nevent-7\nevent-8\nevent-9\nevent-10\nevent-11\n",
+          "unchangedFiles": [
+            "app.log"
+          ]
+        }
+      ],
+      "migrationSourceId": "CLI-CN-049",
+      "developmentShadow": true
+    },
+    "tags": [
+      "cli",
+      "file",
+      "easy"
+    ],
+    "scenarioVersion": "2.1.0",
+    "scenarioHash": "52180948899cb48c",
+    "responseMode": "live_execution",
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null
+  },
+  {
+    "id": "CLI-CN-050-DOCKER",
+    "dimension": "cli_deep_tasks",
+    "category": "file_operations",
+    "difficulty": "easy",
+    "language": "general",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "promptTemplate": "在 /workspace 中执行任务。环境为 Alpine/BusyBox，提供 POSIX sh 和 Python 3 标准库，不提供 bash 或 GNU 工具；提交脚本统一以 sh 执行。统计 data.csv 的总行数并输出到标准输出。只输出可执行 shell 脚本。",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "cli_command",
+    "graderVersion": "cli_command_v1",
+    "scoring": {
+      "type": "cli_command",
+      "mode": "executed_state"
+    },
+    "requirements": {
+      "executionImage": "python:3.12-alpine",
+      "executionImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31",
+      "executionInterpreter": "sh",
+      "executionCases": [
+        {
+          "files": [
+            {
+              "path": "data.csv",
+              "content": "name,value\na,1\nb,2\n"
+            }
+          ],
+          "expectedStdoutPattern": "^\\s*3(?:\\s+data\\.csv)?\\s*$",
+          "unchangedFiles": [
+            "data.csv"
+          ]
+        },
+        {
+          "files": [
+            {
+              "path": "data.csv",
+              "content": "col\nx\ny\nz\nw\n"
+            }
+          ],
+          "expectedStdoutPattern": "^\\s*5(?:\\s+data\\.csv)?\\s*$",
+          "unchangedFiles": [
+            "data.csv"
+          ]
+        }
+      ],
+      "migrationSourceId": "CLI-CN-050",
+      "developmentShadow": true
+    },
+    "tags": [
+      "cli",
+      "file",
+      "easy"
+    ],
+    "scenarioVersion": "2.1.0",
+    "scenarioHash": "40220b44e0aac6dc",
+    "responseMode": "live_execution",
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null
+  },
+  {
+    "id": "CLI-CN-051-DOCKER",
+    "dimension": "cli_deep_tasks",
+    "category": "text_processing",
+    "difficulty": "easy",
+    "language": "general",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "promptTemplate": "在 /workspace 中执行任务。环境为 Alpine/BusyBox，提供 POSIX sh 和 Python 3 标准库，不提供 bash 或 GNU 工具；提交脚本统一以 sh 执行。输出 syslog.txt 中所有包含独立单词 error 的行（区分大小写），保留原始行顺序。只输出可执行 shell 脚本。",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "cli_command",
+    "graderVersion": "cli_command_v1",
+    "scoring": {
+      "type": "cli_command",
+      "mode": "executed_state"
+    },
+    "requirements": {
+      "executionImage": "python:3.12-alpine",
+      "executionImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31",
+      "executionInterpreter": "sh",
+      "executionCases": [
+        {
+          "files": [
+            {
+              "path": "syslog.txt",
+              "content": "error happened\nterror ignored\npre error post\nERROR uppercase\n"
+            }
+          ],
+          "expectedStdout": "error happened\npre error post\n",
+          "unchangedFiles": [
+            "syslog.txt"
+          ]
+        },
+        {
+          "files": [
+            {
+              "path": "syslog.txt",
+              "content": "error\nerrors ignored\nno issue\n[error] occurred\n"
+            }
+          ],
+          "expectedStdout": "error\n[error] occurred\n",
+          "unchangedFiles": [
+            "syslog.txt"
+          ]
+        }
+      ],
+      "migrationSourceId": "CLI-CN-051",
+      "developmentShadow": true
+    },
+    "tags": [
+      "cli",
+      "text",
+      "easy"
+    ],
+    "scenarioVersion": "2.1.0",
+    "scenarioHash": "d5c776fd12c28207",
+    "responseMode": "live_execution",
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null
+  },
+  {
+    "id": "CLI-CN-053-DOCKER",
+    "dimension": "cli_deep_tasks",
+    "category": "file_operations",
+    "difficulty": "medium",
+    "language": "general",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "promptTemplate": "在 /workspace 中执行任务。环境为 Alpine/BusyBox，提供 POSIX sh 和 Python 3 标准库，不提供 bash 或 GNU 工具；提交脚本统一以 sh 执行。统计 logs/ 下所有层级扩展名为 .log 的普通文件总数，输出数字。只输出可执行 shell 脚本。",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "cli_command",
+    "graderVersion": "cli_command_v1",
+    "scoring": {
+      "type": "cli_command",
+      "mode": "executed_state"
+    },
+    "requirements": {
+      "executionImage": "python:3.12-alpine",
+      "executionImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31",
+      "executionInterpreter": "sh",
+      "executionCases": [
+        {
+          "files": [
+            {
+              "path": "logs/a.log",
+              "content": "x\n"
+            },
+            {
+              "path": "logs/deep/b.log",
+              "content": "y\n"
+            },
+            {
+              "path": "logs/deep/c.txt",
+              "content": "z\n"
+            }
+          ],
+          "expectedStdout": "2\n",
+          "unchangedFiles": [
+            "logs/a.log",
+            "logs/deep/b.log",
+            "logs/deep/c.txt"
+          ]
+        },
+        {
+          "files": [
+            {
+              "path": "logs/a.log",
+              "content": "x\n"
+            },
+            {
+              "path": "logs/deep/b.log",
+              "content": "y\n"
+            },
+            {
+              "path": "logs/deep/deeper/c.log",
+              "content": "z\n"
+            },
+            {
+              "path": "logs/d.LOG",
+              "content": "x\n"
+            }
+          ],
+          "expectedStdout": "3\n",
+          "unchangedFiles": [
+            "logs/a.log",
+            "logs/deep/b.log",
+            "logs/deep/deeper/c.log",
+            "logs/d.LOG"
+          ]
+        }
+      ],
+      "migrationSourceId": "CLI-CN-053",
+      "developmentShadow": true
+    },
+    "tags": [
+      "cli",
+      "file",
+      "count"
+    ],
+    "scenarioVersion": "2.1.0",
+    "scenarioHash": "b84dcd269c0f60e7",
+    "responseMode": "live_execution",
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null
+  },
+  {
+    "id": "CLI-CN-056-DOCKER",
+    "dimension": "cli_deep_tasks",
+    "category": "text_processing",
+    "difficulty": "medium",
+    "language": "general",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "promptTemplate": "在 /workspace 中执行任务。环境为 Alpine/BusyBox，提供 POSIX sh 和 Python 3 标准库，不提供 bash 或 GNU 工具；提交脚本统一以 sh 执行。将 config.txt 中所有 foo 替换为 bar，直接保存到原文件。只输出可执行 shell 脚本。",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "cli_command",
+    "graderVersion": "cli_command_v1",
+    "scoring": {
+      "type": "cli_command",
+      "mode": "executed_state"
+    },
+    "requirements": {
+      "executionImage": "python:3.12-alpine",
+      "executionImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31",
+      "executionInterpreter": "sh",
+      "executionCases": [
+        {
+          "files": [
+            {
+              "path": "config.txt",
+              "content": "foo=1\nfoobar\nfoo foo\n"
+            }
+          ],
+          "expectedFiles": {
+            "config.txt": "bar=1\nbarbar\nbar bar\n"
+          }
+        },
+        {
+          "files": [
+            {
+              "path": "config.txt",
+              "content": "prefix foo suffix\nfoofoo\nuntouched\n"
+            }
+          ],
+          "expectedFiles": {
+            "config.txt": "prefix bar suffix\nbarbar\nuntouched\n"
+          }
+        }
+      ],
+      "migrationSourceId": "CLI-CN-056",
+      "developmentShadow": true
+    },
+    "tags": [
+      "cli",
+      "text",
+      "in-place"
+    ],
+    "scenarioVersion": "2.1.0",
+    "scenarioHash": "3e4a507df0a8d862",
+    "responseMode": "live_execution",
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null
+  }
+]

@@ -1,0 +1,1 @@
+工作区 /workspace，Linux sh 和 Python 3 标准库可用。使用 Alpine/BusyBox 工具，提交脚本统一以 POSIX sh 执行，未提供 bash 或 GNU 工具。以固定当前时刻 2026-09-26T12:00:00Z 为准，只删除 cache/ 内超过 7 天未修改的 .tmp 普通文件（递归）；恰好 7 天的文件及其他扩展名须保留。只输出可执行 shell 脚本。

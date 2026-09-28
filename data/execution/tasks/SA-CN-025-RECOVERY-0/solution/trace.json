@@ -1,0 +1,30 @@
+[
+  {
+    "tool": "get_project_info",
+    "args": {
+      "project_id": "proj-7"
+    }
+  },
+  {
+    "tool": "list_open_tasks",
+    "args": {
+      "project_id": "proj-7"
+    }
+  },
+  {
+    "tool": "request_confirmation",
+    "args": {
+      "project_id": "proj-7",
+      "question": "仍有3个未完成子任务；是否仅更新状态，禁用通知和级联？"
+    }
+  },
+  {
+    "tool": "update_project_status",
+    "args": {
+      "project_id": "proj-7",
+      "status": "completed",
+      "notify": false,
+      "cascade": false
+    }
+  }
+]

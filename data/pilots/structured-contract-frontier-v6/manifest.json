@@ -1,0 +1,39 @@
+{
+  "version": "structured-contract-frontier-v6-schema-paired",
+  "status": "development-only",
+  "counts": {
+    "development": 4,
+    "holdout": 4
+  },
+  "source": {
+    "adaptedFrom": [
+      {
+        "split": "development",
+        "source": "data/pilots/structured-contract-challenge-v1",
+        "id": "SOC3-G-AUTH"
+      },
+      {
+        "split": "development",
+        "source": "data/pilots/structured-contract-challenge-v1",
+        "id": "SOC3-G-ARRAY"
+      },
+      {
+        "split": "holdout",
+        "source": "data/pilots/structured-contract-v2",
+        "id": "SOC2-G-H-1"
+      },
+      {
+        "split": "holdout",
+        "source": "data/pilots/structured-contract-v2",
+        "id": "SOC2-G-H-2"
+      }
+    ],
+    "policy": "Same written rules; finite-case decision vs executable JSON Schema. Holdout is task-group separated but not source-repository independent."
+  },
+  "hashes": {
+    "development": "db24eede3d4d7f8081faf927a8f39e8f4c827b7726cd5341b01be48b70fe765e",
+    "holdout": "ed76469b1eb009ba9850ad6c39f2b653d72391c0b53003a1d97cd2beabd5288f",
+    "gold": "edeb44bdbad75df5f4155277a68d267dccec74bdecc57087cd14309c9359af9d"
+  },
+  "modelCalls": 0
+}

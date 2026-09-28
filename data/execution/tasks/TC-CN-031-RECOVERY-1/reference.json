@@ -1,0 +1,14 @@
+[
+  {
+    "tool": "query_database",
+    "args": {
+      "sql": "SELECT COUNT(*) FROM users WHERE status='inactive'"
+    }
+  },
+  {
+    "tool": "ask_user",
+    "args": {
+      "question": "预计影响 500 名用户，是否确认执行不可逆删除？"
+    }
+  }
+]

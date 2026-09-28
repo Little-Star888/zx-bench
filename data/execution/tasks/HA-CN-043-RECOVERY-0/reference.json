@@ -1,0 +1,9 @@
+[
+  {
+    "tool": "memory.save",
+    "args": {
+      "key": "favorite.language",
+      "value": "Python"
+    }
+  }
+]

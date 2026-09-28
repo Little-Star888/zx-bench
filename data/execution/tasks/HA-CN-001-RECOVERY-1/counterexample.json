@@ -1,0 +1,15 @@
+[
+  {
+    "tool": "memory.read",
+    "args": {
+      "key": "project/database/legacy"
+    }
+  },
+  {
+    "tool": "memory.save",
+    "args": {
+      "key": "project/database",
+      "value": "本项目已迁移到 CockroachDB"
+    }
+  }
+]

@@ -1,0 +1,169 @@
+[
+  {
+    "id": "SCE7-095-BASE",
+    "dimension": "structured_output",
+    "category": "frontier_escape_translation",
+    "difficulty": "unverified",
+    "language": "json",
+    "locale": "en-US",
+    "status": "valid",
+    "tier": "private_validation",
+    "promptTemplate": "Output one JSON object with exactly one field, token, whose decoded string equals the special token below. Return only JSON.\n\nSpecial token:\nY-$}rrd^obfp}wj'\f[3-a>}f}1}J%so]k#C7SU'kU4;YV2]\f\t_a\tiN/w'\n\nJSON Schema:\n{\"type\":\"object\",\"properties\":{\"token\":{\"type\":\"string\"}},\"required\":[\"token\"],\"additionalProperties\":false}",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v2",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "json",
+      "dialect": "draft-07",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "token"
+        ],
+        "additionalProperties": false
+      },
+      "formatAssertions": true,
+      "assertions": [
+        {
+          "pointer": "/token",
+          "expected": "Y-$}rrd^obfp}wj'\f[3-a>}f}1}J%so]k#C7SU'kU4;YV2]\f\t_a\tiN/w'",
+          "description": "Decoded special token matches exactly"
+        }
+      ],
+      "family": "schemabench_escape_base",
+      "pairId": "SCE7-095",
+      "pairVariant": "base",
+      "sourceGroup": "schemabench-escape:95",
+      "output_policy": "raw_only",
+      "provenance": {
+        "sourcePack": "SchemaBench Escape Translation",
+        "sourceIndex": 95,
+        "originalLicense": "SchemaBench repository Apache-2.0; upstream schema licensing may vary",
+        "adaptation": "Same token in base JSON and original real-world schema; token path required by explicit assertion"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "source_adapted_unverified",
+    "goldSource": "Original SchemaBench model_schema and special_token; local valid witness",
+    "goldVerifiedAt": null,
+    "tags": [
+      "structured-contract-escape-v2",
+      "paired-development",
+      "official-method-adapted"
+    ],
+    "scenarioHash": "a2ec2b276e8f0f3b"
+  },
+  {
+    "id": "SCE7-095-STRUCTURED",
+    "dimension": "structured_output",
+    "category": "frontier_escape_translation",
+    "difficulty": "unverified",
+    "language": "json",
+    "locale": "en-US",
+    "status": "valid",
+    "tier": "private_validation",
+    "promptTemplate": "Generate a valid JSON object under the real-world schema below. Put the special token in the last_updated field exactly, preserving the decoded characters. Include the field even when the schema lists it as optional. Return only JSON.\n\nSpecial token:\nY-$}rrd^obfp}wj'\f[3-a>}f}1}J%so]k#C7SU'kU4;YV2]\f\t_a\tiN/w'\n\nJSON Schema:\n{\"$schema\":\"http://json-schema.org/draft-07/schema#\",\"type\":\"object\",\"properties\":{\"body\":{\"type\":\"string\",\"description\":\"Body text of the event\"},\"last_updated\":{\"type\":\"string\",\"description\":\"*** This is the special field where you must generate and put the given special token here. Make sure the loaded token will be loaded correctly. ***\"},\"event_type\":{\"type\":\"string\",\"description\":\"Type of event\"},\"title\":{\"type\":\"string\",\"description\":\"Title of event\"},\"date\":{\"type\":\"string\",\"description\":\"Date event occurred\"},\"org\":{\"type\":\"object\",\"description\":\"Organization\",\"properties\":{\"id\":{\"type\":\"integer\",\"description\":\"Organization ID\"},\"name\":{\"type\":\"string\",\"description\":\"Organization name\"}},\"additionalProperties\":false},\"id\":{\"type\":\"integer\",\"description\":\"Event ID\"}},\"required\":[\"body\",\"event_type\",\"last_updated\",\"title\",\"date\",\"org\",\"id\"],\"additionalProperties\":false}",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v2",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "json",
+      "dialect": "draft-07",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "body": {
+            "type": "string",
+            "description": "Body text of the event"
+          },
+          "last_updated": {
+            "type": "string",
+            "description": "*** This is the special field where you must generate and put the given special token here. Make sure the loaded token will be loaded correctly. ***"
+          },
+          "event_type": {
+            "type": "string",
+            "description": "Type of event"
+          },
+          "title": {
+            "type": "string",
+            "description": "Title of event"
+          },
+          "date": {
+            "type": "string",
+            "description": "Date event occurred"
+          },
+          "org": {
+            "type": "object",
+            "description": "Organization",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "description": "Organization ID"
+              },
+              "name": {
+                "type": "string",
+                "description": "Organization name"
+              }
+            },
+            "additionalProperties": false
+          },
+          "id": {
+            "type": "integer",
+            "description": "Event ID"
+          }
+        },
+        "required": [
+          "body",
+          "event_type",
+          "last_updated",
+          "title",
+          "date",
+          "org",
+          "id"
+        ],
+        "additionalProperties": false
+      },
+      "formatAssertions": true,
+      "assertions": [
+        {
+          "pointer": "/last_updated",
+          "expected": "Y-$}rrd^obfp}wj'\f[3-a>}f}1}J%so]k#C7SU'kU4;YV2]\f\t_a\tiN/w'",
+          "description": "Decoded special token matches exactly"
+        }
+      ],
+      "family": "schemabench_escape_structured",
+      "pairId": "SCE7-095",
+      "pairVariant": "structured",
+      "sourceGroup": "schemabench-escape:95",
+      "output_policy": "raw_only",
+      "provenance": {
+        "sourcePack": "SchemaBench Escape Translation",
+        "sourceIndex": 95,
+        "originalLicense": "SchemaBench repository Apache-2.0; upstream schema licensing may vary",
+        "adaptation": "Same token in base JSON and original real-world schema; token path required by explicit assertion"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "source_adapted_unverified",
+    "goldSource": "Original SchemaBench model_schema and special_token; local valid witness",
+    "goldVerifiedAt": null,
+    "tags": [
+      "structured-contract-escape-v2",
+      "paired-development",
+      "official-method-adapted"
+    ],
+    "scenarioHash": "7463ef3db48a2a9a"
+  }
+]

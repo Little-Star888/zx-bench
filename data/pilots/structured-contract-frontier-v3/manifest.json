@@ -1,0 +1,16 @@
+{
+  "version": "structured-contract-frontier-v3",
+  "status": "single-item-design-screen",
+  "counts": {
+    "development": 1,
+    "holdout": 0
+  },
+  "splitPolicy": "One development design probe; no holdout or general difficulty claim yet.",
+  "hashes": {
+    "development": "268272504000b13e6d59d789af57a8f2fe2cdcc9939fb95ee6c96f2082ca2acc",
+    "holdout": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "oracle": "4b1c7d986a6786c21059e1cf72ef41c7d3838fa07e7280ee12e6794be2d45b02",
+    "gold": "48ed4c24f0a8318c36c8e23be40060e41596a699c0956a803f4bce0179ecd16c"
+  },
+  "modelCalls": 0
+}

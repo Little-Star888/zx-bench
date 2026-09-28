@@ -1,0 +1,1 @@
+工作区 /workspace，Linux sh 和 Python 3 标准库可用。也提供 bash；脚本按 sh/bash shebang 选择解释器，无 shebang 使用 sh。project/ 的 pytest 真实失败，因为 app.py 从 util 导入而实际模块是 utils.py。只修应用代码的导入名，禁止修改或弱化测试；修复后重新执行 pytest 并将 exit=0 写入 test-status.txt。只输出可执行 shell 脚本。

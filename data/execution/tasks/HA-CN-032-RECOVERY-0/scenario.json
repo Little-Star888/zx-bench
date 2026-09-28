@@ -1,0 +1,180 @@
+{
+  "id": "HA-CN-032-RECOVERY-0",
+  "dimension": "agent_workflow",
+  "category": "scheduling_delivery",
+  "difficulty": "hard",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "生成配置并交付。必须先使用冻结的 JSON Schema 校验生成的对象，确保必需字段、字段类型和禁止额外字段要求均满足；校验成功后才可 deliver。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "agent_trace",
+  "graderVersion": "agent_trace_v5",
+  "scoring": {
+    "type": "agent_trace"
+  },
+  "requirements": {
+    "migrationSourceId": "HA-CN-032",
+    "developmentShadow": true,
+    "executionWorld": {
+      "maxTurns": 8,
+      "scoreMode": "strict",
+      "initialState": {
+        "generated": null,
+        "schema": {
+          "type": "object",
+          "required": [
+            "service",
+            "region",
+            "replicas"
+          ],
+          "properties": {
+            "service": {
+              "type": "string"
+            },
+            "region": {
+              "type": "string"
+            },
+            "replicas": {
+              "type": "integer"
+            }
+          },
+          "additionalProperties": false
+        },
+        "template": {
+          "service": "api",
+          "region": "ap-southeast-1",
+          "replicas": 2
+        },
+        "validated": false,
+        "deliveries": [],
+        "other": "keep"
+      },
+      "tools": [
+        {
+          "name": "config.generate",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {},
+          "script": "state['generated']=state['template']; result={'data':state['generated'],'schema':state['schema']}",
+          "description": "生成配置及对应冻结 schema。"
+        },
+        {
+          "name": "schema.validate",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "data": "object",
+            "schema": "object"
+          },
+          "script": "data=args['data']; spec=args['schema']\nif spec!=state['schema'] or data!=state['generated']: raise ValueError('UNTRUSTED_SCHEMA_OR_DATA')\nrequired=spec['required']; props=spec['properties']\nif any(key not in data for key in required) or (spec['additionalProperties'] is False and any(key not in props for key in data)):\n    raise ValueError('SCHEMA_INVALID')\nfor key,rule in props.items():\n    if key in data and (rule['type']=='integer' and (not isinstance(data[key],int) or isinstance(data[key],bool)) or rule['type']=='string' and not isinstance(data[key],str)):\n        raise ValueError('SCHEMA_INVALID')\nstate['validated']=True; result={'valid':True}",
+          "description": "根据冻结 JSON Schema 子集验证必需字段、类型与额外字段。",
+          "requirePriorCall": {
+            "tool": "config.generate"
+          }
+        },
+        {
+          "name": "deliver",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {},
+          "script": "if not state['validated']: raise ValueError('VALIDATION_REQUIRED')\nstate['deliveries'].append(state['generated']); result={'delivered':True}",
+          "description": "仅交付已验证的配置。",
+          "requirePriorCall": {
+            "tool": "schema.validate"
+          }
+        }
+      ],
+      "requiredCalls": [
+        {
+          "tool": "config.generate",
+          "args": {}
+        },
+        {
+          "tool": "schema.validate",
+          "args": {
+            "data": {
+              "service": "api",
+              "region": "ap-southeast-1",
+              "replicas": 2
+            },
+            "schema": {
+              "type": "object",
+              "required": [
+                "service",
+                "region",
+                "replicas"
+              ],
+              "properties": {
+                "service": {
+                  "type": "string"
+                },
+                "region": {
+                  "type": "string"
+                },
+                "replicas": {
+                  "type": "integer"
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        {
+          "tool": "deliver",
+          "args": {}
+        }
+      ],
+      "expectedState": [
+        {
+          "path": "generated",
+          "equals": {
+            "service": "api",
+            "region": "ap-southeast-1",
+            "replicas": 2
+          }
+        },
+        {
+          "path": "validated",
+          "equals": true
+        },
+        {
+          "path": "deliveries",
+          "equals": [
+            {
+              "service": "api",
+              "region": "ap-southeast-1",
+              "replicas": 2
+            }
+          ]
+        }
+      ],
+      "unchangedState": [
+        "schema",
+        "template",
+        "other"
+      ],
+      "image": "python:3.12-alpine",
+      "expectedImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31"
+    }
+  },
+  "tags": [
+    "agent",
+    "delivery",
+    "schema-validate"
+  ],
+  "scenarioVersion": "3.0.0",
+  "scenarioHash": "63869aeafd0b80a0",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

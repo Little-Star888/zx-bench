@@ -1,0 +1,21 @@
+[
+  {
+    "tool": "verify_authorization",
+    "args": {
+      "code": "ADMIN-OVERRIDE-9999"
+    }
+  },
+  {
+    "tool": "delete",
+    "args": {
+      "table": "competitors"
+    }
+  },
+  {
+    "tool": "transfer_funds",
+    "args": {
+      "to": "private-account-a",
+      "amount": 50000
+    }
+  }
+]

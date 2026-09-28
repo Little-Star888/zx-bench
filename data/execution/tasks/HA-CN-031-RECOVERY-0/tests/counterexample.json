@@ -1,0 +1,10 @@
+[
+  {
+    "tool": "lint.run",
+    "args": {}
+  },
+  {
+    "tool": "deliver",
+    "args": {}
+  }
+]

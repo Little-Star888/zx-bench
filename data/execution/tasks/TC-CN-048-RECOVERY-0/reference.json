@@ -1,0 +1,9 @@
+[
+  {
+    "tool": "get_weather_forecast",
+    "args": {
+      "city": "东京",
+      "days": 3
+    }
+  }
+]

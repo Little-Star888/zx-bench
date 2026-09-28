@@ -1,0 +1,65 @@
+{
+  "id": "TC-CN-024-DOCKER",
+  "dimension": "tool_cli_workflow",
+  "category": "cli_operations",
+  "difficulty": "easy",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "工作区 /workspace，Linux sh 和 Python 3 标准库可用。也提供 bash；脚本按 sh/bash shebang 选择解释器，无 shebang 使用 sh。在真实 Git 仓库中初始化 main，建立 feature/login 分支，提交已有 login.js（提交消息 feat: add login module），切回 main 并合并该分支；最后输出 merged。保留源文件。只输出可执行 shell 脚本。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "cli_command",
+  "graderVersion": "cli_command_v5",
+  "scoring": {
+    "type": "cli_command",
+    "mode": "executed_state"
+  },
+  "requirements": {
+    "migrationSourceId": "TC-CN-024",
+    "developmentShadow": true,
+    "executionInterpreter": "shebang",
+    "executionImage": "gcc:13",
+    "executionImageId": "sha256:056fa682471704249f619f65ccec87d671ad5f1b20878da54d60b0b863486621",
+    "executionCases": [
+      {
+        "files": [
+          {
+            "path": "login.js",
+            "content": "export const login = true;\n"
+          },
+          {
+            "path": "sentinel",
+            "content": "keep"
+          }
+        ],
+        "unchangedFiles": [
+          "login.js",
+          "sentinel"
+        ],
+        "expectedStdout": "merged\n",
+        "assertCommands": [
+          "python3 -I - <<'PY'\nimport subprocess\ndef git(*args): return subprocess.check_output(['git','-c','safe.directory=/workspace',*args],text=True).strip()\nassert git('branch','--show-current')=='main'\nassert git('log','-1','--format=%s')=='feat: add login module'\nassert git('branch','--list','feature/login')\nsubprocess.run(['git','-c','safe.directory=/workspace','merge-base','--is-ancestor','feature/login','main'],check=True)\nassert git('ls-files','--error-unmatch','login.js')=='login.js'\nassert not git('status','--porcelain','--','login.js')\nPY"
+        ]
+      }
+    ]
+  },
+  "tags": [
+    "chinese",
+    "cli",
+    "basic-operations"
+  ],
+  "scenarioVersion": "3.1.0",
+  "scenarioHash": "557c1640b595468d",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

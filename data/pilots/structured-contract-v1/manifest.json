@@ -1,0 +1,62 @@
+{
+  "version": "structured-contract-v1-batch1",
+  "status": "development-only",
+  "families": [
+    "A",
+    "B",
+    "C",
+    "D"
+  ],
+  "development": 12,
+  "holdout": 8,
+  "splitPolicy": "No source-group overlap; tasks may share evaluator code. Small holdout is screening only.",
+  "modelCallsPlanned": {
+    "development": 36,
+    "holdout": 24
+  },
+  "remainingFamilies": [
+    "E",
+    "F",
+    "G",
+    "H"
+  ],
+  "hashes": {
+    "development": "cb86a64567d29dc38305acc082a576eefd899d65cad1c350480575f9687c27d7",
+    "holdout": "a176dd8b4f9cae07db82fcbbb4573d243194681d430339df374a6b77d229add1"
+  },
+  "goldHashes": {
+    "development": "86fbe361991aaacbda7a9c659a1d43da5d6884de0d0dce2d0dc63a7dae958b0f",
+    "holdout": "e8a100e714679be0f96d50f788d9b9f28ad22bc2575a4c709e28ac006ded829f"
+  },
+  "sources": [
+    {
+      "name": "github-workflow",
+      "url": "https://raw.githubusercontent.com/SchemaStore/schemastore/87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0/src/schemas/json/github-workflow.json",
+      "revision": "87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0",
+      "path": "sources/github-workflow.json",
+      "sha256": "d10c9f4656e1bd5bc6727e9b35080e017dc167154726fca93da33c7a6bd1c4f3"
+    },
+    {
+      "name": "dependabot-2.0",
+      "url": "https://raw.githubusercontent.com/SchemaStore/schemastore/87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0/src/schemas/json/dependabot-2.0.json",
+      "revision": "87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0",
+      "path": "sources/dependabot-2.0.json",
+      "sha256": "57efbbcba05d2c26ad8e00b2ab295f797931652174d4e7d5272615069ecea61f"
+    },
+    {
+      "name": "package",
+      "url": "https://raw.githubusercontent.com/SchemaStore/schemastore/87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0/src/schemas/json/package.json",
+      "revision": "87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0",
+      "path": "sources/package.json",
+      "sha256": "e5390e202b0ab1bcf3154f69bb2334576c53218638dcd857deb413f18ab55a29"
+    },
+    {
+      "name": "babelrc",
+      "url": "https://raw.githubusercontent.com/SchemaStore/schemastore/87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0/src/schemas/json/babelrc.json",
+      "revision": "87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0",
+      "path": "sources/babelrc.json",
+      "sha256": "2e4ff24f430107befd518a87bbc6fbbbe35f8e23de1cb7994775939df8fd492c"
+    }
+  ],
+  "disclosure": "Schema fragments are sourced; tasks and content constraints are locally authored. Difficulty is uncalibrated."
+}

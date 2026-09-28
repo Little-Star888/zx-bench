@@ -1,0 +1,71 @@
+[
+  {
+    "tool": "get_contract",
+    "args": {
+      "customer_name": "张三"
+    }
+  },
+  {
+    "tool": "get_contract",
+    "args": {
+      "customer_name": "李四"
+    }
+  },
+  {
+    "tool": "get_contract",
+    "args": {
+      "customer_name": "王五"
+    }
+  },
+  {
+    "tool": "get_contract",
+    "args": {
+      "customer_name": "赵六"
+    }
+  },
+  {
+    "tool": "get_contract",
+    "args": {
+      "customer_name": "钱七"
+    }
+  },
+  {
+    "tool": "renew_contract",
+    "args": {
+      "contract_id": "C-1",
+      "duration": 12
+    }
+  },
+  {
+    "tool": "renew_contract",
+    "args": {
+      "contract_id": "C-3",
+      "duration": 12
+    }
+  },
+  {
+    "tool": "renew_contract",
+    "args": {
+      "contract_id": "C-5",
+      "duration": 12
+    }
+  },
+  {
+    "tool": "send_notification",
+    "args": {
+      "customer_name": "张三"
+    }
+  },
+  {
+    "tool": "send_notification",
+    "args": {
+      "customer_name": "王五"
+    }
+  },
+  {
+    "tool": "send_notification",
+    "args": {
+      "customer_name": "钱七"
+    }
+  }
+]

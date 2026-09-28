@@ -1,0 +1,1 @@
+工作区 /workspace，Linux sh 和 Python 3 标准库可用。也提供 bash；脚本按 sh/bash shebang 选择解释器，无 shebang 使用 sh。run.sh 首行缺少 shebang，导致直接执行失败。只在第 1 行前插入 #!/bin/bash，赋予执行位后以 ./run.sh 直接运行并把输出保存到 run-output.txt；保留原有脚本正文。只输出可执行 shell 脚本。

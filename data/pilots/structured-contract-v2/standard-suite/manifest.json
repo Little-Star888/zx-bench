@@ -1,0 +1,30 @@
+{
+  "revision": "5b0ee1613e45fcc2bddac00e07c19cd49b00d8a8",
+  "sources": [
+    {
+      "url": "https://raw.githubusercontent.com/json-schema-org/JSON-Schema-Test-Suite/5b0ee1613e45fcc2bddac00e07c19cd49b00d8a8/tests/draft7/const.json",
+      "path": "tests_draft7_const.json",
+      "sha256": "65d2b152fbbbdd3291beb3dcc048dea1644acf3c59c68b5f72f521b5a927fcf9"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/json-schema-org/JSON-Schema-Test-Suite/5b0ee1613e45fcc2bddac00e07c19cd49b00d8a8/tests/draft2020-12/if-then-else.json",
+      "path": "tests_draft2020-12_if-then-else.json",
+      "sha256": "4bc76318e6df0e8294cb9aa8a3bf95f04fa9cfea96f295a3b55e725d1289c809"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/json-schema-org/JSON-Schema-Test-Suite/5b0ee1613e45fcc2bddac00e07c19cd49b00d8a8/tests/draft2020-12/dependentRequired.json",
+      "path": "tests_draft2020-12_dependentRequired.json",
+      "sha256": "0824c393115498ac1a62551c3174a3ccd54ee4ef323d5eb9de0dfe3a185ad666"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/json-schema-org/JSON-Schema-Test-Suite/5b0ee1613e45fcc2bddac00e07c19cd49b00d8a8/tests/draft2020-12/unevaluatedProperties.json",
+      "path": "tests_draft2020-12_unevaluatedProperties.json",
+      "sha256": "cdf9b1c6253470b01da5482c6833553f56e1fb652bf466476faa19c8f0cd2c7c"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/json-schema-org/JSON-Schema-Test-Suite/5b0ee1613e45fcc2bddac00e07c19cd49b00d8a8/LICENSE",
+      "path": "LICENSE",
+      "sha256": "837402bd25fad9b704265801ca3f92566a98157c1f9a7acd6f446299ba1c305a"
+    }
+  ]
+}

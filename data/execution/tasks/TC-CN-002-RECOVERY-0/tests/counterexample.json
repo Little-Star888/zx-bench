@@ -1,0 +1,8 @@
+[
+  {
+    "tool": "extract_text",
+    "args": {
+      "file_path": "report.pdf"
+    }
+  }
+]

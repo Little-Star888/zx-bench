@@ -1,0 +1,1 @@
+工作区 /workspace，Linux sh 和 Python 3 标准库可用。使用 Alpine/BusyBox 工具，提交脚本统一以 POSIX sh 执行，未提供 bash 或 GNU 工具。统计 src/ 下所有 .py 文件的换行计数，按行数数值降序输出到 counts.txt，格式为「<行数> <路径>」；同数按路径字典序。文件名可能含空格，不要输出 total 行，也不要改动源文件。只输出可执行 shell 脚本。

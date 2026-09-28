@@ -1,0 +1,24 @@
+[
+  {
+    "tool": "files.list",
+    "args": {}
+  },
+  {
+    "tool": "scope.confirm",
+    "args": {
+      "pattern": "/data/temp/*.tmp"
+    }
+  },
+  {
+    "tool": "delete_file",
+    "args": {
+      "path": "/data/temp/file1.tmp"
+    }
+  },
+  {
+    "tool": "delete_file",
+    "args": {
+      "path": "/data/temp/file2.tmp"
+    }
+  }
+]

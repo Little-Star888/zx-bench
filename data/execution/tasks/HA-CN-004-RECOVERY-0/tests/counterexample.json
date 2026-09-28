@@ -1,0 +1,24 @@
+[
+  {
+    "tool": "session_search",
+    "args": {
+      "query": "Docker network repair"
+    }
+  },
+  {
+    "tool": "fs.read",
+    "args": {
+      "path": "compose.yml"
+    }
+  },
+  {
+    "tool": "fs.patch",
+    "args": {
+      "path": "compose.yml",
+      "diff": {
+        "old": "network_mode: bridge\n",
+        "new": "networks: [private]\n"
+      }
+    }
+  }
+]

@@ -31,9 +31,16 @@ import type {
 } from '@zxbench/types';
 import { callModelWithRetry } from './model/caller.js';
 import { runAgentLoop, type AgentLoopConfig } from './agentLoop/loop.js';
+import { runWorldLoop, extractWorldFinalMessage, type WorldConfig, type WorldTrace } from './execution/worldLoop.js';
+import { runShellLoop, type ShellConfig } from './execution/shellLoop.js';
+import { executionTimeoutMs } from './execution/budget.js';
+import { createHash } from 'node:crypto';
 import { buildOutputMetadata } from '@zxbench/utils';
 import { runTieredJudge, runJudgeEnsemble, computeJudgeScore, type JudgeOptions } from './judge/index.js';
 import { getEvaluator } from './evaluators/index.js';
+import { prepareStructuredContract } from './evaluators/structuredContract.js';
+import { prepareExtendedContract, type ExtendedContract } from './evaluators/structuredContractV2.js';
+import type { StructuredContractRequirements } from './evaluators/structuredContract.js';
 import { prepareSandboxEvaluation } from './sandbox/workspace.js';
 import { checkSafetyRedLines } from './safety/index.js';
 import { getJudgeWeights, mixDeterministicJudge, applyCoverageDiscount, detectFormatBlindspot, applyReviewedVerdict, applyCliSemanticReview } from './scoring.js';
@@ -213,6 +220,7 @@ export function buildConstraintCriteria(
   const hasAnswer = result.modelOutput.trim().length > 0;
 
   if (constraints.answerFirst === true) {
+    const executionProtocol = Boolean(result.outputMetadata.executionWorldTrace || result.outputMetadata.shellExecutionTrace);
     const lines = result.modelOutput.split('\n');
     const firstIdx = lines.findIndex((line) => line.trim().length > 0);
     const firstLine = firstIdx >= 0 ? lines[firstIdx] : '';
@@ -221,10 +229,11 @@ export function buildConstraintCriteria(
     criteria.push({
       id: 'answer_first',
       description: '先答模式：第一个非空行即给出答案行',
-      status: !hasAnswer ? 'unmeasured' : (answerOnly || labelled) ? 'pass' : 'fail',
+      status: executionProtocol || !hasAnswer ? 'unmeasured' : (answerOnly || labelled) ? 'pass' : 'fail',
       critical: false,
       source: 'rule',
-      evidence: !hasAnswer ? 'No candidate output'
+      evidence: executionProtocol ? 'Execution protocol uses its own final-answer marker; ANSWER label was not requested'
+        : !hasAnswer ? 'No candidate output'
         : answerOnly ? `Answer-only mode; first non-empty line: ${firstLine.slice(0, 80)}`
         : labelled ? `First non-empty line: ${firstLine.slice(0, 80)}`
         : `First non-empty line carries no ANSWER label: ${firstLine.slice(0, 80)}`,
@@ -268,17 +277,47 @@ export async function orchestrateEvaluation(options: OrchestrateOptions): Promis
     result.criterionResults = constraints?.map(c => ({ id: c.id, description: c.description,
       status: 'fail', critical: c.critical === true, source: 'rule', evidence: 'No candidate answer' }));
   }
-  // F4：评分器自带严格检查项时不覆盖；否则补记运行级约束的机械核验结果。
-  if (!result.criterionResults) {
-    const criteria = buildConstraintCriteria(resolveConstraints(options.scenario, options.constraints), result);
-    if (criteria.length > 0) result.criterionResults = criteria;
+  // Keep evaluator checks and runtime checks together so strict pass includes both.
+  const runtimeCriteria = buildConstraintCriteria(resolveConstraints(options.scenario, options.constraints), result);
+  if (runtimeCriteria.length > 0) result.criterionResults = [...(result.criterionResults ?? []), ...runtimeCriteria];
+  if (options.scenario.grader === 'structured_contract' && !result.environmentError) {
+    if (!result.structuredContractMetrics) {
+      result.criterionResults = [...(result.criterionResults ?? []), { id:'structured_completion',
+        description:'A complete answer was produced within the declared budget', status:'fail',
+        critical:true, source:'verified', evidence:'Generation ended before contract evaluation' }];
+      const req = options.scenario.requirements as unknown as { family:string; dialect:string };
+      result.structuredContractMetrics = { version:1,family:req.family,dialect:req.dialect,
+        validator:'not reached',syntaxValid:false,schemaValid:false,contentValid:false,complete:false,partialScore:0 };
+    }
+    if (result.criterionResults?.some(c=>c.critical && c.status !== 'pass')) {
+      result.structuredContractMetrics.complete = false;
+      result.totalScore = 0;
+      result.scoreHistory = [0];
+    }
   }
   return attachEvaluationAudit(result);
 }
 
 async function evaluateCandidate(options: OrchestrateOptions): Promise<ScenarioResult> {
-  const { scenario, modelConfig, modelParams, evalConfig, judgeOptions, systemPrompt, onProgress, constraints } = options;
+  const { scenario, modelConfig, modelParams: suppliedModelParams, evalConfig, judgeOptions, systemPrompt, onProgress, constraints } = options;
+  const modelParams = { ...suppliedModelParams };
+  // These contracts measure direct generation. Saved provider defaults must not
+  // silently turn a development run into a constrained-decoding experiment.
+  if (scenario.grader === 'structured_contract') {
+    for (const key of ['responseFormat', 'response_format', 'grammar', 'json_schema', 'guided_json', 'structured_outputs']) {
+      delete (modelParams as unknown as Record<string, unknown>)[key];
+    }
+    if (modelParams.extra) {
+      modelParams.extra = { ...modelParams.extra };
+      for (const key of ['response_format', 'grammar', 'json_schema', 'guided_json', 'structured_outputs']) delete modelParams.extra[key];
+    }
+  }
   const startedAt = new Date().toISOString();
+
+  if (scenario.grader === 'structured_contract' && !options.savedCandidate) {
+    if (['structured_contract_v2','structured_contract_v3','structured_contract_v4'].includes(scenario.graderVersion)) prepareExtendedContract(scenario.requirements as unknown as ExtendedContract);
+    else prepareStructuredContract(scenario.requirements as unknown as StructuredContractRequirements);
+  }
 
   // ===== Stage 1: 固化运行配置与题目版本 =====
   onProgress?.('initializing');
@@ -327,6 +366,7 @@ async function evaluateCandidate(options: OrchestrateOptions): Promise<ScenarioR
   const initialMaxTokens = modelParams.maxTokens ?? 8192;
   let effectiveMaxTokens = initialMaxTokens;
   let modelResponse: ModelResponse;
+  const attemptedTokenBudgets = [initialMaxTokens];
 
   // ===== Stage 1.5: 沙箱工作区探查（requiresSandbox 实地调查题） =====
   // 物化题述工作区（文件树/git 仓库）→ 执行探查 → 生成真实转录注入 prompt，
@@ -342,6 +382,8 @@ async function evaluateCandidate(options: OrchestrateOptions): Promise<ScenarioR
   const scenarioHardTimeoutMs = Number.isFinite(partHardSeconds) && partHardSeconds > 0
     ? partHardSeconds * 1000
     : undefined;
+  const loopHardTimeoutMs = executionTimeoutMs(scenarioRequirements.hardSeconds,
+    effectiveConstraints, { ...modelConfig.defaultParams, ...modelParams });
 
   // ===== Stage 1.55: 多文件仓库题（project_repair）——注入仓库文件内容 =====
   // P4 事故修复：AG 系列新题的 promptTemplate 是通用英文模板（不内嵌源码），而
@@ -367,7 +409,7 @@ async function evaluateCandidate(options: OrchestrateOptions): Promise<ScenarioR
     console.log(`[orchestrator] Injected ${repoFiles.length} repo files into prompt for ${scenario.id}`);
   }
 
-  if (scenarioRequirements.requiresSandbox === true && !options.savedCandidate) {
+  if (scenarioRequirements.requiresSandbox === true && !scenarioRequirements.executionShell && !options.savedCandidate) {
     onProgress?.('sandbox_prepare');
     try {
       const prepared = await prepareSandboxEvaluation(scenario.id, scenarioRequirements);
@@ -393,8 +435,10 @@ async function evaluateCandidate(options: OrchestrateOptions): Promise<ScenarioR
       config: agentLoopConfig,
       task: scenario.promptTemplate,
       modelConfig,
+      modelParams,
+      constraints: effectiveConstraints,
       maxTokens: effectiveMaxTokens,
-      hardTimeoutMs: scenarioHardTimeoutMs ?? 600000,
+      hardTimeoutMs: loopHardTimeoutMs,
       signal: options.signal,
     });
     // 直接续走既有评分/落库流程：模型响应上挂着完整轨迹，evaluator 从 modelResponse.agentLoop 读取
@@ -404,6 +448,25 @@ async function evaluateCandidate(options: OrchestrateOptions): Promise<ScenarioR
       + `工具调用 ${loopResult.trace.turns.flatMap((t) => t.calls).length} 次, `
       + `违规 ${loopResult.trace.turns.flatMap((t) => t.calls.flatMap((c) => c.violations)).length} 次`,
     );
+  } else if (scenarioRequirements.executionWorld && !options.savedCandidate) {
+    onProgress?.('execution_world');
+    const worldResult = await runWorldLoop({
+      config: scenarioRequirements.executionWorld as WorldConfig,
+      task: scenario.promptTemplate,
+      modelConfig,
+      modelParams,
+      constraints: effectiveConstraints,
+      maxTokens: effectiveMaxTokens,
+      hardTimeoutMs: loopHardTimeoutMs,
+      signal: options.signal,
+    });
+    modelResponse = worldResult.response;
+  } else if (scenarioRequirements.executionShell && !options.savedCandidate) {
+    onProgress?.('execution_shell');
+    modelResponse = await runShellLoop({ config: scenarioRequirements.executionShell as ShellConfig,
+      task: scenario.promptTemplate, modelConfig, modelParams, constraints: effectiveConstraints,
+      maxTokens: effectiveMaxTokens,
+      hardTimeoutMs: loopHardTimeoutMs, signal: options.signal });
   } else {
     try {
       modelResponse = options.savedCandidate ? options.savedCandidate.response : await callModelWithRetry({
@@ -442,11 +505,19 @@ async function evaluateCandidate(options: OrchestrateOptions): Promise<ScenarioR
   // maxReasoningTokens 超预算后流被主动停止、已产出 content 保留。此时不再判 0，
   // 而是标记 truncated 证据后进入正常评分流程（修复"思考超限误伤真实能力"，
   // 实测 AG1-005/AG1-010 判 0 → answerFirst+硬截断下救回 45/40 分）。
+  if (modelResponse.executionWorld) {
+    const trace = modelResponse.executionWorld as WorldTrace;
+    if (trace.turns?.length) {
+      const finalMessage = extractWorldFinalMessage(trace.turns.at(-1)?.assistantRaw ?? '');
+      modelResponse = { ...modelResponse, content: finalMessage, executionWorld: { ...trace, finalMessage } };
+    }
+  }
   const reasoningHardCapped = (modelResponse.raw as Record<string, unknown> | undefined)?.reasoningHardCapped === true;
+  const hasExecutionTrace = Boolean(modelResponse.agentLoop || modelResponse.executionWorld || modelResponse.shellLoop);
 
   // 约束开启时：finish_reason=length 且内容为空 → 思考/输出超限，直接中断判分
   // （模型把预算全花在思考上、无有效答案——不再升级预算让无底洞思考继续）
-  if (!options.savedCandidate && constraintsActive && modelResponse.finishReason === 'length') {
+  if (!hasExecutionTrace && !options.savedCandidate && constraintsActive && modelResponse.finishReason === 'length') {
     const hasContent = modelResponse.content && modelResponse.content.trim().length > 0;
     if (!hasContent) {
       console.warn(`[orchestrator] Constraints active, empty output with finish_reason=length for ${scenario.id} — marking reasoning limit exceeded`);
@@ -466,7 +537,7 @@ async function evaluateCandidate(options: OrchestrateOptions): Promise<ScenarioR
     }
   }
 
-  if (!options.savedCandidate && !constraintsActive) {
+  if (!hasExecutionTrace && !options.savedCandidate && !constraintsActive && scenario.grader !== 'structured_contract') {
     for (let retryAttempt = 0; retryAttempt < TOKEN_RETRY_BUDGETS.length; retryAttempt++) {
       const hasContent = modelResponse.content && modelResponse.content.trim().length > 0;
       if (hasContent) break;
@@ -474,6 +545,7 @@ async function evaluateCandidate(options: OrchestrateOptions): Promise<ScenarioR
       if (modelResponse.finishReason !== 'length') break;
 
       effectiveMaxTokens = TOKEN_RETRY_BUDGETS[retryAttempt];
+      attemptedTokenBudgets.push(effectiveMaxTokens);
       console.warn(
         `[orchestrator] Reasoning model empty output (attempt ${retryAttempt + 1}), ` +
         `upgrading maxTokens ${effectiveMaxTokens} for ${scenario.id}`
@@ -492,9 +564,10 @@ async function evaluateCandidate(options: OrchestrateOptions): Promise<ScenarioR
   }
 
   // ===== Stage 2b: 空响应检测 — 模型返回空内容视为失败 =====
-  if (!modelResponse.content || modelResponse.content.trim().length === 0) {
-    const emptyErr = `Model returned empty response after ${TOKEN_RETRY_BUDGETS.length} retries (finish_reason=${modelResponse.finishReason}, maxTokens=${effectiveMaxTokens})`;
+  if (!hasExecutionTrace && (!modelResponse.content || modelResponse.content.trim().length === 0) && scenario.grader !== 'structured_contract') {
+    const emptyErr = `Model returned empty response after ${attemptedTokenBudgets.length - 1} retries (finish_reason=${modelResponse.finishReason}, maxTokens=${effectiveMaxTokens})`;
     console.error(`[orchestrator] ${emptyErr} for scenario ${scenario.id}`);
+    const executionTrace = modelResponse.agentLoop ?? modelResponse.executionWorld ?? modelResponse.shellLoop;
     return {
       scenarioId: scenario.id,
       scenarioVersion: scenario.scenarioVersion,
@@ -518,9 +591,13 @@ async function evaluateCandidate(options: OrchestrateOptions): Promise<ScenarioR
         inputTokens: modelResponse.usage.inputTokens,
         maxTokens: effectiveMaxTokens,
         incomplete: false,
-        retryChainExhausted: true,
-        retryBudgets: TOKEN_RETRY_BUDGETS,
+        retryChainExhausted: attemptedTokenBudgets.length > TOKEN_RETRY_BUDGETS.length,
+        retryBudgets: attemptedTokenBudgets.slice(1),
         inferenceMs: modelResponse.latencyMs,
+        ...(modelResponse.agentLoop ? { agentLoopTrace: modelResponse.agentLoop } : {}),
+        ...(modelResponse.executionWorld ? { executionWorldTrace: modelResponse.executionWorld } : {}),
+        ...(modelResponse.shellLoop ? { shellExecutionTrace: modelResponse.shellLoop } : {}),
+        ...(executionTrace ? { executionTraceSha256: createHash('sha256').update(JSON.stringify(executionTrace)).digest('hex') } : {}),
       },
       formatParseSuccess: false,
       axisScores: { format_valid: 0, empty_response: 100 },
@@ -536,9 +613,9 @@ async function evaluateCandidate(options: OrchestrateOptions): Promise<ScenarioR
       scoreHistory: [0],
       verdictHistory: ['empty_response'],
       evidence: [
-        `Model returned empty response after ${TOKEN_RETRY_BUDGETS.length} retries. ` +
+        `Model returned empty response after ${attemptedTokenBudgets.length - 1} retries. ` +
         `finish_reason=${modelResponse.finishReason}, ` +
-        `retry budgets attempted: [${initialMaxTokens}, ${TOKEN_RETRY_BUDGETS.join(', ')}], ` +
+        `retry budgets attempted: [${attemptedTokenBudgets.join(', ')}], ` +
         `final maxTokens=${effectiveMaxTokens}, ` +
         `output tokens=${modelResponse.usage.outputTokens}`
       ],
@@ -559,7 +636,38 @@ async function evaluateCandidate(options: OrchestrateOptions): Promise<ScenarioR
     effectiveMaxTokens ?? modelParams.maxTokens ?? 8192,
     modelResponse.usage.outputTokens,
   );
+  // Keep measured generation metadata, but recompute parsing and execution evidence.
+  if (options.savedCandidate?.metadata) outputMetadata = { ...structuredClone(options.savedCandidate.metadata), ...outputMetadata };
   outputMetadata.inputTokens = modelResponse.usage.inputTokens;
+  const loopTrace = (modelResponse.executionWorld ?? modelResponse.shellLoop) as
+    { terminationReason?: string; turnErrors?: string[]; errors?: string[] } | undefined;
+  if (loopTrace) {
+    // Legacy empty-answer records fabricated retries before inspecting the trace.
+    delete outputMetadata.retryChainExhausted;
+    delete outputMetadata.retryBudgets;
+    const reasons = [...(loopTrace.turnErrors ?? []), ...(loopTrace.errors ?? [])];
+    if (loopTrace.terminationReason === 'timeout' || reasons.some(reason => /TOTAL_TIMEOUT|MODEL_ERROR:.*(?:timed out|timeout)/i.test(reason))) {
+      outputMetadata.incomplete = true;
+      outputMetadata.incompleteReasons = [...(outputMetadata.incompleteReasons ?? []), 'HARD_TIME_LIMIT: execution loop timed out'];
+    }
+    if (reasons.length) {
+      outputMetadata.incomplete = true;
+      outputMetadata.incompleteReasons = [...(outputMetadata.incompleteReasons ?? []), ...reasons];
+    }
+  }
+
+  if (modelResponse.agentLoop) {
+    outputMetadata.agentLoopTrace = modelResponse.agentLoop;
+    outputMetadata.executionTraceSha256 = createHash('sha256').update(JSON.stringify(modelResponse.agentLoop)).digest('hex');
+  }
+  if (modelResponse.executionWorld) {
+    outputMetadata.executionWorldTrace = modelResponse.executionWorld;
+    outputMetadata.executionTraceSha256 = createHash('sha256').update(JSON.stringify(modelResponse.executionWorld)).digest('hex');
+  }
+  if (modelResponse.shellLoop) {
+    outputMetadata.shellExecutionTrace = modelResponse.shellLoop;
+    outputMetadata.executionTraceSha256 = createHash('sha256').update(JSON.stringify(modelResponse.shellLoop)).digest('hex');
+  }
   outputMetadata.reasoningTokens = modelResponse.usage.reasoningTokens;
   outputMetadata.tokenUsageSource = modelResponse.usage.source;
   // 存储 LLM 纯推理耗时（caller.ts 中 latencyMs = fetch 发起到响应解析完成）
@@ -576,8 +684,6 @@ async function evaluateCandidate(options: OrchestrateOptions): Promise<ScenarioR
   } else if (timings?.predicted_per_second) {
     outputMetadata.nativeTokensPerSecond = Math.round(timings.predicted_per_second);
   }
-
-  if (options.savedCandidate) outputMetadata = structuredClone(options.savedCandidate.metadata);
 
   // ===== Stage 5: 语法/Schema/执行验证 =====
   onProgress?.('parsing_output');
@@ -610,6 +716,7 @@ async function evaluateCandidate(options: OrchestrateOptions): Promise<ScenarioR
   } else {
     throw new Error(`GRADING_UNAVAILABLE: No evaluator found for ${scenario.grader}@${scenario.graderVersion}`);
   }
+  if (scenario.grader === 'structured_contract') formatParseSuccess = result.formatParseSuccess ?? false;
 
   // 检测代码块提取失败（模型有代码但未使用 Markdown 格式）
   const codeExtractionFailed = result.codeExtractionFailed === true
@@ -633,6 +740,8 @@ async function evaluateCandidate(options: OrchestrateOptions): Promise<ScenarioR
       modelResponse.content,
       structuredAnswer ? JSON.stringify(structuredAnswer) : null,
       scenario.promptTemplate, // 传入题目 prompt 用于上下文豁免
+      { verifiedExecution: Boolean(scenarioRequirements.executionWorld && modelResponse.executionWorld
+          && result.axisEvidence?.task_result === 'verified' && !result.environmentError) },
     );
     if (safetyResult.level === 'red_line') {
       result.totalScore = 0;
@@ -664,6 +773,14 @@ async function evaluateCandidate(options: OrchestrateOptions): Promise<ScenarioR
     };
     console.log(`[orchestrator] Format blindspot detected for ${scenario.id} (dim=${scenario.dimension}), adjusting judge weights: det=${weights.deterministic} judge=${weights.judge}`);
   }
+
+  // Executed CLI fixtures have machine-verifiable artifacts. A text judge must
+  // never turn a failed execution into a pass or reduce a valid equivalent script.
+  if (scenario.grader === 'cli_command' && Array.isArray(scenarioRequirements.executionCases)) {
+    weights = { deterministic: 1, judge: 0 };
+  }
+  if (scenarioRequirements.executionWorld) weights = { deterministic: 1, judge: 0 };
+  if (scenarioRequirements.executionShell) weights = { deterministic: 1, judge: 0 };
 
   if (evaluator?.name === 'code_repair' && ['3.5.0', '3.6.0', '3.7.0', '3.8.0', '3.9.0', '4.0.0', '4.1.0', '4.2.0', '4.3.0', '4.4.0', '4.5.0', '4.6.0', '4.7.0', '4.8.0', '4.9.0', '4.10.0', '4.11.0', '4.12.0', '4.13.0', '4.14.0'].includes(evaluator.version)) {
     weights = { deterministic: 1, judge: 0 };
@@ -828,6 +945,10 @@ async function evaluateCandidate(options: OrchestrateOptions): Promise<ScenarioR
   }
   applyReviewedVerdict(result, finalJudge);
   applyCliSemanticReview(result, scenario, finalJudge);
+  if (result.criterionResults?.some((criterion) => criterion.id === 'tool_unverified_contract')) {
+    result.totalScore = Math.min(result.totalScore ?? 0, 99);
+    result.humanReviewRequired = true;
+  }
   // P1（2026-09-16）：满分可疑审计——幻觉维度 judge 给满分（≥98）但输出含引用形态
   // （DOI/URL/ISBN）时标记人工复核。纯 judge 口径下满分最容易被"格式正确但内容编造"骗过，
   // 引用形态是可机械检测的疑点。只标记不改分，避免引入第二个 judge 依赖。
@@ -888,6 +1009,7 @@ async function evaluateCandidate(options: OrchestrateOptions): Promise<ScenarioR
     },
     totalScore: result.totalScore ?? 0,
     criterionResults: result.criterionResults,
+    structuredContractMetrics: result.structuredContractMetrics,
     deterministicScore: result.deterministicScore,
     judgeScore: result.judgeScore,
     safetyLevel: result.safetyLevel ?? 'safe',
@@ -903,7 +1025,8 @@ async function evaluateCandidate(options: OrchestrateOptions): Promise<ScenarioR
     evidence: result.evidence || [],
     // A deterministic PR failure is a measured model failure, not human work.
     humanReviewRequired: result.humanReviewRequired === true || escalated
-      || ((result.totalScore ?? 0) < 30 && evaluator?.name !== 'pr_executable_evidence'),
+      || ((result.totalScore ?? 0) < 30 && evaluator?.name !== 'pr_executable_evidence'
+        && evaluator?.name !== 'structured_contract'),
     humanReviewNotes: result.humanReviewNotes,
     codeExtractionFailed,
     // 环境/测试基础设施故障标志必须透传：评分器置位后，编排层据此跳过 Judge，

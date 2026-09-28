@@ -1,0 +1,14 @@
+[
+  {
+    "tool": "git.pull",
+    "args": {}
+  },
+  {
+    "tool": "build.run",
+    "args": {}
+  },
+  {
+    "tool": "test.run",
+    "args": {}
+  }
+]

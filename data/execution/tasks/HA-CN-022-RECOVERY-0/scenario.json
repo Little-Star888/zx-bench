@@ -1,0 +1,110 @@
+{
+  "id": "HA-CN-022-RECOVERY-0",
+  "dimension": "agent_workflow",
+  "category": "skills_procedural",
+  "difficulty": "hard",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "把质量门流程做成技能。先 skills_list 检查是否已有 quality-gate；已有则复用，缺失时用 skill_manage(action=create) 创建一次，不能重复。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "agent_trace",
+  "graderVersion": "agent_trace_v5",
+  "scoring": {
+    "type": "agent_trace"
+  },
+  "requirements": {
+    "migrationSourceId": "HA-CN-022",
+    "developmentShadow": true,
+    "executionWorld": {
+      "maxTurns": 8,
+      "scoreMode": "strict",
+      "initialState": {
+        "skills": {
+          "other": "# keep\n"
+        },
+        "listed": false,
+        "creates": [],
+        "other": "keep"
+      },
+      "tools": [
+        {
+          "name": "skills_list",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {},
+          "script": "state['listed']=True; result={'names':list(state['skills'])}",
+          "description": "列出已安装技能。"
+        },
+        {
+          "name": "skill_manage",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "action": "string",
+            "name": "string"
+          },
+          "script": "if args['action']!='create' or args['name']!='quality-gate': raise ValueError('INVALID_CREATE')\nstate['skills'][args['name']]='# New quality gate\\n'; state['creates'].append(args['name'])\nresult={'created':True}",
+          "description": "原生技能创建，若已存在会产生重复记录。",
+          "requirePriorCall": {
+            "tool": "skills_list"
+          }
+        }
+      ],
+      "requiredCalls": [
+        {
+          "tool": "skills_list",
+          "args": {}
+        },
+        {
+          "tool": "skill_manage",
+          "args": {
+            "action": "create",
+            "name": "quality-gate"
+          }
+        }
+      ],
+      "forbiddenCalls": [],
+      "expectedState": [
+        {
+          "path": "listed",
+          "equals": true
+        },
+        {
+          "path": "creates",
+          "equals": [
+            "quality-gate"
+          ]
+        }
+      ],
+      "unchangedState": [
+        "skills/other",
+        "other"
+      ],
+      "finalMessageMustContain": [
+        "创建"
+      ],
+      "image": "python:3.12-alpine",
+      "expectedImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31"
+    }
+  },
+  "tags": [
+    "agent",
+    "skill",
+    "check-before-create"
+  ],
+  "scenarioVersion": "3.0.0",
+  "scenarioHash": "17ce82bdc8990a06",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

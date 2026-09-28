@@ -1,0 +1,394 @@
+[
+  {
+    "id": "SOC4-SOB-090",
+    "dimension": "structured_output",
+    "category": "frontier_real_text_multihop",
+    "difficulty": "adversarial",
+    "language": "json",
+    "locale": "en-US",
+    "status": "valid",
+    "tier": "private_validation",
+    "promptTemplate": "Read the source context and answer the question. Fill every required field in the JSON Schema from the source; keep names, dates and numbers precise. Do not invent unsupported values.\n\nSource context:\nAlf Garnett: Alfred Edward \"Alf\" Garnett is a fictional character from the British sitcom \"Till Death Us Do Part\" and its follow-on and spin-off series \"Till Death...\" and \"In Sickness and in Health\".  Alf also starred in the chat show \"The Thoughts of Chairman Alf\".  The character was created by Johnny Speight and played by Warren Mitchell.\n\nList of ALF episodes: The following is a list of episodes of the American sitcom \"ALF\".  Most episode titles derive from those of American and British popular songs.\n\nBenji Gregory: Benji Gregory (born Benjamin Gregory Hertzberg; May 26, 1978) is a former American actor.  He is best known for playing the role of Brian Tanner on the sitcom \"ALF\".\n\nMax Wright: George Edward Maxwell Wright (born August 2, 1943), credited professionally as Max Wright, is an American actor, best known for his role as Willie Tanner on the sitcom \"ALF\".\n\nTanner Smith (basketball): Tanner James Smith (born March 30, 1990) is a former American professional basketball player for MHP Riesen Ludwigsburg in the Basketball Bundesliga in Germany and a former basketball player for Clemson University and Landstede Basketball in the Netherlands.  He currently serves as the Director of Basketball Operations for the Charlotte 49ers Basketball Team.  He has been noted by such sources as The Post and Courier, The Times and Democrat, and The Atlanta Journal-Constitution for founding Tanner’s Totes, an organization that helps to cheer up children and teenagers with cancer through donations of large tote bags filled with toys and other recreational items.  Tanner's Totes have delivered to hospitals in 25 states across the US.  Over 3000 totes have been delivered.  Smith has also been interviewed by ESPN in print and in televised interviews and has been featured on the ABC special \"Everyday Health\".\n\nElmo Tanner: William Elmo Tanner, known as Elmo Tanner (August 8, 1904 – December 20, 1990) was an American whistler, singer, bandleader and disc jockey, best known for his whistling on the chart-topping song “Heartaches” with the Ted Weems Orchestra.  Tanner and Weems recorded the song for two different record companies within a period of five years.  Neither recording was successful originally.  The song became a hit for both record companies after a Charlotte, North Carolina disk jockey played it at random in 1947.\n\nALF (TV series): ALF is an American sitcom that aired on NBC from September 22, 1986, to March 24, 1990.\n\nProject ALF: Project: ALF (also known as Project: ALF, Part 2) is a 1996 American made-for-television science fiction film directed by Dick Lowry which serves as a sequel to the final episode \"Consider Me Gone\" of the 1986–1990 sitcom \"ALF\".  It was broadcast in the U.S. by ABC and in Canada on CHCH on February 17, 1996.  The film was released on DVD in 2005.\n\nAlf's Hit Talk Show: ALF's Hit Talk Show was an American cable television talk show that aired on TV Land in 2004 for seven episodes.  The host is the puppet character ALF, of 1980s television fame.  At the beginning of each show, ALF is introduced by his \"sidekick\", Ed McMahon.  The show ran in a 30-minute block and featured guests such as Drew Carey and Joe Mantegna.  Prior to the series' debut, \"Entertainment Weekly\" described \"ALF's Hit Talk Show\" as \"a one-shot, a lead-in\" for TV Land's marathon of the original \"ALF\" sitcom.\n\nAnne Schedeen: Luanne Ruth Schedeen (born January 8, 1949), known professionally as Anne Schedeen, is an American actress who was born in Portland, Oregon.  She is best known for her role as Kate Tanner on \"ALF,\" which ran from 1986 to 1990.\n\nQuestion:\nWho starred as Brian Tanner in the 1990 American sitcom ALF?\n\nJSON Schema:\n{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"object\",\"properties\":{\"actor_name\":{\"type\":\"string\",\"description\":\"The name of the actor who played the character.\"},\"character_name\":{\"type\":\"string\",\"description\":\"The name of the character played by the actor.\"},\"tv_series_details\":{\"type\":\"object\",\"properties\":{\"title\":{\"type\":\"string\",\"description\":\"The title of the TV series.\"},\"genre\":{\"type\":\"string\",\"description\":\"The genre of the TV series.\"},\"air_start_year\":{\"type\":\"integer\",\"description\":\"The year the TV series started airing.\"},\"air_end_year\":{\"type\":\"integer\",\"description\":\"The year the TV series stopped airing.\"}},\"required\":[\"title\",\"genre\",\"air_start_year\",\"air_end_year\"],\"additionalProperties\":false}},\"required\":[\"actor_name\",\"character_name\",\"tv_series_details\"],\"additionalProperties\":false}\n\nReturn only one complete JSON object. No Markdown fence or explanation.",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v4",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "json",
+      "dialect": "2020-12",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "actor_name": {
+            "type": "string",
+            "description": "The name of the actor who played the character."
+          },
+          "character_name": {
+            "type": "string",
+            "description": "The name of the character played by the actor."
+          },
+          "tv_series_details": {
+            "type": "object",
+            "properties": {
+              "title": {
+                "type": "string",
+                "description": "The title of the TV series."
+              },
+              "genre": {
+                "type": "string",
+                "description": "The genre of the TV series."
+              },
+              "air_start_year": {
+                "type": "integer",
+                "description": "The year the TV series started airing."
+              },
+              "air_end_year": {
+                "type": "integer",
+                "description": "The year the TV series stopped airing."
+              }
+            },
+            "required": [
+              "title",
+              "genre",
+              "air_start_year",
+              "air_end_year"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "actor_name",
+          "character_name",
+          "tv_series_details"
+        ],
+        "additionalProperties": false
+      },
+      "formatAssertions": true,
+      "family": "sob_bridge",
+      "challengeFamily": "SOB_BRIDGE",
+      "sourceGroup": "5a7294915542992359bc3118",
+      "output_policy": "raw_only",
+      "oracleSet": "frontier-v4",
+      "oracleRef": "SOC4-SOB-090",
+      "oracleHash": "2368348337ee0ea80b36311c32ab8c6ff4252dc10ebf545cc0d247efb88c3a4d",
+      "provenance": {
+        "sourcePack": "interfaze-ai/sob",
+        "recordId": "13ffb445cc1d814762709746b608ff48d39e8ed74fbb7686da005acf46ac69ad",
+        "sourceId": "5a7294915542992359bc3118",
+        "sourceDataset": "hotpotqa",
+        "originalLicense": "HotpotQA CC-BY-SA-4.0; SOB code MIT",
+        "adaptation": "Text context, question, Schema, ground truth; zxbench raw JSON direct generation"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "official-sob-ground-truth-provisional-local-adjudication",
+    "goldVerifiedAt": null,
+    "tags": [
+      "structured-contract-frontier-v4",
+      "official-source-adapted",
+      "development_only"
+    ],
+    "scenarioHash": "9070e3e3b418a0bc"
+  },
+  {
+    "id": "SOC4-SOB-096",
+    "dimension": "structured_output",
+    "category": "frontier_real_text_multihop",
+    "difficulty": "adversarial",
+    "language": "json",
+    "locale": "en-US",
+    "status": "valid",
+    "tier": "private_validation",
+    "promptTemplate": "Read the source context and answer the question. Fill every required field in the JSON Schema from the source; keep names, dates and numbers precise. Do not invent unsupported values.\n\nSource context:\nFrontier of the Dawn: Frontier of the Dawn (French: La Frontiere de l'Aube ) is a 2008 French drama film directed by Philippe Garrel.  The film stars Louis Garrel, Laura Smet, and Clémentine Poidatz and was photographed by cinematographer William Lubtchansky in black and white.  It premiered at the 2008 Cannes Film Festival in competition.\n\nStephan Elliott: Stephan Elliott (born 27 August 1964) is an Australian film director and screenwriter.  His best-known film internationally is \"The Adventures of Priscilla, Queen of the Desert\" (1994).\n\nClotilde Hesme: Clotilde Hesme (born 30 July 1979) is a French actress, best known for playing Lilie in Philippe Garrel's \"Regular Lovers\" and Alice in Christophe Honoré's \"Love Songs\".  She is also known for the role of Adèle from the TV series \"Les Revenants\".\n\nPhilippe Garrel: Philippe Garrel (] ; born 6 April 1948) is a French director, cinematographer, screenwriter, film editor and producer, associated with New Wave movement.  His films have won him awards at the prestigious Cannes Film Festival and Venice Film Festival.\n\nLe vent de la nuit: Le Vent de la nuit (\"Night Wind\" in English) is a French drama film that came out in 1999, starring Catherine Deneuve and directed by Philippe Garrel, with a score by John Cale.  It tells a story of transient loves and willed deaths, in which a callow young man abandons an older woman and loses a wiser friend.\n\nAnémone: Anémone (Anne Bourguignon ), born 9 August 1950, is a French actress, filmmaker and political activist.  She took her stage name in 1968 from the title of her film debut in Philippe Garrel's \"Anémone\".\n\nArlette Langmann: Arlette Langmann (born on April 3, 1946) is a French screenwriter, film editor and production designer.  Born in Paris to Jewish immigrant parents from Romania and Poland, Langmann is best known for her long-running collaborations with her brother Claude Berri, Maurice Pialat, and Philippe Garrel.\n\nRegular Lovers: Regular Lovers (French: Les Amants réguliers ) is a 2005 French independent coming-of-age romantic drama film directed by Philippe Garrel and starring his son, actor Louis Garrel.  The director's father, actor Maurice Garrel, has a supporting role.\n\nLa Naissance de l'amour: La Naissance de l'amour is a 1993 drama film directed by Philippe Garrel.  Garrel also wrote the screenplay together with his long-time collaborators Muriel Cerf and Marc Cholodenko.\n\nA Burning Hot Summer: A Burning Hot Summer (pre-release title: That Summer) is a 2011 drama film directed by Philippe Garrel, starring Monica Bellucci, Louis Garrel, Céline Sallette, and Jérôme Robart.  Its original French title is Un été brûlant, which means \"A burning summer\".  The film portrays a tempestuous relationship between an actress and a painter.\n\nQuestion:\nBetween Stephan Elliott and Philippe Garrel who was born earlier?\n\nJSON Schema:\n{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"object\",\"properties\":{\"person_a_details\":{\"type\":\"object\",\"properties\":{\"name\":{\"type\":\"string\"},\"birth_year\":{\"type\":\"integer\"},\"birth_month\":{\"type\":\"string\"},\"birth_day\":{\"type\":\"integer\"}},\"required\":[\"name\",\"birth_year\",\"birth_month\",\"birth_day\"],\"additionalProperties\":false},\"person_b_details\":{\"type\":\"object\",\"properties\":{\"name\":{\"type\":\"string\"},\"birth_year\":{\"type\":\"integer\"},\"birth_month\":{\"type\":\"string\"},\"birth_day\":{\"type\":\"integer\"}},\"required\":[\"name\",\"birth_year\",\"birth_month\",\"birth_day\"],\"additionalProperties\":false},\"earlier_born_person_name\":{\"type\":\"string\",\"description\":\"The name of the person who was born earlier.\"},\"earlier_born_person_birth_year\":{\"type\":\"integer\",\"description\":\"The birth year of the person who was born earlier.\"},\"comparison_summary\":{\"type\":\"string\",\"description\":\"A summary statement comparing the birth dates of the two individuals.\"}},\"required\":[\"person_a_details\",\"person_b_details\",\"earlier_born_person_name\",\"earlier_born_person_birth_year\",\"comparison_summary\"],\"additionalProperties\":false}\n\nReturn only one complete JSON object. No Markdown fence or explanation.",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v4",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "json",
+      "dialect": "2020-12",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "person_a_details": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "birth_year": {
+                "type": "integer"
+              },
+              "birth_month": {
+                "type": "string"
+              },
+              "birth_day": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "name",
+              "birth_year",
+              "birth_month",
+              "birth_day"
+            ],
+            "additionalProperties": false
+          },
+          "person_b_details": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "birth_year": {
+                "type": "integer"
+              },
+              "birth_month": {
+                "type": "string"
+              },
+              "birth_day": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "name",
+              "birth_year",
+              "birth_month",
+              "birth_day"
+            ],
+            "additionalProperties": false
+          },
+          "earlier_born_person_name": {
+            "type": "string",
+            "description": "The name of the person who was born earlier."
+          },
+          "earlier_born_person_birth_year": {
+            "type": "integer",
+            "description": "The birth year of the person who was born earlier."
+          },
+          "comparison_summary": {
+            "type": "string",
+            "description": "A summary statement comparing the birth dates of the two individuals."
+          }
+        },
+        "required": [
+          "person_a_details",
+          "person_b_details",
+          "earlier_born_person_name",
+          "earlier_born_person_birth_year",
+          "comparison_summary"
+        ],
+        "additionalProperties": false
+      },
+      "formatAssertions": true,
+      "family": "sob_comparison",
+      "challengeFamily": "SOB_COMPARISON",
+      "sourceGroup": "5a7b6efb55429927d897bfcf",
+      "output_policy": "raw_only",
+      "oracleSet": "frontier-v4",
+      "oracleRef": "SOC4-SOB-096",
+      "oracleHash": "29834925d9d1003c1b318c24e51951cda931d540b1371b9dceebe0367ca063b4",
+      "provenance": {
+        "sourcePack": "interfaze-ai/sob",
+        "recordId": "1f34119f0239a5338cc43887cef21a5f513f717654f55d0147d9392810498636",
+        "sourceId": "5a7b6efb55429927d897bfcf",
+        "sourceDataset": "hotpotqa",
+        "originalLicense": "HotpotQA CC-BY-SA-4.0; SOB code MIT",
+        "adaptation": "Text context, question, Schema, ground truth; zxbench raw JSON direct generation"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "official-sob-ground-truth-provisional-local-adjudication",
+    "goldVerifiedAt": null,
+    "tags": [
+      "structured-contract-frontier-v4",
+      "official-source-adapted",
+      "development_only"
+    ],
+    "scenarioHash": "0c05a46b32da1f83"
+  },
+  {
+    "id": "SOC4-SOB-098",
+    "dimension": "structured_output",
+    "category": "frontier_real_text_multihop",
+    "difficulty": "adversarial",
+    "language": "json",
+    "locale": "en-US",
+    "status": "valid",
+    "tier": "private_validation",
+    "promptTemplate": "Read the source context and answer the question. Fill every required field in the JSON Schema from the source; keep names, dates and numbers precise. Do not invent unsupported values.\n\nSource context:\nZawiszyn, Masovian Voivodeship: Zawiszyn is a village in the administrative district of Gmina Jadów, within Wołomin County, Masovian Voivodeship, in east-central Poland.  It lies approximately 6 km north-east of Jadów, 35 km north-east of Wołomin, and 57 km north-east of Warsaw.\n\nKrusze, Masovian Voivodeship: Krusze is a village in the administrative district of Gmina Klembów, within Wołomin County, Masovian Voivodeship, in east-central Poland.  It lies approximately 6 km north-east of Klembów, 13 km north-east of Wołomin, and 35 km north-east of Warsaw.\n\nMokra Wieś, Masovian Voivodeship: Mokra Wieś is a village in the administrative district of Gmina Tłuszcz, within Wołomin County, Masovian Voivodeship, in east-central Poland.  It lies approximately 6 km north-east of Tłuszcz, 23 km north-east of Wołomin, and 44 km north-east of Warsaw.\n\nSouth Channel Fort: South Channel Fort, also known as South Channel Island, is a 0.7 ha artificial island in southern Port Phillip, Victoria, Australia, 6 km north-east of the town of Sorrento.  It was part of a network of fortifications protecting the narrow entrance to Port Phillip.\n\nLeśniaki, Będzin County: Leśniaki is a village in the administrative district of Gmina Siewierz, within Będzin County, Silesian Voivodeship, in southern Poland.  It lies approximately 6 km north-east of Siewierz, 24 km north-east of Będzin, and 36 km north-east of the regional capital Katowice.\n\nDerkacze: Derkacze (German: \"Dicking\" ) is a village in the administrative district of Gmina Dobiegniew, within Strzelce-Drezdenko County, Lubusz Voivodeship, in western Poland.  It lies approximately 6 km north-east of Dobiegniew, 24 km north-east of Strzelce Krajeńskie, and 49 km north-east of Gorzów Wielkopolski.\n\nSorrento, Victoria: Sorrento is a township in Victoria, Australia, located on the shores of Port Phillip on the Mornington Peninsula, about one and a half hours by car south of Melbourne.  It is a largely upper-class, seaside resort area, but is also a quiet seaside township in the off-peak months of the year.  It was named by the Italian founders after the southern Italian town.\n\nHucisko, Zawiercie County: Hucisko is a village in the administrative district of Gmina Włodowice, within Zawiercie County, Silesian Voivodeship, in southern Poland.  It lies approximately 6 km north-east of Włodowice, 12 km north-east of Zawiercie, and 52 km north-east of the regional capital Katowice.\n\nBiałe Błota, Świecie County: Białe Błota is a village in the administrative district of Gmina Jeżewo, within Świecie County, Kuyavian-Pomeranian Voivodeship, in north-central Poland.  It lies approximately 6 km north-east of Jeżewo, 16 km north-east of Świecie, 56 km north of Toruń, and 60 km north-east of Bydgoszcz.\n\nStarowola, Wołomin County: Starowola is a village in the administrative district of Gmina Jadów, within Wołomin County, Masovian Voivodeship, in east-central Poland.  It lies approximately 6 km north-east of Jadów, 36 km north-east of Wołomin, and 58 km north-east of Warsaw.\n\nQuestion:\nSouth Channel Fort is located 6 km north-east of a town on the shores of what port?\n\nJSON Schema:\n{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"object\",\"properties\":{\"fort_name\":{\"type\":\"string\",\"description\":\"The name of the fort.\"},\"location_details\":{\"type\":\"object\",\"properties\":{\"distance_from_town_km\":{\"type\":\"number\",\"description\":\"The distance from the specified town in kilometers.\"},\"direction_from_town\":{\"type\":\"string\",\"description\":\"The cardinal direction from the specified town.\"},\"town_name\":{\"type\":\"string\",\"description\":\"The name of the town the fort is located relative to.\"},\"port_name\":{\"type\":\"string\",\"description\":\"The name of the port associated with the town.\"}},\"required\":[\"distance_from_town_km\",\"direction_from_town\",\"town_name\",\"port_name\"],\"additionalProperties\":false},\"port_location_description\":{\"type\":\"string\",\"description\":\"A description of the port's location or context.\"}},\"required\":[\"fort_name\",\"location_details\",\"port_location_description\"],\"additionalProperties\":false}\n\nReturn only one complete JSON object. No Markdown fence or explanation.",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v4",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "json",
+      "dialect": "2020-12",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "fort_name": {
+            "type": "string",
+            "description": "The name of the fort."
+          },
+          "location_details": {
+            "type": "object",
+            "properties": {
+              "distance_from_town_km": {
+                "type": "number",
+                "description": "The distance from the specified town in kilometers."
+              },
+              "direction_from_town": {
+                "type": "string",
+                "description": "The cardinal direction from the specified town."
+              },
+              "town_name": {
+                "type": "string",
+                "description": "The name of the town the fort is located relative to."
+              },
+              "port_name": {
+                "type": "string",
+                "description": "The name of the port associated with the town."
+              }
+            },
+            "required": [
+              "distance_from_town_km",
+              "direction_from_town",
+              "town_name",
+              "port_name"
+            ],
+            "additionalProperties": false
+          },
+          "port_location_description": {
+            "type": "string",
+            "description": "A description of the port's location or context."
+          }
+        },
+        "required": [
+          "fort_name",
+          "location_details",
+          "port_location_description"
+        ],
+        "additionalProperties": false
+      },
+      "formatAssertions": true,
+      "family": "sob_bridge",
+      "challengeFamily": "SOB_BRIDGE",
+      "sourceGroup": "5ae1109455429901ffe4ad42",
+      "output_policy": "raw_only",
+      "oracleSet": "frontier-v4",
+      "oracleRef": "SOC4-SOB-098",
+      "oracleHash": "0964499068d145de01f8e57d4b60d234d073d5421a33b00934663fbd0d433af5",
+      "provenance": {
+        "sourcePack": "interfaze-ai/sob",
+        "recordId": "19c3d8eaf67aa667fef187e57beaa8c0ed04e50af540731f6fe8f101b679ce1a",
+        "sourceId": "5ae1109455429901ffe4ad42",
+        "sourceDataset": "hotpotqa",
+        "originalLicense": "HotpotQA CC-BY-SA-4.0; SOB code MIT",
+        "adaptation": "Text context, question, Schema, ground truth; zxbench raw JSON direct generation"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "official-sob-ground-truth-provisional-local-adjudication",
+    "goldVerifiedAt": null,
+    "tags": [
+      "structured-contract-frontier-v4",
+      "official-source-adapted",
+      "development_only"
+    ],
+    "scenarioHash": "c6a4e77c3cb11c69"
+  },
+  {
+    "id": "SOC4-SOB-032",
+    "dimension": "structured_output",
+    "category": "frontier_real_text_multihop",
+    "difficulty": "adversarial",
+    "language": "json",
+    "locale": "en-US",
+    "status": "valid",
+    "tier": "private_validation",
+    "promptTemplate": "Read the source context and answer the question. Fill every required field in the JSON Schema from the source; keep names, dates and numbers precise. Do not invent unsupported values.\n\nSource context:\nProton (supermarkets): Proton is a Greek based retail chain of independent retailers (primarily grocery shops) operating as a brand and buying group (or symbol group).  All stores are independently owned.  The parent company (ELETA LTD) is communally owned with each retailer owning a share.  As of 2006, the Proton retail network consists of around 390 stores throughout Greece.  They also sell their own brand of cola, Proton Cola.\n\nCoop (Hungary): Coop is a Hungarian supermarket chain and buying group with about 4000 stores.  In 2015, it is the second largest retail chain in Hungary.\n\nUnited Hardware Distributing Company: United Hardware Distributing Co. is a dealer-owned corporation based in Plymouth, Minnesota which provides distribution services for about 610 member-owned stores, the majority of which operate under the Hardware Hank trade name.  In addition, the company services about 800 other stores owned by non-members.  2006 sales were $183 million.  It was founded in 1945 as a furniture and hardware distributor.  The furniture division was sold in 1953, and it became a dealer-owned retailers' cooperative in 1957 when majority control was assumed by a group of hardware store owners.  In addition to servicing the Hardware Hank stores, United Hardware also services TrustWorthy Hardware Stores, Golden Rule Lumber Centers, and Ranch & Pet Supply stores.  It is a member of the Distribution America buying group.\n\nNisa (retailer): Nisa Retail Limited (formerly Nisa-Today's) is a brand and buying group (or \"symbol group\") of independent retailers (primarily small grocery shops) and wholesalers in the United Kingdom.  It is a mutual organisation owned by its members and operating \"...like a co-operative, using the collective buying power of the large group of members to negotiate deals with suppliers\".\n\nWarehouse store: A warehouse store or warehouse supermarket is a food and grocery retailer that operates stores geared toward offering deeper discounted prices than a traditional supermarket.  These stores offer a no-frills experience and warehouse shelving stocked well with merchandise intended to move at higher volumes.  Unlike warehouse clubs, warehouse stores do not require a membership or membership fees. Warehouse stores also offer a selection of merchandise sold in bulk, Typically warehouse stores are laid out in a logical format which leads people a certain way around the store to the checkout.  As one enters the store they are directed down an aisle of discounted special buys when entering the store.  From there the layout typically then leads to the fresh Produce followed by the Deli at the back of the store.  Also included bakery and other departments similar to other supermarkets.  Another typical feature of these stores is that the customer bags their own groceries which also helps to reduce the overall cost.  Many warehouse stores are operated by traditional grocery chains both as a way to attract lower income, value conscious consumers and to maximize their buying power in order to lower costs at their mainstream stores.  Notable examples of corporations who operate warehouse stores include United States chains Kroger and Albertsons LLC and the smaller Sacramento-based Nugget Market.  However, WinCo Foods is an exception as it is a warehouse chain of its own and not part of a larger chain of traditional supermarkets like A&P, Safeway, Kroger, or Supervalu.\n\nDigitas Health: Digitas Health is an interactive marketing agency catering exclusively to healthcare and pharmaceutical companies.  The company was founded in 1990 as Medical Broadcasting Corporation and became a unit of Digitas in 2006 as Digitas Health.  In 2011, the agency became independent of Digitas, and integrated into the Publicis Healthcare Communications Group (PHCG), the world’s largest healthcare communications network.  PHCG is part of Paris-based Publicis Groupe the world’s third largest communications group, second largest media counsel and buying group, and a global leader in digital and healthcare communications.\n\nCrest Foods: Crest Foods is a family owned and operated business chain of grocery stores in Oklahoma, with the corporate office in Edmond.  As of 2017, there are 8 stores and a 9th store will open in late 2017 or early 2018.  It buys direct from 150 manufacturers and the largest supplier in the state.\n\nToymaster: Toymaster is an association of independently owned toy stores formed in 1977 as a buying group.  , it comprises over 250 independently owned toy retailers in the United Kingdom and Ireland.  There are six in Wales, three in Jersey, one in Guernsey and three on the Isle of Man.\n\nFilco Foods: Filco Foods is an independent grocery chain based in Llantwit Major, Vale of Glamorgan, Wales.  As of 2013, Filco has 8 stores and operates as part of the Nisa group.  Filco Foods was founded by Phillip Jones in 1946.  The original location opened on Wine Street in Llantwit Major in 1946.  Goods were packaged and delivered according to the customer shopping lists.  In 2010 the company celebrated its 65th anniversary with a charity drive.\n\nCo-operative Federal Trading Services: The Co-operative Federal Retail and Trading Services is the central buying group for co-operative retail societies in the United Kingdom.  It came into its current structure in 2015, though its predecessor was established in 1993, and it supplies almost all food bought for sale by the over 4,000 co-operative foodstores in the UK.  The buying group is owned and controlled by each of its member societies but is managed by The Co-operative Group on their behalf.  It operates by pooling the collective £8.5bn buying power for 18 co-operative societies in the UK, allowing them to negotiate better prices from suppliers, so as to compete effectively with other UK supermarket chains.\n\nQuestion:\nWhere is the brand and buying group which  Filco foods has 8 stores and operates as part of located \n\nJSON Schema:\n{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"object\",\"properties\":{\"entity_type\":{\"type\":\"string\",\"description\":\"The type of entity being described, e.g., 'brand and buying group'.\"},\"entity_name\":{\"type\":\"string\",\"description\":\"The name of the brand and buying group.\"},\"location\":{\"type\":\"string\",\"description\":\"The country where the brand and buying group is located.\"},\"member_company\":{\"type\":\"string\",\"description\":\"The name of the company that operates as part of this group.\"},\"member_company_store_count\":{\"type\":\"integer\",\"description\":\"The number of stores operated by the member company.\"}},\"required\":[\"entity_type\",\"entity_name\",\"location\",\"member_company\",\"member_company_store_count\"],\"additionalProperties\":false}\n\nReturn only one complete JSON object. No Markdown fence or explanation.",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v4",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "json",
+      "dialect": "2020-12",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "entity_type": {
+            "type": "string",
+            "description": "The type of entity being described, e.g., 'brand and buying group'."
+          },
+          "entity_name": {
+            "type": "string",
+            "description": "The name of the brand and buying group."
+          },
+          "location": {
+            "type": "string",
+            "description": "The country where the brand and buying group is located."
+          },
+          "member_company": {
+            "type": "string",
+            "description": "The name of the company that operates as part of this group."
+          },
+          "member_company_store_count": {
+            "type": "integer",
+            "description": "The number of stores operated by the member company."
+          }
+        },
+        "required": [
+          "entity_type",
+          "entity_name",
+          "location",
+          "member_company",
+          "member_company_store_count"
+        ],
+        "additionalProperties": false
+      },
+      "formatAssertions": true,
+      "family": "sob_bridge",
+      "challengeFamily": "SOB_BRIDGE",
+      "sourceGroup": "5adf08ac5542993a75d263dc",
+      "output_policy": "raw_only",
+      "oracleSet": "frontier-v4",
+      "oracleRef": "SOC4-SOB-032",
+      "oracleHash": "cb0f665052677a2ad12486c2a14b3e8107fde29a0dcb06c86d987e4210131563",
+      "provenance": {
+        "sourcePack": "interfaze-ai/sob",
+        "recordId": "e1cd196dcff15328ff827fbe07b0c881f8ed1c6211477e1f24f2158f1040c987",
+        "sourceId": "5adf08ac5542993a75d263dc",
+        "sourceDataset": "hotpotqa",
+        "originalLicense": "HotpotQA CC-BY-SA-4.0; SOB code MIT",
+        "adaptation": "Text context, question, Schema, ground truth; zxbench raw JSON direct generation"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "official-sob-ground-truth-provisional-local-adjudication",
+    "goldVerifiedAt": null,
+    "tags": [
+      "structured-contract-frontier-v4",
+      "official-source-adapted",
+      "development_only"
+    ],
+    "scenarioHash": "b6e45a92168c1aa2"
+  }
+]

@@ -1,0 +1,481 @@
+{
+  "SOC4-SOB-055": {
+    "expected": {
+      "person_name": "Pamela Nicholson",
+      "company_name": "Enterprise Rent-A-Car",
+      "company_type": "car rental company",
+      "headquarters_location": {
+        "city": "Clayton",
+        "state": "Missouri",
+        "country": "United States"
+      }
+    },
+    "sources": {
+      "hotpotqa:5ade063b5542997545bbbe28": "Jim Lentz: Jim Lentz is the chief executive officer for Toyota North America; president and chief operating officer of Toyota Motor North America, Inc. (TMA); and a senior managing officer of the parent company Toyota Motor Corporation (TMC) which is located in Japan.  In that role Lentz manages all of Toyota’s North American affiliate companies which include TMA, Toyota Motor Sales, U.S.A., Inc. (TMS), and Toyota Motor Engineering & Manufacturing, North America, Inc. (TEMA), which includes responsibilities for Toyota Motor Manufacturing Canada Inc. (TMMC), and oversight for Toyota Canada, Inc. (TCI).  Lentz also serves as the chairman of the North American Executive Committee.  This is composed of the top leaders from the affiliate companies.  Most recently Lentz was the president and chief executive officer of TMS and senior vice president of TMA and served in a global advisory capacity as the managing officer for TMC.  Before that he served as president and chief operating officer and executive vice president of TMS.  Lentz previously held several executive positions including Toyota division group vice president and general manager where he oversaw all sales, logistics and marketing activities for Toyota and Scion regional sales offices and distributors.  He also served as the group vice president of marketing for the Toyota division and vice president of Scion, and was responsible for the initial launch of a new line of vehicles.  Lentz spent several years in the field as vice president and general manager of the Los Angeles region and before that general manager of the San Francisco region.  Prior to his role as general manager Lentz was vice president of marketing services for CAT in Maryland.  He has also held several other TMS positions, including field training manager, sales administration manager and truck sales team member.  Lentz joined Toyota in 1982 as the merchandising manager for its Portland, Oregon region where he later became the distribution manager and field operations manager.  He serves as chairman on the board of directors of The Global Automakers and is also a member of the executive advisory board for Daniels College of Business at the University of Denver (DU), his alma mater.  He was named “Marketer of the Year” by Advertising Age in 2006, an Automotive News “All Star” in 2007 and honored at Industry Leader of the year.\n\nMike Lunsford: Mike Lunsford is the chief executive officer of SK Planet, Inc., the U.S. arm of SK Planet, Ltd., a Korean-based company.  He is the former executive vice president and interim chief executive officer of RealNetworks, the former chief executive officer of Rhapsody, a joint venture between RealNetworks and Viacom, and the former president and interim chief executive officer of Earthlink.  Before joining EarthLink, Lunsford worked as a consultant at Andersen Consulting (now Accenture) in Chicago and Scott, Madden & Associates, a management consulting firm in Raleigh, North Carolina.  He received an undergraduate degree and a Masters of Business Administration (MBA) from the University of North Carolina.\n\nBobby Mehta: Siddharth N. \"Bobby\" Mehta was former CEO and vice chairman of HSBC North America.  Mehta served as an Advisor of TransUnion since December 31, 2012.  Mehta serves as consultant of TransUnion.  He served the chief executive officer and president of TransUnion from August 2007 to December 31, 2012, and Transunion Financing Corp. until December 31, 2012.  From May 2007 to July 2007, he served as a consultant to the board of directors at TransUnion.  He served as the chief executive officer and president of TransUnion until December 31, 2012.  He served as the chief executive officer of TransUnion LLC.  He served as chairman of the board and chief executive officer of HSBC Finance Corporation from April 2005 to February 2007.  He served as chief executive officer and president of TransUnion LLC from 2007 to 2012.  From 1998 to 2007, he held a variety of positions with HSBC Finance Corporation and HSBC North America Holdings, Inc.  Mehta served as chief executive officer of HSBC North America until February 2007.  Mehta served as consultant of TransUnion since May 2007 until July 2007.  Mehta served as group managing director of HSBC Holdings PLC of HSBC Finance Corp. since April 30, 2005, and its unit chief executive officer since March 2005.  He served as the chief executive of HS BC North America Holdings Inc., of HSBC Finance Corp., from March 2005 to February 15, 2007.  He served as an executive chairman of HSBC Financial Corporation Limited since April 2005 and served as its chief executive officer from April 2005 to February 15, 2007.  He served as the chief executive officer of HSBC Bank USA, N.A. until February 2007.  He served as the chief executive officer of HSBC North America Holdings Inc. since March 2005.  He served as chairman and chief executive officer of HSBC Financial Corp., Ltd.  He oversaw HSBC's global credit card services, its North American consumer lending and mortgage services businesses and its first mortgage operation.  He was also responsible for corporate marketing, strategic planning and corporate development for HSBC North America Holdings Inc. and had responsibility for the strategic management of credit cards throughout the HSBC Group.  Mehta served as group executive of Credit Card Services, Auto Finance and Canada of Household International Inc., since July 2002.  He worked at MasterCard’s U.S. region board since March 2000.  Mehta joined Household International Inc., in 1998.  He served as senior vice president of The Boston Consulting Group in Los Angeles and co-leader of Boston Consulting Group Financial Services Practice in the United States.  Mehta served as a director of Global Board of MasterCard Incorporated since March 17, 2005.  He served as unit chairman of HSBC Holdings PLC and served as its board member since March 2005.  He served as vice chairman and director of HSBC Financial Corporation Limited., (Formerly Household International Inc.).  He has been a director of Avant Credit Corporation since December 18, 2014.  He has been an independent director of The Allstate Corporation since February 19, 2014.  He serves as a member of the advisory board at Core2 Group, Inc.  He has been non-executive independent director at Piramal Enterprises Ltd since April 1, 2013.  He serves on the boards of Datacard, Chicago Public Education Fund, University of Chicago Laboratory Schools, The Economic Club of Chicago, The Field Museum and Myelin Repair Foundation.  He serves as a director of TransUnion Corp. and TransUnion LLC.  He served as a director of MasterCard International Inc. (also known as MasterCard Worldwide) (formerly, MasterCard Inc.), since March 17, 2005.  He served as a director of HSBC Financial Corp.  Ltd.  He has been a director of TransUnion since April 2012.  Mehta serves on the board of international advisors for the Monterey, California, Institute of International Studies and is a member of the Financial Services Roundtable.  He also serves on the board of advisors for the Myelin Repair Foundation.  Mehta holds a Bachelor of Arts in economics from the London School of Economics and Masters of Business Administration from the University of Chicago.  He stepped down as head of the North American unit after the lender raised its forecast for bad loans in the U.S.  He is of Indian descent.\n\nEnterprise Rent-A-Car: Enterprise Rent-A-Car is an American car rental company headquartered in Clayton, Missouri, United States in Greater St. Louis.  In addition to car rental, Enterprise also oversees commercial fleet management, used car sales, and commercial truck rental operations.\n\nConsolidated rental car facility: A consolidated rental car facility (CRCF) is a complex that hosts numerous rental car agencies.  They are often found at airports in the United States.  The incentive for building consolidated facilities are numerous, including: less congestion on surface streets, more convenience for rental car company employees, greater efficiencies for rental car companies, and numerous environmental benefits from reduced emissions to consolidated, professionally managed fueling stations.  Typical services to the rental car companies include onsite offices, fueling, car wash, car prep (vacuums, windshield wiper fluids, and trash services), and light maintenance areas.\n\nPamela Nicholson: Pamela M. Nicholson is a U.S. businesswoman.  She is President and Chief Executive Officer of Enterprise Holdings.  In 2007 she was also inducted in the \"Fortune\" Top 50 Most Powerful Women list as number 44.  In 2009, \"Forbes\" included her among their 100 Most Powerful Women at number 89.\n\nGlen Post: Glen F. Post III (born October 4, 1952) is the chief executive officer and president of CenturyLink, an S&P 500 integrated communications service provider based out of Monroe, Louisiana.  He earned a bachelor's degree in accounting in 1974 at Louisiana Tech University and an MBA in 1976 at Louisiana Tech.  Post joined CenturyTel in 1976.  He was named vice president in 1982 and was promoted to senior vice president and treasurer in 1984.  He was appointed to the CenturyTel board of directors in 1985, and the following year he was promoted to senior vice president and chief financial officer.  In 1988 Post was named executive vice president and chief operating officer.  He became the president and chief operating officer of CenturyTel in 1990.  In 1992 Post was named vice chairman of the board, president, and chief executive officer.  In 2002 he was appointed chairman of the board and chief executive officer.  Since 2009 Post has served as chief executive officer and president of CenturyLink.  His honors include: Louisiana Tech College of Administration and Business Distinguished Alumni in 1991, Louisiana Tech University Tower Medallion Award in 1997 and DeGree Enterprises Lifetime Achievement Award in Business 2003.\n\nStephen P. MacMillan: Stephen P. MacMillan is the Chairman, President, and Chief Executive Officer, and Director of Hologic, a medical device and diagnostic manufacturer headquartered in Marlborough, Massachusetts.  He was previously the Chairman of the Board, President, and Chief Executive Officer of Stryker Corporation, a global medical device company, and has 24 years of healthcare industry operating experience.  He served as Chief Executive Officer of Stryker from January 2005 to February 2012 and served as its President from June 2003 to February 2012.  During his tenure at Stryker, MacMillan successfully led the company through a series of key strategic acquisitions, the launch of a number of products within the orthopedic implants and medical instrumentation businesses, and delivered strong operating performance, with revenue growing from $2.8 billion to $8.3 billion, between 2003 and 2011.  During his tenure, Stryker delivered stock price appreciation of more than 62%, compared to appreciation of the S&P 500 index of approximately 40%.  While MacMillan presided as CEO, Stryker was selected by FORTUNE, over multiple consecutive years, as one of the \"World's Most Admired Companies\" in the Medical Equipment Industry.\n\nJonathan G. Ornstein: Jonathan Ornstein is Chairman and Chief Executive Officer of Mesa Air Group, Inc., and was appointed effective May 1, 1998.  From April 1996 to his joining the company as Chief Executive Officer, Ornstein served as President and Chief Executive Officer and Chairman of Virgin Express, a European airline.  From 1995 to April 1996, Ornstein served as Chief Executive Officer of Virgin Express Holdings, Inc.  Ornstein joined Continental Express as President and Chief Executive Officer in July 1994 and, in November 1994, was named Senior Vice President, Airport Services at Continental Airlines.  Ornstein was previously employed by the company from 1988 to 1994, as Executive Vice President and as President of the company’s WestAir Holding, Inc., subsidiary.\n\nB. Wayne Hughes: Bradley Wayne Hughes (born September 28, 1933) is the founder and chairman of Public Storage, the largest self-storage company in America doing business as a REIT or real estate investment trust.  As of 2014, Hughes is worth $2.2 billion.  Known all his life by his middle name, B. Wayne Hughes was the company's President and Co-Chief Executive Officer from 1980 until November 1991 when he became Chairman of the Board and sole Chief Executive Officer.  He retired as Chief Executive Officer in November 2002 and remains Chairman of the Board.  He was Chairman of the Board and Chief Executive Officer from 1990 until March 1998 of Public Storage Properties XI, Inc., which was renamed PS Business Parks, Inc. (\"PSB\"), an affiliated REIT.  From 1989-90 until the respective dates of merger, he was Chairman of the Board and Chief Executive Officer of 18 affiliated REITs that were merged into the Company between September 1994 and May 1998 (collectively, the \"Merged Public Storage REITs\").  has been active in the real estate investment field for over 30 years."
+    },
+    "provenance": {
+      "/person_name": [
+        "hotpotqa:5ade063b5542997545bbbe28"
+      ],
+      "/company_name": [
+        "hotpotqa:5ade063b5542997545bbbe28"
+      ],
+      "/company_type": [
+        "hotpotqa:5ade063b5542997545bbbe28"
+      ],
+      "/headquarters_location/city": [
+        "hotpotqa:5ade063b5542997545bbbe28"
+      ],
+      "/headquarters_location/state": [
+        "hotpotqa:5ade063b5542997545bbbe28"
+      ],
+      "/headquarters_location/country": [
+        "hotpotqa:5ade063b5542997545bbbe28"
+      ]
+    },
+    "allowed": {
+      "/company_type": [
+        "car rental"
+      ]
+    }
+  },
+  "SOC4-SOB-002": {
+    "expected": {
+      "coach_name": "Lionel Hollins",
+      "previous_team": "Memphis Grizzlies",
+      "subsequent_team": "Brooklyn Nets",
+      "subsequent_team_details": {
+        "league": "National Basketball Association",
+        "coaching_role": "head coach",
+        "firing_date_from_subsequent_team": "January 2016"
+      }
+    },
+    "sources": {
+      "hotpotqa:5ae4e6f25542993aec5ec0e9": "2016–17 Brooklyn Nets season: The 2016–17 Brooklyn Nets season was the 41st season of the franchise in the National Basketball Association (NBA), 50th season overall, and its 5th season playing in the New York City borough of Brooklyn.  In the month of February, the Nets would go 0-10 marking the first time that they lost every game in a single month since going 0-14 in November 2009.  This would be Brook Lopez's final year in Brooklyn and the first season with new management.  The Nets hired Kenny Atkinson after Lionel Hollins was fired back in January 2016 when Tony Brown took over as the interim.  Billy King was also fired as the infamous trade back in 2013 where they traded their first round picks in 2014, 2016, and 2018 in exchange for Kevin Garnett and Paul Pierce hurt the Nets badly.  Sean Marks took over as the Nets began rebuilding.  They would finish 20–62, their worst record since 2009–10.\n\nPaul Westhead: Paul William Westhead (born February 21, 1939) is an American basketball coach who most recently was the head coach of the University of Oregon women's team.  In his first year as an NBA head coach, he led a rookie Magic Johnson and the Los Angeles Lakers to the 1980 NBA Title.  He has previously been a head coach for three National Basketball Association (NBA) teams and an assistant for four others, and has also coached in the National Collegiate Athletic Association (NCAA), Women's National Basketball Association (WNBA), American Basketball Association (ABA) and Japan Basketball League (JBL).  He won titles in both the NBA and WNBA, and is also remembered as the coach of the Loyola Marymount University (LMU) men's basketball team during that school's era of greatest basketball glory.  Westhead is known for an unorthodox, run-and-gun style called \"The System.\"  He attended Saint Joseph's University.\n\n1979–80 Philadelphia 76ers season: The 1979–1980 Philadelphia 76ers season was the 76ers 31st season in the National Basketball Association (NBA) and 17th season in Philadelphia.  They finished with a record of 59–23, their best since the 1967–68 season.  The team had acquired guard Lionel Hollins from the Portland Trail Blazers after their effort to obtain Pete Maravich failed as he signed with the Boston Celtics.  In the playoffs, they won the 1980 Eastern Conference Championship over the Boston Celtics 4–1.  In the 1980 NBA Finals they would lose to the Los Angeles Lakers 4–2.  The series was memorable for Julius Erving's baseline move in Game 4, and Magic Johnson's 42-point effort in Game 6 starting the game at center in place of an injured Kareem Abdul-Jabbar.\n\nHue Hollins: Hue Spencer Hollins, Sr. (November 28, 1940 - July 4, 2013)  was an American professional basketball referee for the National Basketball Association (NBA).  During his 27-year career in the NBA, Hollins officiated 19 NBA Finals games and five NBA All-Star Games.  He is notable for working the Finals every year during the 1990s and for a notorious call during a 1994 NBA Playoffs game between the Chicago Bulls and New York Knicks.  Hollins was probed by the Federal Bureau of Investigation (FBI) over the 2007 NBA betting scandal involving former referee Tim Donaghy.\n\nLionel Hollins: Lionel Eugene Hollins (born October 19, 1953) is an American basketball coach and former professional basketball player.  He most recently served as the head coach of the Brooklyn Nets of the National Basketball Association (NBA).\n\nBaltimore Bullets (1944–54): The Baltimore Bullets were an American Basketball League (1944–47) team, and later, a Basketball Association of America (1947–49), and (beginning in 1949, following the BAA's absorption of the National Basketball League) a National Basketball Association team based in Baltimore.  The team folded November 27, 1954 with a 3–11 record, making the Bullets the last NBA franchise to do so, as of 2016.  Out of all defunct NBA teams, the Bullets were members of the association for the longest time and the only defunct team to win a championship.\n\n2001–02 Memphis Grizzlies season: The 2001–02 NBA season was the Grizzlies 7th season in the National Basketball Association, and their first season in Memphis.  After six years of struggling in Vancouver, the Grizzlies relocated to Memphis.  Although it was the first NBA team for the city, Memphis played home to an American Basketball Association team from 1970–1975.  During the offseason, the Grizzlies acquired rookie Pau Gasol, Brevin Knight and former University of Memphis star Lorenzen Wright from the Atlanta Hawks, while acquiring Jason Williams and Nick Anderson from the Sacramento Kings.  However, Bryant Reeves missed the entire season due to a preseason back injury, and retired after playing just six seasons in the NBA, while Michael Dickerson played just four games due to a groin injury.\n\n2004–05 Memphis Grizzlies season: The 2004–05 NBA season was the Grizzlies' tenth season in the National Basketball Association, and their fourth season in Memphis.  Coming off their first playoff appearance in franchise history, the Grizzlies had a new look and moved into their new arena, the FedExForum.  However, the team struggled with a 5–7 start as 71-year old Hubie Brown retired from coaching due to \"unexpected health problems\".  The Grizzlies would lose their next four games under Lionel Hollins before replacing him with TNT analyst Mike Fratello.  Under Fratello, the Grizzlies would win 12 of their 15 games in January climbing back into playoff connection.  Despite losing five of their last six games, the Grizzlies finished fourth in the Southwest Division with a 45–37 record, making their second consecutive trip to the playoffs.\n\nPhilip Brownstein: Philip Brownstein (May 17, 1906 – February 11, 1999) was an American basketball coach, scout, and general manager at the prep school and professional levels.  He was the interim head coach for the Chicago Stags, an early National Basketball Association team, for 11 games during the 1948–49 season, and went 10–1 while head coach Harold Olsen was out.  Brownstein then took over as the Stags' head coach for the 1949–50 season and led them to a 40–28 record.\n\nEmanual Davis: Emanual Davis (born August 27, 1968) is a retired American professional basketball player.  As a 6'4\" (1.96 m) point guard, Davis played college basketball at Delaware State University in Dover, Delaware.  Davis was never drafted by a National Basketball Association team, and played in the Continental Basketball Association, Italian Basketball League, United States Basketball League and the Atlantic Basketball Association in a span of 5 years before making it into the NBA.  Davis played in 6 NBA seasons from 1996–1998 and 1999–2003.  He played for the Houston Rockets, Seattle SuperSonics and Atlanta Hawks."
+    },
+    "provenance": {
+      "/coach_name": [
+        "hotpotqa:5ae4e6f25542993aec5ec0e9"
+      ],
+      "/previous_team": [
+        "hotpotqa:5ae4e6f25542993aec5ec0e9"
+      ],
+      "/subsequent_team": [
+        "hotpotqa:5ae4e6f25542993aec5ec0e9"
+      ],
+      "/subsequent_team_details/league": [
+        "hotpotqa:5ae4e6f25542993aec5ec0e9"
+      ],
+      "/subsequent_team_details/coaching_role": [
+        "hotpotqa:5ae4e6f25542993aec5ec0e9"
+      ],
+      "/subsequent_team_details/firing_date_from_subsequent_team": [
+        "hotpotqa:5ae4e6f25542993aec5ec0e9"
+      ]
+    }
+  },
+  "SOC4-SOB-007": {
+    "expected": {
+      "triggering_event": {
+        "name": "Tunisian Revolution",
+        "start_date": "17 December 2010",
+        "location": "Tunisia"
+      },
+      "revolutionary_wave": {
+        "name": "Arab Spring",
+        "description": "revolutionary wave"
+      },
+      "inspired_movement": {
+        "name": "Occupy Wall Street"
+      }
+    },
+    "sources": {
+      "hotpotqa:5a8c52e25542995e66a475bc": "Arab Spring: The Arab Spring, (Arabic: الربيع العربي‎ ‎ \"ar-Rabīʻ al-ʻArabī\") also referred to as Arab revolutions (Arabic: الثورات العربية‎ ‎ \"aṯ-'awrāt al-ʻarabiyyah\"), was a revolutionary wave of both violent and non-violent demonstrations, protests, riots, coups and civil wars in North Africa and the Middle East that began on 17 December 2010 in Tunisia with the Tunisian Revolution.\n\nOccupy Dataran: Occupy Dataran was an autonomous grassroots movement based in Kuala Lumpur, that aims to create a platform to experiment participatory democracy based on the popular assembly model.  \"The Malaysian Insider\" reported that Occupy Dataran were an offshoot of Occupy Wall Street.  The online news portal also reported that the Malaysian protesters were expressing solidarity with the New York protest movement as part of the 15 October 2011 global protests.  However, it is widely acknowledged that the first Occupy Dataran assembly was held on 30 July 2011, seven weeks before Occupy Wall Street.\n\nOccupy Ashland: Occupy Ashland included a peaceful protest and demonstration against economic inequality, corporate greed and the influence of corporations and lobbyists on government which has taken place in Ashland, Oregon, United States since 6 October 2011.  The protests began in solidarity with the Occupy Wall Street protests in New York.  The protests included an occupation of the downtown Plaza and a daily picket outside the JPMorgan Chase branch in Ashland.\n\nOccupy Eugene: Occupy Eugene was a collaboration that occurred in Eugene, Oregon based on the Occupy Wall Street movement which began in New York City on September 17, 2011.  Occupy Eugene included peaceful protests and demonstrations.  Protesters were concerned about fairness issues regarding wealth-distribution, banking regulation, housing issues and corporate greed.  The first protest march was held on October 15, 2011.  The march started at the Wayne Morse Free Speech Plaza and continued downtown before marching over Ferry Street Bridge.  It was reported that close to 2000 people were in attendance from all over the state of Oregon.  Occupy Eugene continues to hold regular protests and actions.  Protesters have stated that they do not have a set group of leaders.  Occupy Eugene General Assemblies have met from as frequently as twice a day at times during active occupations, and as infrequently as weekly.  Many committees have met since at least the third General Assembly - typically weekly, and of course informal conversations are essentially non-stop.  Decisions are made through a process known as consensus.  Occupy Eugene's consensus process operates in a similar fashion to how consensus is being handled in New York City by protesters involved in Occupy Wall Street.  Although the exact method varies from Occupation to Occupation.  As of October 18, 2011, The Eugene police department is allowing protesters to camp in downtown Eugene, although city law prohibits it.  Eugene police also stated that downtown camping won't be permanently allowed.\n\nOccupy Chicago: Occupy Chicago was an ongoing collaboration that has included peaceful protests and demonstrations against economic inequality, corporate greed and the influence of corporations and lobbyists on government which has been taking place in Chicago since September 24, 2011.  The protests began in solidarity with the Occupy Wall Street protests in New York.\n\nOccupy Seattle: Occupy Seattle was a collaboration that has included direct action demonstration with occasional activity at Westlake Park and Seattle City Hall in downtown Seattle, Washington.  Occupy Seattle is inspired by the Occupy Wall Street protests in New York City in September 2011, which in turn was inspired by the Arab Spring.  The protest, like the one in New York, is against wealth inequality, perceived corporate greed, and corruption in the banking and economic systems in the United States.\n\nOccupy Berlin: Occupy Berlin was a collaboration in Berlin, Germany that has included peaceful protests and demonstrations against unregulated financial markets and other alleged social injustices.  It began as a part of the 15 October 2011 global protests.  The protest began in solidarity with the Occupy Wall Street protests in New York, United States.  It has established three encampments: outside of the church Parochialkirche, in Boxhagener Platz and the biggest one on the Bundespressestrand.\n\nOccupy the Hood: The Occupy the Hood movement is a nationwide grassroots movement in the United States that is an extension of Occupy Wall Street and of the Occupy Movement generally.  The movement started in response to how the Occupy Wall Street movement was developing after its initial encampment in Zuccotti Park.  Occupy the Hood seeks to represent the interests of oppressed people and to bring people of color into the Occupy Movement.  The movement has been especially active in its attempts to decolonize the Occupy Movement.  Occupy the Hood was created by Malik Rhasaan, from Jamaica, Queens.  Occupy the hood chapters exist in the U.S. cities of Atlanta, Boston, Indianapolis, Los Angeles, Milwaukee, New York City, New York, and other major metropolitan cities.\n\nList of Occupy movement protest locations: The Occupy Wall Street protests have inspired a wide international response.  There have been hundreds of Occupy movement protests worldwide over time, intended and organized as non-violent protest.  This is a list of some of their locations.  Months before the Occupy movement began, the Movimiento 15-M planned to hold events in many nations on October 15, 2011.  The Occupy movement joined in and also held many events in many nations on that day.  A list of proposed events for the 15 October 2011 global protests listed events in 951 cities in 82 countries.  Reportedly the large manifestation in Rome ended in violence.  Protest camps were built at many of the protest locations from Honolulu to Zeulenroda, often near banking institutions or stock markets.  Many locations had further manifestations at the following weekends until \"Guy-Fawkes\" day since the Guy Fawkes mask had become protester fashion.  Many US-American Occupy groups kept activity alive until spring 2012, some are still active.\n\nOccupy Oslo: Occupy Oslo was a collaboration, peaceful protest and demonstration against social injustice, corporate greed and the influence of corporations and lobbyists on government.  It occurred in Oslo, Norway, and started as a part of the global protests of October 15th, 2011.  The protest began in solidarity with the Occupy Wall Street protests in New York, United States, and is a part of the global occupy movement."
+    },
+    "provenance": {
+      "/triggering_event/name": [
+        "hotpotqa:5a8c52e25542995e66a475bc"
+      ],
+      "/triggering_event/start_date": [
+        "hotpotqa:5a8c52e25542995e66a475bc"
+      ],
+      "/triggering_event/location": [
+        "hotpotqa:5a8c52e25542995e66a475bc"
+      ],
+      "/revolutionary_wave/name": [
+        "hotpotqa:5a8c52e25542995e66a475bc"
+      ],
+      "/revolutionary_wave/description": [
+        "hotpotqa:5a8c52e25542995e66a475bc"
+      ],
+      "/inspired_movement/name": [
+        "hotpotqa:5a8c52e25542995e66a475bc"
+      ]
+    }
+  },
+  "SOC4-SOB-009": {
+    "expected": {
+      "film_title": "Bedknobs and Broomsticks",
+      "film_year": 1971,
+      "film_genre": [
+        "musical",
+        "fantasy"
+      ],
+      "film_origin_countries": [
+        "British",
+        "American"
+      ],
+      "actress_name": "Cindy O'Callaghan",
+      "role_name": "Carrie Rawlins",
+      "source_material": {
+        "type": "books",
+        "author_name": "Mary Norton",
+        "book_titles": [
+          "The Magic Bedknob; or, How to Become a Witch in Ten Easy Lessons",
+          "Bonfires and Broomsticks"
+        ]
+      }
+    },
+    "sources": {
+      "hotpotqa:5ab2a9c8554299545a2cf9fc": "The Phantom of the Opera (2004 film): The Phantom of the Opera is a 2004 British-American musical drama film based on Andrew Lloyd Webber's 1986 musical of the same name, which in turn is based on the French novel \"Le Fantôme de l'Opéra\" by Gaston Leroux.  It was produced and co-written by Lloyd Webber and directed by Joel Schumacher.  It stars Gerard Butler in the title role, Emmy Rossum as Christine Daaé, Patrick Wilson as Raoul, Miranda Richardson as Madame Giry, Minnie Driver as Carlotta Giudicelli, and Jennifer Ellison as Meg Giry.\n\nCindy O'Callaghan: Cindy O'Callaghan (born 18 October 1956) is an Irish-born British former actress.  Her acting career began in her adolescence, when she was chosen to play the part of Carrie Rawlins in the Disney feature film \"Bedknobs and Broomsticks\" in 1971.  She has appeared in a wide range of television programmes and films since, including BBC's \"EastEnders\", where she played Andrea Price for several stints in the 1990s.  Her last credited role was in 2001, and she has since given up acting to become a child psychologist.\n\nBedknobs and Broomsticks: Bedknobs and Broomsticks is a 1971 British-American musical fantasy film produced by Walt Disney Productions and released by Buena Vista Distribution Company in North America on December 13, 1971.  It is based upon the books \"The Magic Bedknob; or, How to Become a Witch in Ten Easy Lessons\" (1943) and \"Bonfires and Broomsticks\" (1945) by English children's author Mary Norton.  The film, which combines live action and animation, stars Angela Lansbury and David Tomlinson.\n\nLindsay Parker: Lindsay Parker (born March 30, 1980 in Los Angeles, California) is an American actress who got her start as Little Girl on an episode of \"MacGyver\".  She appeared in the film \"Shocker\" three years later, and played Kirstie Alley's daughter Melissa in the 1987 film \"Infidelity\".  She provided the voice of Corey in \"Cartoon All-Stars to the Rescue\" and also played Carrie in the 1987 film \"Flowers in the Attic\".  She remained active in acting up until 2007.\n\nCorpse Bride: Corpse Bride is a 2005 British-American stop-motion-animated musical fantasy film directed by Mike Johnson and Tim Burton with a screenplay by John August, Caroline Thompson and Pamela Pettler based on characters created by Burton and Carlos Grangel.  The plot is set in a fictional Victorian era village in Europe.  Johnny Depp leads the cast as the voice of Victor, while Helena Bonham Carter voices Emily, the titular bride.  \"Corpse Bride\" is the third stop-motion feature film produced by Burton and the first directed by him (the previous two films, \"The Nightmare Before Christmas\" and \"James and the Giant Peach\", were directed by Henry Selick).  This is also the first stop-motion feature from Burton that was distributed by Warner Bros.  Pictures.  It was dedicated to executive producer Joe Ranft, who died during production.\n\nThe Rocky Horror Picture Show: The Rocky Horror Picture Show is a 1975 British-American musical screwball comedy horror film by 20th Century Fox produced by Lou Adler and Michael White and directed by Jim Sharman.  The screenplay was written by Sharman and actor Richard O'Brien, who appears in the film, which is based on the 1973 musical stage production \"of the same title\", with music, book, and lyrics by O'Brien.  The production is a parody tribute to the science fiction and horror B movies of the 1930s through to the early 1970s.  Along with O'Brien, the film stars Tim Curry, Susan Sarandon, and Barry Bostwick and is narrated by Charles Gray with cast members from the original Royal Court Theatre, Roxy Theatre, and Belasco Theatre productions.\n\nJames and the Giant Peach (film): James and the Giant Peach is a 1996 British-American musical fantasy film directed by Henry Selick, based on the 1961 novel of the same name by Roald Dahl.  It was produced by Tim Burton and Denise Di Novi, directed by Henry Selick, and starred Paul Terry as James.  The film is a combination of live action and stop-motion animation.  Co-stars Joanna Lumley and Miriam Margolyes played James's aunts in the live-action segments, and Simon Callow, Richard Dreyfuss, Susan Sarandon, Jane Leeves, David Thewlis, and Margoyles voiced his insect friends in the animation sequences.\n\nLabyrinth (film): Labyrinth is a 1986 British-American adventure musical dark fantasy film directed by Jim Henson, executive-produced by George Lucas, and based upon conceptual designs by Brian Froud.  The film revolves around 15-year-old Sarah's (Jennifer Connelly) quest to reach the center of an enormous otherworldly maze to rescue her infant brother Toby, whom Sarah wished away to Jareth, the Goblin King (David Bowie).  With the exception of Connelly and Bowie, most of the film's significant characters are played by puppets produced by Jim Henson's Creature Shop.\n\nMacbeth (1971 film): Macbeth (or The Tragedy of Macbeth) is a 1971 British-American historical drama film directed by Roman Polanski and co-written by Polanski and Kenneth Tynan.  A film adaptation of William Shakespeare's tragedy of the same name, it retells the story of the Highland lord who becomes King of Scotland through treachery and murder.  The film stars Jon Finch as the title character and Francesca Annis as Lady Macbeth, noted for their relative youth as actors.  Themes of historic recurrence, greater pessimism and internal ugliness in physically beautiful characters are added to Shakespeare's story of moral decline, which is presented in a more realistic style.\n\nThe Boy Friend (1971 film): The Boy Friend is a 1971 British-American musical comedy film directed by Ken Russell and starring Twiggy, Christopher Gable, Tommy Tune, and Max Adrian with an uncredited appearance by Glenda Jackson.  It is an adaptation of the musical \"The Boy Friend\" by Sandy Wilson.  It was released on DVD on April 12, 2011."
+    },
+    "provenance": {
+      "/film_title": [
+        "hotpotqa:5ab2a9c8554299545a2cf9fc"
+      ],
+      "/film_year": [
+        "hotpotqa:5ab2a9c8554299545a2cf9fc"
+      ],
+      "/film_genre/0": [
+        "hotpotqa:5ab2a9c8554299545a2cf9fc"
+      ],
+      "/film_genre/1": [
+        "hotpotqa:5ab2a9c8554299545a2cf9fc"
+      ],
+      "/film_origin_countries/0": [
+        "hotpotqa:5ab2a9c8554299545a2cf9fc"
+      ],
+      "/film_origin_countries/1": [
+        "hotpotqa:5ab2a9c8554299545a2cf9fc"
+      ],
+      "/actress_name": [
+        "hotpotqa:5ab2a9c8554299545a2cf9fc"
+      ],
+      "/role_name": [
+        "hotpotqa:5ab2a9c8554299545a2cf9fc"
+      ],
+      "/source_material/type": [
+        "hotpotqa:5ab2a9c8554299545a2cf9fc"
+      ],
+      "/source_material/author_name": [
+        "hotpotqa:5ab2a9c8554299545a2cf9fc"
+      ],
+      "/source_material/book_titles/0": [
+        "hotpotqa:5ab2a9c8554299545a2cf9fc"
+      ],
+      "/source_material/book_titles/1": [
+        "hotpotqa:5ab2a9c8554299545a2cf9fc"
+      ]
+    }
+  },
+  "SOC4-SOB-027": {
+    "expected": {
+      "poem_title": "Hugh Selwyn Mauberley",
+      "author": "Ezra Pound",
+      "publication_year": 1920,
+      "related_person": {
+        "name": "T.S. Eliot",
+        "event_description": "moved to England",
+        "event_year": 1914,
+        "years_after_event": 6
+      }
+    },
+    "sources": {
+      "hotpotqa:5a8033e95542996402f6a47e": "T. S. Eliot: Thomas Stearns Eliot, {'1': \", '2': \", '3': \", '4': \"} (26 September 1888 – 4 January 1965) was a British essayist, publisher, playwright, literary and social critic, and \"one of the twentieth century's major poets\".  He moved from his native United States to England in 1914 at the age of 25, settling, working, and marrying there.  He eventually became a British subject in 1927 at the age of 39, renouncing his American citizenship.\n\nAlan Seeger: Alan Seeger (22 June 1888 – 4 July 1916) was an American poet who fought and died in World War I during the Battle of the Somme, serving in the French Foreign Legion.  Seeger was the uncle of American folk singer Pete Seeger, and was a classmate of T.S. Eliot at Harvard.  He is best known for the poem, \"I Have a Rendezvous with Death\", a favorite of President John F. Kennedy.  A statue representing him is on the monument in the Place des États-Unis, Paris, honoring fallen Americans who volunteered for France during the war.  Seeger is sometimes called the \"American Rupert Brooke.\"\n\nPoetry Book Society: The Poetry Book Society (PBS) was founded in 1953 by T. S. Eliot and friends, including Sir Basil Blackwell, \"to propagate the art of poetry\".  Eric Walter White was secretary from December 1953 until 1971, and was subsequently the society's chairman.  The PBS was chaired by Philip Larkin in the 1980s.  Each quarter the Society selects one newly published collection of poetry as its \"Choice\" title for its members and makes four \"Recommendations\" for optional purchase.  The Society also publishes the quarterly poetry journal, the \"PBS Bulletin\", and until 2016 administered the annual T. S. Eliot Prize for Poetry.  Following the Poetry Society's instigation of its New Generation Poets promotion in 1994, the Poetry Book Society organised two subsequent \"Next Generation Poets\" promotions in 2004 and 2014.  In 2016 the former Poetry Book Society charity which had managed the book club from 1953 had to be wound up, with its director Chris Holifield appointed as the new director of the T.S. Eliot Prize, and with its book club and company name taken over by book sales agency Inpress Ltd in Newcastle.\n\nCharles William Eliot: Charles William Eliot (March 20, 1834 – August 22, 1926) was an American academic who was selected as Harvard's president in 1869.  He transformed the provincial college into the preeminent American research university.  Eliot served until 1909, having the longest term as president in the university's history.  He was a cousin of the Nobel Prize-winning poet T.S. Eliot.\n\nHamlet and His Problems: Hamlet and His Problems is an essay written by T.S. Eliot in 1919 that offers a critical reading of \"Hamlet\".  The essay first appeared in Eliot's \"The Sacred Wood: Essays on Poetry and Criticism\" in 1920.  It was later reprinted by Faber & Faber in 1932 in \"Selected Essays, 1917-1932\".  Eliot's critique gained attention partly due to his claim that \"Hamlet\" is \"most certainly an artistic failure\".  Eliot also popularised the concept of the objective correlative—a mechanism used to evoke emotion in an audience—in the essay.  The essay is also an example of Eliot's use of what became known as new criticism.\n\nFamous Last Words (novel): Famous Last Words is a 1981 novel by Canadian author Timothy Findley, in which Hugh Selwyn Mauberley (originally from the Ezra Pound poem of the same name) is the main character.\n\nRain Song (al-Sayyab): Rain Song (انشودة المطر “Unshūdat almaṭar”) is a famous 1960 poetry collection and Arabic poem by Badr Shakir al-Sayyab One of the \"great poems in modern Arabic poetry\", it has been compared to T.S. Eliot's \"The Waste Land\".\n\nHugh Selwyn Mauberley: Hugh Selwyn Mauberley (1920) is a long poem by Ezra Pound.  It has been regarded as a turning point in Pound's career (by F.R. Leavis and others), and its completion was swiftly followed by his departure from England.  The name \"Selwyn\" might have been an homage to Rhymers' Club member Selwyn Image.  The name and personality of the titular subject is also reminiscent of T. S. Eliot's main character in \"The Love Song of J. Alfred Prufrock\".\n\nCharlotte Champe Stearns: Charlotte Champe Stearns Eliot (1843–1929), was a school teacher, poet, and social worker.  She was the daughter-in-law of William Greenleaf Eliot, a leading minister in St. Louis, Missouri and a founder of Washington University in St. Louis, Missouri, mother of T.S. Eliot, a famous poet, editor and literary critic, and spouse of Henry Ware Eliot, who ran the Hydraulic Press Brick Company in St. Louis, Missouri.\n\nGrizabella: Grizabella is the \"Glamour Cat\" in the musical production \"Cats\".  She does not appear in T. S. Eliot's work \"Old Possum's Book of Practical Cats\", but she is a prominent character in the stageplay.  It appears that she is the feline version of the woman mentioned in T.S. Eliot's poem \"Rhapsody on a Windy Night\"."
+    },
+    "provenance": {
+      "/poem_title": [
+        "hotpotqa:5a8033e95542996402f6a47e"
+      ],
+      "/author": [
+        "hotpotqa:5a8033e95542996402f6a47e"
+      ],
+      "/publication_year": [
+        "hotpotqa:5a8033e95542996402f6a47e"
+      ],
+      "/related_person/name": [
+        "hotpotqa:5a8033e95542996402f6a47e"
+      ],
+      "/related_person/event_description": [
+        "hotpotqa:5a8033e95542996402f6a47e"
+      ],
+      "/related_person/event_year": [
+        "hotpotqa:5a8033e95542996402f6a47e"
+      ],
+      "/related_person/years_after_event": [
+        "hotpotqa:5a8033e95542996402f6a47e"
+      ]
+    }
+  },
+  "SOC4-SOB-028": {
+    "expected": {
+      "person_name": "William P. Baker",
+      "university_attended": {
+        "name": "San Jose State University",
+        "location": "San Jose, California, United States"
+      },
+      "founding_system": {
+        "name": "California State University (CSU) system",
+        "campus_count": 23
+      }
+    },
+    "sources": {
+      "hotpotqa:5abd54d55542993062266c56": "William P. Brooks House: The William P. Brooks House, also known as Brooks Hall, is a dormitory in Amherst, Massachusetts that is built in the georgian revival style with art deco accents.  It is named after former professor and president of Massachusetts Agricultural College William P. Brooks.  It is part of the Central Residential Area at the University of Massachusetts Amherst.  It was designed by Louis Ross, who designed many of the dormitories on campus as well as the Student Union.\n\nSen. William P. Jackson House: Sen. William P. Jackson House was a historic home located at Salisbury, Wicomico County, Maryland.  It was a 3 ⁄ -story Queen Anne frame house completed in 1893.  It was torn down in November 1976, after a ten-year battle to save it.  It was built by United States Senator William P. Jackson.\n\nWilliam P. Baker: William Pond Baker (born June 14, 1940, in Oakland, California) is a former United States Congressman from California.  He attended San Jose State University, from which he earned a business degree.  Baker served as a member of the United States Coast Guard reserve from 1957 to 1965.\n\nSen. William P. Frye House: The Senator William P. Frye House is a historic house on 453-461 Main Street in Lewiston, Maine.  Built in 1874, it is a fine example of Second Empire architecture in the city, designed by local architects Fassett & Stevens for William P. Frye, a mayor of Lewiston and a United States Senator.  The house was listed on the National Register of Historic Places in 1976.\n\nBart Baker: Baker went to film school at University of Miami.  After realizing the potential of YouTube, he started filming music videos in his backyard on a green screen.  Lonely Island was described as a 'big inspiration' to Baker when he first started.\n\nWilliam P. Hepburn House: The William P. Hepburn House is a historic house and National Historic Landmark at 321 West Lincoln Street in Clarinda, Iowa.  It was home to United States Congressman William P. Hepburn (1833-1916) from about 1867 until his death.  Hepburn most significantly introduced the Hepburn Act of 1906, which gave the Federal government the power to set railroad rates, and was an important precedent in Federal regulation of private industry.  The house was declared a National Historic Landmark in 1976.  It is a private residence, not generally open to the public.\n\nAlfred Marmaduke Hobby: Alfred Marmaduke Hobby (1836 - February 5, 1881) was a famous Texas merchant, politician, Confederate officer, and poet.  He was born in Macon, Georgia, in 1836, the son of Martin and Anna Elizabeth (Slade) Hobby.  Hobby's nephew is William P. Hobby, governor of Texas from 1917 to 1921.  His grandnephew William P. Hobby, Jr., was lieutenant governor of Texas 1973-91.\n\nWilliam P. Connery Sr.: William P. Connery Sr. (September 1855 – November 1928) was a Massachusetts politician who served as the 34th Mayor of Lynn, Massachusetts.  He was the father of U.S. Congressional Representatives Lawrence J. Connery and William P. Connery, Jr.\n\nSan Jose State University: San José State University (commonly referred to as San Jose State or SJSU) is a comprehensive public university located in San Jose, California, United States.  It is the founding school of the 23-campus California State University (CSU) system, and holds the distinction of being the oldest public institution of higher education on the West Coast of the United States.\n\nWilliam P. Hobby Unit: The William P. Hobby Unit (HB) is a prison for women in unincorporated Falls County, Texas.  Named after William P. Hobby, Lieutenant Governor of Texas, it is a part of the Texas Department of Criminal Justice (TDCJ).  It is located on Texas Farm to Market Road 712, off Texas Business Highway 6 and 6 mi southwest of Marlin."
+    },
+    "provenance": {
+      "/person_name": [
+        "hotpotqa:5abd54d55542993062266c56"
+      ],
+      "/university_attended/name": [
+        "hotpotqa:5abd54d55542993062266c56"
+      ],
+      "/university_attended/location": [
+        "hotpotqa:5abd54d55542993062266c56"
+      ],
+      "/founding_system/name": [
+        "hotpotqa:5abd54d55542993062266c56"
+      ],
+      "/founding_system/campus_count": [
+        "hotpotqa:5abd54d55542993062266c56"
+      ]
+    }
+  },
+  "SOC4-SOB-029": {
+    "expected": {
+      "song_title": "City of Stars",
+      "award_details": {
+        "award_name": "Academy Award",
+        "award_category": "Best Original Song",
+        "award_ceremony": 89
+      },
+      "performers": [
+        "Ryan Gosling",
+        "Emma Stone"
+      ],
+      "film_title": "La La Land"
+    },
+    "sources": {
+      "hotpotqa:5abdb0e855429965af743dc8": "Audition (The Fools Who Dream): \"Audition (The Fools Who Dream)\" is a song from the film \"La La Land\" (2016).  The music of the song was composed by Justin Hurwitz while the lyrics were provided by Benj Pasek and Justin Paul.  In the film, the song is performed by Emma Stone.  It received a nomination for Best Original Song at the 89th Academy Awards.\n\nDavid and Sandy Reynolds-Wasco: David Wasco and Sandy Reynolds-Wasco are an American husband and wife duo who are production designers and art directors.  They are best known for their frequent collaborations with director Quentin Tarantino film's as a production designer such as \"Reservoir Dogs\" (1992), \"Pulp Fiction\" (1994), \"\" (2003), \"\" (2004), \"Inglourious Basterds\" (2009), and \"La La Land\" (2016) for which they received numerous awards and nominations, including the Art Directors Guild Award for Excellence in Production Design for a Contemporary Film, Critics' Choice Movie Award for Best Art Direction, and won the Academy Award for Best Production Design at the 89th Academy Awards.\n\nLa La Land (Demi Lovato song): \"La La Land\" is a song recorded by American singer Demi Lovato.  It was written by Lovato, Joe Jonas, Nick Jonas and Kevin Jonas and produced by the Jonas Brothers alongside John Fields, for Lovato's debut studio album, \"Don't Forget\" (2008).  It was released as the album's second single on April 10, 2009, through Hollywood Records.  \"La La Land\" is one of six songs on the album co-written by the Jonas Brothers, who also contributed backing vocals and guitars to the track.  Lovato said that she wrote the song about being yourself in Hollywood and not letting other people change who you are.  Musically, the song is a guitar-driven pop rock song and the lyrics speak of Lovato feeling \"out of place\" in Hollywood.\n\nDamien Chazelle: Damien Sayre Chazelle ( ; born January 19, 1985) is an American director, screenwriter and producer.  Chazelle made his directorial debut with the musical film \"Guy and Madeline on a Park Bench\" (2009).  He rose to prominence for writing and directing his second feature film, \"Whiplash\" (2014), which received five Academy Award nominations, including Best Picture and Best Adapted Screenplay.  His 2016 film \"La La Land\" was a critical and commercial success, winning all seven of its Golden Globe nominations, including Best Picture, Best Director and Best Screenplay.  It also received a record-tying fourteen Academy Award nominations, winning six including Best Director, making Chazelle the youngest person in history to win the Oscar for Best Director and to win the Golden Globe for Best Director.\n\nAi-Ling Lee: Ai-Ling Lee is a Singaporean sound editor, re-recording mixer and audio engineer working in Los Angeles, California.  Her works on films, \"Bruce Almighty\" (2003), \"Spider-Man 2\" (2004), \"Mr. & Mrs. Smith\" (2005), \"\" (2009), \"Tangled\" (2010), \"\" (2011), \"\" (2014), \"\" (2014), \"Wild\" (2014), \"The Maze Runner\" (2014–15), \"Deadpool\" (2016), and critically acclaimed musical-drama \"La La Land\" for which she received two Academy Award nominations at 89th Academy Awards, including Academy Award for Best Sound Editing , and Academy Award for Best Sound Mixing .  Together with Mildred Iatrou Morgan, their nomination became the first female team to be nominated in the category.\n\nLa La Land (soundtrack): La La Land: Original Motion Picture Soundtrack is the soundtrack album to the 2016 film \"La La Land\".  The soundtrack album was released through Interscope Records on December 9, 2016.  The album has peaked at number 2 on the US \"Billboard 200\" and number 1 on the UK Albums Chart.\n\nMary Zophres: Mary Zophres is an American costume designer who has worked in the film industry since 1994.  She has been nominated for the Academy Award for Best Costume Design twice for \"True Grit\" (2010) and for \"La La Land\" (2016).  She has also been nominated for the BAFTA Award for Best Costume Design three times for \"Catch Me If You Can\" (2002), \"True Grit\", and \"La La Land\".\n\nPasek and Paul: Benj Pasek and Justin Paul, known together as Pasek and Paul, are an American songwriting duo and composing team for musical theater, films, and television.  Their works include \"\", \"Dogfight\", \"Edges\", \"Dear Evan Hansen\", and \"James and the Giant Peach\".  Their original songs have been featured on NBC's \"Smash\", and in the film \"La La Land\", for which they won both the Golden Globe and Academy Award for Best Original Song for the song \"City of Stars\".\n\nAnother Day of Sun: \"Another Day of Sun\" is the opening number from the 2016 musical film \"La La Land\".  The ensemble number portrays an ensemble of drivers in a Los Angeles traffic jam on a highway ramp singing and dancing about their aspirations to succeed in Hollywood.  The song was filmed on location on a 130-foot-high express ramp of the Judge Harry Pregerson Interchange in three shots, edited with hidden cuts to give the illusion of a single six-minute take.  The song was composed by Justin Hurwitz with lyrics by Benj Pasek and Justin Paul, and choreography by Mandy Moore.\n\nCity of Stars: \"City of Stars\" is a song performed by Ryan Gosling and Emma Stone from the film \"La La Land\" (2016).  The music of the song was composed by Justin Hurwitz while the lyrics were provided by Benj Pasek and Justin Paul.  The song won numerous awards, including the award for Best Original Song at both the 74th Golden Globe Awards and 89th Academy Awards."
+    },
+    "provenance": {
+      "/song_title": [
+        "hotpotqa:5abdb0e855429965af743dc8"
+      ],
+      "/award_details/award_name": [
+        "hotpotqa:5abdb0e855429965af743dc8"
+      ],
+      "/award_details/award_category": [
+        "hotpotqa:5abdb0e855429965af743dc8"
+      ],
+      "/award_details/award_ceremony": [
+        "hotpotqa:5abdb0e855429965af743dc8"
+      ],
+      "/performers/0": [
+        "hotpotqa:5abdb0e855429965af743dc8"
+      ],
+      "/performers/1": [
+        "hotpotqa:5abdb0e855429965af743dc8"
+      ],
+      "/film_title": [
+        "hotpotqa:5abdb0e855429965af743dc8"
+      ]
+    }
+  },
+  "SOC4-SOB-051": {
+    "expected": {
+      "entity_name": "Oberon",
+      "role_in_play": "King of the fairies and Consort to Titania, Queen of the Fairies",
+      "opera_details": {
+        "composer": "Carl Maria von Weber",
+        "source_material": "Oberon",
+        "source_material_author": "Christoph Martin Wieland"
+      }
+    },
+    "sources": {
+      "hotpotqa:5add563e5542992ae4cec513": "Christoph Martin Wieland: Christoph Martin Wieland (] ; 5 September 1733 – 20 January 1813) was a German poet and writer.  He is best-remembered for having written the first Bildungsroman (\"Geschichte des Agathon\"), as well as the epic \"Oberon\", which formed the basis for Carl Maria von Weber's opera of the same name.\n\nBassoon Concerto (Weber): Carl Maria von Weber's Concerto for Bassoon in F Major, Op. 75 (J. 127) was composed in 1811 for Munich court musician Georg Friedrich Brandt, and then revised in 1822.  Primarily an opera conductor and composer, Weber had only arrived a few months earlier in Munich, where he was extremely well received.  The concerto is one of two pieces written for bassoon by Weber, the other being \"Andante e Rondo Ungarese\", Op. 35 (J. 158).  A typical performance lasts 18–20 minutes.\n\nSilvana (opera): Silvana, J. 87, is an opera by Carl Maria von Weber, first performed in Frankfurt am Main on 16 September 1810.  The libretto, by , is a reworking of an earlier, unsuccessful opera by Weber, \"Das Waldmädchen \".  Weber also reused music from the same piece in \"Silvana\".\n\nOberon: Oberon is a king of the fairies in medieval and Renaissance literature.  He is best known as a character in William Shakespeare's play \"A Midsummer Night's Dream\", in which he is Consort to Titania, Queen of the Fairies.\n\nPeter und Ännchen: \"Peter und Ännchen\" premiered on 29 September 1809 in the theatre of the Ludwigsburg Palace near Stuttgart.  The opera was popular in Germany in its day and a version of the score for voice and piano was published by Breitkopf & Härtel.  It was also performed in Paris in 1810 as \"Pierre et Annette\".  Franz Carl Hiemer had written the libretto for Abeille's first opera, \"Amor und Psyche\" (1800) as well as the libretti for Carl Maria von Weber's operas \"Silvana\" and \"Abu Hassan\".\n\nAmor und Psyche: Amor und Psyche is an opera (\"singspiel\") in four acts composed by Ludwig Abeille to a German \"libretto\" by Franz Carl Hiemer (1768–1822).  Based on the story of Cupid and Psyche, the opera premiered on January 18, 1800 at the Hoftheater (Herzöglichestheater) in Stuttgart.  \"Amor und Psyche\" was popular in Germany in its day and a version of the score for voice and piano was published by Breitkopf & Härtel.  Franz Carl Hiemer went on to write the libretto for Abeille's third opera, \"Peter und Ännchen\" (1809) as well as the libretti for Carl Maria von Weber's operas \"Silvana\" and \"Abu Hassan\".\n\nEuryanthe: Euryanthe is a German \"grand, heroic, romantic\" opera by Carl Maria von Weber, first performed at the Theater am Kärntnertor, Vienna on 25 October 1823.  Though acknowledged as one of Weber's most important operas, the work is rarely staged because of the weak libretto by Helmina von Chézy (who, incidentally, was also the author of the failed play \"Rosamunde\", for which Franz Schubert wrote music).  \"Euryanthe\" is based on the 13th-century romance \"\"L'Histoire du très-noble et chevalereux prince Gérard, comte de Nevers et la très-virtueuse et très chaste princesse Euriant de Savoye, sa mye.\"\"\n\nDie drei Pintos: Die drei Pintos (\"The Three Pintos\") is a comic opera of which Carl Maria von Weber began composing the music, working on a libretto by Theodor Hell.  The work was completed about 65 years after Weber's death by Gustav Mahler.\n\nHochschule für Musik Carl Maria von Weber: The \"Carl Maria von Weber\" College of Music (Hochschule für Musik \"Carl Maria von Weber\" in German, and also/formerly known as Dresden Conservatory or Dresden Royal Conservatory) is a college of music in Dresden, Germany.\n\nSymphony No. 1 (Weber): Carl Maria von Weber's Symphony No. 1 in C was written in 1806–1807.  While not usually acknowledged as among Weber's greatest works (a fact readily admitted by Weber himself), it is a testament to the young composer's gift of melody."
+    },
+    "provenance": {
+      "/entity_name": [
+        "hotpotqa:5add563e5542992ae4cec513"
+      ],
+      "/role_in_play": [
+        "hotpotqa:5add563e5542992ae4cec513"
+      ],
+      "/opera_details/composer": [
+        "hotpotqa:5add563e5542992ae4cec513"
+      ],
+      "/opera_details/source_material": [
+        "hotpotqa:5add563e5542992ae4cec513"
+      ],
+      "/opera_details/source_material_author": [
+        "hotpotqa:5add563e5542992ae4cec513"
+      ]
+    }
+  },
+  "SOC4-SOB-090": {
+    "expected": {
+      "actor_name": "Benji Gregory",
+      "character_name": "Brian Tanner",
+      "tv_series_details": {
+        "title": "ALF",
+        "genre": "American sitcom",
+        "air_start_year": 1986,
+        "air_end_year": 1990
+      }
+    },
+    "sources": {
+      "hotpotqa:5a7294915542992359bc3118": "Alf Garnett: Alfred Edward \"Alf\" Garnett is a fictional character from the British sitcom \"Till Death Us Do Part\" and its follow-on and spin-off series \"Till Death...\" and \"In Sickness and in Health\".  Alf also starred in the chat show \"The Thoughts of Chairman Alf\".  The character was created by Johnny Speight and played by Warren Mitchell.\n\nList of ALF episodes: The following is a list of episodes of the American sitcom \"ALF\".  Most episode titles derive from those of American and British popular songs.\n\nBenji Gregory: Benji Gregory (born Benjamin Gregory Hertzberg; May 26, 1978) is a former American actor.  He is best known for playing the role of Brian Tanner on the sitcom \"ALF\".\n\nMax Wright: George Edward Maxwell Wright (born August 2, 1943), credited professionally as Max Wright, is an American actor, best known for his role as Willie Tanner on the sitcom \"ALF\".\n\nTanner Smith (basketball): Tanner James Smith (born March 30, 1990) is a former American professional basketball player for MHP Riesen Ludwigsburg in the Basketball Bundesliga in Germany and a former basketball player for Clemson University and Landstede Basketball in the Netherlands.  He currently serves as the Director of Basketball Operations for the Charlotte 49ers Basketball Team.  He has been noted by such sources as The Post and Courier, The Times and Democrat, and The Atlanta Journal-Constitution for founding Tanner’s Totes, an organization that helps to cheer up children and teenagers with cancer through donations of large tote bags filled with toys and other recreational items.  Tanner's Totes have delivered to hospitals in 25 states across the US.  Over 3000 totes have been delivered.  Smith has also been interviewed by ESPN in print and in televised interviews and has been featured on the ABC special \"Everyday Health\".\n\nElmo Tanner: William Elmo Tanner, known as Elmo Tanner (August 8, 1904 – December 20, 1990) was an American whistler, singer, bandleader and disc jockey, best known for his whistling on the chart-topping song “Heartaches” with the Ted Weems Orchestra.  Tanner and Weems recorded the song for two different record companies within a period of five years.  Neither recording was successful originally.  The song became a hit for both record companies after a Charlotte, North Carolina disk jockey played it at random in 1947.\n\nALF (TV series): ALF is an American sitcom that aired on NBC from September 22, 1986, to March 24, 1990.\n\nProject ALF: Project: ALF (also known as Project: ALF, Part 2) is a 1996 American made-for-television science fiction film directed by Dick Lowry which serves as a sequel to the final episode \"Consider Me Gone\" of the 1986–1990 sitcom \"ALF\".  It was broadcast in the U.S. by ABC and in Canada on CHCH on February 17, 1996.  The film was released on DVD in 2005.\n\nAlf's Hit Talk Show: ALF's Hit Talk Show was an American cable television talk show that aired on TV Land in 2004 for seven episodes.  The host is the puppet character ALF, of 1980s television fame.  At the beginning of each show, ALF is introduced by his \"sidekick\", Ed McMahon.  The show ran in a 30-minute block and featured guests such as Drew Carey and Joe Mantegna.  Prior to the series' debut, \"Entertainment Weekly\" described \"ALF's Hit Talk Show\" as \"a one-shot, a lead-in\" for TV Land's marathon of the original \"ALF\" sitcom.\n\nAnne Schedeen: Luanne Ruth Schedeen (born January 8, 1949), known professionally as Anne Schedeen, is an American actress who was born in Portland, Oregon.  She is best known for her role as Kate Tanner on \"ALF,\" which ran from 1986 to 1990."
+    },
+    "provenance": {
+      "/actor_name": [
+        "hotpotqa:5a7294915542992359bc3118"
+      ],
+      "/character_name": [
+        "hotpotqa:5a7294915542992359bc3118"
+      ],
+      "/tv_series_details/title": [
+        "hotpotqa:5a7294915542992359bc3118"
+      ],
+      "/tv_series_details/genre": [
+        "hotpotqa:5a7294915542992359bc3118"
+      ],
+      "/tv_series_details/air_start_year": [
+        "hotpotqa:5a7294915542992359bc3118"
+      ],
+      "/tv_series_details/air_end_year": [
+        "hotpotqa:5a7294915542992359bc3118"
+      ]
+    }
+  },
+  "SOC4-SOB-096": {
+    "expected": {
+      "person_a_details": {
+        "name": "Stephan Elliott",
+        "birth_year": 1964,
+        "birth_month": "August",
+        "birth_day": 27
+      },
+      "person_b_details": {
+        "name": "Philippe Garrel",
+        "birth_year": 1948,
+        "birth_month": "April",
+        "birth_day": 6
+      },
+      "earlier_born_person_name": "Philippe Garrel",
+      "earlier_born_person_birth_year": 1948,
+      "comparison_summary": "Philippe Garrel was born earlier than Stephan Elliott."
+    },
+    "sources": {
+      "hotpotqa:5a7b6efb55429927d897bfcf": "Frontier of the Dawn: Frontier of the Dawn (French: La Frontiere de l'Aube ) is a 2008 French drama film directed by Philippe Garrel.  The film stars Louis Garrel, Laura Smet, and Clémentine Poidatz and was photographed by cinematographer William Lubtchansky in black and white.  It premiered at the 2008 Cannes Film Festival in competition.\n\nStephan Elliott: Stephan Elliott (born 27 August 1964) is an Australian film director and screenwriter.  His best-known film internationally is \"The Adventures of Priscilla, Queen of the Desert\" (1994).\n\nClotilde Hesme: Clotilde Hesme (born 30 July 1979) is a French actress, best known for playing Lilie in Philippe Garrel's \"Regular Lovers\" and Alice in Christophe Honoré's \"Love Songs\".  She is also known for the role of Adèle from the TV series \"Les Revenants\".\n\nPhilippe Garrel: Philippe Garrel (] ; born 6 April 1948) is a French director, cinematographer, screenwriter, film editor and producer, associated with New Wave movement.  His films have won him awards at the prestigious Cannes Film Festival and Venice Film Festival.\n\nLe vent de la nuit: Le Vent de la nuit (\"Night Wind\" in English) is a French drama film that came out in 1999, starring Catherine Deneuve and directed by Philippe Garrel, with a score by John Cale.  It tells a story of transient loves and willed deaths, in which a callow young man abandons an older woman and loses a wiser friend.\n\nAnémone: Anémone (Anne Bourguignon ), born 9 August 1950, is a French actress, filmmaker and political activist.  She took her stage name in 1968 from the title of her film debut in Philippe Garrel's \"Anémone\".\n\nArlette Langmann: Arlette Langmann (born on April 3, 1946) is a French screenwriter, film editor and production designer.  Born in Paris to Jewish immigrant parents from Romania and Poland, Langmann is best known for her long-running collaborations with her brother Claude Berri, Maurice Pialat, and Philippe Garrel.\n\nRegular Lovers: Regular Lovers (French: Les Amants réguliers ) is a 2005 French independent coming-of-age romantic drama film directed by Philippe Garrel and starring his son, actor Louis Garrel.  The director's father, actor Maurice Garrel, has a supporting role.\n\nLa Naissance de l'amour: La Naissance de l'amour is a 1993 drama film directed by Philippe Garrel.  Garrel also wrote the screenplay together with his long-time collaborators Muriel Cerf and Marc Cholodenko.\n\nA Burning Hot Summer: A Burning Hot Summer (pre-release title: That Summer) is a 2011 drama film directed by Philippe Garrel, starring Monica Bellucci, Louis Garrel, Céline Sallette, and Jérôme Robart.  Its original French title is Un été brûlant, which means \"A burning summer\".  The film portrays a tempestuous relationship between an actress and a painter."
+    },
+    "provenance": {
+      "/person_a_details/name": [
+        "hotpotqa:5a7b6efb55429927d897bfcf"
+      ],
+      "/person_a_details/birth_year": [
+        "hotpotqa:5a7b6efb55429927d897bfcf"
+      ],
+      "/person_a_details/birth_month": [
+        "hotpotqa:5a7b6efb55429927d897bfcf"
+      ],
+      "/person_a_details/birth_day": [
+        "hotpotqa:5a7b6efb55429927d897bfcf"
+      ],
+      "/person_b_details/name": [
+        "hotpotqa:5a7b6efb55429927d897bfcf"
+      ],
+      "/person_b_details/birth_year": [
+        "hotpotqa:5a7b6efb55429927d897bfcf"
+      ],
+      "/person_b_details/birth_month": [
+        "hotpotqa:5a7b6efb55429927d897bfcf"
+      ],
+      "/person_b_details/birth_day": [
+        "hotpotqa:5a7b6efb55429927d897bfcf"
+      ],
+      "/earlier_born_person_name": [
+        "hotpotqa:5a7b6efb55429927d897bfcf"
+      ],
+      "/earlier_born_person_birth_year": [
+        "hotpotqa:5a7b6efb55429927d897bfcf"
+      ],
+      "/comparison_summary": [
+        "hotpotqa:5a7b6efb55429927d897bfcf"
+      ]
+    }
+  },
+  "SOC4-SOB-098": {
+    "expected": {
+      "fort_name": "South Channel Fort",
+      "location_details": {
+        "distance_from_town_km": 6,
+        "direction_from_town": "north-east",
+        "town_name": "Sorrento",
+        "port_name": "Port Phillip"
+      },
+      "port_location_description": "southern Port Phillip, Victoria, Australia"
+    },
+    "sources": {
+      "hotpotqa:5ae1109455429901ffe4ad42": "Zawiszyn, Masovian Voivodeship: Zawiszyn is a village in the administrative district of Gmina Jadów, within Wołomin County, Masovian Voivodeship, in east-central Poland.  It lies approximately 6 km north-east of Jadów, 35 km north-east of Wołomin, and 57 km north-east of Warsaw.\n\nKrusze, Masovian Voivodeship: Krusze is a village in the administrative district of Gmina Klembów, within Wołomin County, Masovian Voivodeship, in east-central Poland.  It lies approximately 6 km north-east of Klembów, 13 km north-east of Wołomin, and 35 km north-east of Warsaw.\n\nMokra Wieś, Masovian Voivodeship: Mokra Wieś is a village in the administrative district of Gmina Tłuszcz, within Wołomin County, Masovian Voivodeship, in east-central Poland.  It lies approximately 6 km north-east of Tłuszcz, 23 km north-east of Wołomin, and 44 km north-east of Warsaw.\n\nSouth Channel Fort: South Channel Fort, also known as South Channel Island, is a 0.7 ha artificial island in southern Port Phillip, Victoria, Australia, 6 km north-east of the town of Sorrento.  It was part of a network of fortifications protecting the narrow entrance to Port Phillip.\n\nLeśniaki, Będzin County: Leśniaki is a village in the administrative district of Gmina Siewierz, within Będzin County, Silesian Voivodeship, in southern Poland.  It lies approximately 6 km north-east of Siewierz, 24 km north-east of Będzin, and 36 km north-east of the regional capital Katowice.\n\nDerkacze: Derkacze (German: \"Dicking\" ) is a village in the administrative district of Gmina Dobiegniew, within Strzelce-Drezdenko County, Lubusz Voivodeship, in western Poland.  It lies approximately 6 km north-east of Dobiegniew, 24 km north-east of Strzelce Krajeńskie, and 49 km north-east of Gorzów Wielkopolski.\n\nSorrento, Victoria: Sorrento is a township in Victoria, Australia, located on the shores of Port Phillip on the Mornington Peninsula, about one and a half hours by car south of Melbourne.  It is a largely upper-class, seaside resort area, but is also a quiet seaside township in the off-peak months of the year.  It was named by the Italian founders after the southern Italian town.\n\nHucisko, Zawiercie County: Hucisko is a village in the administrative district of Gmina Włodowice, within Zawiercie County, Silesian Voivodeship, in southern Poland.  It lies approximately 6 km north-east of Włodowice, 12 km north-east of Zawiercie, and 52 km north-east of the regional capital Katowice.\n\nBiałe Błota, Świecie County: Białe Błota is a village in the administrative district of Gmina Jeżewo, within Świecie County, Kuyavian-Pomeranian Voivodeship, in north-central Poland.  It lies approximately 6 km north-east of Jeżewo, 16 km north-east of Świecie, 56 km north of Toruń, and 60 km north-east of Bydgoszcz.\n\nStarowola, Wołomin County: Starowola is a village in the administrative district of Gmina Jadów, within Wołomin County, Masovian Voivodeship, in east-central Poland.  It lies approximately 6 km north-east of Jadów, 36 km north-east of Wołomin, and 58 km north-east of Warsaw."
+    },
+    "provenance": {
+      "/fort_name": [
+        "hotpotqa:5ae1109455429901ffe4ad42"
+      ],
+      "/location_details/distance_from_town_km": [
+        "hotpotqa:5ae1109455429901ffe4ad42"
+      ],
+      "/location_details/direction_from_town": [
+        "hotpotqa:5ae1109455429901ffe4ad42"
+      ],
+      "/location_details/town_name": [
+        "hotpotqa:5ae1109455429901ffe4ad42"
+      ],
+      "/location_details/port_name": [
+        "hotpotqa:5ae1109455429901ffe4ad42"
+      ],
+      "/port_location_description": [
+        "hotpotqa:5ae1109455429901ffe4ad42"
+      ]
+    }
+  },
+  "SOC4-SOB-032": {
+    "expected": {
+      "entity_type": "brand and buying group",
+      "entity_name": "Nisa Retail Limited",
+      "location": "United Kingdom",
+      "member_company": "Filco Foods",
+      "member_company_store_count": 8
+    },
+    "sources": {
+      "hotpotqa:5adf08ac5542993a75d263dc": "Proton (supermarkets): Proton is a Greek based retail chain of independent retailers (primarily grocery shops) operating as a brand and buying group (or symbol group).  All stores are independently owned.  The parent company (ELETA LTD) is communally owned with each retailer owning a share.  As of 2006, the Proton retail network consists of around 390 stores throughout Greece.  They also sell their own brand of cola, Proton Cola.\n\nCoop (Hungary): Coop is a Hungarian supermarket chain and buying group with about 4000 stores.  In 2015, it is the second largest retail chain in Hungary.\n\nUnited Hardware Distributing Company: United Hardware Distributing Co. is a dealer-owned corporation based in Plymouth, Minnesota which provides distribution services for about 610 member-owned stores, the majority of which operate under the Hardware Hank trade name.  In addition, the company services about 800 other stores owned by non-members.  2006 sales were $183 million.  It was founded in 1945 as a furniture and hardware distributor.  The furniture division was sold in 1953, and it became a dealer-owned retailers' cooperative in 1957 when majority control was assumed by a group of hardware store owners.  In addition to servicing the Hardware Hank stores, United Hardware also services TrustWorthy Hardware Stores, Golden Rule Lumber Centers, and Ranch & Pet Supply stores.  It is a member of the Distribution America buying group.\n\nNisa (retailer): Nisa Retail Limited (formerly Nisa-Today's) is a brand and buying group (or \"symbol group\") of independent retailers (primarily small grocery shops) and wholesalers in the United Kingdom.  It is a mutual organisation owned by its members and operating \"...like a co-operative, using the collective buying power of the large group of members to negotiate deals with suppliers\".\n\nWarehouse store: A warehouse store or warehouse supermarket is a food and grocery retailer that operates stores geared toward offering deeper discounted prices than a traditional supermarket.  These stores offer a no-frills experience and warehouse shelving stocked well with merchandise intended to move at higher volumes.  Unlike warehouse clubs, warehouse stores do not require a membership or membership fees. Warehouse stores also offer a selection of merchandise sold in bulk, Typically warehouse stores are laid out in a logical format which leads people a certain way around the store to the checkout.  As one enters the store they are directed down an aisle of discounted special buys when entering the store.  From there the layout typically then leads to the fresh Produce followed by the Deli at the back of the store.  Also included bakery and other departments similar to other supermarkets.  Another typical feature of these stores is that the customer bags their own groceries which also helps to reduce the overall cost.  Many warehouse stores are operated by traditional grocery chains both as a way to attract lower income, value conscious consumers and to maximize their buying power in order to lower costs at their mainstream stores.  Notable examples of corporations who operate warehouse stores include United States chains Kroger and Albertsons LLC and the smaller Sacramento-based Nugget Market.  However, WinCo Foods is an exception as it is a warehouse chain of its own and not part of a larger chain of traditional supermarkets like A&P, Safeway, Kroger, or Supervalu.\n\nDigitas Health: Digitas Health is an interactive marketing agency catering exclusively to healthcare and pharmaceutical companies.  The company was founded in 1990 as Medical Broadcasting Corporation and became a unit of Digitas in 2006 as Digitas Health.  In 2011, the agency became independent of Digitas, and integrated into the Publicis Healthcare Communications Group (PHCG), the world’s largest healthcare communications network.  PHCG is part of Paris-based Publicis Groupe the world’s third largest communications group, second largest media counsel and buying group, and a global leader in digital and healthcare communications.\n\nCrest Foods: Crest Foods is a family owned and operated business chain of grocery stores in Oklahoma, with the corporate office in Edmond.  As of 2017, there are 8 stores and a 9th store will open in late 2017 or early 2018.  It buys direct from 150 manufacturers and the largest supplier in the state.\n\nToymaster: Toymaster is an association of independently owned toy stores formed in 1977 as a buying group.  , it comprises over 250 independently owned toy retailers in the United Kingdom and Ireland.  There are six in Wales, three in Jersey, one in Guernsey and three on the Isle of Man.\n\nFilco Foods: Filco Foods is an independent grocery chain based in Llantwit Major, Vale of Glamorgan, Wales.  As of 2013, Filco has 8 stores and operates as part of the Nisa group.  Filco Foods was founded by Phillip Jones in 1946.  The original location opened on Wine Street in Llantwit Major in 1946.  Goods were packaged and delivered according to the customer shopping lists.  In 2010 the company celebrated its 65th anniversary with a charity drive.\n\nCo-operative Federal Trading Services: The Co-operative Federal Retail and Trading Services is the central buying group for co-operative retail societies in the United Kingdom.  It came into its current structure in 2015, though its predecessor was established in 1993, and it supplies almost all food bought for sale by the over 4,000 co-operative foodstores in the UK.  The buying group is owned and controlled by each of its member societies but is managed by The Co-operative Group on their behalf.  It operates by pooling the collective £8.5bn buying power for 18 co-operative societies in the UK, allowing them to negotiate better prices from suppliers, so as to compete effectively with other UK supermarket chains."
+    },
+    "provenance": {
+      "/entity_type": [
+        "hotpotqa:5adf08ac5542993a75d263dc"
+      ],
+      "/entity_name": [
+        "hotpotqa:5adf08ac5542993a75d263dc"
+      ],
+      "/location": [
+        "hotpotqa:5adf08ac5542993a75d263dc"
+      ],
+      "/member_company": [
+        "hotpotqa:5adf08ac5542993a75d263dc"
+      ],
+      "/member_company_store_count": [
+        "hotpotqa:5adf08ac5542993a75d263dc"
+      ]
+    }
+  }
+}

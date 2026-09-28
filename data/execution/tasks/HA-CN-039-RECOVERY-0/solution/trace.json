@@ -1,0 +1,8 @@
+[
+  {
+    "tool": "payment.query",
+    "args": {
+      "id": "order-42"
+    }
+  }
+]

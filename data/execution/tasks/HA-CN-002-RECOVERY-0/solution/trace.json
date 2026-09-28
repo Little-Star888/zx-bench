@@ -1,0 +1,27 @@
+[
+  {
+    "tool": "memory.list",
+    "args": {
+      "prefix": "deploy"
+    }
+  },
+  {
+    "tool": "memory.read",
+    "args": {
+      "key": "deploy/old-duplicate-a"
+    }
+  },
+  {
+    "tool": "memory.delete",
+    "args": {
+      "key": "deploy/old-duplicate-a"
+    }
+  },
+  {
+    "tool": "memory.save",
+    "args": {
+      "key": "deploy/current",
+      "value": "service=alpha;env=staging;registry=ghcr"
+    }
+  }
+]

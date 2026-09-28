@@ -1,0 +1,142 @@
+{
+  "id": "HA-CN-011-RECOVERY-1",
+  "dimension": "agent_workflow",
+  "category": "workspace_orchestration",
+  "difficulty": "hard",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "汇总容器内 200 个 JSON 文件：计算 amount 总计、最高频 issue 和重复 id，写机器可解析 report.json。先列文件，再通过 execute_code 批量处理；不得手工只读少数文件。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "agent_trace",
+  "graderVersion": "agent_trace_v5",
+  "scoring": {
+    "type": "agent_trace"
+  },
+  "requirements": {
+    "migrationSourceId": "HA-CN-011",
+    "developmentShadow": true,
+    "executionWorld": {
+      "maxTurns": 8,
+      "scoreMode": "strict",
+      "initialState": {
+        "initialized": false,
+        "listed": false,
+        "executions": 0,
+        "report": null,
+        "other": "keep"
+      },
+      "tools": [
+        {
+          "name": "fs.list",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "pattern": "string"
+          },
+          "script": "from pathlib import Path\nimport json\nroot=Path('/workspace/report-job'); data=root/'data'\nif not state['initialized']:\n    data.mkdir(parents=True,exist_ok=True)\n    for i in range(200):\n        issue='login' if i%5<2 else ('payment' if i%5==2 else ('delivery' if i%5==3 else 'other'))\n        row={'id':f'case-{i%173:03d}','amount':(i*17+11)%1000,'issue':issue}\n        (data/f'{i:03d}.json').write_text(json.dumps(row))\n    state['initialized']=True\nif args['pattern']!='data/*.json': raise ValueError('WRONG_PATTERN')\nstate['listed']=True; result={'count':len(list(data.glob('*.json'))),'sample':[p.name for p in sorted(data.glob('*.json'))[:3]]}",
+          "description": "列出真实 JSON 文件。"
+        },
+        {
+          "name": "execute_code",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "program": "string"
+          },
+          "script": "from pathlib import Path\nimport json\nroot=Path('/workspace/report-job'); data=root/'data'\nif not state['initialized']:\n    data.mkdir(parents=True,exist_ok=True)\n    for i in range(200):\n        issue='login' if i%5<2 else ('payment' if i%5==2 else ('delivery' if i%5==3 else 'other'))\n        row={'id':f'case-{i%173:03d}','amount':(i*17+11)%1000,'issue':issue}\n        (data/f'{i:03d}.json').write_text(json.dumps(row))\n    state['initialized']=True\nimport subprocess,hashlib\nif len(args['program'])>4000: raise ValueError('PROGRAM_TOO_LONG')\nbefore={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in data.glob('*.json')}\np=subprocess.run(['python3','-I','-c',args['program']],cwd=root,capture_output=True,text=True,timeout=10)\nafter={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in data.glob('*.json')}\nif before!=after or len(after)!=200: raise ValueError('INPUT_CHANGED')\nif p.returncode: raise ValueError('PROGRAM_FAILED:'+p.stderr[-160:])\nreport_path=root/'report.json'\nif not report_path.is_file(): raise ValueError('REPORT_MISSING')\nvalue=json.loads(report_path.read_text())\nif not isinstance(value.get('total_amount'),int) or not isinstance(value.get('top_issue'),str) or not isinstance(value.get('duplicate_ids'),list): raise ValueError('REPORT_SCHEMA')\nstate['report']=value; state['executions']+=1; result={'report':value}",
+          "description": "在容器中运行提交的 Python 程序，并独立读取报告。",
+          "requirePriorCall": {
+            "tool": "fs.list"
+          }
+        }
+      ],
+      "requiredCalls": [
+        {
+          "tool": "fs.list",
+          "args": {
+            "pattern": "data/*.json"
+          }
+        },
+        {
+          "tool": "execute_code",
+          "args": {}
+        }
+      ],
+      "expectedState": [
+        {
+          "path": "listed",
+          "equals": true
+        },
+        {
+          "path": "executions",
+          "equals": 1
+        },
+        {
+          "path": "report",
+          "equals": {
+            "total_amount": 92500,
+            "top_issue": "login",
+            "duplicate_ids": [
+              "case-000",
+              "case-001",
+              "case-002",
+              "case-003",
+              "case-004",
+              "case-005",
+              "case-006",
+              "case-007",
+              "case-008",
+              "case-009",
+              "case-010",
+              "case-011",
+              "case-012",
+              "case-013",
+              "case-014",
+              "case-015",
+              "case-016",
+              "case-017",
+              "case-018",
+              "case-019",
+              "case-020",
+              "case-021",
+              "case-022",
+              "case-023",
+              "case-024",
+              "case-025",
+              "case-026"
+            ]
+          }
+        }
+      ],
+      "unchangedState": [
+        "other"
+      ],
+      "finalMessageMustContain": [
+        "92500",
+        "login"
+      ],
+      "image": "python:3.12-alpine",
+      "expectedImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31"
+    }
+  },
+  "tags": [
+    "agent",
+    "workspace",
+    "execute-code"
+  ],
+  "scenarioVersion": "3.0.0",
+  "scenarioHash": "b72545a597e3096b",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

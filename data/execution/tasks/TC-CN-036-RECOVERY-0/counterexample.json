@@ -1,0 +1,14 @@
+[
+  {
+    "tool": "check_server",
+    "args": {
+      "host": "app-1.internal"
+    }
+  },
+  {
+    "tool": "send_alert",
+    "args": {
+      "message": "服务器离线"
+    }
+  }
+]

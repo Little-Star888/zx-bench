@@ -1,0 +1,99 @@
+[
+  {
+    "id": "SOC4-F-HANDOFF",
+    "dimension": "structured_output",
+    "category": "frontier_multihop_dossier",
+    "difficulty": "adversarial",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_validation",
+    "promptTemplate": "下面是一份被打乱次序的交接档案。只使用档案事实，不凭编号的外观猜测路线。\n对每个起点，依次走三次交接；某节点有多版交接时，只采用 revision 数值最大的版本。到达终点后，查该终点负责人及 revision 最大的预算。\nrecords 按起点 R-07、R-007、R-O7、R-70 顺序排列。每条 sourceIds 依次为起点记录、三次最终采用的交接记录、终点负责人记录、终点最终预算记录；旧版交接和旧预算不要列入。totalBudget 为四个终点最终预算之和。\n01. [F-1U1VCQS] 交接簿称「M-42」第 2 版后续项目为「V-16」；这是该节点最新版本。\n02. [F-1H6DDQ0] 项目「Z-18」的第 1 版核准预算为 45 万元。\n03. [F-BWALI8] 交接簿称「V-10」第 2 版后续项目为「Z-21」；这是该节点最新版本。\n04. [F-1RJOWRQ] 交接簿称「R-O7」第 2 版后续项目为「M-46」；这是该节点最新版本。\n05. [F-U3P4PC] 本轮需追踪的起点是「R-07」。\n06. [X1] 归档说明：R-07 和 R-007 是不同编号，字母 O 与数字 0 不可互换。\n07. [F-XBY955] 项目「Z-21」的第 2 版核准预算为 47 万元，覆盖同项目更早版本。\n08. [F-E65ZZG] 交接簿称「R-007」第 2 版后续项目为「M-49」；这是该节点最新版本。\n09. [F-1IYQGLW] 本轮需追踪的起点是「R-O7」。\n10. [F-168MKRU] 本轮需追踪的起点是「R-007」。\n11. [F-1LD37J8] 交接簿称「V-11」第 2 版后续项目为「Z-20」；这是该节点最新版本。\n12. [F-1XS8QRE] 交接簿称「V-13」第 2 版后续项目为「Z-19」；这是该节点最新版本。\n13. [F-TT2P21] 交接簿称「V-11」第 1 版后续项目为「Z-19」；这是保留的旧版本。\n14. [F-6LPGHX] 交接簿称「V-10」第 1 版后续项目为「Z-18」；这是保留的旧版本。\n15. [F-5MA56K] 项目「Z-19」的第 1 版核准预算为 59 万元。\n16. [F-1GBTDL9] 交接簿称「M-46」第 1 版后续项目为「V-16」；这是保留的旧版本。\n17. [F-TBCCSI] 交接簿称「R-07」第 2 版后续项目为「M-42」；这是该节点最新版本。\n18. [F-MEZF5P] 项目「Z-18」的负责人员记录为「柳岚」。\n19. [F-1GIYG2J] 交接簿称「M-49」第 1 版后续项目为「V-11」；这是保留的旧版本。\n20. [F-1GX46FL] 项目「Z-19」的负责人员记录为「宋乔」。\n21. [F-CVJHYU] 项目「Z-20」的第 1 版核准预算为 33 万元。\n22. [F-JJOS6O] 交接簿称「R-70」第 2 版后续项目为「M-40」；这是该节点最新版本。\n23. [F-JWDYF2] 交接簿称「M-49」第 2 版后续项目为「V-10」；这是该节点最新版本。\n24. [F-1TY4YBB] 项目「Z-18」的第 2 版核准预算为 61 万元，覆盖同项目更早版本。\n25. [F-1CVICV1] 项目「Z-20」的第 2 版核准预算为 40 万元，覆盖同项目更早版本。\n26. [F-1JLUCWJ] 交接簿称「V-16」第 1 版后续项目为「Z-20」；这是保留的旧版本。\n27. [F-5PDR4I] 项目「Z-21」的第 1 版核准预算为 54 万元。\n28. [F-1B09W0L] 交接簿称「R-70」第 1 版后续项目为「M-42」；这是保留的旧版本。\n29. [F-3NRKEG] 交接簿称「M-46」第 2 版后续项目为「V-13」；这是该节点最新版本。\n30. [F-9R1IBL] 交接簿称「R-007」第 1 版后续项目为「M-46」；这是保留的旧版本。\n31. [F-1830WT2] 交接簿称「V-16」第 2 版后续项目为「Z-18」；这是该节点最新版本。\n32. [F-1FV069Z] 交接簿称「V-13」第 1 版后续项目为「Z-21」；这是保留的旧版本。\n33. [X3] 预算单位统一为万元，不需要币种换算。\n34. [F-1N2PVXV] 项目「Z-20」的负责人员记录为「费雨」。\n35. [F-GBRJNY] 本轮需追踪的起点是「R-70」。\n36. [X2] 旧版交接记录保留用于审计，不表示该记录仍为当前路线。\n37. [F-1A6AWY7] 交接簿称「M-40」第 1 版后续项目为「V-10」；这是保留的旧版本。\n38. [F-1ORQHPR] 交接簿称「R-07」第 1 版后续项目为「M-49」；这是保留的旧版本。\n39. [F-13KZSJD] 交接簿称「M-42」第 1 版后续项目为「V-13」；这是保留的旧版本。\n40. [F-1OUCXMN] 项目「Z-21」的负责人员记录为「郑宁」。\n41. [F-1A14WV6] 交接簿称「M-40」第 2 版后续项目为「V-11」；这是该节点最新版本。\n42. [F-136XD5V] 交接簿称「R-O7」第 1 版后续项目为「M-40」；这是保留的旧版本。\n43. [F-RDCBMZ] 项目「Z-19」的第 2 版核准预算为 58 万元，覆盖同项目更早版本。\n只输出一个完整 JSON，满足以下 Schema：{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"object\",\"properties\":{\"records\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"seed\":{\"type\":\"string\"},\"terminal\":{\"type\":\"string\"},\"owner\":{\"type\":\"string\"},\"budget\":{\"type\":\"integer\",\"minimum\":0},\"sourceIds\":{\"type\":\"array\",\"items\":{\"type\":\"string\"},\"minItems\":6,\"maxItems\":6}},\"required\":[\"seed\",\"terminal\",\"owner\",\"budget\",\"sourceIds\"],\"additionalProperties\":false},\"minItems\":4,\"maxItems\":4},\"totalBudget\":{\"type\":\"integer\",\"minimum\":0}},\"required\":[\"records\",\"totalBudget\"],\"additionalProperties\":false}。不要代码围栏、解释或额外字段。",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v4",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "json",
+      "dialect": "2020-12",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "records": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "seed": {
+                  "type": "string"
+                },
+                "terminal": {
+                  "type": "string"
+                },
+                "owner": {
+                  "type": "string"
+                },
+                "budget": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "sourceIds": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "minItems": 6,
+                  "maxItems": 6
+                }
+              },
+              "required": [
+                "seed",
+                "terminal",
+                "owner",
+                "budget",
+                "sourceIds"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 4,
+            "maxItems": 4
+          },
+          "totalBudget": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "records",
+          "totalBudget"
+        ],
+        "additionalProperties": false
+      },
+      "formatAssertions": true,
+      "family": "frontier_F",
+      "challengeFamily": "F",
+      "sourceGroup": "shuffled-handoff-dossier-v1",
+      "output_policy": "raw_only",
+      "oracleSet": "frontier-v3",
+      "oracleRef": "SOC4-F-HANDOFF",
+      "oracleHash": "90a2d024c3a3520857bc7c20b55f61d0fa0a9cf2a6dca5484ebeeebd8ef81a87",
+      "provenance": {
+        "sourcePack": "structured-contract-frontier-v3",
+        "method": "Locally authored shuffled dossier and deterministic graph traversal; not an official benchmark item"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "verified",
+    "goldSource": "local-derived-fixture-v1",
+    "goldVerifiedAt": "2026-09-26T12:00:00.000Z",
+    "tags": [
+      "structured-contract-frontier-v3",
+      "family:F",
+      "development_only"
+    ],
+    "scenarioHash": "694ee3e36333ee9e"
+  }
+]

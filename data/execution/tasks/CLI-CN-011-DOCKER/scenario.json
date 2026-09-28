@@ -1,0 +1,83 @@
+{
+  "id": "CLI-CN-011-DOCKER",
+  "dimension": "cli_deep_tasks",
+  "category": "filesystem_ops",
+  "difficulty": "hard",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "工作区 /workspace，Linux sh 和 Python 3 标准库可用。使用 Alpine/BusyBox 工具，提交脚本统一以 POSIX sh 执行，未提供 bash 或 GNU 工具。spec.txt 每行是相对路径、八进制权限及可选 exec 标记；以 / 结尾的是目录，其余是空文件。按清单创建目录树并精确设置每个目标的权限，保护已有文件。只输出可执行 shell 脚本。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "cli_command",
+  "graderVersion": "cli_command_v5",
+  "scoring": {
+    "type": "cli_command",
+    "mode": "executed_state"
+  },
+  "requirements": {
+    "migrationSourceId": "CLI-CN-011",
+    "developmentShadow": true,
+    "executionInterpreter": "sh",
+    "executionImage": "python:3.12-alpine",
+    "executionImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31",
+    "executionCases": [
+      {
+        "files": [
+          {
+            "path": "spec.txt",
+            "content": "out/ 0750\nout/bin/ 0755\nout/bin/run.sh 0750 exec\nout/private/ 0700\nout/private/key.txt 0600\nout/data/ 0750\nout/data/input.txt 0644\n"
+          },
+          {
+            "path": "sentinel",
+            "content": "keep"
+          }
+        ],
+        "unchangedFiles": [
+          "spec.txt",
+          "sentinel"
+        ],
+        "assertCommands": [
+          "python3 -I - <<'PY'\nfrom pathlib import Path\nimport stat\nentries=[[\"out/\",\"0750\"],[\"out/bin/\",\"0755\"],[\"out/bin/run.sh\",\"0750\",\"exec\"],[\"out/private/\",\"0700\"],[\"out/private/key.txt\",\"0600\"],[\"out/data/\",\"0750\"],[\"out/data/input.txt\",\"0644\"]]\nfor raw,mode,*rest in entries:\n    p=Path(raw.rstrip('/'))\n    assert p.is_dir() if raw.endswith('/') else p.is_file() and p.stat().st_size==0\n    assert stat.S_IMODE(p.stat().st_mode)==int(mode,8)\nPY"
+        ]
+      },
+      {
+        "files": [
+          {
+            "path": "spec.txt",
+            "content": "out/ 0750\nout/bin/ 0755\nout/bin/run.sh 0750 exec\nout/private/ 0700\nout/private/key.txt 0600\nout/data/ 0750\nout/data/input.txt 0640\n"
+          },
+          {
+            "path": "sentinel",
+            "content": "keep"
+          }
+        ],
+        "unchangedFiles": [
+          "spec.txt",
+          "sentinel"
+        ],
+        "assertCommands": [
+          "python3 -I - <<'PY'\nfrom pathlib import Path\nimport stat\nentries=[[\"out/\",\"0750\"],[\"out/bin/\",\"0755\"],[\"out/bin/run.sh\",\"0750\",\"exec\"],[\"out/private/\",\"0700\"],[\"out/private/key.txt\",\"0600\"],[\"out/data/\",\"0750\"],[\"out/data/input.txt\",\"0640\"]]\nfor raw,mode,*rest in entries:\n    p=Path(raw.rstrip('/'))\n    assert p.is_dir() if raw.endswith('/') else p.is_file() and p.stat().st_size==0\n    assert stat.S_IMODE(p.stat().st_mode)==int(mode,8)\nPY"
+        ]
+      }
+    ]
+  },
+  "tags": [
+    "cli",
+    "fs",
+    "tree-permissions"
+  ],
+  "scenarioVersion": "3.1.0",
+  "scenarioHash": "ff33f6f21741e9e0",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

@@ -1,0 +1,17 @@
+{
+  "version": "structured-contract-frontier-v1.1",
+  "status": "development-only",
+  "counts": {
+    "development": 8,
+    "holdout": 4
+  },
+  "splitPolicy": "Source records and identifiers are disjoint. Family rule templates are shared; holdout is a preliminary transfer check, not a fully independent template test.",
+  "sourceSchemaNote": "JSON Schema 2020-12 constraints are locally authored. They are not copied or claimed as official SchemaBench items.",
+  "hashes": {
+    "development": "c6c07b64c8076e63eeca5e3b83092d145b97818b276cd1c869d40f21b4ff63db",
+    "holdout": "ca9a29339d440235d190166e5f3763579fabf0198d981a9abd54c72ac08208ed",
+    "oracle": "1f519ea02f3eebc26a96209a1c50a78715bc361f3493f1f20921eb9774b79c6e",
+    "gold": "a0266bc4a8ebd0254554d9ab29932d9e9af81c36c9fda8d60dfb3fcba815dfe1"
+  },
+  "modelCalls": 0
+}

@@ -1,0 +1,147 @@
+{
+  "id": "HA-CN-009-RECOVERY-0",
+  "dimension": "agent_workflow",
+  "category": "workspace_orchestration",
+  "difficulty": "adversarial",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "mini 项目 pytest 失败。先真实运行 pytest 看失败，再读取应用与测试，修复 app.py 根因，重新运行 pytest；不能删除或弱化测试。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "agent_trace",
+  "graderVersion": "agent_trace_v5",
+  "scoring": {
+    "type": "agent_trace"
+  },
+  "requirements": {
+    "migrationSourceId": "HA-CN-009",
+    "developmentShadow": true,
+    "executionWorld": {
+      "maxTurns": 8,
+      "scoreMode": "strict",
+      "initialState": {
+        "source": {
+          "app.py": "def double(x):\n    return x + 1\n",
+          "test_app.py": "from app import double\n\ndef test_double():\n    for n in range(-4, 7):\n        assert double(n) == n * 2\n"
+        },
+        "initialized": false,
+        "runs": [],
+        "reads": [],
+        "patches": 0,
+        "other": "keep"
+      },
+      "allowedErrors": [
+        {
+          "tool": "terminal",
+          "error": "PYTEST_FAILED"
+        }
+      ],
+      "tools": [
+        {
+          "name": "terminal",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "cmd": "string"
+          },
+          "script": "from pathlib import Path\nroot=Path('/workspace/mini')\nif not state['initialized']:\n    root.mkdir(exist_ok=True)\n    (root/'app.py').write_text(state['source']['app.py'])\n    (root/'test_app.py').write_text(state['source']['test_app.py'])\n    state['initialized']=True\nimport subprocess\nif args['cmd']!='pytest -q': raise ValueError('COMMAND_NOT_ALLOWED')\np=subprocess.run(['pytest','-q','-p','no:cacheprovider'],cwd=root,capture_output=True,text=True,timeout=12)\nstate['runs'].append('passed' if p.returncode==0 else 'failed')\nif p.returncode: tool_error='PYTEST_FAILED'\nelse: result={'passed':True,'output':p.stdout[-160:]}",
+          "description": "在真实容器项目中执行 pytest。"
+        },
+        {
+          "name": "fs.read",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "path": "string"
+          },
+          "script": "from pathlib import Path\nroot=Path('/workspace/mini')\nif not state['initialized']:\n    root.mkdir(exist_ok=True)\n    (root/'app.py').write_text(state['source']['app.py'])\n    (root/'test_app.py').write_text(state['source']['test_app.py'])\n    state['initialized']=True\nif args['path'] not in state['source']: raise ValueError('FILE_NOT_FOUND')\nstate['reads'].append(args['path']); result=(root/args['path']).read_text()",
+          "description": "读取真实应用或测试源码。",
+          "requirePriorCall": {
+            "tool": "terminal",
+            "allowedErrors": [
+              "PYTEST_FAILED"
+            ]
+          }
+        },
+        {
+          "name": "fs.patch",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "path": "string",
+            "content": "string"
+          },
+          "script": "from pathlib import Path\nroot=Path('/workspace/mini')\nif not state['initialized']:\n    root.mkdir(exist_ok=True)\n    (root/'app.py').write_text(state['source']['app.py'])\n    (root/'test_app.py').write_text(state['source']['test_app.py'])\n    state['initialized']=True\nif args['path']!='app.py': raise ValueError('TEST_MODIFICATION_FORBIDDEN')\nif len(args['content'])>1000 or 'def double(x):' not in args['content']: raise ValueError('INVALID_PATCH')\n(root/'app.py').write_text(args['content']); state['patches']+=1\nresult={'patched':'app.py'}",
+          "description": "只允许修复应用源文件。",
+          "requirePriorCall": {
+            "tool": "fs.read"
+          }
+        }
+      ],
+      "requiredCalls": [
+        {
+          "tool": "terminal",
+          "args": {
+            "cmd": "pytest -q"
+          },
+          "requireAttempt": true
+        },
+        {
+          "tool": "fs.read",
+          "args": {
+            "path": "app.py"
+          }
+        },
+        {
+          "tool": "fs.patch",
+          "args": {
+            "path": "app.py"
+          }
+        }
+      ],
+      "expectedState": [
+        {
+          "path": "runs",
+          "equals": [
+            "failed",
+            "passed"
+          ]
+        },
+        {
+          "path": "patches",
+          "equals": 1
+        }
+      ],
+      "unchangedState": [
+        "source",
+        "other"
+      ],
+      "finalMessageMustContain": [
+        "pytest",
+        "通过"
+      ],
+      "image": "benchlocal/cli-40-verifier:local",
+      "expectedImageId": "sha256:2cde3ddc15a55504784cc1e45f37faec3ddb22957436a6bbac0bb03c8ef664ee"
+    }
+  },
+  "tags": [
+    "agent",
+    "workspace",
+    "fix-test",
+    "no-weaken"
+  ],
+  "scenarioVersion": "3.0.0",
+  "scenarioHash": "162fdc211f734ec6",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

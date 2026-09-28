@@ -1,0 +1,108 @@
+{
+  "id": "HA-CN-044-RECOVERY-0",
+  "dimension": "agent_workflow",
+  "category": "tool_selection",
+  "difficulty": "medium",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "用户询问今天日程。先 calendar.list 读取真实模拟日历，再逐项回复；不得新增会议。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "agent_trace",
+  "graderVersion": "agent_trace_v5",
+  "scoring": {
+    "type": "agent_trace"
+  },
+  "requirements": {
+    "migrationSourceId": "HA-CN-044",
+    "developmentShadow": true,
+    "executionWorld": {
+      "maxTurns": 8,
+      "scoreMode": "strict",
+      "initialState": {
+        "calendar": {
+          "today": [
+            "10:00 团队会",
+            "14:00 代码评审"
+          ]
+        },
+        "queries": 0,
+        "added": [],
+        "other": "keep"
+      },
+      "tools": [
+        {
+          "name": "calendar.list",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "date": "string"
+          },
+          "script": "if args['date']!='today': raise ValueError('WRONG_DATE')\nstate['queries']+=1; result={'events':state['calendar']['today']}",
+          "description": "读取当天日历。"
+        },
+        {
+          "name": "calendar.add",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "title": "string",
+            "time": "string"
+          },
+          "script": "state['added'].append(args); result={'created':True}",
+          "description": "新增会议副作用。"
+        }
+      ],
+      "requiredCalls": [
+        {
+          "tool": "calendar.list",
+          "args": {
+            "date": "today"
+          }
+        }
+      ],
+      "forbiddenCalls": [
+        "calendar.add"
+      ],
+      "expectedState": [
+        {
+          "path": "queries",
+          "equals": 1
+        },
+        {
+          "path": "added",
+          "equals": []
+        }
+      ],
+      "unchangedState": [
+        "calendar",
+        "other"
+      ],
+      "finalMessageMustContain": [
+        "10:00 团队会",
+        "14:00 代码评审"
+      ],
+      "image": "python:3.12-alpine",
+      "expectedImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31"
+    }
+  },
+  "tags": [
+    "agent",
+    "tool-order",
+    "medium"
+  ],
+  "scenarioVersion": "3.0.0",
+  "scenarioHash": "2675d83314737702",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

@@ -1,0 +1,16 @@
+[
+  {
+    "tool": "lookup_contact",
+    "args": {
+      "name": "张三"
+    }
+  },
+  {
+    "tool": "send_email",
+    "args": {
+      "to": "zhangsan-a@example.test",
+      "subject": "季度报告",
+      "body": "请查收附件"
+    }
+  }
+]

@@ -1,0 +1,10 @@
+[
+  {
+    "tool": "cronjob",
+    "args": {
+      "action": "create",
+      "schedule": "0 8 * * *",
+      "endpoint": "http://localhost:8101/health"
+    }
+  }
+]

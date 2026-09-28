@@ -1,0 +1,30 @@
+[
+  {
+    "id": "SYN7-EVENT-BASE",
+    "split": "development",
+    "pairId": "SYN7-EVENT",
+    "variant": "base",
+    "raw": "{\"validIds\":[\"01\",\"02\",\"03\",\"04\",\"05\",\"06\"]}"
+  },
+  {
+    "id": "SYN7-EVENT-STRUCTURED",
+    "split": "development",
+    "pairId": "SYN7-EVENT",
+    "variant": "structured",
+    "raw": "{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"object\",\"required\":[\"kind\",\"id\",\"payload\"],\"additionalProperties\":false,\"properties\":{\"kind\":{\"enum\":[\"debit\",\"credit\",\"transfer\"]},\"id\":{\"type\":\"string\",\"pattern\":\"^[A-Z]{2}-[0-9]{4}$\"},\"payload\":{\"type\":\"object\"}},\"oneOf\":[{\"properties\":{\"kind\":{\"const\":\"debit\"},\"payload\":{\"type\":\"object\",\"required\":[\"account\",\"amount\"],\"additionalProperties\":false,\"properties\":{\"account\":{\"type\":\"string\",\"pattern\":\"^[0-9]{8}$\"},\"amount\":{\"type\":\"integer\",\"minimum\":1,\"maximum\":5000},\"memo\":{\"type\":\"string\",\"minLength\":1}}}}},{\"properties\":{\"kind\":{\"const\":\"credit\"},\"payload\":{\"type\":\"object\",\"required\":[\"account\",\"amount\",\"source\"],\"additionalProperties\":false,\"properties\":{\"account\":{\"type\":\"string\",\"pattern\":\"^[0-9]{8}$\"},\"amount\":{\"type\":\"integer\",\"minimum\":1,\"maximum\":5000},\"source\":{\"enum\":[\"cash\",\"wire\"]}}}}},{\"properties\":{\"kind\":{\"const\":\"transfer\"},\"payload\":{\"type\":\"object\",\"required\":[\"from\",\"to\",\"amount\",\"priority\"],\"additionalProperties\":false,\"properties\":{\"from\":{\"type\":\"string\",\"pattern\":\"^[0-9]{8}$\"},\"to\":{\"type\":\"string\",\"pattern\":\"^[0-9]{8}$\"},\"amount\":{\"type\":\"integer\",\"minimum\":1,\"maximum\":5000},\"priority\":{\"enum\":[\"normal\",\"urgent\"]},\"approval\":{\"type\":\"string\",\"pattern\":\"^APP-[0-9]{3}$\"}},\"if\":{\"properties\":{\"priority\":{\"const\":\"urgent\"}},\"required\":[\"priority\"]},\"then\":{\"required\":[\"approval\"]},\"else\":{\"not\":{\"required\":[\"approval\"]}}}}}]}"
+  },
+  {
+    "id": "SYN7-BATCH-BASE",
+    "split": "development",
+    "pairId": "SYN7-BATCH",
+    "variant": "base",
+    "raw": "{\"validIds\":[\"01\",\"02\",\"03\",\"04\"]}"
+  },
+  {
+    "id": "SYN7-BATCH-STRUCTURED",
+    "split": "development",
+    "pairId": "SYN7-BATCH",
+    "variant": "structured",
+    "raw": "{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"object\",\"required\":[\"batchId\",\"readings\"],\"additionalProperties\":false,\"properties\":{\"batchId\":{\"type\":\"string\",\"pattern\":\"^BT-[0-9]{4}$\"},\"readings\":{\"type\":\"array\",\"minItems\":2,\"maxItems\":5,\"uniqueItems\":true,\"items\":{\"type\":\"object\",\"required\":[\"sensor\",\"level\",\"state\"],\"additionalProperties\":false,\"properties\":{\"sensor\":{\"type\":\"string\",\"pattern\":\"^[a-z]{2}$\"},\"level\":{\"type\":\"integer\",\"minimum\":0,\"maximum\":9},\"state\":{\"enum\":[\"ok\",\"alert\"]}},\"if\":{\"properties\":{\"state\":{\"const\":\"ok\"}},\"required\":[\"state\"]},\"then\":{\"properties\":{\"level\":{\"maximum\":6}}},\"else\":{\"properties\":{\"level\":{\"minimum\":7}}}},\"contains\":{\"type\":\"object\",\"properties\":{\"state\":{\"const\":\"alert\"}},\"required\":[\"state\"]},\"minContains\":1,\"maxContains\":2},\"tags\":{\"type\":\"array\",\"minItems\":1,\"maxItems\":3,\"uniqueItems\":true,\"items\":{\"enum\":[\"lab\",\"field\",\"urgent\"]}}}}"
+  }
+]

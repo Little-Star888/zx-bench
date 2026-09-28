@@ -1,0 +1,1654 @@
+[
+  {
+    "id": "SO-CN-008",
+    "dimension": "structured_output",
+    "category": "csv_yaml",
+    "difficulty": "medium",
+    "language": "yaml",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "promptTemplate": "请生成一个 Web 应用的 YAML 配置文件。\n\n要求包含：\n1. 应用名称和版本\n2. 服务器配置（端口、主机、超时时间）\n3. 数据库配置（类型、主机、端口、数据库名、连接池大小）\n4. 日志配置（级别、文件路径、轮转策略）\n5. 缓存配置（类型、TTL、最大内存）\n6. 至少2个环境配置（development, production）\n\n输出纯 YAML，不要 markdown 代码块。",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "yaml",
+      "output_policy": "raw_only",
+      "requiredFields": [
+        "server",
+        "database",
+        "logging",
+        "cache"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.15,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.45,
+        "cross_field_consistency": 0.05,
+        "output_discipline": 0.15
+      },
+      "text_contract": "v1"
+    },
+    "tags": [
+      "chinese",
+      "yaml",
+      "configuration"
+    ],
+    "scenarioVersion": "2.0.2",
+    "scenarioHash": "f99dcfb3a6377be1",
+    "responseMode": null,
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null
+  },
+  {
+    "id": "SO-CN-010",
+    "dimension": "structured_output",
+    "category": "csv_yaml",
+    "difficulty": "hard",
+    "language": "yaml",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "promptTemplate": "请生成一个 Kubernetes Deployment 的 YAML 配置。\n\n要求：\n1. apiVersion: apps/v1\n2. kind: Deployment\n3. metadata 包含 name, namespace, labels\n4. spec.replicas: 3\n5. spec.selector 使用 matchLabels\n6. spec.template 包含完整的 Pod 配置：\n   - 2个容器（主容器 + sidecar）\n   - 主容器：image, ports, resources(requests/limits), env(至少3个), volumeMounts\n   - sidecar：日志收集容器\n7. 包含 volumes 定义（configMap + emptyDir）\n8. 包含 strategy: RollingUpdate\n9. 输出纯 YAML",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "yaml",
+      "output_policy": "raw_only",
+      "requiredFields": [
+        "apiVersion",
+        "kind",
+        "metadata",
+        "spec",
+        "replicas",
+        "containers",
+        "volumes",
+        "matchLabels"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.15,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.45,
+        "cross_field_consistency": 0.05,
+        "output_discipline": 0.15
+      },
+      "text_contract": "v1"
+    },
+    "tags": [
+      "chinese",
+      "yaml",
+      "kubernetes",
+      "devops"
+    ],
+    "scenarioVersion": "2.0.2",
+    "scenarioHash": "c51600e040886772",
+    "responseMode": null,
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null
+  },
+  {
+    "id": "SO-CN-012",
+    "dimension": "structured_output",
+    "category": "csv_yaml",
+    "difficulty": "hard",
+    "language": "yaml",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "promptTemplate": "请生成一个 GitLab CI/CD 的 .gitlab-ci.yml 配置。\n\n要求：\n1. 定义 stages: [lint, test, build, deploy]\n2. 定义 variables（至少4个）\n3. lint 阶段：代码检查任务\n4. test 阶段：单元测试 + 集成测试（parallel）\n5. build 阶段：Docker 镜像构建\n6. deploy 阶段：区分 staging 和 production\n7. production 部署需要 manual 触发（when: manual）\n8. 包含 cache 配置\n9. 包含 artifacts 配置\n10. 包含 only/except 分支规则\n11. 输出纯 YAML",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "yaml",
+      "output_policy": "raw_only",
+      "requiredFields": [
+        "stages",
+        "variables",
+        "cache",
+        "artifacts",
+        "lint",
+        "test",
+        "build",
+        "deploy"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.15,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.45,
+        "cross_field_consistency": 0.05,
+        "output_discipline": 0.15
+      },
+      "text_contract": "v1"
+    },
+    "tags": [
+      "chinese",
+      "yaml",
+      "cicd",
+      "gitlab"
+    ],
+    "scenarioVersion": "2.0.2",
+    "scenarioHash": "52fbf8f6246d56c1",
+    "responseMode": null,
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null
+  },
+  {
+    "id": "SO-CN-013",
+    "dimension": "structured_output",
+    "category": "sql_xml",
+    "difficulty": "hard",
+    "language": "sql",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "promptTemplate": "根据以下数据库表结构，编写 SQL 查询：\n\n表结构：\n- orders(id, user_id, order_no, amount, status, created_at)\n- users(id, name, email, phone, city, created_at)\n- order_items(id, order_id, product_id, quantity, price)\n- products(id, name, category, price, stock)\n\n请编写查询：\n找出2024年3月每个城市中订单金额最高的前3名用户，显示城市、用户名、订单号、订单金额。\n\n要求：\n1. 使用窗口函数\n2. 结果按城市和金额排序\n3. 输出纯 SQL，不要 markdown",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "sql",
+      "output_policy": "raw_only",
+      "requiredFields": [
+        "SELECT",
+        "FROM",
+        "JOIN",
+        "PARTITION BY",
+        "ROW_NUMBER",
+        "WHERE",
+        "ORDER BY"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.15,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.45,
+        "cross_field_consistency": 0.05,
+        "output_discipline": 0.15
+      },
+      "text_contract": "v1"
+    },
+    "tags": [
+      "chinese",
+      "sql",
+      "window-function",
+      "complex-query"
+    ],
+    "scenarioVersion": "2.0.2",
+    "scenarioHash": "7fd7b4444bb461fe",
+    "responseMode": null,
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null
+  },
+  {
+    "id": "SO-CN-014",
+    "dimension": "structured_output",
+    "category": "sql_xml",
+    "difficulty": "medium",
+    "language": "general",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "promptTemplate": "请生成一个查询天气的 SOAP 请求 XML。\n\n要求：\n1. 符合 SOAP 1.2 信封格式\n2. 命名空间使用 http://example.com/weather\n3. 操作名称：GetWeather\n4. 参数：城市名（北京）、日期（2024-03-20）\n5. 包含正确的 XML 声明和命名空间\n6. 输出纯 XML",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "xml",
+      "output_policy": "raw_only",
+      "requiredFields": [
+        "Envelope",
+        "Body",
+        "GetWeather",
+        "xml"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.15,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.45,
+        "cross_field_consistency": 0.05,
+        "output_discipline": 0.15
+      },
+      "text_contract": "v1"
+    },
+    "tags": [
+      "chinese",
+      "xml",
+      "soap",
+      "web-service"
+    ],
+    "scenarioVersion": "2.0.2",
+    "scenarioHash": "b9b604b28b13beb6",
+    "responseMode": null,
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null
+  },
+  {
+    "id": "SO-CN-015",
+    "dimension": "structured_output",
+    "category": "sql_xml",
+    "difficulty": "medium",
+    "language": "sql",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "promptTemplate": "请为一个在线书店系统编写 SQL 建表语句。\n\n需要创建以下表：\n1. books（书籍表）：id, isbn, title, author, publisher, publish_date, price, stock, category_id\n2. categories（分类表）：id, name, parent_id（支持多级分类）\n3. customers（客户表）：id, username, email, phone, address, created_at\n4. orders（订单表）：id, customer_id, total_amount, status, created_at\n5. order_items（订单明细）：id, order_id, book_id, quantity, unit_price\n\n要求：\n1. 使用 MySQL 语法\n2. 包含主键、外键约束\n3. 包含适当的索引\n4. 包含 COMMENT 注释\n5. 使用 InnoDB 引擎，UTF8MB4 字符集\n6. 输出纯 SQL",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "sql",
+      "output_policy": "raw_only",
+      "requiredFields": [
+        "CREATE TABLE",
+        "PRIMARY KEY",
+        "FOREIGN KEY",
+        "InnoDB",
+        "COMMENT",
+        "INDEX||KEY"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.15,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.45,
+        "cross_field_consistency": 0.05,
+        "output_discipline": 0.15
+      },
+      "text_contract": "v1"
+    },
+    "tags": [
+      "chinese",
+      "sql",
+      "ddl",
+      "database-design"
+    ],
+    "scenarioVersion": "2.1.2",
+    "scenarioHash": "ef4de8d3efc4224f",
+    "responseMode": null,
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null
+  },
+  {
+    "id": "SO-CN-016",
+    "dimension": "structured_output",
+    "category": "sql_xml",
+    "difficulty": "medium",
+    "language": "general",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "promptTemplate": "请生成一个技术博客的 RSS 2.0 Feed XML。\n\n要求：\n1. 包含 XML 声明和正确的 RSS 2.0 根元素\n2. channel 包含：title, link, description, language(zh-cn), lastBuildDate, ttl\n3. 包含至少5个 item\n4. 每个 item 包含：title, link, description, pubDate, author, category, guid\n5. pubDate 格式符合 RFC 822\n6. guid 使用 isPermaLink=\"false\" 属性\n7. description 中包含 HTML 内容（用 CDATA 包裹）\n8. 输出纯 XML",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "xml",
+      "output_policy": "raw_only",
+      "requiredFields": [
+        "rss",
+        "channel",
+        "item",
+        "title",
+        "link",
+        "description",
+        "pubDate",
+        "guid"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.15,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.45,
+        "cross_field_consistency": 0.05,
+        "output_discipline": 0.15
+      },
+      "text_contract": "v1"
+    },
+    "tags": [
+      "chinese",
+      "xml",
+      "rss",
+      "feed"
+    ],
+    "scenarioVersion": "2.0.2",
+    "scenarioHash": "8d52a225cbd4ab39",
+    "responseMode": null,
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null
+  },
+  {
+    "id": "SO-CN-017",
+    "dimension": "structured_output",
+    "category": "sql_xml",
+    "difficulty": "hard",
+    "language": "sql",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "promptTemplate": "请编写一个 MySQL 存储过程，实现\"下单\"业务逻辑。\n\n功能：\n1. 输入参数：customer_id, 商品列表(JSON数组)\n2. 验证客户是否存在\n3. 验证每个商品库存是否充足\n4. 开启事务\n5. 创建订单记录\n6. 创建订单明细\n7. 扣减库存\n8. 计算总金额\n9. 如果任何步骤失败，回滚事务\n10. 返回订单ID和总金额\n\n要求：\n1. 使用 DECLARE ... HANDLER 处理异常\n2. 使用游标遍历商品列表\n3. 包含完整的注释\n4. 输出纯 SQL",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "sql",
+      "output_policy": "raw_only",
+      "requiredFields": [
+        "CREATE PROCEDURE",
+        "DECLARE",
+        "CURSOR",
+        "ROLLBACK",
+        "COMMIT",
+        "BEGIN",
+        "END"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.15,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.45,
+        "cross_field_consistency": 0.05,
+        "output_discipline": 0.15
+      },
+      "text_contract": "v1"
+    },
+    "tags": [
+      "chinese",
+      "sql",
+      "stored-procedure",
+      "transaction"
+    ],
+    "scenarioVersion": "2.0.2",
+    "scenarioHash": "c4a4c55afc519130",
+    "responseMode": null,
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null
+  },
+  {
+    "id": "SO-CN-018",
+    "dimension": "structured_output",
+    "category": "sql_xml",
+    "difficulty": "medium",
+    "language": "general",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "promptTemplate": "请生成一个 SVG 格式的中国国旗简化示意图。\n\n要求：\n1. 有效的 SVG 根元素（xmlns, viewBox, width, height）\n2. 红色背景矩形\n3. 一颗大五角星（黄色）\n4. 四颗小五角星（黄色，弧形排列）\n5. 使用 polygon 或 path 绘制五角星\n6. 包含 title 和 desc 元素\n7. 使用适当的坐标和比例\n8. 输出纯 SVG/XML",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "xml",
+      "output_policy": "raw_only",
+      "requiredFields": [
+        "svg",
+        "xmlns",
+        "viewBox",
+        "rect",
+        "polygon",
+        "title",
+        "desc"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.15,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.45,
+        "cross_field_consistency": 0.05,
+        "output_discipline": 0.15
+      },
+      "text_contract": "v1"
+    },
+    "tags": [
+      "chinese",
+      "xml",
+      "svg",
+      "graphics"
+    ],
+    "scenarioVersion": "2.0.2",
+    "scenarioHash": "86a134a1b96c8da0",
+    "responseMode": null,
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null
+  },
+  {
+    "id": "SO-CN-019",
+    "dimension": "structured_output",
+    "category": "html_mermaid",
+    "difficulty": "medium",
+    "language": "general",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "promptTemplate": "请生成一个订单确认邮件的 HTML 模板。\n\n要求：\n1. 使用内联 CSS 样式（style=\"...\" 属性）\n2. 使用 <img> 标签作为公司 Logo 占位符（src 用占位地址）\n3. 包含订单信息表格（订单号、商品列表、金额）\n4. 包含配送信息区域\n5. 包含客服联系方式\n6. 响应式设计，适配手机端\n7. 使用中文内容\n8. 输出纯 HTML，不要 markdown 代码块",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "html",
+      "output_policy": "raw_only",
+      "requiredFields": [
+        "html",
+        "table",
+        "style",
+        "img",
+        "body"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.15,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.45,
+        "cross_field_consistency": 0.05,
+        "output_discipline": 0.15
+      },
+      "text_contract": "v1"
+    },
+    "tags": [
+      "chinese",
+      "html",
+      "email-template",
+      "responsive"
+    ],
+    "scenarioVersion": "2.1.2",
+    "scenarioHash": "a53f04ecdf3c7b71",
+    "responseMode": null,
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null
+  },
+  {
+    "id": "SO-CN-020",
+    "dimension": "structured_output",
+    "category": "html_mermaid",
+    "difficulty": "medium",
+    "language": "general",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "promptTemplate": "请用 Mermaid 语法画一个电商订单处理流程图。\n\n流程包括：\n1. 用户下单\n2. 系统验证库存\n3. 库存充足则锁定库存，不足则通知用户\n4. 用户支付\n5. 支付成功则安排发货，失败则取消订单\n6. 物流配送\n7. 用户签收\n8. 订单完成\n\n要求使用 flowchart 类型，节点使用中文标签，允许用 ```mermaid 围栏包裹图表。",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "mermaid",
+      "output_policy": "fenced_allowed",
+      "allowed_fence_languages": [
+        "mermaid"
+      ],
+      "requiredFields": [
+        "flowchart",
+        "下单",
+        "库存",
+        "支付",
+        "发货",
+        "签收"
+      ],
+      "text_contract": "v1"
+    },
+    "tags": [
+      "chinese",
+      "mermaid",
+      "flowchart",
+      "business-process"
+    ],
+    "scenarioVersion": "2.1.2",
+    "scenarioHash": "167263c48f32d229",
+    "responseMode": null,
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null
+  },
+  {
+    "id": "SO-CN-021",
+    "dimension": "structured_output",
+    "category": "html_mermaid",
+    "difficulty": "medium",
+    "language": "general",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "promptTemplate": "请生成一个程序员个人简历的 HTML 页面。\n\n要求：\n1. 使用语义化 HTML5 标签（header, main, section, article, footer）\n2. 包含：个人信息、教育背景、工作经历（至少2段）、技能列表、项目经验\n3. 使用内联 CSS 美化（字体、颜色、间距）\n4. 技能用进度条或标签展示\n5. 包含 meta viewport 标签\n6. 所有内容使用中文\n7. 输出完整 HTML 文档（含 DOCTYPE），且不要用 markdown 代码块包裹",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "html",
+      "output_policy": "raw_only",
+      "requiredFields": [
+        "DOCTYPE",
+        "html",
+        "header",
+        "main",
+        "section",
+        "footer",
+        "meta"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.15,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.45,
+        "cross_field_consistency": 0.05,
+        "output_discipline": 0.15
+      },
+      "text_contract": "v1"
+    },
+    "tags": [
+      "chinese",
+      "html",
+      "resume",
+      "semantic"
+    ],
+    "scenarioVersion": "2.1.2",
+    "scenarioHash": "866db20b141af6c7",
+    "responseMode": null,
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null
+  },
+  {
+    "id": "SO-CN-022",
+    "dimension": "structured_output",
+    "category": "html_mermaid",
+    "difficulty": "medium",
+    "language": "general",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "promptTemplate": "请用 Mermaid 时序图描述用户登录认证流程。\n\n参与者：用户、前端、API网关、认证服务、Redis、数据库\n\n流程：\n1. 用户输入账号密码\n2. 前端发送登录请求到API网关\n3. API网关转发到认证服务\n4. 认证服务查询数据库验证用户\n5. 验证通过后生成JWT Token\n6. 将Token存入Redis（设置过期时间）\n7. 返回Token给前端\n8. 前端存储Token\n9. 后续请求携带Token\n10. API网关验证Token（查Redis）\n\n要求使用 sequenceDiagram 类型，包含 alt 分支（验证失败情况）。",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "mermaid",
+      "output_policy": "fenced_allowed",
+      "allowed_fence_languages": [
+        "mermaid"
+      ],
+      "requiredFields": [
+        "sequenceDiagram",
+        "alt",
+        "JWT",
+        "Redis",
+        "Token"
+      ],
+      "text_contract": "v1"
+    },
+    "tags": [
+      "chinese",
+      "mermaid",
+      "sequence-diagram",
+      "authentication"
+    ],
+    "scenarioVersion": "2.0.2",
+    "scenarioHash": "c804fca53488ca0b",
+    "responseMode": null,
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null
+  },
+  {
+    "id": "SO-CN-023",
+    "dimension": "structured_output",
+    "category": "html_mermaid",
+    "difficulty": "hard",
+    "language": "general",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "promptTemplate": "请生成一个销售数据仪表盘的 HTML 页面。\n\n要求：\n1. 完整 HTML5 文档结构\n2. 顶部：4个KPI卡片（总销售额、订单数、客单价、转化率）\n3. 中部：一个用纯CSS实现的柱状图（12个月数据）\n4. 底部：一个数据表格（最近10笔订单）\n5. 使用 CSS Grid 或 Flexbox 布局\n6. 深色主题（暗色背景）\n7. 所有样式内联或写在 style 标签中\n8. 数据使用中文和人民币格式\n9. 输出完整 HTML，且不要用 markdown 代码块包裹",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "html",
+      "output_policy": "raw_only",
+      "requiredFields": [
+        "DOCTYPE",
+        "html",
+        "head",
+        "body",
+        "table",
+        "style",
+        "div"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.15,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.45,
+        "cross_field_consistency": 0.05,
+        "output_discipline": 0.15
+      },
+      "text_contract": "v1"
+    },
+    "tags": [
+      "chinese",
+      "html",
+      "dashboard",
+      "css-chart"
+    ],
+    "scenarioVersion": "2.1.2",
+    "scenarioHash": "051a91637c9c3703",
+    "responseMode": null,
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null
+  },
+  {
+    "id": "SO-CN-024",
+    "dimension": "structured_output",
+    "category": "html_mermaid",
+    "difficulty": "medium",
+    "language": "general",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "promptTemplate": "请用 Mermaid erDiagram 语法画一个在线教育平台的数据库关系图。\n\n实体：\n1. User（用户）：id, username, email, role\n2. Course（课程）：id, title, instructor_id, price, category\n3. Enrollment（选课）：id, user_id, course_id, enrolled_at, progress\n4. Lesson（课时）：id, course_id, title, duration, order_num\n5. Payment（支付）：id, user_id, course_id, amount, method, status\n6. Review（评价）：id, user_id, course_id, rating, content\n\n关系：\n- User 1--N Enrollment\n- Course 1--N Enrollment\n- User 1--N Payment\n- Course 1--N Lesson\n- User 1--N Review\n- Course 1--N Review\n- User 1--N Course（instructor）\n\n要求使用 erDiagram 类型，标注关系类型。\n\n命名要求：图中出现的实体名 / 类名 / 状态名必须与上文题面完全一致（含大小写），不要自行改变大小写或翻译。",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "mermaid",
+      "output_policy": "fenced_allowed",
+      "allowed_fence_languages": [
+        "mermaid"
+      ],
+      "requiredFields": [
+        "erDiagram",
+        "User",
+        "Course",
+        "Enrollment",
+        "Lesson",
+        "Payment",
+        "Review"
+      ],
+      "text_contract": "v1"
+    },
+    "tags": [
+      "chinese",
+      "mermaid",
+      "er-diagram",
+      "database"
+    ],
+    "scenarioVersion": "2.2.2",
+    "scenarioHash": "4d6dc8463852850b",
+    "responseMode": null,
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null
+  },
+  {
+    "id": "SO-CN-025",
+    "dimension": "structured_output",
+    "category": "mixed_special",
+    "difficulty": "medium",
+    "language": "general",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "promptTemplate": "请生成一份数据分析报告，包含以下格式元素：\n\n1. 标题（Markdown 一级标题）\n2. 摘要段落\n3. 数据表格（Markdown 表格）\n4. 代码示例（SQL 查询，用 ```sql 代码块包裹）\n5. 流程图描述（文字描述的流程）\n6. 结论列表（有序列表）\n\n要求：\n1. 各部分用分隔线隔开\n2. 表格数据至少5行3列\n3. 全部使用中文\n4. 可以用代码块包裹 SQL 示例，但不要用代码块包裹整份报告",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "markdown",
+      "output_policy": "fenced_allowed",
+      "allowed_fence_languages": [
+        "sql"
+      ],
+      "requiredFields": [
+        "re:^#\\s",
+        "re:^\\|.*\\|",
+        "SELECT",
+        "re:^\\d+\\.\\s"
+      ],
+      "text_contract": "v1"
+    },
+    "tags": [
+      "chinese",
+      "mixed-format",
+      "report",
+      "complex"
+    ],
+    "scenarioVersion": "2.4.2",
+    "scenarioHash": "e723ca18ddc03768",
+    "responseMode": null,
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null
+  },
+  {
+    "id": "SO-CN-026",
+    "dimension": "structured_output",
+    "category": "mixed_special",
+    "difficulty": "medium",
+    "language": "rust",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "promptTemplate": "请生成一个 Rust 项目的 Cargo.toml 配置文件。\n\n要求：\n1. [package] 部分：name, version, edition, authors, description, license\n2. [dependencies] 部分：至少5个依赖（含版本号）\n3. [dev-dependencies] 部分：至少2个测试依赖\n4. [features] 部分：定义 default 和至少2个可选 feature\n5. [[bin]] 部分：定义2个二进制目标\n6. [profile.release] 部分：优化配置\n7. 包含适当的注释\n8. 输出纯 TOML",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "toml",
+      "output_policy": "raw_only",
+      "requiredFields": [
+        "package",
+        "dependencies",
+        "dev-dependencies",
+        "features",
+        "bin"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.15,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.45,
+        "cross_field_consistency": 0.05,
+        "output_discipline": 0.15
+      },
+      "text_contract": "v1"
+    },
+    "tags": [
+      "chinese",
+      "toml",
+      "rust",
+      "project-config"
+    ],
+    "scenarioVersion": "2.0.2",
+    "scenarioHash": "e850a581036e33b8",
+    "responseMode": null,
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null
+  },
+  {
+    "id": "SO-CN-027",
+    "dimension": "structured_output",
+    "category": "mixed_special",
+    "difficulty": "medium",
+    "language": "markdown",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "promptTemplate": "请生成一个 API 接口文档的 Markdown 页面。\n\n要求：\n1. 一级标题：文档名称\n2. 目录（使用锚点链接）\n3. 至少3个接口，每个接口包含：\n   - 二级标题（接口名）\n   - 请求方法和路径（代码格式）\n   - 参数表格（Markdown 表格）\n   - 请求示例（JSON 代码块）\n   - 响应示例（JSON 代码块）\n   - 错误码表格\n4. 包含\"认证说明\"章节\n5. 包含\"版本历史\"表格\n6. 使用中文",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "markdown",
+      "output_policy": "fenced_allowed",
+      "allowed_fence_languages": [
+        "json",
+        "http",
+        "bash",
+        "yaml",
+        "text"
+      ],
+      "requiredFields": [
+        "re:^#\\s",
+        "re:^##\\s",
+        "re:^\\|.*\\|",
+        "re:\\]\\(#",
+        "```json"
+      ],
+      "text_contract": "v1"
+    },
+    "tags": [
+      "chinese",
+      "markdown",
+      "api-docs",
+      "technical-writing"
+    ],
+    "scenarioVersion": "2.5.2",
+    "scenarioHash": "b9aad90ee7275f58",
+    "responseMode": null,
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null
+  },
+  {
+    "dimension": "structured_output",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "scenarioVersion": "2.1.2",
+    "scenarioHash": "6164610039fe255f",
+    "responseMode": null,
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null,
+    "id": "SO-CN-032",
+    "category": "csv_yaml",
+    "difficulty": "easy",
+    "language": "yaml",
+    "promptTemplate": "请生成一个 Kubernetes 风格的 YAML 配置，并使用 YAML 复用特性。\n\n要求：\n1. 使用文档分隔符 --- 分隔两段文档\n2. 第一段定义默认配置，用锚点 &defaultMeta 标注 metadata 块\n3. 在第一段的另一处用 *defaultMeta 引用该锚点；第二段为独立配置，不跨文档引用锚点\n4. 至少包含 apiVersion、kind、metadata（含 name、labels）、spec 字段\n5. spec 下至少有 replicas 与 containers，containers 每项含 name、image\n6. labels 至少 2 个键值对\n7. 输出纯 YAML，不要 markdown 代码块",
+    "requirements": {
+      "format": "yaml",
+      "output_policy": "raw_only",
+      "requiredFields": [
+        "---",
+        "&defaultMeta",
+        "*defaultMeta",
+        "apiVersion",
+        "kind",
+        "metadata",
+        "spec",
+        "containers"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.15,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.45,
+        "cross_field_consistency": 0.05,
+        "output_discipline": 0.15
+      },
+      "text_contract": "v1"
+    },
+    "tags": [
+      "yaml",
+      "anchor",
+      "alias",
+      "multi-document"
+    ]
+  },
+  {
+    "dimension": "structured_output",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "scenarioVersion": "2.1.2",
+    "scenarioHash": "cb5a8b8a5770d687",
+    "responseMode": null,
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null,
+    "id": "SO-CN-033",
+    "category": "csv_yaml",
+    "difficulty": "medium",
+    "language": "yaml",
+    "promptTemplate": "请生成一个 docker-compose.yml 配置。\n\n要求：\n1. 顶层 version 与 services\n2. 至少 3 个服务：web、api、db\n3. web 服务：image、ports（映射 8080）、depends_on 依赖 api\n4. api 服务：build 配置、environment（至少3个变量）、depends_on 依赖 db、healthcheck\n5. db 服务：image 为 postgres、volumes 挂载、environment 含 POSTGRES_PASSWORD\n6. 顶层 networks 与 volumes 定义，并在服务中引用\n7. 使用 restart 策略\n8. 输出纯 YAML，不要 markdown 代码块",
+    "requirements": {
+      "format": "yaml",
+      "output_policy": "raw_only",
+      "requiredFields": [
+        "version",
+        "services",
+        "web",
+        "api",
+        "db",
+        "ports",
+        "depends_on",
+        "environment",
+        "healthcheck",
+        "volumes",
+        "networks",
+        "restart"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.15,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.45,
+        "cross_field_consistency": 0.05,
+        "output_discipline": 0.15
+      },
+      "text_contract": "v1"
+    },
+    "tags": [
+      "yaml",
+      "docker-compose",
+      "services",
+      "depends_on"
+    ]
+  },
+  {
+    "dimension": "structured_output",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "scenarioVersion": "2.1.2",
+    "scenarioHash": "d8ad96495b29b3ea",
+    "responseMode": null,
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null,
+    "id": "SO-CN-034",
+    "category": "sql_xml",
+    "difficulty": "hard",
+    "language": "sql",
+    "promptTemplate": "使用 PostgreSQL 语法编写一个「批量补货」语句。\n\n表结构：\n- products(product_id, sku, name, stock, reorder_level, price)\n- warehouses(warehouse_id, product_id, quantity)\n- restock_log(id, product_id, warehouse_id, added_quantity, created_at)\n\n要求：\n1. 用 WITH 定义 CTE，找出 stock 低于 reorder_level 的商品\n2. 用 LATERAL 子查询为每个商品挑选一个目标仓库\n3. 用 INSERT ... SELECT 写入 restock_log\n4. 用 ON CONFLICT 处理 (product_id, warehouse_id) 冲突并 DO UPDATE\n5. 用 RETURNING 返回写入结果\n6. 同时 UPDATE products 表增加 stock\n7. 输出纯 SQL，不要 markdown 代码块",
+    "requirements": {
+      "format": "sql",
+      "output_policy": "raw_only",
+      "requiredFields": [
+        "WITH",
+        "SELECT",
+        "INSERT",
+        "LATERAL",
+        "ON CONFLICT",
+        "DO UPDATE",
+        "RETURNING",
+        "UPDATE",
+        "SET"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.15,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.45,
+        "cross_field_consistency": 0.05,
+        "output_discipline": 0.15
+      },
+      "text_contract": "v1"
+    },
+    "tags": [
+      "sql",
+      "postgresql",
+      "cte",
+      "lateral",
+      "upsert"
+    ]
+  },
+  {
+    "dimension": "structured_output",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "scenarioVersion": "2.1.2",
+    "scenarioHash": "dc73769886be7b85",
+    "responseMode": null,
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null,
+    "id": "SO-CN-035",
+    "category": "sql_xml",
+    "difficulty": "easy",
+    "language": "xml",
+    "promptTemplate": "请用 XSD（XML Schema）描述一个「图书入库单」的结构。\n\n要求：\n1. 使用 XML 声明，根元素为 xs:schema\n2. 声明目标命名空间 xmlns:xs=\"http://www.w3.org/2001/XMLSchema\"\n3. 定义元素 bookReceipt，包含属性 receiptNo\n4. 定义 xs:complexType，内部用 xs:sequence 组织子元素：bookTitle、isbn、quantity、supplier\n5. 每个子元素用 xs:element 并声明 xs:simpleType 或在 type 上直接标注类型\n6. quantity 使用 xs:positiveInteger\n7. 至少使用 3 个 xs:attribute 定义属性\n8. 输出纯 XML，不要 markdown 代码块",
+    "requirements": {
+      "format": "xml",
+      "output_policy": "raw_only",
+      "requiredFields": [
+        "xs:schema",
+        "xs:element",
+        "xs:complexType",
+        "xs:sequence",
+        "xs:attribute",
+        "xs:positiveInteger",
+        "xmlns:xs"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.15,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.45,
+        "cross_field_consistency": 0.05,
+        "output_discipline": 0.15
+      },
+      "text_contract": "v1"
+    },
+    "tags": [
+      "xml",
+      "xsd",
+      "namespace",
+      "schema"
+    ]
+  },
+  {
+    "dimension": "structured_output",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "scenarioVersion": "2.2.2",
+    "scenarioHash": "62392cb4369ea412",
+    "responseMode": null,
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null,
+    "id": "SO-CN-036",
+    "category": "html_mermaid",
+    "difficulty": "easy",
+    "language": "mermaid",
+    "promptTemplate": "请用 Mermaid classDiagram 描述一个博客系统的领域模型。\n\n类：User、Post、Comment、Tag\n要求：\n1. 使用 classDiagram 类型\n2. User 有 id、username、email，方法 publish()\n3. Post 有 id、title、content、createdAt，方法 addComment()\n4. Comment 有 id、content、createdAt\n5. Tag 有 id、name\n6. 关系：User 一对多 Post，Post 一对多 Comment，Post 多对多 Tag\n7. 至少使用两种关系箭头（如 --> 与 <-->）并标注关系文字\n8. 允许用 ```mermaid 围栏包裹图表\n\n命名要求：图中出现的实体名 / 类名 / 状态名必须与上文题面完全一致（含大小写），不要自行改变大小写或翻译。",
+    "requirements": {
+      "format": "mermaid",
+      "output_policy": "fenced_allowed",
+      "allowed_fence_languages": [
+        "mermaid"
+      ],
+      "requiredFields": [
+        "classDiagram",
+        "User",
+        "Post",
+        "Comment",
+        "Tag",
+        "publish",
+        "addComment"
+      ],
+      "text_contract": "v1"
+    },
+    "tags": [
+      "mermaid",
+      "class-diagram",
+      "domain-model"
+    ]
+  },
+  {
+    "dimension": "structured_output",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "scenarioVersion": "2.2.2",
+    "scenarioHash": "f6579a64afb8cf6f",
+    "responseMode": null,
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null,
+    "id": "SO-CN-037",
+    "category": "html_mermaid",
+    "difficulty": "medium",
+    "language": "mermaid",
+    "promptTemplate": "请用 Mermaid stateDiagram-v2 描述一个「设备固件升级」的状态机。\n\n要求：\n1. 使用 stateDiagram-v2 类型\n2. 用 [*] 标注初始状态与终止状态\n3. 状态至少包括：Idle、Downloading、Verifying、Installing、Rollback、Success、Failed\n4. 包含一个复合状态（用 state ... { } 语法），例如 Installing 内部再分两步\n5. 用 --% 之外的标准转移语法，并在每条转移上写中文条件说明\n6. 校验失败必须能回到 Idle 或进入 Failed\n7. 允许用 ```mermaid 围栏包裹图表\n\n命名要求：图中出现的实体名 / 类名 / 状态名必须与上文题面完全一致（含大小写），不要自行改变大小写或翻译。",
+    "requirements": {
+      "format": "mermaid",
+      "output_policy": "fenced_allowed",
+      "allowed_fence_languages": [
+        "mermaid"
+      ],
+      "requiredFields": [
+        "stateDiagram-v2",
+        "[*]",
+        "Downloading",
+        "Verifying",
+        "Installing",
+        "Rollback",
+        "Success",
+        "Failed"
+      ],
+      "text_contract": "v1"
+    },
+    "tags": [
+      "mermaid",
+      "state-diagram",
+      "composite-state"
+    ]
+  },
+  {
+    "dimension": "structured_output",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "scenarioVersion": "2.1.2",
+    "scenarioHash": "941afb1439ea1dbf",
+    "responseMode": null,
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null,
+    "id": "SO-CN-038",
+    "category": "html_mermaid",
+    "difficulty": "medium",
+    "language": "xml",
+    "promptTemplate": "请生成一个 SVG 图标：表示「云端数据同步」的简化示意图。\n\n要求：\n1. 有效的 SVG 根元素，含 xmlns、viewBox、width、height\n2. 使用 defs 定义一组可复用的元素（例如箭头标记或小圆点），并用 use 引用至少 2 次\n3. 使用 path 绘制云朵轮廓（至少一段曲线指令）\n4. 使用 circle 绘制两个数据节点\n5. 使用 g 标签对图形分组，并给至少一个 g 加 transform\n6. 使用 rect 作为背景，fill 为浅色\n7. 包含 title 与 desc 元素\n8. 输出纯 SVG，不要 markdown 代码块",
+    "requirements": {
+      "format": "xml",
+      "output_policy": "raw_only",
+      "requiredFields": [
+        "svg",
+        "viewBox",
+        "defs",
+        "use",
+        "path",
+        "circle",
+        "g",
+        "transform",
+        "rect",
+        "title",
+        "desc"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.15,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.45,
+        "cross_field_consistency": 0.05,
+        "output_discipline": 0.15
+      },
+      "text_contract": "v1"
+    },
+    "tags": [
+      "svg",
+      "defs",
+      "reuse",
+      "path",
+      "self-closing"
+    ]
+  },
+  {
+    "dimension": "structured_output",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "scenarioVersion": "2.1.2",
+    "scenarioHash": "72442a62ce7b4f42",
+    "responseMode": null,
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null,
+    "id": "SO-CN-039",
+    "category": "mixed_special",
+    "difficulty": "medium",
+    "language": "toml",
+    "promptTemplate": "请生成一个 Rust workspace 项目的根 Cargo.toml。\n\n要求：\n1. [workspace] 段：定义 members 数组（至少 3 个成员）与 resolver\n2. [workspace.package] 段：version、edition、license、authors\n3. [workspace.dependencies] 段：至少 4 个共享依赖（含版本号）\n4. [package] 段：name、version、edition\n5. 使用数组表 [[bin]] 定义 2 个二进制目标（每个含 name 与 path）\n6. [features] 段：default 加至少 2 个可选 feature\n7. [profile.release] 段：至少 3 项优化配置\n8. 包含适当的注释\n9. 输出纯 TOML，不要 markdown 代码块",
+    "requirements": {
+      "format": "toml",
+      "output_policy": "raw_only",
+      "requiredFields": [
+        "workspace",
+        "workspace.package",
+        "workspace.dependencies",
+        "package",
+        "bin",
+        "features",
+        "profile.release",
+        "members"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.15,
+        "schema_compliance": 0.2,
+        "field_constraints": 0.45,
+        "cross_field_consistency": 0.05,
+        "output_discipline": 0.15
+      },
+      "text_contract": "v1"
+    },
+    "tags": [
+      "toml",
+      "workspace",
+      "array-of-tables",
+      "rust"
+    ]
+  },
+  {
+    "dimension": "structured_output",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "scenarioVersion": "2.4.2",
+    "scenarioHash": "96e293911dad7538",
+    "responseMode": null,
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null,
+    "id": "SO-CN-041",
+    "category": "mixed_special",
+    "difficulty": "medium",
+    "language": "markdown",
+    "promptTemplate": "请生成一份「数据库索引优化实践」的 Markdown 技术文档。\n\n要求：\n1. 一级标题（# 开头）\n2. 二级标题至少 3 个\n3. 一个 Markdown 表格，至少 4 行 3 列（含表头）\n4. 至少 3 个围栏代码块，且语言标记不同：分别用 ```sql、```bash、```yaml\n5. 一段有序列表（1. 2. 3.）\n6. 一段引用块（> 开头）\n7. 全部使用中文\n8. 不要用代码块包裹整份文档",
+    "requirements": {
+      "format": "markdown",
+      "output_policy": "fenced_allowed",
+      "allowed_fence_languages": [
+        "sql",
+        "bash",
+        "yaml"
+      ],
+      "requiredFields": [
+        "re:^#\\s",
+        "re:^\\|.*\\|",
+        "```sql",
+        "```bash",
+        "```yaml",
+        "re:^\\d+\\.\\s",
+        "re:^>\\s"
+      ],
+      "text_contract": "v1"
+    },
+    "tags": [
+      "markdown",
+      "fenced-code",
+      "table",
+      "ordered-list",
+      "blockquote"
+    ]
+  },
+  {
+    "dimension": "structured_output",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "scenarioVersion": "3.1.2",
+    "scenarioHash": "c5215f95520dd98b",
+    "responseMode": null,
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null,
+    "id": "SO-CN-045",
+    "category": "mixed_special",
+    "difficulty": "hard",
+    "language": "markdown",
+    "promptTemplate": "请生成一份「微服务拆分复盘」的 Markdown 文档，各结构的**数量必须精确**：\n\n1. 恰好 1 个一级标题（以「# 」开头）\n2. 恰好 4 个二级标题（以「## 」开头）\n3. 恰好 1 个表格：6 行数据 + 表头 + 分隔行，即恰好 8 行以「|」开头，且为 4 列\n4. 恰好 3 个围栏代码块，语言分别为 sql、yaml、bash（即恰好 6 个以「```」开头的围栏行）\n5. 恰好 1 个引用块（以「> 」开头，且只有 1 行）\n6. 恰好 5 个有序列表项（形如 1. 2. 3. 4. 5.，不得多也不得少）\n7. 全部使用中文内容\n8. 不要用代码块包裹整份文档",
+    "requirements": {
+      "format": "markdown",
+      "output_policy": "fenced_allowed",
+      "allowed_fence_languages": [
+        "sql",
+        "yaml",
+        "bash"
+      ],
+      "requiredFields": [
+        "#",
+        "##",
+        "|",
+        "```sql",
+        "```yaml",
+        "```bash",
+        ">"
+      ],
+      "constraints": [
+        "count:^#\\s:==1",
+        "count:^##\\s:==4",
+        "count:^\\|:==8",
+        "count:^```:==6",
+        "count:^```sql:==1",
+        "count:^```yaml:==1",
+        "count:^```bash:==1",
+        "count:^>:==1",
+        "count:^\\d+\\.\\s:==5"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.05,
+        "schema_compliance": 0.1,
+        "field_constraints": 0.55,
+        "cross_field_consistency": 0.1,
+        "output_discipline": 0.15
+      },
+      "text_contract": "v1"
+    },
+    "tags": [
+      "markdown",
+      "exact-count",
+      "structure",
+      "counting"
+    ]
+  },
+  {
+    "dimension": "structured_output",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "public_dev",
+    "sourceCode": null,
+    "functionName": null,
+    "expectedVerdict": null,
+    "grader": "schema_compliance",
+    "graderVersion": "schema_compliance_v6",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "scenarioVersion": "3.1.2",
+    "scenarioHash": "a45db830852d872d",
+    "responseMode": null,
+    "outputPolicy": null,
+    "environmentImage": null,
+    "seed": null,
+    "goldSource": null,
+    "reviewStatus": "unreviewed",
+    "answerFirst": null,
+    "maxAnswerTokens": null,
+    "maxReasoningTokens": null,
+    "id": "SO-CN-049",
+    "category": "sql_xml",
+    "difficulty": "hard",
+    "language": "xml",
+    "promptTemplate": "请生成一份 XML 采购报价单。\n\n1. 必须以 <?xml version=\"1.0\" encoding=\"UTF-8\"?> 声明开头\n2. 根元素为 quote；根内元素**顺序严格**为：quoteNo、buyer、items、total\n3. items 内**恰好 12 个** item 元素；每个 item 含 sku、name、qty、unitPrice 四个子元素，顺序同前\n4. buyer 下的 name 为「北京机械 & 电子有限公司」，其中的 & 必须用实体转义（&amp;）或整体放入 CDATA，禁止出现裸的 &\n5. total 为所有 item 的 qty × unitPrice 之和，用字符串形式保留 2 位小数\n6. 输出纯 XML，不要 markdown 代码块，不要任何解释文字",
+    "requirements": {
+      "format": "xml",
+      "output_policy": "raw_only",
+      "requiredFields": [
+        "quoteNo",
+        "buyer",
+        "items",
+        "total",
+        "item",
+        "sku",
+        "unitPrice"
+      ],
+      "constraints": [
+        "count:<item>:==12",
+        "count:</item>:==12",
+        "count:(<!\\[CDATA\\[|&amp;):>=1",
+        "order:<quoteNo>|<buyer>",
+        "order:</buyer>|<items>",
+        "order:</items>|<total>",
+        "order:<qty>|<unitPrice>",
+        "order:<sku>|<qty>"
+      ],
+      "axis_weights": {
+        "syntax_parse": 0.05,
+        "schema_compliance": 0.1,
+        "field_constraints": 0.55,
+        "cross_field_consistency": 0.1,
+        "output_discipline": 0.15
+      },
+      "text_contract": "v1"
+    },
+    "tags": [
+      "xml",
+      "exact-count",
+      "element-order",
+      "escaping",
+      "cdata"
+    ]
+  }
+]

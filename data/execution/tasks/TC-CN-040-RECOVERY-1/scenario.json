@@ -1,0 +1,159 @@
+{
+  "id": "TC-CN-040-RECOVERY-1",
+  "dimension": "tool_cli_workflow",
+  "category": "multi_step_chain",
+  "difficulty": "adversarial",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "按用户信息→订单→更新等级→再获取用户验证的顺序执行。等级由订单金额总和确定；末次读取用于确认状态，不要在更新前重复查询。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "tool_call_trace",
+  "graderVersion": "tool_trace_v4",
+  "scoring": {
+    "type": "tool_call_trace"
+  },
+  "requirements": {
+    "migrationSourceId": "TC-CN-040",
+    "developmentShadow": true,
+    "executionWorld": {
+      "maxTurns": 8,
+      "scoreMode": "strict",
+      "initialState": {
+        "uid": "U-84",
+        "user": {
+          "uid": "U-84",
+          "level": 1
+        },
+        "orders": [
+          {
+            "amount": 80
+          },
+          {
+            "amount": 120
+          }
+        ],
+        "reads": 0,
+        "ordersRead": false,
+        "updates": [],
+        "other": "keep"
+      },
+      "tools": [
+        {
+          "name": "get_user",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "uid": "string"
+          },
+          "script": "if args['uid']!=state['uid']: raise ValueError('WRONG_USER')\nstate['reads']+=1; result=state['user']",
+          "description": "读取当前用户等级。"
+        },
+        {
+          "name": "get_orders",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "uid": "string"
+          },
+          "script": "if args['uid']!=state['uid']: raise ValueError('WRONG_USER')\nstate['ordersRead']=True; result={'orders':state['orders']}",
+          "description": "读取用户订单。",
+          "requirePriorCall": {
+            "tool": "get_user",
+            "sameArgs": [
+              "uid"
+            ]
+          }
+        },
+        {
+          "name": "update_user_level",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "uid": "string",
+            "level": "number"
+          },
+          "script": "target=3 if sum(o['amount'] for o in state['orders'])>=400 else 2\nif not state['ordersRead'] or args['uid']!=state['uid'] or args['level']!=target: raise ValueError('WRONG_LEVEL')\nstate['user']['level']=args['level']; state['updates'].append(args['level']); result={'updated':True}",
+          "description": "按订单金额更新用户等级。",
+          "requirePriorCall": {
+            "tool": "get_orders",
+            "sameArgs": [
+              "uid"
+            ]
+          }
+        }
+      ],
+      "requiredCalls": [
+        {
+          "tool": "get_user",
+          "args": {
+            "uid": "U-84"
+          }
+        },
+        {
+          "tool": "get_orders",
+          "args": {
+            "uid": "U-84"
+          }
+        },
+        {
+          "tool": "update_user_level",
+          "args": {
+            "uid": "U-84",
+            "level": 2
+          }
+        }
+      ],
+      "expectedState": [
+        {
+          "path": "reads",
+          "equals": 2
+        },
+        {
+          "path": "ordersRead",
+          "equals": true
+        },
+        {
+          "path": "user/level",
+          "equals": 2
+        },
+        {
+          "path": "updates",
+          "equals": [
+            2
+          ]
+        }
+      ],
+      "unchangedState": [
+        "uid",
+        "orders",
+        "other"
+      ],
+      "finalMessageMustContain": [
+        "2"
+      ],
+      "image": "python:3.12-alpine",
+      "expectedImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31"
+    }
+  },
+  "tags": [
+    "chinese",
+    "multi-step",
+    "dependency-order",
+    "adversarial"
+  ],
+  "scenarioVersion": "3.0.0",
+  "scenarioHash": "33b3f07ab6f80522",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

@@ -1,0 +1,16 @@
+[
+  {
+    "tool": "skill_view",
+    "args": {
+      "name": "incident-review"
+    }
+  },
+  {
+    "tool": "skill_manage",
+    "args": {
+      "action": "patch",
+      "name": "incident-review",
+      "content": "## Pitfalls\n- 注意。\n"
+    }
+  }
+]

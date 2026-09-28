@@ -1,0 +1,18 @@
+[
+  {
+    "tool": "cronjob",
+    "args": {
+      "action": "run",
+      "params": {
+        "name": "daily-report"
+      }
+    }
+  },
+  {
+    "tool": "send_message",
+    "args": {
+      "target": "channel-reports-b",
+      "message": "报告 B 已生成"
+    }
+  }
+]

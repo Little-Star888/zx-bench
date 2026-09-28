@@ -1,0 +1,26 @@
+[
+  {
+    "tool": "skill_view",
+    "args": {
+      "name": "release"
+    }
+  },
+  {
+    "tool": "terminal",
+    "args": {
+      "cmd": "build"
+    }
+  },
+  {
+    "tool": "terminal",
+    "args": {
+      "cmd": "test"
+    }
+  },
+  {
+    "tool": "terminal",
+    "args": {
+      "cmd": "publish"
+    }
+  }
+]

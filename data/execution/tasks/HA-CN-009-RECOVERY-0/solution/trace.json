@@ -1,0 +1,33 @@
+[
+  {
+    "tool": "terminal",
+    "args": {
+      "cmd": "pytest -q"
+    }
+  },
+  {
+    "tool": "fs.read",
+    "args": {
+      "path": "app.py"
+    }
+  },
+  {
+    "tool": "fs.read",
+    "args": {
+      "path": "test_app.py"
+    }
+  },
+  {
+    "tool": "fs.patch",
+    "args": {
+      "path": "app.py",
+      "content": "def double(x):\n    return x * 2\n"
+    }
+  },
+  {
+    "tool": "terminal",
+    "args": {
+      "cmd": "pytest -q"
+    }
+  }
+]

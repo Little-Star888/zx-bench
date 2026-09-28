@@ -1,0 +1,16 @@
+[
+  {
+    "tool": "skill_view",
+    "args": {
+      "name": "release-review"
+    }
+  },
+  {
+    "tool": "skill_manage",
+    "args": {
+      "action": "patch",
+      "name": "release-review",
+      "content": "## Pitfalls\n- 不要跳过失败。\n## Verification\n- 核对最终结果。\n"
+    }
+  }
+]

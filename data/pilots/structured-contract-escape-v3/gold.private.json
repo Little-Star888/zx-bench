@@ -1,0 +1,30 @@
+[
+  {
+    "id": "SCE8-635-BASE",
+    "split": "development",
+    "pairId": "SCE8-635",
+    "variant": "base",
+    "raw": "{\"token\":\"PI2\\u000b$5E4[d7VBC*NH\\rwHUNv/7'XS1\\\\(M9,y`1SA}j\\f6c y?~v;%/Cvvrh{O`q@o<*B^o,Rn8wz.:7\\n6T\\f\\r$D\\nQq?\\r2~\"}"
+  },
+  {
+    "id": "SCE8-635-STRUCTURED",
+    "split": "development",
+    "pairId": "SCE8-635",
+    "variant": "structured",
+    "raw": "{\"name\":\"My Token List\",\"timestamp\":\"2026-09-26T00:00:00Z\",\"version\":{\"major\":1,\"minor\":0,\"patch\":0},\"tokens\":[{\"chainId\":1,\"address\":\"0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"decimals\":18,\"name\":\"USD Coin\",\"symbol\":\"USDC\"}],\"logoURI\":\"PI2\\u000b$5E4[d7VBC*NH\\rwHUNv/7'XS1\\\\(M9,y`1SA}j\\f6c y?~v;%/Cvvrh{O`q@o<*B^o,Rn8wz.:7\\n6T\\f\\r$D\\nQq?\\r2~\"}"
+  },
+  {
+    "id": "SCE8-095-BASE",
+    "split": "holdout",
+    "pairId": "SCE8-095",
+    "variant": "base",
+    "raw": "{\"token\":\"Y-$}rrd^obfp}wj'\\f[3-a>}f}1}J%so]k#C7SU'kU4;YV2]\\f\\t_a\\tiN/w'\"}"
+  },
+  {
+    "id": "SCE8-095-STRUCTURED",
+    "split": "holdout",
+    "pairId": "SCE8-095",
+    "variant": "structured",
+    "raw": "{\"body\":\"notice\",\"event_type\":\"announcement\",\"last_updated\":\"Y-$}rrd^obfp}wj'\\f[3-a>}f}1}J%so]k#C7SU'kU4;YV2]\\f\\t_a\\tiN/w'\",\"title\":\"Notice\",\"date\":\"2026-09-26\",\"org\":{\"id\":1,\"name\":\"Example\"},\"id\":1}"
+  }
+]

@@ -1,0 +1,105 @@
+{
+  "id": "TC-CN-025-DOCKER",
+  "dimension": "tool_cli_workflow",
+  "category": "cli_operations",
+  "difficulty": "medium",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "工作区 /workspace，Linux sh 和 Python 3 标准库可用。使用 Alpine/BusyBox 工具，提交脚本统一以 POSIX sh 执行，未提供 bash 或 GNU 工具。分析 ps_snapshot.txt：列出 RSS 超过 500000 KB 的进程、CPU 前 5 和 python 进程；读取 system.txt 的负载/内存。target.pid 指向容器里真实运行的测试进程，向它发送 SIGTERM，并将摘要写 diagnostics.txt。diagnostics.txt 格式：HEAVY 加空格和按 PID 升序的逗号分隔列表；CPU_TOP5 加空格和按 CPU 降序、同值 PID 升序的前五 PID 列表；PYTHON 加空格和命令以 python 开头的进程 PID 列表（输入顺序）。接着原样追加 system.txt，最后一行 SIGNAL SIGTERM。每行以换行结尾。只输出可执行 shell 脚本。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "cli_command",
+  "graderVersion": "cli_command_v5",
+  "scoring": {
+    "type": "cli_command",
+    "mode": "executed_state"
+  },
+  "requirements": {
+    "migrationSourceId": "TC-CN-025",
+    "developmentShadow": true,
+    "executionInterpreter": "sh",
+    "executionImage": "python:3.12-alpine",
+    "executionImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31",
+    "executionCases": [
+      {
+        "files": [
+          {
+            "path": "ps_snapshot.txt",
+            "content": "USER PID %CPU %MEM VSZ RSS TTY STAT START TIME COMMAND\nbench 2000 0 1.0 900000 350000 ? S 09:00 0:00 python worker.py\nbench 2017 13 1.0 900000 381777 ? S 09:00 0:00 service-daemon\nbench 2034 26 1.0 900000 413554 ? S 09:00 0:00 service-daemon\nbench 2051 39 1.0 900000 445331 ? S 09:00 0:00 service-daemon\nbench 2068 52 1.0 900000 477108 ? S 09:00 0:00 python worker.py\nbench 2085 65 1.0 900000 508885 ? S 09:00 0:00 service-daemon\nbench 2102 78 1.0 900000 540662 ? S 09:00 0:00 service-daemon\nbench 2119 91 1.0 900000 572439 ? S 09:00 0:00 service-daemon\nbench 2136 7 1.0 900000 604216 ? S 09:00 0:00 python worker.py\nbench 2153 20 1.0 900000 635993 ? S 09:00 0:00 service-daemon\nbench 2170 33 1.0 900000 667770 ? S 09:00 0:00 service-daemon\nbench 2187 46 1.0 900000 699547 ? S 09:00 0:00 service-daemon\nbench 2204 59 1.0 900000 731324 ? S 09:00 0:00 python worker.py\nbench 2221 72 1.0 900000 763101 ? S 09:00 0:00 service-daemon\nbench 2238 85 1.0 900000 374878 ? S 09:00 0:00 service-daemon\nbench 2255 1 1.0 900000 406655 ? S 09:00 0:00 service-daemon\nbench 2272 14 1.0 900000 438432 ? S 09:00 0:00 python worker.py\nbench 2289 27 1.0 900000 470209 ? S 09:00 0:00 service-daemon\n"
+          },
+          {
+            "path": "system.txt",
+            "content": "load=0.75\nmem_free_mb=8192\n"
+          },
+          {
+            "path": "sentinel",
+            "content": "keep"
+          }
+        ],
+        "setupCommands": [
+          "python3 -I - <<'PY'\nimport subprocess\nfrom pathlib import Path\np=subprocess.Popen(['sleep','3600'],stdin=subprocess.DEVNULL,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,start_new_session=True)\nPath('target.pid').write_text(str(p.pid))\nPY"
+        ],
+        "expectedFiles": {
+          "diagnostics.txt": "HEAVY 2085,2102,2119,2136,2153,2170,2187,2204,2221\nCPU_TOP5 2119,2238,2102,2221,2085\nPYTHON 2000,2068,2136,2204,2272\nload=0.75\nmem_free_mb=8192\nSIGNAL SIGTERM\n"
+        },
+        "unchangedFiles": [
+          "ps_snapshot.txt",
+          "system.txt",
+          "sentinel"
+        ],
+        "assertCommands": [
+          "python3 -I - <<'PY'\nfrom pathlib import Path\nimport os\npid=int(Path('target.pid').read_text())\nstatus=Path(f'/proc/{pid}/status')\nif status.exists(): assert 'State:\\tZ' in status.read_text() or 'State:\\tX' in status.read_text()\nPY"
+        ]
+      },
+      {
+        "files": [
+          {
+            "path": "ps_snapshot.txt",
+            "content": "USER PID %CPU %MEM VSZ RSS TTY STAT START TIME COMMAND\nbench 2000 5 1.0 900000 350000 ? S 09:00 0:00 python worker.py\nbench 2017 18 1.0 900000 381777 ? S 09:00 0:00 service-daemon\nbench 2034 31 1.0 900000 413554 ? S 09:00 0:00 service-daemon\nbench 2051 44 1.0 900000 445331 ? S 09:00 0:00 service-daemon\nbench 2068 57 1.0 900000 477108 ? S 09:00 0:00 python worker.py\nbench 2085 70 1.0 900000 508885 ? S 09:00 0:00 service-daemon\nbench 2102 83 1.0 900000 540662 ? S 09:00 0:00 service-daemon\nbench 2119 96 1.0 900000 572439 ? S 09:00 0:00 service-daemon\nbench 2136 12 1.0 900000 604216 ? S 09:00 0:00 python worker.py\nbench 2153 25 1.0 900000 635993 ? S 09:00 0:00 service-daemon\nbench 2170 38 1.0 900000 667770 ? S 09:00 0:00 service-daemon\nbench 2187 51 1.0 900000 699547 ? S 09:00 0:00 service-daemon\nbench 2204 64 1.0 900000 731324 ? S 09:00 0:00 python worker.py\nbench 2221 77 1.0 900000 763101 ? S 09:00 0:00 service-daemon\nbench 2238 90 1.0 900000 374878 ? S 09:00 0:00 service-daemon\nbench 2255 6 1.0 900000 406655 ? S 09:00 0:00 service-daemon\nbench 2272 19 1.0 900000 438432 ? S 09:00 0:00 python worker.py\nbench 2289 32 1.0 900000 470209 ? S 09:00 0:00 service-daemon\n"
+          },
+          {
+            "path": "system.txt",
+            "content": "load=1.80\nmem_free_mb=4096\n"
+          },
+          {
+            "path": "sentinel",
+            "content": "keep"
+          }
+        ],
+        "setupCommands": [
+          "python3 -I - <<'PY'\nimport subprocess\nfrom pathlib import Path\np=subprocess.Popen(['sleep','3600'],stdin=subprocess.DEVNULL,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,start_new_session=True)\nPath('target.pid').write_text(str(p.pid))\nPY"
+        ],
+        "expectedFiles": {
+          "diagnostics.txt": "HEAVY 2085,2102,2119,2136,2153,2170,2187,2204,2221\nCPU_TOP5 2119,2238,2102,2221,2085\nPYTHON 2000,2068,2136,2204,2272\nload=1.80\nmem_free_mb=4096\nSIGNAL SIGTERM\n"
+        },
+        "unchangedFiles": [
+          "ps_snapshot.txt",
+          "system.txt",
+          "sentinel"
+        ],
+        "assertCommands": [
+          "python3 -I - <<'PY'\nfrom pathlib import Path\nimport os\npid=int(Path('target.pid').read_text())\nstatus=Path(f'/proc/{pid}/status')\nif status.exists(): assert 'State:\\tZ' in status.read_text() or 'State:\\tX' in status.read_text()\nPY"
+        ]
+      }
+    ]
+  },
+  "tags": [
+    "chinese",
+    "cli",
+    "process-management"
+  ],
+  "scenarioVersion": "3.1.0",
+  "scenarioHash": "b48f71c06a33b8ec",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

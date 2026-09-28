@@ -1,0 +1,21 @@
+[
+  {
+    "tool": "fs.mkdir",
+    "args": {
+      "path": "myapp"
+    }
+  },
+  {
+    "tool": "fs.mkdir",
+    "args": {
+      "path": "myapp/src"
+    }
+  },
+  {
+    "tool": "fs.write",
+    "args": {
+      "path": "myapp/package.json",
+      "content": "{\"name\":\"myapp\",\"version\":\"1.0.0\",\"scripts\":{\"test\":\"node tests/basic.js\"}}\n"
+    }
+  }
+]

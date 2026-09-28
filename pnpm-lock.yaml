@@ -115,6 +115,12 @@ importers:
       '@zxbench/utils':
         specifier: workspace:*
         version: link:../utils
+      ajv:
+        specifier: 8.20.0
+        version: 8.20.0
+      ajv-formats:
+        specifier: 3.0.1
+        version: 3.0.1(ajv@8.20.0)
       quickjs-emscripten-core:
         specifier: 0.32.0
         version: 0.32.0

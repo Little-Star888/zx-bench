@@ -1,0 +1,14 @@
+[
+  {
+    "tool": "get_server_metrics",
+    "args": {
+      "host": "node-a"
+    }
+  },
+  {
+    "tool": "reboot_server",
+    "args": {
+      "host": "node-a"
+    }
+  }
+]

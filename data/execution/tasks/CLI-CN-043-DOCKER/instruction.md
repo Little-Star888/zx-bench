@@ -1,0 +1,1 @@
+工作区 /workspace，Linux sh 和 Python 3 标准库可用。也提供 bash；脚本按 sh/bash shebang 选择解释器，无 shebang 使用 sh。json-query 在容器中不存在。使用实际可用的 jq，从 data.json 的 users 数组提取每个 email，每行一个写入 emails.txt；不得因缺失工具而放弃，也不得更改输入。只输出可执行 shell 脚本。

@@ -1,0 +1,14 @@
+[
+  {
+    "tool": "flight_status_api",
+    "args": {
+      "flight_no": "CA1234"
+    }
+  },
+  {
+    "tool": "search_flight_by_web",
+    "args": {
+      "flight_no": "CA1234"
+    }
+  }
+]

@@ -1,0 +1,20 @@
+[
+  {
+    "tool": "check_server",
+    "args": {
+      "host": "app-1.internal"
+    }
+  },
+  {
+    "tool": "git_pull",
+    "args": {
+      "repo": "service"
+    }
+  },
+  {
+    "tool": "restart_service",
+    "args": {
+      "name": "service"
+    }
+  }
+]

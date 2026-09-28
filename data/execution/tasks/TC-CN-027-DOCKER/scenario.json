@@ -1,0 +1,84 @@
+{
+  "id": "TC-CN-027-DOCKER",
+  "dimension": "tool_cli_workflow",
+  "category": "cli_operations",
+  "difficulty": "medium",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "工作区 /workspace，Linux sh 和 Python 3 标准库可用。使用 Alpine/BusyBox 工具，提交脚本统一以 POSIX sh 执行，未提供 bash 或 GNU 工具。给定容器内 etc/passwd 快照。只取 shell 为 /bin/bash 且 UID 严格大于 1000 的账户，按 UID 数值升序输出「用户名:UID」到 users.txt，末行「TOTAL N」；保护输入。只输出可执行 shell 脚本。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "cli_command",
+  "graderVersion": "cli_command_v5",
+  "scoring": {
+    "type": "cli_command",
+    "mode": "executed_state"
+  },
+  "requirements": {
+    "migrationSourceId": "TC-CN-027",
+    "developmentShadow": true,
+    "executionInterpreter": "sh",
+    "executionImage": "python:3.12-alpine",
+    "executionImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31",
+    "executionCases": [
+      {
+        "files": [
+          {
+            "path": "etc/passwd",
+            "content": "root:x:0:0:root:/root:/bin/bash\nservice:x:999:999:s:/srv:/bin/bash\nedge:x:1000:1000:e:/home/edge:/bin/bash\nuser0:x:1001:100:user:/home/user0:/usr/sbin/nologin\nuser1:x:1018:100:user:/home/user1:/bin/bash\nuser2:x:1035:100:user:/home/user2:/bin/bash\nuser3:x:1052:100:user:/home/user3:/bin/bash\nuser4:x:1069:100:user:/home/user4:/bin/bash\nuser5:x:1016:100:user:/home/user5:/bin/bash\nuser6:x:1033:100:user:/home/user6:/usr/sbin/nologin\nuser7:x:1050:100:user:/home/user7:/bin/bash\nuser8:x:1067:100:user:/home/user8:/bin/bash\nuser9:x:1014:100:user:/home/user9:/bin/bash\nuser10:x:1031:100:user:/home/user10:/bin/bash\nuser11:x:1048:100:user:/home/user11:/bin/bash\nuser12:x:1065:100:user:/home/user12:/usr/sbin/nologin\nuser13:x:1012:100:user:/home/user13:/bin/bash\nuser14:x:1029:100:user:/home/user14:/bin/bash\nuser15:x:1046:100:user:/home/user15:/bin/bash\nuser16:x:1063:100:user:/home/user16:/bin/bash\nuser17:x:1010:100:user:/home/user17:/bin/bash\nuser18:x:1027:100:user:/home/user18:/usr/sbin/nologin\nuser19:x:1044:100:user:/home/user19:/bin/bash\nuser20:x:1061:100:user:/home/user20:/bin/bash\nuser21:x:1008:100:user:/home/user21:/bin/bash\nuser22:x:1025:100:user:/home/user22:/bin/bash\nuser23:x:1042:100:user:/home/user23:/bin/bash\nuser24:x:1059:100:user:/home/user24:/usr/sbin/nologin\nuser25:x:1006:100:user:/home/user25:/bin/bash\nuser26:x:1023:100:user:/home/user26:/bin/bash\nuser27:x:1040:100:user:/home/user27:/bin/bash\nuser28:x:1057:100:user:/home/user28:/bin/bash\nuser29:x:1004:100:user:/home/user29:/bin/bash\nuser30:x:1021:100:user:/home/user30:/usr/sbin/nologin\nuser31:x:1038:100:user:/home/user31:/bin/bash\nuser32:x:1055:100:user:/home/user32:/bin/bash\nuser33:x:1002:100:user:/home/user33:/bin/bash\nuser34:x:1019:100:user:/home/user34:/bin/bash\nuser35:x:1036:100:user:/home/user35:/bin/bash\nuser36:x:1053:100:user:/home/user36:/usr/sbin/nologin\nuser37:x:1070:100:user:/home/user37:/bin/bash\nuser38:x:1017:100:user:/home/user38:/bin/bash\nuser39:x:1034:100:user:/home/user39:/bin/bash\nuser40:x:1051:100:user:/home/user40:/bin/bash\nuser41:x:1068:100:user:/home/user41:/bin/bash\nuser42:x:1015:100:user:/home/user42:/usr/sbin/nologin\nuser43:x:1032:100:user:/home/user43:/bin/bash\nuser44:x:1049:100:user:/home/user44:/bin/bash\n"
+          },
+          {
+            "path": "sentinel",
+            "content": "keep"
+          }
+        ],
+        "expectedFiles": {
+          "users.txt": "user33:1002\nuser29:1004\nuser25:1006\nuser21:1008\nuser17:1010\nuser13:1012\nuser9:1014\nuser5:1016\nuser38:1017\nuser1:1018\nuser34:1019\nuser26:1023\nuser22:1025\nuser14:1029\nuser10:1031\nuser43:1032\nuser39:1034\nuser2:1035\nuser35:1036\nuser31:1038\nuser27:1040\nuser23:1042\nuser19:1044\nuser15:1046\nuser11:1048\nuser44:1049\nuser7:1050\nuser40:1051\nuser3:1052\nuser32:1055\nuser28:1057\nuser20:1061\nuser16:1063\nuser8:1067\nuser41:1068\nuser4:1069\nuser37:1070\nTOTAL 37\n"
+        },
+        "unchangedFiles": [
+          "etc/passwd",
+          "sentinel"
+        ]
+      },
+      {
+        "files": [
+          {
+            "path": "etc/passwd",
+            "content": "root:x:0:0:root:/root:/bin/bash\nservice:x:999:999:s:/srv:/bin/bash\nedge:x:1000:1000:e:/home/edge:/bin/bash\nuser0:x:1004:100:user:/home/user0:/usr/sbin/nologin\nuser1:x:1021:100:user:/home/user1:/bin/bash\nuser2:x:1038:100:user:/home/user2:/bin/bash\nuser3:x:1055:100:user:/home/user3:/bin/bash\nuser4:x:1002:100:user:/home/user4:/bin/bash\nuser5:x:1019:100:user:/home/user5:/bin/bash\nuser6:x:1036:100:user:/home/user6:/usr/sbin/nologin\nuser7:x:1053:100:user:/home/user7:/bin/bash\nuser8:x:1070:100:user:/home/user8:/bin/bash\nuser9:x:1017:100:user:/home/user9:/bin/bash\nuser10:x:1034:100:user:/home/user10:/bin/bash\nuser11:x:1051:100:user:/home/user11:/bin/bash\nuser12:x:1068:100:user:/home/user12:/usr/sbin/nologin\nuser13:x:1015:100:user:/home/user13:/bin/bash\nuser14:x:1032:100:user:/home/user14:/bin/bash\nuser15:x:1049:100:user:/home/user15:/bin/bash\nuser16:x:1066:100:user:/home/user16:/bin/bash\nuser17:x:1013:100:user:/home/user17:/bin/bash\nuser18:x:1030:100:user:/home/user18:/usr/sbin/nologin\nuser19:x:1047:100:user:/home/user19:/bin/bash\nuser20:x:1064:100:user:/home/user20:/bin/bash\nuser21:x:1011:100:user:/home/user21:/bin/bash\nuser22:x:1028:100:user:/home/user22:/bin/bash\nuser23:x:1045:100:user:/home/user23:/bin/bash\nuser24:x:1062:100:user:/home/user24:/usr/sbin/nologin\nuser25:x:1009:100:user:/home/user25:/bin/bash\nuser26:x:1026:100:user:/home/user26:/bin/bash\nuser27:x:1043:100:user:/home/user27:/bin/bash\nuser28:x:1060:100:user:/home/user28:/bin/bash\nuser29:x:1007:100:user:/home/user29:/bin/bash\nuser30:x:1024:100:user:/home/user30:/usr/sbin/nologin\nuser31:x:1041:100:user:/home/user31:/bin/bash\nuser32:x:1058:100:user:/home/user32:/bin/bash\nuser33:x:1005:100:user:/home/user33:/bin/bash\nuser34:x:1022:100:user:/home/user34:/bin/bash\nuser35:x:1039:100:user:/home/user35:/bin/bash\nuser36:x:1056:100:user:/home/user36:/usr/sbin/nologin\nuser37:x:1003:100:user:/home/user37:/bin/bash\nuser38:x:1020:100:user:/home/user38:/bin/bash\nuser39:x:1037:100:user:/home/user39:/bin/bash\nuser40:x:1054:100:user:/home/user40:/bin/bash\nuser41:x:1001:100:user:/home/user41:/bin/bash\nuser42:x:1018:100:user:/home/user42:/usr/sbin/nologin\nuser43:x:1035:100:user:/home/user43:/bin/bash\nuser44:x:1052:100:user:/home/user44:/bin/bash\n"
+          },
+          {
+            "path": "sentinel",
+            "content": "keep"
+          }
+        ],
+        "expectedFiles": {
+          "users.txt": "user41:1001\nuser4:1002\nuser37:1003\nuser33:1005\nuser29:1007\nuser25:1009\nuser21:1011\nuser17:1013\nuser13:1015\nuser9:1017\nuser5:1019\nuser38:1020\nuser1:1021\nuser34:1022\nuser26:1026\nuser22:1028\nuser14:1032\nuser10:1034\nuser43:1035\nuser39:1037\nuser2:1038\nuser35:1039\nuser31:1041\nuser27:1043\nuser23:1045\nuser19:1047\nuser15:1049\nuser11:1051\nuser44:1052\nuser7:1053\nuser40:1054\nuser3:1055\nuser32:1058\nuser28:1060\nuser20:1064\nuser16:1066\nuser8:1070\nTOTAL 37\n"
+        },
+        "unchangedFiles": [
+          "etc/passwd",
+          "sentinel"
+        ]
+      }
+    ]
+  },
+  "tags": [
+    "chinese",
+    "cli",
+    "text-processing",
+    "pipeline"
+  ],
+  "scenarioVersion": "3.1.0",
+  "scenarioHash": "4b7970238aca439d",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

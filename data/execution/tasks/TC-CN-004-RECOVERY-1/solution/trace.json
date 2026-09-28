@@ -1,0 +1,15 @@
+[
+  {
+    "tool": "check_server_status",
+    "args": {
+      "server_id": "srv-b"
+    }
+  },
+  {
+    "tool": "log_status",
+    "args": {
+      "server_id": "srv-b",
+      "status": "healthy"
+    }
+  }
+]

@@ -1,0 +1,15 @@
+[
+  {
+    "tool": "memory.read",
+    "args": {
+      "key": "user.language"
+    }
+  },
+  {
+    "tool": "memory.save",
+    "args": {
+      "key": "user.language.new",
+      "value": "ja"
+    }
+  }
+]

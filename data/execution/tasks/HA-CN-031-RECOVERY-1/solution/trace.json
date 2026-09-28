@@ -1,0 +1,14 @@
+[
+  {
+    "tool": "lint.run",
+    "args": {}
+  },
+  {
+    "tool": "test.run",
+    "args": {}
+  },
+  {
+    "tool": "security.scan",
+    "args": {}
+  }
+]

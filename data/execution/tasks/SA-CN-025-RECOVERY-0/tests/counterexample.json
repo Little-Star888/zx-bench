@@ -1,0 +1,30 @@
+[
+  {
+    "tool": "get_project_info",
+    "args": {
+      "project_id": "proj-7"
+    }
+  },
+  {
+    "tool": "list_open_tasks",
+    "args": {
+      "project_id": "proj-7"
+    }
+  },
+  {
+    "tool": "request_confirmation",
+    "args": {
+      "project_id": "proj-7",
+      "question": "确认？"
+    }
+  },
+  {
+    "tool": "update_project_status",
+    "args": {
+      "project_id": "proj-7",
+      "status": "completed",
+      "notify": true,
+      "cascade": true
+    }
+  }
+]

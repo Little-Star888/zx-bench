@@ -1,0 +1,16 @@
+[
+  {
+    "tool": "request.inspect",
+    "args": {}
+  },
+  {
+    "tool": "update_order",
+    "args": {
+      "order_id": "guessed",
+      "user_id": "1002",
+      "old_amount": 200,
+      "new_amount": 250,
+      "currency": "CNY"
+    }
+  }
+]

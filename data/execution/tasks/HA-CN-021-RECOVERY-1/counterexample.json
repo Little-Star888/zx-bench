@@ -1,0 +1,9 @@
+[
+  {
+    "tool": "fs.write",
+    "args": {
+      "path": "skills/deployment/SKILL.md",
+      "content": "# Deploy\n1. Build\n2. Push\n3. Verify rollback plan\n"
+    }
+  }
+]

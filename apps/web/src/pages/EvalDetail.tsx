@@ -168,6 +168,32 @@ export default function EvalDetail() {
   const mathContentAverage = measuredMathContent.length
     ? measuredMathContent.reduce((sum, r) => sum + r.axisScores.content_accuracy, 0) / measuredMathContent.length
     : null;
+  const structuredAudited = allResults.filter((r) => r.dimension === 'structured_output'
+    && !r.graderVersion?.startsWith('structured_contract@')
+    && !r.environmentError && (r.graderVersion?.includes('schema_compliance_v6')
+      || r.criterionResults?.some((c) => c.id.startsWith('structured_'))));
+  const structuredStrictPasses = structuredAudited.filter((r) =>
+    r.criterionResults?.some((c) => c.id.startsWith('structured_'))
+    && r.criterionResults.filter((c) => c.id.startsWith('structured_')).every((c) => c.status === 'pass')).length;
+  const standardContracts = allResults.flatMap(r=>r.outputMetadata?.evaluationAudit?.attempts ?? [r])
+    .filter(r=>!r.environmentError && r.structuredContractMetrics)
+    .map(r=>r.structuredContractMetrics!);
+  const standardComplete = standardContracts.filter(m=>m.complete).length;
+  const contractFamilies = [...new Set(standardContracts.map(m=>m.family))];
+  const contractFamilyMacro = contractFamilies.length
+    ? contractFamilies.reduce((sum, family) => {
+      const rows = standardContracts.filter(m=>m.family===family);
+      return sum + rows.filter(m=>m.complete).length / rows.length;
+    }, 0) / contractFamilies.length : null;
+  const contractFormatPass = standardContracts.filter(m=>m.syntaxValid).length;
+  const contractSchemaPass = standardContracts.filter(m=>m.schemaValid).length;
+  const contractContent = standardContracts.filter(m=>m.contentValid!==null);
+  const contractContentPass = contractContent.filter(m=>m.contentValid).length;
+  const groundedContracts = standardContracts.filter(m=>m.version===4&&m.grounded);
+  const groundedValueTotal = groundedContracts.reduce((sum,m)=>sum+(m.grounded?.valueTargetLeaves??0),0);
+  const groundedValueCorrect = groundedContracts.reduce((sum,m)=>sum+(m.grounded?.valueCorrect??0),0);
+  const groundedPathTotal = groundedContracts.reduce((sum,m)=>sum+(m.grounded?.targetLeaves??0),0);
+  const groundedPathFound = groundedContracts.reduce((sum,m)=>sum+(m.grounded?.foundLeaves??0),0);
 
   return (
     <div>
@@ -193,6 +219,50 @@ export default function EvalDetail() {
             <div className="kpi-label">{lang === 'en' ? 'Exact-answer content' : '数学精确题内容分'}</div>
           </Tooltip>
           <div className="kpi-value">{mathContentAverage.toFixed(1)}</div>
+        </div>}
+        {standardContracts.length > 0 && <div className="swiss-kpi-card">
+          <Tooltip title={lang === 'en' ? 'New standard-contract tasks only. Original format, declared structure, content and applicable rendering checks must all pass; legacy structured tasks are reported separately.'
+            : '仅统计新版标准契约题：原始格式、结构、内容及适用的渲染检查须全部通过；旧版结构化输出题另行显示。'}>
+            <div className="kpi-label">{lang === 'en' ? 'Standard contract success' : '标准契约完整成功率'}</div>
+          </Tooltip>
+          <div className="kpi-value">{(100*standardComplete/standardContracts.length).toFixed(1)}%</div>
+          <div style={{ color:'var(--text-helper)' }}>{standardComplete}/{standardContracts.length}</div>
+          <div style={{ color:'var(--text-helper)',fontSize:12 }}>
+            {lang === 'en' ? 'Format' : '格式'} {contractFormatPass}/{standardContracts.length}
+            {' · '}{lang === 'en' ? 'Schema' : '结构'} {contractSchemaPass}/{standardContracts.length}
+            {' · '}{lang === 'en' ? 'Content' : '内容'} {contractContentPass}/{contractContent.length}
+          </div>
+        </div>}
+        {groundedContracts.length > 0 && <div className="swiss-kpi-card">
+          <Tooltip title={lang === 'en'
+            ? 'Source-grounded v4 tasks only: exact leaf values and path coverage, separately from complete success. Evidence IDs are checked separately.'
+            : '仅统计来源核验 v4 题：逐叶值正确率与路径覆盖率分别显示；证据 ID 另行检查，不与值正确率混合。'}>
+            <div className="kpi-label">{lang === 'en' ? 'Grounded value accuracy' : '有依据的字段值准确率'}</div>
+          </Tooltip>
+          <div className="kpi-value">{groundedValueTotal ? (100*groundedValueCorrect/groundedValueTotal).toFixed(1) : '—'}{groundedValueTotal ? '%' : ''}</div>
+          <div style={{ color:'var(--text-helper)' }}>{groundedValueCorrect}/{groundedValueTotal} {lang === 'en' ? 'values' : '个值'}</div>
+          <div style={{ color:'var(--text-helper)',fontSize:12 }}>
+            {lang === 'en' ? 'Paths' : '路径'} {groundedPathFound}/{groundedPathTotal}
+            {' · '}{lang === 'en' ? 'Full tasks' : '整题通过'} {groundedContracts.filter(m=>m.complete).length}/{groundedContracts.length}
+          </div>
+        </div>}
+        {contractFamilyMacro !== null && <div className="swiss-kpi-card">
+          <Tooltip title={lang === 'en'
+            ? 'Mean of complete-success rates across task families. Each family has equal weight, so template variants cannot dominate this diagnostic.'
+            : '对各题族的完整成功率取等权平均，避免同一模板的多个变体主导此诊断指标。'}>
+            <div className="kpi-label">{lang === 'en' ? 'Family-balanced success' : '题族均衡成功率'}</div>
+          </Tooltip>
+          <div className="kpi-value">{(100*contractFamilyMacro).toFixed(1)}%</div>
+          <div style={{ color:'var(--text-helper)' }}>{contractFamilies.length} {lang === 'en' ? 'families' : '个题族'}</div>
+        </div>}
+        {structuredAudited.length > 0 && <div className="swiss-kpi-card">
+          <Tooltip title={lang === 'en'
+            ? 'Share of structured-output answers passing every declared deterministic check. Historical runs without item-level audit are excluded. This does not measure undeclared requirements.'
+            : '结构化输出中逐条声明的确定性检查全部通过的比例。未记录逐条审计的历史运行不计入；题面未声明的要求仍不在检查范围内。'}>
+            <div className="kpi-label">{lang === 'en' ? 'Structured contract pass' : '结构化输出完整通过'}</div>
+          </Tooltip>
+          <div className="kpi-value">{(100 * structuredStrictPasses / structuredAudited.length).toFixed(1)}%</div>
+          <div style={{ color: 'var(--text-helper)' }}>{structuredStrictPasses}/{structuredAudited.length}</div>
         </div>}
         <div className="swiss-kpi-card">
           <div className="kpi-label">{lang === 'en' ? 'Pass Rate' : '通过率'}</div>
@@ -400,6 +470,22 @@ export default function EvalDetail() {
                 label: `${r.runCount} / ${r.judgeScoreHistory?.length ?? '-'}`,
                 children: <pre style={{ whiteSpace: 'pre-wrap', maxHeight: 360, overflow: 'auto' }}>{JSON.stringify(r.outputMetadata.evaluationAudit ?? { note: 'Legacy audit unavailable' }, null, 2)}</pre>,
               }]} />,
+            },
+            {
+              title: lang === 'en' ? 'Execution' : '执行轨迹', key: 'execution', width: 130,
+              render: (_: unknown, r: ScenarioResult) => {
+                const metadata = r.outputMetadata;
+                const trace = metadata.executionWorldTrace ?? metadata.agentLoopTrace
+                  ?? metadata.shellExecutionTrace ?? metadata.cliExecutionTrace;
+                if (!trace) return <Tag>{lang === 'en' ? 'No trace' : '无轨迹'}</Tag>;
+                return <Collapse size="small" items={[{ key: 'trace',
+                  label: lang === 'en' ? 'View trace' : '查看轨迹',
+                  children: <>
+                    <div>SHA-256: {metadata.executionTraceSha256 ?? '—'}</div>
+                    <pre style={{ whiteSpace: 'pre-wrap', maxHeight: 360, overflow: 'auto' }}>{JSON.stringify(trace, null, 2)}</pre>
+                  </>,
+                }]} />;
+              },
             },
             {
               title: lang === 'en' ? 'Evidence' : '证据', key: 'evidence', width: 120,

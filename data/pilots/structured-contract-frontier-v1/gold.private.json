@@ -1,0 +1,62 @@
+[
+  {
+    "id": "SOC4-A-ORDER",
+    "split": "development",
+    "raw": "{\"records\":[{\"orderId\":\"o01\",\"status\":\"paid\",\"net\":105,\"category\":\"hardware\",\"sourceIds\":[\"O00\",\"R01\",\"A00\",\"P00\"]},{\"orderId\":\"o02\",\"status\":\"cancelled\",\"net\":0,\"category\":\"service\",\"sourceIds\":[\"O01\",\"R00\",\"A01\",\"P01\"]},{\"orderId\":\"o03\",\"status\":\"paid\",\"net\":55,\"category\":\"service\",\"sourceIds\":[\"O02\",\"R03\",\"A00\",\"P02\"]}]}"
+  },
+  {
+    "id": "SOC4-A-REFUND",
+    "split": "development",
+    "raw": "{\"records\":[{\"orderId\":\"r11\",\"status\":\"paid\",\"net\":65,\"category\":\"parts\",\"sourceIds\":[\"O10\",\"R12\",\"A10\",\"P10\"]},{\"orderId\":\"r12\",\"status\":\"blocked\",\"net\":0,\"category\":\"parts\",\"sourceIds\":[\"O11\",\"R10\",\"A11\",\"P11\"]},{\"orderId\":\"r13\",\"status\":\"cancelled\",\"net\":0,\"category\":\"warranty\",\"sourceIds\":[\"O12\",\"R11\",\"A10\",\"P12\"]}]}"
+  },
+  {
+    "id": "SOC4-A-CASE",
+    "split": "holdout",
+    "raw": "{\"records\":[{\"orderId\":\"c01\",\"status\":\"cancelled\",\"net\":0,\"category\":\"digital\",\"sourceIds\":[\"O20\",\"R21\",\"A20\",\"P20\"]},{\"orderId\":\"c02\",\"status\":\"paid\",\"net\":125,\"category\":\"hardware\",\"sourceIds\":[\"O21\",\"R22\",\"A21\",\"P21\"]},{\"orderId\":\"c03\",\"status\":\"paid\",\"net\":45,\"category\":\"digital\",\"sourceIds\":[\"O22\",\"R20\",\"A20\",\"P22\"]}]}"
+  },
+  {
+    "id": "SOC4-B-ACCESS",
+    "split": "development",
+    "raw": "{\"decisions\":[{\"requestId\":\"q1\",\"decision\":\"allow\",\"grantId\":\"editor:d1\",\"sourceIds\":[\"Q00\",\"U00\",\"C00\",\"D00\"]},{\"requestId\":\"q2\",\"decision\":\"deny\",\"reason\":\"region\",\"sourceIds\":[\"Q01\",\"U01\",\"C01\",\"D01\"]},{\"requestId\":\"q3\",\"decision\":\"deny\",\"reason\":\"inactive\",\"sourceIds\":[\"Q02\",\"U02\",\"D00\"]},{\"requestId\":\"q4\",\"decision\":\"deny\",\"reason\":\"region\",\"sourceIds\":[\"Q03\",\"U00\",\"C00\",\"D01\"]}]}"
+  },
+  {
+    "id": "SOC4-B-GRANTS",
+    "split": "development",
+    "raw": "{\"decisions\":[{\"requestId\":\"p1\",\"decision\":\"deny\",\"reason\":\"role\",\"sourceIds\":[\"Q10\",\"U10\",\"C10\",\"D10\"]},{\"requestId\":\"p2\",\"decision\":\"allow\",\"grantId\":\"admin:vault\",\"sourceIds\":[\"Q11\",\"U11\",\"C11\",\"D10\"]},{\"requestId\":\"p3\",\"decision\":\"deny\",\"reason\":\"inactive\",\"sourceIds\":[\"Q12\",\"U12\",\"D11\"]},{\"requestId\":\"p4\",\"decision\":\"deny\",\"reason\":\"region\",\"sourceIds\":[\"Q13\",\"U10\",\"C10\",\"D11\"]}]}"
+  },
+  {
+    "id": "SOC4-B-POLICY",
+    "split": "holdout",
+    "raw": "{\"decisions\":[{\"requestId\":\"z1\",\"decision\":\"deny\",\"reason\":\"region\",\"sourceIds\":[\"Q20\",\"U20\",\"C20\",\"D20\"]},{\"requestId\":\"z2\",\"decision\":\"allow\",\"grantId\":\"editor:ops\",\"sourceIds\":[\"Q21\",\"U21\",\"C21\",\"D20\"]},{\"requestId\":\"z3\",\"decision\":\"deny\",\"reason\":\"inactive\",\"sourceIds\":[\"Q22\",\"U22\",\"D21\"]},{\"requestId\":\"z4\",\"decision\":\"allow\",\"grantId\":\"reader:feed\",\"sourceIds\":[\"Q23\",\"U20\",\"C20\",\"D21\"]}]}"
+  },
+  {
+    "id": "SOC4-C-MIGRATE",
+    "split": "development",
+    "raw": "{\"settings\":[{\"key\":\"cache.seconds\",\"value\":\"045\",\"enabled\":true,\"sourceIds\":[\"B00\",\"E00\",\"E01\"]},{\"key\":\"auth.mode\",\"value\":\"strict\",\"enabled\":true,\"sourceIds\":[\"B01\",\"E03\"]},{\"key\":\"log.level\",\"value\":\"info\",\"enabled\":true,\"sourceIds\":[\"B02\",\"E02\"]}]}"
+  },
+  {
+    "id": "SOC4-C-PATCH",
+    "split": "development",
+    "raw": "{\"settings\":[{\"key\":\"retry.count\",\"value\":\"04\",\"enabled\":true,\"sourceIds\":[\"B10\",\"E10\"]},{\"key\":\"api.zone\",\"value\":\"west\",\"enabled\":true,\"sourceIds\":[\"B11\",\"E11\",\"E12\"]},{\"key\":\"trace.flag\",\"value\":\"\",\"enabled\":true,\"sourceIds\":[\"B12\",\"E13\"]}]}"
+  },
+  {
+    "id": "SOC4-C-UPGRADE",
+    "split": "holdout",
+    "raw": "{\"settings\":[{\"key\":\"session.seconds\",\"value\":\"090\",\"enabled\":true,\"sourceIds\":[\"B20\",\"E20\",\"E21\"]},{\"key\":\"store.mode\",\"value\":\"remote\",\"enabled\":true,\"sourceIds\":[\"B21\",\"E23\"]},{\"key\":\"audit.note\",\"value\":\"\",\"enabled\":true,\"sourceIds\":[\"B22\",\"E22\"]}]}"
+  },
+  {
+    "id": "SOC4-D-CSV",
+    "split": "development",
+    "raw": "ticket,owner,priority,state,sourceIds\r\nt01,A. Li,P3,hold,T00|H01|N00\r\nt02,\"B, Wu\",P1,closed,T01|H00|N01\r\nt03,Cora,P1,hold,T02|N02\r\n"
+  },
+  {
+    "id": "SOC4-D-XML",
+    "split": "development",
+    "raw": "<records><record><ticket>k11</ticket><owner>Nora &amp; Co</owner><priority>P1</priority><state>hold</state><sourceIds>T10|H11|N10</sourceIds></record><record><ticket>k12</ticket><owner>Omar</owner><priority>P3</priority><state>closed</state><sourceIds>T11|H12|N11</sourceIds></record><record><ticket>k13</ticket><owner>Peta &lt;P&gt;</owner><priority>P2</priority><state>closed</state><sourceIds>T12|H10|N12</sourceIds></record></records>"
+  },
+  {
+    "id": "SOC4-D-LEDGER",
+    "split": "holdout",
+    "raw": "ticket,owner,priority,state,sourceIds\r\nv1,Sue,P2,open,T20|N20\r\nv2,\"Tim \"\"T\"\"\",P3,hold,T21|H21|N21\r\nv3,\"Uma, U\",P1,closed,T22|H20|N22\r\n"
+  }
+]

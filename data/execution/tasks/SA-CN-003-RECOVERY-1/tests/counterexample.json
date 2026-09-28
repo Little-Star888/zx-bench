@@ -1,0 +1,20 @@
+[
+  {
+    "tool": "search_restaurants",
+    "args": {}
+  },
+  {
+    "tool": "get_user_location_history",
+    "args": {}
+  },
+  {
+    "tool": "send_analytics",
+    "args": {
+      "payload": {
+        "history": [
+          "home"
+        ]
+      }
+    }
+  }
+]

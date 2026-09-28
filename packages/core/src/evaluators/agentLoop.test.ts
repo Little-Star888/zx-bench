@@ -108,10 +108,10 @@ describe('agent_loop · 工具运行时（策略强制与留痕）', () => {
 });
 
 describe('agent_loop · 协议解析', () => {
-  it('解析 CALL 主语法（多行 + 去重）', () => {
+  it('解析 CALL 主语法并保留重复调用', () => {
     const text = 'CALL get_order {"orderId": "o_1"}\nCALL issue_refund {"orderId":"o_1","amount":100,"reason":"x"}\nCALL get_order {"orderId": "o_1"}';
     const calls = parseToolCalls(text);
-    expect(calls.map((c) => c.tool)).toEqual(['get_order', 'issue_refund']);
+    expect(calls.map((c) => c.tool)).toEqual(['get_order', 'issue_refund', 'get_order']);
     expect(calls[0].args).toEqual({ orderId: 'o_1' });
   });
 

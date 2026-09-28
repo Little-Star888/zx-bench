@@ -1,0 +1,1942 @@
+{
+  "SOC4-A-ORDER": {
+    "expected": {
+      "records": [
+        {
+          "orderId": "o01",
+          "status": "paid",
+          "net": 105,
+          "category": "hardware",
+          "sourceIds": [
+            "O00",
+            "R01",
+            "A00",
+            "P00"
+          ]
+        },
+        {
+          "orderId": "o02",
+          "status": "cancelled",
+          "net": 0,
+          "category": "service",
+          "sourceIds": [
+            "O01",
+            "R00",
+            "A01",
+            "P01"
+          ]
+        },
+        {
+          "orderId": "o03",
+          "status": "paid",
+          "net": 55,
+          "category": "service",
+          "sourceIds": [
+            "O02",
+            "R03",
+            "A00",
+            "P02"
+          ]
+        }
+      ]
+    },
+    "sources": {
+      "O00": "orders: {\"id\":\"O00\",\"orderId\":\"o01\",\"account\":\"a1\",\"sku\":\"sku-7\",\"gross\":120,\"state\":\"open\"}",
+      "O01": "orders: {\"id\":\"O01\",\"orderId\":\"o02\",\"account\":\"a2\",\"sku\":\"sku-8\",\"gross\":90,\"state\":\"open\"}",
+      "O02": "orders: {\"id\":\"O02\",\"orderId\":\"o03\",\"account\":\"a1\",\"sku\":\"sku-9\",\"gross\":60,\"state\":\"open\"}",
+      "R00": "revisions: {\"id\":\"R00\",\"orderId\":\"o02\",\"revision\":2,\"state\":\"cancelled\",\"gross\":null}",
+      "R01": "revisions: {\"id\":\"R01\",\"orderId\":\"o01\",\"revision\":3,\"state\":\"paid\",\"gross\":105}",
+      "R02": "revisions: {\"id\":\"R02\",\"orderId\":\"o02\",\"revision\":1,\"state\":\"paid\",\"gross\":80}",
+      "R03": "revisions: {\"id\":\"R03\",\"orderId\":\"o03\",\"revision\":4,\"state\":\"paid\",\"gross\":55}",
+      "A00": "accounts: {\"id\":\"A00\",\"account\":\"a1\",\"active\":true}",
+      "A01": "accounts: {\"id\":\"A01\",\"account\":\"a2\",\"active\":true}",
+      "P00": "catalog: {\"id\":\"P00\",\"sku\":\"sku-7\",\"category\":\"hardware\"}",
+      "P01": "catalog: {\"id\":\"P01\",\"sku\":\"sku-8\",\"category\":\"service\"}",
+      "P02": "catalog: {\"id\":\"P02\",\"sku\":\"sku-9\",\"category\":\"service\"}"
+    },
+    "provenance": {
+      "/records/0/orderId": [
+        "O00",
+        "R01",
+        "A00",
+        "P00"
+      ],
+      "/records/0/status": [
+        "O00",
+        "R01",
+        "A00",
+        "P00"
+      ],
+      "/records/0/net": [
+        "O00",
+        "R01",
+        "A00",
+        "P00"
+      ],
+      "/records/0/category": [
+        "O00",
+        "R01",
+        "A00",
+        "P00"
+      ],
+      "/records/0/sourceIds/0": [
+        "O00",
+        "R01",
+        "A00",
+        "P00"
+      ],
+      "/records/0/sourceIds/1": [
+        "O00",
+        "R01",
+        "A00",
+        "P00"
+      ],
+      "/records/0/sourceIds/2": [
+        "O00",
+        "R01",
+        "A00",
+        "P00"
+      ],
+      "/records/0/sourceIds/3": [
+        "O00",
+        "R01",
+        "A00",
+        "P00"
+      ],
+      "/records/1/orderId": [
+        "O01",
+        "R00",
+        "A01",
+        "P01"
+      ],
+      "/records/1/status": [
+        "O01",
+        "R00",
+        "A01",
+        "P01"
+      ],
+      "/records/1/net": [
+        "O01",
+        "R00",
+        "A01",
+        "P01"
+      ],
+      "/records/1/category": [
+        "O01",
+        "R00",
+        "A01",
+        "P01"
+      ],
+      "/records/1/sourceIds/0": [
+        "O01",
+        "R00",
+        "A01",
+        "P01"
+      ],
+      "/records/1/sourceIds/1": [
+        "O01",
+        "R00",
+        "A01",
+        "P01"
+      ],
+      "/records/1/sourceIds/2": [
+        "O01",
+        "R00",
+        "A01",
+        "P01"
+      ],
+      "/records/1/sourceIds/3": [
+        "O01",
+        "R00",
+        "A01",
+        "P01"
+      ],
+      "/records/2/orderId": [
+        "O02",
+        "R03",
+        "A00",
+        "P02"
+      ],
+      "/records/2/status": [
+        "O02",
+        "R03",
+        "A00",
+        "P02"
+      ],
+      "/records/2/net": [
+        "O02",
+        "R03",
+        "A00",
+        "P02"
+      ],
+      "/records/2/category": [
+        "O02",
+        "R03",
+        "A00",
+        "P02"
+      ],
+      "/records/2/sourceIds/0": [
+        "O02",
+        "R03",
+        "A00",
+        "P02"
+      ],
+      "/records/2/sourceIds/1": [
+        "O02",
+        "R03",
+        "A00",
+        "P02"
+      ],
+      "/records/2/sourceIds/2": [
+        "O02",
+        "R03",
+        "A00",
+        "P02"
+      ],
+      "/records/2/sourceIds/3": [
+        "O02",
+        "R03",
+        "A00",
+        "P02"
+      ]
+    }
+  },
+  "SOC4-A-REFUND": {
+    "expected": {
+      "records": [
+        {
+          "orderId": "r11",
+          "status": "paid",
+          "net": 65,
+          "category": "parts",
+          "sourceIds": [
+            "O10",
+            "R12",
+            "A10",
+            "P10"
+          ]
+        },
+        {
+          "orderId": "r12",
+          "status": "blocked",
+          "net": 0,
+          "category": "parts",
+          "sourceIds": [
+            "O11",
+            "R10",
+            "A11",
+            "P11"
+          ]
+        },
+        {
+          "orderId": "r13",
+          "status": "cancelled",
+          "net": 0,
+          "category": "warranty",
+          "sourceIds": [
+            "O12",
+            "R11",
+            "A10",
+            "P12"
+          ]
+        }
+      ]
+    },
+    "sources": {
+      "O10": "orders: {\"id\":\"O10\",\"orderId\":\"r11\",\"account\":\"u7\",\"sku\":\"part-A\",\"gross\":70,\"state\":\"open\"}",
+      "O11": "orders: {\"id\":\"O11\",\"orderId\":\"r12\",\"account\":\"u8\",\"sku\":\"part-B\",\"gross\":115,\"state\":\"open\"}",
+      "O12": "orders: {\"id\":\"O12\",\"orderId\":\"r13\",\"account\":\"u7\",\"sku\":\"part-C\",\"gross\":40,\"state\":\"open\"}",
+      "R10": "revisions: {\"id\":\"R10\",\"orderId\":\"r12\",\"revision\":6,\"state\":\"paid\",\"gross\":100}",
+      "R11": "revisions: {\"id\":\"R11\",\"orderId\":\"r13\",\"revision\":5,\"state\":\"cancelled\",\"gross\":null}",
+      "R12": "revisions: {\"id\":\"R12\",\"orderId\":\"r11\",\"revision\":9,\"state\":\"paid\",\"gross\":65}",
+      "R13": "revisions: {\"id\":\"R13\",\"orderId\":\"r12\",\"revision\":4,\"state\":\"cancelled\",\"gross\":null}",
+      "A10": "accounts: {\"id\":\"A10\",\"account\":\"u7\",\"active\":true}",
+      "A11": "accounts: {\"id\":\"A11\",\"account\":\"u8\",\"active\":false}",
+      "P10": "catalog: {\"id\":\"P10\",\"sku\":\"part-A\",\"category\":\"parts\"}",
+      "P11": "catalog: {\"id\":\"P11\",\"sku\":\"part-B\",\"category\":\"parts\"}",
+      "P12": "catalog: {\"id\":\"P12\",\"sku\":\"part-C\",\"category\":\"warranty\"}"
+    },
+    "provenance": {
+      "/records/0/orderId": [
+        "O10",
+        "R12",
+        "A10",
+        "P10"
+      ],
+      "/records/0/status": [
+        "O10",
+        "R12",
+        "A10",
+        "P10"
+      ],
+      "/records/0/net": [
+        "O10",
+        "R12",
+        "A10",
+        "P10"
+      ],
+      "/records/0/category": [
+        "O10",
+        "R12",
+        "A10",
+        "P10"
+      ],
+      "/records/0/sourceIds/0": [
+        "O10",
+        "R12",
+        "A10",
+        "P10"
+      ],
+      "/records/0/sourceIds/1": [
+        "O10",
+        "R12",
+        "A10",
+        "P10"
+      ],
+      "/records/0/sourceIds/2": [
+        "O10",
+        "R12",
+        "A10",
+        "P10"
+      ],
+      "/records/0/sourceIds/3": [
+        "O10",
+        "R12",
+        "A10",
+        "P10"
+      ],
+      "/records/1/orderId": [
+        "O11",
+        "R10",
+        "A11",
+        "P11"
+      ],
+      "/records/1/status": [
+        "O11",
+        "R10",
+        "A11",
+        "P11"
+      ],
+      "/records/1/net": [
+        "O11",
+        "R10",
+        "A11",
+        "P11"
+      ],
+      "/records/1/category": [
+        "O11",
+        "R10",
+        "A11",
+        "P11"
+      ],
+      "/records/1/sourceIds/0": [
+        "O11",
+        "R10",
+        "A11",
+        "P11"
+      ],
+      "/records/1/sourceIds/1": [
+        "O11",
+        "R10",
+        "A11",
+        "P11"
+      ],
+      "/records/1/sourceIds/2": [
+        "O11",
+        "R10",
+        "A11",
+        "P11"
+      ],
+      "/records/1/sourceIds/3": [
+        "O11",
+        "R10",
+        "A11",
+        "P11"
+      ],
+      "/records/2/orderId": [
+        "O12",
+        "R11",
+        "A10",
+        "P12"
+      ],
+      "/records/2/status": [
+        "O12",
+        "R11",
+        "A10",
+        "P12"
+      ],
+      "/records/2/net": [
+        "O12",
+        "R11",
+        "A10",
+        "P12"
+      ],
+      "/records/2/category": [
+        "O12",
+        "R11",
+        "A10",
+        "P12"
+      ],
+      "/records/2/sourceIds/0": [
+        "O12",
+        "R11",
+        "A10",
+        "P12"
+      ],
+      "/records/2/sourceIds/1": [
+        "O12",
+        "R11",
+        "A10",
+        "P12"
+      ],
+      "/records/2/sourceIds/2": [
+        "O12",
+        "R11",
+        "A10",
+        "P12"
+      ],
+      "/records/2/sourceIds/3": [
+        "O12",
+        "R11",
+        "A10",
+        "P12"
+      ]
+    }
+  },
+  "SOC4-A-CASE": {
+    "expected": {
+      "records": [
+        {
+          "orderId": "c01",
+          "status": "cancelled",
+          "net": 0,
+          "category": "digital",
+          "sourceIds": [
+            "O20",
+            "R21",
+            "A20",
+            "P20"
+          ]
+        },
+        {
+          "orderId": "c02",
+          "status": "paid",
+          "net": 125,
+          "category": "hardware",
+          "sourceIds": [
+            "O21",
+            "R22",
+            "A21",
+            "P21"
+          ]
+        },
+        {
+          "orderId": "c03",
+          "status": "paid",
+          "net": 45,
+          "category": "digital",
+          "sourceIds": [
+            "O22",
+            "R20",
+            "A20",
+            "P22"
+          ]
+        }
+      ]
+    },
+    "sources": {
+      "O20": "orders: {\"id\":\"O20\",\"orderId\":\"c01\",\"account\":\"x1\",\"sku\":\"P-01\",\"gross\":75,\"state\":\"open\"}",
+      "O21": "orders: {\"id\":\"O21\",\"orderId\":\"c02\",\"account\":\"x2\",\"sku\":\"P-02\",\"gross\":130,\"state\":\"open\"}",
+      "O22": "orders: {\"id\":\"O22\",\"orderId\":\"c03\",\"account\":\"x1\",\"sku\":\"P-03\",\"gross\":50,\"state\":\"open\"}",
+      "R20": "revisions: {\"id\":\"R20\",\"orderId\":\"c03\",\"revision\":7,\"state\":\"paid\",\"gross\":45}",
+      "R21": "revisions: {\"id\":\"R21\",\"orderId\":\"c01\",\"revision\":8,\"state\":\"cancelled\",\"gross\":null}",
+      "R22": "revisions: {\"id\":\"R22\",\"orderId\":\"c02\",\"revision\":2,\"state\":\"paid\",\"gross\":125}",
+      "R23": "revisions: {\"id\":\"R23\",\"orderId\":\"c01\",\"revision\":3,\"state\":\"paid\",\"gross\":70}",
+      "A20": "accounts: {\"id\":\"A20\",\"account\":\"x1\",\"active\":true}",
+      "A21": "accounts: {\"id\":\"A21\",\"account\":\"x2\",\"active\":true}",
+      "P20": "catalog: {\"id\":\"P20\",\"sku\":\"P-01\",\"category\":\"digital\"}",
+      "P21": "catalog: {\"id\":\"P21\",\"sku\":\"P-02\",\"category\":\"hardware\"}",
+      "P22": "catalog: {\"id\":\"P22\",\"sku\":\"P-03\",\"category\":\"digital\"}"
+    },
+    "provenance": {
+      "/records/0/orderId": [
+        "O20",
+        "R21",
+        "A20",
+        "P20"
+      ],
+      "/records/0/status": [
+        "O20",
+        "R21",
+        "A20",
+        "P20"
+      ],
+      "/records/0/net": [
+        "O20",
+        "R21",
+        "A20",
+        "P20"
+      ],
+      "/records/0/category": [
+        "O20",
+        "R21",
+        "A20",
+        "P20"
+      ],
+      "/records/0/sourceIds/0": [
+        "O20",
+        "R21",
+        "A20",
+        "P20"
+      ],
+      "/records/0/sourceIds/1": [
+        "O20",
+        "R21",
+        "A20",
+        "P20"
+      ],
+      "/records/0/sourceIds/2": [
+        "O20",
+        "R21",
+        "A20",
+        "P20"
+      ],
+      "/records/0/sourceIds/3": [
+        "O20",
+        "R21",
+        "A20",
+        "P20"
+      ],
+      "/records/1/orderId": [
+        "O21",
+        "R22",
+        "A21",
+        "P21"
+      ],
+      "/records/1/status": [
+        "O21",
+        "R22",
+        "A21",
+        "P21"
+      ],
+      "/records/1/net": [
+        "O21",
+        "R22",
+        "A21",
+        "P21"
+      ],
+      "/records/1/category": [
+        "O21",
+        "R22",
+        "A21",
+        "P21"
+      ],
+      "/records/1/sourceIds/0": [
+        "O21",
+        "R22",
+        "A21",
+        "P21"
+      ],
+      "/records/1/sourceIds/1": [
+        "O21",
+        "R22",
+        "A21",
+        "P21"
+      ],
+      "/records/1/sourceIds/2": [
+        "O21",
+        "R22",
+        "A21",
+        "P21"
+      ],
+      "/records/1/sourceIds/3": [
+        "O21",
+        "R22",
+        "A21",
+        "P21"
+      ],
+      "/records/2/orderId": [
+        "O22",
+        "R20",
+        "A20",
+        "P22"
+      ],
+      "/records/2/status": [
+        "O22",
+        "R20",
+        "A20",
+        "P22"
+      ],
+      "/records/2/net": [
+        "O22",
+        "R20",
+        "A20",
+        "P22"
+      ],
+      "/records/2/category": [
+        "O22",
+        "R20",
+        "A20",
+        "P22"
+      ],
+      "/records/2/sourceIds/0": [
+        "O22",
+        "R20",
+        "A20",
+        "P22"
+      ],
+      "/records/2/sourceIds/1": [
+        "O22",
+        "R20",
+        "A20",
+        "P22"
+      ],
+      "/records/2/sourceIds/2": [
+        "O22",
+        "R20",
+        "A20",
+        "P22"
+      ],
+      "/records/2/sourceIds/3": [
+        "O22",
+        "R20",
+        "A20",
+        "P22"
+      ]
+    }
+  },
+  "SOC4-B-ACCESS": {
+    "expected": {
+      "decisions": [
+        {
+          "requestId": "q1",
+          "decision": "allow",
+          "grantId": "editor:d1",
+          "sourceIds": [
+            "Q00",
+            "U00",
+            "C00",
+            "D00"
+          ]
+        },
+        {
+          "requestId": "q2",
+          "decision": "deny",
+          "reason": "region",
+          "sourceIds": [
+            "Q01",
+            "U01",
+            "C01",
+            "D01"
+          ]
+        },
+        {
+          "requestId": "q3",
+          "decision": "deny",
+          "reason": "inactive",
+          "sourceIds": [
+            "Q02",
+            "U02",
+            "D00"
+          ]
+        },
+        {
+          "requestId": "q4",
+          "decision": "deny",
+          "reason": "region",
+          "sourceIds": [
+            "Q03",
+            "U00",
+            "C00",
+            "D01"
+          ]
+        }
+      ]
+    },
+    "sources": {
+      "U00": "users: {\"id\":\"U00\",\"user\":\"u01\",\"active\":true,\"role\":\"reader\",\"region\":\"east\"}",
+      "U01": "users: {\"id\":\"U01\",\"user\":\"u02\",\"active\":true,\"role\":\"editor\",\"region\":\"west\"}",
+      "U02": "users: {\"id\":\"U02\",\"user\":\"u03\",\"active\":false,\"role\":\"admin\",\"region\":\"east\"}",
+      "C00": "updates: {\"id\":\"C00\",\"user\":\"u01\",\"revision\":4,\"role\":\"editor\",\"region\":null}",
+      "C01": "updates: {\"id\":\"C01\",\"user\":\"u02\",\"revision\":7,\"role\":null,\"region\":\"east\"}",
+      "D00": "resources: {\"id\":\"D00\",\"resource\":\"d1\",\"minRole\":\"editor\",\"region\":\"east\"}",
+      "D01": "resources: {\"id\":\"D01\",\"resource\":\"d2\",\"minRole\":\"reader\",\"region\":\"west\"}",
+      "Q00": "requests: {\"id\":\"Q00\",\"requestId\":\"q1\",\"user\":\"u01\",\"resource\":\"d1\"}",
+      "Q01": "requests: {\"id\":\"Q01\",\"requestId\":\"q2\",\"user\":\"u02\",\"resource\":\"d2\"}",
+      "Q02": "requests: {\"id\":\"Q02\",\"requestId\":\"q3\",\"user\":\"u03\",\"resource\":\"d1\"}",
+      "Q03": "requests: {\"id\":\"Q03\",\"requestId\":\"q4\",\"user\":\"u01\",\"resource\":\"d2\"}"
+    },
+    "provenance": {
+      "/decisions/0/requestId": [
+        "Q00",
+        "U00",
+        "C00",
+        "D00"
+      ],
+      "/decisions/0/decision": [
+        "Q00",
+        "U00",
+        "C00",
+        "D00"
+      ],
+      "/decisions/0/grantId": [
+        "Q00",
+        "U00",
+        "C00",
+        "D00"
+      ],
+      "/decisions/0/sourceIds/0": [
+        "Q00",
+        "U00",
+        "C00",
+        "D00"
+      ],
+      "/decisions/0/sourceIds/1": [
+        "Q00",
+        "U00",
+        "C00",
+        "D00"
+      ],
+      "/decisions/0/sourceIds/2": [
+        "Q00",
+        "U00",
+        "C00",
+        "D00"
+      ],
+      "/decisions/0/sourceIds/3": [
+        "Q00",
+        "U00",
+        "C00",
+        "D00"
+      ],
+      "/decisions/1/requestId": [
+        "Q01",
+        "U01",
+        "C01",
+        "D01"
+      ],
+      "/decisions/1/decision": [
+        "Q01",
+        "U01",
+        "C01",
+        "D01"
+      ],
+      "/decisions/1/reason": [
+        "Q01",
+        "U01",
+        "C01",
+        "D01"
+      ],
+      "/decisions/1/sourceIds/0": [
+        "Q01",
+        "U01",
+        "C01",
+        "D01"
+      ],
+      "/decisions/1/sourceIds/1": [
+        "Q01",
+        "U01",
+        "C01",
+        "D01"
+      ],
+      "/decisions/1/sourceIds/2": [
+        "Q01",
+        "U01",
+        "C01",
+        "D01"
+      ],
+      "/decisions/1/sourceIds/3": [
+        "Q01",
+        "U01",
+        "C01",
+        "D01"
+      ],
+      "/decisions/2/requestId": [
+        "Q02",
+        "U02",
+        "D00"
+      ],
+      "/decisions/2/decision": [
+        "Q02",
+        "U02",
+        "D00"
+      ],
+      "/decisions/2/reason": [
+        "Q02",
+        "U02",
+        "D00"
+      ],
+      "/decisions/2/sourceIds/0": [
+        "Q02",
+        "U02",
+        "D00"
+      ],
+      "/decisions/2/sourceIds/1": [
+        "Q02",
+        "U02",
+        "D00"
+      ],
+      "/decisions/2/sourceIds/2": [
+        "Q02",
+        "U02",
+        "D00"
+      ],
+      "/decisions/3/requestId": [
+        "Q03",
+        "U00",
+        "C00",
+        "D01"
+      ],
+      "/decisions/3/decision": [
+        "Q03",
+        "U00",
+        "C00",
+        "D01"
+      ],
+      "/decisions/3/reason": [
+        "Q03",
+        "U00",
+        "C00",
+        "D01"
+      ],
+      "/decisions/3/sourceIds/0": [
+        "Q03",
+        "U00",
+        "C00",
+        "D01"
+      ],
+      "/decisions/3/sourceIds/1": [
+        "Q03",
+        "U00",
+        "C00",
+        "D01"
+      ],
+      "/decisions/3/sourceIds/2": [
+        "Q03",
+        "U00",
+        "C00",
+        "D01"
+      ],
+      "/decisions/3/sourceIds/3": [
+        "Q03",
+        "U00",
+        "C00",
+        "D01"
+      ]
+    }
+  },
+  "SOC4-B-GRANTS": {
+    "expected": {
+      "decisions": [
+        {
+          "requestId": "p1",
+          "decision": "deny",
+          "reason": "role",
+          "sourceIds": [
+            "Q10",
+            "U10",
+            "C10",
+            "D10"
+          ]
+        },
+        {
+          "requestId": "p2",
+          "decision": "allow",
+          "grantId": "admin:vault",
+          "sourceIds": [
+            "Q11",
+            "U11",
+            "C11",
+            "D10"
+          ]
+        },
+        {
+          "requestId": "p3",
+          "decision": "deny",
+          "reason": "inactive",
+          "sourceIds": [
+            "Q12",
+            "U12",
+            "D11"
+          ]
+        },
+        {
+          "requestId": "p4",
+          "decision": "deny",
+          "reason": "region",
+          "sourceIds": [
+            "Q13",
+            "U10",
+            "C10",
+            "D11"
+          ]
+        }
+      ]
+    },
+    "sources": {
+      "U10": "users: {\"id\":\"U10\",\"user\":\"a7\",\"active\":true,\"role\":\"editor\",\"region\":\"north\"}",
+      "U11": "users: {\"id\":\"U11\",\"user\":\"a8\",\"active\":true,\"role\":\"reader\",\"region\":\"south\"}",
+      "U12": "users: {\"id\":\"U12\",\"user\":\"a9\",\"active\":false,\"role\":\"admin\",\"region\":\"north\"}",
+      "C10": "updates: {\"id\":\"C10\",\"user\":\"a7\",\"revision\":5,\"role\":\"reader\",\"region\":null}",
+      "C11": "updates: {\"id\":\"C11\",\"user\":\"a8\",\"revision\":8,\"role\":\"admin\",\"region\":\"north\"}",
+      "D10": "resources: {\"id\":\"D10\",\"resource\":\"vault\",\"minRole\":\"admin\",\"region\":\"north\"}",
+      "D11": "resources: {\"id\":\"D11\",\"resource\":\"blog\",\"minRole\":\"reader\",\"region\":\"south\"}",
+      "Q10": "requests: {\"id\":\"Q10\",\"requestId\":\"p1\",\"user\":\"a7\",\"resource\":\"vault\"}",
+      "Q11": "requests: {\"id\":\"Q11\",\"requestId\":\"p2\",\"user\":\"a8\",\"resource\":\"vault\"}",
+      "Q12": "requests: {\"id\":\"Q12\",\"requestId\":\"p3\",\"user\":\"a9\",\"resource\":\"blog\"}",
+      "Q13": "requests: {\"id\":\"Q13\",\"requestId\":\"p4\",\"user\":\"a7\",\"resource\":\"blog\"}"
+    },
+    "provenance": {
+      "/decisions/0/requestId": [
+        "Q10",
+        "U10",
+        "C10",
+        "D10"
+      ],
+      "/decisions/0/decision": [
+        "Q10",
+        "U10",
+        "C10",
+        "D10"
+      ],
+      "/decisions/0/reason": [
+        "Q10",
+        "U10",
+        "C10",
+        "D10"
+      ],
+      "/decisions/0/sourceIds/0": [
+        "Q10",
+        "U10",
+        "C10",
+        "D10"
+      ],
+      "/decisions/0/sourceIds/1": [
+        "Q10",
+        "U10",
+        "C10",
+        "D10"
+      ],
+      "/decisions/0/sourceIds/2": [
+        "Q10",
+        "U10",
+        "C10",
+        "D10"
+      ],
+      "/decisions/0/sourceIds/3": [
+        "Q10",
+        "U10",
+        "C10",
+        "D10"
+      ],
+      "/decisions/1/requestId": [
+        "Q11",
+        "U11",
+        "C11",
+        "D10"
+      ],
+      "/decisions/1/decision": [
+        "Q11",
+        "U11",
+        "C11",
+        "D10"
+      ],
+      "/decisions/1/grantId": [
+        "Q11",
+        "U11",
+        "C11",
+        "D10"
+      ],
+      "/decisions/1/sourceIds/0": [
+        "Q11",
+        "U11",
+        "C11",
+        "D10"
+      ],
+      "/decisions/1/sourceIds/1": [
+        "Q11",
+        "U11",
+        "C11",
+        "D10"
+      ],
+      "/decisions/1/sourceIds/2": [
+        "Q11",
+        "U11",
+        "C11",
+        "D10"
+      ],
+      "/decisions/1/sourceIds/3": [
+        "Q11",
+        "U11",
+        "C11",
+        "D10"
+      ],
+      "/decisions/2/requestId": [
+        "Q12",
+        "U12",
+        "D11"
+      ],
+      "/decisions/2/decision": [
+        "Q12",
+        "U12",
+        "D11"
+      ],
+      "/decisions/2/reason": [
+        "Q12",
+        "U12",
+        "D11"
+      ],
+      "/decisions/2/sourceIds/0": [
+        "Q12",
+        "U12",
+        "D11"
+      ],
+      "/decisions/2/sourceIds/1": [
+        "Q12",
+        "U12",
+        "D11"
+      ],
+      "/decisions/2/sourceIds/2": [
+        "Q12",
+        "U12",
+        "D11"
+      ],
+      "/decisions/3/requestId": [
+        "Q13",
+        "U10",
+        "C10",
+        "D11"
+      ],
+      "/decisions/3/decision": [
+        "Q13",
+        "U10",
+        "C10",
+        "D11"
+      ],
+      "/decisions/3/reason": [
+        "Q13",
+        "U10",
+        "C10",
+        "D11"
+      ],
+      "/decisions/3/sourceIds/0": [
+        "Q13",
+        "U10",
+        "C10",
+        "D11"
+      ],
+      "/decisions/3/sourceIds/1": [
+        "Q13",
+        "U10",
+        "C10",
+        "D11"
+      ],
+      "/decisions/3/sourceIds/2": [
+        "Q13",
+        "U10",
+        "C10",
+        "D11"
+      ],
+      "/decisions/3/sourceIds/3": [
+        "Q13",
+        "U10",
+        "C10",
+        "D11"
+      ]
+    }
+  },
+  "SOC4-B-POLICY": {
+    "expected": {
+      "decisions": [
+        {
+          "requestId": "z1",
+          "decision": "deny",
+          "reason": "region",
+          "sourceIds": [
+            "Q20",
+            "U20",
+            "C20",
+            "D20"
+          ]
+        },
+        {
+          "requestId": "z2",
+          "decision": "allow",
+          "grantId": "editor:ops",
+          "sourceIds": [
+            "Q21",
+            "U21",
+            "C21",
+            "D20"
+          ]
+        },
+        {
+          "requestId": "z3",
+          "decision": "deny",
+          "reason": "inactive",
+          "sourceIds": [
+            "Q22",
+            "U22",
+            "D21"
+          ]
+        },
+        {
+          "requestId": "z4",
+          "decision": "allow",
+          "grantId": "reader:feed",
+          "sourceIds": [
+            "Q23",
+            "U20",
+            "C20",
+            "D21"
+          ]
+        }
+      ]
+    },
+    "sources": {
+      "U20": "users: {\"id\":\"U20\",\"user\":\"x1\",\"active\":true,\"role\":\"admin\",\"region\":\"blue\"}",
+      "U21": "users: {\"id\":\"U21\",\"user\":\"x2\",\"active\":true,\"role\":\"reader\",\"region\":\"red\"}",
+      "U22": "users: {\"id\":\"U22\",\"user\":\"x3\",\"active\":false,\"role\":\"editor\",\"region\":\"blue\"}",
+      "C20": "updates: {\"id\":\"C20\",\"user\":\"x1\",\"revision\":9,\"role\":\"reader\",\"region\":\"red\"}",
+      "C21": "updates: {\"id\":\"C21\",\"user\":\"x2\",\"revision\":3,\"role\":\"editor\",\"region\":\"blue\"}",
+      "D20": "resources: {\"id\":\"D20\",\"resource\":\"ops\",\"minRole\":\"editor\",\"region\":\"blue\"}",
+      "D21": "resources: {\"id\":\"D21\",\"resource\":\"feed\",\"minRole\":\"reader\",\"region\":\"red\"}",
+      "Q20": "requests: {\"id\":\"Q20\",\"requestId\":\"z1\",\"user\":\"x1\",\"resource\":\"ops\"}",
+      "Q21": "requests: {\"id\":\"Q21\",\"requestId\":\"z2\",\"user\":\"x2\",\"resource\":\"ops\"}",
+      "Q22": "requests: {\"id\":\"Q22\",\"requestId\":\"z3\",\"user\":\"x3\",\"resource\":\"feed\"}",
+      "Q23": "requests: {\"id\":\"Q23\",\"requestId\":\"z4\",\"user\":\"x1\",\"resource\":\"feed\"}"
+    },
+    "provenance": {
+      "/decisions/0/requestId": [
+        "Q20",
+        "U20",
+        "C20",
+        "D20"
+      ],
+      "/decisions/0/decision": [
+        "Q20",
+        "U20",
+        "C20",
+        "D20"
+      ],
+      "/decisions/0/reason": [
+        "Q20",
+        "U20",
+        "C20",
+        "D20"
+      ],
+      "/decisions/0/sourceIds/0": [
+        "Q20",
+        "U20",
+        "C20",
+        "D20"
+      ],
+      "/decisions/0/sourceIds/1": [
+        "Q20",
+        "U20",
+        "C20",
+        "D20"
+      ],
+      "/decisions/0/sourceIds/2": [
+        "Q20",
+        "U20",
+        "C20",
+        "D20"
+      ],
+      "/decisions/0/sourceIds/3": [
+        "Q20",
+        "U20",
+        "C20",
+        "D20"
+      ],
+      "/decisions/1/requestId": [
+        "Q21",
+        "U21",
+        "C21",
+        "D20"
+      ],
+      "/decisions/1/decision": [
+        "Q21",
+        "U21",
+        "C21",
+        "D20"
+      ],
+      "/decisions/1/grantId": [
+        "Q21",
+        "U21",
+        "C21",
+        "D20"
+      ],
+      "/decisions/1/sourceIds/0": [
+        "Q21",
+        "U21",
+        "C21",
+        "D20"
+      ],
+      "/decisions/1/sourceIds/1": [
+        "Q21",
+        "U21",
+        "C21",
+        "D20"
+      ],
+      "/decisions/1/sourceIds/2": [
+        "Q21",
+        "U21",
+        "C21",
+        "D20"
+      ],
+      "/decisions/1/sourceIds/3": [
+        "Q21",
+        "U21",
+        "C21",
+        "D20"
+      ],
+      "/decisions/2/requestId": [
+        "Q22",
+        "U22",
+        "D21"
+      ],
+      "/decisions/2/decision": [
+        "Q22",
+        "U22",
+        "D21"
+      ],
+      "/decisions/2/reason": [
+        "Q22",
+        "U22",
+        "D21"
+      ],
+      "/decisions/2/sourceIds/0": [
+        "Q22",
+        "U22",
+        "D21"
+      ],
+      "/decisions/2/sourceIds/1": [
+        "Q22",
+        "U22",
+        "D21"
+      ],
+      "/decisions/2/sourceIds/2": [
+        "Q22",
+        "U22",
+        "D21"
+      ],
+      "/decisions/3/requestId": [
+        "Q23",
+        "U20",
+        "C20",
+        "D21"
+      ],
+      "/decisions/3/decision": [
+        "Q23",
+        "U20",
+        "C20",
+        "D21"
+      ],
+      "/decisions/3/grantId": [
+        "Q23",
+        "U20",
+        "C20",
+        "D21"
+      ],
+      "/decisions/3/sourceIds/0": [
+        "Q23",
+        "U20",
+        "C20",
+        "D21"
+      ],
+      "/decisions/3/sourceIds/1": [
+        "Q23",
+        "U20",
+        "C20",
+        "D21"
+      ],
+      "/decisions/3/sourceIds/2": [
+        "Q23",
+        "U20",
+        "C20",
+        "D21"
+      ],
+      "/decisions/3/sourceIds/3": [
+        "Q23",
+        "U20",
+        "C20",
+        "D21"
+      ]
+    }
+  },
+  "SOC4-C-MIGRATE": {
+    "expected": {
+      "settings": [
+        {
+          "key": "cache.seconds",
+          "value": "045",
+          "enabled": true,
+          "sourceIds": [
+            "B00",
+            "E00",
+            "E01"
+          ]
+        },
+        {
+          "key": "auth.mode",
+          "value": "strict",
+          "enabled": true,
+          "sourceIds": [
+            "B01",
+            "E03"
+          ]
+        },
+        {
+          "key": "log.level",
+          "value": "info",
+          "enabled": true,
+          "sourceIds": [
+            "B02",
+            "E02"
+          ]
+        }
+      ]
+    },
+    "sources": {
+      "B00": "base: {\"id\":\"B00\",\"key\":\"cache.ttl\",\"value\":\"030\",\"enabled\":true}",
+      "B01": "base: {\"id\":\"B01\",\"key\":\"auth.mode\",\"value\":\"legacy\",\"enabled\":true}",
+      "B02": "base: {\"id\":\"B02\",\"key\":\"log.level\",\"value\":\"info\",\"enabled\":false}",
+      "E00": "edits: {\"id\":\"E00\",\"op\":\"rename\",\"key\":\"cache.ttl\",\"value\":\"cache.seconds\"}",
+      "E01": "edits: {\"id\":\"E01\",\"op\":\"set\",\"key\":\"cache.seconds\",\"value\":\"045\"}",
+      "E02": "edits: {\"id\":\"E02\",\"op\":\"enable\",\"key\":\"log.level\",\"value\":true}",
+      "E03": "edits: {\"id\":\"E03\",\"op\":\"set\",\"key\":\"auth.mode\",\"value\":\"strict\"}"
+    },
+    "provenance": {
+      "/settings/0/key": [
+        "B00",
+        "E00",
+        "E01"
+      ],
+      "/settings/0/value": [
+        "B00",
+        "E00",
+        "E01"
+      ],
+      "/settings/0/enabled": [
+        "B00",
+        "E00",
+        "E01"
+      ],
+      "/settings/0/sourceIds/0": [
+        "B00",
+        "E00",
+        "E01"
+      ],
+      "/settings/0/sourceIds/1": [
+        "B00",
+        "E00",
+        "E01"
+      ],
+      "/settings/0/sourceIds/2": [
+        "B00",
+        "E00",
+        "E01"
+      ],
+      "/settings/1/key": [
+        "B01",
+        "E03"
+      ],
+      "/settings/1/value": [
+        "B01",
+        "E03"
+      ],
+      "/settings/1/enabled": [
+        "B01",
+        "E03"
+      ],
+      "/settings/1/sourceIds/0": [
+        "B01",
+        "E03"
+      ],
+      "/settings/1/sourceIds/1": [
+        "B01",
+        "E03"
+      ],
+      "/settings/2/key": [
+        "B02",
+        "E02"
+      ],
+      "/settings/2/value": [
+        "B02",
+        "E02"
+      ],
+      "/settings/2/enabled": [
+        "B02",
+        "E02"
+      ],
+      "/settings/2/sourceIds/0": [
+        "B02",
+        "E02"
+      ],
+      "/settings/2/sourceIds/1": [
+        "B02",
+        "E02"
+      ]
+    }
+  },
+  "SOC4-C-PATCH": {
+    "expected": {
+      "settings": [
+        {
+          "key": "retry.count",
+          "value": "04",
+          "enabled": true,
+          "sourceIds": [
+            "B10",
+            "E10"
+          ]
+        },
+        {
+          "key": "api.zone",
+          "value": "west",
+          "enabled": true,
+          "sourceIds": [
+            "B11",
+            "E11",
+            "E12"
+          ]
+        },
+        {
+          "key": "trace.flag",
+          "value": "",
+          "enabled": true,
+          "sourceIds": [
+            "B12",
+            "E13"
+          ]
+        }
+      ]
+    },
+    "sources": {
+      "B10": "base: {\"id\":\"B10\",\"key\":\"retry.count\",\"value\":\"03\",\"enabled\":true}",
+      "B11": "base: {\"id\":\"B11\",\"key\":\"api.region\",\"value\":\"east\",\"enabled\":true}",
+      "B12": "base: {\"id\":\"B12\",\"key\":\"trace.flag\",\"value\":\"\",\"enabled\":false}",
+      "E10": "edits: {\"id\":\"E10\",\"op\":\"set\",\"key\":\"retry.count\",\"value\":\"04\"}",
+      "E11": "edits: {\"id\":\"E11\",\"op\":\"rename\",\"key\":\"api.region\",\"value\":\"api.zone\"}",
+      "E12": "edits: {\"id\":\"E12\",\"op\":\"set\",\"key\":\"api.zone\",\"value\":\"west\"}",
+      "E13": "edits: {\"id\":\"E13\",\"op\":\"enable\",\"key\":\"trace.flag\",\"value\":true}"
+    },
+    "provenance": {
+      "/settings/0/key": [
+        "B10",
+        "E10"
+      ],
+      "/settings/0/value": [
+        "B10",
+        "E10"
+      ],
+      "/settings/0/enabled": [
+        "B10",
+        "E10"
+      ],
+      "/settings/0/sourceIds/0": [
+        "B10",
+        "E10"
+      ],
+      "/settings/0/sourceIds/1": [
+        "B10",
+        "E10"
+      ],
+      "/settings/1/key": [
+        "B11",
+        "E11",
+        "E12"
+      ],
+      "/settings/1/value": [
+        "B11",
+        "E11",
+        "E12"
+      ],
+      "/settings/1/enabled": [
+        "B11",
+        "E11",
+        "E12"
+      ],
+      "/settings/1/sourceIds/0": [
+        "B11",
+        "E11",
+        "E12"
+      ],
+      "/settings/1/sourceIds/1": [
+        "B11",
+        "E11",
+        "E12"
+      ],
+      "/settings/1/sourceIds/2": [
+        "B11",
+        "E11",
+        "E12"
+      ],
+      "/settings/2/key": [
+        "B12",
+        "E13"
+      ],
+      "/settings/2/value": [
+        "B12",
+        "E13"
+      ],
+      "/settings/2/enabled": [
+        "B12",
+        "E13"
+      ],
+      "/settings/2/sourceIds/0": [
+        "B12",
+        "E13"
+      ],
+      "/settings/2/sourceIds/1": [
+        "B12",
+        "E13"
+      ]
+    }
+  },
+  "SOC4-C-UPGRADE": {
+    "expected": {
+      "settings": [
+        {
+          "key": "session.seconds",
+          "value": "090",
+          "enabled": true,
+          "sourceIds": [
+            "B20",
+            "E20",
+            "E21"
+          ]
+        },
+        {
+          "key": "store.mode",
+          "value": "remote",
+          "enabled": true,
+          "sourceIds": [
+            "B21",
+            "E23"
+          ]
+        },
+        {
+          "key": "audit.note",
+          "value": "",
+          "enabled": true,
+          "sourceIds": [
+            "B22",
+            "E22"
+          ]
+        }
+      ]
+    },
+    "sources": {
+      "B20": "base: {\"id\":\"B20\",\"key\":\"session.life\",\"value\":\"060\",\"enabled\":true}",
+      "B21": "base: {\"id\":\"B21\",\"key\":\"store.mode\",\"value\":\"local\",\"enabled\":true}",
+      "B22": "base: {\"id\":\"B22\",\"key\":\"audit.note\",\"value\":\"\",\"enabled\":false}",
+      "E20": "edits: {\"id\":\"E20\",\"op\":\"rename\",\"key\":\"session.life\",\"value\":\"session.seconds\"}",
+      "E21": "edits: {\"id\":\"E21\",\"op\":\"set\",\"key\":\"session.seconds\",\"value\":\"090\"}",
+      "E22": "edits: {\"id\":\"E22\",\"op\":\"enable\",\"key\":\"audit.note\",\"value\":true}",
+      "E23": "edits: {\"id\":\"E23\",\"op\":\"set\",\"key\":\"store.mode\",\"value\":\"remote\"}"
+    },
+    "provenance": {
+      "/settings/0/key": [
+        "B20",
+        "E20",
+        "E21"
+      ],
+      "/settings/0/value": [
+        "B20",
+        "E20",
+        "E21"
+      ],
+      "/settings/0/enabled": [
+        "B20",
+        "E20",
+        "E21"
+      ],
+      "/settings/0/sourceIds/0": [
+        "B20",
+        "E20",
+        "E21"
+      ],
+      "/settings/0/sourceIds/1": [
+        "B20",
+        "E20",
+        "E21"
+      ],
+      "/settings/0/sourceIds/2": [
+        "B20",
+        "E20",
+        "E21"
+      ],
+      "/settings/1/key": [
+        "B21",
+        "E23"
+      ],
+      "/settings/1/value": [
+        "B21",
+        "E23"
+      ],
+      "/settings/1/enabled": [
+        "B21",
+        "E23"
+      ],
+      "/settings/1/sourceIds/0": [
+        "B21",
+        "E23"
+      ],
+      "/settings/1/sourceIds/1": [
+        "B21",
+        "E23"
+      ],
+      "/settings/2/key": [
+        "B22",
+        "E22"
+      ],
+      "/settings/2/value": [
+        "B22",
+        "E22"
+      ],
+      "/settings/2/enabled": [
+        "B22",
+        "E22"
+      ],
+      "/settings/2/sourceIds/0": [
+        "B22",
+        "E22"
+      ],
+      "/settings/2/sourceIds/1": [
+        "B22",
+        "E22"
+      ]
+    }
+  },
+  "SOC4-D-CSV": {
+    "expected": [
+      {
+        "ticket": "t01",
+        "owner": "A. Li",
+        "priority": "P3",
+        "state": "hold",
+        "sourceIds": "T00|H01|N00"
+      },
+      {
+        "ticket": "t02",
+        "owner": "B, Wu",
+        "priority": "P1",
+        "state": "closed",
+        "sourceIds": "T01|H00|N01"
+      },
+      {
+        "ticket": "t03",
+        "owner": "Cora",
+        "priority": "P1",
+        "state": "hold",
+        "sourceIds": "T02|N02"
+      }
+    ],
+    "sources": {
+      "T00": "tickets: {\"id\":\"T00\",\"ticket\":\"t01\",\"owner\":\"alice\",\"priority\":\"P2\",\"state\":\"open\"}",
+      "T01": "tickets: {\"id\":\"T01\",\"ticket\":\"t02\",\"owner\":\"bob\",\"priority\":\"P3\",\"state\":\"open\"}",
+      "T02": "tickets: {\"id\":\"T02\",\"ticket\":\"t03\",\"owner\":\"cora\",\"priority\":\"P1\",\"state\":\"hold\"}",
+      "H00": "changes: {\"id\":\"H00\",\"ticket\":\"t02\",\"revision\":5,\"priority\":\"P1\",\"state\":\"closed\"}",
+      "H01": "changes: {\"id\":\"H01\",\"ticket\":\"t01\",\"revision\":7,\"priority\":\"P3\",\"state\":\"hold\"}",
+      "H02": "changes: {\"id\":\"H02\",\"ticket\":\"t02\",\"revision\":3,\"priority\":\"P2\",\"state\":\"open\"}",
+      "N00": "aliases: {\"id\":\"N00\",\"owner\":\"alice\",\"display\":\"A. Li\"}",
+      "N01": "aliases: {\"id\":\"N01\",\"owner\":\"bob\",\"display\":\"B, Wu\"}",
+      "N02": "aliases: {\"id\":\"N02\",\"owner\":\"cora\",\"display\":\"Cora\"}"
+    },
+    "provenance": {
+      "/0/ticket": [
+        "T00",
+        "H01",
+        "N00"
+      ],
+      "/0/owner": [
+        "T00",
+        "H01",
+        "N00"
+      ],
+      "/0/priority": [
+        "T00",
+        "H01",
+        "N00"
+      ],
+      "/0/state": [
+        "T00",
+        "H01",
+        "N00"
+      ],
+      "/0/sourceIds": [
+        "T00",
+        "H01",
+        "N00"
+      ],
+      "/1/ticket": [
+        "T01",
+        "H00",
+        "N01"
+      ],
+      "/1/owner": [
+        "T01",
+        "H00",
+        "N01"
+      ],
+      "/1/priority": [
+        "T01",
+        "H00",
+        "N01"
+      ],
+      "/1/state": [
+        "T01",
+        "H00",
+        "N01"
+      ],
+      "/1/sourceIds": [
+        "T01",
+        "H00",
+        "N01"
+      ],
+      "/2/ticket": [
+        "T02",
+        "N02"
+      ],
+      "/2/owner": [
+        "T02",
+        "N02"
+      ],
+      "/2/priority": [
+        "T02",
+        "N02"
+      ],
+      "/2/state": [
+        "T02",
+        "N02"
+      ],
+      "/2/sourceIds": [
+        "T02",
+        "N02"
+      ]
+    }
+  },
+  "SOC4-D-XML": {
+    "expected": [
+      {
+        "ticket": "k11",
+        "owner": "Nora & Co",
+        "priority": "P1",
+        "state": "hold",
+        "sourceIds": "T10|H11|N10"
+      },
+      {
+        "ticket": "k12",
+        "owner": "Omar",
+        "priority": "P3",
+        "state": "closed",
+        "sourceIds": "T11|H12|N11"
+      },
+      {
+        "ticket": "k13",
+        "owner": "Peta <P>",
+        "priority": "P2",
+        "state": "closed",
+        "sourceIds": "T12|H10|N12"
+      }
+    ],
+    "sources": {
+      "T10": "tickets: {\"id\":\"T10\",\"ticket\":\"k11\",\"owner\":\"nora\",\"priority\":\"P3\",\"state\":\"open\"}",
+      "T11": "tickets: {\"id\":\"T11\",\"ticket\":\"k12\",\"owner\":\"omar\",\"priority\":\"P2\",\"state\":\"hold\"}",
+      "T12": "tickets: {\"id\":\"T12\",\"ticket\":\"k13\",\"owner\":\"peta\",\"priority\":\"P1\",\"state\":\"open\"}",
+      "H10": "changes: {\"id\":\"H10\",\"ticket\":\"k13\",\"revision\":8,\"priority\":\"P2\",\"state\":\"closed\"}",
+      "H11": "changes: {\"id\":\"H11\",\"ticket\":\"k11\",\"revision\":2,\"priority\":\"P1\",\"state\":\"hold\"}",
+      "H12": "changes: {\"id\":\"H12\",\"ticket\":\"k12\",\"revision\":6,\"priority\":\"P3\",\"state\":\"closed\"}",
+      "N10": "aliases: {\"id\":\"N10\",\"owner\":\"nora\",\"display\":\"Nora & Co\"}",
+      "N11": "aliases: {\"id\":\"N11\",\"owner\":\"omar\",\"display\":\"Omar\"}",
+      "N12": "aliases: {\"id\":\"N12\",\"owner\":\"peta\",\"display\":\"Peta <P>\"}"
+    },
+    "provenance": {
+      "/0/ticket": [
+        "T10",
+        "H11",
+        "N10"
+      ],
+      "/0/owner": [
+        "T10",
+        "H11",
+        "N10"
+      ],
+      "/0/priority": [
+        "T10",
+        "H11",
+        "N10"
+      ],
+      "/0/state": [
+        "T10",
+        "H11",
+        "N10"
+      ],
+      "/0/sourceIds": [
+        "T10",
+        "H11",
+        "N10"
+      ],
+      "/1/ticket": [
+        "T11",
+        "H12",
+        "N11"
+      ],
+      "/1/owner": [
+        "T11",
+        "H12",
+        "N11"
+      ],
+      "/1/priority": [
+        "T11",
+        "H12",
+        "N11"
+      ],
+      "/1/state": [
+        "T11",
+        "H12",
+        "N11"
+      ],
+      "/1/sourceIds": [
+        "T11",
+        "H12",
+        "N11"
+      ],
+      "/2/ticket": [
+        "T12",
+        "H10",
+        "N12"
+      ],
+      "/2/owner": [
+        "T12",
+        "H10",
+        "N12"
+      ],
+      "/2/priority": [
+        "T12",
+        "H10",
+        "N12"
+      ],
+      "/2/state": [
+        "T12",
+        "H10",
+        "N12"
+      ],
+      "/2/sourceIds": [
+        "T12",
+        "H10",
+        "N12"
+      ]
+    }
+  },
+  "SOC4-D-LEDGER": {
+    "expected": [
+      {
+        "ticket": "v1",
+        "owner": "Sue",
+        "priority": "P2",
+        "state": "open",
+        "sourceIds": "T20|N20"
+      },
+      {
+        "ticket": "v2",
+        "owner": "Tim \"T\"",
+        "priority": "P3",
+        "state": "hold",
+        "sourceIds": "T21|H21|N21"
+      },
+      {
+        "ticket": "v3",
+        "owner": "Uma, U",
+        "priority": "P1",
+        "state": "closed",
+        "sourceIds": "T22|H20|N22"
+      }
+    ],
+    "sources": {
+      "T20": "tickets: {\"id\":\"T20\",\"ticket\":\"v1\",\"owner\":\"sue\",\"priority\":\"P2\",\"state\":\"open\"}",
+      "T21": "tickets: {\"id\":\"T21\",\"ticket\":\"v2\",\"owner\":\"tim\",\"priority\":\"P1\",\"state\":\"open\"}",
+      "T22": "tickets: {\"id\":\"T22\",\"ticket\":\"v3\",\"owner\":\"uma\",\"priority\":\"P3\",\"state\":\"hold\"}",
+      "H20": "changes: {\"id\":\"H20\",\"ticket\":\"v3\",\"revision\":9,\"priority\":\"P1\",\"state\":\"closed\"}",
+      "H21": "changes: {\"id\":\"H21\",\"ticket\":\"v2\",\"revision\":4,\"priority\":\"P3\",\"state\":\"hold\"}",
+      "H22": "changes: {\"id\":\"H22\",\"ticket\":\"v3\",\"revision\":2,\"priority\":\"P2\",\"state\":\"open\"}",
+      "N20": "aliases: {\"id\":\"N20\",\"owner\":\"sue\",\"display\":\"Sue\"}",
+      "N21": "aliases: {\"id\":\"N21\",\"owner\":\"tim\",\"display\":\"Tim \\\"T\\\"\"}",
+      "N22": "aliases: {\"id\":\"N22\",\"owner\":\"uma\",\"display\":\"Uma, U\"}"
+    },
+    "provenance": {
+      "/0/ticket": [
+        "T20",
+        "N20"
+      ],
+      "/0/owner": [
+        "T20",
+        "N20"
+      ],
+      "/0/priority": [
+        "T20",
+        "N20"
+      ],
+      "/0/state": [
+        "T20",
+        "N20"
+      ],
+      "/0/sourceIds": [
+        "T20",
+        "N20"
+      ],
+      "/1/ticket": [
+        "T21",
+        "H21",
+        "N21"
+      ],
+      "/1/owner": [
+        "T21",
+        "H21",
+        "N21"
+      ],
+      "/1/priority": [
+        "T21",
+        "H21",
+        "N21"
+      ],
+      "/1/state": [
+        "T21",
+        "H21",
+        "N21"
+      ],
+      "/1/sourceIds": [
+        "T21",
+        "H21",
+        "N21"
+      ],
+      "/2/ticket": [
+        "T22",
+        "H20",
+        "N22"
+      ],
+      "/2/owner": [
+        "T22",
+        "H20",
+        "N22"
+      ],
+      "/2/priority": [
+        "T22",
+        "H20",
+        "N22"
+      ],
+      "/2/state": [
+        "T22",
+        "H20",
+        "N22"
+      ],
+      "/2/sourceIds": [
+        "T22",
+        "H20",
+        "N22"
+      ]
+    }
+  }
+}

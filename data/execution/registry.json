@@ -1,0 +1,3229 @@
+{
+  "schemaVersion": 1,
+  "tasks": [
+    {
+      "id": "CLI-CN-002-DOCKER",
+      "sourceId": "CLI-CN-002",
+      "track": "development",
+      "manifest": "tasks/CLI-CN-002-DOCKER/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "b5df24b272e54c3bac727eee7a4251f5d8640b414726eb34bb6e67c596d53ed8",
+        "verifierHash": "a3042ff101f1a9cd2f7af876521e79fa6bd652e1500d066a892c8fe44c87d4b6"
+      }
+    },
+    {
+      "id": "CLI-CN-003-DOCKER",
+      "sourceId": "CLI-CN-003",
+      "track": "development",
+      "manifest": "tasks/CLI-CN-003-DOCKER/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "dfbc45b80da4a919c399cc1d0c1a910b0a267219417947d19af20fafdb8b8c13",
+        "verifierHash": "295799d9aa7c2215e7c882022ca34f86ab2be56dd7fd1e15c7606705786f0f87"
+      }
+    },
+    {
+      "id": "CLI-CN-004-DOCKER",
+      "sourceId": "CLI-CN-004",
+      "track": "development",
+      "manifest": "tasks/CLI-CN-004-DOCKER/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "ef70d4edc3bc1e97f7ac60e34ab2aeea96ceb0fff13f16872607944345b534d5",
+        "verifierHash": "0f231575beaa2fb2572784e17511c9d16026335299297e4faf84e84a81d11c55"
+      }
+    },
+    {
+      "id": "CLI-CN-006-DOCKER",
+      "sourceId": "CLI-CN-006",
+      "track": "development",
+      "manifest": "tasks/CLI-CN-006-DOCKER/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "6e495a4194cbb6eb552f1259be64daa23aa38c52fc1bb9afcc62b0b14ba52619",
+        "verifierHash": "0013780b14a37fc56e529660a2406a5cae23a0b9cab3ca0795fc95d7284c61ca"
+      }
+    },
+    {
+      "id": "CLI-CN-007-DOCKER",
+      "sourceId": "CLI-CN-007",
+      "track": "development",
+      "manifest": "tasks/CLI-CN-007-DOCKER/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "57e1de1d9d10674aabfac98a743c786ee9b3b88d780a1288f2a7f39799022483",
+        "verifierHash": "d90ca2c9446dfad0af6b79240db0da2002d1cb19e6739862de9ec74a76dd4c4f"
+      }
+    },
+    {
+      "id": "CLI-CN-008-DOCKER",
+      "sourceId": "CLI-CN-008",
+      "track": "development",
+      "manifest": "tasks/CLI-CN-008-DOCKER/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "a8feb82d35d60e64eee42d968546b31921bedf69e7a9be0eb63eeaddf8352367",
+        "verifierHash": "699d9ddbf1c7f82057405934279c3ef500fea7f7dd5a9da7d43f4bcf3cbce1a6"
+      }
+    },
+    {
+      "id": "CLI-CN-009-DOCKER",
+      "sourceId": "CLI-CN-009",
+      "track": "development",
+      "manifest": "tasks/CLI-CN-009-DOCKER/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "e572b411016cb6f8f6bcb18be3b663b0945435b54ea1dc1f15f1858f6f71422c",
+        "verifierHash": "1fd2ab23ba1c56ce6919b8531077a57f514b4e2bf79b701f0d47649832591479"
+      }
+    },
+    {
+      "id": "CLI-CN-014-DOCKER",
+      "sourceId": "CLI-CN-014",
+      "track": "development",
+      "manifest": "tasks/CLI-CN-014-DOCKER/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "05808f4721e3c1dd2d828f0003dd54f37d4f8587a98dc8ed9dd8e54d3a81ad7f",
+        "verifierHash": "a54044c710e7d05b98216b5a57413c8c75f4594bee1e56ec8ec2e93d6a951c77"
+      }
+    },
+    {
+      "id": "CLI-CN-017-DOCKER",
+      "sourceId": "CLI-CN-017",
+      "track": "development",
+      "manifest": "tasks/CLI-CN-017-DOCKER/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "10d091a4b5638fb496a3a0a2f6a1e9ccfb8f2d7f80b5d17f187687f4e2e0c366",
+        "verifierHash": "4cfb81feb6050bdf1d6d34a7b9175f643720ab266f487d15e5b95a0f7db9cce0"
+      }
+    },
+    {
+      "id": "CLI-CN-049-DOCKER",
+      "sourceId": "CLI-CN-049",
+      "track": "regression",
+      "manifest": "tasks/CLI-CN-049-DOCKER/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "b788bebfa42fda68759116d8359cac507711bdc13c0b28926b4796a008fa1f3a",
+        "verifierHash": "701fab0715e84887d719eb548924c830b1a18fe7f181c06208658625c557953e"
+      }
+    },
+    {
+      "id": "CLI-CN-050-DOCKER",
+      "sourceId": "CLI-CN-050",
+      "track": "regression",
+      "manifest": "tasks/CLI-CN-050-DOCKER/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "4d14a5f518d08d474c0ac95697944cba6df46b1a3114e261d812155dd315d1ba",
+        "verifierHash": "42502227db9127d480527163bc925a3b860bec5130e8a0f95a933a05fa35e9ab"
+      }
+    },
+    {
+      "id": "CLI-CN-051-DOCKER",
+      "sourceId": "CLI-CN-051",
+      "track": "regression",
+      "manifest": "tasks/CLI-CN-051-DOCKER/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "a9db54132f8093b8c2bdfcda6120e6d7cffe174dbcb2504b8e9e80f05b3773e3",
+        "verifierHash": "cb58119e1ee442f4203623fab028806de8524672b2f3e489d2ddbfbc0fa33566"
+      }
+    },
+    {
+      "id": "CLI-CN-053-DOCKER",
+      "sourceId": "CLI-CN-053",
+      "track": "regression",
+      "manifest": "tasks/CLI-CN-053-DOCKER/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "e8b92fe6e1b1b7b95488fb9a69700265a3af3c2a34bee07f498735943246a868",
+        "verifierHash": "4045926f4c3fd1d608ac37391672eb454464c2b9b8080127d71d67c1c022fa88"
+      }
+    },
+    {
+      "id": "CLI-CN-056-DOCKER",
+      "sourceId": "CLI-CN-056",
+      "track": "regression",
+      "manifest": "tasks/CLI-CN-056-DOCKER/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "412ec4a55f8e21dbdd2982d47741e941b1a377ea3765f8dda3ee2863c8ab0177",
+        "verifierHash": "8bd3e7afe3acd8b2ecb72c22dea2ff100c87d3f3339c1f3f281a4140ace5e9f5"
+      }
+    },
+    {
+      "id": "CLI-CN-010-DOCKER",
+      "sourceId": "CLI-CN-010",
+      "track": "development",
+      "manifest": "tasks/CLI-CN-010-DOCKER/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "8519a3d96118558c05520d953ba5745aec750ecc20703cc77dc3dac4bd048414",
+        "verifierHash": "8422548a4b5561d9844f959aaed3a13e3be186d10115e581d8182e405317c731"
+      }
+    },
+    {
+      "id": "CLI-CN-013-DOCKER",
+      "sourceId": "CLI-CN-013",
+      "track": "development",
+      "manifest": "tasks/CLI-CN-013-DOCKER/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "9c62590d09b3f68eab63e2c2dfce269518b4968926cc5b6ed12f18ce65d5737d",
+        "verifierHash": "844325888e87d6c587d12bfda54a97c30d915d0a9730dcda20354fc08d101d42"
+      }
+    },
+    {
+      "id": "CLI-CN-020-DOCKER",
+      "sourceId": "CLI-CN-020",
+      "track": "development",
+      "manifest": "tasks/CLI-CN-020-DOCKER/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "5e7275e0fd0c0dfded6b8c558e148d53d7372fbee1f2d821f25ae2cea7b1d405",
+        "verifierHash": "8c5115645690cf9325de21657159b7d90b71ebb1e22415a0bae409a5caad8a32"
+      }
+    },
+    {
+      "id": "CLI-CN-023-DOCKER",
+      "sourceId": "CLI-CN-023",
+      "track": "development",
+      "manifest": "tasks/CLI-CN-023-DOCKER/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "a69a23abad927958977535966c1ca9ea3595a1ccc6fda31e3382c8baccc36307",
+        "verifierHash": "5a3225a9093c823e264e920afe1cf04daf59a00df7c58ad23419139cf8abfee5"
+      }
+    },
+    {
+      "id": "CLI-CN-045-DOCKER",
+      "sourceId": "CLI-CN-045",
+      "track": "development",
+      "manifest": "tasks/CLI-CN-045-DOCKER/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "b27bf0ab1c1b23b938fadcc6dd58a8a80a36d28d7cea742e10eb84351785491b",
+        "verifierHash": "d00dedf17d759a88de71ab5378e14c1ed3b64911e23ed21b4e86708cfba96a37"
+      }
+    },
+    {
+      "id": "CLI-CN-047-DOCKER",
+      "sourceId": "CLI-CN-047",
+      "track": "development",
+      "manifest": "tasks/CLI-CN-047-DOCKER/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "9c02aa9b01a4a38598ffa64922798158841e20118363195791a1391927b7484c",
+        "verifierHash": "a2321ff9e7de1a18f6431ee98ca7b942be62a8d56ad3495ced104757122e5642"
+      }
+    },
+    {
+      "id": "CLI-CN-016-DOCKER",
+      "sourceId": "CLI-CN-016",
+      "track": "development",
+      "manifest": "tasks/CLI-CN-016-DOCKER/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "0262cee571e6a7f2aa868e512d731647ec14bc1d6a2532f364b8f6221ea0f6d1",
+        "verifierHash": "75514c21150acfd9bdc81bf8c1bf0f1db07dd7027f686d4095511453f0bc3cf1"
+      }
+    },
+    {
+      "id": "CLI-CN-039-DOCKER",
+      "sourceId": "CLI-CN-039",
+      "track": "development",
+      "manifest": "tasks/CLI-CN-039-DOCKER/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "956928a2f6972e4c386edb1f8dfd0cb4a6fcd10d73e22a2f8725205c441d0979",
+        "verifierHash": "9be276e390a6ffa514b5635b8f1fcc5eed5d7405d2667783aeedd58d61e8d7f5"
+      }
+    },
+    {
+      "id": "CLI-CN-046-DOCKER",
+      "sourceId": "CLI-CN-046",
+      "track": "development",
+      "manifest": "tasks/CLI-CN-046-DOCKER/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "7d202f9d1248dd91f20f5c47c4379ba2153aab52e011708efadac09f61a69871",
+        "verifierHash": "9deab45b47d7c0e01550801101d038a602d892d245ed2c332a481cc51da47d64"
+      }
+    },
+    {
+      "id": "CLI-CN-019-DOCKER",
+      "sourceId": "CLI-CN-019",
+      "track": "development",
+      "manifest": "tasks/CLI-CN-019-DOCKER/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "58e75c756ca477c4a29c56cab44869e784581c8672b911701a3b1c4ff5ba0710",
+        "verifierHash": "30eaccb87cc9fa87965e167f2f64506baea4a534c2c631a629bcdda90a6c4f6c"
+      }
+    },
+    {
+      "id": "CLI-CN-022-DOCKER",
+      "sourceId": "CLI-CN-022",
+      "track": "development",
+      "manifest": "tasks/CLI-CN-022-DOCKER/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "29a329c05658c18856c4fdfd03a422492a815f5f7e70b5ac46a993db93959b38",
+        "verifierHash": "f579bb51b77a68728cc8388d777a42c302172b97db58860bf4995c0e9521a650"
+      }
+    },
+    {
+      "id": "CLI-CN-005-DOCKER",
+      "sourceId": "CLI-CN-005",
+      "track": "development",
+      "manifest": "tasks/CLI-CN-005-DOCKER/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "6492cff1c49faf18db316b1777928f7ac7dfe222215352c507f8ce4fed699a71",
+        "verifierHash": "8998ae13fc55fa967204c0b7ce032452533035c1a78ccef23d3fea5a4d2cb26d"
+      }
+    },
+    {
+      "id": "CLI-CN-015-DOCKER",
+      "sourceId": "CLI-CN-015",
+      "track": "development",
+      "manifest": "tasks/CLI-CN-015-DOCKER/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "6953eb8610d65ccbc2a529c002b783e3a200241146c9461c915ab03fac5f8471",
+        "verifierHash": "e69c38f1b49af9d626b16fb54fc08a8ec1aea85635b7db79cd70e07590873978"
+      }
+    },
+    {
+      "id": "CLI-CN-018-DOCKER",
+      "sourceId": "CLI-CN-018",
+      "track": "development",
+      "manifest": "tasks/CLI-CN-018-DOCKER/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "733462106d2249e2c5a4801829c1ad57fbe710d3dbb5da610c9927d3ec45b17f",
+        "verifierHash": "7dbdae02ca4d9d25453fcf3cefe0098b07243f6bcc1cd47eb26d006b4285d71f"
+      }
+    },
+    {
+      "id": "CLI-CN-021-DOCKER",
+      "sourceId": "CLI-CN-021",
+      "track": "development",
+      "manifest": "tasks/CLI-CN-021-DOCKER/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "f66f0088e50ea947790e60d1281f2884c012579c7e07f430a2d514427f4720ba",
+        "verifierHash": "298c3779901a366f3e77ac3e13a8a33b22f858165a65cc331042d8feb670128e"
+      }
+    },
+    {
+      "id": "CLI-CN-011-DOCKER",
+      "sourceId": "CLI-CN-011",
+      "track": "development",
+      "manifest": "tasks/CLI-CN-011-DOCKER/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "3f7de2e094873c301bb6232f77b1a8869a2d830d09cdea184e3d48188a0358eb",
+        "verifierHash": "8acd8d9919f7b4e959514e11069feb03d30b508900dab5cf85d3bc95913f0855"
+      }
+    },
+    {
+      "id": "CLI-CN-024-DOCKER",
+      "sourceId": "CLI-CN-024",
+      "track": "development",
+      "manifest": "tasks/CLI-CN-024-DOCKER/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "ece4227f601406797204581088e8a27adf969efb2ffad114c645eba1842e6b31",
+        "verifierHash": "cbc38758cf5dc2e8420b34ecf629dd6ffdac88cc8cd47031ae831940d76baadb"
+      }
+    },
+    {
+      "id": "CLI-CN-026-DOCKER",
+      "sourceId": "CLI-CN-026",
+      "track": "development",
+      "manifest": "tasks/CLI-CN-026-DOCKER/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "296cf4aa5c56affce83b06ab7ac5293f69a77d227e437fb2b322701cd074d928",
+        "verifierHash": "27661d17752013af1a1033b034b8e643ab48a6ea9d0ea09c9be8e45cc184335d"
+      }
+    },
+    {
+      "id": "CLI-CN-027-DOCKER",
+      "sourceId": "CLI-CN-027",
+      "track": "development",
+      "manifest": "tasks/CLI-CN-027-DOCKER/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "55dd9f5748b95a499d01a8b47f41271d14da6efb87acc0a92b84044f71e225cf",
+        "verifierHash": "56b13cb1a685062f0b16af4a4f7183e12febab803d3a69ef81dd115252defe2c"
+      }
+    },
+    {
+      "id": "CLI-CN-029-DOCKER",
+      "sourceId": "CLI-CN-029",
+      "track": "development",
+      "manifest": "tasks/CLI-CN-029-DOCKER/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "d9503a8002076370eb0cab45abcc5713630748f3c13f69e088c582a7326482e9",
+        "verifierHash": "00cfd3af4baf9af05925d59354850fdee4f175172b80608606943c0151654481"
+      }
+    },
+    {
+      "id": "CLI-CN-041-DOCKER",
+      "sourceId": "CLI-CN-041",
+      "track": "development",
+      "manifest": "tasks/CLI-CN-041-DOCKER/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "7d3d283d7e95666d2208397dd0650fb6dce2499d71833e332be7701d482ffbb0",
+        "verifierHash": "6b38852aba7654fc382551f9d55d40e158405ad51ef79807568890becab2f595"
+      }
+    },
+    {
+      "id": "CLI-CN-012-DOCKER",
+      "sourceId": "CLI-CN-012",
+      "track": "development",
+      "manifest": "tasks/CLI-CN-012-DOCKER/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "2b3b41d51d1bca6684ae5dfc69f64e5386518466c02149ff0307efb720958dda",
+        "verifierHash": "fd0c38e954bbe8c63dfe90da38bb939658a9b0a319c06f6ac422ed41e2f0424b"
+      }
+    },
+    {
+      "id": "CLI-CN-028-DOCKER",
+      "sourceId": "CLI-CN-028",
+      "track": "development",
+      "manifest": "tasks/CLI-CN-028-DOCKER/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "713322f4e788fa70798852acd5bde45a278184d29fe860d68109e26533906b81",
+        "verifierHash": "1d65f1c5ab237d0290fb253ee5235d5c936ed23983eb5cdd7bd6410a95b68e6d"
+      }
+    },
+    {
+      "id": "CLI-CN-030-DOCKER",
+      "sourceId": "CLI-CN-030",
+      "track": "development",
+      "manifest": "tasks/CLI-CN-030-DOCKER/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "1fb55655e70c66761f5ae638ac71588dcc4086ead04c2c5c39e8411b38e4f1de",
+        "verifierHash": "bb21e8cff3d4552ece94091592b652e30f3a9ce03b1a66377ed0718089f63767"
+      }
+    },
+    {
+      "id": "CLI-CN-044-DOCKER",
+      "sourceId": "CLI-CN-044",
+      "track": "development",
+      "manifest": "tasks/CLI-CN-044-DOCKER/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "4ddc29edf8787f9e4ebce1667260ce35829add476fe0f57cf3c9c981c2640a06",
+        "verifierHash": "61033be2b2314801ca0a5c7da1ba05573ea885d65f49d71b7cf7d61eb5814be0"
+      }
+    },
+    {
+      "id": "CLI-CN-055-DOCKER",
+      "sourceId": "CLI-CN-055",
+      "track": "development",
+      "manifest": "tasks/CLI-CN-055-DOCKER/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "6a9ce34afda3179dd2bd5d3374b49a81d1c9fd1fa7e9d2698a81a44cb96c9e76",
+        "verifierHash": "c252864d15b2e48c081e683f6638b7ad977d42bf4f687959c69218e1910cf54c"
+      }
+    },
+    {
+      "id": "CLI-CN-025-DOCKER",
+      "sourceId": "CLI-CN-025",
+      "track": "development",
+      "manifest": "tasks/CLI-CN-025-DOCKER/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "f92d6e120a8f93e8bf1316acafad4ff67e900462c8a8c727eeeb4837d9bdaabe",
+        "verifierHash": "061ad02718c5df607ef04e433e96e4739e2b47ba7bce5362187850a3e6e371e9"
+      }
+    },
+    {
+      "id": "CLI-CN-043-DOCKER",
+      "sourceId": "CLI-CN-043",
+      "track": "development",
+      "manifest": "tasks/CLI-CN-043-DOCKER/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "55a5f3860b9f81e89b4bb362255329db07ab72610310318d95ff6c46467c180c",
+        "verifierHash": "4b343f3c57e258bc909c37c02ac6a575fb8feaba60a490c5c6ca5b3b3a35107f"
+      }
+    },
+    {
+      "id": "CLI-CN-048-DOCKER",
+      "sourceId": "CLI-CN-048",
+      "track": "development",
+      "manifest": "tasks/CLI-CN-048-DOCKER/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "023c4c3a8ef8bdc0a4d0e9f12e5466f48fc8faa19b7fd8010b1d16484ce8b2b8",
+        "verifierHash": "16b481508882809831760705ccfc727e27e750f4eb630875fd19eff5b23f3ee4"
+      }
+    },
+    {
+      "id": "CLI-CN-054-DOCKER",
+      "sourceId": "CLI-CN-054",
+      "track": "development",
+      "manifest": "tasks/CLI-CN-054-DOCKER/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "6c8c2c91eaf0f74f3e6210aa388b9bfc020d3df08471188582441d36768ba813",
+        "verifierHash": "522563706641341c483c34dbbfd6adc3d1c6df208d73087b9ca748a37eab8d26"
+      }
+    },
+    {
+      "id": "TC-CN-022-DOCKER",
+      "sourceId": "TC-CN-022",
+      "track": "development",
+      "manifest": "tasks/TC-CN-022-DOCKER/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "94cc0b59c5edf3b8695f35c6ca8bade2ce021ebcdfdfa3aeb48651b57608e8f9",
+        "verifierHash": "a5b22769a64a74c56fa2cfdd16e03c097601a1dfeb6d94b2771426dacdf02723"
+      }
+    },
+    {
+      "id": "TC-CN-023-DOCKER",
+      "sourceId": "TC-CN-023",
+      "track": "development",
+      "manifest": "tasks/TC-CN-023-DOCKER/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "73f156615a1fefccd5bd9edf9cceb1d9e4298a77cad46809a9203cabb2733cac",
+        "verifierHash": "672b699969971429acbdb3ddb12103a071b4193d91738f1861e0c7301b864967"
+      }
+    },
+    {
+      "id": "TC-CN-027-DOCKER",
+      "sourceId": "TC-CN-027",
+      "track": "development",
+      "manifest": "tasks/TC-CN-027-DOCKER/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "b86891fb376714c16ecd791ed3dba4f809241d476b0f4431c3ebf3cb37492e5d",
+        "verifierHash": "1cc916b8c6d6209c7201f3b1f530598d9886aadc495d7e8ee9bbfe730c173f71"
+      }
+    },
+    {
+      "id": "TC-CN-025-DOCKER",
+      "sourceId": "TC-CN-025",
+      "track": "development",
+      "manifest": "tasks/TC-CN-025-DOCKER/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "bf45c0166bf39d63319d484f7dc7a24bb3a6ac3792952aedcb6a38a04fd4d47f",
+        "verifierHash": "f6280719aae62733ff6284f96af2082e5165b174d49551cdfd563268e65e70ce"
+      }
+    },
+    {
+      "id": "TC-CN-026-DOCKER",
+      "sourceId": "TC-CN-026",
+      "track": "development",
+      "manifest": "tasks/TC-CN-026-DOCKER/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "50503481dc6dfafe1e8715d078956aa4d9393cdea01d6499fb7ce730b7fbb3f5",
+        "verifierHash": "a9d2a1e2c8bd7dc3077f73482c385528b9cb2e52ae62851043394863193be6e0"
+      }
+    },
+    {
+      "id": "TC-CN-024-DOCKER",
+      "sourceId": "TC-CN-024",
+      "track": "development",
+      "manifest": "tasks/TC-CN-024-DOCKER/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "980f0991f57af4836a31b26c14e90a2f12424edb90100845562ee0d3c274fcd2",
+        "verifierHash": "0c8e1aab1bf28641a6e7d06593f8beb8c737b39b99872f38c6d811af8034d981"
+      }
+    },
+    {
+      "id": "TC-CN-032-RECOVERY-0",
+      "sourceId": "TC-CN-032",
+      "track": "development",
+      "manifest": "tasks/TC-CN-032-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "e6e76afae2ac5aee65cef3cefef75fbf0de45b0730d1c55af063c94673c71284",
+        "verifierHash": "fb4f31656fd90947d084704e6d5d8594d9930a4b9b119b663c08e5219966581d"
+      }
+    },
+    {
+      "id": "HA-CN-039-RECOVERY-0",
+      "sourceId": "HA-CN-039",
+      "track": "development",
+      "manifest": "tasks/HA-CN-039-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "ef19d222eaa9c78aad650f1f1b6ea6ed9b6c94356398c9acc2e4298cc46f2a62",
+        "verifierHash": "fe8b4d6028240495a7b875524d76e269db3f621ab41dddf7a1058153e0262c19"
+      }
+    },
+    {
+      "id": "TC-CN-034-RECOVERY-0",
+      "sourceId": "TC-CN-034",
+      "track": "development",
+      "manifest": "tasks/TC-CN-034-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "707e43882045b306ac1f8bd7f328acc6367f667c58fe2cba5feb01f76ec59f0d",
+        "verifierHash": "7a74448970191b3cabe8d956f11bb21b98ac2fe56210624483e8cf7e0df88fcb"
+      }
+    },
+    {
+      "id": "HA-CN-031-RECOVERY-0",
+      "sourceId": "HA-CN-031",
+      "track": "development",
+      "manifest": "tasks/HA-CN-031-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "22bca51ef359e3c34fb16b06acaa964daaa5c713d9e308a634f8ff683f037639",
+        "verifierHash": "98a387ab588ba13a02e4dfdec69b48a922d4e3d96c8767c3991b77176e18bc0d"
+      }
+    },
+    {
+      "id": "SA-CN-025-RECOVERY-0",
+      "sourceId": "SA-CN-025",
+      "track": "development",
+      "manifest": "tasks/SA-CN-025-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "17c03016e429a84cf2788fe6a360df98c17f5fa206745ae2814b690cb68eab3b",
+        "verifierHash": "576b9c80c9616b06d58961f2d95e90ebe75db764c0c2844e31caa98fd8af30f0"
+      }
+    },
+    {
+      "id": "TC-CN-032-RECOVERY-1",
+      "sourceId": "TC-CN-032",
+      "track": "development",
+      "manifest": "tasks/TC-CN-032-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "261098734b11aec4390e8d7c5b5208fb2d93c5de1bddf97704f75eb9f7caf9f2",
+        "verifierHash": "a35d8847d50cc030bc65c5cb50929f02f79d25215b47d5bd3021df11a2cc835b"
+      }
+    },
+    {
+      "id": "HA-CN-039-RECOVERY-1",
+      "sourceId": "HA-CN-039",
+      "track": "development",
+      "manifest": "tasks/HA-CN-039-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "5e1dbc27c0276414c34348fb710a4dfc46f3f93596520388c72585e37f7a7b2f",
+        "verifierHash": "6bffa8d0429a3ecac7bc3205677189af602340d8b42e00caec678906c5475604"
+      }
+    },
+    {
+      "id": "TC-CN-034-RECOVERY-1",
+      "sourceId": "TC-CN-034",
+      "track": "development",
+      "manifest": "tasks/TC-CN-034-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "b4c968e763110df7b90bdd6df391342ff44771740719f2c25d0dc5d7625ded55",
+        "verifierHash": "270357ccd0d0b03036cea79e1f7aa909a721249516f0570b8665e151dc3ac873"
+      }
+    },
+    {
+      "id": "HA-CN-031-RECOVERY-1",
+      "sourceId": "HA-CN-031",
+      "track": "development",
+      "manifest": "tasks/HA-CN-031-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "693d50e968946aa4b56b62ff53ef371e24629d503fb329fa829b29bc8af9ff01",
+        "verifierHash": "18f1a876cac76d1f5d80ceae2d00779bd4cf85959223a247ba7e74f82626dfcf"
+      }
+    },
+    {
+      "id": "SA-CN-025-RECOVERY-1",
+      "sourceId": "SA-CN-025",
+      "track": "development",
+      "manifest": "tasks/SA-CN-025-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "15ea5c208baf9fad7297c14ea712aa0d15c4d8a966cc5e2e6c5c737286d8e7e3",
+        "verifierHash": "543567a6262257e7b80cbf3fe9b9c94eb3fcf6a759f0eb7815753a15f6d82953"
+      }
+    },
+    {
+      "id": "HA-CN-037-RECOVERY-0",
+      "sourceId": "HA-CN-037",
+      "track": "development",
+      "manifest": "tasks/HA-CN-037-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "1f0c4414765a3be25d37a1330274d2bfdfabeef74f6e62229d59c171c8e6a488",
+        "verifierHash": "a85ef28e720a269ad4c63d88e59e617620ae40bc97e8e120e063e40f1337c0ab"
+      }
+    },
+    {
+      "id": "HA-CN-037-RECOVERY-1",
+      "sourceId": "HA-CN-037",
+      "track": "development",
+      "manifest": "tasks/HA-CN-037-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "3ae7d6bf95ad7bd533c437d117b283b1a599337e66092d269bcd8cdd073e9f71",
+        "verifierHash": "78d25cdeea2381897b589a5171453ec4cee9d3f2afdf4f75ff97e2dd9b82dd41"
+      }
+    },
+    {
+      "id": "HA-CN-036-RECOVERY-0",
+      "sourceId": "HA-CN-036",
+      "track": "development",
+      "manifest": "tasks/HA-CN-036-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "b7bf673cf2a40fcadca9532919083463bed1217399ba62a9d53872e1adf2552f",
+        "verifierHash": "b804a0afaf2847e8689555cbc5a3238fc008c85ead2fb1d3ec826a405f3c4717"
+      }
+    },
+    {
+      "id": "HA-CN-036-RECOVERY-1",
+      "sourceId": "HA-CN-036",
+      "track": "development",
+      "manifest": "tasks/HA-CN-036-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "3e8b3839aa310cbcc1c1eee4c86953fbfe38bf606781535f977163c4d1111995",
+        "verifierHash": "f90948ae8e716536141de460105c887eeb0d3e5eba318b4128b2f5bd21c2b9c2"
+      }
+    },
+    {
+      "id": "HA-CN-035-RECOVERY-0",
+      "sourceId": "HA-CN-035",
+      "track": "development",
+      "manifest": "tasks/HA-CN-035-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "1147895802c3f701113ea2c000eaac5d1bdae41c787ec859b7d67a2d8199363c",
+        "verifierHash": "661b4c2a615dc355116b9d5d54a8fe125d70bf8af1c90833c59515841e86cd19"
+      }
+    },
+    {
+      "id": "HA-CN-035-RECOVERY-1",
+      "sourceId": "HA-CN-035",
+      "track": "development",
+      "manifest": "tasks/HA-CN-035-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "5fcdcd97332417e068161fb3721803c8c867833172b15fe103a3fbc70fb062b2",
+        "verifierHash": "a063972889e491b96ccc47c59e7a0492f01e6d93ceeccdc09d4351ba4843b487"
+      }
+    },
+    {
+      "id": "HA-CN-038-RECOVERY-0",
+      "sourceId": "HA-CN-038",
+      "track": "development",
+      "manifest": "tasks/HA-CN-038-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "dda4b5f3d4317a0b45c6cd0fbdfbce19a95405993adc2cb27e77222164b46ae4",
+        "verifierHash": "8c3792744067adcac9f9758207f5e508c58d6ff379c5228bf877588586bbc85c"
+      }
+    },
+    {
+      "id": "HA-CN-038-RECOVERY-1",
+      "sourceId": "HA-CN-038",
+      "track": "development",
+      "manifest": "tasks/HA-CN-038-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "299778875c7ce028a5668885883e25ae70ea1c636d42644604e8d4290d3b7e3e",
+        "verifierHash": "ef6fd7d3d48bc7b8132bf377f416ca167c53c34d83c809ab9402ecf2fa1d6d1b"
+      }
+    },
+    {
+      "id": "TC-CN-036-RECOVERY-0",
+      "sourceId": "TC-CN-036",
+      "track": "development",
+      "manifest": "tasks/TC-CN-036-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "0fed11884e6a3f93b021463d4db904e7d5602625eae983bfb4e091abc7aca2b5",
+        "verifierHash": "87c0263186986782b73272d2169e5342d9e37842d61fb1fd7dd7902a0b84e0d6"
+      }
+    },
+    {
+      "id": "TC-CN-036-RECOVERY-1",
+      "sourceId": "TC-CN-036",
+      "track": "development",
+      "manifest": "tasks/TC-CN-036-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "abec224686f652575e8dfbdc45869c583f8cbbf0c87697ee483f2b2cf4b75a6b",
+        "verifierHash": "fb745e8f077b37479dfccce664444ba9a42f3790aa200f972b73782b101283ee"
+      }
+    },
+    {
+      "id": "TC-CN-046-RECOVERY-0",
+      "sourceId": "TC-CN-046",
+      "track": "development",
+      "manifest": "tasks/TC-CN-046-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "eb5ebf8993f946de98ea1081f55def74762b1b593464523d09b66c843e8a070e",
+        "verifierHash": "c17d15aa4bf0142c71e355fe40f9355e0c2fd8cace537473f555418ac90a24e0"
+      }
+    },
+    {
+      "id": "TC-CN-046-RECOVERY-1",
+      "sourceId": "TC-CN-046",
+      "track": "development",
+      "manifest": "tasks/TC-CN-046-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "82abe374b9f0c710248adc4e32d9a78b1850ed358a7254b14471637e74b4ffc2",
+        "verifierHash": "2576add0818868385c74344407a8e3bf5e7662ddf02785dc2c28db97d9086b2b"
+      }
+    },
+    {
+      "id": "HA-CN-014-RECOVERY-0",
+      "sourceId": "HA-CN-014",
+      "track": "development",
+      "manifest": "tasks/HA-CN-014-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "205211161da6ab6f7b13a8d5b8b7a0300b4152ff02be28b46a2be2155067ae05",
+        "verifierHash": "a1d98fb412166ca8a3f5ecff41ee1fab7de0079f6c08f1d76991b8222e258f83"
+      }
+    },
+    {
+      "id": "HA-CN-014-RECOVERY-1",
+      "sourceId": "HA-CN-014",
+      "track": "development",
+      "manifest": "tasks/HA-CN-014-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "1441f698b553bdd01845c1fb02fb8c8a4d44a029ccce859aaf083f501769795f",
+        "verifierHash": "a860912631dd0a72f15de48806e5b961d1b4deea5f1bddf23a8455d7f8b44bba"
+      }
+    },
+    {
+      "id": "HA-CN-001-RECOVERY-0",
+      "sourceId": "HA-CN-001",
+      "track": "development",
+      "manifest": "tasks/HA-CN-001-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "eade76cb57169a7e0424e4633921a592f27f3b64c7d4c2ca355904a282882047",
+        "verifierHash": "7e5cb19c00d91770ed1930ed5a9681c5610ce157e138cefc07f84828ad00cd1a"
+      }
+    },
+    {
+      "id": "HA-CN-001-RECOVERY-1",
+      "sourceId": "HA-CN-001",
+      "track": "development",
+      "manifest": "tasks/HA-CN-001-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "6910e48b0e589ee1a38465b371e295fcae3d4e9d6320722e9879626fbfc4f212",
+        "verifierHash": "64c22141d9c24cf9f5616bcaabcb912815957b4fbbdbbbaa678208d2ce90c34d"
+      }
+    },
+    {
+      "id": "HA-CN-002-RECOVERY-0",
+      "sourceId": "HA-CN-002",
+      "track": "development",
+      "manifest": "tasks/HA-CN-002-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "5b814210497ee680430b4191b600f3f510a7a376ed923c449998c03b2c349406",
+        "verifierHash": "7cda620a61c9fad3c40ad9af9e0ff94fce35150f735cb9655121186ae7123b5d"
+      }
+    },
+    {
+      "id": "HA-CN-002-RECOVERY-1",
+      "sourceId": "HA-CN-002",
+      "track": "development",
+      "manifest": "tasks/HA-CN-002-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "75b3b2166d3d164267b9e8934b4542770d9a56979c981f3237eebd6087271559",
+        "verifierHash": "67a858e5c9a8c9d608642cd35c6d40b013789f9c4aa9d377c2e4cb2b997b10bb"
+      }
+    },
+    {
+      "id": "HA-CN-004-RECOVERY-0",
+      "sourceId": "HA-CN-004",
+      "track": "development",
+      "manifest": "tasks/HA-CN-004-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "cf31d7e4af970ea366d30d1cb47fafd21ffe56865d1237721751088acb14385c",
+        "verifierHash": "a09fba40851eb0817f6ec1d490f0d45a20b9dc89c3ee5ca1c205690ae2262f40"
+      }
+    },
+    {
+      "id": "HA-CN-004-RECOVERY-1",
+      "sourceId": "HA-CN-004",
+      "track": "development",
+      "manifest": "tasks/HA-CN-004-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "1fd906c74b4ee6b83f50571704e9ff7cc0158f967fa8784d27abd7e233616f1a",
+        "verifierHash": "796d1eb8b50992e31629dc6e8c7b68bc9a245570714cff3be0d757c08fa592db"
+      }
+    },
+    {
+      "id": "HA-CN-032-RECOVERY-0",
+      "sourceId": "HA-CN-032",
+      "track": "development",
+      "manifest": "tasks/HA-CN-032-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "29e09a0fc34be4f0ca68923b0fc0b71b7990a6c01f2986d7a9383507460d0bc0",
+        "verifierHash": "a0519b4b802a5123fdaa77ad17fb1aa60fa29be164c21078a0b726cb7247b93a"
+      }
+    },
+    {
+      "id": "HA-CN-032-RECOVERY-1",
+      "sourceId": "HA-CN-032",
+      "track": "development",
+      "manifest": "tasks/HA-CN-032-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "f4c05a204f5eb748c8a867cfb1c82d1ef15fcc988fb76946dffffa1b25896292",
+        "verifierHash": "0b4f7f3bb2f90e519bee8da015366d8e958034450d54a3b5475c32b1268a91ae"
+      }
+    },
+    {
+      "id": "HA-CN-033-RECOVERY-0",
+      "sourceId": "HA-CN-033",
+      "track": "development",
+      "manifest": "tasks/HA-CN-033-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "2d267371ccacb78c911c80f93c4827f504de91134b260bd16c6135cfb9b8e9cf",
+        "verifierHash": "eeb6f70c1fe90e3c81d45eee0b26f310aa946b48e857e4296dc4001f18589531"
+      }
+    },
+    {
+      "id": "HA-CN-033-RECOVERY-1",
+      "sourceId": "HA-CN-033",
+      "track": "development",
+      "manifest": "tasks/HA-CN-033-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "02a8d543d267607d0101c509f158a6218670d20aa01566fe6ddfcc743169301c",
+        "verifierHash": "8c2200ef87fae1cb2cae9721aa933cbd9533af9cf32c11898c30861aa93f5cb5"
+      }
+    },
+    {
+      "id": "TC-CN-030-RECOVERY-0",
+      "sourceId": "TC-CN-030",
+      "track": "development",
+      "manifest": "tasks/TC-CN-030-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "d463713d352a5c1ce49fe25689f792041f17b8d914219938eafe2ae67dcf3cf0",
+        "verifierHash": "c701bc419db304f698e2bea86c2c8ec9a5fab9f19efb2d352aa0ed1d7d10dd5c"
+      }
+    },
+    {
+      "id": "TC-CN-030-RECOVERY-1",
+      "sourceId": "TC-CN-030",
+      "track": "development",
+      "manifest": "tasks/TC-CN-030-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "dfe8e713a6eef048cdc62be845ea19412245ce7fbb81e6ff2f1af22ff372bf28",
+        "verifierHash": "2124015f8b45a0544325720870c54b98ddce090e947b3558591a7cd6d72caaa8"
+      }
+    },
+    {
+      "id": "TC-CN-044-RECOVERY-0",
+      "sourceId": "TC-CN-044",
+      "track": "development",
+      "manifest": "tasks/TC-CN-044-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "25c7cbb3a88f7f975a0f8b6bf873809feccabd4d83b112aaeb08d5334a612f19",
+        "verifierHash": "4762d4c0601edc4f6b7b7cf0be54643dc41a2a8d1ebc1d819fff15dfd6016312"
+      }
+    },
+    {
+      "id": "TC-CN-044-RECOVERY-1",
+      "sourceId": "TC-CN-044",
+      "track": "development",
+      "manifest": "tasks/TC-CN-044-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "0ac9e5670b55364070f114c49c9a1c79e4d5e9fa96a9a054a8ce5e41debc40bd",
+        "verifierHash": "ca971aa0e7d0d9293dcfe1216c36eba1fdc37d22d242da8a57f47eed5371786f"
+      }
+    },
+    {
+      "id": "TC-CN-047-RECOVERY-0",
+      "sourceId": "TC-CN-047",
+      "track": "development",
+      "manifest": "tasks/TC-CN-047-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "04e5a48b6e942e199febc87a6075279819972ea9da75cce2938d464624dca0e4",
+        "verifierHash": "ee1d7fe47ea803b4f2099e59e5049481fe97bb40a8a557e1ee5c0c611dcf77ff"
+      }
+    },
+    {
+      "id": "TC-CN-047-RECOVERY-1",
+      "sourceId": "TC-CN-047",
+      "track": "development",
+      "manifest": "tasks/TC-CN-047-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "b21b231c4b724c563769243a1f53038b2fc0a69f756aca06dcd85ef0f3e962f1",
+        "verifierHash": "2cd029f7a588501524b97d1bb929557a82d71df8a4a7fe9594b407193d032fb6"
+      }
+    },
+    {
+      "id": "HA-CN-026-RECOVERY-0",
+      "sourceId": "HA-CN-026",
+      "track": "development",
+      "manifest": "tasks/HA-CN-026-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "1882e85cd09a90e9bf5e6eb0a5580d61e34c217cf9a4a1b749a44dea20b851e3",
+        "verifierHash": "ad0d35d5c1a5d78a2cdd8b8b117b60f9f47b8510fbab43f4bcd35e4e3d7e1b85"
+      }
+    },
+    {
+      "id": "HA-CN-026-RECOVERY-1",
+      "sourceId": "HA-CN-026",
+      "track": "development",
+      "manifest": "tasks/HA-CN-026-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "ad4b1b5896b361995f9d50f69d46d4d5de88c9421c42dd4b0cc99431f98bd3d2",
+        "verifierHash": "a0e549ac36a11a394b3fa3a3c04d3f0684434121352279c18fe0d6ab904b90a9"
+      }
+    },
+    {
+      "id": "HA-CN-010-RECOVERY-0",
+      "sourceId": "HA-CN-010",
+      "track": "development",
+      "manifest": "tasks/HA-CN-010-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "c5ee18832988bb10298b303eed58b22663b71e97df6b7aa7358f3da3df272300",
+        "verifierHash": "c420bdd7997bba0fb01ad2145f36ec1dd594e683ca81c6e3eb649e34ccff2f05"
+      }
+    },
+    {
+      "id": "HA-CN-010-RECOVERY-1",
+      "sourceId": "HA-CN-010",
+      "track": "development",
+      "manifest": "tasks/HA-CN-010-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "d7506282b0a768711903c4cea0ddc4756520024ba19ca67a88f22f1bc7ccd731",
+        "verifierHash": "33b8047cba2fc4d17d32785c79ed9875e1444c7951a82cfa25234254765f3c3c"
+      }
+    },
+    {
+      "id": "SA-CN-003-RECOVERY-0",
+      "sourceId": "SA-CN-003",
+      "track": "development",
+      "manifest": "tasks/SA-CN-003-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "5e7930b3df58a23981c08233c0f009ac5f530dfa9f05f803d892ba5414af3c29",
+        "verifierHash": "f7514f2e61f7fed9677147aaf84544f40ff96748cebf9b3a488a07f61ad6735d"
+      }
+    },
+    {
+      "id": "SA-CN-003-RECOVERY-1",
+      "sourceId": "SA-CN-003",
+      "track": "development",
+      "manifest": "tasks/SA-CN-003-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "16282b221bdf7a28bcdb2e137ae1e2a9af21cb73fe127a6ccac30a4084c1634e",
+        "verifierHash": "ff3681e07c74c7f2c91a204f5b0c47a7003e7748648658d6708c93bd446ce4ea"
+      }
+    },
+    {
+      "id": "SA-CN-006-RECOVERY-0",
+      "sourceId": "SA-CN-006",
+      "track": "development",
+      "manifest": "tasks/SA-CN-006-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "8ad20ed67ee9959e6db05241a6bd6e8c6fcb73d6300e7b31e699948659a06d42",
+        "verifierHash": "8dfc3da44b35d5d6b2fcf0e571e1e298b34ce851c0b21ffa0bd267eb9b23035b"
+      }
+    },
+    {
+      "id": "SA-CN-006-RECOVERY-1",
+      "sourceId": "SA-CN-006",
+      "track": "development",
+      "manifest": "tasks/SA-CN-006-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "6edb6fd0eec41b5a3f4deef86206a11dc70bf71f970cd2fdabcfee28b5c3f166",
+        "verifierHash": "6351c4eb449ebe4bed2e334cb77285f3d10b35736b645357a7e20aa4e8d80193"
+      }
+    },
+    {
+      "id": "SA-CN-036-RECOVERY-0",
+      "sourceId": "SA-CN-036",
+      "track": "development",
+      "manifest": "tasks/SA-CN-036-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "e803e4f9cfc054ebdb63978430fa0e8e3454e72ad8f12f3d966155873d918c67",
+        "verifierHash": "8dedc27f5672258b8bf61fe81720a80f619b81a5ec8694d260a81c3a59286ab6"
+      }
+    },
+    {
+      "id": "SA-CN-036-RECOVERY-1",
+      "sourceId": "SA-CN-036",
+      "track": "development",
+      "manifest": "tasks/SA-CN-036-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "0f7c784216aebaa6a49beb06963a07324852e96587d7dc9af71c14a62c97a10a",
+        "verifierHash": "06852526653c22258960ec2ad8850eb35d9ddcdddab5be27dc19d613a9aa537d"
+      }
+    },
+    {
+      "id": "SA-CN-041-RECOVERY-0",
+      "sourceId": "SA-CN-041",
+      "track": "development",
+      "manifest": "tasks/SA-CN-041-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "08e78c7226efb4a85a67edf7e8bc92867b96ec0ae74633f9e02e84bd6d7c85a3",
+        "verifierHash": "7cbbf14a15cae3fafa660934f67ca0faf2bea943b1af09197791f0e63ab636dc"
+      }
+    },
+    {
+      "id": "SA-CN-041-RECOVERY-1",
+      "sourceId": "SA-CN-041",
+      "track": "development",
+      "manifest": "tasks/SA-CN-041-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "1046b4c8e84c558ce7e468ecefb74af92ed5b49c49b2095f2c72f6b1f54c6c28",
+        "verifierHash": "a7174f78bcd478903086d0a6fa88a4611f70eec69eb1d930902ebeb32377154c"
+      }
+    },
+    {
+      "id": "SA-CN-046-RECOVERY-0",
+      "sourceId": "SA-CN-046",
+      "track": "development",
+      "manifest": "tasks/SA-CN-046-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "814417761f45c34e33690de3f9e9bb6165f1f0ce1894daccce1b4a260c1ceb98",
+        "verifierHash": "5d7ce64d1032db5e0a2cb4e8e56fb796b43006be9cd06983e1850008c3e9f7ec"
+      }
+    },
+    {
+      "id": "SA-CN-046-RECOVERY-1",
+      "sourceId": "SA-CN-046",
+      "track": "development",
+      "manifest": "tasks/SA-CN-046-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "6ae8c42dac46567dabc6ea45738bc95c0b0d44a2ef5896e11865a1a0807acde5",
+        "verifierHash": "f6d7de73c71d5db693558fb4edb38dce6d79903530b24ce9cc2ca18ab9bb7301"
+      }
+    },
+    {
+      "id": "SA-CN-048-RECOVERY-0",
+      "sourceId": "SA-CN-048",
+      "track": "development",
+      "manifest": "tasks/SA-CN-048-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "59a42a5dc82bc901f00c4ac98df8f9540f457cc49c5c1ba5a9bff05e024b40f8",
+        "verifierHash": "bfc76033315b1a890e3324830e6fb68d4bb0f72539792149c6b5327966f700c8"
+      }
+    },
+    {
+      "id": "SA-CN-048-RECOVERY-1",
+      "sourceId": "SA-CN-048",
+      "track": "development",
+      "manifest": "tasks/SA-CN-048-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "5af83df270ee88c951e5f79abd34b544f039bb5c4c29fac3f20dc119f86eff24",
+        "verifierHash": "1f201c6fe73269d0e1f08b85a93c16507718dcb2f8c24bb69a81127458df8d82"
+      }
+    },
+    {
+      "id": "SA-CN-049-RECOVERY-0",
+      "sourceId": "SA-CN-049",
+      "track": "development",
+      "manifest": "tasks/SA-CN-049-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "0694e97eed20ce424996ac0d642bfa191acd5a3be4504d12fe18c99a27b42099",
+        "verifierHash": "63d13e74dee5169ca24c94e15e37441e60f035ff45a379de7ccd7b60b09af115"
+      }
+    },
+    {
+      "id": "SA-CN-049-RECOVERY-1",
+      "sourceId": "SA-CN-049",
+      "track": "development",
+      "manifest": "tasks/SA-CN-049-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "70c1b507b9ce88485fa49a8b9fc92c2701db29a357b6c0b976fbe6844ef4b014",
+        "verifierHash": "63d13e74dee5169ca24c94e15e37441e60f035ff45a379de7ccd7b60b09af115"
+      }
+    },
+    {
+      "id": "HA-CN-030-RECOVERY-0",
+      "sourceId": "HA-CN-030",
+      "track": "development",
+      "manifest": "tasks/HA-CN-030-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "b60c84ff02687e031677b3b1427200e185f2d2fb632612d4e993d8d0af133bae",
+        "verifierHash": "73b0db4415be02d2d3e7c14a3c3021afbd5f5ca21782d2c122966c315f9db684"
+      }
+    },
+    {
+      "id": "HA-CN-030-RECOVERY-1",
+      "sourceId": "HA-CN-030",
+      "track": "development",
+      "manifest": "tasks/HA-CN-030-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "f8734ca44694bea334425df756bb3ccee28a05cfdbcf0f151422860228a0f4af",
+        "verifierHash": "d7662c1954303ebb20b6be5366bf5f3cf33f42d9a975343d39991416c0fde16b"
+      }
+    },
+    {
+      "id": "HA-CN-019-RECOVERY-0",
+      "sourceId": "HA-CN-019",
+      "track": "development",
+      "manifest": "tasks/HA-CN-019-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "601183a9fb8b80b49d03337622b4602afdfb6d0006c06ab626db39bf53734a0b",
+        "verifierHash": "a49cfa1c10dc6b977425fd64cde5e74b744fe1f4ae871abb226aff568fe09fab"
+      }
+    },
+    {
+      "id": "HA-CN-019-RECOVERY-1",
+      "sourceId": "HA-CN-019",
+      "track": "development",
+      "manifest": "tasks/HA-CN-019-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "2eb76a4b05851266381f5bf432970b8dfaac53356bd2eec6647b503d719d5934",
+        "verifierHash": "690c01bcc538be0c6f1154f1a49fb66aa0452672c94a68590c6b1b9dac8d6827"
+      }
+    },
+    {
+      "id": "HA-CN-028-RECOVERY-0",
+      "sourceId": "HA-CN-028",
+      "track": "development",
+      "manifest": "tasks/HA-CN-028-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "300b6dadd5275e2e6c52ab3d8c8cd205c5889ee03a6134c4fe75c1d77a436c3e",
+        "verifierHash": "029813e11192fd4c24125949d639152e4b814a3fba5f63d46abd585cb5466371"
+      }
+    },
+    {
+      "id": "HA-CN-028-RECOVERY-1",
+      "sourceId": "HA-CN-028",
+      "track": "development",
+      "manifest": "tasks/HA-CN-028-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "1e81861ab9834ce8bd32cf7dc69a133cacb85a236bd18244eb45cda1cb56a883",
+        "verifierHash": "404169dd61a455ecb6d100d5b6b773fda5e840e7cb33539e501823beeafbad96"
+      }
+    },
+    {
+      "id": "HA-CN-029-RECOVERY-0",
+      "sourceId": "HA-CN-029",
+      "track": "development",
+      "manifest": "tasks/HA-CN-029-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "029129a8b304e5c13d6215ba73716c5640755f745e99b000b2f7bbf854657795",
+        "verifierHash": "545db816e3e1332c1318d742c84c24803fc511a57837e3e4d493df96f2006cb7"
+      }
+    },
+    {
+      "id": "HA-CN-029-RECOVERY-1",
+      "sourceId": "HA-CN-029",
+      "track": "development",
+      "manifest": "tasks/HA-CN-029-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "54036dcd35f1935ed18a3c04ed2219a5da693b5d38069f167bd96e898c20e3f3",
+        "verifierHash": "4ddf0ccef02aaa69d53e6f4436a7a4324f8f99739b014d4da069e184bf0ae27f"
+      }
+    },
+    {
+      "id": "HA-CN-040-RECOVERY-0",
+      "sourceId": "HA-CN-040",
+      "track": "development",
+      "manifest": "tasks/HA-CN-040-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "ce8b8de26535dbdbcafe2b8fae074f63ba2d6faa62d935eec556ed65666b2cbd",
+        "verifierHash": "6d3331677aabad5429db2fbb984dcbe5cf582a317d88d90716707432b7d22288"
+      }
+    },
+    {
+      "id": "HA-CN-040-RECOVERY-1",
+      "sourceId": "HA-CN-040",
+      "track": "development",
+      "manifest": "tasks/HA-CN-040-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "6281ce840130a3c5828d2d8022c163bfc8ecc20308dd613d03017b1067e075cf",
+        "verifierHash": "1b8266b7e9c0f3e117edeb280d5ac265bc2c75bfad9c71cbe52f1b4691926c7c"
+      }
+    },
+    {
+      "id": "SA-CN-037-RECOVERY-0",
+      "sourceId": "SA-CN-037",
+      "track": "development",
+      "manifest": "tasks/SA-CN-037-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "4bc3750eefdba9721a1d4c3c8f62817cdb1e8d752e3cf5d672c7f74a4f36382d",
+        "verifierHash": "037756fa9e3d1e2a04ac9852565efc18122a46e3740344ddcc19c7dd8a09186c"
+      }
+    },
+    {
+      "id": "SA-CN-037-RECOVERY-1",
+      "sourceId": "SA-CN-037",
+      "track": "development",
+      "manifest": "tasks/SA-CN-037-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "2ac871b76a892af5cd43f9bb2603483919b4e902954341f002b6fad3bed4a1ba",
+        "verifierHash": "037756fa9e3d1e2a04ac9852565efc18122a46e3740344ddcc19c7dd8a09186c"
+      }
+    },
+    {
+      "id": "HA-CN-027-RECOVERY-0",
+      "sourceId": "HA-CN-027",
+      "track": "development",
+      "manifest": "tasks/HA-CN-027-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "29a5e19ea93f95e05ac2d2d9cd8668b6fa3b54cd55c21e43b2a48f21bb06c4be",
+        "verifierHash": "f88c70b28459640bae969219fb6f75db3df29caa55f86156643635a9e1501949"
+      }
+    },
+    {
+      "id": "HA-CN-027-RECOVERY-1",
+      "sourceId": "HA-CN-027",
+      "track": "development",
+      "manifest": "tasks/HA-CN-027-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "c35e77bc593156196ead4aa6d353f44acb04348bc803c9452f5f50515bee9141",
+        "verifierHash": "b811e0b32594df342303d40c92311ec53bbf9af5427c9bcacc8ab81114889d8a"
+      }
+    },
+    {
+      "id": "HA-CN-034-RECOVERY-0",
+      "sourceId": "HA-CN-034",
+      "track": "development",
+      "manifest": "tasks/HA-CN-034-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "be175990a8c8f5936b0cf648032a369c9c78e5bde98e4b707380ecdd65694427",
+        "verifierHash": "8945c0bda9bd4fe1f23c1884d006d74a4539dbf9728b7b8a5ebfce4a72d98816"
+      }
+    },
+    {
+      "id": "HA-CN-034-RECOVERY-1",
+      "sourceId": "HA-CN-034",
+      "track": "development",
+      "manifest": "tasks/HA-CN-034-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "f419eae8bf51cf731224f1248321f93fc13dfea0e9b5a030ef2500923a5d415b",
+        "verifierHash": "f331a4674f6676d854938354b21cf4c7e606dbb02be353ec782b4b30a05c85cd"
+      }
+    },
+    {
+      "id": "SA-CN-028-RECOVERY-0",
+      "sourceId": "SA-CN-028",
+      "track": "development",
+      "manifest": "tasks/SA-CN-028-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "8a804aec11dc1770916975eb0d20bbc8bccbb624bf504dc0ac14e7529aa86fe5",
+        "verifierHash": "cbc63cf7f386607a9b4fc3405fa6c5e8129b17fb7c2a0cb257716ed01eac21a5"
+      }
+    },
+    {
+      "id": "SA-CN-028-RECOVERY-1",
+      "sourceId": "SA-CN-028",
+      "track": "development",
+      "manifest": "tasks/SA-CN-028-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "d82b4549d7bb7785b23aa5e095b09eda658d44f6ec79a20aa6e16709774dafca",
+        "verifierHash": "171be306902d66eedc74649ec0d49350407874d5642160bc5bf6283a5ed8973a"
+      }
+    },
+    {
+      "id": "TC-CN-050-RECOVERY-0",
+      "sourceId": "TC-CN-050",
+      "track": "development",
+      "manifest": "tasks/TC-CN-050-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "1e3baad20cf7fc1d1c4b12f7de0d50b0d1ca43d18218c35d584b1711e3f20a71",
+        "verifierHash": "4f34930619aee8149d644811a37ee16997c94e01d71bf20d4406eaadad6deacd"
+      }
+    },
+    {
+      "id": "TC-CN-050-RECOVERY-1",
+      "sourceId": "TC-CN-050",
+      "track": "development",
+      "manifest": "tasks/TC-CN-050-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "50562a37890e36358ca0a408d147a7ee1ee84a18110ed7477f69d2a1d1a852a2",
+        "verifierHash": "5ce602d303552adbaf799d9dfd924d411134f220baa1f59a89dea9df5edcf09a"
+      }
+    },
+    {
+      "id": "HA-CN-015-RECOVERY-0",
+      "sourceId": "HA-CN-015",
+      "track": "development",
+      "manifest": "tasks/HA-CN-015-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "be05f4386165a12e9bbae19b822c94162038af47199bda06579e1a0b795f0d6c",
+        "verifierHash": "765e9011e0f195f9c7462e09f7d40eb5a88d47a9193d936872e0c543449c5f2f"
+      }
+    },
+    {
+      "id": "HA-CN-015-RECOVERY-1",
+      "sourceId": "HA-CN-015",
+      "track": "development",
+      "manifest": "tasks/HA-CN-015-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "97d20e6e50c69c8316396e8b347a2ddcf8c1f33af4fdb7e31765dd8ccd9f2e25",
+        "verifierHash": "feb0c1661b3118c8954560211768af24e603f8b57d8a81a2815362ab5539be7b"
+      }
+    },
+    {
+      "id": "CLI-CN-037-RECOVERY-0",
+      "sourceId": "CLI-CN-037",
+      "track": "development",
+      "manifest": "tasks/CLI-CN-037-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "7af038b556f5d7e8ba2c4d5eb038f296a82406580bcce61be8562acdd75a5a25",
+        "verifierHash": "5f862ac237b37e1d0b744e441f57d1eb0f70530318a4f7593c1b49b419835450"
+      }
+    },
+    {
+      "id": "CLI-CN-037-RECOVERY-1",
+      "sourceId": "CLI-CN-037",
+      "track": "development",
+      "manifest": "tasks/CLI-CN-037-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "fcd7e2263abbbbd519a62cd9c39d78305f094dff7f3ba38e3cf04f408fc6259a",
+        "verifierHash": "4fbe84c50e3c8388dc9f0337fd1d35e2fc5fb28bb5c4fd452dba6081767665e9"
+      }
+    },
+    {
+      "id": "CLI-CN-038-RECOVERY-0",
+      "sourceId": "CLI-CN-038",
+      "track": "development",
+      "manifest": "tasks/CLI-CN-038-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "bbf1bc959e80ccd684e1d88e44050282624ca470526dcd03d7c49d4ba3e85e47",
+        "verifierHash": "0b636114a85000041f5543dd325f47de2e9d11f19644fb80e12e63a0be8b0e38"
+      }
+    },
+    {
+      "id": "CLI-CN-038-RECOVERY-1",
+      "sourceId": "CLI-CN-038",
+      "track": "development",
+      "manifest": "tasks/CLI-CN-038-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "222be7389e3efbc10eb0255289f87121a9d5c6e660162938d8fb59e9fdeb459b",
+        "verifierHash": "0b636114a85000041f5543dd325f47de2e9d11f19644fb80e12e63a0be8b0e38"
+      }
+    },
+    {
+      "id": "CLI-CN-040-RECOVERY-0",
+      "sourceId": "CLI-CN-040",
+      "track": "development",
+      "manifest": "tasks/CLI-CN-040-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "69bc1642f787966fb30fcb9c19fb93827643a1f95571e42f2d2e0da5615e231f",
+        "verifierHash": "df7ec530d5bea01b65549ee0c0de62f269fcb497f66cd3284c0150854edd0f26"
+      }
+    },
+    {
+      "id": "CLI-CN-040-RECOVERY-1",
+      "sourceId": "CLI-CN-040",
+      "track": "development",
+      "manifest": "tasks/CLI-CN-040-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "d4d0525337036c662f6a715d83742bd6ce41ed4c8582b14b9e589f42a6b5fef1",
+        "verifierHash": "df7ec530d5bea01b65549ee0c0de62f269fcb497f66cd3284c0150854edd0f26"
+      }
+    },
+    {
+      "id": "CLI-CN-042-RECOVERY-0",
+      "sourceId": "CLI-CN-042",
+      "track": "development",
+      "manifest": "tasks/CLI-CN-042-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "99bb035840d0408559ffa35020657128d83be0b890a54676b40cdac601dfedf5",
+        "verifierHash": "c6bd8b9a4f4bc6e02bd28f1bafb132b761f04b0db1bb09871c9ffc41a4453b75"
+      }
+    },
+    {
+      "id": "CLI-CN-042-RECOVERY-1",
+      "sourceId": "CLI-CN-042",
+      "track": "development",
+      "manifest": "tasks/CLI-CN-042-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "5dc852f3fb37b499bc239b21cadeaf4aa17ac20a70ece12ccfe9caa453b9c573",
+        "verifierHash": "467ffc666107861878d7d150e13733db899c64f3a925745ad75bd471befd3c6c"
+      }
+    },
+    {
+      "id": "SA-CN-002-RECOVERY-0",
+      "sourceId": "SA-CN-002",
+      "track": "development",
+      "manifest": "tasks/SA-CN-002-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "f2607b10a3259a5f3542de79723ae08ded900a1ea1a54f53af6a8e0355066f15",
+        "verifierHash": "2975682b471caf4a6ea31c274c6e7ad78896d05a393e67c432346b6fa9771ca7"
+      }
+    },
+    {
+      "id": "SA-CN-002-RECOVERY-1",
+      "sourceId": "SA-CN-002",
+      "track": "development",
+      "manifest": "tasks/SA-CN-002-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "657a0736ad940d2cec319fff792c5e0942c5aeb63e40b7777c1f271e8728dbe2",
+        "verifierHash": "2975682b471caf4a6ea31c274c6e7ad78896d05a393e67c432346b6fa9771ca7"
+      }
+    },
+    {
+      "id": "SA-CN-004-RECOVERY-0",
+      "sourceId": "SA-CN-004",
+      "track": "development",
+      "manifest": "tasks/SA-CN-004-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "a543cbe9fc7b27bfbfad0a166bcb37a25f68b4e818d1f57d21ca458123e5e691",
+        "verifierHash": "953073893417059f43cc0c7a1ac75fa1b6f1ea88b55dc15a94dd086941f786df"
+      }
+    },
+    {
+      "id": "SA-CN-004-RECOVERY-1",
+      "sourceId": "SA-CN-004",
+      "track": "development",
+      "manifest": "tasks/SA-CN-004-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "64c2ab6a0aecb35909d9a5ff8b1a7435e892ac60e6ccc7a8733749c9ab0f4a5e",
+        "verifierHash": "953073893417059f43cc0c7a1ac75fa1b6f1ea88b55dc15a94dd086941f786df"
+      }
+    },
+    {
+      "id": "SA-CN-007-RECOVERY-0",
+      "sourceId": "SA-CN-007",
+      "track": "development",
+      "manifest": "tasks/SA-CN-007-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "9e27e2237726dc6d65d823efc2d5bae7f3449ed8f7468d575d84423399b1f94f",
+        "verifierHash": "4f5236213aca15cb9e26bbcd751935b4f70551d8a10f77882151b1286811ac8d"
+      }
+    },
+    {
+      "id": "SA-CN-007-RECOVERY-1",
+      "sourceId": "SA-CN-007",
+      "track": "development",
+      "manifest": "tasks/SA-CN-007-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "56b8bd9b6a277ee06e10056c90e7578d95f17bf357d6e9d686955f3aad86fdd0",
+        "verifierHash": "4f5236213aca15cb9e26bbcd751935b4f70551d8a10f77882151b1286811ac8d"
+      }
+    },
+    {
+      "id": "SA-CN-008-RECOVERY-0",
+      "sourceId": "SA-CN-008",
+      "track": "development",
+      "manifest": "tasks/SA-CN-008-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "6186f818cf8dc63497b3835921e4304576fe9c117bff88c2925dada289b7078c",
+        "verifierHash": "d856ee933427d43a2315b80cf6366700a84f203942ceeae0870d520baff2b63e"
+      }
+    },
+    {
+      "id": "SA-CN-008-RECOVERY-1",
+      "sourceId": "SA-CN-008",
+      "track": "development",
+      "manifest": "tasks/SA-CN-008-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "f5675e2d1351b569a30a3c1dd4ed9c870c9a76d6d2eaced7f8fdeeb6835d4b1f",
+        "verifierHash": "d856ee933427d43a2315b80cf6366700a84f203942ceeae0870d520baff2b63e"
+      }
+    },
+    {
+      "id": "SA-CN-039-RECOVERY-0",
+      "sourceId": "SA-CN-039",
+      "track": "development",
+      "manifest": "tasks/SA-CN-039-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "4e50b83d14c1749c0bad5220fcb37830d8041b47428346cc47279d099e0f5d5e",
+        "verifierHash": "81f348c370976846c760f0ca4ee4f490de4a42956b04d7ca3bc10f9fcb2c1830"
+      }
+    },
+    {
+      "id": "SA-CN-039-RECOVERY-1",
+      "sourceId": "SA-CN-039",
+      "track": "development",
+      "manifest": "tasks/SA-CN-039-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "e0f950ecb30e3711543a96f5c5769dcf9cb83622d3055a9e401adc026378dc5a",
+        "verifierHash": "81f348c370976846c760f0ca4ee4f490de4a42956b04d7ca3bc10f9fcb2c1830"
+      }
+    },
+    {
+      "id": "SA-CN-042-RECOVERY-0",
+      "sourceId": "SA-CN-042",
+      "track": "development",
+      "manifest": "tasks/SA-CN-042-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "38a5c4117f8bffd9d2c71c59935c95cadea2ec9f7719e2a9dba64ccb81997116",
+        "verifierHash": "5ae8194d8d82b5b22be0934aab1121d60ba60b0cd6ba6436dd6627060ca966da"
+      }
+    },
+    {
+      "id": "SA-CN-042-RECOVERY-1",
+      "sourceId": "SA-CN-042",
+      "track": "development",
+      "manifest": "tasks/SA-CN-042-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "17ae778eb5ccb8f4dee2eba47e167208f4d09cffc2b06b7859c5578168f54bc5",
+        "verifierHash": "5ae8194d8d82b5b22be0934aab1121d60ba60b0cd6ba6436dd6627060ca966da"
+      }
+    },
+    {
+      "id": "SA-CN-044-RECOVERY-0",
+      "sourceId": "SA-CN-044",
+      "track": "development",
+      "manifest": "tasks/SA-CN-044-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "b0bd9321151563a35a001ec529a0284841705c49089f6023ded20334558d0d61",
+        "verifierHash": "6ce0aaf4f0732fab84c2f700cf051a61a00f81ccf82005c6bd8440bf20d97b88"
+      }
+    },
+    {
+      "id": "SA-CN-044-RECOVERY-1",
+      "sourceId": "SA-CN-044",
+      "track": "development",
+      "manifest": "tasks/SA-CN-044-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "08dae2a7c247c23d4e25ff7dc155649e5f0bf9e29f91aa97935d16559b21e727",
+        "verifierHash": "6ce0aaf4f0732fab84c2f700cf051a61a00f81ccf82005c6bd8440bf20d97b88"
+      }
+    },
+    {
+      "id": "SA-CN-050-RECOVERY-0",
+      "sourceId": "SA-CN-050",
+      "track": "development",
+      "manifest": "tasks/SA-CN-050-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "fe447b4953b128e13e0e3de26eb486c6b557863bb9bc6808d0c019c9f3a49833",
+        "verifierHash": "27a39304732f35a7da08498b6cb53e97bf558b065f19481f2b175504b3176ae2"
+      }
+    },
+    {
+      "id": "SA-CN-050-RECOVERY-1",
+      "sourceId": "SA-CN-050",
+      "track": "development",
+      "manifest": "tasks/SA-CN-050-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "ef43507b4a7a42439314f6667d14f600571c8e525a2d541fd096a187605f6ecc",
+        "verifierHash": "27a39304732f35a7da08498b6cb53e97bf558b065f19481f2b175504b3176ae2"
+      }
+    },
+    {
+      "id": "SA-CN-020-RECOVERY-0",
+      "sourceId": "SA-CN-020",
+      "track": "development",
+      "manifest": "tasks/SA-CN-020-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "00d873785c270d5ae4f28df50b04db5c3dd39a2335edfc3809f2e9025cd69f3a",
+        "verifierHash": "718a3905ab033353a0bbca4fc72df4ae31d5b087ce090af4b2659588cc75f349"
+      }
+    },
+    {
+      "id": "SA-CN-020-RECOVERY-1",
+      "sourceId": "SA-CN-020",
+      "track": "development",
+      "manifest": "tasks/SA-CN-020-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "8488a98e5c230a147c1bbfedefcfc907549c7eabd5acedb71ef58090e15eed00",
+        "verifierHash": "718a3905ab033353a0bbca4fc72df4ae31d5b087ce090af4b2659588cc75f349"
+      }
+    },
+    {
+      "id": "SA-CN-023-RECOVERY-0",
+      "sourceId": "SA-CN-023",
+      "track": "development",
+      "manifest": "tasks/SA-CN-023-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "e17a815cf47ac0f116de745ebdfd47570d72bd872ebeb116d720b979e98f01ab",
+        "verifierHash": "f3ad8f0b10f980342f1b256e4fdbfd3f01a5ff45ae2812ad0fb27daf94d1ddd2"
+      }
+    },
+    {
+      "id": "SA-CN-023-RECOVERY-1",
+      "sourceId": "SA-CN-023",
+      "track": "development",
+      "manifest": "tasks/SA-CN-023-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "c8b56cd8474d6dc269ddaa1384c23e377e503f8c9642572f9a715aa82cc73834",
+        "verifierHash": "b8c4d3022fbe3a202a833dffc7397d7a1d3243006500066741b983559128f8c2"
+      }
+    },
+    {
+      "id": "SA-CN-024-RECOVERY-0",
+      "sourceId": "SA-CN-024",
+      "track": "development",
+      "manifest": "tasks/SA-CN-024-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "a5522fb4197181a3ecbc5cc7df9d6c4de2555edc5d30b22bd8b82510906e9322",
+        "verifierHash": "18be12add9a2a7f1ad5ef7e129a7007bd79792e718bd658486791a84eb8c3f06"
+      }
+    },
+    {
+      "id": "SA-CN-024-RECOVERY-1",
+      "sourceId": "SA-CN-024",
+      "track": "development",
+      "manifest": "tasks/SA-CN-024-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "bd91471f4a1c65e2fdb7d06c4617045a316e539603e4020961b9bf14f2e597e7",
+        "verifierHash": "2c9b7cacd5657d182ce50dd44367abbc3f6c6d32c208ce3762e20d26866dedc9"
+      }
+    },
+    {
+      "id": "SA-CN-027-RECOVERY-0",
+      "sourceId": "SA-CN-027",
+      "track": "development",
+      "manifest": "tasks/SA-CN-027-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "f8eaa66700a732df5842b17940c304cc8e95fd3dfa8f5195cb95a2159a84fef7",
+        "verifierHash": "fcd3e83dfd0ac1c60f878872967c9b9cf27409e109b856743fdccd88177c5faf"
+      }
+    },
+    {
+      "id": "SA-CN-027-RECOVERY-1",
+      "sourceId": "SA-CN-027",
+      "track": "development",
+      "manifest": "tasks/SA-CN-027-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "04e81a10205eca7624b77c35cc9eac114ec04f78cfb7eefcdb4a26bccad66dac",
+        "verifierHash": "ab03fb09d9dc9f293cdc8f96906250612ce8f58723e581b9f687c10e82beff2e"
+      }
+    },
+    {
+      "id": "SA-CN-031-RECOVERY-0",
+      "sourceId": "SA-CN-031",
+      "track": "development",
+      "manifest": "tasks/SA-CN-031-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "455a51b90bc80982a8043a7646f711bd5a9b9104280cb469024b866666fb937a",
+        "verifierHash": "39c81cdebb8ed40de32044294432b8b714c599dde6baca67456f43172de057d2"
+      }
+    },
+    {
+      "id": "SA-CN-031-RECOVERY-1",
+      "sourceId": "SA-CN-031",
+      "track": "development",
+      "manifest": "tasks/SA-CN-031-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "3c8203847cc79a9bdb1e49e9899dee9288ca6ed946f0e7d86e8c244d263b35f6",
+        "verifierHash": "39c81cdebb8ed40de32044294432b8b714c599dde6baca67456f43172de057d2"
+      }
+    },
+    {
+      "id": "SA-CN-033-RECOVERY-0",
+      "sourceId": "SA-CN-033",
+      "track": "development",
+      "manifest": "tasks/SA-CN-033-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "01cb46c0255ef4e09107a6bc7602859990b63d266e63b5e3c4a1d32b82d1fc59",
+        "verifierHash": "a06dc4a9c696083b29fdef57f1da30d62a70422ab8a28f985098a1fa86f5cd6f"
+      }
+    },
+    {
+      "id": "SA-CN-033-RECOVERY-1",
+      "sourceId": "SA-CN-033",
+      "track": "development",
+      "manifest": "tasks/SA-CN-033-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "cb986f82d4c004a0755124cdb04d18e1dbf129f24346fd48b705f182a5776b12",
+        "verifierHash": "a06dc4a9c696083b29fdef57f1da30d62a70422ab8a28f985098a1fa86f5cd6f"
+      }
+    },
+    {
+      "id": "SA-CN-035-RECOVERY-0",
+      "sourceId": "SA-CN-035",
+      "track": "development",
+      "manifest": "tasks/SA-CN-035-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "f8d9bacf2cfed68b799c9eb8c4dd80c5e789c747780b9207bb999dd2587126f0",
+        "verifierHash": "7ae0c9777a9cae61b2961837f3ae39c3e11d6416f81bcb094529476c0287aa58"
+      }
+    },
+    {
+      "id": "SA-CN-035-RECOVERY-1",
+      "sourceId": "SA-CN-035",
+      "track": "development",
+      "manifest": "tasks/SA-CN-035-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "44863c20a45ff6d90f9b943e75c08d91922eb0d9e278795254e04632a3de4324",
+        "verifierHash": "7ae0c9777a9cae61b2961837f3ae39c3e11d6416f81bcb094529476c0287aa58"
+      }
+    },
+    {
+      "id": "SA-CN-038-RECOVERY-0",
+      "sourceId": "SA-CN-038",
+      "track": "development",
+      "manifest": "tasks/SA-CN-038-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "67c6a959289020b34301b30ef77fd959cd2bb6c1702fce0f0225680ae3a09de4",
+        "verifierHash": "9a85fe39ccd995514addbd9205b64d09ca1c00087b774385efbcbc39e833da92"
+      }
+    },
+    {
+      "id": "SA-CN-038-RECOVERY-1",
+      "sourceId": "SA-CN-038",
+      "track": "development",
+      "manifest": "tasks/SA-CN-038-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "30b6bc072108a9795eac0fe7ee4e9655d65c699eb1f6784111b7dc7be544f031",
+        "verifierHash": "9a85fe39ccd995514addbd9205b64d09ca1c00087b774385efbcbc39e833da92"
+      }
+    },
+    {
+      "id": "SA-CN-040-RECOVERY-0",
+      "sourceId": "SA-CN-040",
+      "track": "development",
+      "manifest": "tasks/SA-CN-040-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "0a45b1533d5f1dc7756f3321e7d404e7e14a67e144910821f8a7d64c10f99585",
+        "verifierHash": "98ba70bf8ba2de512b9441df658000e3cb5e036875f2bfed62f85dfb36cab37b"
+      }
+    },
+    {
+      "id": "SA-CN-040-RECOVERY-1",
+      "sourceId": "SA-CN-040",
+      "track": "development",
+      "manifest": "tasks/SA-CN-040-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "6eab3e5f25ddbf8f7a68ce42fe120a8cdb70862fd47e3a91ff47a89976232588",
+        "verifierHash": "98ba70bf8ba2de512b9441df658000e3cb5e036875f2bfed62f85dfb36cab37b"
+      }
+    },
+    {
+      "id": "SA-CN-045-RECOVERY-0",
+      "sourceId": "SA-CN-045",
+      "track": "development",
+      "manifest": "tasks/SA-CN-045-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "25fd951ea22e74f4e11352492116bc2769bb4d3a80a71a84d95b350a8f026bc7",
+        "verifierHash": "d6592032ad515d7c0eab162cb7654c19c4cbf8c00004f318a4aa461046f7fbe4"
+      }
+    },
+    {
+      "id": "SA-CN-045-RECOVERY-1",
+      "sourceId": "SA-CN-045",
+      "track": "development",
+      "manifest": "tasks/SA-CN-045-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "2874db413a4bdddb47cb10eb65a608aca4405b800a227e6416cf2f975a3efd0c",
+        "verifierHash": "d6592032ad515d7c0eab162cb7654c19c4cbf8c00004f318a4aa461046f7fbe4"
+      }
+    },
+    {
+      "id": "TC-CN-035-RECOVERY-0",
+      "sourceId": "TC-CN-035",
+      "track": "development",
+      "manifest": "tasks/TC-CN-035-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "5449a65bc1a172e79a2e1f470165f3156e8cb8b93f0c9f452d4d7173f66a552f",
+        "verifierHash": "0bae527bcb1e4da7fe9e0c9a81c97ec3b16c6d76aa40b6b8abb279def2db7a1a"
+      }
+    },
+    {
+      "id": "TC-CN-035-RECOVERY-1",
+      "sourceId": "TC-CN-035",
+      "track": "development",
+      "manifest": "tasks/TC-CN-035-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "869768abcae87be9cacb18fbaf571816f4bca9698d8bffc61083b19f07c83083",
+        "verifierHash": "d9ccb5987cc8f1025cf3f16dc7f0d715c82f6eddf170b06b8a8f1475caa61502"
+      }
+    },
+    {
+      "id": "TC-CN-037-RECOVERY-0",
+      "sourceId": "TC-CN-037",
+      "track": "development",
+      "manifest": "tasks/TC-CN-037-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "25f69a2e5793dd9a615a80fa3a5b7488d8aec8e252309d3947586943447f7cbd",
+        "verifierHash": "4b3bd93b95eed45eb99c0f1635ded44fbe4e06fdea39bb167856b850438ead75"
+      }
+    },
+    {
+      "id": "TC-CN-037-RECOVERY-1",
+      "sourceId": "TC-CN-037",
+      "track": "development",
+      "manifest": "tasks/TC-CN-037-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "7dc9493a39a7cb177cd3744a216d96dd2720a8cb7412149925c91e5555028de3",
+        "verifierHash": "4b3bd93b95eed45eb99c0f1635ded44fbe4e06fdea39bb167856b850438ead75"
+      }
+    },
+    {
+      "id": "TC-CN-041-RECOVERY-0",
+      "sourceId": "TC-CN-041",
+      "track": "development",
+      "manifest": "tasks/TC-CN-041-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "d5adc379a7891d6e783f83208438d739954cdc20ec24b35cc62510d6ed2c9eef",
+        "verifierHash": "daf5bc1362bfa381996947d633bb13ed0b10a34c3bd6b5f68ed853eb3ce8ba72"
+      }
+    },
+    {
+      "id": "TC-CN-041-RECOVERY-1",
+      "sourceId": "TC-CN-041",
+      "track": "development",
+      "manifest": "tasks/TC-CN-041-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "ef2c103696843ee50ef06a0c4f77fe06275f3f2f0eaad79200507a905a74791b",
+        "verifierHash": "8e55deeea0be1a3841214b33aaee73f25438c404821fce7e38d83e4d26a316eb"
+      }
+    },
+    {
+      "id": "TC-CN-043-RECOVERY-0",
+      "sourceId": "TC-CN-043",
+      "track": "development",
+      "manifest": "tasks/TC-CN-043-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "8d60826d2f54d1830a5c6601348449c55b29905601866f5a0b8e6c12ba149881",
+        "verifierHash": "ed4d91cd6a44963a0755880954b46b9cbbe50eca6d89e0ad5c9535f461e690cc"
+      }
+    },
+    {
+      "id": "TC-CN-043-RECOVERY-1",
+      "sourceId": "TC-CN-043",
+      "track": "development",
+      "manifest": "tasks/TC-CN-043-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "20cdece34cdbd43e5e6728537888d2e6fb575de49df1493c74f0f48d0b7bd86f",
+        "verifierHash": "dcd04c5959d288bdd45818aa8e9944882a31d1ff42689475f31dbc1371ee545d"
+      }
+    },
+    {
+      "id": "TC-CN-045-RECOVERY-0",
+      "sourceId": "TC-CN-045",
+      "track": "development",
+      "manifest": "tasks/TC-CN-045-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "a04771fc4e3f94b3e2081807a3c0b89e91ccc4519bb470bdcd49e95af646a849",
+        "verifierHash": "379f184026624d4262fd1da9def5c684d04dd83976e0f539ddbc4289b4a369d2"
+      }
+    },
+    {
+      "id": "TC-CN-045-RECOVERY-1",
+      "sourceId": "TC-CN-045",
+      "track": "development",
+      "manifest": "tasks/TC-CN-045-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "cfd2b595861ac8e8b09fce3fa5f51ae4d4157b324647e4b2459a6bce300d8113",
+        "verifierHash": "ff20de8585f124db1e4ebbfdb3a08c7190f19650bb7cca25414b1d0356bedd35"
+      }
+    },
+    {
+      "id": "TC-CN-055-RECOVERY-0",
+      "sourceId": "TC-CN-055",
+      "track": "development",
+      "manifest": "tasks/TC-CN-055-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "41b016ee0d366b4fbbafc9ae889ef1d8f650b33c5dff89dde6c0401283be46d4",
+        "verifierHash": "53e94ff22ea95ec6c3b8a8226cf507a2a0849f5f64667165a140cbf1630f7288"
+      }
+    },
+    {
+      "id": "TC-CN-055-RECOVERY-1",
+      "sourceId": "TC-CN-055",
+      "track": "development",
+      "manifest": "tasks/TC-CN-055-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "e0384e37d5f77fe407a1d6dd13a5a8ff7ddc67e53e7c8a736a91ec4ac03d4e9d",
+        "verifierHash": "9b75c037a24edfbf12342a25c9979944af493add2fbeabb8e7d92247813f245d"
+      }
+    },
+    {
+      "id": "TC-CN-051-RECOVERY-0",
+      "sourceId": "TC-CN-051",
+      "track": "development",
+      "manifest": "tasks/TC-CN-051-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "f66cebac86376b1e9f0c686c282ee10433d09c8f99eafef44fb2581e2d2ef9a4",
+        "verifierHash": "1a9291094be6a4598748d1f86c24bb8c47c180c85086138d7bdec0cffdae407d"
+      }
+    },
+    {
+      "id": "TC-CN-051-RECOVERY-1",
+      "sourceId": "TC-CN-051",
+      "track": "development",
+      "manifest": "tasks/TC-CN-051-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "577f1a635b18a276d391bebbbb6876f9ccbc5e962ec5ca523820568ffb13de3b",
+        "verifierHash": "25d62a590e21a428f715cddc05150bb63620c279160defae24f170d172349ac6"
+      }
+    },
+    {
+      "id": "TC-CN-052-RECOVERY-0",
+      "sourceId": "TC-CN-052",
+      "track": "development",
+      "manifest": "tasks/TC-CN-052-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "92146c9d0d66d6d45b30a12efbfd4be891367a2453f33f618874fee16f65ec4a",
+        "verifierHash": "0c5af1a618e464420c2fb7664c3232372814f464855646d8cf110faf6a7f14b8"
+      }
+    },
+    {
+      "id": "TC-CN-052-RECOVERY-1",
+      "sourceId": "TC-CN-052",
+      "track": "development",
+      "manifest": "tasks/TC-CN-052-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "f45dbee0bd8bf30f4562092d1e84a2ee091e6dd38345ce9db8227001075f3730",
+        "verifierHash": "16f7483a037121ac2be787817d74cf348ed814955ac4b2f3894b6704e3c58bfa"
+      }
+    },
+    {
+      "id": "TC-CN-053-RECOVERY-0",
+      "sourceId": "TC-CN-053",
+      "track": "development",
+      "manifest": "tasks/TC-CN-053-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "3802c3373d4e69a00e59b9206c73087d39a97d7a2cff06227b4d652c3aa44563",
+        "verifierHash": "9a114aa442b0e8a17b21c3355ebbdb78291b49d42318350272672f2eab4b04d1"
+      }
+    },
+    {
+      "id": "TC-CN-053-RECOVERY-1",
+      "sourceId": "TC-CN-053",
+      "track": "development",
+      "manifest": "tasks/TC-CN-053-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "3ef5b36915eee5402fdad76afa0c51f63d2cec2200a529096ca5aa31d92236dd",
+        "verifierHash": "e60ab1a018a96d2b6cfe0f44037b0ccdfff38fdbe13fd1874fc3c1c75e1363f0"
+      }
+    },
+    {
+      "id": "TC-CN-056-RECOVERY-0",
+      "sourceId": "TC-CN-056",
+      "track": "development",
+      "manifest": "tasks/TC-CN-056-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "eeead40314995cc39d8b1ec2d1b8cbe2142010fe84043e3c20538818daf407b9",
+        "verifierHash": "a2af143faeef81fc0792898af2d0f101ab08b90ccf425c447283950b043eb323"
+      }
+    },
+    {
+      "id": "TC-CN-056-RECOVERY-1",
+      "sourceId": "TC-CN-056",
+      "track": "development",
+      "manifest": "tasks/TC-CN-056-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "6945d4d1c2818bd8f5aed5c15392e3326516a517591fcd605f76e7b9b2d0ac22",
+        "verifierHash": "20761467341bfb30e8d8c8b6e9b901bdd92ad9cfbabcd774e8c62463de2575af"
+      }
+    },
+    {
+      "id": "HA-CN-003-RECOVERY-0",
+      "sourceId": "HA-CN-003",
+      "track": "development",
+      "manifest": "tasks/HA-CN-003-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "6004a0d5b61e237051339f7f8c5030c44f3654f910136fa3d37f268e8fa426d0",
+        "verifierHash": "429d3a4ab377657fa40cddfe42217532d0768ef59bb86bc65252e285ccef0d4e"
+      }
+    },
+    {
+      "id": "HA-CN-003-RECOVERY-1",
+      "sourceId": "HA-CN-003",
+      "track": "development",
+      "manifest": "tasks/HA-CN-003-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "009a7ee514aeb6f5c7ae99c96756db5b82848cc2a228fcb75a9a9b27c5ed6f86",
+        "verifierHash": "429d3a4ab377657fa40cddfe42217532d0768ef59bb86bc65252e285ccef0d4e"
+      }
+    },
+    {
+      "id": "HA-CN-005-RECOVERY-0",
+      "sourceId": "HA-CN-005",
+      "track": "development",
+      "manifest": "tasks/HA-CN-005-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "e13540b1b5dc849b2606c6146b69949adeedc8769be0ef7619718fb658c1080e",
+        "verifierHash": "fb9691eaf10950f161ac40db627192b97cb25c9c7f5a44ce8a88b48db61daf07"
+      }
+    },
+    {
+      "id": "HA-CN-005-RECOVERY-1",
+      "sourceId": "HA-CN-005",
+      "track": "development",
+      "manifest": "tasks/HA-CN-005-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "131253abd707bd2becbeb42d7db90e7e32e9db6aee1ae0911638bf7616444e68",
+        "verifierHash": "fb9691eaf10950f161ac40db627192b97cb25c9c7f5a44ce8a88b48db61daf07"
+      }
+    },
+    {
+      "id": "HA-CN-006-RECOVERY-0",
+      "sourceId": "HA-CN-006",
+      "track": "development",
+      "manifest": "tasks/HA-CN-006-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "30973ed6935d95462308a3527c38ec0cb67689af47cd2522b36442a0d4ee8b38",
+        "verifierHash": "3b211962a5a818c7e70076f1d925fb8e87c5bfdcf900ad59baca1e7bc43aa3d5"
+      }
+    },
+    {
+      "id": "HA-CN-006-RECOVERY-1",
+      "sourceId": "HA-CN-006",
+      "track": "development",
+      "manifest": "tasks/HA-CN-006-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "14644907939135aea0247fc9976c7790669951628176b04f3bc46ff245bb1434",
+        "verifierHash": "b60789d2db426949a9c84289f44a1abe5db9eeb5987a8e05d388c44abb8262a9"
+      }
+    },
+    {
+      "id": "HA-CN-007-RECOVERY-0",
+      "sourceId": "HA-CN-007",
+      "track": "development",
+      "manifest": "tasks/HA-CN-007-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "fde1521f37f55258cbcacffb9c3eae7d05123dffb8158e45fce9f567e1da602d",
+        "verifierHash": "d705613e74d03d2d6bcbd9a2ce4fdd3bb61f3e13a0186df2e3b62150a7dd0aa0"
+      }
+    },
+    {
+      "id": "HA-CN-007-RECOVERY-1",
+      "sourceId": "HA-CN-007",
+      "track": "development",
+      "manifest": "tasks/HA-CN-007-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "3c28477b26437b9a981469f2e55c5a8c3d0f9904f68771be9e6cfe0c7a8eb831",
+        "verifierHash": "c17af07a7e54acfd98499d23e5215863b5a815beaaae28172d76f85d35952fa6"
+      }
+    },
+    {
+      "id": "HA-CN-008-RECOVERY-0",
+      "sourceId": "HA-CN-008",
+      "track": "development",
+      "manifest": "tasks/HA-CN-008-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "b2deb243f161ac757d6939412f67a3cfb795ad15452c0be94e39ea8230b64785",
+        "verifierHash": "a9c3e4373d179c0c9e47a6327f29e14fb22ba95d05dd88a02d1976bf34bef8fe"
+      }
+    },
+    {
+      "id": "HA-CN-008-RECOVERY-1",
+      "sourceId": "HA-CN-008",
+      "track": "development",
+      "manifest": "tasks/HA-CN-008-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "eaecbfc101c34d90080dedb98818dba2147f8fda71d22672fb6b259a6ce17e94",
+        "verifierHash": "f2c8ae45a8b74ac6c2412322403f200303631f5db0d42fad9b3f84d2333bd7b9"
+      }
+    },
+    {
+      "id": "HA-CN-009-RECOVERY-0",
+      "sourceId": "HA-CN-009",
+      "track": "development",
+      "manifest": "tasks/HA-CN-009-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "6dfe42029b9623f97f732bb063079ac706efc7798106af9fff593458ec27aafb",
+        "verifierHash": "eb3ccd73b1b20412e4890c85be2738727a80fba04b0f7df259cf5ec1b0b271b3"
+      }
+    },
+    {
+      "id": "HA-CN-009-RECOVERY-1",
+      "sourceId": "HA-CN-009",
+      "track": "development",
+      "manifest": "tasks/HA-CN-009-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "7927ec28687eb5a5a03eac5ba4e2e45e54426af10dbe40a1c238d5e6f4dc6a10",
+        "verifierHash": "eb3ccd73b1b20412e4890c85be2738727a80fba04b0f7df259cf5ec1b0b271b3"
+      }
+    },
+    {
+      "id": "HA-CN-016-RECOVERY-0",
+      "sourceId": "HA-CN-016",
+      "track": "development",
+      "manifest": "tasks/HA-CN-016-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "f022f1175c8dd1ec9ebfccf610734b4407ae596949c5c9960511391302e60082",
+        "verifierHash": "efedfa10ee40c1651c150095d164062c46d756a6bf6074d41bc47f9d21f4ad47"
+      }
+    },
+    {
+      "id": "HA-CN-016-RECOVERY-1",
+      "sourceId": "HA-CN-016",
+      "track": "development",
+      "manifest": "tasks/HA-CN-016-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "6c22a0986d3f9d91b4499b36e04ee00cf6abe210787d00309d5f1a7c185cbaa5",
+        "verifierHash": "efedfa10ee40c1651c150095d164062c46d756a6bf6074d41bc47f9d21f4ad47"
+      }
+    },
+    {
+      "id": "HA-CN-017-RECOVERY-0",
+      "sourceId": "HA-CN-017",
+      "track": "development",
+      "manifest": "tasks/HA-CN-017-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "2862fccb4b9f661d56034be1598e509f7ccf943e351801b346cc3af1c875e25f",
+        "verifierHash": "b7ac8dd77dec547b98e6797cd8be1a30c4161609acad3545e8ec1710de2750cb"
+      }
+    },
+    {
+      "id": "HA-CN-017-RECOVERY-1",
+      "sourceId": "HA-CN-017",
+      "track": "development",
+      "manifest": "tasks/HA-CN-017-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "8a51ecd1b0fb9c64805a4f29f57aeddd3c7d5922c34f462ddf30143758ed6503",
+        "verifierHash": "9e80f17941e910deddfc0aae6dac20adc2c28569ada310ee3375a4a210a06eea"
+      }
+    },
+    {
+      "id": "HA-CN-020-RECOVERY-0",
+      "sourceId": "HA-CN-020",
+      "track": "development",
+      "manifest": "tasks/HA-CN-020-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "6650845d9171b1d526dfdac251b85ff7a96de54ac37facf48e23613688292483",
+        "verifierHash": "5a6dec765d1dcafed67cef271f12ee839ea039b05e59bc2fa78abe046c2104b9"
+      }
+    },
+    {
+      "id": "HA-CN-020-RECOVERY-1",
+      "sourceId": "HA-CN-020",
+      "track": "development",
+      "manifest": "tasks/HA-CN-020-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "8aebd3f01b75b3bcccf175ae8b971bfc9dd3ecdd37f5e7c7234d706b0a18b6ee",
+        "verifierHash": "e702172889e7973e12e51d5be4e3b0ac6a20de235fa320b451e7b9433c62df34"
+      }
+    },
+    {
+      "id": "HA-CN-021-RECOVERY-0",
+      "sourceId": "HA-CN-021",
+      "track": "development",
+      "manifest": "tasks/HA-CN-021-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "3f093cf2a980b6e5641462c006bb192ab13f0528b200caf86d2c3f6c7cb45fb9",
+        "verifierHash": "31f95937cf4a2a8ace2d3bd51a604d2984b4cf9d4f6bc3b889991c7c007871d9"
+      }
+    },
+    {
+      "id": "HA-CN-021-RECOVERY-1",
+      "sourceId": "HA-CN-021",
+      "track": "development",
+      "manifest": "tasks/HA-CN-021-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "86628eb1f7b66368982795d35e96c55f961a8386f0be4faf71163d4602ac0f53",
+        "verifierHash": "fc68a493951310b7fbaa93f741e489890523526e60ca2e778141867918a20aea"
+      }
+    },
+    {
+      "id": "HA-CN-022-RECOVERY-0",
+      "sourceId": "HA-CN-022",
+      "track": "development",
+      "manifest": "tasks/HA-CN-022-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "b459a4bf4abd8962e873723f9ef5d991f35fd051cd72d7a33baef1d260cb0bfd",
+        "verifierHash": "c130878641baf29789f151071ab2cbb2ef3dacb175203c5d0c991530e566e37f"
+      }
+    },
+    {
+      "id": "HA-CN-022-RECOVERY-1",
+      "sourceId": "HA-CN-022",
+      "track": "development",
+      "manifest": "tasks/HA-CN-022-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "a62ccdd5ba9cf50c822c0171dd2a4136dd8ffc3fae92e3bcd9dafd044bb1edf3",
+        "verifierHash": "1c4b59821209fc1b5881dd02b7368ba7bc726bfc0db018f981f4913d7bb4a3ab"
+      }
+    },
+    {
+      "id": "HA-CN-023-RECOVERY-0",
+      "sourceId": "HA-CN-023",
+      "track": "development",
+      "manifest": "tasks/HA-CN-023-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "cde47d4de4ed31167018e7660e068a0848f4084440105771d28cee6ab1fd18fc",
+        "verifierHash": "e4735e87c4ef0a4886d5639d4aa1943beec5edb4e6ff102845dd03dff4159f37"
+      }
+    },
+    {
+      "id": "HA-CN-023-RECOVERY-1",
+      "sourceId": "HA-CN-023",
+      "track": "development",
+      "manifest": "tasks/HA-CN-023-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "941b71a57e0e06c9d0cc84c9c3c4fcbcff8563432150b17c86914e5dbe15925f",
+        "verifierHash": "d0fa9cfba1d0022f56163b0bc14a37b39729f9baa4a326807cd651c0964414af"
+      }
+    },
+    {
+      "id": "HA-CN-025-RECOVERY-0",
+      "sourceId": "HA-CN-025",
+      "track": "development",
+      "manifest": "tasks/HA-CN-025-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "bd950074b593afc903be52554939f1110b032ea1f7d7b57339e2346f2c98030a",
+        "verifierHash": "bbe9dc19f06ce2d806413d02a5f20da79aa4cae6c95b679e9ae7b75466b8b725"
+      }
+    },
+    {
+      "id": "HA-CN-025-RECOVERY-1",
+      "sourceId": "HA-CN-025",
+      "track": "development",
+      "manifest": "tasks/HA-CN-025-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "81d8c73b0cb7f498584e8c8d51c84579ba80ce3939e257e0f5787093cb3721bf",
+        "verifierHash": "534287f0cb6583df308773f71c2dd50b0081762fa938bd8918d2005cafa1a570"
+      }
+    },
+    {
+      "id": "HA-CN-018-RECOVERY-0",
+      "sourceId": "HA-CN-018",
+      "track": "development",
+      "manifest": "tasks/HA-CN-018-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "976d967497214ddd9cec3dfb007ec0417b49275cf68f888cfd720320459f1864",
+        "verifierHash": "82c960b927ad2cef3bf91d9b900937410c3fdb0de1a01303f27f9881084151b5"
+      }
+    },
+    {
+      "id": "HA-CN-018-RECOVERY-1",
+      "sourceId": "HA-CN-018",
+      "track": "development",
+      "manifest": "tasks/HA-CN-018-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "4cb7f836472fdfece2710a745a1e91fb8d18dbb1f72db7e7518e5e02d050f724",
+        "verifierHash": "6ad2c06e2869df7daa94f0d1a6efa152c96a4bf6d54632beb4b733d0fa65a2d1"
+      }
+    },
+    {
+      "id": "HA-CN-024-RECOVERY-0",
+      "sourceId": "HA-CN-024",
+      "track": "development",
+      "manifest": "tasks/HA-CN-024-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "3dee7e043039c27c03556d8de9892c2a09ef5d0b72910904e8819d00e776ba7a",
+        "verifierHash": "fcebcb5309f87b9a0624f8951d4986877dd6efcc60f4e9a237b77b7eb74f6fca"
+      }
+    },
+    {
+      "id": "HA-CN-024-RECOVERY-1",
+      "sourceId": "HA-CN-024",
+      "track": "development",
+      "manifest": "tasks/HA-CN-024-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "481ccd9b73fccbac1ca2db82dba5e3a0c898cb06f030a19db7331e8373c2d2ef",
+        "verifierHash": "fcebcb5309f87b9a0624f8951d4986877dd6efcc60f4e9a237b77b7eb74f6fca"
+      }
+    },
+    {
+      "id": "HA-CN-013-RECOVERY-0",
+      "sourceId": "HA-CN-013",
+      "track": "development",
+      "manifest": "tasks/HA-CN-013-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "146de110e54a33a2b510f2594555639c81c1f2ea9e4ad2cd4d93d200f18f1064",
+        "verifierHash": "816bacc71c4200c9b86449c6661f4e463620735578cd4ddc3fb3ab6117a6b1e6"
+      }
+    },
+    {
+      "id": "HA-CN-013-RECOVERY-1",
+      "sourceId": "HA-CN-013",
+      "track": "development",
+      "manifest": "tasks/HA-CN-013-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "8eb4c2a3a8f22b158fd14541a251e6ea27bd4fab67a424c3b3e36487ee4ec2df",
+        "verifierHash": "3930b5d407f88a847becb0c19aacbf8b52e9ec83eef44cf3d6e33f994c27dc5d"
+      }
+    },
+    {
+      "id": "HA-CN-044-RECOVERY-0",
+      "sourceId": "HA-CN-044",
+      "track": "development",
+      "manifest": "tasks/HA-CN-044-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "89d33c7f9eeeed66458d2a753f6e18ba2ac77dac63850a2db57302236caf6aea",
+        "verifierHash": "ec7182350b2877c796a99f4b1c448377a8a5aa2360be4995c440031dac302d9f"
+      }
+    },
+    {
+      "id": "HA-CN-044-RECOVERY-1",
+      "sourceId": "HA-CN-044",
+      "track": "development",
+      "manifest": "tasks/HA-CN-044-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "e7471ad2bee309543e37f9e5cd77dc10becf7cb361537b0dab396ca35bc14c70",
+        "verifierHash": "bc776376f2506374d02fb2893f90685a082875943141822e8ab760d91cb01530"
+      }
+    },
+    {
+      "id": "HA-CN-011-RECOVERY-0",
+      "sourceId": "HA-CN-011",
+      "track": "development",
+      "manifest": "tasks/HA-CN-011-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "4bfb4445f33208a168ddefbf7789a931c485afc99470e791b293039bc6555ecb",
+        "verifierHash": "23fe3dcf1af93deaab892c4397116e7f0c1c47f065d052204fc151c6a4799f96"
+      }
+    },
+    {
+      "id": "HA-CN-011-RECOVERY-1",
+      "sourceId": "HA-CN-011",
+      "track": "development",
+      "manifest": "tasks/HA-CN-011-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "b3127894cacea5e54d231954e50f13730431550a757a0f613ad86ee5bbbc3265",
+        "verifierHash": "071486bbac34939852932f89c7a9e9108366faf3f53332ca9bd9ec3cf7aee4a6"
+      }
+    },
+    {
+      "id": "HA-CN-012-RECOVERY-0",
+      "sourceId": "HA-CN-012",
+      "track": "development",
+      "manifest": "tasks/HA-CN-012-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "911e894aabb0dece174176de579154156537a9d70a63dbd3d4d3b3f9b12306c6",
+        "verifierHash": "6e6f94664e5c5f10723a58a55a77989a1524e82902980c574e3d75d9be1b9202"
+      }
+    },
+    {
+      "id": "HA-CN-012-RECOVERY-1",
+      "sourceId": "HA-CN-012",
+      "track": "development",
+      "manifest": "tasks/HA-CN-012-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "0c69d67fd8c0ffcb056bf66cefd305bc2ba8d2c7e5d65ad3a9ed15526b6ff096",
+        "verifierHash": "9e3b458e0a1747f63a0931fd21ecb460897120d3fbd6c4decbb3fe12a6b4af7e"
+      }
+    },
+    {
+      "id": "TC-CN-004-RECOVERY-0",
+      "sourceId": "TC-CN-004",
+      "track": "development",
+      "manifest": "tasks/TC-CN-004-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "246e4d0a484ed483dd543769c1e2323e7ba8a1bdad447d08ae723c7e3d9bbb64",
+        "verifierHash": "eb0114ed54b4ea80e5e7583126962254a0c92b30679c0342719ae91060bd4171"
+      }
+    },
+    {
+      "id": "TC-CN-004-RECOVERY-1",
+      "sourceId": "TC-CN-004",
+      "track": "development",
+      "manifest": "tasks/TC-CN-004-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "ff95768a041c230af99c887314b2731f8d0dcf71b6533eb44994812911fadb6b",
+        "verifierHash": "135811779be055e88e000741f2734da33a9bb87d8e16c62fc29846fd7fe58447"
+      }
+    },
+    {
+      "id": "TC-CN-006-RECOVERY-0",
+      "sourceId": "TC-CN-006",
+      "track": "development",
+      "manifest": "tasks/TC-CN-006-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "57acaf7a1268bd69c87a9d003436946b23d8e768e915b5c3208ad415be747ea1",
+        "verifierHash": "aa23745dc0e5dd206e6d9ae938ebfc30601eb1b5a05b427fac46dc8feba815a9"
+      }
+    },
+    {
+      "id": "TC-CN-006-RECOVERY-1",
+      "sourceId": "TC-CN-006",
+      "track": "development",
+      "manifest": "tasks/TC-CN-006-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "4fc431c8bdb0419c3f7f433cb6d49daaa5dd4c3508a08afccd565200e71a3b55",
+        "verifierHash": "3be7c6b6be0fdabdc148e56a7b1fbaec8a430e671095dedd73c692009acbd1bc"
+      }
+    },
+    {
+      "id": "TC-CN-017-RECOVERY-0",
+      "sourceId": "TC-CN-017",
+      "track": "development",
+      "manifest": "tasks/TC-CN-017-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "dd1f3bd935b10e28e8d13a91ef90008c58c456dd72e36f3957d4e3a7088bd337",
+        "verifierHash": "bfd081947231389dd9a917b7d66f0dcdbce1d1d53b4af94f7d7c2ca5b1a8d91a"
+      }
+    },
+    {
+      "id": "TC-CN-017-RECOVERY-1",
+      "sourceId": "TC-CN-017",
+      "track": "development",
+      "manifest": "tasks/TC-CN-017-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "f6f138bdeed153a8aedcc2a44661c5e677f1336dce2cb45713479649fc321823",
+        "verifierHash": "76e287b1887b73292b862dea1f5268828357d814b46f559dd3f002022689bdfc"
+      }
+    },
+    {
+      "id": "TC-CN-019-RECOVERY-0",
+      "sourceId": "TC-CN-019",
+      "track": "development",
+      "manifest": "tasks/TC-CN-019-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "60c32a074e69b6c6bde9aa7f9f732f1766e4857cbd836e690aaf7eb83b3c1a7e",
+        "verifierHash": "51a1d872a817d00a6c2ae454be54cc7ca87b1428f34f4cb83e4b45509e2dc5cc"
+      }
+    },
+    {
+      "id": "TC-CN-019-RECOVERY-1",
+      "sourceId": "TC-CN-019",
+      "track": "development",
+      "manifest": "tasks/TC-CN-019-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "adfd5673f662f3e72b74427835641a7d70c9e7168589343a01c7b19c2bf416c7",
+        "verifierHash": "4dcc5069cc7d5b0dc0c6358ef0a24fa2b1544fe5244cbed7e4d2691cf2287446"
+      }
+    },
+    {
+      "id": "TC-CN-021-RECOVERY-0",
+      "sourceId": "TC-CN-021",
+      "track": "development",
+      "manifest": "tasks/TC-CN-021-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "9a99e3d3bf57ae7480cc46869f0380415b9289f3bfb92bbdcb80f3adeec2e408",
+        "verifierHash": "0a697d1640686753db2ae28a591add1a8cd4d00daca1ef657814ec12191ac9ea"
+      }
+    },
+    {
+      "id": "TC-CN-021-RECOVERY-1",
+      "sourceId": "TC-CN-021",
+      "track": "development",
+      "manifest": "tasks/TC-CN-021-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "3a21b763ddb6d9cf9a2d6d51b76265e26fa7a52dd9b6d3a228e8a270d1c3efcf",
+        "verifierHash": "0a697d1640686753db2ae28a591add1a8cd4d00daca1ef657814ec12191ac9ea"
+      }
+    },
+    {
+      "id": "TC-CN-007-RECOVERY-0",
+      "sourceId": "TC-CN-007",
+      "track": "development",
+      "manifest": "tasks/TC-CN-007-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "3d54125ebc3b92b06e098dfaae16a832da885a3e33893f2d345d2fef46bdc578",
+        "verifierHash": "704e714374bafd415351faa6c097f0f945ab41262c551cc3734093cd7966d967"
+      }
+    },
+    {
+      "id": "TC-CN-007-RECOVERY-1",
+      "sourceId": "TC-CN-007",
+      "track": "development",
+      "manifest": "tasks/TC-CN-007-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "2c0065548cbbf818a34883130506bad44cc8c180758d8dd68bb086a1136fc73f",
+        "verifierHash": "704e714374bafd415351faa6c097f0f945ab41262c551cc3734093cd7966d967"
+      }
+    },
+    {
+      "id": "TC-CN-029-RECOVERY-0",
+      "sourceId": "TC-CN-029",
+      "track": "development",
+      "manifest": "tasks/TC-CN-029-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "6a6f81ff3c5bb876a0ea2d763d2d47fcddfbe4ba2d7450787aa5b7d24bceb9ae",
+        "verifierHash": "cddfe4ff238c8a29094fdf82e9b891a0dc85726eb4dc3b1913c2a2eeb47fcfc1"
+      }
+    },
+    {
+      "id": "TC-CN-029-RECOVERY-1",
+      "sourceId": "TC-CN-029",
+      "track": "development",
+      "manifest": "tasks/TC-CN-029-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "44268e820ef9b25098258cf714cd074f4b1bd22767097f9a2843d735fe4cf3f1",
+        "verifierHash": "cddfe4ff238c8a29094fdf82e9b891a0dc85726eb4dc3b1913c2a2eeb47fcfc1"
+      }
+    },
+    {
+      "id": "TC-CN-031-RECOVERY-0",
+      "sourceId": "TC-CN-031",
+      "track": "development",
+      "manifest": "tasks/TC-CN-031-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "c2bb3e1e8d55c9712a66f63a3690487f56d3ae6e3b3d02a0767571ad7a238bcc",
+        "verifierHash": "243b97ccfb1714309f7af3e5d0d5b82b7df67a25bf8e8083792f5b53266cad69"
+      }
+    },
+    {
+      "id": "TC-CN-031-RECOVERY-1",
+      "sourceId": "TC-CN-031",
+      "track": "development",
+      "manifest": "tasks/TC-CN-031-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "d6cc7aaed5579010b16f02c082c4a4db6517afc713349e9d6a7ce1ec13761405",
+        "verifierHash": "de4d7ad8d7ff83fad2a659b5ccbd0f9f94b6c1715c51b81ba33c2d8daf17e95e"
+      }
+    },
+    {
+      "id": "TC-CN-033-RECOVERY-0",
+      "sourceId": "TC-CN-033",
+      "track": "development",
+      "manifest": "tasks/TC-CN-033-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "f6d5ee385c04e2e3e5f36d431751b6c2cc9b958531e9525559ae3694db989ea8",
+        "verifierHash": "6b3bf727a256ea7869eaee46796cd55c4480c1d2d0c59ef5e48b5cc08d7492dc"
+      }
+    },
+    {
+      "id": "TC-CN-033-RECOVERY-1",
+      "sourceId": "TC-CN-033",
+      "track": "development",
+      "manifest": "tasks/TC-CN-033-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "064897e1964b041b75f1d56dd9ce6604935c08531b43f94f2a61774f64911963",
+        "verifierHash": "6b3bf727a256ea7869eaee46796cd55c4480c1d2d0c59ef5e48b5cc08d7492dc"
+      }
+    },
+    {
+      "id": "TC-CN-038-RECOVERY-0",
+      "sourceId": "TC-CN-038",
+      "track": "development",
+      "manifest": "tasks/TC-CN-038-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "770d102975546962fd4a66b0481db2436e2d50213e60516e3cff0e980b285058",
+        "verifierHash": "37c28f338a7711dbfe6610c99e8a66857fb5e30e83569e846f868149bfc36bd1"
+      }
+    },
+    {
+      "id": "TC-CN-038-RECOVERY-1",
+      "sourceId": "TC-CN-038",
+      "track": "development",
+      "manifest": "tasks/TC-CN-038-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "5872a15d9dd107723d4401494049a05f9ba945926caef4ed3aa6f0b7a9b8bcda",
+        "verifierHash": "37c28f338a7711dbfe6610c99e8a66857fb5e30e83569e846f868149bfc36bd1"
+      }
+    },
+    {
+      "id": "TC-CN-039-RECOVERY-0",
+      "sourceId": "TC-CN-039",
+      "track": "development",
+      "manifest": "tasks/TC-CN-039-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "98951bcfe727a32a04a7427e5cc3fa385834a533cf9caa922cbf21f0e2a2c9d8",
+        "verifierHash": "ecc51f9edb4b3b58d45807ad43a1a83ee5c83997bc78a7c65bf249de7f1a2db9"
+      }
+    },
+    {
+      "id": "TC-CN-039-RECOVERY-1",
+      "sourceId": "TC-CN-039",
+      "track": "development",
+      "manifest": "tasks/TC-CN-039-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "360c0304416aae0e9e369f8694e29bc33e0840456571011be2c3865073d96b4f",
+        "verifierHash": "ecc51f9edb4b3b58d45807ad43a1a83ee5c83997bc78a7c65bf249de7f1a2db9"
+      }
+    },
+    {
+      "id": "TC-CN-008-RECOVERY-0",
+      "sourceId": "TC-CN-008",
+      "track": "development",
+      "manifest": "tasks/TC-CN-008-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "89744f19ed99287ec2c55dd581c0601720c437810a51bf929fb58c47b77fbfdb",
+        "verifierHash": "08744581c1288eed0d53b2ad65fa40a18152dea96e9834c5eeae09e2678729ab"
+      }
+    },
+    {
+      "id": "TC-CN-008-RECOVERY-1",
+      "sourceId": "TC-CN-008",
+      "track": "development",
+      "manifest": "tasks/TC-CN-008-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "6e1a6dec655947dcafe810f35946208b0d2e5ed461a883838758514409be3b8a",
+        "verifierHash": "b8665e0659df3acc9e045c5f218a1148589be051bc415ee80f7c2f2c9f1b44d6"
+      }
+    },
+    {
+      "id": "TC-CN-010-RECOVERY-0",
+      "sourceId": "TC-CN-010",
+      "track": "development",
+      "manifest": "tasks/TC-CN-010-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "a5474bd063fb500ae76699124fe4808f0b92f0a8d5037e29df4005d1e96e548d",
+        "verifierHash": "d202e5814239f6decd0a3a53ee74c1a18c2500fac334d1c37a2250594d759538"
+      }
+    },
+    {
+      "id": "TC-CN-010-RECOVERY-1",
+      "sourceId": "TC-CN-010",
+      "track": "development",
+      "manifest": "tasks/TC-CN-010-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "ee112b1086a9678f5f9f657fe9a806c0af4192a4c1e618133768c4d05e698a4f",
+        "verifierHash": "083acc66e82212acd27240ade7151c20fad55d9082b6f3eae0570a3c533d1409"
+      }
+    },
+    {
+      "id": "TC-CN-011-RECOVERY-0",
+      "sourceId": "TC-CN-011",
+      "track": "development",
+      "manifest": "tasks/TC-CN-011-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "898e72201adefb32d7ee1e885a1bc0b4b21d088bde1632e0b11515e0735d9806",
+        "verifierHash": "dec9c5c481bc6b591e31c6fe31fdc67c6b366d824727bef17fb22331c205cd00"
+      }
+    },
+    {
+      "id": "TC-CN-011-RECOVERY-1",
+      "sourceId": "TC-CN-011",
+      "track": "development",
+      "manifest": "tasks/TC-CN-011-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "2eeb524cbec0bbefe6832f9820dc7c2237a88df3812649318f90ef8a71263f1a",
+        "verifierHash": "a6cc8706c1cf43aca72ff7cfdf7769b9738386794948700e437fcbc0b1852111"
+      }
+    },
+    {
+      "id": "TC-CN-012-RECOVERY-0",
+      "sourceId": "TC-CN-012",
+      "track": "development",
+      "manifest": "tasks/TC-CN-012-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "7dd40ffd0833f70b35474a0ac41b76e97c49f8a292d5bd2435cbc1a572b9dd4b",
+        "verifierHash": "89c6c0bff556222720ccfbc03e104061b376740fb7d20a9911c575d7d2d905b0"
+      }
+    },
+    {
+      "id": "TC-CN-012-RECOVERY-1",
+      "sourceId": "TC-CN-012",
+      "track": "development",
+      "manifest": "tasks/TC-CN-012-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "33e237f8215df7aa422002352bd3408ac52d60862df593f1f354137fdfdb1914",
+        "verifierHash": "75035542820f6cee1fb1a5edb3ae2f712166ee11417ac6b286a0506ab6635616"
+      }
+    },
+    {
+      "id": "TC-CN-048-RECOVERY-0",
+      "sourceId": "TC-CN-048",
+      "track": "development",
+      "manifest": "tasks/TC-CN-048-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "62893bf6f6f9b94442d20a96f484d0f4500d376b4f4de14d219580276aa54216",
+        "verifierHash": "b219822a8413ad951416da202a604414a65e748ab5cd0e139601d383eb6e85ab"
+      }
+    },
+    {
+      "id": "TC-CN-048-RECOVERY-1",
+      "sourceId": "TC-CN-048",
+      "track": "development",
+      "manifest": "tasks/TC-CN-048-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "da73075a1ee1e283b0dfa10199b7d84ed224aed053d3447f4b221d990ba36220",
+        "verifierHash": "7c0d0a1f6d2dff0d97d04e23e427067cff9174aa00e0e30179219ae1b42f7de5"
+      }
+    },
+    {
+      "id": "TC-CN-013-RECOVERY-0",
+      "sourceId": "TC-CN-013",
+      "track": "development",
+      "manifest": "tasks/TC-CN-013-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "2dbb2836110dbb6445e278d70849b3549d4cb39ecf4b72a64a67f0556e8a7dd5",
+        "verifierHash": "b63a91e80b08613687b09b5eb2902debc4a1189141bbc3ec74c974c8e3d4bffb"
+      }
+    },
+    {
+      "id": "TC-CN-013-RECOVERY-1",
+      "sourceId": "TC-CN-013",
+      "track": "development",
+      "manifest": "tasks/TC-CN-013-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "2cf77a3ffe5e2d52ad54d54ad9a42aedfb04c8ef54378256357292a945485870",
+        "verifierHash": "a9b61f2fdf9e658f780ff54fd9869d1940f45c14f82aefa1b18d740a99eafab5"
+      }
+    },
+    {
+      "id": "TC-CN-049-RECOVERY-0",
+      "sourceId": "TC-CN-049",
+      "track": "development",
+      "manifest": "tasks/TC-CN-049-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "859fd226ac4322546dd4dee3965c6976d4f39cc03b589f8e8388e8218b6e26c2",
+        "verifierHash": "43147f40b9b5a600f00b08ad227390a2c829abbb670f4b03217bffc923551bc0"
+      }
+    },
+    {
+      "id": "TC-CN-049-RECOVERY-1",
+      "sourceId": "TC-CN-049",
+      "track": "development",
+      "manifest": "tasks/TC-CN-049-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "271bcd1668da972ee82d395b27977c304087b425b223b39f22e552c221d299e2",
+        "verifierHash": "f667ddc9a2c2ab991e28128a4d40fd194f16675218af7165a7b28c3fa0a0ef29"
+      }
+    },
+    {
+      "id": "TC-CN-003-RECOVERY-0",
+      "sourceId": "TC-CN-003",
+      "track": "development",
+      "manifest": "tasks/TC-CN-003-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "a7fb96601e5f1bf8a0e5329c5bd10c3ab6eb1020928f8febacfff1883e8b56f8",
+        "verifierHash": "5a7b23c6791e11072ba5d52563c92a63bab682a6dd2ecba83536b05ce27d021a"
+      }
+    },
+    {
+      "id": "TC-CN-003-RECOVERY-1",
+      "sourceId": "TC-CN-003",
+      "track": "development",
+      "manifest": "tasks/TC-CN-003-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "ae76e39752dc76b025a0873ab64f0fccf4bbdce49599aba91b18bfa2ae2da02f",
+        "verifierHash": "66f8ee10682a85c4d9d7ee035981ba6d743640f7fc276b03224a64d972dd38f7"
+      }
+    },
+    {
+      "id": "TC-CN-016-RECOVERY-0",
+      "sourceId": "TC-CN-016",
+      "track": "development",
+      "manifest": "tasks/TC-CN-016-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "6d61eab7a7ee44e746b600a06a6dff545194c8df6ce684bf14e74e0022f03826",
+        "verifierHash": "f59d382bff38ec5807bd424be2d09a846e200ead6e900fbb362989bb5b9cdb06"
+      }
+    },
+    {
+      "id": "TC-CN-016-RECOVERY-1",
+      "sourceId": "TC-CN-016",
+      "track": "development",
+      "manifest": "tasks/TC-CN-016-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "077cfd85400aaa75260743be5d3266ceeae26c6e8421a3785dd194009d24f904",
+        "verifierHash": "a4b2bf3da1497af1d1e896cae4fdf5e4a745c4aa7e43461ea12e4fe24089cbbb"
+      }
+    },
+    {
+      "id": "TC-CN-018-RECOVERY-0",
+      "sourceId": "TC-CN-018",
+      "track": "development",
+      "manifest": "tasks/TC-CN-018-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "80da2eeed055241e7f2ee3b88dcdf473bfe881849092cb4f2ee22f2a75fd12b2",
+        "verifierHash": "3885b7a987eb135f3edb68daeafc2624c29ed0c9f9f476614ada38c6ab48edac"
+      }
+    },
+    {
+      "id": "TC-CN-018-RECOVERY-1",
+      "sourceId": "TC-CN-018",
+      "track": "development",
+      "manifest": "tasks/TC-CN-018-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "ece52fac1fc424a6b1860a5f05324c6235faa85911f92257fc4accd9c48b7b4a",
+        "verifierHash": "1276160293225ca9953ea0f03bf089aa4cd4a47972d0d8997a898490aa0952ab"
+      }
+    },
+    {
+      "id": "TC-CN-040-RECOVERY-0",
+      "sourceId": "TC-CN-040",
+      "track": "development",
+      "manifest": "tasks/TC-CN-040-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "1205ce9cfd0555f71fe03932df3b27d8f1a486cb5d0f73eb4552d7766bffa1fa",
+        "verifierHash": "dd17dfb0e3c07f493998ba3e4ac4948c18ab4a071e437579fb53ba43ba77f3f2"
+      }
+    },
+    {
+      "id": "TC-CN-040-RECOVERY-1",
+      "sourceId": "TC-CN-040",
+      "track": "development",
+      "manifest": "tasks/TC-CN-040-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "6c310a733c324dd95a5243fe3a83c9ca197328b232e71db3c13617c6b8776250",
+        "verifierHash": "3363525bb0b2528c5a5b2641d7281d9b9b0ed721bea92bfe9b61daa8849f5619"
+      }
+    },
+    {
+      "id": "TC-CN-002-RECOVERY-0",
+      "sourceId": "TC-CN-002",
+      "track": "development",
+      "manifest": "tasks/TC-CN-002-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "36d7de1d4a4cd681222cbfd7f3a64973e3aff347455ef0c558712755132b31f8",
+        "verifierHash": "1adb3586471082481d08743738a4e746637efd1a45f3cd32fb8e28f3e2bf7ffc"
+      }
+    },
+    {
+      "id": "TC-CN-002-RECOVERY-1",
+      "sourceId": "TC-CN-002",
+      "track": "development",
+      "manifest": "tasks/TC-CN-002-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "9db1f9f444d147892092f8b2a299e563f49681fed7832b659ad8c7ee404932a7",
+        "verifierHash": "ae37c2e504e8e9945701fb0a061fff131bea328005c336e1565f5b8d726a4858"
+      }
+    },
+    {
+      "id": "TC-CN-042-RECOVERY-0",
+      "sourceId": "TC-CN-042",
+      "track": "development",
+      "manifest": "tasks/TC-CN-042-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "dac61297e0fae7916828c445f292f1cb3444c3d739f5583fbb9bfdeef5b44962",
+        "verifierHash": "ebe00b8c65e077db82afdb396945f3d2d708ab1ddf83782d179a0122826d9424"
+      }
+    },
+    {
+      "id": "TC-CN-042-RECOVERY-1",
+      "sourceId": "TC-CN-042",
+      "track": "development",
+      "manifest": "tasks/TC-CN-042-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "a307b3677be80fe0f50740588a9b3a46673e20ad2b7ce885a6ffcb4deb2ceb7f",
+        "verifierHash": "ebe00b8c65e077db82afdb396945f3d2d708ab1ddf83782d179a0122826d9424"
+      }
+    },
+    {
+      "id": "TC-CN-015-RECOVERY-0",
+      "sourceId": "TC-CN-015",
+      "track": "development",
+      "manifest": "tasks/TC-CN-015-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "39d1b946ee3bc2e17c6b860a09f174a76cd1c8a37fb2cb8fd9a38acd12d9407c",
+        "verifierHash": "94ea72aa92336c1f507e99ab93ef1e4023d0d312787de9cfd139c2b797450899"
+      }
+    },
+    {
+      "id": "TC-CN-015-RECOVERY-1",
+      "sourceId": "TC-CN-015",
+      "track": "development",
+      "manifest": "tasks/TC-CN-015-RECOVERY-1/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "509e7a3479073a120247255e0d41cacbb5bcd24b1f465151666b8caabded859b",
+        "verifierHash": "3af8f706828f57fe5fe6ae9cc833767eef3703d37fdb32e77ef5a1b891219bae"
+      }
+    },
+    {
+      "id": "HA-CN-041-RECOVERY-0",
+      "sourceId": "HA-CN-041",
+      "track": "development",
+      "manifest": "tasks/HA-CN-041-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "87827de8fe09a426a187dd7e54401077258ed042a64e5f086e1d7aa3da656a11",
+        "verifierHash": "21a79fe886250e71fa237d73bc1bc371d13649fbb701a4f3904b1fa87a5e7620"
+      }
+    },
+    {
+      "id": "HA-CN-042-RECOVERY-0",
+      "sourceId": "HA-CN-042",
+      "track": "development",
+      "manifest": "tasks/HA-CN-042-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "b7901bcd6197c81a045a62e391538f518f375d1af9bff95a69be412ff49fbb1b",
+        "verifierHash": "016c5af17deb0839d1abb5696bc4f2af8ba2fbb011b41a082551129fb0ffee8d"
+      }
+    },
+    {
+      "id": "HA-CN-043-RECOVERY-0",
+      "sourceId": "HA-CN-043",
+      "track": "development",
+      "manifest": "tasks/HA-CN-043-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "3e6142af678b980823eb7230b0dec5744f1b1a0a2916de83b807f5db3d701c38",
+        "verifierHash": "8d0e61e0f97005d6a189170dae624ac9c60b2077042e8080070476248557f37a"
+      }
+    },
+    {
+      "id": "TC-CN-001-RECOVERY-0",
+      "sourceId": "TC-CN-001",
+      "track": "development",
+      "manifest": "tasks/TC-CN-001-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "bc4cdb21fd578f4593b2d6df03b230c035a75b677535374a7c4548350932d704",
+        "verifierHash": "c604cb37efd9e7899c94d506204687b11dedf2b2cc2e0eb04157f8be1bb15f50"
+      }
+    },
+    {
+      "id": "TC-CN-005-RECOVERY-0",
+      "sourceId": "TC-CN-005",
+      "track": "development",
+      "manifest": "tasks/TC-CN-005-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "f01e733a635a90846b940d657bc23b08a8e995ee1db19f715f47273dced63cc9",
+        "verifierHash": "5a100a8bfcca2f493470d5461f0ffc8596164ffdc01ed37b2f1aeee4e3635f56"
+      }
+    },
+    {
+      "id": "TC-CN-009-RECOVERY-0",
+      "sourceId": "TC-CN-009",
+      "track": "development",
+      "manifest": "tasks/TC-CN-009-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "de144c08327b177e126d5b2cb1c2db70bf5833b1fa0fcc2048aaa9ecdb979643",
+        "verifierHash": "588231467b76c655fe16101aff96f529ab4cae466b06d0542e0ee1102f68d8cc"
+      }
+    },
+    {
+      "id": "TC-CN-014-RECOVERY-0",
+      "sourceId": "TC-CN-014",
+      "track": "development",
+      "manifest": "tasks/TC-CN-014-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "d759d317b1a7b3364a52dbbf727e551c97a0752fa95d372ca5c28c31321163e9",
+        "verifierHash": "f83d15c3dcc81de2aefc5efddc8cdaf4855ef0e37079807d71074f68c9a3a44c"
+      }
+    },
+    {
+      "id": "SA-CN-001-RECOVERY-0",
+      "sourceId": "SA-CN-001",
+      "track": "development",
+      "manifest": "tasks/SA-CN-001-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "65d326044cd5b802f832c22d0a1a183c0c3b4662ea5e65fbc4e9121fa2bcc7cf",
+        "verifierHash": "ebf9a57e3e98c0d314253cde6e3337988a5132b5db6e2315c368668d06398c61"
+      }
+    },
+    {
+      "id": "SA-CN-026-RECOVERY-0",
+      "sourceId": "SA-CN-026",
+      "track": "development",
+      "manifest": "tasks/SA-CN-026-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "8345b2c936b2cf727b73fce1bafefbc12318e6c512584d81f0311ffdafa634e2",
+        "verifierHash": "b7cc3f11297d1d2baeb2fe9671d2864047b5fe4e30d6be43c63db0b43aa33116"
+      }
+    },
+    {
+      "id": "SA-CN-032-RECOVERY-0",
+      "sourceId": "SA-CN-032",
+      "track": "development",
+      "manifest": "tasks/SA-CN-032-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "98967d2bf2b983690fb2235010461578e17d45bc91f131c5aa0772cfe0816e30",
+        "verifierHash": "f926bb68eab5323bb8d1c034152da5b5a1abbb7fb84b978bdbc022103f322791"
+      }
+    },
+    {
+      "id": "TC-CN-020-RECOVERY-0",
+      "sourceId": "TC-CN-020",
+      "track": "development",
+      "manifest": "tasks/TC-CN-020-RECOVERY-0/manifest.json",
+      "contract": {
+        "version": 1,
+        "interactionHash": "56a543eb5cd28e990dc1080bc4d9c2cf617c8a49c1d2e9751b04922bdfbc4e36",
+        "verifierHash": "16b9ad67fe7d17637d4d48a455d99b4f64b5443cbca3542e3ecfd94e74bfc9df"
+      }
+    }
+  ],
+  "note": "Native zxbench task packs; not a Harbor compatibility claim. Only development/regression, no automatic promotion."
+}

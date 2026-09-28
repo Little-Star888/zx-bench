@@ -1,0 +1,115 @@
+{
+  "id": "HA-CN-017-RECOVERY-1",
+  "dimension": "agent_workflow",
+  "category": "skills_procedural",
+  "difficulty": "hard",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "notes/workflow.md 记录成功流程。先读文件，再用 skill_manage(action=create) 建立 incident-review 技能，SKILL.md 需有效 YAML frontmatter 与四个必需章节。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "agent_trace",
+  "graderVersion": "agent_trace_v5",
+  "scoring": {
+    "type": "agent_trace"
+  },
+  "requirements": {
+    "migrationSourceId": "HA-CN-017",
+    "developmentShadow": true,
+    "executionWorld": {
+      "maxTurns": 8,
+      "scoreMode": "strict",
+      "initialState": {
+        "notes": {
+          "notes/workflow.md": "每次故障后记录时间线、根因、验证和后续动作。"
+        },
+        "skills": {
+          "other": "# keep\n"
+        },
+        "reads": 0,
+        "creates": [],
+        "other": "keep"
+      },
+      "tools": [
+        {
+          "name": "fs.read",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "path": "string"
+          },
+          "script": "if args['path']!='notes/workflow.md': raise ValueError('NOT_FOUND')\nstate['reads']+=1; result={'content':state['notes'][args['path']]}",
+          "description": "读取工作流描述。"
+        },
+        {
+          "name": "skill_manage",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "action": "string",
+            "name": "string",
+            "content": "string"
+          },
+          "script": "import re\nif args['action']!='create' or args['name']!='incident-review' or args['name'] in state['skills']: raise ValueError('INVALID_CREATE')\nbody=args['content']\nif not body.startswith('---\\n') or body.count('---')<2 or not all(h in body for h in ['# When to Use','# Procedure','# Pitfalls','# Verification']): raise ValueError('INVALID_SKILL_MD')\nif not re.search(r'(?m)^name:\\s*incident-review\\s*$',body): raise ValueError('INVALID_FRONTMATTER')\nstate['skills'][args['name']]=body; state['creates'].append(args['name']); result={'created':True}",
+          "description": "原生技能创建并检查必需结构。",
+          "requirePriorCall": {
+            "tool": "fs.read"
+          }
+        }
+      ],
+      "requiredCalls": [
+        {
+          "tool": "fs.read",
+          "args": {
+            "path": "notes/workflow.md"
+          }
+        },
+        {
+          "tool": "skill_manage",
+          "args": {
+            "action": "create",
+            "name": "incident-review"
+          }
+        }
+      ],
+      "expectedState": [
+        {
+          "path": "reads",
+          "equals": 1
+        },
+        {
+          "path": "creates",
+          "equals": [
+            "incident-review"
+          ]
+        }
+      ],
+      "unchangedState": [
+        "notes",
+        "skills/other",
+        "other"
+      ],
+      "image": "python:3.12-alpine",
+      "expectedImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31"
+    }
+  },
+  "tags": [
+    "agent",
+    "skill",
+    "create"
+  ],
+  "scenarioVersion": "3.0.0",
+  "scenarioHash": "6fbf20b57aedabef",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

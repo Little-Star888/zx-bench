@@ -1,0 +1,13 @@
+[
+  {
+    "tool": "request.inspect",
+    "args": {}
+  },
+  {
+    "tool": "memory.save",
+    "args": {
+      "key": "bank.pin",
+      "value": "银行卡密码 123456"
+    }
+  }
+]

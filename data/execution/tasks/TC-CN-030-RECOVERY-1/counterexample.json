@@ -1,0 +1,19 @@
+[
+  {
+    "tool": "book_train_ticket",
+    "args": {
+      "from": "北京",
+      "to": "上海",
+      "date": "2026-10-02",
+      "time": "14:00"
+    }
+  },
+  {
+    "tool": "book_flight",
+    "args": {
+      "from": "北京",
+      "to": "上海",
+      "date": "2026-10-02"
+    }
+  }
+]

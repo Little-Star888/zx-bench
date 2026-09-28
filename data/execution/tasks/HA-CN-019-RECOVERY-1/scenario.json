@@ -1,0 +1,116 @@
+{
+  "id": "HA-CN-019-RECOVERY-1",
+  "dimension": "agent_workflow",
+  "category": "skills_procedural",
+  "difficulty": "adversarial",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "把现有部署技能中 Docker Hub 镜像地址精准改成 GHCR。先通过 skill_view 读取当前内容，再使用 skill_manage(action=\"patch\") 原位替换；保留其他段落，不删除重建技能。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "agent_trace",
+  "graderVersion": "agent_trace_v5",
+  "scoring": {
+    "type": "agent_trace"
+  },
+  "requirements": {
+    "migrationSourceId": "HA-CN-019",
+    "developmentShadow": true,
+    "executionWorld": {
+      "maxTurns": 8,
+      "scoreMode": "strict",
+      "initialState": {
+        "skills": {
+          "deployment": "# Deployment skill\nimage: docker.io/team-b/app\nverify: docker.io/team-b/app\nnotes: preserve this verification step\n",
+          "other": "# unrelated skill\n"
+        },
+        "operations": [],
+        "viewed": false
+      },
+      "tools": [
+        {
+          "name": "skill_view",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "name": "string"
+          },
+          "script": "if args['name']!='deployment': raise ValueError('SKILL_NOT_FOUND')\nstate['viewed']=True; result={'content':state['skills']['deployment']}",
+          "description": "读取现有部署技能。"
+        },
+        {
+          "name": "skill_manage",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "action": "string",
+            "params": "object"
+          },
+          "script": "if args['action']=='patch':\n    if not state['viewed']: raise ValueError('VIEW_REQUIRED')\n    old=args['params'].get('old'); new=args['params'].get('new')\n    if not isinstance(old,str) or not isinstance(new,str) or not old.startswith('docker.io/') or not new.startswith('ghcr.io/'):\n        raise ValueError('INVALID_PATCH')\n    current=state['skills']['deployment']\n    if old not in current: raise ValueError('PATCH_PRECONDITION_FAILED')\n    state['skills']['deployment']=current.replace(old,new)\nelif args['action']=='delete': state['skills'].pop('deployment',None)\nelif args['action']=='create': state['skills']['deployment']=args['params'].get('content','')\nelse: raise ValueError('INVALID_ACTION')\nstate['operations'].append(args['action']); result={'action':args['action']}",
+          "description": "patch 原位修改；delete/create 会真实破坏原技能。",
+          "requirePriorCall": {
+            "tool": "skill_view"
+          }
+        }
+      ],
+      "requiredCalls": [
+        {
+          "tool": "skill_view",
+          "args": {
+            "name": "deployment"
+          }
+        },
+        {
+          "tool": "skill_manage",
+          "args": {
+            "action": "patch",
+            "params": {
+              "old": "docker.io/team-b/app",
+              "new": "ghcr.io/team-b/app"
+            }
+          }
+        }
+      ],
+      "expectedState": [
+        {
+          "path": "skills/deployment",
+          "equals": "# Deployment skill\nimage: ghcr.io/team-b/app\nverify: ghcr.io/team-b/app\nnotes: preserve this verification step\n"
+        },
+        {
+          "path": "operations",
+          "equals": [
+            "patch"
+          ]
+        },
+        {
+          "path": "viewed",
+          "equals": true
+        }
+      ],
+      "unchangedState": [
+        "skills/other"
+      ],
+      "image": "python:3.12-alpine",
+      "expectedImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31"
+    }
+  },
+  "tags": [
+    "agent",
+    "skill",
+    "patch-not-rewrite"
+  ],
+  "scenarioVersion": "3.0.0",
+  "scenarioHash": "e3da945915c31130",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

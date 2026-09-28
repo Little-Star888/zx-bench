@@ -1,0 +1,84 @@
+{
+  "id": "CLI-CN-021-DOCKER",
+  "dimension": "cli_deep_tasks",
+  "category": "archive_encoding",
+  "difficulty": "hard",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "工作区 /workspace，Linux sh 和 Python 3 标准库可用。使用 Alpine/BusyBox 工具，提交脚本统一以 POSIX sh 执行，未提供 bash 或 GNU 工具。payload.txt 由原文先 gzip 压缩，再 base64 编码而成。按逆序解码，写入 original.txt；输出须与原始 UTF-8 字节完全相同，保持 payload.txt 和无关文件不变。只输出可执行 shell 脚本。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "cli_command",
+  "graderVersion": "cli_command_v5",
+  "scoring": {
+    "type": "cli_command",
+    "mode": "executed_state"
+  },
+  "requirements": {
+    "migrationSourceId": "CLI-CN-021",
+    "developmentShadow": true,
+    "executionInterpreter": "sh",
+    "executionImage": "python:3.12-alpine",
+    "executionImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31",
+    "executionCases": [
+      {
+        "files": [
+          {
+            "path": "payload.txt",
+            "content": "H4sIAAAAAAAACj3SPUqEQRCE4XxPsUfY6Z+Z+ZA9jIGZIAhqbOgBPIPJIqYi4ml09xjCVFWHb/ZUz5xPp33b/718Xn6ez29fl/eP3+/X3f3d0/Fw9Xh9+3BzPKxqLG8rjdltpTM3XxlMQyYzY2Vnzlw5mA05mdFXbswxwJCKWayJLteGFqwdOEM0Z8vWsasJt2FYk87Y4iWmNfkmtpl8jS1gYJ0JODDPBGQWD/useNhnxcM+Kx5bvI55Jt6GeS6escVLvqN4E/O87seWLzDP5RuY5/IxxXPM8+JhnhcP86J47OJhXoi3YV6IZ2zxEvNCvIl5IV5jyxf8t/INzAv5kCmeY16K1zEvi4d5WTx28TAvi4d5WTy2eIl5Kd7EvBSvtd0/waCAKsgDAAA=\n"
+          },
+          {
+            "path": "sentinel",
+            "content": "keep"
+          }
+        ],
+        "expectedFiles": {
+          "original.txt": "第 1 批迁移记录\nrow=0;value=0\nrow=1;value=31\nrow=2;value=62\nrow=3;value=93\nrow=4;value=23\nrow=5;value=54\nrow=6;value=85\nrow=7;value=15\nrow=8;value=46\nrow=9;value=77\nrow=10;value=7\nrow=11;value=38\nrow=12;value=69\nrow=13;value=100\nrow=14;value=30\nrow=15;value=61\nrow=16;value=92\nrow=17;value=22\nrow=18;value=53\nrow=19;value=84\nrow=20;value=14\nrow=21;value=45\nrow=22;value=76\nrow=23;value=6\nrow=24;value=37\nrow=25;value=68\nrow=26;value=99\nrow=27;value=29\nrow=28;value=60\nrow=29;value=91\nrow=30;value=21\nrow=31;value=52\nrow=32;value=83\nrow=33;value=13\nrow=34;value=44\nrow=35;value=75\nrow=36;value=5\nrow=37;value=36\nrow=38;value=67\nrow=39;value=98\nrow=40;value=28\nrow=41;value=59\nrow=42;value=90\nrow=43;value=20\nrow=44;value=51\nrow=45;value=82\nrow=46;value=12\nrow=47;value=43\nrow=48;value=74\nrow=49;value=4\nrow=50;value=35\nrow=51;value=66\nrow=52;value=97\nrow=53;value=27\nrow=54;value=58\nrow=55;value=89\nrow=56;value=19\nrow=57;value=50\nrow=58;value=81\nrow=59;value=11\n"
+        },
+        "unchangedFiles": [
+          "payload.txt",
+          "sentinel"
+        ]
+      },
+      {
+        "files": [
+          {
+            "path": "payload.txt",
+            "content": "H4sIAAAAAAAACj3SPUqEMRSF4X5WMUuY3J98CTKLsbATBEGtLV2Aa7AZxFZEXI3OLEPIOeeWb5XnJDmfTnvb/718Xn6ez29fl/eP3+/X3f3d0/Fw9Xh9+3BzbKsay22lMbuvdOaMlcE0ZDIzV3bm6Cs3nYMczNhWTuY2wJCKWayJlms7oAVjCuYcJVnHqibaxKwmm7GFSwxr0g0ss7oztniBbVY8jDPxmMXDOise1pl47YA9Jp+z5evYZ/JN7HP5jC1f8hnlG9jn8jW2gIF9LuCGfS4gs3jY58XDPi8e9kXx2OJ1zAvxJuaFeMYWLzEvxBuYF3V/bPmC31a+DfNCPmSK55iXxcO8LB7mZfHYxcO8FG9iXopnbPES81K8gXkpXrPdP5XKGwDHAwAA\n"
+          },
+          {
+            "path": "sentinel",
+            "content": "keep"
+          }
+        ],
+        "expectedFiles": {
+          "original.txt": "第 2 批迁移记录\nrow=0;value=1\nrow=1;value=32\nrow=2;value=63\nrow=3;value=94\nrow=4;value=24\nrow=5;value=55\nrow=6;value=86\nrow=7;value=16\nrow=8;value=47\nrow=9;value=78\nrow=10;value=8\nrow=11;value=39\nrow=12;value=70\nrow=13;value=0\nrow=14;value=31\nrow=15;value=62\nrow=16;value=93\nrow=17;value=23\nrow=18;value=54\nrow=19;value=85\nrow=20;value=15\nrow=21;value=46\nrow=22;value=77\nrow=23;value=7\nrow=24;value=38\nrow=25;value=69\nrow=26;value=100\nrow=27;value=30\nrow=28;value=61\nrow=29;value=92\nrow=30;value=22\nrow=31;value=53\nrow=32;value=84\nrow=33;value=14\nrow=34;value=45\nrow=35;value=76\nrow=36;value=6\nrow=37;value=37\nrow=38;value=68\nrow=39;value=99\nrow=40;value=29\nrow=41;value=60\nrow=42;value=91\nrow=43;value=21\nrow=44;value=52\nrow=45;value=83\nrow=46;value=13\nrow=47;value=44\nrow=48;value=75\nrow=49;value=5\nrow=50;value=36\nrow=51;value=67\nrow=52;value=98\nrow=53;value=28\nrow=54;value=59\nrow=55;value=90\nrow=56;value=20\nrow=57;value=51\nrow=58;value=82\nrow=59;value=12\n"
+        },
+        "unchangedFiles": [
+          "payload.txt",
+          "sentinel"
+        ]
+      }
+    ]
+  },
+  "tags": [
+    "cli",
+    "encoding",
+    "base64-gzip",
+    "trap"
+  ],
+  "scenarioVersion": "3.1.0",
+  "scenarioHash": "4984f5b46687ebb2",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

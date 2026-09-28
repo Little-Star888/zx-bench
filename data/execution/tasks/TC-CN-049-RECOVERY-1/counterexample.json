@@ -1,0 +1,10 @@
+[
+  {
+    "tool": "send_email",
+    "args": {
+      "to": "张三",
+      "subject": "季度报告",
+      "body": "请查收附件"
+    }
+  }
+]

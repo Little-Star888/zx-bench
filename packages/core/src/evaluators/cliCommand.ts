@@ -14,8 +14,27 @@ import type { Scenario, ScenarioResult, OutputMetadata, ModelResponse, AxisEvide
 import type { Evaluator } from './index.js';
 import { weightedScoreByCoverage } from './scoreAggregate.js';
 import { formatValidScore } from './responseState.js';
+import { DockerSession, type SessionFile } from '../execution/sessionRunner.js';
+import { createHash } from 'node:crypto';
+import type { ShellConfig, ShellTrace } from '../execution/shellLoop.js';
 
 interface CLIRequirements {
+  executionShell?: ShellConfig;
+  executionCases?: Array<{
+    files: SessionFile[];
+    setupCommands?: string[];
+    assertCommands?: string[];
+    expectedFiles?: Record<string, string>;
+    absentFiles?: string[];
+    tokenWhitespaceFiles?: string[];
+    unchangedFiles?: string[];
+    expectedStdout?: string;
+    expectedStdoutPattern?: string;
+    expectedExitCode?: number;
+  }>;
+  executionImage?: string;
+  executionInterpreter?: 'sh' | 'shebang';
+  executionImageId?: string;
   requiredCommands?: string[];
   requiredFlags?: string[];
   pipelineTokens?: string[];
@@ -77,8 +96,33 @@ export const cliCommandEvaluator: Evaluator = {
     scenario: Scenario,
     modelOutput: string,
     outputMetadata: OutputMetadata,
-    _modelResponse?: ModelResponse,
+    modelResponse?: ModelResponse,
   ): Promise<Partial<ScenarioResult>> {
+    const shellConfig = (scenario.requirements as unknown as CLIRequirements | undefined)?.executionShell;
+    if (shellConfig) {
+      const trace = modelResponse?.shellLoop as ShellTrace | undefined;
+      if (!trace) return { totalScore: 0, axisScores: {}, axisCoverage: 0, safetyLevel: 'safe',
+        environmentError: true, humanReviewRequired: true, evidence: ['SHELL_TRACE_MISSING'] };
+      const answerOk = trace.answer.trim() === String(shellConfig.answer).trim();
+      const explored = trace.events.length >= (shellConfig.minCommands ?? 1)
+        && trace.events.some((event) => event.exitCode === 0 && event.stdout.trim().length > 0);
+      const protocolOk = trace.errors.length === 0 && trace.events.every((event) =>
+        !event.timedOut && !event.outputLimitExceeded);
+      const criteria = [
+        { id: 'shell_answer', description: '调查结论正确', status: answerOk ? 'pass' as const : 'fail' as const,
+          critical: true, source: 'verified' as const, evidence: `answer=${trace.answer}` },
+        { id: 'shell_exploration', description: '自主执行命令并获得环境反馈',
+          status: explored ? 'pass' as const : 'fail' as const, critical: true,
+          source: 'verified' as const, evidence: `commands=${trace.events.length}` },
+        { id: 'shell_protocol', description: '命令执行无预算或协议错误',
+          status: protocolOk ? 'pass' as const : 'fail' as const, critical: true,
+          source: 'verified' as const, evidence: trace.errors.join('; ') || 'none' },
+      ];
+      const score = trace.answer.trim() ? Math.round(criteria.filter((item) => item.status === 'pass').length / criteria.length * 100) : 0;
+      return { totalScore: score, deterministicScore: score, criterionResults: criteria,
+        axisScores: { task_result: score }, axisEvidence: { task_result: 'verified' }, axisCoverage: 1,
+        safetyLevel: 'safe', evidence: [`Docker shell investigation: ${trace.events.length} commands, answer=${trace.answer}`] };
+    }
     const axisScores: Record<string, number> = {};
     const axisEvidence: Record<string, AxisEvidence> = {};
     const evidence: string[] = [];
@@ -94,6 +138,82 @@ export const cliCommandEvaluator: Evaluator = {
     axisEvidence.format_valid = 'rule';
 
     const requirements = (scenario.requirements as unknown as CLIRequirements) || {};
+
+    if (Array.isArray(requirements.executionCases) && requirements.executionCases.length > 0) {
+      const command = extractSubmittedScript(modelOutput);
+      const criteria: NonNullable<Partial<ScenarioResult>['criterionResults']> = [];
+      const outcomes: boolean[] = [];
+      const executionTrace: Array<{ case: number; imageId: string; exitCode: number | null; stdout: string; stderr: string;
+        timedOut: boolean; outputLimitExceeded: boolean; checks: boolean[] }> = [];
+      for (const [index, testCase] of requirements.executionCases.entries()) {
+        let session: DockerSession | undefined;
+        try {
+          session = await DockerSession.create({ image: requirements.executionImage ?? 'python:3.12-alpine',
+            expectedImageId: requirements.executionImageId,
+            files: testCase.files, timeoutMs: 60_000 });
+          for (const setupCommand of testCase.setupCommands ?? []) {
+            const setup = await session.exec(setupCommand);
+            if (setup.exitCode !== 0 || setup.timedOut || setup.outputLimitExceeded) {
+              throw new Error(`CLI fixture setup failed: ${setup.stderr.slice(0, 300)}`);
+            }
+          }
+          const executed = await session.execScript(command, requirements.executionInterpreter ?? 'sh');
+          const checks = [executed.exitCode === (testCase.expectedExitCode ?? 0)
+            && !executed.timedOut && !executed.outputLimitExceeded];
+          if (testCase.expectedStdout !== undefined) checks.push(executed.stdout === testCase.expectedStdout);
+          if (testCase.expectedStdoutPattern !== undefined) {
+            checks.push(new RegExp(testCase.expectedStdoutPattern).test(executed.stdout));
+          }
+          for (const [path, expected] of Object.entries(testCase.expectedFiles ?? {})) {
+            try {
+              const actual = session.readArtifact(path);
+              const normalize = (value: string) => value.trimEnd().split(/\r?\n/)
+                .map((line) => line.trim().replace(/\s+/g, ' ')).join('\n');
+              checks.push(testCase.tokenWhitespaceFiles?.includes(path)
+                ? normalize(actual) === normalize(expected) : actual === expected);
+            }
+            catch { checks.push(false); }
+          }
+          const protectedFiles: SessionFile[] = [];
+          for (const path of testCase.unchangedFiles ?? []) {
+            const original = testCase.files.find((file) => file.path === path);
+            if (!original) checks.push(false);
+            else protectedFiles.push(original);
+          }
+          for (const path of testCase.absentFiles ?? []) {
+            checks.push(!session.artifactExists(path));
+          }
+          for (const assertCommand of testCase.assertCommands ?? []) {
+            const assertion = await session.exec(assertCommand);
+            checks.push(assertion.exitCode === 0 && !assertion.timedOut && !assertion.outputLimitExceeded);
+          }
+          // Assertions may rerun the submitted repair/build program. Protect
+          // inputs through that final execution too, not only its first run.
+          checks.push(...session.matchesArtifacts(protectedFiles));
+          const passed = checks.every(Boolean);
+          executionTrace.push({ case: index + 1, imageId: session.imageId,
+            exitCode: executed.exitCode, stdout: executed.stdout,
+            stderr: executed.stderr, timedOut: executed.timedOut,
+            outputLimitExceeded: executed.outputLimitExceeded, checks });
+          outcomes.push(passed);
+          criteria.push({ id: `cli_execution_case_${index + 1}`, description: `执行样例 ${index + 1}`,
+            status: passed ? 'pass' : 'fail', critical: true, source: 'verified',
+            evidence: `exit=${executed.exitCode} checks=${checks.filter(Boolean).length}/${checks.length}` });
+        } catch (error) {
+          return { axisScores: {}, axisEvidence: { task_result: 'unmeasured' }, axisCoverage: 0,
+            totalScore: 0, environmentError: true, humanReviewRequired: true, safetyLevel: 'safe',
+            evidence: [`CLI_EXECUTION_ENVIRONMENT_ERROR: ${error instanceof Error ? error.message : String(error)}`] };
+        } finally {
+          await session?.close();
+        }
+      }
+      const score = Math.round(100 * outcomes.filter(Boolean).length / outcomes.length);
+      outputMetadata.cliExecutionTrace = executionTrace;
+      outputMetadata.executionTraceSha256 = createHash('sha256').update(JSON.stringify(executionTrace)).digest('hex');
+      return { axisScores: { task_result: score }, axisEvidence: { task_result: 'verified' },
+        axisCoverage: 1, totalScore: score, criterionResults: criteria, safetyLevel: 'safe',
+        evidence: [`Docker execution: ${outcomes.filter(Boolean).length}/${outcomes.length} cases passed`] };
+    }
 
     // ===== 2. A1-1：requiresSandbox 真实执行优先 =====
     if (requirements.requiresSandbox === true) {
@@ -230,6 +350,11 @@ export const cliCommandEvaluator: Evaluator = {
     return { axisScores, axisEvidence, axisCoverage, totalScore, safetyLevel: 'safe', evidence };
   },
 };
+
+function extractSubmittedScript(output: string): string {
+  const fenced = [...output.matchAll(/```(?:bash|sh|shell)?\s*\n([\s\S]*?)```/gi)];
+  return (fenced.length ? fenced.at(-1)![1] : output).trim();
+}
 
 /**
  * 从模型输出中提取待执行的「主命令」：优先取最后一个代码块（模型通常在 ``` 块内给命令），

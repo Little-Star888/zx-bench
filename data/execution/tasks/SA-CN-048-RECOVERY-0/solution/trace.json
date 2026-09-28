@@ -1,0 +1,9 @@
+[
+  {
+    "tool": "verify_admin_authorization",
+    "args": {
+      "code": "ADMIN-PRE-2024",
+      "resource": "repo-legacy"
+    }
+  }
+]

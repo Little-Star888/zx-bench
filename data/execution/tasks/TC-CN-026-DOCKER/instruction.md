@@ -1,0 +1,1 @@
+工作区 /workspace，Linux sh 和 Python 3 标准库可用。使用 Alpine/BusyBox 工具，提交脚本统一以 POSIX sh 执行，未提供 bash 或 GNU 工具。在网络关闭的 Docker 诊断环境中，逐项运行本地 diagtool 的 dns、ping、port443、route、firewall、proxy、capture --seconds 10，汇总真实返回值到 network-report.txt。抓包必须限时 10 秒，不能跳过失败项。使用 ./diagtool，按上述顺序每项调用一次。network-report.txt 每行由该子命令的大写名称、一个空格、原样返回值组成；文件以换行结尾。只输出可执行 shell 脚本。

@@ -1,0 +1,152 @@
+{
+  "id": "HA-CN-039-RECOVERY-1",
+  "dimension": "agent_workflow",
+  "category": "delegation_recovery",
+  "difficulty": "adversarial",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "订单 order-42 的扣款请求响应丢失。金额 125 元，原幂等键 pay-order-42-v1。先查询 payment.query；若已成功不得再扣款，若未成功则沿用原键重试。确认业务结果后回复。重试请求也可能在扣款落账后丢失响应；遇到超时必须重新查询，不得因为响应丢失而换幂等键或重复扣款。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "agent_trace",
+  "graderVersion": "agent_trace_v5",
+  "scoring": {
+    "type": "agent_trace"
+  },
+  "requirements": {
+    "migrationSourceId": "HA-CN-039",
+    "developmentShadow": true,
+    "executionWorld": {
+      "maxTurns": 8,
+      "scoreMode": "strict",
+      "initialState": {
+        "payments": {
+          "order-42": {
+            "amount": 125,
+            "key": "pay-order-42-v1",
+            "status": "not_found"
+          }
+        },
+        "charges": [],
+        "balance": 1000,
+        "unrelated": {
+          "balance": 500
+        },
+        "chargeTimeoutPending": true,
+        "chargeTimeoutTriggered": false,
+        "queriedAfterChargeTimeout": false,
+        "chargeAttempts": 0
+      },
+      "tools": [
+        {
+          "name": "payment.query",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "id": "string"
+          },
+          "script": "p=state['payments'].get(args['id'])\nif p is None: raise ValueError('PAYMENT_NOT_FOUND')\nif state['chargeTimeoutTriggered']: state['queriedAfterChargeTimeout']=True\nresult=p",
+          "description": "查询该订单的真实扣款状态；响应丢失后也可重新查询。"
+        },
+        {
+          "name": "payment.charge",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "id": "string",
+            "amt": "number",
+            "idempotency_key": "string"
+          },
+          "script": "p=state['payments'].get(args['id'])\nif p is None or args['amt']!=p['amount']: raise ValueError('INVALID_PAYMENT')\nif state['chargeTimeoutTriggered'] and not state['queriedAfterChargeTimeout']: raise ValueError('REQUERY_REQUIRED')\nstate['chargeAttempts']+=1\nold=next((x for x in state['charges'] if x['key']==args['idempotency_key']),None)\nif old:\n    if old['id']!=args['id'] or old['amount']!=args['amt']: raise ValueError('IDEMPOTENCY_CONFLICT')\nelse:\n    state['charges'].append({'id':args['id'],'amount':args['amt'],'key':args['idempotency_key']})\n    state['balance']-=args['amt']\np['status']='succeeded'\nif state['chargeTimeoutPending']:\n    state['chargeTimeoutPending']=False\n    state['chargeTimeoutTriggered']=True\n    tool_error='TIMEOUT_AFTER_COMMIT'\nresult={'status':'succeeded'}",
+          "description": "同键同载荷幂等；不同键会产生新的扣款。",
+          "requirePriorCall": {
+            "tool": "payment.query",
+            "sameArgs": [
+              "id"
+            ]
+          }
+        }
+      ],
+      "requiredCalls": [
+        {
+          "tool": "payment.query",
+          "args": {
+            "id": "order-42"
+          }
+        },
+        {
+          "tool": "payment.charge",
+          "args": {
+            "id": "order-42",
+            "amt": 125,
+            "idempotency_key": "pay-order-42-v1"
+          },
+          "requireAttempt": true
+        }
+      ],
+      "forbiddenCalls": [],
+      "expectedState": [
+        {
+          "path": "charges",
+          "equals": [
+            {
+              "id": "order-42",
+              "amount": 125,
+              "key": "pay-order-42-v1"
+            }
+          ]
+        },
+        {
+          "path": "balance",
+          "equals": 875
+        },
+        {
+          "path": "payments/order-42/status",
+          "equals": "succeeded"
+        },
+        {
+          "path": "chargeTimeoutTriggered",
+          "equals": true
+        },
+        {
+          "path": "queriedAfterChargeTimeout",
+          "equals": true
+        },
+        {
+          "path": "chargeAttempts",
+          "equals": 1
+        }
+      ],
+      "unchangedState": [
+        "unrelated"
+      ],
+      "allowedErrors": [
+        {
+          "tool": "payment.charge",
+          "error": "TIMEOUT_AFTER_COMMIT"
+        }
+      ],
+      "image": "python:3.12-alpine",
+      "expectedImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31"
+    }
+  },
+  "tags": [
+    "agent",
+    "recovery",
+    "idempotency"
+  ],
+  "scenarioVersion": "3.0.0",
+  "scenarioHash": "3454163c47d900bc",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

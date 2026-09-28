@@ -1,0 +1,40 @@
+[
+  {
+    "tool": "fs.glob",
+    "args": {
+      "pattern": "src/*.js"
+    }
+  },
+  {
+    "tool": "fs.read",
+    "args": {
+      "path": "src/a.js"
+    }
+  },
+  {
+    "tool": "fs.patch",
+    "args": {
+      "path": "src/a.js",
+      "content": "const a = 2;\nmodule.exports = a;\n"
+    }
+  },
+  {
+    "tool": "fs.read",
+    "args": {
+      "path": "src/b.js"
+    }
+  },
+  {
+    "tool": "fs.patch",
+    "args": {
+      "path": "src/b.js",
+      "content": "const b = 5;\nmodule.exports = b;\n"
+    }
+  },
+  {
+    "tool": "terminal",
+    "args": {
+      "cmd": "node test.js"
+    }
+  }
+]

@@ -1,0 +1,177 @@
+{
+  "id": "TC-CN-006-RECOVERY-0",
+  "dimension": "tool_cli_workflow",
+  "category": "tool_selection",
+  "difficulty": "hard",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "在公司内网搜索远程办公政策，按日期选最新文档，读取、总结关键条款后发到用户邮箱。不得用过期政策或未经读取就发送。用户邮箱为 user@example.test；邮件 body 使用 summarize_text 返回的 summary 原文。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "tool_call_trace",
+  "graderVersion": "tool_trace_v4",
+  "scoring": {
+    "type": "tool_call_trace"
+  },
+  "requirements": {
+    "migrationSourceId": "TC-CN-006",
+    "developmentShadow": true,
+    "executionWorld": {
+      "maxTurns": 8,
+      "scoreMode": "strict",
+      "initialState": {
+        "docs": [
+          {
+            "id": "policy-old",
+            "date": "2024-01-01",
+            "content": "远程办公须经理批准"
+          },
+          {
+            "id": "policy-new",
+            "date": "2026-08-15",
+            "content": "远程办公每周最多两天，需经理批准"
+          }
+        ],
+        "ownerEmail": "user@example.test",
+        "searched": false,
+        "readIds": [],
+        "summaries": [],
+        "emails": [],
+        "other": "keep"
+      },
+      "tools": [
+        {
+          "name": "search_intranet",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "query": "string"
+          },
+          "script": "if '远程办公政策' not in args['query']: raise ValueError('WRONG_QUERY')\nstate['searched']=True; result={'docs':[{'id':d['id'],'date':d['date']} for d in state['docs']]}",
+          "description": "返回内网文档日期与 ID。"
+        },
+        {
+          "name": "read_document",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "doc_id": "string"
+          },
+          "script": "d=next((x for x in state['docs'] if x['id']==args['doc_id']),None)\nif not d: raise ValueError('DOC_NOT_FOUND')\nstate['readIds'].append(args['doc_id']); result={'content':d['content']}",
+          "description": "读取指定文档内容。",
+          "requirePriorCall": {
+            "tool": "search_intranet"
+          }
+        },
+        {
+          "name": "summarize_text",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "text": "string"
+          },
+          "script": "if args['text']!=state['docs'][1]['content']: raise ValueError('OUTDATED_SOURCE')\nstate['summaries'].append(args['text']); result={'summary':args['text']}",
+          "description": "总结实际最新文档。",
+          "requirePriorCall": {
+            "tool": "read_document"
+          }
+        },
+        {
+          "name": "send_email",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "to": "string",
+            "body": "string"
+          },
+          "script": "if args['to']!=state['ownerEmail'] or args['body']!=state['docs'][1]['content']: raise ValueError('WRONG_RECIPIENT_OR_SUMMARY')\nstate['emails'].append(args); result={'sent':True}",
+          "description": "记录合成邮件发送。",
+          "requirePriorCall": {
+            "tool": "summarize_text"
+          }
+        }
+      ],
+      "requiredCalls": [
+        {
+          "tool": "search_intranet",
+          "args": {}
+        },
+        {
+          "tool": "read_document",
+          "args": {
+            "doc_id": "policy-new"
+          }
+        },
+        {
+          "tool": "summarize_text",
+          "args": {
+            "text": "远程办公每周最多两天，需经理批准"
+          }
+        },
+        {
+          "tool": "send_email",
+          "args": {
+            "to": "user@example.test",
+            "body": "远程办公每周最多两天，需经理批准"
+          }
+        }
+      ],
+      "expectedState": [
+        {
+          "path": "searched",
+          "equals": true
+        },
+        {
+          "path": "readIds",
+          "equals": [
+            "policy-new"
+          ]
+        },
+        {
+          "path": "summaries",
+          "equals": [
+            "远程办公每周最多两天，需经理批准"
+          ]
+        },
+        {
+          "path": "emails",
+          "equals": [
+            {
+              "to": "user@example.test",
+              "body": "远程办公每周最多两天，需经理批准"
+            }
+          ]
+        }
+      ],
+      "unchangedState": [
+        "docs",
+        "ownerEmail",
+        "other"
+      ],
+      "finalMessageMustContain": [
+        "远程办公每周最多两天，需经理批准"
+      ],
+      "image": "python:3.12-alpine",
+      "expectedImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31"
+    }
+  },
+  "tags": [
+    "chinese",
+    "tool-selection",
+    "composition-vs-single"
+  ],
+  "scenarioVersion": "3.1.0",
+  "scenarioHash": "3dd0972ae75a564c",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

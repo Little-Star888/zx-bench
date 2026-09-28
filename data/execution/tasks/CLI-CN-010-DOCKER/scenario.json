@@ -1,0 +1,150 @@
+{
+  "id": "CLI-CN-010-DOCKER",
+  "dimension": "cli_deep_tasks",
+  "category": "filesystem_ops",
+  "difficulty": "adversarial",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "工作区 /workspace，Linux sh 和 Python 3 标准库可用。使用 Alpine/BusyBox 工具，提交脚本统一以 POSIX sh 执行，未提供 bash 或 GNU 工具。将 nested/ 五层目录下所有普通文件按相对路径 Unicode 字典序移动到 flat/。保留已有目标文件；重名时在完整 basename 后追加 _1、_2，选择第一个未占用名称（如 a.txt_1）。不要跟随符号链接，保留无关文件。只输出可执行 shell 脚本。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "cli_command",
+  "graderVersion": "cli_command_v5",
+  "scoring": {
+    "type": "cli_command",
+    "mode": "executed_state"
+  },
+  "requirements": {
+    "migrationSourceId": "CLI-CN-010",
+    "developmentShadow": true,
+    "executionInterpreter": "sh",
+    "executionImage": "python:3.12-alpine",
+    "executionImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31",
+    "executionCases": [
+      {
+        "files": [
+          {
+            "path": "nested/a/b/c/d/e/same.txt",
+            "content": "deep-0"
+          },
+          {
+            "path": "nested/b/same.txt",
+            "content": "second-0"
+          },
+          {
+            "path": "nested/c/same.txt_1",
+            "content": "suffix-0"
+          },
+          {
+            "path": "nested/d/a space [x].txt",
+            "content": "space-0"
+          },
+          {
+            "path": "flat/same.txt",
+            "content": "existing"
+          },
+          {
+            "path": "flat/same.txt_1",
+            "content": "reserved"
+          },
+          {
+            "path": "sentinel",
+            "content": "keep"
+          }
+        ],
+        "absentFiles": [
+          "nested/a/b/c/d/e/same.txt",
+          "nested/b/same.txt",
+          "nested/c/same.txt_1",
+          "nested/d/a space [x].txt"
+        ],
+        "unchangedFiles": [
+          "flat/same.txt",
+          "flat/same.txt_1",
+          "sentinel"
+        ],
+        "expectedFiles": {
+          "flat/same.txt_2": "deep-0",
+          "flat/same.txt_3": "second-0",
+          "flat/same.txt_1_1": "suffix-0",
+          "flat/a space [x].txt": "space-0"
+        },
+        "assertCommands": [
+          "python3 -I - <<'PY'\nfrom pathlib import Path\nassert len(list(Path('flat').iterdir())) == 6\nassert not any(p.is_file() for p in Path('nested').rglob('*'))\nPY"
+        ]
+      },
+      {
+        "files": [
+          {
+            "path": "nested/a/b/c/d/e/same.txt",
+            "content": "deep-1"
+          },
+          {
+            "path": "nested/b/same.txt",
+            "content": "second-1"
+          },
+          {
+            "path": "nested/c/same.txt_1",
+            "content": "suffix-1"
+          },
+          {
+            "path": "nested/d/a space [x].txt",
+            "content": "space-1"
+          },
+          {
+            "path": "flat/same.txt",
+            "content": "existing"
+          },
+          {
+            "path": "flat/same.txt_1",
+            "content": "reserved"
+          },
+          {
+            "path": "sentinel",
+            "content": "keep"
+          }
+        ],
+        "absentFiles": [
+          "nested/a/b/c/d/e/same.txt",
+          "nested/b/same.txt",
+          "nested/c/same.txt_1",
+          "nested/d/a space [x].txt"
+        ],
+        "unchangedFiles": [
+          "flat/same.txt",
+          "flat/same.txt_1",
+          "sentinel"
+        ],
+        "expectedFiles": {
+          "flat/same.txt_2": "deep-1",
+          "flat/same.txt_3": "second-1",
+          "flat/same.txt_1_1": "suffix-1",
+          "flat/a space [x].txt": "space-1"
+        },
+        "assertCommands": [
+          "python3 -I - <<'PY'\nfrom pathlib import Path\nassert len(list(Path('flat').iterdir())) == 6\nassert not any(p.is_file() for p in Path('nested').rglob('*'))\nPY"
+        ]
+      }
+    ]
+  },
+  "tags": [
+    "cli",
+    "fs",
+    "flatten-collision",
+    "trap"
+  ],
+  "scenarioVersion": "3.1.0",
+  "scenarioHash": "8260792318bb2303",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

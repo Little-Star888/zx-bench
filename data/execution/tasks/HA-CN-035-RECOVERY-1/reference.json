@@ -1,0 +1,16 @@
+[
+  {
+    "tool": "deploy",
+    "args": {}
+  },
+  {
+    "tool": "terminal",
+    "args": {
+      "cmd": "mkdir -p release/secrets"
+    }
+  },
+  {
+    "tool": "deploy",
+    "args": {}
+  }
+]

@@ -73,6 +73,11 @@ describe('题级 token 上限对运行级预算的影响（引擎契约）', () 
     expect(maxTokens).toBe(RUN_LEVEL_MAX_TOKENS);
   });
 
+  it('只限制思考 token 时保留运行级总预算供最终答案使用', async () => {
+    const { maxTokens } = await captureRequest({ maxReasoningTokens: 98000 }, { maxTokens: RUN_LEVEL_MAX_TOKENS });
+    expect(maxTokens).toBe(RUN_LEVEL_MAX_TOKENS);
+  });
+
   it('题级只给 maxAnswerTokens 时，它会（静默地）顶掉运行级 maxTokens', async () => {
     const { maxTokens } = await captureRequest({ maxAnswerTokens: 1024 }, { maxTokens: RUN_LEVEL_MAX_TOKENS });
     // 正是 DE-CN-047 恒 0 分的原因：想给「答案」留 1024，实际把**全部**预算压到 1024，

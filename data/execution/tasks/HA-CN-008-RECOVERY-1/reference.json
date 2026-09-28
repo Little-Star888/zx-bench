@@ -1,0 +1,20 @@
+[
+  {
+    "tool": "memory.list",
+    "args": {
+      "prefix": "migration/"
+    }
+  },
+  {
+    "tool": "memory.read",
+    "args": {
+      "key": "migration/batch-42"
+    }
+  },
+  {
+    "tool": "fs.read",
+    "args": {
+      "path": "data/input.json"
+    }
+  }
+]

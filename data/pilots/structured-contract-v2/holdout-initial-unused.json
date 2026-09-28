@@ -1,0 +1,1973 @@
+[
+  {
+    "id": "SOC2-A-H-route",
+    "dimension": "structured_output",
+    "category": "contract_A",
+    "difficulty": "medium",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v2",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "生成网关路由。mode=private；host=svc.internal；ports 按顺序为 443、8443；如果 schema 要求 auth，则 scheme=mtls，ca=ca/内网.pem。不得遗漏 Schema 条件字段。\n输出必须遵循这个 Schema：{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"object\",\"properties\":{\"mode\":{\"enum\":[\"public\",\"private\"]},\"host\":{\"type\":\"string\"},\"auth\":{\"type\":\"object\",\"properties\":{\"scheme\":{\"const\":\"mtls\"},\"ca\":{\"type\":\"string\"}},\"required\":[\"scheme\",\"ca\"],\"additionalProperties\":false},\"ports\":{\"type\":\"array\",\"items\":{\"type\":\"integer\"},\"minItems\":1,\"uniqueItems\":true}},\"required\":[\"mode\",\"host\",\"ports\"],\"allOf\":[{\"if\":{\"properties\":{\"mode\":{\"const\":\"private\"}},\"required\":[\"mode\"]},\"then\":{\"required\":[\"auth\"]},\"else\":{\"not\":{\"required\":[\"auth\"]}}}],\"unevaluatedProperties\":false}\n只输出完整 JSON 原文，不要围栏或解释。对象键序不限。响应最多 131072 个字符。",
+    "requirements": {
+      "format": "json",
+      "dialect": "2020-12",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "mode": {
+            "enum": [
+              "public",
+              "private"
+            ]
+          },
+          "host": {
+            "type": "string"
+          },
+          "auth": {
+            "type": "object",
+            "properties": {
+              "scheme": {
+                "const": "mtls"
+              },
+              "ca": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "scheme",
+              "ca"
+            ],
+            "additionalProperties": false
+          },
+          "ports": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "minItems": 1,
+            "uniqueItems": true
+          }
+        },
+        "required": [
+          "mode",
+          "host",
+          "ports"
+        ],
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "mode": {
+                  "const": "private"
+                }
+              },
+              "required": [
+                "mode"
+              ]
+            },
+            "then": {
+              "required": [
+                "auth"
+              ]
+            },
+            "else": {
+              "not": {
+                "required": [
+                  "auth"
+                ]
+              }
+            }
+          }
+        ],
+        "unevaluatedProperties": false
+      },
+      "formatAssertions": true,
+      "family": "A",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": {
+            "mode": "private",
+            "host": "svc.internal",
+            "ports": [
+              443,
+              8443
+            ],
+            "auth": {
+              "scheme": "mtls",
+              "ca": "ca/内网.pem"
+            }
+          },
+          "description": "Preserve the publicly specified data and transformation"
+        }
+      ],
+      "developmentShadow": true,
+      "provenance": {
+        "sourceGroup": "authored:A:holdout",
+        "source": null,
+        "pairId": null,
+        "split": "holdout",
+        "seed": "SOC2-A-H-route",
+        "method": "Locally authored composition/conversion task; not an official benchmark instance"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "frozen-derived-fixture-v2",
+    "tags": [
+      "structured-contract-v2",
+      "family:A",
+      "split:holdout"
+    ],
+    "scenarioHash": "b1f0f4b4a60882e1"
+  },
+  {
+    "id": "SOC2-B-H-tree",
+    "dimension": "structured_output",
+    "category": "contract_B",
+    "difficulty": "medium",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v2",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "生成递归树，根是 group，name=\"根\"。根的第一个孩子是 leaf，name=\"a/b~c\"，value=null；第二个是 group，name=\"nested\"，它恰有一个 leaf 孩子，name=\"empty\"，value=\"\"。保留 null 和空串，禁止简化树。\n输出必须遵循这个 Schema：{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"$ref\":\"#/$defs/node\",\"$defs\":{\"node\":{\"oneOf\":[{\"type\":\"object\",\"properties\":{\"kind\":{\"const\":\"leaf\"},\"name\":{\"type\":\"string\"},\"value\":{\"type\":[\"string\",\"null\"]}},\"required\":[\"kind\",\"name\",\"value\"],\"additionalProperties\":false},{\"type\":\"object\",\"properties\":{\"kind\":{\"const\":\"group\"},\"name\":{\"type\":\"string\"},\"children\":{\"type\":\"array\",\"items\":{\"$ref\":\"#/$defs/node\"}}},\"required\":[\"kind\",\"name\",\"children\"],\"additionalProperties\":false}]}}}\n只输出完整 JSON 原文，不要围栏或解释。对象键序不限。响应最多 131072 个字符。",
+    "requirements": {
+      "format": "json",
+      "dialect": "2020-12",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$ref": "#/$defs/node",
+        "$defs": {
+          "node": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "const": "leaf"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "kind",
+                  "name",
+                  "value"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "const": "group"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "children": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/$defs/node"
+                    }
+                  }
+                },
+                "required": [
+                  "kind",
+                  "name",
+                  "children"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          }
+        }
+      },
+      "formatAssertions": true,
+      "family": "B",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": {
+            "kind": "group",
+            "name": "根",
+            "children": [
+              {
+                "kind": "leaf",
+                "name": "a/b~c",
+                "value": null
+              },
+              {
+                "kind": "group",
+                "name": "nested",
+                "children": [
+                  {
+                    "kind": "leaf",
+                    "name": "empty",
+                    "value": ""
+                  }
+                ]
+              }
+            ]
+          },
+          "description": "Preserve the publicly specified data and transformation"
+        }
+      ],
+      "developmentShadow": true,
+      "provenance": {
+        "sourceGroup": "authored:B:holdout",
+        "source": null,
+        "pairId": null,
+        "split": "holdout",
+        "seed": "SOC2-B-H-tree",
+        "method": "Locally authored composition/conversion task; not an official benchmark instance"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "frozen-derived-fixture-v2",
+    "tags": [
+      "structured-contract-v2",
+      "family:B",
+      "split:holdout"
+    ],
+    "scenarioHash": "744c7bbdaec333d9"
+  },
+  {
+    "id": "SOC2-C-H-headers",
+    "dimension": "structured_output",
+    "category": "contract_C",
+    "difficulty": "medium",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v2",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "生成 headers 对象，只有 x-note、x-empty、x-enabled。x-note 对字符串 \"a/b 空\" 按 UTF-8 百分号编码：仅 ASCII 字母数字和 -._~ 不编码，十六进制大写，空格是 %20；x-empty 是空串；x-enabled 是布尔 false。\n输出必须遵循这个 Schema：{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"object\",\"properties\":{\"headers\":{\"type\":\"object\",\"properties\":{\"x-note\":{\"type\":\"string\"},\"x-empty\":{\"type\":\"string\"},\"x-enabled\":{\"type\":\"boolean\"}},\"required\":[\"x-note\",\"x-empty\",\"x-enabled\"],\"additionalProperties\":false}},\"required\":[\"headers\"],\"additionalProperties\":false}\n只输出完整 JSON 原文，不要围栏或解释。对象键序不限。响应最多 131072 个字符。",
+    "requirements": {
+      "format": "json",
+      "dialect": "2020-12",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "headers": {
+            "type": "object",
+            "properties": {
+              "x-note": {
+                "type": "string"
+              },
+              "x-empty": {
+                "type": "string"
+              },
+              "x-enabled": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "x-note",
+              "x-empty",
+              "x-enabled"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "headers"
+        ],
+        "additionalProperties": false
+      },
+      "formatAssertions": true,
+      "family": "C",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": {
+            "headers": {
+              "x-note": "a%2Fb%20%E7%A9%BA",
+              "x-empty": "",
+              "x-enabled": false
+            }
+          },
+          "description": "Preserve the publicly specified data and transformation"
+        }
+      ],
+      "developmentShadow": true,
+      "provenance": {
+        "sourceGroup": "authored:C:holdout",
+        "source": null,
+        "pairId": null,
+        "split": "holdout",
+        "seed": "SOC2-C-H-headers",
+        "method": "Locally authored composition/conversion task; not an official benchmark instance"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "frozen-derived-fixture-v2",
+    "tags": [
+      "structured-contract-v2",
+      "family:C",
+      "split:holdout"
+    ],
+    "scenarioHash": "bac5ce7f5bb72242"
+  },
+  {
+    "id": "SOC-D-H1",
+    "dimension": "structured_output",
+    "category": "contract_D",
+    "difficulty": "medium",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v1",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "ab771b60383240ca",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "输出仅包含键 \"registry/a~b\" 的注册中心对象。其 type=\"npm-registry\"，url=\"https://registry.example.test\"。先把 inputText 的 JSON 字符串字面量解析为原文，构造 {\"note\":原文}，按 JavaScript JSON.stringify 的默认行为序列化一次后把结果作为 token 字符串值（中文原样保留，无额外空白）。这是虚构字符串保真测试，不是实际认证信息。不得增加字段。inputText=\"\\\"quoted\\\"\\\\slash\\n${{data}}\"\n\n必须同时遵循以下 JSON Schema 和上面的内容规则；可省略的字段按题面决定。对象键序不限。只输出一个完整 JSON 值，不要围栏或解释。\n{\"$schema\":\"http://json-schema.org/draft-07/schema#\",\"type\":\"object\",\"additionalProperties\":{\"type\":\"object\",\"additionalProperties\":false,\"properties\":{\"type\":{\"enum\":[\"cargo-registry\",\"composer-repository\",\"docker-registry\",\"git\",\"goproxy-server\",\"hex-organization\",\"hex-repository\",\"helm-registry\",\"maven-repository\",\"npm-registry\",\"nuget-feed\",\"pub-repository\",\"python-index\",\"rubygems-server\",\"terraform-registry\"]},\"url\":{\"type\":\"string\"},\"username\":{\"type\":\"string\"},\"password\":{\"type\":\"string\"},\"key\":{\"type\":\"string\"},\"token\":{\"type\":\"string\"},\"replaces-base\":{\"type\":\"boolean\"},\"scope\":{\"oneOf\":[{\"type\":\"array\",\"items\":{\"type\":\"string\",\"minLength\":1},\"uniqueItems\":true,\"minItems\":1},{\"type\":\"string\",\"minLength\":1}]},\"organization\":{\"type\":\"string\"},\"repo\":{\"type\":\"string\"},\"auth-key\":{\"type\":\"string\"},\"public-key-fingerprint\":{\"type\":\"string\"},\"registry\":{\"type\":\"string\"},\"tenant-id\":{\"type\":\"string\"},\"client-id\":{\"type\":\"string\"},\"jfrog-oidc-provider-name\":{\"type\":\"string\"},\"identity-mapping-name\":{\"type\":\"string\"},\"audience\":{\"type\":\"string\"},\"aws-region\":{\"type\":\"string\"},\"account-id\":{\"type\":\"string\"},\"role-name\":{\"type\":\"string\"},\"domain\":{\"type\":\"string\"},\"domain-owner\":{\"type\":\"string\"}},\"required\":[\"type\",\"url\"]},\"minProperties\":1}",
+    "requirements": {
+      "format": "json",
+      "dialect": "draft-07",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "additionalProperties": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "enum": [
+                "cargo-registry",
+                "composer-repository",
+                "docker-registry",
+                "git",
+                "goproxy-server",
+                "hex-organization",
+                "hex-repository",
+                "helm-registry",
+                "maven-repository",
+                "npm-registry",
+                "nuget-feed",
+                "pub-repository",
+                "python-index",
+                "rubygems-server",
+                "terraform-registry"
+              ]
+            },
+            "url": {
+              "type": "string"
+            },
+            "username": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            },
+            "key": {
+              "type": "string"
+            },
+            "token": {
+              "type": "string"
+            },
+            "replaces-base": {
+              "type": "boolean"
+            },
+            "scope": {
+              "oneOf": [
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "uniqueItems": true,
+                  "minItems": 1
+                },
+                {
+                  "type": "string",
+                  "minLength": 1
+                }
+              ]
+            },
+            "organization": {
+              "type": "string"
+            },
+            "repo": {
+              "type": "string"
+            },
+            "auth-key": {
+              "type": "string"
+            },
+            "public-key-fingerprint": {
+              "type": "string"
+            },
+            "registry": {
+              "type": "string"
+            },
+            "tenant-id": {
+              "type": "string"
+            },
+            "client-id": {
+              "type": "string"
+            },
+            "jfrog-oidc-provider-name": {
+              "type": "string"
+            },
+            "identity-mapping-name": {
+              "type": "string"
+            },
+            "audience": {
+              "type": "string"
+            },
+            "aws-region": {
+              "type": "string"
+            },
+            "account-id": {
+              "type": "string"
+            },
+            "role-name": {
+              "type": "string"
+            },
+            "domain": {
+              "type": "string"
+            },
+            "domain-owner": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "type",
+            "url"
+          ]
+        },
+        "minProperties": 1
+      },
+      "formatAssertions": true,
+      "family": "D",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": {
+            "registry/a~b": {
+              "type": "npm-registry",
+              "url": "https://registry.example.test",
+              "token": "{\"note\":\"\\\"quoted\\\"\\\\slash\\n${{data}}\"}"
+            }
+          },
+          "description": "Exact content determined by the published input and transformation rules"
+        }
+      ],
+      "developmentShadow": true,
+      "provenance": {
+        "sourceUrl": "https://raw.githubusercontent.com/SchemaStore/schemastore/87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0/src/schemas/json/dependabot-2.0.json",
+        "sourceRevision": "87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0",
+        "sourceLicense": "Apache-2.0",
+        "originalSha256": "57efbbcba05d2c26ad8e00b2ab295f797931652174d4e7d5272615069ecea61f",
+        "fragment": "/definitions/registry",
+        "sourceGroup": "schemastore:dependabot-2.0",
+        "transformations": [
+          "selected fragment and transitive local definitions",
+          "removed documentation annotations",
+          "added explicit local task requirements"
+        ],
+        "upstreamBenchmark": "SchemaStore source; locally authored tasks, not official SchemaBench instances",
+        "split": "holdout",
+        "designLevel": 1,
+        "seed": "D:holdout:0",
+        "baseIds": []
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "deterministic-frozen-fixture-v1",
+    "tags": [
+      "structured-contract-v1",
+      "family:D",
+      "split:holdout"
+    ]
+  },
+  {
+    "id": "SOC-D-H2",
+    "dimension": "structured_output",
+    "category": "contract_D",
+    "difficulty": "medium",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v1",
+    "scenarioVersion": "1.0.0",
+    "scenarioHash": "51f8636b9749530f",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "输出仅包含键 \"registry/a~b\" 的注册中心对象。其 type=\"npm-registry\"，url=\"https://registry.example.test\"。先把 inputText 的 JSON 字符串字面量解析为原文，构造 {\"note\":原文}，按 JavaScript JSON.stringify 的默认行为序列化一次后把结果作为 token 字符串值（中文原样保留，无额外空白）。这是虚构字符串保真测试，不是实际认证信息。不得增加字段。inputText=\"用户名=\\\"甲\\\"\\r\\n路径=C:\\\\temp\\\\秘密\"\n\n必须同时遵循以下 JSON Schema 和上面的内容规则；可省略的字段按题面决定。对象键序不限。只输出一个完整 JSON 值，不要围栏或解释。\n{\"$schema\":\"http://json-schema.org/draft-07/schema#\",\"type\":\"object\",\"additionalProperties\":{\"type\":\"object\",\"additionalProperties\":false,\"properties\":{\"type\":{\"enum\":[\"cargo-registry\",\"composer-repository\",\"docker-registry\",\"git\",\"goproxy-server\",\"hex-organization\",\"hex-repository\",\"helm-registry\",\"maven-repository\",\"npm-registry\",\"nuget-feed\",\"pub-repository\",\"python-index\",\"rubygems-server\",\"terraform-registry\"]},\"url\":{\"type\":\"string\"},\"username\":{\"type\":\"string\"},\"password\":{\"type\":\"string\"},\"key\":{\"type\":\"string\"},\"token\":{\"type\":\"string\"},\"replaces-base\":{\"type\":\"boolean\"},\"scope\":{\"oneOf\":[{\"type\":\"array\",\"items\":{\"type\":\"string\",\"minLength\":1},\"uniqueItems\":true,\"minItems\":1},{\"type\":\"string\",\"minLength\":1}]},\"organization\":{\"type\":\"string\"},\"repo\":{\"type\":\"string\"},\"auth-key\":{\"type\":\"string\"},\"public-key-fingerprint\":{\"type\":\"string\"},\"registry\":{\"type\":\"string\"},\"tenant-id\":{\"type\":\"string\"},\"client-id\":{\"type\":\"string\"},\"jfrog-oidc-provider-name\":{\"type\":\"string\"},\"identity-mapping-name\":{\"type\":\"string\"},\"audience\":{\"type\":\"string\"},\"aws-region\":{\"type\":\"string\"},\"account-id\":{\"type\":\"string\"},\"role-name\":{\"type\":\"string\"},\"domain\":{\"type\":\"string\"},\"domain-owner\":{\"type\":\"string\"}},\"required\":[\"type\",\"url\"]},\"minProperties\":1}",
+    "requirements": {
+      "format": "json",
+      "dialect": "draft-07",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "additionalProperties": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "enum": [
+                "cargo-registry",
+                "composer-repository",
+                "docker-registry",
+                "git",
+                "goproxy-server",
+                "hex-organization",
+                "hex-repository",
+                "helm-registry",
+                "maven-repository",
+                "npm-registry",
+                "nuget-feed",
+                "pub-repository",
+                "python-index",
+                "rubygems-server",
+                "terraform-registry"
+              ]
+            },
+            "url": {
+              "type": "string"
+            },
+            "username": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            },
+            "key": {
+              "type": "string"
+            },
+            "token": {
+              "type": "string"
+            },
+            "replaces-base": {
+              "type": "boolean"
+            },
+            "scope": {
+              "oneOf": [
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "uniqueItems": true,
+                  "minItems": 1
+                },
+                {
+                  "type": "string",
+                  "minLength": 1
+                }
+              ]
+            },
+            "organization": {
+              "type": "string"
+            },
+            "repo": {
+              "type": "string"
+            },
+            "auth-key": {
+              "type": "string"
+            },
+            "public-key-fingerprint": {
+              "type": "string"
+            },
+            "registry": {
+              "type": "string"
+            },
+            "tenant-id": {
+              "type": "string"
+            },
+            "client-id": {
+              "type": "string"
+            },
+            "jfrog-oidc-provider-name": {
+              "type": "string"
+            },
+            "identity-mapping-name": {
+              "type": "string"
+            },
+            "audience": {
+              "type": "string"
+            },
+            "aws-region": {
+              "type": "string"
+            },
+            "account-id": {
+              "type": "string"
+            },
+            "role-name": {
+              "type": "string"
+            },
+            "domain": {
+              "type": "string"
+            },
+            "domain-owner": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "type",
+            "url"
+          ]
+        },
+        "minProperties": 1
+      },
+      "formatAssertions": true,
+      "family": "D",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": {
+            "registry/a~b": {
+              "type": "npm-registry",
+              "url": "https://registry.example.test",
+              "token": "{\"note\":\"用户名=\\\"甲\\\"\\r\\n路径=C:\\\\temp\\\\秘密\"}"
+            }
+          },
+          "description": "Exact content determined by the published input and transformation rules"
+        }
+      ],
+      "developmentShadow": true,
+      "provenance": {
+        "sourceUrl": "https://raw.githubusercontent.com/SchemaStore/schemastore/87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0/src/schemas/json/dependabot-2.0.json",
+        "sourceRevision": "87bc8d9d70f6f5f2792bd01c621e6cb7c217d4a0",
+        "sourceLicense": "Apache-2.0",
+        "originalSha256": "57efbbcba05d2c26ad8e00b2ab295f797931652174d4e7d5272615069ecea61f",
+        "fragment": "/definitions/registry",
+        "sourceGroup": "schemastore:dependabot-2.0",
+        "transformations": [
+          "selected fragment and transitive local definitions",
+          "removed documentation annotations",
+          "added explicit local task requirements"
+        ],
+        "upstreamBenchmark": "SchemaStore source; locally authored tasks, not official SchemaBench instances",
+        "split": "holdout",
+        "designLevel": 2,
+        "seed": "D:holdout:1",
+        "baseIds": []
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "deterministic-frozen-fixture-v1",
+    "tags": [
+      "structured-contract-v1",
+      "family:D",
+      "split:holdout"
+    ]
+  },
+  {
+    "id": "SOC2-E-H-simple",
+    "dimension": "structured_output",
+    "category": "contract_E",
+    "difficulty": "medium",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v2",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "按原顺序输出每条记录的 id、state、note，值和类型不变。输入：[{\"id\":\"02\",\"state\":\"error\",\"note\":\"A\\r\\nB\"},{\"id\":\"03\",\"state\":\"ok\",\"note\":\"~/\"},{\"id\":\"04\",\"state\":\"skip\",\"note\":null}]\n输出必须遵循这个 Schema：{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"},\"state\":{\"enum\":[\"ok\",\"error\",\"skip\"]},\"note\":{\"type\":[\"string\",\"null\"]}},\"required\":[\"id\",\"state\",\"note\"],\"additionalProperties\":false}}\n只输出完整 JSON 原文，不要围栏或解释。对象键序不限。响应最多 131072 个字符。",
+    "requirements": {
+      "format": "json",
+      "dialect": "2020-12",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "state": {
+              "enum": [
+                "ok",
+                "error",
+                "skip"
+              ]
+            },
+            "note": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "id",
+            "state",
+            "note"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "formatAssertions": true,
+      "family": "E",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": [
+            {
+              "id": "02",
+              "state": "error",
+              "note": "A\r\nB"
+            },
+            {
+              "id": "03",
+              "state": "ok",
+              "note": "~/"
+            },
+            {
+              "id": "04",
+              "state": "skip",
+              "note": null
+            }
+          ],
+          "description": "Preserve the publicly specified data and transformation"
+        }
+      ],
+      "developmentShadow": true,
+      "provenance": {
+        "sourceGroup": "authored:event-delivery",
+        "source": null,
+        "pairId": "pair:E:holdout",
+        "split": "holdout",
+        "seed": "SOC2-E-H-simple",
+        "method": "Locally authored composition/conversion task; not an official benchmark instance"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "frozen-derived-fixture-v2",
+    "tags": [
+      "structured-contract-v2",
+      "family:E",
+      "split:holdout"
+    ],
+    "scenarioHash": "71f9f0e0b0b08eb6"
+  },
+  {
+    "id": "SOC2-E-H-complex",
+    "dimension": "structured_output",
+    "category": "contract_E",
+    "difficulty": "medium",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v2",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "按输入顺序输出数组，每项是仅含一个动态键的对象，键为原 id 字符串。state=skip 时值只能是 {\"skipped\":true}；ok 时值为 {\"ok\":{\"message\":原note}}；error 时值为 {\"error\":{\"message\":原note,\"retryable\":false}}。保留空串、反斜杠与换行，不额外输出 state/note。输入：[{\"id\":\"02\",\"state\":\"error\",\"note\":\"A\\r\\nB\"},{\"id\":\"03\",\"state\":\"ok\",\"note\":\"~/\"},{\"id\":\"04\",\"state\":\"skip\",\"note\":null}]\n输出必须遵循这个 Schema：{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"array\",\"items\":{\"type\":\"object\",\"minProperties\":1,\"maxProperties\":1,\"additionalProperties\":{\"oneOf\":[{\"type\":\"object\",\"properties\":{\"skipped\":{\"const\":true}},\"required\":[\"skipped\"],\"additionalProperties\":false},{\"type\":\"object\",\"properties\":{\"ok\":{\"type\":\"object\",\"properties\":{\"message\":{\"type\":\"string\"}},\"required\":[\"message\"],\"additionalProperties\":false}},\"required\":[\"ok\"],\"additionalProperties\":false},{\"type\":\"object\",\"properties\":{\"error\":{\"type\":\"object\",\"properties\":{\"message\":{\"type\":\"string\"},\"retryable\":{\"const\":false}},\"required\":[\"message\",\"retryable\"],\"additionalProperties\":false}},\"required\":[\"error\"],\"additionalProperties\":false}]}}}\n只输出完整 JSON 原文，不要围栏或解释。对象键序不限。响应最多 131072 个字符。",
+    "requirements": {
+      "format": "json",
+      "dialect": "2020-12",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "minProperties": 1,
+          "maxProperties": 1,
+          "additionalProperties": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "skipped": {
+                    "const": true
+                  }
+                },
+                "required": [
+                  "skipped"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "ok": {
+                    "type": "object",
+                    "properties": {
+                      "message": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "message"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "ok"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "error": {
+                    "type": "object",
+                    "properties": {
+                      "message": {
+                        "type": "string"
+                      },
+                      "retryable": {
+                        "const": false
+                      }
+                    },
+                    "required": [
+                      "message",
+                      "retryable"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "error"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          }
+        }
+      },
+      "formatAssertions": true,
+      "family": "E",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": [
+            {
+              "02": {
+                "error": {
+                  "message": "A\r\nB",
+                  "retryable": false
+                }
+              }
+            },
+            {
+              "03": {
+                "ok": {
+                  "message": "~/"
+                }
+              }
+            },
+            {
+              "04": {
+                "skipped": true
+              }
+            }
+          ],
+          "description": "Preserve the publicly specified data and transformation"
+        }
+      ],
+      "developmentShadow": true,
+      "provenance": {
+        "sourceGroup": "authored:event-delivery",
+        "source": null,
+        "pairId": "pair:E:holdout",
+        "split": "holdout",
+        "seed": "SOC2-E-H-complex",
+        "method": "Locally authored composition/conversion task; not an official benchmark instance"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "frozen-derived-fixture-v2",
+    "tags": [
+      "structured-contract-v2",
+      "family:E",
+      "split:holdout"
+    ],
+    "scenarioHash": "803e4ed3cd82add5"
+  },
+  {
+    "id": "SOC2-F-H-csv",
+    "dimension": "structured_output",
+    "category": "contract_F",
+    "difficulty": "medium",
+    "language": "csv",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v2",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "把 JSON 输入无损转换为 CSV。首行表头恰为 code,name,note。RFC 4180 引号规则；字段内换行保留为实际换行；不要用字面量 \\n 替换。所有字段按字符串处理。 输入：[{\"code\":\"000\",\"name\":\"x<y & z\",\"note\":\"C:\\\\tmp\\\\a\"},{\"code\":\"002\",\"name\":\"false\",\"note\":\"\"}]\n只输出完整 CSV 原文，不要围栏或解释。对象键序不限。响应最多 131072 个字符。",
+    "requirements": {
+      "format": "csv",
+      "dialect": "2020-12",
+      "schema": true,
+      "formatAssertions": true,
+      "family": "F",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": [
+            {
+              "code": "000",
+              "name": "x<y & z",
+              "note": "C:\\tmp\\a"
+            },
+            {
+              "code": "002",
+              "name": "false",
+              "note": ""
+            }
+          ],
+          "description": "Preserve the publicly specified data and transformation"
+        }
+      ],
+      "developmentShadow": true,
+      "provenance": {
+        "sourceGroup": "authored:conversion-audit-log",
+        "source": null,
+        "pairId": null,
+        "split": "holdout",
+        "seed": "SOC2-F-H-csv",
+        "method": "Locally authored composition/conversion task; not an official benchmark instance"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "frozen-derived-fixture-v2",
+    "tags": [
+      "structured-contract-v2",
+      "family:F",
+      "split:holdout"
+    ],
+    "scenarioHash": "79d15a2d5054cabc"
+  },
+  {
+    "id": "SOC2-F-H-xml",
+    "dimension": "structured_output",
+    "category": "contract_F",
+    "difficulty": "medium",
+    "language": "xml",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v2",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "把 JSON 输入无损转换为 XML。根 records，每行 record，字段顺序 code/name/note。每个字段是一个简单子元素；null 用空元素 <note null=\"true\"/>，空串用空文本元素；其他元素无属性。不能使用 DTD、实体声明或嵌套字段。 输入：[{\"code\":\"000\",\"name\":\"x<y & z\",\"note\":\"C:\\\\tmp\\\\a\"},{\"code\":\"002\",\"name\":\"false\",\"note\":null}]\n只输出完整 XML 原文，不要围栏或解释。对象键序不限。响应最多 131072 个字符。",
+    "requirements": {
+      "format": "xml",
+      "dialect": "2020-12",
+      "schema": true,
+      "formatAssertions": true,
+      "family": "F",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": [
+            {
+              "code": "000",
+              "name": "x<y & z",
+              "note": "C:\\tmp\\a"
+            },
+            {
+              "code": "002",
+              "name": "false",
+              "note": null
+            }
+          ],
+          "description": "Preserve the publicly specified data and transformation"
+        }
+      ],
+      "developmentShadow": true,
+      "provenance": {
+        "sourceGroup": "authored:conversion-audit-log",
+        "source": null,
+        "pairId": null,
+        "split": "holdout",
+        "seed": "SOC2-F-H-xml",
+        "method": "Locally authored composition/conversion task; not an official benchmark instance"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "frozen-derived-fixture-v2",
+    "tags": [
+      "structured-contract-v2",
+      "family:F",
+      "split:holdout"
+    ],
+    "scenarioHash": "f393b19692c25d46"
+  },
+  {
+    "id": "SOC2-F-H-yaml",
+    "dimension": "structured_output",
+    "category": "contract_F",
+    "difficulty": "medium",
+    "language": "yaml",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v2",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "把 JSON 输入无损转换为 YAML。使用 YAML 1.2 的 JSON 兼容数据类型，不使用锚点、别名、自定义标签；字符串保留原类型。也允许 JSON 语法，因为它是合法 YAML。 输入：[{\"code\":\"000\",\"name\":\"x<y & z\",\"note\":\"C:\\\\tmp\\\\a\"},{\"code\":\"002\",\"name\":\"false\",\"note\":\"\"}]\n只输出完整 YAML 原文，不要围栏或解释。对象键序不限。响应最多 131072 个字符。",
+    "requirements": {
+      "format": "yaml",
+      "dialect": "2020-12",
+      "schema": true,
+      "formatAssertions": true,
+      "family": "F",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": [
+            {
+              "code": "000",
+              "name": "x<y & z",
+              "note": "C:\\tmp\\a"
+            },
+            {
+              "code": "002",
+              "name": "false",
+              "note": ""
+            }
+          ],
+          "description": "Preserve the publicly specified data and transformation"
+        }
+      ],
+      "developmentShadow": true,
+      "provenance": {
+        "sourceGroup": "authored:conversion-audit-log",
+        "source": null,
+        "pairId": null,
+        "split": "holdout",
+        "seed": "SOC2-F-H-yaml",
+        "method": "Locally authored composition/conversion task; not an official benchmark instance"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "frozen-derived-fixture-v2",
+    "tags": [
+      "structured-contract-v2",
+      "family:F",
+      "split:holdout"
+    ],
+    "scenarioHash": "5d74378afc82b2ca"
+  },
+  {
+    "id": "SOC2-F-H-toml",
+    "dimension": "structured_output",
+    "category": "contract_F",
+    "difficulty": "medium",
+    "language": "toml",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v2",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "把 JSON 输入无损转换为 TOML。TOML 1.0：顶层只有 records 数组，使用 [[records]]。所有 code/name/note 均为字符串；勿自动转日期、布尔或数字。 输入：[{\"code\":\"000\",\"name\":\"x<y & z\",\"note\":\"C:\\\\tmp\\\\a\"},{\"code\":\"002\",\"name\":\"false\",\"note\":\"\"}]\n只输出完整 TOML 原文，不要围栏或解释。对象键序不限。响应最多 131072 个字符。",
+    "requirements": {
+      "format": "toml",
+      "dialect": "2020-12",
+      "schema": true,
+      "formatAssertions": true,
+      "family": "F",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": {
+            "records": [
+              {
+                "code": "000",
+                "name": "x<y & z",
+                "note": "C:\\tmp\\a"
+              },
+              {
+                "code": "002",
+                "name": "false",
+                "note": ""
+              }
+            ]
+          },
+          "description": "Preserve the publicly specified data and transformation"
+        }
+      ],
+      "developmentShadow": true,
+      "provenance": {
+        "sourceGroup": "authored:conversion-audit-log",
+        "source": null,
+        "pairId": null,
+        "split": "holdout",
+        "seed": "SOC2-F-H-toml",
+        "method": "Locally authored composition/conversion task; not an official benchmark instance"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "frozen-derived-fixture-v2",
+    "tags": [
+      "structured-contract-v2",
+      "family:F",
+      "split:holdout"
+    ],
+    "scenarioHash": "9442d0b4e7d89dd7"
+  },
+  {
+    "id": "SOC2-G-H-1",
+    "dimension": "structured_output",
+    "category": "contract_G",
+    "difficulty": "medium",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v2",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "生成 JSON Schema 2020-12：顶层数组，长度 2 至 4，所有数组元素按完整 JSON 值去重。每个元素只能有必需的 kind、name；kind 是 start/stop，name 是非空字符串。整个数组恰有一个 kind=start 的元素。name 不要求在不同元素间唯一，不能额外限制。 可以自由选择等价的标准 Schema 写法；只允许本地引用，不允许外部引用；Schema 嵌套深度不超过 64。使用这些有界题目时验证器会限制编译/验证资源。\n输出必须遵循这个 Schema：{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":[\"object\",\"boolean\"]}\n只输出完整 JSON 原文，不要围栏或解释。对象键序不限。响应最多 131072 个字符。",
+    "requirements": {
+      "format": "json",
+      "dialect": "2020-12",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": [
+          "object",
+          "boolean"
+        ]
+      },
+      "formatAssertions": true,
+      "family": "G",
+      "output_policy": "raw_only",
+      "generatedSchema": {
+        "cases": [
+          {
+            "data": [
+              {
+                "kind": "start",
+                "name": "A"
+              },
+              {
+                "kind": "stop",
+                "name": "B"
+              }
+            ],
+            "valid": true
+          },
+          {
+            "data": [
+              {
+                "kind": "stop",
+                "name": "A"
+              },
+              {
+                "kind": "start",
+                "name": "B"
+              },
+              {
+                "kind": "stop",
+                "name": "C"
+              }
+            ],
+            "valid": true
+          },
+          {
+            "data": null,
+            "valid": false
+          },
+          {
+            "data": {},
+            "valid": false
+          },
+          {
+            "data": [],
+            "valid": false
+          },
+          {
+            "data": [
+              {
+                "kind": "start",
+                "name": "A"
+              }
+            ],
+            "valid": false
+          },
+          {
+            "data": [
+              {
+                "kind": "start",
+                "name": "A"
+              },
+              {
+                "kind": "start",
+                "name": "A"
+              }
+            ],
+            "valid": false
+          },
+          {
+            "data": [
+              {
+                "kind": "start",
+                "name": "A"
+              },
+              {
+                "kind": "start",
+                "name": "B"
+              }
+            ],
+            "valid": false
+          },
+          {
+            "data": [
+              {
+                "kind": "stop",
+                "name": "A"
+              },
+              {
+                "kind": "stop",
+                "name": "B"
+              }
+            ],
+            "valid": false
+          },
+          {
+            "data": [
+              {
+                "kind": "start",
+                "name": ""
+              },
+              {
+                "kind": "stop",
+                "name": "B"
+              }
+            ],
+            "valid": false
+          },
+          {
+            "data": [
+              {
+                "kind": "start",
+                "name": "A",
+                "extra": 1
+              },
+              {
+                "kind": "stop",
+                "name": "B"
+              }
+            ],
+            "valid": false
+          },
+          {
+            "data": [
+              {
+                "kind": "start",
+                "name": 1
+              },
+              {
+                "kind": "stop",
+                "name": "B"
+              }
+            ],
+            "valid": false
+          },
+          {
+            "data": [
+              {
+                "kind": "start",
+                "name": "A"
+              },
+              {
+                "kind": "stop",
+                "name": "B"
+              },
+              {
+                "kind": "stop",
+                "name": "C"
+              },
+              {
+                "kind": "stop",
+                "name": "D"
+              },
+              {
+                "kind": "stop",
+                "name": "E"
+              }
+            ],
+            "valid": false
+          }
+        ]
+      },
+      "developmentShadow": true,
+      "provenance": {
+        "sourceGroup": "authored:G:holdout",
+        "source": null,
+        "pairId": null,
+        "split": "holdout",
+        "seed": "SOC2-G-H-1",
+        "method": "Locally authored composition/conversion task; not an official benchmark instance"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "frozen-derived-fixture-v2",
+    "tags": [
+      "structured-contract-v2",
+      "family:G",
+      "split:holdout"
+    ],
+    "scenarioHash": "41543081614a50ff"
+  },
+  {
+    "id": "SOC2-G-H-2",
+    "dimension": "structured_output",
+    "category": "contract_G",
+    "difficulty": "medium",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v2",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "生成 JSON Schema 2020-12：顶层数组，长度 2 至 4，所有数组元素按完整 JSON 值去重。每个元素只能有必需的 kind、name；kind 是 start/stop，name 是非空字符串。整个数组恰有一个 kind=start 的元素。name 不要求在不同元素间唯一，不能额外限制。name 另外必须以一个大写 ASCII 字母开头，之后只有大写 ASCII 字母或数字；不限制长度上界。 可以自由选择等价的标准 Schema 写法；只允许本地引用，不允许外部引用；Schema 嵌套深度不超过 64。使用这些有界题目时验证器会限制编译/验证资源。\n输出必须遵循这个 Schema：{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":[\"object\",\"boolean\"]}\n只输出完整 JSON 原文，不要围栏或解释。对象键序不限。响应最多 131072 个字符。",
+    "requirements": {
+      "format": "json",
+      "dialect": "2020-12",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": [
+          "object",
+          "boolean"
+        ]
+      },
+      "formatAssertions": true,
+      "family": "G",
+      "output_policy": "raw_only",
+      "generatedSchema": {
+        "cases": [
+          {
+            "data": [
+              {
+                "kind": "start",
+                "name": "A"
+              },
+              {
+                "kind": "stop",
+                "name": "B"
+              }
+            ],
+            "valid": true
+          },
+          {
+            "data": [
+              {
+                "kind": "stop",
+                "name": "A"
+              },
+              {
+                "kind": "start",
+                "name": "B"
+              },
+              {
+                "kind": "stop",
+                "name": "C"
+              }
+            ],
+            "valid": true
+          },
+          {
+            "data": null,
+            "valid": false
+          },
+          {
+            "data": {},
+            "valid": false
+          },
+          {
+            "data": [],
+            "valid": false
+          },
+          {
+            "data": [
+              {
+                "kind": "start",
+                "name": "A"
+              }
+            ],
+            "valid": false
+          },
+          {
+            "data": [
+              {
+                "kind": "start",
+                "name": "A"
+              },
+              {
+                "kind": "start",
+                "name": "A"
+              }
+            ],
+            "valid": false
+          },
+          {
+            "data": [
+              {
+                "kind": "start",
+                "name": "A"
+              },
+              {
+                "kind": "start",
+                "name": "B"
+              }
+            ],
+            "valid": false
+          },
+          {
+            "data": [
+              {
+                "kind": "stop",
+                "name": "A"
+              },
+              {
+                "kind": "stop",
+                "name": "B"
+              }
+            ],
+            "valid": false
+          },
+          {
+            "data": [
+              {
+                "kind": "start",
+                "name": ""
+              },
+              {
+                "kind": "stop",
+                "name": "B"
+              }
+            ],
+            "valid": false
+          },
+          {
+            "data": [
+              {
+                "kind": "start",
+                "name": "A",
+                "extra": 1
+              },
+              {
+                "kind": "stop",
+                "name": "B"
+              }
+            ],
+            "valid": false
+          },
+          {
+            "data": [
+              {
+                "kind": "start",
+                "name": 1
+              },
+              {
+                "kind": "stop",
+                "name": "B"
+              }
+            ],
+            "valid": false
+          },
+          {
+            "data": [
+              {
+                "kind": "start",
+                "name": "A"
+              },
+              {
+                "kind": "stop",
+                "name": "B"
+              },
+              {
+                "kind": "stop",
+                "name": "C"
+              },
+              {
+                "kind": "stop",
+                "name": "D"
+              },
+              {
+                "kind": "stop",
+                "name": "E"
+              }
+            ],
+            "valid": false
+          },
+          {
+            "data": [
+              {
+                "kind": "start",
+                "name": "a"
+              },
+              {
+                "kind": "stop",
+                "name": "B"
+              }
+            ],
+            "valid": false
+          },
+          {
+            "data": [
+              {
+                "kind": "start",
+                "name": "A-"
+              },
+              {
+                "kind": "stop",
+                "name": "B"
+              }
+            ],
+            "valid": false
+          }
+        ]
+      },
+      "developmentShadow": true,
+      "provenance": {
+        "sourceGroup": "authored:G:holdout",
+        "source": null,
+        "pairId": null,
+        "split": "holdout",
+        "seed": "SOC2-G-H-2",
+        "method": "Locally authored composition/conversion task; not an official benchmark instance"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "frozen-derived-fixture-v2",
+    "tags": [
+      "structured-contract-v2",
+      "family:G",
+      "split:holdout"
+    ],
+    "scenarioHash": "60caf0c0e0cf7812"
+  },
+  {
+    "id": "SOC2-H-H-1",
+    "dimension": "structured_output",
+    "category": "contract_H",
+    "difficulty": "medium",
+    "language": "svg",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v2",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "生成一个 SVG 图，width=240、height=120、viewBox=\"0 0 240 120\"。元素 ID 必须唯一，元素类型及属性如下（数字为 SVG 用户坐标）：[{\"id\":\"node/a~0\",\"tag\":\"rect\",\"attrs\":{\"x\":40,\"y\":20,\"width\":60,\"height\":40}},{\"id\":\"node-b\",\"tag\":\"rect\",\"attrs\":{\"x\":150,\"y\":20,\"width\":60,\"height\":40}},{\"id\":\"edge\",\"tag\":\"line\",\"attrs\":{\"x1\":100,\"y1\":40,\"x2\":150,\"y2\":40}},{\"id\":\"label\",\"tag\":\"text\",\"attrs\":{\"x\":40,\"y\":90},\"text\":\"ON / off ~ 甲\"}]。第一个 rect 填充 rgb(255,128,0)，第二个 rect 填充 #00aa00；line 为黑色，stroke-width=4。必须实际可见，不得用透明度、遮盖或变换改变指定位置/颜色；允许等价颜色写法。text 的文字原样显示（正确处理 XML 转义）。禁止脚本、样式表、动画、foreignObject、外部资源、DTD。\n只输出完整 SVG 原文，不要围栏或解释。对象键序不限。响应最多 131072 个字符。",
+    "requirements": {
+      "format": "svg",
+      "dialect": "2020-12",
+      "schema": true,
+      "formatAssertions": true,
+      "family": "H",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": {
+            "width": 240,
+            "height": 120,
+            "viewBox": [
+              0,
+              0,
+              240,
+              120
+            ],
+            "nodes": {
+              "node/a~0": {
+                "tag": "rect",
+                "attrs": {
+                  "x": 40,
+                  "y": 20,
+                  "width": 60,
+                  "height": 40
+                }
+              },
+              "node-b": {
+                "tag": "rect",
+                "attrs": {
+                  "x": 150,
+                  "y": 20,
+                  "width": 60,
+                  "height": 40
+                }
+              },
+              "edge": {
+                "tag": "line",
+                "attrs": {
+                  "x1": 100,
+                  "y1": 40,
+                  "x2": 150,
+                  "y2": 40
+                }
+              },
+              "label": {
+                "tag": "text",
+                "attrs": {
+                  "x": 40,
+                  "y": 90
+                },
+                "text": "ON / off ~ 甲"
+              }
+            }
+          },
+          "description": "Preserve the publicly specified data and transformation"
+        }
+      ],
+      "svg": {
+        "width": 240,
+        "height": 120,
+        "elements": [
+          {
+            "id": "node/a~0",
+            "tag": "rect",
+            "attrs": {
+              "x": 40,
+              "y": 20,
+              "width": 60,
+              "height": 40
+            }
+          },
+          {
+            "id": "node-b",
+            "tag": "rect",
+            "attrs": {
+              "x": 150,
+              "y": 20,
+              "width": 60,
+              "height": 40
+            }
+          },
+          {
+            "id": "edge",
+            "tag": "line",
+            "attrs": {
+              "x1": 100,
+              "y1": 40,
+              "x2": 150,
+              "y2": 40
+            }
+          },
+          {
+            "id": "label",
+            "tag": "text",
+            "attrs": {
+              "x": 40,
+              "y": 90
+            },
+            "text": "ON / off ~ 甲"
+          }
+        ],
+        "samples": [
+          {
+            "x": 55,
+            "y": 35,
+            "rgba": [
+              255,
+              128,
+              0,
+              255
+            ]
+          },
+          {
+            "x": 165,
+            "y": 35,
+            "rgba": [
+              0,
+              170,
+              0,
+              255
+            ]
+          },
+          {
+            "x": 125,
+            "y": 40,
+            "rgba": [
+              0,
+              0,
+              0,
+              255
+            ]
+          }
+        ]
+      },
+      "developmentShadow": true,
+      "provenance": {
+        "sourceGroup": "authored:status-panel",
+        "source": null,
+        "pairId": null,
+        "split": "holdout",
+        "seed": "SOC2-H-H-1",
+        "method": "Locally authored composition/conversion task; not an official benchmark instance"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "frozen-derived-fixture-v2",
+    "tags": [
+      "structured-contract-v2",
+      "family:H",
+      "split:holdout"
+    ],
+    "scenarioHash": "52295e563fe43047"
+  },
+  {
+    "id": "SOC2-H-H-2",
+    "dimension": "structured_output",
+    "category": "contract_H",
+    "difficulty": "medium",
+    "language": "svg",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_dev",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v2",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "promptTemplate": "生成一个 SVG 图，width=240、height=120、viewBox=\"0 0 240 120\"。元素 ID 必须唯一，元素类型及属性如下（数字为 SVG 用户坐标）：[{\"id\":\"node/a~0\",\"tag\":\"rect\",\"attrs\":{\"x\":40,\"y\":20,\"width\":60,\"height\":40}},{\"id\":\"node-b\",\"tag\":\"rect\",\"attrs\":{\"x\":150,\"y\":20,\"width\":60,\"height\":40}},{\"id\":\"edge\",\"tag\":\"line\",\"attrs\":{\"x1\":100,\"y1\":40,\"x2\":150,\"y2\":40}},{\"id\":\"label\",\"tag\":\"text\",\"attrs\":{\"x\":40,\"y\":90},\"text\":\"ON / off ~ 甲\"}]。第一个 rect 填充 rgb(0,128,255)，第二个 rect 填充 #00aa00；line 为黑色，stroke-width=4。必须实际可见，不得用透明度、遮盖或变换改变指定位置/颜色；允许等价颜色写法。text 的文字原样显示（正确处理 XML 转义）。禁止脚本、样式表、动画、foreignObject、外部资源、DTD。\n只输出完整 SVG 原文，不要围栏或解释。对象键序不限。响应最多 131072 个字符。",
+    "requirements": {
+      "format": "svg",
+      "dialect": "2020-12",
+      "schema": true,
+      "formatAssertions": true,
+      "family": "H",
+      "output_policy": "raw_only",
+      "assertions": [
+        {
+          "pointer": "",
+          "expected": {
+            "width": 240,
+            "height": 120,
+            "viewBox": [
+              0,
+              0,
+              240,
+              120
+            ],
+            "nodes": {
+              "node/a~0": {
+                "tag": "rect",
+                "attrs": {
+                  "x": 40,
+                  "y": 20,
+                  "width": 60,
+                  "height": 40
+                }
+              },
+              "node-b": {
+                "tag": "rect",
+                "attrs": {
+                  "x": 150,
+                  "y": 20,
+                  "width": 60,
+                  "height": 40
+                }
+              },
+              "edge": {
+                "tag": "line",
+                "attrs": {
+                  "x1": 100,
+                  "y1": 40,
+                  "x2": 150,
+                  "y2": 40
+                }
+              },
+              "label": {
+                "tag": "text",
+                "attrs": {
+                  "x": 40,
+                  "y": 90
+                },
+                "text": "ON / off ~ 甲"
+              }
+            }
+          },
+          "description": "Preserve the publicly specified data and transformation"
+        }
+      ],
+      "svg": {
+        "width": 240,
+        "height": 120,
+        "elements": [
+          {
+            "id": "node/a~0",
+            "tag": "rect",
+            "attrs": {
+              "x": 40,
+              "y": 20,
+              "width": 60,
+              "height": 40
+            }
+          },
+          {
+            "id": "node-b",
+            "tag": "rect",
+            "attrs": {
+              "x": 150,
+              "y": 20,
+              "width": 60,
+              "height": 40
+            }
+          },
+          {
+            "id": "edge",
+            "tag": "line",
+            "attrs": {
+              "x1": 100,
+              "y1": 40,
+              "x2": 150,
+              "y2": 40
+            }
+          },
+          {
+            "id": "label",
+            "tag": "text",
+            "attrs": {
+              "x": 40,
+              "y": 90
+            },
+            "text": "ON / off ~ 甲"
+          }
+        ],
+        "samples": [
+          {
+            "x": 55,
+            "y": 35,
+            "rgba": [
+              0,
+              128,
+              255,
+              255
+            ]
+          },
+          {
+            "x": 165,
+            "y": 35,
+            "rgba": [
+              0,
+              170,
+              0,
+              255
+            ]
+          },
+          {
+            "x": 125,
+            "y": 40,
+            "rgba": [
+              0,
+              0,
+              0,
+              255
+            ]
+          }
+        ]
+      },
+      "developmentShadow": true,
+      "provenance": {
+        "sourceGroup": "authored:status-panel",
+        "source": null,
+        "pairId": null,
+        "split": "holdout",
+        "seed": "SOC2-H-H-2",
+        "method": "Locally authored composition/conversion task; not an official benchmark instance"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "unreviewed",
+    "goldSource": "frozen-derived-fixture-v2",
+    "tags": [
+      "structured-contract-v2",
+      "family:H",
+      "split:holdout"
+    ],
+    "scenarioHash": "5591e7a3e261b08b"
+  }
+]

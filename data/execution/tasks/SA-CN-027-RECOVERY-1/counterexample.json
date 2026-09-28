@@ -1,0 +1,10 @@
+[
+  {
+    "tool": "list_cron_jobs",
+    "args": {}
+  },
+  {
+    "tool": "create_cron_job",
+    "args": {}
+  }
+]

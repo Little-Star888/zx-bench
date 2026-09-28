@@ -1,0 +1,16 @@
+[
+  {
+    "tool": "fs.read",
+    "args": {
+      "path": "notes/workflow.md"
+    }
+  },
+  {
+    "tool": "skill_manage",
+    "args": {
+      "action": "create",
+      "name": "release-review",
+      "content": "# release-review\nNo frontmatter"
+    }
+  }
+]

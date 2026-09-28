@@ -1,0 +1,116 @@
+{
+  "id": "HA-CN-006-RECOVERY-0",
+  "dimension": "agent_workflow",
+  "category": "memory_recall",
+  "difficulty": "medium",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "用户询问自己喜欢的编程语言及学习资源。先读取记忆里的语言偏好，再以该偏好搜索资源并给出具体推荐，不要凭空猜。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "agent_trace",
+  "graderVersion": "agent_trace_v5",
+  "scoring": {
+    "type": "agent_trace"
+  },
+  "requirements": {
+    "migrationSourceId": "HA-CN-006",
+    "developmentShadow": true,
+    "executionWorld": {
+      "maxTurns": 8,
+      "scoreMode": "strict",
+      "initialState": {
+        "memory": {
+          "favorite.language": "Python"
+        },
+        "catalog": {
+          "Python": "Python 官方教程"
+        },
+        "reads": 0,
+        "searches": [],
+        "other": "keep"
+      },
+      "tools": [
+        {
+          "name": "memory.read",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "key": "string"
+          },
+          "script": "if args['key']!='favorite.language': raise ValueError('UNKNOWN_KEY')\nstate['reads']+=1; result={'value':state['memory'][args['key']]}",
+          "description": "读取用户语言偏好。"
+        },
+        {
+          "name": "search",
+          "kind": "script",
+          "path": "business",
+          "requiredArgs": {
+            "query": "string"
+          },
+          "script": "state['searches'].append(args['query'])\nif args['query']!=state['memory']['favorite.language']: raise ValueError('WRONG_SEARCH_TOPIC')\nresult={'resource':state['catalog'][args['query']]}",
+          "description": "从本地资源目录搜索学习资料。",
+          "requirePriorCall": {
+            "tool": "memory.read"
+          }
+        }
+      ],
+      "requiredCalls": [
+        {
+          "tool": "memory.read",
+          "args": {
+            "key": "favorite.language"
+          }
+        },
+        {
+          "tool": "search",
+          "args": {
+            "query": "Python"
+          }
+        }
+      ],
+      "expectedState": [
+        {
+          "path": "reads",
+          "equals": 1
+        },
+        {
+          "path": "searches",
+          "equals": [
+            "Python"
+          ]
+        }
+      ],
+      "unchangedState": [
+        "memory",
+        "catalog",
+        "other"
+      ],
+      "finalMessageMustContain": [
+        "Python",
+        "Python 官方教程"
+      ],
+      "image": "python:3.12-alpine",
+      "expectedImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31"
+    }
+  },
+  "tags": [
+    "agent",
+    "memory",
+    "personalization"
+  ],
+  "scenarioVersion": "3.0.0",
+  "scenarioHash": "199afd0b1084a7ca",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

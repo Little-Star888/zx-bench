@@ -1,0 +1,20 @@
+[
+  {
+    "tool": "query_duplicates",
+    "args": {
+      "table": "records"
+    }
+  },
+  {
+    "tool": "backup_table",
+    "args": {
+      "table": "records"
+    }
+  },
+  {
+    "tool": "delete_all_records",
+    "args": {
+      "table": "records"
+    }
+  }
+]

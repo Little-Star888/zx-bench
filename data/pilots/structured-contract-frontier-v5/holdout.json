@@ -1,0 +1,622 @@
+[
+  {
+    "id": "SOC4-T2S-040-BASE",
+    "dimension": "structured_output",
+    "category": "frontier_paired_graph_reasoning",
+    "difficulty": "unverified",
+    "language": "json",
+    "locale": "en-US",
+    "status": "valid",
+    "tier": "private_validation",
+    "promptTemplate": "Read the paper excerpt and diagram transcription, then answer the multiple-choice question using only the supplied material. The diagram links are directed. Select every correct option; list letters in alphabetical order.\n\nPaper: Vortex RISC-V GPGPU System: Extending the ISA, Synthesizing the Microarchitecture, and Modeling the Software Stack\n\nSource:\n# 4 MICROARCHITECTURE IMPLEMENTATION\n\nThe aim of Vortex GPGPU is to make a lightweight GPGPU that is highly customizable to target specific applications. Vortex GPGPU is a 32-bit 5-stage pipeline that supports RISC-V's integer and multiplication extensions (RV32IM) on top of the instructions mentioned in Section 3. Compared to a basic RISC-V pipeline, Vortex has 1) a hardware warp scheduler that contains the PC and thread mask registers and an IPDOM stack for each hardware warp 2) a warp context for each hardware warp that contains a set of register files for each thread in a warp, and 3) a shared memory module, as shown in shown in Figure 1. In addition, the execute stage has multiple execution units to parallelize execution of hardware threads in a warp; However, the number of execution units does not have to be equal to the number of hardware threads or lanes available. Thus, the latency of the execute stage will depend on the number of execution units in the configuration. Vortex supports a fully customizable warp and threads per warp configuration, L1 cache, and a banked shared memory module. An instruction being executed by a warp is only fetched and decoded once, but executes on the operands and destination registers for each hardware thread in a warp.\n\n#### 4.1 Warps\n\nThe warp scheduler in Vortex is implemented as a fine-graine scheduler which is a lightweight scheduler that and hides the latency for branches and jumps. It stores a state that keeps track of which hardware warps are active and it supports the *wspawn* and *ebreak* instructions described in Section 3. In addition, the execution is optimized so that only the currently active warps are scheduled. The rest of the warp state is stored in the warp context in the decode stage. The warp context contains the general purpose register files for each thread and is responsible for supporting the *clone* and *wspawn* instructions.\n\n# 4.2 Control Divergence\n\nOne of the biggest challenges in SIMT processors is control divergence which leaves the pipeline highly underutilized because of its dynamic nature . However, to maintain a simplistic approach, a hardware IPDOM stack is used to handle control divergence. The IPDOM stack works by maintaining a private thread mask register for each warp that stores a mask of the current running threads. When a *split* instruction is reached, the current state of the thread mask and the inverse of the new thread mask, along with PC+4, are pushed onto the IPDOM stack. The next instruction continues with the new thread mask. When *join* instruction is reached,\n\nthe stack is popped and the pipeline either jumps to the PC popped from the stack, or falls through to the current PC+4.\n\n# 4.3 Memory\n\nSimilar to Volta architecture, Vortex supports both an L1 data cache and shared memory module . The L1 cache implementation is parameterizable by cache size, block size, and number of ways. To maintain a lightweight design, only one memory access request could be sent to the cache in one cycle; This indicates that a 32 threads per warp would take 32 cycles in the memory stage to complete a memory access to the cache in case of a cache hit.\n\nOn the other end of the spectrum, the shared memory module is extremely parallelizable. Each hardware thread has a one-cycle access to a dierent bank. Vortex matrix library is optimized to reduce bank conicts. The shared memory module is mapped to addresses 0xFF000000 to (0xFF000000 + shared memory size). This address space is interleaved for each bank by word; The word at 0xFF000000 is stored in bank 0, 0xFF000004 is stored at bank 1, ... for a number of banks equal to the number of hardware threads in the conguration.\n\n\nDiagram transcription (nodes and directed links):\n{\"nodes\":[{\"id\":\"n1\",\"label\":\"Warp Scheduler\"},{\"id\":\"n2\",\"label\":\"Fetch\"},{\"id\":\"n3\",\"label\":\"Decode\"},{\"id\":\"n4\",\"label\":\"Execute\"},{\"id\":\"n5\",\"label\":\"Memory\"},{\"id\":\"n6\",\"label\":\"Writeback\"},{\"id\":\"n7\",\"label\":\"I-Cache\"},{\"id\":\"n8\",\"label\":\"D-Cache\"},{\"id\":\"n9\",\"label\":\"Shared Memory\"},{\"id\":\"n10\",\"label\":\"RF\"}],\"links\":[{\"source\":\"n1\",\"target\":\"n2\",\"label\":\"\"},{\"source\":\"n2\",\"target\":\"n1\",\"label\":\"\"},{\"source\":\"n2\",\"target\":\"n3\",\"label\":\"\"},{\"source\":\"n3\",\"target\":\"n4\",\"label\":\"\"},{\"source\":\"n4\",\"target\":\"n5\",\"label\":\"\"},{\"source\":\"n5\",\"target\":\"n6\",\"label\":\"\"},{\"source\":\"n7\",\"target\":\"n2\",\"label\":\"\"},{\"source\":\"n2\",\"target\":\"n7\",\"label\":\"\"},{\"source\":\"n5\",\"target\":\"n8\",\"label\":\"\"},{\"source\":\"n8\",\"target\":\"n5\",\"label\":\"\"},{\"source\":\"n8\",\"target\":\"n9\",\"label\":\"\"},{\"source\":\"n9\",\"target\":\"n8\",\"label\":\"\"},{\"source\":\"n5\",\"target\":\"n9\",\"label\":\"\"},{\"source\":\"n9\",\"target\":\"n5\",\"label\":\"\"},{\"source\":\"n3\",\"target\":\"n10\",\"label\":\"\"},{\"source\":\"n10\",\"target\":\"n3\",\"label\":\"\"}]}\n\nQuestion:\nIn the Vortex GPGPU's 5-stage pipeline, if a persistent hardware fault in the `Fetch` stage prevents any new instructions from being passed forward, which stage would be the *second* to be impacted by the lack of incoming work?\n\nOptions:\nA. Warp Scheduler\nB. Decode stage\nC. Execute stage\nD. Memory stage\n\nReturn one JSON object with only selected_options, for example {\"selected_options\":\"A,C\"}. Return no explanation.\n\nJSON Schema:\n{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"object\",\"properties\":{\"selected_options\":{\"type\":\"string\",\"pattern\":\"^[A-D](,[A-D])*$\"}},\"required\":[\"selected_options\"],\"additionalProperties\":false}",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v4",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "json",
+      "dialect": "2020-12",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "selected_options": {
+            "type": "string",
+            "pattern": "^[A-D](,[A-D])*$"
+          }
+        },
+        "required": [
+          "selected_options"
+        ],
+        "additionalProperties": false
+      },
+      "formatAssertions": true,
+      "family": "t2s_fault_localization",
+      "challengeFamily": "T2S_FAULT_LOCALIZATION",
+      "pairId": "T2S-040",
+      "pairVariant": "base",
+      "sourceGroup": "Vortex RISC-V GPGPU System: Extending the ISA, Synthesizing the Microarchitecture, and Modeling the Software Stack",
+      "output_policy": "raw_only",
+      "oracleSet": "frontier-v5",
+      "oracleRef": "SOC4-T2S-040-BASE",
+      "oracleHash": "4aca3a60728e8f071fb4bc4da0f63c5757a5f6cb7d5e1c2b6c6fe6cee73b1034",
+      "provenance": {
+        "sourcePack": "T2S-Bench-MR",
+        "pid": "41",
+        "paperTitle": "Vortex RISC-V GPGPU System: Extending the ISA, Synthesizing the Microarchitecture, and Modeling the Software Stack",
+        "originalLicense": "Apache-2.0",
+        "adaptation": "Diagram reference frame rendered as directed graph text; paired JSON outputs"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "source_adapted_unverified",
+    "goldSource": "T2S-Bench-MR official answer",
+    "goldVerifiedAt": null,
+    "tags": [
+      "structured-contract-frontier-v5",
+      "paired-development",
+      "official-source-adapted"
+    ],
+    "scenarioHash": "25e020ee91b03522"
+  },
+  {
+    "id": "SOC4-T2S-040-STRUCTURED",
+    "dimension": "structured_output",
+    "category": "frontier_paired_graph_reasoning",
+    "difficulty": "unverified",
+    "language": "json",
+    "locale": "en-US",
+    "status": "valid",
+    "tier": "private_validation",
+    "promptTemplate": "Read the paper excerpt and diagram transcription, then answer the multiple-choice question using only the supplied material. The diagram links are directed. Select every correct option; list letters in alphabetical order.\n\nPaper: Vortex RISC-V GPGPU System: Extending the ISA, Synthesizing the Microarchitecture, and Modeling the Software Stack\n\nSource:\n# 4 MICROARCHITECTURE IMPLEMENTATION\n\nThe aim of Vortex GPGPU is to make a lightweight GPGPU that is highly customizable to target specific applications. Vortex GPGPU is a 32-bit 5-stage pipeline that supports RISC-V's integer and multiplication extensions (RV32IM) on top of the instructions mentioned in Section 3. Compared to a basic RISC-V pipeline, Vortex has 1) a hardware warp scheduler that contains the PC and thread mask registers and an IPDOM stack for each hardware warp 2) a warp context for each hardware warp that contains a set of register files for each thread in a warp, and 3) a shared memory module, as shown in shown in Figure 1. In addition, the execute stage has multiple execution units to parallelize execution of hardware threads in a warp; However, the number of execution units does not have to be equal to the number of hardware threads or lanes available. Thus, the latency of the execute stage will depend on the number of execution units in the configuration. Vortex supports a fully customizable warp and threads per warp configuration, L1 cache, and a banked shared memory module. An instruction being executed by a warp is only fetched and decoded once, but executes on the operands and destination registers for each hardware thread in a warp.\n\n#### 4.1 Warps\n\nThe warp scheduler in Vortex is implemented as a fine-graine scheduler which is a lightweight scheduler that and hides the latency for branches and jumps. It stores a state that keeps track of which hardware warps are active and it supports the *wspawn* and *ebreak* instructions described in Section 3. In addition, the execution is optimized so that only the currently active warps are scheduled. The rest of the warp state is stored in the warp context in the decode stage. The warp context contains the general purpose register files for each thread and is responsible for supporting the *clone* and *wspawn* instructions.\n\n# 4.2 Control Divergence\n\nOne of the biggest challenges in SIMT processors is control divergence which leaves the pipeline highly underutilized because of its dynamic nature . However, to maintain a simplistic approach, a hardware IPDOM stack is used to handle control divergence. The IPDOM stack works by maintaining a private thread mask register for each warp that stores a mask of the current running threads. When a *split* instruction is reached, the current state of the thread mask and the inverse of the new thread mask, along with PC+4, are pushed onto the IPDOM stack. The next instruction continues with the new thread mask. When *join* instruction is reached,\n\nthe stack is popped and the pipeline either jumps to the PC popped from the stack, or falls through to the current PC+4.\n\n# 4.3 Memory\n\nSimilar to Volta architecture, Vortex supports both an L1 data cache and shared memory module . The L1 cache implementation is parameterizable by cache size, block size, and number of ways. To maintain a lightweight design, only one memory access request could be sent to the cache in one cycle; This indicates that a 32 threads per warp would take 32 cycles in the memory stage to complete a memory access to the cache in case of a cache hit.\n\nOn the other end of the spectrum, the shared memory module is extremely parallelizable. Each hardware thread has a one-cycle access to a dierent bank. Vortex matrix library is optimized to reduce bank conicts. The shared memory module is mapped to addresses 0xFF000000 to (0xFF000000 + shared memory size). This address space is interleaved for each bank by word; The word at 0xFF000000 is stored in bank 0, 0xFF000004 is stored at bank 1, ... for a number of banks equal to the number of hardware threads in the conguration.\n\n\nDiagram transcription (nodes and directed links):\n{\"nodes\":[{\"id\":\"n1\",\"label\":\"Warp Scheduler\"},{\"id\":\"n2\",\"label\":\"Fetch\"},{\"id\":\"n3\",\"label\":\"Decode\"},{\"id\":\"n4\",\"label\":\"Execute\"},{\"id\":\"n5\",\"label\":\"Memory\"},{\"id\":\"n6\",\"label\":\"Writeback\"},{\"id\":\"n7\",\"label\":\"I-Cache\"},{\"id\":\"n8\",\"label\":\"D-Cache\"},{\"id\":\"n9\",\"label\":\"Shared Memory\"},{\"id\":\"n10\",\"label\":\"RF\"}],\"links\":[{\"source\":\"n1\",\"target\":\"n2\",\"label\":\"\"},{\"source\":\"n2\",\"target\":\"n1\",\"label\":\"\"},{\"source\":\"n2\",\"target\":\"n3\",\"label\":\"\"},{\"source\":\"n3\",\"target\":\"n4\",\"label\":\"\"},{\"source\":\"n4\",\"target\":\"n5\",\"label\":\"\"},{\"source\":\"n5\",\"target\":\"n6\",\"label\":\"\"},{\"source\":\"n7\",\"target\":\"n2\",\"label\":\"\"},{\"source\":\"n2\",\"target\":\"n7\",\"label\":\"\"},{\"source\":\"n5\",\"target\":\"n8\",\"label\":\"\"},{\"source\":\"n8\",\"target\":\"n5\",\"label\":\"\"},{\"source\":\"n8\",\"target\":\"n9\",\"label\":\"\"},{\"source\":\"n9\",\"target\":\"n8\",\"label\":\"\"},{\"source\":\"n5\",\"target\":\"n9\",\"label\":\"\"},{\"source\":\"n9\",\"target\":\"n5\",\"label\":\"\"},{\"source\":\"n3\",\"target\":\"n10\",\"label\":\"\"},{\"source\":\"n10\",\"target\":\"n3\",\"label\":\"\"}]}\n\nQuestion:\nIn the Vortex GPGPU's 5-stage pipeline, if a persistent hardware fault in the `Fetch` stage prevents any new instructions from being passed forward, which stage would be the *second* to be impacted by the lack of incoming work?\n\nOptions:\nA. Warp Scheduler\nB. Decode stage\nC. Execute stage\nD. Memory stage\n\nReturn one JSON object with option_decisions for A, B, C, D (each true or false), selected_options as sorted comma-separated letters, and selected_count. These fields must agree. Return no explanation.\n\nJSON Schema:\n{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"object\",\"properties\":{\"option_decisions\":{\"type\":\"object\",\"properties\":{\"A\":{\"type\":\"boolean\"},\"B\":{\"type\":\"boolean\"},\"C\":{\"type\":\"boolean\"},\"D\":{\"type\":\"boolean\"}},\"required\":[\"A\",\"B\",\"C\",\"D\"],\"additionalProperties\":false},\"selected_options\":{\"type\":\"string\",\"pattern\":\"^[A-D](,[A-D])*$\"},\"selected_count\":{\"type\":\"integer\",\"minimum\":1,\"maximum\":4}},\"required\":[\"option_decisions\",\"selected_options\",\"selected_count\"],\"additionalProperties\":false}",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v4",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "json",
+      "dialect": "2020-12",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "option_decisions": {
+            "type": "object",
+            "properties": {
+              "A": {
+                "type": "boolean"
+              },
+              "B": {
+                "type": "boolean"
+              },
+              "C": {
+                "type": "boolean"
+              },
+              "D": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "A",
+              "B",
+              "C",
+              "D"
+            ],
+            "additionalProperties": false
+          },
+          "selected_options": {
+            "type": "string",
+            "pattern": "^[A-D](,[A-D])*$"
+          },
+          "selected_count": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4
+          }
+        },
+        "required": [
+          "option_decisions",
+          "selected_options",
+          "selected_count"
+        ],
+        "additionalProperties": false
+      },
+      "formatAssertions": true,
+      "family": "t2s_fault_localization",
+      "challengeFamily": "T2S_FAULT_LOCALIZATION",
+      "pairId": "T2S-040",
+      "pairVariant": "structured",
+      "sourceGroup": "Vortex RISC-V GPGPU System: Extending the ISA, Synthesizing the Microarchitecture, and Modeling the Software Stack",
+      "output_policy": "raw_only",
+      "oracleSet": "frontier-v5",
+      "oracleRef": "SOC4-T2S-040-STRUCTURED",
+      "oracleHash": "5363dff4e484019d2cf4353bdbe6d174e72d794dba5ea37dfe09b683b2f4ad0b",
+      "provenance": {
+        "sourcePack": "T2S-Bench-MR",
+        "pid": "41",
+        "paperTitle": "Vortex RISC-V GPGPU System: Extending the ISA, Synthesizing the Microarchitecture, and Modeling the Software Stack",
+        "originalLicense": "Apache-2.0",
+        "adaptation": "Diagram reference frame rendered as directed graph text; paired JSON outputs"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "source_adapted_unverified",
+    "goldSource": "T2S-Bench-MR official answer",
+    "goldVerifiedAt": null,
+    "tags": [
+      "structured-contract-frontier-v5",
+      "paired-development",
+      "official-source-adapted"
+    ],
+    "scenarioHash": "09c0a6d53cf99496"
+  },
+  {
+    "id": "SOC4-T2S-042-BASE",
+    "dimension": "structured_output",
+    "category": "frontier_paired_graph_reasoning",
+    "difficulty": "unverified",
+    "language": "json",
+    "locale": "en-US",
+    "status": "valid",
+    "tier": "private_validation",
+    "promptTemplate": "Read the paper excerpt and diagram transcription, then answer the multiple-choice question using only the supplied material. The diagram links are directed. Select every correct option; list letters in alphabetical order.\n\nPaper: DATC RDF: An Open Design Flow from Logic Synthesis to Detailed Routing\n\nSource:\n#### 2 DATC ROBUST DESIGN FLOW\n\nDATC RDF improves the preliminary versions to deliver a complete research infrastructure of VLSI design flow . Our goal is to provide an open-source academic design flow that covers entire design stages, i.e., from logic synthesis to detailed routing, based on the public academic point tools from the previous EDA research contests , Figure illustrates the overview of DATC RDF. It includes academic point tools for logic synthesis, global placement, detailed placement, timing analysis, gate sizing, global routing, and detailed routing. These tools are interfaced via transition scripts that enable data exchange between tools of other domains.\n\nA design library for DATC RDF contains:\n\n- A circuit written in a structural Verilog netlist.\n- Standard cell library in Liberty format.\n- Physical information of standard cells along with technology information in LEF format, which defines physical dimensions of each cell.\n- Initial floorplan described in DEF format.\n- Design constraints in SDC (Synopsys Design Constraints) format, such as clock period, driver information of each input port, and load capacitance of each output.\n\nGiven a design library, DATC RDF starts with the logic synthesis and generates a logic-optimized gate-mapped Verilog netlist. Taking the netlist and LEF/DEF from the design library, global and detail placements are then performed. Wire parasitics are extracted so that the timing of the placement result can be analyzed. Gate sizing may optionally run to remove timing violations while minimizing leakage power. Legalization is called to remove illegal placement caused by the gate sizing. Finally, global routing and detailed routing is performed.\n\nCurrently, RDF database contains:\n\n- (1) Benchmarks: 2017 TAU Contest, and IWLS 2005 Benchmarks.\n- (2) Logic synthesis: ABC.\n- (3) Global placers: NTUPlace3, ComPLx, mPL5/6, Capo, FastPlace3- GP, Eh?Placer.\n- (4) Detailed placers: FastPlace3-DP, MCHL.\n- (5) Global routers: NCTUgr, FastRoute4.1, BFG-R.\n- (6) Detailed routers: NCTUdr.\n- (7) Gate sizers: USizer 2013 and USizer 2012.\n- (8) Timers: OpenTimer, iTimerC2.0.\n- (9) Cell libraries: ISPD 2012/2013 Contests, ASAP 7nm library.\n\nUsers can customize their own flow based on the above options.\n\n\nDiagram transcription (nodes and directed links):\n{\"nodes\":[{\"id\":\"n1\",\"label\":\"Design Library\"},{\"id\":\"n2\",\"label\":\"Logic synthesis\"},{\"id\":\"n3\",\"label\":\"Floorplanning\"},{\"id\":\"n4\",\"label\":\"Placement\"},{\"id\":\"n5\",\"label\":\"Detailed placement\"},{\"id\":\"n6\",\"label\":\"RC extraction\"},{\"id\":\"n7\",\"label\":\"Timing analysis\"},{\"id\":\"n8\",\"label\":\"Gate sizing\"},{\"id\":\"n9\",\"label\":\"Legalization\"},{\"id\":\"n10\",\"label\":\"Global routing\"},{\"id\":\"n11\",\"label\":\"Detailed routing\"},{\"id\":\"n12\",\"label\":\"Design result\"}],\"links\":[{\"source\":\"n2\",\"target\":\"n3\",\"label\":\"\"},{\"source\":\"n3\",\"target\":\"n4\",\"label\":\"\"},{\"source\":\"n4\",\"target\":\"n5\",\"label\":\"\"},{\"source\":\"n5\",\"target\":\"n6\",\"label\":\"\"},{\"source\":\"n6\",\"target\":\"n7\",\"label\":\"Verilog', DEF', SPEF\"},{\"source\":\"n7\",\"target\":\"n8\",\"label\":\"\"},{\"source\":\"n8\",\"target\":\"n9\",\"label\":\"\"},{\"source\":\"n9\",\"target\":\"n10\",\"label\":\"\"},{\"source\":\"n10\",\"target\":\"n11\",\"label\":\"\"},{\"source\":\"n11\",\"target\":\"n12\",\"label\":\"Verilog, DEF\"},{\"source\":\"n1\",\"target\":\"n2\",\"label\":\"Verilog\"},{\"source\":\"n1\",\"target\":\"n2\",\"label\":\"Liberty\"},{\"source\":\"n1\",\"target\":\"n3\",\"label\":\"LEF/DEF\"},{\"source\":\"n1\",\"target\":\"n7\",\"label\":\"Liberty\"},{\"source\":\"n1\",\"target\":\"n7\",\"label\":\"SDC\"},{\"source\":\"n1\",\"target\":\"n10\",\"label\":\"LEF\"}]}\n\nQuestion:\nDuring the flow, Timing analysis starts producing inconsistent results. Which of the following stages could be the original source of the problem because they lie on a dependency path leading into Timing analysis? (Select all that apply.)\n\nOptions:\nA. RC extraction\nB. Detailed placement\nC. Gate sizing\nD. Placement\n\nReturn one JSON object with only selected_options, for example {\"selected_options\":\"A,C\"}. Return no explanation.\n\nJSON Schema:\n{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"object\",\"properties\":{\"selected_options\":{\"type\":\"string\",\"pattern\":\"^[A-D](,[A-D])*$\"}},\"required\":[\"selected_options\"],\"additionalProperties\":false}",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v4",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "json",
+      "dialect": "2020-12",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "selected_options": {
+            "type": "string",
+            "pattern": "^[A-D](,[A-D])*$"
+          }
+        },
+        "required": [
+          "selected_options"
+        ],
+        "additionalProperties": false
+      },
+      "formatAssertions": true,
+      "family": "t2s_fault_localization",
+      "challengeFamily": "T2S_FAULT_LOCALIZATION",
+      "pairId": "T2S-042",
+      "pairVariant": "base",
+      "sourceGroup": "DATC RDF: An Open Design Flow from Logic Synthesis to Detailed Routing",
+      "output_policy": "raw_only",
+      "oracleSet": "frontier-v5",
+      "oracleRef": "SOC4-T2S-042-BASE",
+      "oracleHash": "e2e2bb771be9e530b483fa237f30a4e4b2abe6f121caf6e6ff1a28755bf12f60",
+      "provenance": {
+        "sourcePack": "T2S-Bench-MR",
+        "pid": "43",
+        "paperTitle": "DATC RDF: An Open Design Flow from Logic Synthesis to Detailed Routing",
+        "originalLicense": "Apache-2.0",
+        "adaptation": "Diagram reference frame rendered as directed graph text; paired JSON outputs"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "source_adapted_unverified",
+    "goldSource": "T2S-Bench-MR official answer",
+    "goldVerifiedAt": null,
+    "tags": [
+      "structured-contract-frontier-v5",
+      "paired-development",
+      "official-source-adapted"
+    ],
+    "scenarioHash": "98bec899888a9758"
+  },
+  {
+    "id": "SOC4-T2S-042-STRUCTURED",
+    "dimension": "structured_output",
+    "category": "frontier_paired_graph_reasoning",
+    "difficulty": "unverified",
+    "language": "json",
+    "locale": "en-US",
+    "status": "valid",
+    "tier": "private_validation",
+    "promptTemplate": "Read the paper excerpt and diagram transcription, then answer the multiple-choice question using only the supplied material. The diagram links are directed. Select every correct option; list letters in alphabetical order.\n\nPaper: DATC RDF: An Open Design Flow from Logic Synthesis to Detailed Routing\n\nSource:\n#### 2 DATC ROBUST DESIGN FLOW\n\nDATC RDF improves the preliminary versions to deliver a complete research infrastructure of VLSI design flow . Our goal is to provide an open-source academic design flow that covers entire design stages, i.e., from logic synthesis to detailed routing, based on the public academic point tools from the previous EDA research contests , Figure illustrates the overview of DATC RDF. It includes academic point tools for logic synthesis, global placement, detailed placement, timing analysis, gate sizing, global routing, and detailed routing. These tools are interfaced via transition scripts that enable data exchange between tools of other domains.\n\nA design library for DATC RDF contains:\n\n- A circuit written in a structural Verilog netlist.\n- Standard cell library in Liberty format.\n- Physical information of standard cells along with technology information in LEF format, which defines physical dimensions of each cell.\n- Initial floorplan described in DEF format.\n- Design constraints in SDC (Synopsys Design Constraints) format, such as clock period, driver information of each input port, and load capacitance of each output.\n\nGiven a design library, DATC RDF starts with the logic synthesis and generates a logic-optimized gate-mapped Verilog netlist. Taking the netlist and LEF/DEF from the design library, global and detail placements are then performed. Wire parasitics are extracted so that the timing of the placement result can be analyzed. Gate sizing may optionally run to remove timing violations while minimizing leakage power. Legalization is called to remove illegal placement caused by the gate sizing. Finally, global routing and detailed routing is performed.\n\nCurrently, RDF database contains:\n\n- (1) Benchmarks: 2017 TAU Contest, and IWLS 2005 Benchmarks.\n- (2) Logic synthesis: ABC.\n- (3) Global placers: NTUPlace3, ComPLx, mPL5/6, Capo, FastPlace3- GP, Eh?Placer.\n- (4) Detailed placers: FastPlace3-DP, MCHL.\n- (5) Global routers: NCTUgr, FastRoute4.1, BFG-R.\n- (6) Detailed routers: NCTUdr.\n- (7) Gate sizers: USizer 2013 and USizer 2012.\n- (8) Timers: OpenTimer, iTimerC2.0.\n- (9) Cell libraries: ISPD 2012/2013 Contests, ASAP 7nm library.\n\nUsers can customize their own flow based on the above options.\n\n\nDiagram transcription (nodes and directed links):\n{\"nodes\":[{\"id\":\"n1\",\"label\":\"Design Library\"},{\"id\":\"n2\",\"label\":\"Logic synthesis\"},{\"id\":\"n3\",\"label\":\"Floorplanning\"},{\"id\":\"n4\",\"label\":\"Placement\"},{\"id\":\"n5\",\"label\":\"Detailed placement\"},{\"id\":\"n6\",\"label\":\"RC extraction\"},{\"id\":\"n7\",\"label\":\"Timing analysis\"},{\"id\":\"n8\",\"label\":\"Gate sizing\"},{\"id\":\"n9\",\"label\":\"Legalization\"},{\"id\":\"n10\",\"label\":\"Global routing\"},{\"id\":\"n11\",\"label\":\"Detailed routing\"},{\"id\":\"n12\",\"label\":\"Design result\"}],\"links\":[{\"source\":\"n2\",\"target\":\"n3\",\"label\":\"\"},{\"source\":\"n3\",\"target\":\"n4\",\"label\":\"\"},{\"source\":\"n4\",\"target\":\"n5\",\"label\":\"\"},{\"source\":\"n5\",\"target\":\"n6\",\"label\":\"\"},{\"source\":\"n6\",\"target\":\"n7\",\"label\":\"Verilog', DEF', SPEF\"},{\"source\":\"n7\",\"target\":\"n8\",\"label\":\"\"},{\"source\":\"n8\",\"target\":\"n9\",\"label\":\"\"},{\"source\":\"n9\",\"target\":\"n10\",\"label\":\"\"},{\"source\":\"n10\",\"target\":\"n11\",\"label\":\"\"},{\"source\":\"n11\",\"target\":\"n12\",\"label\":\"Verilog, DEF\"},{\"source\":\"n1\",\"target\":\"n2\",\"label\":\"Verilog\"},{\"source\":\"n1\",\"target\":\"n2\",\"label\":\"Liberty\"},{\"source\":\"n1\",\"target\":\"n3\",\"label\":\"LEF/DEF\"},{\"source\":\"n1\",\"target\":\"n7\",\"label\":\"Liberty\"},{\"source\":\"n1\",\"target\":\"n7\",\"label\":\"SDC\"},{\"source\":\"n1\",\"target\":\"n10\",\"label\":\"LEF\"}]}\n\nQuestion:\nDuring the flow, Timing analysis starts producing inconsistent results. Which of the following stages could be the original source of the problem because they lie on a dependency path leading into Timing analysis? (Select all that apply.)\n\nOptions:\nA. RC extraction\nB. Detailed placement\nC. Gate sizing\nD. Placement\n\nReturn one JSON object with option_decisions for A, B, C, D (each true or false), selected_options as sorted comma-separated letters, and selected_count. These fields must agree. Return no explanation.\n\nJSON Schema:\n{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"object\",\"properties\":{\"option_decisions\":{\"type\":\"object\",\"properties\":{\"A\":{\"type\":\"boolean\"},\"B\":{\"type\":\"boolean\"},\"C\":{\"type\":\"boolean\"},\"D\":{\"type\":\"boolean\"}},\"required\":[\"A\",\"B\",\"C\",\"D\"],\"additionalProperties\":false},\"selected_options\":{\"type\":\"string\",\"pattern\":\"^[A-D](,[A-D])*$\"},\"selected_count\":{\"type\":\"integer\",\"minimum\":1,\"maximum\":4}},\"required\":[\"option_decisions\",\"selected_options\",\"selected_count\"],\"additionalProperties\":false}",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v4",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "json",
+      "dialect": "2020-12",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "option_decisions": {
+            "type": "object",
+            "properties": {
+              "A": {
+                "type": "boolean"
+              },
+              "B": {
+                "type": "boolean"
+              },
+              "C": {
+                "type": "boolean"
+              },
+              "D": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "A",
+              "B",
+              "C",
+              "D"
+            ],
+            "additionalProperties": false
+          },
+          "selected_options": {
+            "type": "string",
+            "pattern": "^[A-D](,[A-D])*$"
+          },
+          "selected_count": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4
+          }
+        },
+        "required": [
+          "option_decisions",
+          "selected_options",
+          "selected_count"
+        ],
+        "additionalProperties": false
+      },
+      "formatAssertions": true,
+      "family": "t2s_fault_localization",
+      "challengeFamily": "T2S_FAULT_LOCALIZATION",
+      "pairId": "T2S-042",
+      "pairVariant": "structured",
+      "sourceGroup": "DATC RDF: An Open Design Flow from Logic Synthesis to Detailed Routing",
+      "output_policy": "raw_only",
+      "oracleSet": "frontier-v5",
+      "oracleRef": "SOC4-T2S-042-STRUCTURED",
+      "oracleHash": "6d9e3e9c96cefdb82f41ea3b9c5226e9eeee88788c0a456d482f6bfb967d4e4f",
+      "provenance": {
+        "sourcePack": "T2S-Bench-MR",
+        "pid": "43",
+        "paperTitle": "DATC RDF: An Open Design Flow from Logic Synthesis to Detailed Routing",
+        "originalLicense": "Apache-2.0",
+        "adaptation": "Diagram reference frame rendered as directed graph text; paired JSON outputs"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "source_adapted_unverified",
+    "goldSource": "T2S-Bench-MR official answer",
+    "goldVerifiedAt": null,
+    "tags": [
+      "structured-contract-frontier-v5",
+      "paired-development",
+      "official-source-adapted"
+    ],
+    "scenarioHash": "e8530df2aa0cd4f7"
+  },
+  {
+    "id": "SOC4-T2S-045-BASE",
+    "dimension": "structured_output",
+    "category": "frontier_paired_graph_reasoning",
+    "difficulty": "unverified",
+    "language": "json",
+    "locale": "en-US",
+    "status": "valid",
+    "tier": "private_validation",
+    "promptTemplate": "Read the paper excerpt and diagram transcription, then answer the multiple-choice question using only the supplied material. The diagram links are directed. Select every correct option; list letters in alphabetical order.\n\nPaper: Comprehensive RTL-to-GDSII Workflow for Custom Embedded FPGA Architectures Using Open-Source Tools\n\nSource:\n# **3. Analysis of Workflow**\n\nThe RTL-to-GDSII workflow is a fundamental process in FPGA development by transforming a high-level RTL description into a final GDSII file ready for manufacturing. This workflow involves several crucial steps, starting with the creation of the FPGA architecture using OpenFPGA.\n\nTo ensure a successful GDSII generation, an additional step is necessary during the FPGA architecture creation, which involves the creation of the FPGA pin planner. The pin planner plays a crucial role in defining the placement and routing of input and output pins within the FPGA, ensuring proper connectivity and functionality. It allows designers to strategically position the pins to optimize signal integrity and minimize potential timing and routing issues.\n\nAfter defining the architecture and pin planner, the FPGA undergoes a full simulation testbench that verifies behavior under multiple input scenarios, allowing early detection and correction of design errors.\n\nThe Verilog files are then exported to OpenLane, where minor edits improve compatibility: defaulting signals to wire and adding vcc/vss ports for a stable Power Delivery Network (PDN). Each main module proceeds through the RTL-to-GDSII flow, beginning with configuration files that set timing, power, and placement constraints to meet design goals. *Electronics* **2025**, *14*, 3866 7 of 26\n\nFollowing the placement stage, the core configuration file, containing various design parameters, includes configuring timing constraints, power targets, and other performance criteria. A final gate-level simulation validates timing and functionality, exposing issues with power, delay, or signal integrity before fabrication.\n\nIn summary, the RTL-to-GDSII workflow for FPGAs is a multi-step process that involves various tools and methodologies. Starting with the creation of the FPGA architecture using OpenFPGA and the pin planner, followed by the full simulation testbench and Verilog file modifications, then in OpenLane, each main module undergoes the RTL-to-GDSII workflow. Creating the placement configuration file and performing gate-level simulation are vital stages in ensuring a successful FPGA design that meets all required specifications and design constraints. Figure illustrates the comprehensive workflow followed to obtain a successful GDSII file for an FPGA design.\n\n**Figure 3.** Workflow for generating a successful GDSII file of an FPGA design with OpenFPGA and OpenLane.\n\n\nDiagram transcription (nodes and directed links):\n{\"nodes\":[{\"id\":\"n1\",\"label\":\"Custom FPGA architecture\"},{\"id\":\"n2\",\"label\":\"FPGA pin planner\"},{\"id\":\"n3\",\"label\":\"FPGA full testbench\"},{\"id\":\"n4\",\"label\":\"From OpenFPGA to OpenLANE\"},{\"id\":\"n5\",\"label\":\".v files\"},{\"id\":\"n6\",\"label\":\"none to wire default data type\"},{\"id\":\"n7\",\"label\":\"add vcc & vss inout ports\"},{\"id\":\"n8\",\"label\":\"Hardening each module\"},{\"id\":\"n9\",\"label\":\"OpenLANE macro workflow\"},{\"id\":\"n10\",\"label\":\"Placement configuration file\"},{\"id\":\"n11\",\"label\":\"\\\"json\\\" file configuration\"},{\"id\":\"n12\",\"label\":\"Top module OpenLANE workflow\"},{\"id\":\"n13\",\"label\":\"Verification\"},{\"id\":\"n14\",\"label\":\"Pass\"},{\"id\":\"n15\",\"label\":\"Final GDSII\"}],\"links\":[{\"source\":\"n1\",\"target\":\"n2\",\"label\":\"\"},{\"source\":\"n2\",\"target\":\"n3\",\"label\":\"\"},{\"source\":\"n3\",\"target\":\"n4\",\"label\":\"\"},{\"source\":\"n5\",\"target\":\"n4\",\"label\":\"\"},{\"source\":\"n6\",\"target\":\"n4\",\"label\":\"\"},{\"source\":\"n7\",\"target\":\"n4\",\"label\":\"\"},{\"source\":\"n4\",\"target\":\"n8\",\"label\":\"\"},{\"source\":\"n8\",\"target\":\"n9\",\"label\":\"\"},{\"source\":\"n8\",\"target\":\"n10\",\"label\":\"\"},{\"source\":\"n9\",\"target\":\"n10\",\"label\":\"Macro size\"},{\"source\":\"n10\",\"target\":\"n11\",\"label\":\"\"},{\"source\":\"n11\",\"target\":\"n12\",\"label\":\"\"},{\"source\":\"n12\",\"target\":\"n13\",\"label\":\"\"},{\"source\":\"n13\",\"target\":\"n14\",\"label\":\"\"},{\"source\":\"n14\",\"target\":\"n15\",\"label\":\"Yes\"},{\"source\":\"n14\",\"target\":\"n8\",\"label\":\"No\"},{\"source\":\"n10\",\"target\":\"n8\",\"label\":\"\"}]}\n\nQuestion:\nIf the connection from the exported Verilog files to the “defaulting signals to wire” adjustment is completely removed (while the “add vcc/vss ports” edit remains), which of the following stages are STILL reachable from the Verilog files through an alternative route?  Select ALL that apply.\n\nOptions:\nA. Placement configuration file\nB. Final GDSII file\nC. FPGA full testbench\nD. “Defaulting signals to wire” adjustment\n\nReturn one JSON object with only selected_options, for example {\"selected_options\":\"A,C\"}. Return no explanation.\n\nJSON Schema:\n{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"object\",\"properties\":{\"selected_options\":{\"type\":\"string\",\"pattern\":\"^[A-D](,[A-D])*$\"}},\"required\":[\"selected_options\"],\"additionalProperties\":false}",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v4",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "json",
+      "dialect": "2020-12",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "selected_options": {
+            "type": "string",
+            "pattern": "^[A-D](,[A-D])*$"
+          }
+        },
+        "required": [
+          "selected_options"
+        ],
+        "additionalProperties": false
+      },
+      "formatAssertions": true,
+      "family": "t2s_boundary_testing",
+      "challengeFamily": "T2S_BOUNDARY_TESTING",
+      "pairId": "T2S-045",
+      "pairVariant": "base",
+      "sourceGroup": "Comprehensive RTL-to-GDSII Workflow for Custom Embedded FPGA Architectures Using Open-Source Tools",
+      "output_policy": "raw_only",
+      "oracleSet": "frontier-v5",
+      "oracleRef": "SOC4-T2S-045-BASE",
+      "oracleHash": "7f7018cce392777dc4341191becec6e793e91ffed99bcc2e49b7ca3255697c1a",
+      "provenance": {
+        "sourcePack": "T2S-Bench-MR",
+        "pid": "46",
+        "paperTitle": "Comprehensive RTL-to-GDSII Workflow for Custom Embedded FPGA Architectures Using Open-Source Tools",
+        "originalLicense": "Apache-2.0",
+        "adaptation": "Diagram reference frame rendered as directed graph text; paired JSON outputs"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "source_adapted_unverified",
+    "goldSource": "T2S-Bench-MR official answer",
+    "goldVerifiedAt": null,
+    "tags": [
+      "structured-contract-frontier-v5",
+      "paired-development",
+      "official-source-adapted"
+    ],
+    "scenarioHash": "f70f98cc26b149b4"
+  },
+  {
+    "id": "SOC4-T2S-045-STRUCTURED",
+    "dimension": "structured_output",
+    "category": "frontier_paired_graph_reasoning",
+    "difficulty": "unverified",
+    "language": "json",
+    "locale": "en-US",
+    "status": "valid",
+    "tier": "private_validation",
+    "promptTemplate": "Read the paper excerpt and diagram transcription, then answer the multiple-choice question using only the supplied material. The diagram links are directed. Select every correct option; list letters in alphabetical order.\n\nPaper: Comprehensive RTL-to-GDSII Workflow for Custom Embedded FPGA Architectures Using Open-Source Tools\n\nSource:\n# **3. Analysis of Workflow**\n\nThe RTL-to-GDSII workflow is a fundamental process in FPGA development by transforming a high-level RTL description into a final GDSII file ready for manufacturing. This workflow involves several crucial steps, starting with the creation of the FPGA architecture using OpenFPGA.\n\nTo ensure a successful GDSII generation, an additional step is necessary during the FPGA architecture creation, which involves the creation of the FPGA pin planner. The pin planner plays a crucial role in defining the placement and routing of input and output pins within the FPGA, ensuring proper connectivity and functionality. It allows designers to strategically position the pins to optimize signal integrity and minimize potential timing and routing issues.\n\nAfter defining the architecture and pin planner, the FPGA undergoes a full simulation testbench that verifies behavior under multiple input scenarios, allowing early detection and correction of design errors.\n\nThe Verilog files are then exported to OpenLane, where minor edits improve compatibility: defaulting signals to wire and adding vcc/vss ports for a stable Power Delivery Network (PDN). Each main module proceeds through the RTL-to-GDSII flow, beginning with configuration files that set timing, power, and placement constraints to meet design goals. *Electronics* **2025**, *14*, 3866 7 of 26\n\nFollowing the placement stage, the core configuration file, containing various design parameters, includes configuring timing constraints, power targets, and other performance criteria. A final gate-level simulation validates timing and functionality, exposing issues with power, delay, or signal integrity before fabrication.\n\nIn summary, the RTL-to-GDSII workflow for FPGAs is a multi-step process that involves various tools and methodologies. Starting with the creation of the FPGA architecture using OpenFPGA and the pin planner, followed by the full simulation testbench and Verilog file modifications, then in OpenLane, each main module undergoes the RTL-to-GDSII workflow. Creating the placement configuration file and performing gate-level simulation are vital stages in ensuring a successful FPGA design that meets all required specifications and design constraints. Figure illustrates the comprehensive workflow followed to obtain a successful GDSII file for an FPGA design.\n\n**Figure 3.** Workflow for generating a successful GDSII file of an FPGA design with OpenFPGA and OpenLane.\n\n\nDiagram transcription (nodes and directed links):\n{\"nodes\":[{\"id\":\"n1\",\"label\":\"Custom FPGA architecture\"},{\"id\":\"n2\",\"label\":\"FPGA pin planner\"},{\"id\":\"n3\",\"label\":\"FPGA full testbench\"},{\"id\":\"n4\",\"label\":\"From OpenFPGA to OpenLANE\"},{\"id\":\"n5\",\"label\":\".v files\"},{\"id\":\"n6\",\"label\":\"none to wire default data type\"},{\"id\":\"n7\",\"label\":\"add vcc & vss inout ports\"},{\"id\":\"n8\",\"label\":\"Hardening each module\"},{\"id\":\"n9\",\"label\":\"OpenLANE macro workflow\"},{\"id\":\"n10\",\"label\":\"Placement configuration file\"},{\"id\":\"n11\",\"label\":\"\\\"json\\\" file configuration\"},{\"id\":\"n12\",\"label\":\"Top module OpenLANE workflow\"},{\"id\":\"n13\",\"label\":\"Verification\"},{\"id\":\"n14\",\"label\":\"Pass\"},{\"id\":\"n15\",\"label\":\"Final GDSII\"}],\"links\":[{\"source\":\"n1\",\"target\":\"n2\",\"label\":\"\"},{\"source\":\"n2\",\"target\":\"n3\",\"label\":\"\"},{\"source\":\"n3\",\"target\":\"n4\",\"label\":\"\"},{\"source\":\"n5\",\"target\":\"n4\",\"label\":\"\"},{\"source\":\"n6\",\"target\":\"n4\",\"label\":\"\"},{\"source\":\"n7\",\"target\":\"n4\",\"label\":\"\"},{\"source\":\"n4\",\"target\":\"n8\",\"label\":\"\"},{\"source\":\"n8\",\"target\":\"n9\",\"label\":\"\"},{\"source\":\"n8\",\"target\":\"n10\",\"label\":\"\"},{\"source\":\"n9\",\"target\":\"n10\",\"label\":\"Macro size\"},{\"source\":\"n10\",\"target\":\"n11\",\"label\":\"\"},{\"source\":\"n11\",\"target\":\"n12\",\"label\":\"\"},{\"source\":\"n12\",\"target\":\"n13\",\"label\":\"\"},{\"source\":\"n13\",\"target\":\"n14\",\"label\":\"\"},{\"source\":\"n14\",\"target\":\"n15\",\"label\":\"Yes\"},{\"source\":\"n14\",\"target\":\"n8\",\"label\":\"No\"},{\"source\":\"n10\",\"target\":\"n8\",\"label\":\"\"}]}\n\nQuestion:\nIf the connection from the exported Verilog files to the “defaulting signals to wire” adjustment is completely removed (while the “add vcc/vss ports” edit remains), which of the following stages are STILL reachable from the Verilog files through an alternative route?  Select ALL that apply.\n\nOptions:\nA. Placement configuration file\nB. Final GDSII file\nC. FPGA full testbench\nD. “Defaulting signals to wire” adjustment\n\nReturn one JSON object with option_decisions for A, B, C, D (each true or false), selected_options as sorted comma-separated letters, and selected_count. These fields must agree. Return no explanation.\n\nJSON Schema:\n{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"object\",\"properties\":{\"option_decisions\":{\"type\":\"object\",\"properties\":{\"A\":{\"type\":\"boolean\"},\"B\":{\"type\":\"boolean\"},\"C\":{\"type\":\"boolean\"},\"D\":{\"type\":\"boolean\"}},\"required\":[\"A\",\"B\",\"C\",\"D\"],\"additionalProperties\":false},\"selected_options\":{\"type\":\"string\",\"pattern\":\"^[A-D](,[A-D])*$\"},\"selected_count\":{\"type\":\"integer\",\"minimum\":1,\"maximum\":4}},\"required\":[\"option_decisions\",\"selected_options\",\"selected_count\"],\"additionalProperties\":false}",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v4",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "json",
+      "dialect": "2020-12",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "option_decisions": {
+            "type": "object",
+            "properties": {
+              "A": {
+                "type": "boolean"
+              },
+              "B": {
+                "type": "boolean"
+              },
+              "C": {
+                "type": "boolean"
+              },
+              "D": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "A",
+              "B",
+              "C",
+              "D"
+            ],
+            "additionalProperties": false
+          },
+          "selected_options": {
+            "type": "string",
+            "pattern": "^[A-D](,[A-D])*$"
+          },
+          "selected_count": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4
+          }
+        },
+        "required": [
+          "option_decisions",
+          "selected_options",
+          "selected_count"
+        ],
+        "additionalProperties": false
+      },
+      "formatAssertions": true,
+      "family": "t2s_boundary_testing",
+      "challengeFamily": "T2S_BOUNDARY_TESTING",
+      "pairId": "T2S-045",
+      "pairVariant": "structured",
+      "sourceGroup": "Comprehensive RTL-to-GDSII Workflow for Custom Embedded FPGA Architectures Using Open-Source Tools",
+      "output_policy": "raw_only",
+      "oracleSet": "frontier-v5",
+      "oracleRef": "SOC4-T2S-045-STRUCTURED",
+      "oracleHash": "3af7e3c8fc2692e11aa047f6b93d1587ac117907728ebc63d1bc062f5774baec",
+      "provenance": {
+        "sourcePack": "T2S-Bench-MR",
+        "pid": "46",
+        "paperTitle": "Comprehensive RTL-to-GDSII Workflow for Custom Embedded FPGA Architectures Using Open-Source Tools",
+        "originalLicense": "Apache-2.0",
+        "adaptation": "Diagram reference frame rendered as directed graph text; paired JSON outputs"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "source_adapted_unverified",
+    "goldSource": "T2S-Bench-MR official answer",
+    "goldVerifiedAt": null,
+    "tags": [
+      "structured-contract-frontier-v5",
+      "paired-development",
+      "official-source-adapted"
+    ],
+    "scenarioHash": "7bc858bb39ff3cac"
+  },
+  {
+    "id": "SOC4-T2S-063-BASE",
+    "dimension": "structured_output",
+    "category": "frontier_paired_graph_reasoning",
+    "difficulty": "unverified",
+    "language": "json",
+    "locale": "en-US",
+    "status": "valid",
+    "tier": "private_validation",
+    "promptTemplate": "Read the paper excerpt and diagram transcription, then answer the multiple-choice question using only the supplied material. The diagram links are directed. Select every correct option; list letters in alphabetical order.\n\nPaper: Post-Silicon Bug Diagnosis with Inconsistent Executions\n\nSource:\n## III. BPS OVERVIEW\n\nBPS diagnoses the time and location of functional, electrical and manufacturing bugs during post-silicon validation; in particular, those bugs that manifest through inconsistent test outcomes. In these situations, the same post-silicon test may pass for some of its executions and fail other times, due to asynchronous events or electrical and environmental variations on-chip.\n\nTo locate these difficult bugs, BPS leverages a two-part approach: logging compact observations of signal activity with an on-chip hardware component, followed by an off-chip software post-analysis. The compact size of observations produced by the hardware are essential for minimizing expensive off-chip data transfers. These signal observations are gathered and reduced to a compact encoding for a number of executions of the same test, some passing and some failing, but usually all slightly different. Finally, the collected data is analyzed by the BPS post-analysis software, leveraging a statistical approach that is insensitive to the natural variations over several executions, but it is capable of detecting the more dramatic differences in signal activity typically caused by bugs. The result is the localization of the bug through the reporting of an approximate clock cycle and the set of signals most closely related to the error.\n\n\nDiagram transcription (nodes and directed links):\n{\"nodes\":[{\"id\":\"n1\",\"label\":\"post-si test\"},{\"id\":\"n2\",\"label\":\"post-si platform\"},{\"id\":\"n3\",\"label\":\"hw sensors\"},{\"id\":\"n4\",\"label\":\"SW post-analysis\"},{\"id\":\"n5\",\"label\":\"bug location\"},{\"id\":\"n6\",\"label\":\"bug occurrence time\"}],\"links\":[{\"source\":\"n1\",\"target\":\"n2\",\"label\":\"\"},{\"source\":\"n3\",\"target\":\"n4\",\"label\":\"signatures\"},{\"source\":\"n4\",\"target\":\"n5\",\"label\":\"pass\"},{\"source\":\"n4\",\"target\":\"n6\",\"label\":\"fail\"}]}\n\nQuestion:\nIf the transfer of compact signal observations from the on-chip hardware component to the post-analysis software were completely disabled—while every other connection in the bug-diagnosis flow stays intact—which of the following elements would STILL be reachable by information originating from a post-silicon test execution?\n\nOptions:\nA. bug location\nB. post-analysis software\nC. on-chip hardware component\nD. approximate clock-cycle report (bug occurrence time)\n\nReturn one JSON object with only selected_options, for example {\"selected_options\":\"A,C\"}. Return no explanation.\n\nJSON Schema:\n{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"object\",\"properties\":{\"selected_options\":{\"type\":\"string\",\"pattern\":\"^[A-D](,[A-D])*$\"}},\"required\":[\"selected_options\"],\"additionalProperties\":false}",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v4",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "json",
+      "dialect": "2020-12",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "selected_options": {
+            "type": "string",
+            "pattern": "^[A-D](,[A-D])*$"
+          }
+        },
+        "required": [
+          "selected_options"
+        ],
+        "additionalProperties": false
+      },
+      "formatAssertions": true,
+      "family": "t2s_counterfactual_reasoning",
+      "challengeFamily": "T2S_COUNTERFACTUAL_REASONING",
+      "pairId": "T2S-063",
+      "pairVariant": "base",
+      "sourceGroup": "Post-Silicon Bug Diagnosis with Inconsistent Executions",
+      "output_policy": "raw_only",
+      "oracleSet": "frontier-v5",
+      "oracleRef": "SOC4-T2S-063-BASE",
+      "oracleHash": "df4a4b88d4d216b833d66da630f5ff2d8be342fa2bd67de22f7d03a5538b7146",
+      "provenance": {
+        "sourcePack": "T2S-Bench-MR",
+        "pid": "64",
+        "paperTitle": "Post-Silicon Bug Diagnosis with Inconsistent Executions",
+        "originalLicense": "Apache-2.0",
+        "adaptation": "Diagram reference frame rendered as directed graph text; paired JSON outputs"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "source_adapted_unverified",
+    "goldSource": "T2S-Bench-MR official answer",
+    "goldVerifiedAt": null,
+    "tags": [
+      "structured-contract-frontier-v5",
+      "paired-development",
+      "official-source-adapted"
+    ],
+    "scenarioHash": "20c499617bcfcca6"
+  },
+  {
+    "id": "SOC4-T2S-063-STRUCTURED",
+    "dimension": "structured_output",
+    "category": "frontier_paired_graph_reasoning",
+    "difficulty": "unverified",
+    "language": "json",
+    "locale": "en-US",
+    "status": "valid",
+    "tier": "private_validation",
+    "promptTemplate": "Read the paper excerpt and diagram transcription, then answer the multiple-choice question using only the supplied material. The diagram links are directed. Select every correct option; list letters in alphabetical order.\n\nPaper: Post-Silicon Bug Diagnosis with Inconsistent Executions\n\nSource:\n## III. BPS OVERVIEW\n\nBPS diagnoses the time and location of functional, electrical and manufacturing bugs during post-silicon validation; in particular, those bugs that manifest through inconsistent test outcomes. In these situations, the same post-silicon test may pass for some of its executions and fail other times, due to asynchronous events or electrical and environmental variations on-chip.\n\nTo locate these difficult bugs, BPS leverages a two-part approach: logging compact observations of signal activity with an on-chip hardware component, followed by an off-chip software post-analysis. The compact size of observations produced by the hardware are essential for minimizing expensive off-chip data transfers. These signal observations are gathered and reduced to a compact encoding for a number of executions of the same test, some passing and some failing, but usually all slightly different. Finally, the collected data is analyzed by the BPS post-analysis software, leveraging a statistical approach that is insensitive to the natural variations over several executions, but it is capable of detecting the more dramatic differences in signal activity typically caused by bugs. The result is the localization of the bug through the reporting of an approximate clock cycle and the set of signals most closely related to the error.\n\n\nDiagram transcription (nodes and directed links):\n{\"nodes\":[{\"id\":\"n1\",\"label\":\"post-si test\"},{\"id\":\"n2\",\"label\":\"post-si platform\"},{\"id\":\"n3\",\"label\":\"hw sensors\"},{\"id\":\"n4\",\"label\":\"SW post-analysis\"},{\"id\":\"n5\",\"label\":\"bug location\"},{\"id\":\"n6\",\"label\":\"bug occurrence time\"}],\"links\":[{\"source\":\"n1\",\"target\":\"n2\",\"label\":\"\"},{\"source\":\"n3\",\"target\":\"n4\",\"label\":\"signatures\"},{\"source\":\"n4\",\"target\":\"n5\",\"label\":\"pass\"},{\"source\":\"n4\",\"target\":\"n6\",\"label\":\"fail\"}]}\n\nQuestion:\nIf the transfer of compact signal observations from the on-chip hardware component to the post-analysis software were completely disabled—while every other connection in the bug-diagnosis flow stays intact—which of the following elements would STILL be reachable by information originating from a post-silicon test execution?\n\nOptions:\nA. bug location\nB. post-analysis software\nC. on-chip hardware component\nD. approximate clock-cycle report (bug occurrence time)\n\nReturn one JSON object with option_decisions for A, B, C, D (each true or false), selected_options as sorted comma-separated letters, and selected_count. These fields must agree. Return no explanation.\n\nJSON Schema:\n{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"object\",\"properties\":{\"option_decisions\":{\"type\":\"object\",\"properties\":{\"A\":{\"type\":\"boolean\"},\"B\":{\"type\":\"boolean\"},\"C\":{\"type\":\"boolean\"},\"D\":{\"type\":\"boolean\"}},\"required\":[\"A\",\"B\",\"C\",\"D\"],\"additionalProperties\":false},\"selected_options\":{\"type\":\"string\",\"pattern\":\"^[A-D](,[A-D])*$\"},\"selected_count\":{\"type\":\"integer\",\"minimum\":1,\"maximum\":4}},\"required\":[\"option_decisions\",\"selected_options\",\"selected_count\"],\"additionalProperties\":false}",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v4",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "json",
+      "dialect": "2020-12",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "option_decisions": {
+            "type": "object",
+            "properties": {
+              "A": {
+                "type": "boolean"
+              },
+              "B": {
+                "type": "boolean"
+              },
+              "C": {
+                "type": "boolean"
+              },
+              "D": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "A",
+              "B",
+              "C",
+              "D"
+            ],
+            "additionalProperties": false
+          },
+          "selected_options": {
+            "type": "string",
+            "pattern": "^[A-D](,[A-D])*$"
+          },
+          "selected_count": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4
+          }
+        },
+        "required": [
+          "option_decisions",
+          "selected_options",
+          "selected_count"
+        ],
+        "additionalProperties": false
+      },
+      "formatAssertions": true,
+      "family": "t2s_counterfactual_reasoning",
+      "challengeFamily": "T2S_COUNTERFACTUAL_REASONING",
+      "pairId": "T2S-063",
+      "pairVariant": "structured",
+      "sourceGroup": "Post-Silicon Bug Diagnosis with Inconsistent Executions",
+      "output_policy": "raw_only",
+      "oracleSet": "frontier-v5",
+      "oracleRef": "SOC4-T2S-063-STRUCTURED",
+      "oracleHash": "169eb1194a508380f5d50fd084a0c8a7ee8cb2de44af14219e6af78625f2819d",
+      "provenance": {
+        "sourcePack": "T2S-Bench-MR",
+        "pid": "64",
+        "paperTitle": "Post-Silicon Bug Diagnosis with Inconsistent Executions",
+        "originalLicense": "Apache-2.0",
+        "adaptation": "Diagram reference frame rendered as directed graph text; paired JSON outputs"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "source_adapted_unverified",
+    "goldSource": "T2S-Bench-MR official answer",
+    "goldVerifiedAt": null,
+    "tags": [
+      "structured-contract-frontier-v5",
+      "paired-development",
+      "official-source-adapted"
+    ],
+    "scenarioHash": "9a32476ca06d9018"
+  }
+]

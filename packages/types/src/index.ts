@@ -204,6 +204,8 @@ export interface ModelResponse {
    * 避免 types 包反向依赖 core。
    */
   agentLoop?: unknown;
+  executionWorld?: unknown;
+  shellLoop?: unknown;
 }
 
 export interface TokenUsage {
@@ -222,6 +224,12 @@ export type { CalibrationSplit, ReviewState, ReviewCriterion, CalibrationCandida
 export interface OutputMetadata {
   /** Versioned audit envelope persisted with existing JSON rows (no DB migration). */
   evaluationAudit?: EvaluationAudit;
+  /** Complete execution trace for new live agent runs; absent on legacy rows. */
+  agentLoopTrace?: unknown;
+  executionWorldTrace?: unknown;
+  shellExecutionTrace?: unknown;
+  cliExecutionTrace?: unknown;
+  executionTraceSha256?: string;
   reasoningTokens?: number;
   tokenUsageSource?: 'provider' | 'estimated';
   finishReason: FinishReason;
@@ -283,6 +291,32 @@ export interface CriterionResult {
   source: AxisEvidence;
 }
 
+export interface StructuredContractMetrics {
+  version: 1 | 4;
+  format?: string;
+  renderingValid?: boolean;
+  family: string;
+  validator: string;
+  dialect: string;
+  syntaxValid: boolean;
+  schemaValid: boolean;
+  contentValid: boolean | null;
+  complete: boolean;
+  partialScore: number;
+  grounded?: {
+    targetLeaves: number;
+    foundLeaves: number;
+    typeCorrect: number;
+    valueCorrect: number;
+    valueTargetLeaves: number;
+    extraLeaves: number;
+    evidenceCorrect: number;
+    evidenceTargetLeaves: number;
+    pathRecall: number;
+    valueAccuracy: number;
+  };
+}
+
 export interface EvaluationAudit {
   version: 1;
   scenarioHash: string;
@@ -290,6 +324,7 @@ export interface EvaluationAudit {
   runtimeEvaluation?: RuntimeEvaluation;
   graderVersion?: string;
   criterionResults?: CriterionResult[];
+  structuredContractMetrics?: StructuredContractMetrics;
   judgeScoreHistory?: number[];
   multiRunStats?: MultiRunStats;
   /** Full independent candidate attempts; parent output is only a representative. */
@@ -321,6 +356,7 @@ export interface ScenarioResult {
   axisCoverage?: number;
   totalScore: number;
   criterionResults?: CriterionResult[];
+  structuredContractMetrics?: StructuredContractMetrics;
   deterministicScore?: number;
   judgeScore?: number;
   safetyLevel: SafetyLevel;

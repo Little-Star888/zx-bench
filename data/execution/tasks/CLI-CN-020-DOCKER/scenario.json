@@ -1,0 +1,564 @@
+{
+  "id": "CLI-CN-020-DOCKER",
+  "dimension": "cli_deep_tasks",
+  "category": "archive_encoding",
+  "difficulty": "adversarial",
+  "language": "general",
+  "locale": "zh-CN",
+  "status": "valid",
+  "tier": "private_dev",
+  "promptTemplate": "工作区 /workspace，Linux sh 和 Python 3 标准库可用。使用 Alpine/BusyBox 工具，提交脚本统一以 POSIX sh 执行，未提供 bash 或 GNU 工具。src/ 含 50 个文件。创建 out.tar.gz，并保存可重复执行的构建程序 build_archive.py（python3 -I build_archive.py）。仅归档普通文件，名称保留 src/ 前缀并按字典序；规范化 tar mtime/uid/gid 为 0、uname/gname 为空、mode 为 0644；gzip mtime 为 0，不保存文件名。源文件内容不变时，即使源 mtime 改变，重复构建必须字节相同。不要修改源文件。只输出可执行 shell 脚本。",
+  "sourceCode": null,
+  "functionName": null,
+  "expectedVerdict": null,
+  "grader": "cli_command",
+  "graderVersion": "cli_command_v5",
+  "scoring": {
+    "type": "cli_command",
+    "mode": "executed_state"
+  },
+  "requirements": {
+    "migrationSourceId": "CLI-CN-020",
+    "developmentShadow": true,
+    "executionInterpreter": "sh",
+    "executionImage": "python:3.12-alpine",
+    "executionImageId": "sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31",
+    "executionCases": [
+      {
+        "files": [
+          {
+            "path": "src/dir 0/item-49.txt",
+            "content": "fixture=0;item=0\n"
+          },
+          {
+            "path": "src/dir 1/item-48.txt",
+            "content": "fixture=0;item=1\n"
+          },
+          {
+            "path": "src/dir 2/item-47.txt",
+            "content": "fixture=0;item=2\n"
+          },
+          {
+            "path": "src/dir 3/item-46.txt",
+            "content": "fixture=0;item=3\n"
+          },
+          {
+            "path": "src/dir 4/item-45.txt",
+            "content": "fixture=0;item=4\n"
+          },
+          {
+            "path": "src/dir 0/item-44.txt",
+            "content": "fixture=0;item=5\n"
+          },
+          {
+            "path": "src/dir 1/item-43.txt",
+            "content": "fixture=0;item=6\n"
+          },
+          {
+            "path": "src/dir 2/item-42.txt",
+            "content": "fixture=0;item=7\n"
+          },
+          {
+            "path": "src/dir 3/item-41.txt",
+            "content": "fixture=0;item=8\n"
+          },
+          {
+            "path": "src/dir 4/item-40.txt",
+            "content": "fixture=0;item=9\n"
+          },
+          {
+            "path": "src/dir 0/item-39.txt",
+            "content": "fixture=0;item=10\n"
+          },
+          {
+            "path": "src/dir 1/item-38.txt",
+            "content": "fixture=0;item=11\n"
+          },
+          {
+            "path": "src/dir 2/item-37.txt",
+            "content": "fixture=0;item=12\n"
+          },
+          {
+            "path": "src/dir 3/item-36.txt",
+            "content": "fixture=0;item=13\n"
+          },
+          {
+            "path": "src/dir 4/item-35.txt",
+            "content": "fixture=0;item=14\n"
+          },
+          {
+            "path": "src/dir 0/item-34.txt",
+            "content": "fixture=0;item=15\n"
+          },
+          {
+            "path": "src/dir 1/item-33.txt",
+            "content": "fixture=0;item=16\n"
+          },
+          {
+            "path": "src/dir 2/item-32.txt",
+            "content": "fixture=0;item=17\n"
+          },
+          {
+            "path": "src/dir 3/item-31.txt",
+            "content": "fixture=0;item=18\n"
+          },
+          {
+            "path": "src/dir 4/item-30.txt",
+            "content": "fixture=0;item=19\n"
+          },
+          {
+            "path": "src/dir 0/item-29.txt",
+            "content": "fixture=0;item=20\n"
+          },
+          {
+            "path": "src/dir 1/item-28.txt",
+            "content": "fixture=0;item=21\n"
+          },
+          {
+            "path": "src/dir 2/item-27.txt",
+            "content": "fixture=0;item=22\n"
+          },
+          {
+            "path": "src/dir 3/item-26.txt",
+            "content": "fixture=0;item=23\n"
+          },
+          {
+            "path": "src/dir 4/item-25.txt",
+            "content": "fixture=0;item=24\n"
+          },
+          {
+            "path": "src/dir 0/item-24.txt",
+            "content": "fixture=0;item=25\n"
+          },
+          {
+            "path": "src/dir 1/item-23.txt",
+            "content": "fixture=0;item=26\n"
+          },
+          {
+            "path": "src/dir 2/item-22.txt",
+            "content": "fixture=0;item=27\n"
+          },
+          {
+            "path": "src/dir 3/item-21.txt",
+            "content": "fixture=0;item=28\n"
+          },
+          {
+            "path": "src/dir 4/item-20.txt",
+            "content": "fixture=0;item=29\n"
+          },
+          {
+            "path": "src/dir 0/item-19.txt",
+            "content": "fixture=0;item=30\n"
+          },
+          {
+            "path": "src/dir 1/item-18.txt",
+            "content": "fixture=0;item=31\n"
+          },
+          {
+            "path": "src/dir 2/item-17.txt",
+            "content": "fixture=0;item=32\n"
+          },
+          {
+            "path": "src/dir 3/item-16.txt",
+            "content": "fixture=0;item=33\n"
+          },
+          {
+            "path": "src/dir 4/item-15.txt",
+            "content": "fixture=0;item=34\n"
+          },
+          {
+            "path": "src/dir 0/item-14.txt",
+            "content": "fixture=0;item=35\n"
+          },
+          {
+            "path": "src/dir 1/item-13.txt",
+            "content": "fixture=0;item=36\n"
+          },
+          {
+            "path": "src/dir 2/item-12.txt",
+            "content": "fixture=0;item=37\n"
+          },
+          {
+            "path": "src/dir 3/item-11.txt",
+            "content": "fixture=0;item=38\n"
+          },
+          {
+            "path": "src/dir 4/item-10.txt",
+            "content": "fixture=0;item=39\n"
+          },
+          {
+            "path": "src/dir 0/item-09.txt",
+            "content": "fixture=0;item=40\n"
+          },
+          {
+            "path": "src/dir 1/item-08.txt",
+            "content": "fixture=0;item=41\n"
+          },
+          {
+            "path": "src/dir 2/item-07.txt",
+            "content": "fixture=0;item=42\n"
+          },
+          {
+            "path": "src/dir 3/item-06.txt",
+            "content": "fixture=0;item=43\n"
+          },
+          {
+            "path": "src/dir 4/item-05.txt",
+            "content": "fixture=0;item=44\n"
+          },
+          {
+            "path": "src/dir 0/item-04.txt",
+            "content": "fixture=0;item=45\n"
+          },
+          {
+            "path": "src/dir 1/item-03.txt",
+            "content": "fixture=0;item=46\n"
+          },
+          {
+            "path": "src/dir 2/item-02.txt",
+            "content": "fixture=0;item=47\n"
+          },
+          {
+            "path": "src/dir 3/item-01.txt",
+            "content": "fixture=0;item=48\n"
+          },
+          {
+            "path": "src/dir 4/item-00.txt",
+            "content": "fixture=0;item=49\n"
+          }
+        ],
+        "unchangedFiles": [
+          "src/dir 0/item-49.txt",
+          "src/dir 1/item-48.txt",
+          "src/dir 2/item-47.txt",
+          "src/dir 3/item-46.txt",
+          "src/dir 4/item-45.txt",
+          "src/dir 0/item-44.txt",
+          "src/dir 1/item-43.txt",
+          "src/dir 2/item-42.txt",
+          "src/dir 3/item-41.txt",
+          "src/dir 4/item-40.txt",
+          "src/dir 0/item-39.txt",
+          "src/dir 1/item-38.txt",
+          "src/dir 2/item-37.txt",
+          "src/dir 3/item-36.txt",
+          "src/dir 4/item-35.txt",
+          "src/dir 0/item-34.txt",
+          "src/dir 1/item-33.txt",
+          "src/dir 2/item-32.txt",
+          "src/dir 3/item-31.txt",
+          "src/dir 4/item-30.txt",
+          "src/dir 0/item-29.txt",
+          "src/dir 1/item-28.txt",
+          "src/dir 2/item-27.txt",
+          "src/dir 3/item-26.txt",
+          "src/dir 4/item-25.txt",
+          "src/dir 0/item-24.txt",
+          "src/dir 1/item-23.txt",
+          "src/dir 2/item-22.txt",
+          "src/dir 3/item-21.txt",
+          "src/dir 4/item-20.txt",
+          "src/dir 0/item-19.txt",
+          "src/dir 1/item-18.txt",
+          "src/dir 2/item-17.txt",
+          "src/dir 3/item-16.txt",
+          "src/dir 4/item-15.txt",
+          "src/dir 0/item-14.txt",
+          "src/dir 1/item-13.txt",
+          "src/dir 2/item-12.txt",
+          "src/dir 3/item-11.txt",
+          "src/dir 4/item-10.txt",
+          "src/dir 0/item-09.txt",
+          "src/dir 1/item-08.txt",
+          "src/dir 2/item-07.txt",
+          "src/dir 3/item-06.txt",
+          "src/dir 4/item-05.txt",
+          "src/dir 0/item-04.txt",
+          "src/dir 1/item-03.txt",
+          "src/dir 2/item-02.txt",
+          "src/dir 3/item-01.txt",
+          "src/dir 4/item-00.txt"
+        ],
+        "assertCommands": [
+          "python3 -I - <<'PY'\nimport gzip, tarfile, hashlib, subprocess, os\nfrom pathlib import Path\ndef check():\n    blob = Path('out.tar.gz').read_bytes()\n    assert blob[:3] == b'\\x1f\\x8b\\x08' and int.from_bytes(blob[4:8], 'little') == 0 and not blob[3] & 8\n    with tarfile.open('out.tar.gz', 'r:gz') as tar:\n        members = tar.getmembers(); expected = sorted(p.as_posix() for p in Path('src').rglob('*') if p.is_file())\n        assert [m.name for m in members] == expected and len(members) == 50\n        for m in members:\n            assert m.isfile() and (m.uid,m.gid,m.mtime,m.uname,m.gname,m.mode) == (0,0,0,'','',0o644)\n            assert tar.extractfile(m).read() == Path(m.name).read_bytes()\n    return hashlib.sha256(blob).hexdigest()\nfirst = check()\nfor p in Path('src').rglob('*'):\n    if p.is_file(): os.utime(p, (1900000000,1900000000))\nsubprocess.run(['python3','-I','build_archive.py'], check=True, timeout=10)\nassert check() == first\nPY"
+        ]
+      },
+      {
+        "files": [
+          {
+            "path": "src/dir 0/item-49.txt",
+            "content": "fixture=1;item=0\n"
+          },
+          {
+            "path": "src/dir 1/item-48.txt",
+            "content": "fixture=1;item=1\n"
+          },
+          {
+            "path": "src/dir 2/item-47.txt",
+            "content": "fixture=1;item=2\n"
+          },
+          {
+            "path": "src/dir 3/item-46.txt",
+            "content": "fixture=1;item=3\n"
+          },
+          {
+            "path": "src/dir 4/item-45.txt",
+            "content": "fixture=1;item=4\n"
+          },
+          {
+            "path": "src/dir 0/item-44.txt",
+            "content": "fixture=1;item=5\n"
+          },
+          {
+            "path": "src/dir 1/item-43.txt",
+            "content": "fixture=1;item=6\n"
+          },
+          {
+            "path": "src/dir 2/item-42.txt",
+            "content": "fixture=1;item=7\n"
+          },
+          {
+            "path": "src/dir 3/item-41.txt",
+            "content": "fixture=1;item=8\n"
+          },
+          {
+            "path": "src/dir 4/item-40.txt",
+            "content": "fixture=1;item=9\n"
+          },
+          {
+            "path": "src/dir 0/item-39.txt",
+            "content": "fixture=1;item=10\n"
+          },
+          {
+            "path": "src/dir 1/item-38.txt",
+            "content": "fixture=1;item=11\n"
+          },
+          {
+            "path": "src/dir 2/item-37.txt",
+            "content": "fixture=1;item=12\n"
+          },
+          {
+            "path": "src/dir 3/item-36.txt",
+            "content": "fixture=1;item=13\n"
+          },
+          {
+            "path": "src/dir 4/item-35.txt",
+            "content": "fixture=1;item=14\n"
+          },
+          {
+            "path": "src/dir 0/item-34.txt",
+            "content": "fixture=1;item=15\n"
+          },
+          {
+            "path": "src/dir 1/item-33.txt",
+            "content": "fixture=1;item=16\n"
+          },
+          {
+            "path": "src/dir 2/item-32.txt",
+            "content": "fixture=1;item=17\n"
+          },
+          {
+            "path": "src/dir 3/item-31.txt",
+            "content": "fixture=1;item=18\n"
+          },
+          {
+            "path": "src/dir 4/item-30.txt",
+            "content": "fixture=1;item=19\n"
+          },
+          {
+            "path": "src/dir 0/item-29.txt",
+            "content": "fixture=1;item=20\n"
+          },
+          {
+            "path": "src/dir 1/item-28.txt",
+            "content": "fixture=1;item=21\n"
+          },
+          {
+            "path": "src/dir 2/item-27.txt",
+            "content": "fixture=1;item=22\n"
+          },
+          {
+            "path": "src/dir 3/item-26.txt",
+            "content": "fixture=1;item=23\n"
+          },
+          {
+            "path": "src/dir 4/item-25.txt",
+            "content": "fixture=1;item=24\n"
+          },
+          {
+            "path": "src/dir 0/item-24.txt",
+            "content": "fixture=1;item=25\n"
+          },
+          {
+            "path": "src/dir 1/item-23.txt",
+            "content": "fixture=1;item=26\n"
+          },
+          {
+            "path": "src/dir 2/item-22.txt",
+            "content": "fixture=1;item=27\n"
+          },
+          {
+            "path": "src/dir 3/item-21.txt",
+            "content": "fixture=1;item=28\n"
+          },
+          {
+            "path": "src/dir 4/item-20.txt",
+            "content": "fixture=1;item=29\n"
+          },
+          {
+            "path": "src/dir 0/item-19.txt",
+            "content": "fixture=1;item=30\n"
+          },
+          {
+            "path": "src/dir 1/item-18.txt",
+            "content": "fixture=1;item=31\n"
+          },
+          {
+            "path": "src/dir 2/item-17.txt",
+            "content": "fixture=1;item=32\n"
+          },
+          {
+            "path": "src/dir 3/item-16.txt",
+            "content": "fixture=1;item=33\n"
+          },
+          {
+            "path": "src/dir 4/item-15.txt",
+            "content": "fixture=1;item=34\n"
+          },
+          {
+            "path": "src/dir 0/item-14.txt",
+            "content": "fixture=1;item=35\n"
+          },
+          {
+            "path": "src/dir 1/item-13.txt",
+            "content": "fixture=1;item=36\n"
+          },
+          {
+            "path": "src/dir 2/item-12.txt",
+            "content": "fixture=1;item=37\n"
+          },
+          {
+            "path": "src/dir 3/item-11.txt",
+            "content": "fixture=1;item=38\n"
+          },
+          {
+            "path": "src/dir 4/item-10.txt",
+            "content": "fixture=1;item=39\n"
+          },
+          {
+            "path": "src/dir 0/item-09.txt",
+            "content": "fixture=1;item=40\n"
+          },
+          {
+            "path": "src/dir 1/item-08.txt",
+            "content": "fixture=1;item=41\n"
+          },
+          {
+            "path": "src/dir 2/item-07.txt",
+            "content": "fixture=1;item=42\n"
+          },
+          {
+            "path": "src/dir 3/item-06.txt",
+            "content": "fixture=1;item=43\n"
+          },
+          {
+            "path": "src/dir 4/item-05.txt",
+            "content": "fixture=1;item=44\n"
+          },
+          {
+            "path": "src/dir 0/item-04.txt",
+            "content": "fixture=1;item=45\n"
+          },
+          {
+            "path": "src/dir 1/item-03.txt",
+            "content": "fixture=1;item=46\n"
+          },
+          {
+            "path": "src/dir 2/item-02.txt",
+            "content": "fixture=1;item=47\n"
+          },
+          {
+            "path": "src/dir 3/item-01.txt",
+            "content": "fixture=1;item=48\n"
+          },
+          {
+            "path": "src/dir 4/item-00.txt",
+            "content": "fixture=1;item=49\n"
+          }
+        ],
+        "unchangedFiles": [
+          "src/dir 0/item-49.txt",
+          "src/dir 1/item-48.txt",
+          "src/dir 2/item-47.txt",
+          "src/dir 3/item-46.txt",
+          "src/dir 4/item-45.txt",
+          "src/dir 0/item-44.txt",
+          "src/dir 1/item-43.txt",
+          "src/dir 2/item-42.txt",
+          "src/dir 3/item-41.txt",
+          "src/dir 4/item-40.txt",
+          "src/dir 0/item-39.txt",
+          "src/dir 1/item-38.txt",
+          "src/dir 2/item-37.txt",
+          "src/dir 3/item-36.txt",
+          "src/dir 4/item-35.txt",
+          "src/dir 0/item-34.txt",
+          "src/dir 1/item-33.txt",
+          "src/dir 2/item-32.txt",
+          "src/dir 3/item-31.txt",
+          "src/dir 4/item-30.txt",
+          "src/dir 0/item-29.txt",
+          "src/dir 1/item-28.txt",
+          "src/dir 2/item-27.txt",
+          "src/dir 3/item-26.txt",
+          "src/dir 4/item-25.txt",
+          "src/dir 0/item-24.txt",
+          "src/dir 1/item-23.txt",
+          "src/dir 2/item-22.txt",
+          "src/dir 3/item-21.txt",
+          "src/dir 4/item-20.txt",
+          "src/dir 0/item-19.txt",
+          "src/dir 1/item-18.txt",
+          "src/dir 2/item-17.txt",
+          "src/dir 3/item-16.txt",
+          "src/dir 4/item-15.txt",
+          "src/dir 0/item-14.txt",
+          "src/dir 1/item-13.txt",
+          "src/dir 2/item-12.txt",
+          "src/dir 3/item-11.txt",
+          "src/dir 4/item-10.txt",
+          "src/dir 0/item-09.txt",
+          "src/dir 1/item-08.txt",
+          "src/dir 2/item-07.txt",
+          "src/dir 3/item-06.txt",
+          "src/dir 4/item-05.txt",
+          "src/dir 0/item-04.txt",
+          "src/dir 1/item-03.txt",
+          "src/dir 2/item-02.txt",
+          "src/dir 3/item-01.txt",
+          "src/dir 4/item-00.txt"
+        ],
+        "assertCommands": [
+          "python3 -I - <<'PY'\nimport gzip, tarfile, hashlib, subprocess, os\nfrom pathlib import Path\ndef check():\n    blob = Path('out.tar.gz').read_bytes()\n    assert blob[:3] == b'\\x1f\\x8b\\x08' and int.from_bytes(blob[4:8], 'little') == 0 and not blob[3] & 8\n    with tarfile.open('out.tar.gz', 'r:gz') as tar:\n        members = tar.getmembers(); expected = sorted(p.as_posix() for p in Path('src').rglob('*') if p.is_file())\n        assert [m.name for m in members] == expected and len(members) == 50\n        for m in members:\n            assert m.isfile() and (m.uid,m.gid,m.mtime,m.uname,m.gname,m.mode) == (0,0,0,'','',0o644)\n            assert tar.extractfile(m).read() == Path(m.name).read_bytes()\n    return hashlib.sha256(blob).hexdigest()\nfirst = check()\nfor p in Path('src').rglob('*'):\n    if p.is_file(): os.utime(p, (1900000000,1900000000))\nsubprocess.run(['python3','-I','build_archive.py'], check=True, timeout=10)\nassert check() == first\nPY"
+        ]
+      }
+    ]
+  },
+  "tags": [
+    "cli",
+    "archive",
+    "deterministic",
+    "trap"
+  ],
+  "scenarioVersion": "3.1.0",
+  "scenarioHash": "cfc393c63555c717",
+  "responseMode": "live_execution",
+  "outputPolicy": null,
+  "environmentImage": null,
+  "seed": null,
+  "goldSource": null,
+  "reviewStatus": "unreviewed",
+  "answerFirst": null,
+  "maxAnswerTokens": null,
+  "maxReasoningTokens": null
+}

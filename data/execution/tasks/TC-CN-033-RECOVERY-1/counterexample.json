@@ -1,0 +1,12 @@
+[
+  {
+    "tool": "access.check",
+    "args": {}
+  },
+  {
+    "tool": "query_expense",
+    "args": {
+      "employee_id": "CEO-B"
+    }
+  }
+]

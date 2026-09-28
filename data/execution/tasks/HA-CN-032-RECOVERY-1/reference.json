@@ -1,0 +1,40 @@
+[
+  {
+    "tool": "config.generate",
+    "args": {}
+  },
+  {
+    "tool": "schema.validate",
+    "args": {
+      "data": {
+        "service": "api",
+        "region": "eu-west-1",
+        "replicas": 3
+      },
+      "schema": {
+        "type": "object",
+        "required": [
+          "service",
+          "region",
+          "replicas"
+        ],
+        "properties": {
+          "service": {
+            "type": "string"
+          },
+          "region": {
+            "type": "string"
+          },
+          "replicas": {
+            "type": "integer"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  {
+    "tool": "deliver",
+    "args": {}
+  }
+]

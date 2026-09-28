@@ -42,6 +42,35 @@ export function analyzeRunQuality(results: QualityRow[], totalScenarios: number)
     unmeasuredCriteria: samples.reduce((n, s) => n + s.total - s.measured, 0),
     unscoredSamples: samples.length - measuredSamples.length,
   };
+  const contracts = results.flatMap((r,i) => {
+    const audit = audits[i];
+    if (audit?.attempts) return audit.attempts.flatMap(a =>
+      !a.environmentError && a.structuredContractMetrics ? [a.structuredContractMetrics] : []);
+    const metrics = audit?.structuredContractMetrics;
+    return !r.environmentError && metrics ? [metrics] : [];
+  });
+  const families = [...new Set(contracts.map(m=>m.family))];
+  const rate = (key:'syntaxValid'|'schemaValid'|'contentValid'|'complete') => {
+    const measured = contracts.filter(m=>m[key] !== null);
+    return measured.length ? measured.filter(m=>m[key]).length / measured.length : null;
+  };
+  const structuredContracts = {
+    scoredSamples:contracts.length,
+    unavailableSamples:results.reduce((n,r,i)=>{
+      if (!r.graderVersion?.startsWith('structured_contract@')) return n;
+      const audit=audits[i];
+      return n+(audit?.attempts ? audit.attempts.filter(a=>a.environmentError || !a.structuredContractMetrics).length
+        : Number(r.environmentError || !audit?.structuredContractMetrics));
+    },0),
+    rawFormatRate:rate('syntaxValid'),
+    rawJsonRate:(()=>{const json=contracts.filter(m=>!m.format||m.format==='json');return json.length?json.filter(m=>m.syntaxValid).length/json.length:null;})(),
+    schemaRate:rate('schemaValid'), contentRate:rate('contentValid'),
+    completeRate:rate('complete'),
+    familyMacroRate:families.length ? families.reduce((sum,family)=>{
+      const rows=contracts.filter(m=>m.family===family);
+      return sum+rows.filter(m=>m.complete).length/rows.length;
+    },0)/families.length : null,
+  };
   const valid = results.filter(r => !r.environmentError);
   const issues: string[] = [];
   const referenceIssues = referenceAnswerWarnings(results);
@@ -63,7 +92,8 @@ export function analyzeRunQuality(results: QualityRow[], totalScenarios: number)
   // Progressive batch parts are intentionally deterministic-only; a zero is a
   // measured wrong answer, not evidence that grading failed to participate.
   const zeroDet = valid.filter(r => r.deterministicScore === 0 && r.judgeScore === null
-    && !r.graderVersion?.startsWith('ultra_batch_part@'));
+    && !r.graderVersion?.startsWith('ultra_batch_part@')
+    && !r.graderVersion?.startsWith('structured_contract@'));
   const partialRepeats = valid.filter(r => {
     try { return (JSON.parse(r.evidence || '[]') as string[]).some(e => e.startsWith('CANDIDATE_REPEATS_PARTIAL:')); }
     catch { return false; }
@@ -117,7 +147,7 @@ export function analyzeRunQuality(results: QualityRow[], totalScenarios: number)
     || executionJudgeConflicts.length > 0 || unresolvedCliDisagreements.length > 0
     || empty.length > threshold || length.length > threshold
     ? 'critical' : issues.length ? 'warning' : 'good';
-  return { grade, issues, constraintMetrics, partialEnvironmentErrors, emptyOutputCount: empty.length, judgeZeroCount: judgeZero.length,
+  return { grade, issues, constraintMetrics, structuredContracts, partialEnvironmentErrors, emptyOutputCount: empty.length, judgeZeroCount: judgeZero.length,
     lengthFinishCount: length.length, zeroDeterministCount: zeroDet.length,
     judgeFailedCount: failed.length, scoringComplete: failed.length === 0 && partialRepeats.length === 0
       && referenceIssues.length === 0 && parserFalseNegatives.length === 0 && scoreIntegrityFailures.length === 0

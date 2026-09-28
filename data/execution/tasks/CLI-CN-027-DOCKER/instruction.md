@@ -1,0 +1,1 @@
+工作区 /workspace，Linux sh 和 Python 3 标准库可用。使用 Alpine/BusyBox 工具，提交脚本统一以 POSIX sh 执行，未提供 bash 或 GNU 工具。项目入口 run.sh 不可执行、etc/ 不可读。仅将 run.sh 和 etc/ 的权限精确改为 0755，然后实际执行 ./run.sh 并把结果写入 start.txt；不得递归放开项目权限。脚本和配置文件均位于 /workspace/project 下；从该目录运行脚本。只输出可执行 shell 脚本。

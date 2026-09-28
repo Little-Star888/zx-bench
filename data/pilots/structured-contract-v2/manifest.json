@@ -1,0 +1,27 @@
+{
+  "version": "structured-contract-v2",
+  "status": "frozen-development",
+  "families": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H"
+  ],
+  "development": 19,
+  "holdout": 15,
+  "hashes": {
+    "development": "edcd89204980381863c846fb2e135df841822ec4583aca359671f3db8f1d2d9f",
+    "holdout": "abb81385cbc64e556ff1c2250883526550438d4354ae44ef31d64dc8c262bb65"
+  },
+  "goldHashes": {
+    "development": "20007c00acee4c7fe6e881e8cb748ebdef4f11667d65b107505a16971a42d99d",
+    "holdout": "e582aa00464e2f76dd9d0245945daabe9aa9b37b0ce9a98d0161f0a1583b2b5a"
+  },
+  "sourcePolicy": "Source/schema task-group split; some groups share repository and evaluator. Holdout is screening, not strong independence proof.",
+  "stoppingRule": "No extra sampling to seek a desired ranking. Preserve failures and alternative-answer reviews; heldout items used for repair lose holdout status.",
+  "promotion": "Keep easy anchors separate; no difficulty claim until independent configuration/holdout screening."
+}

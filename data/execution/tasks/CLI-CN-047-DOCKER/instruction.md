@@ -1,0 +1,1 @@
+工作区 /workspace，Linux sh 和 Python 3 标准库可用。使用 Alpine/BusyBox 工具，提交脚本统一以 POSIX sh 执行，未提供 bash 或 GNU 工具。events.log 是 UTF-8 CSV，无表头，第一个字段是用户 ID，其余为事件描述。正确解析引号、逗号和字段内换行，统计非空唯一用户 ID，将数字与换行输出到 stdout。不要修改输入。期望值仅在验证器中保存。只输出可执行 shell 脚本。

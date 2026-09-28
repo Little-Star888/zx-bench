@@ -1,0 +1,385 @@
+[
+  {
+    "id": "SOC4-A-CASE",
+    "dimension": "structured_output",
+    "category": "frontier_A",
+    "difficulty": "adversarial",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_validation",
+    "promptTemplate": "整合订单、修订、账户与产品目录。对同一订单，选 revision 数值最大的修订，不按输入顺序选；若账户 inactive，最终 status=blocked 且 net=0，优先于修订；否则用修订的状态和金额。cancelled 的 net=0；其余状态 net=最终金额。保留基础订单次序和原 ID，按 SKU 匹配目录；只输出 records。每行 sourceIds 依次是基础订单、胜出的修订（若有）、账户、产品记录。\norders：\n[O20] {\"id\":\"O20\",\"orderId\":\"c01\",\"account\":\"x1\",\"sku\":\"P-01\",\"gross\":75,\"state\":\"open\"}\n[O21] {\"id\":\"O21\",\"orderId\":\"c02\",\"account\":\"x2\",\"sku\":\"P-02\",\"gross\":130,\"state\":\"open\"}\n[O22] {\"id\":\"O22\",\"orderId\":\"c03\",\"account\":\"x1\",\"sku\":\"P-03\",\"gross\":50,\"state\":\"open\"}\nrevisions：\n[R20] {\"id\":\"R20\",\"orderId\":\"c03\",\"revision\":7,\"state\":\"paid\",\"gross\":45}\n[R21] {\"id\":\"R21\",\"orderId\":\"c01\",\"revision\":8,\"state\":\"cancelled\",\"gross\":null}\n[R22] {\"id\":\"R22\",\"orderId\":\"c02\",\"revision\":2,\"state\":\"paid\",\"gross\":125}\n[R23] {\"id\":\"R23\",\"orderId\":\"c01\",\"revision\":3,\"state\":\"paid\",\"gross\":70}\naccounts：\n[A20] {\"id\":\"A20\",\"account\":\"x1\",\"active\":true}\n[A21] {\"id\":\"A21\",\"account\":\"x2\",\"active\":true}\ncatalog：\n[P20] {\"id\":\"P20\",\"sku\":\"P-01\",\"category\":\"digital\"}\n[P21] {\"id\":\"P21\",\"sku\":\"P-02\",\"category\":\"hardware\"}\n[P22] {\"id\":\"P22\",\"sku\":\"P-03\",\"category\":\"digital\"}\n输出必须满足 JSON Schema 2020-12：{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"object\",\"properties\":{\"records\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"orderId\":{\"type\":\"string\"},\"status\":{\"enum\":[\"open\",\"paid\",\"cancelled\",\"blocked\"]},\"net\":{\"type\":\"integer\"},\"category\":{\"type\":\"string\"},\"sourceIds\":{\"type\":\"array\",\"items\":{\"type\":\"string\"},\"minItems\":3,\"maxItems\":4}},\"required\":[\"orderId\",\"status\",\"net\",\"category\",\"sourceIds\"],\"additionalProperties\":false},\"minItems\":3,\"maxItems\":3}},\"required\":[\"records\"],\"additionalProperties\":false}\n只输出完整 JSON 原文，无代码围栏和解释。sourceIds 是本行参与计算的指定来源记录 ID；即使高优先级规则覆盖其中的值，也须按本题规定的顺序列出。",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v4",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "json",
+      "dialect": "2020-12",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "records": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "orderId": {
+                  "type": "string"
+                },
+                "status": {
+                  "enum": [
+                    "open",
+                    "paid",
+                    "cancelled",
+                    "blocked"
+                  ]
+                },
+                "net": {
+                  "type": "integer"
+                },
+                "category": {
+                  "type": "string"
+                },
+                "sourceIds": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "minItems": 3,
+                  "maxItems": 4
+                }
+              },
+              "required": [
+                "orderId",
+                "status",
+                "net",
+                "category",
+                "sourceIds"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 3,
+            "maxItems": 3
+          }
+        },
+        "required": [
+          "records"
+        ],
+        "additionalProperties": false
+      },
+      "formatAssertions": true,
+      "family": "frontier_A",
+      "challengeFamily": "A",
+      "sourceGroup": "order-ledger-2",
+      "output_policy": "raw_only",
+      "oracleRef": "SOC4-A-CASE",
+      "oracleHash": "28cbdef9ff3eb1243125714c81130282559af7ddb9c9e52af1358ae63bf058ac",
+      "provenance": {
+        "sourcePack": "structured-contract-frontier-v1",
+        "sourceGroup": "order-ledger-2",
+        "method": "Locally authored business fixture and JSON Schema 2020-12; source records are frozen in the prompt"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "verified",
+    "goldSource": "local-derived-fixture-v1",
+    "goldVerifiedAt": "2026-09-26T12:00:00.000Z",
+    "tags": [
+      "structured-contract-frontier-v1",
+      "family:A",
+      "development_only"
+    ],
+    "scenarioHash": "40b696b45797c7dd"
+  },
+  {
+    "id": "SOC4-B-POLICY",
+    "dimension": "structured_output",
+    "category": "frontier_B",
+    "difficulty": "adversarial",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_validation",
+    "promptTemplate": "按 requests 顺序判权限。用户更新覆盖非 null 的 role/region；inactive 优先，接着区域不符，再按 reader<editor<admin 比较角色；否则允许。允许分支只含 requestId,decision=allow,grantId=\"最终角色:资源 ID\",sourceIds；拒绝分支只含 requestId,decision=deny,reason（inactive/region/role）,sourceIds。不得泄漏另一分支字段。每行 sourceIds 依次是请求、用户、该用户的更新（若有）、资源记录。\nusers：\n[U20] {\"id\":\"U20\",\"user\":\"x1\",\"active\":true,\"role\":\"admin\",\"region\":\"blue\"}\n[U21] {\"id\":\"U21\",\"user\":\"x2\",\"active\":true,\"role\":\"reader\",\"region\":\"red\"}\n[U22] {\"id\":\"U22\",\"user\":\"x3\",\"active\":false,\"role\":\"editor\",\"region\":\"blue\"}\nupdates：\n[C20] {\"id\":\"C20\",\"user\":\"x1\",\"revision\":9,\"role\":\"reader\",\"region\":\"red\"}\n[C21] {\"id\":\"C21\",\"user\":\"x2\",\"revision\":3,\"role\":\"editor\",\"region\":\"blue\"}\nresources：\n[D20] {\"id\":\"D20\",\"resource\":\"ops\",\"minRole\":\"editor\",\"region\":\"blue\"}\n[D21] {\"id\":\"D21\",\"resource\":\"feed\",\"minRole\":\"reader\",\"region\":\"red\"}\nrequests：\n[Q20] {\"id\":\"Q20\",\"requestId\":\"z1\",\"user\":\"x1\",\"resource\":\"ops\"}\n[Q21] {\"id\":\"Q21\",\"requestId\":\"z2\",\"user\":\"x2\",\"resource\":\"ops\"}\n[Q22] {\"id\":\"Q22\",\"requestId\":\"z3\",\"user\":\"x3\",\"resource\":\"feed\"}\n[Q23] {\"id\":\"Q23\",\"requestId\":\"z4\",\"user\":\"x1\",\"resource\":\"feed\"}\n输出必须满足 JSON Schema 2020-12：{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"object\",\"properties\":{\"decisions\":{\"type\":\"array\",\"items\":{\"oneOf\":[{\"type\":\"object\",\"properties\":{\"requestId\":{\"type\":\"string\"},\"decision\":{\"const\":\"allow\"},\"sourceIds\":{\"type\":\"array\",\"items\":{\"type\":\"string\"},\"minItems\":3,\"maxItems\":4},\"grantId\":{\"type\":\"string\"}},\"required\":[\"requestId\",\"decision\",\"sourceIds\",\"grantId\"],\"additionalProperties\":false},{\"type\":\"object\",\"properties\":{\"requestId\":{\"type\":\"string\"},\"decision\":{\"const\":\"deny\"},\"sourceIds\":{\"type\":\"array\",\"items\":{\"type\":\"string\"},\"minItems\":3,\"maxItems\":4},\"reason\":{\"enum\":[\"inactive\",\"region\",\"role\"]}},\"required\":[\"requestId\",\"decision\",\"sourceIds\",\"reason\"],\"additionalProperties\":false}]},\"minItems\":4,\"maxItems\":4}},\"required\":[\"decisions\"],\"additionalProperties\":false}\n只输出完整 JSON 原文，无代码围栏和解释。sourceIds 是本行参与计算的指定来源记录 ID；即使高优先级规则覆盖其中的值，也须按本题规定的顺序列出。",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v4",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "json",
+      "dialect": "2020-12",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "decisions": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "requestId": {
+                      "type": "string"
+                    },
+                    "decision": {
+                      "const": "allow"
+                    },
+                    "sourceIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "minItems": 3,
+                      "maxItems": 4
+                    },
+                    "grantId": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "requestId",
+                    "decision",
+                    "sourceIds",
+                    "grantId"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "requestId": {
+                      "type": "string"
+                    },
+                    "decision": {
+                      "const": "deny"
+                    },
+                    "sourceIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "minItems": 3,
+                      "maxItems": 4
+                    },
+                    "reason": {
+                      "enum": [
+                        "inactive",
+                        "region",
+                        "role"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "requestId",
+                    "decision",
+                    "sourceIds",
+                    "reason"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            },
+            "minItems": 4,
+            "maxItems": 4
+          }
+        },
+        "required": [
+          "decisions"
+        ],
+        "additionalProperties": false
+      },
+      "formatAssertions": true,
+      "family": "frontier_B",
+      "challengeFamily": "B",
+      "sourceGroup": "access-ledger-2",
+      "output_policy": "raw_only",
+      "oracleRef": "SOC4-B-POLICY",
+      "oracleHash": "c395cd2fd38029f51a23c34d09b43c19472d0ec7f505ec1f42f1ae599ad56367",
+      "provenance": {
+        "sourcePack": "structured-contract-frontier-v1",
+        "sourceGroup": "access-ledger-2",
+        "method": "Locally authored business fixture and JSON Schema 2020-12; source records are frozen in the prompt"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "verified",
+    "goldSource": "local-derived-fixture-v1",
+    "goldVerifiedAt": "2026-09-26T12:00:00.000Z",
+    "tags": [
+      "structured-contract-frontier-v1",
+      "family:B",
+      "development_only"
+    ],
+    "scenarioHash": "613a0b3f8d415db8"
+  },
+  {
+    "id": "SOC4-C-UPGRADE",
+    "dimension": "structured_output",
+    "category": "frontier_C",
+    "difficulty": "adversarial",
+    "language": "json",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_validation",
+    "promptTemplate": "按 edits 给出的次序修改 base 配置。rename 后，后续操作查找新 key；set 保留字符串原样（包括前导零和空串）；enable 只修改布尔值。保留原配置行的顺序，输出最终 settings，每行 sourceIds 按初始记录及实际作用在该行的编辑顺序列出。\nbase：\n[B20] {\"id\":\"B20\",\"key\":\"session.life\",\"value\":\"060\",\"enabled\":true}\n[B21] {\"id\":\"B21\",\"key\":\"store.mode\",\"value\":\"local\",\"enabled\":true}\n[B22] {\"id\":\"B22\",\"key\":\"audit.note\",\"value\":\"\",\"enabled\":false}\nedits：\n[E20] {\"id\":\"E20\",\"op\":\"rename\",\"key\":\"session.life\",\"value\":\"session.seconds\"}\n[E21] {\"id\":\"E21\",\"op\":\"set\",\"key\":\"session.seconds\",\"value\":\"090\"}\n[E22] {\"id\":\"E22\",\"op\":\"enable\",\"key\":\"audit.note\",\"value\":true}\n[E23] {\"id\":\"E23\",\"op\":\"set\",\"key\":\"store.mode\",\"value\":\"remote\"}\n输出必须满足 JSON Schema 2020-12：{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"object\",\"properties\":{\"settings\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"key\":{\"type\":\"string\"},\"value\":{\"type\":\"string\"},\"enabled\":{\"type\":\"boolean\"},\"sourceIds\":{\"type\":\"array\",\"items\":{\"type\":\"string\"},\"minItems\":1}},\"required\":[\"key\",\"value\",\"enabled\",\"sourceIds\"],\"additionalProperties\":false},\"minItems\":3,\"maxItems\":3}},\"required\":[\"settings\"],\"additionalProperties\":false}\n只输出完整 JSON 原文，无代码围栏和解释。sourceIds 是本行参与计算的指定来源记录 ID；即使高优先级规则覆盖其中的值，也须按本题规定的顺序列出。",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v4",
+    "scenarioVersion": "1.0.0",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "json",
+      "dialect": "2020-12",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "settings": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "key": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "sourceIds": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "minItems": 1
+                }
+              },
+              "required": [
+                "key",
+                "value",
+                "enabled",
+                "sourceIds"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 3,
+            "maxItems": 3
+          }
+        },
+        "required": [
+          "settings"
+        ],
+        "additionalProperties": false
+      },
+      "formatAssertions": true,
+      "family": "frontier_C",
+      "challengeFamily": "C",
+      "sourceGroup": "config-migration-2",
+      "output_policy": "raw_only",
+      "oracleRef": "SOC4-C-UPGRADE",
+      "oracleHash": "312d3866cc0165646dec4e27740e531a2a44f022018ca6aa3b3be6218e3992f8",
+      "provenance": {
+        "sourcePack": "structured-contract-frontier-v1",
+        "sourceGroup": "config-migration-2",
+        "method": "Locally authored business fixture and JSON Schema 2020-12; source records are frozen in the prompt"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "verified",
+    "goldSource": "local-derived-fixture-v1",
+    "goldVerifiedAt": "2026-09-26T12:00:00.000Z",
+    "tags": [
+      "structured-contract-frontier-v1",
+      "family:C",
+      "development_only"
+    ],
+    "scenarioHash": "d845edc304b1fec9"
+  },
+  {
+    "id": "SOC4-D-LEDGER",
+    "dimension": "structured_output",
+    "category": "frontier_D",
+    "difficulty": "adversarial",
+    "language": "csv",
+    "locale": "zh-CN",
+    "status": "valid",
+    "tier": "private_validation",
+    "promptTemplate": "按基础 tickets 顺序合并 changes 和 aliases：同 ticket 取 revision 数值最大的修改，不按列出顺序；owner 按原 ID 查别名；sourceIds 严格只列基础 ticket、最终采用的最高 revision 修改（若有）、owner 别名记录，用 | 连接。被更高 revision 覆盖的修改不得列入 sourceIds。输出 RFC 4180 CSV，表头严格为 ticket,owner,priority,state,sourceIds；逗号和双引号须正确转义。\ntickets：\n[T20] {\"id\":\"T20\",\"ticket\":\"v1\",\"owner\":\"sue\",\"priority\":\"P2\",\"state\":\"open\"}\n[T21] {\"id\":\"T21\",\"ticket\":\"v2\",\"owner\":\"tim\",\"priority\":\"P1\",\"state\":\"open\"}\n[T22] {\"id\":\"T22\",\"ticket\":\"v3\",\"owner\":\"uma\",\"priority\":\"P3\",\"state\":\"hold\"}\nchanges：\n[H20] {\"id\":\"H20\",\"ticket\":\"v3\",\"revision\":9,\"priority\":\"P1\",\"state\":\"closed\"}\n[H21] {\"id\":\"H21\",\"ticket\":\"v2\",\"revision\":4,\"priority\":\"P3\",\"state\":\"hold\"}\n[H22] {\"id\":\"H22\",\"ticket\":\"v3\",\"revision\":2,\"priority\":\"P2\",\"state\":\"open\"}\naliases：\n[N20] {\"id\":\"N20\",\"owner\":\"sue\",\"display\":\"Sue\"}\n[N21] {\"id\":\"N21\",\"owner\":\"tim\",\"display\":\"Tim \\\"T\\\"\"}\n[N22] {\"id\":\"N22\",\"owner\":\"uma\",\"display\":\"Uma, U\"}\n只输出完整 CSV 原文，无代码围栏和解释。sourceIds 是本行参与计算的指定来源记录 ID；即使高优先级规则覆盖其中的值，也须按本题规定的顺序列出。",
+    "grader": "structured_contract",
+    "graderVersion": "structured_contract_v4",
+    "scenarioVersion": "1.0.1",
+    "scoring": {
+      "type": "schema_compliance"
+    },
+    "requirements": {
+      "format": "csv",
+      "dialect": "2020-12",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "ticket": {
+              "type": "string"
+            },
+            "owner": {
+              "type": "string"
+            },
+            "priority": {
+              "type": "string"
+            },
+            "state": {
+              "type": "string"
+            },
+            "sourceIds": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "ticket",
+            "owner",
+            "priority",
+            "state",
+            "sourceIds"
+          ],
+          "additionalProperties": false
+        },
+        "minItems": 3,
+        "maxItems": 3
+      },
+      "formatAssertions": true,
+      "family": "frontier_D",
+      "challengeFamily": "D",
+      "sourceGroup": "ticket-format-2",
+      "output_policy": "raw_only",
+      "oracleRef": "SOC4-D-LEDGER",
+      "oracleHash": "8db6e16eee10b2c8d61ac9dbf213a36dc6b137ab557c27fb3a62e8f12b9a9074",
+      "provenance": {
+        "sourcePack": "structured-contract-frontier-v1",
+        "sourceGroup": "ticket-format-2",
+        "method": "Locally authored business fixture and JSON Schema 2020-12; source records are frozen in the prompt"
+      }
+    },
+    "outputPolicy": "raw_only",
+    "reviewStatus": "verified",
+    "goldSource": "local-derived-fixture-v1",
+    "goldVerifiedAt": "2026-09-26T12:00:00.000Z",
+    "tags": [
+      "structured-contract-frontier-v1",
+      "family:D",
+      "development_only"
+    ],
+    "scenarioHash": "3c8eb3eaf5c34b50"
+  }
+]
