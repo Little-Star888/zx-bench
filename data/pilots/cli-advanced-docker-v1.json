@@ -2521,7 +2521,7 @@
             "chmod 644 project/run.sh; chmod 600 project/etc; chmod 600 project/secret.key"
           ],
           "expectedFiles": {
-            "start.txt": "port=8080\n"
+            "project/start.txt": "port=8080\n"
           },
           "unchangedFiles": [
             "project/run.sh",
@@ -2556,7 +2556,7 @@
             "chmod 644 project/run.sh; chmod 600 project/etc; chmod 600 project/secret.key"
           ],
           "expectedFiles": {
-            "start.txt": "port=9443\n"
+            "project/start.txt": "port=9443\n"
           },
           "unchangedFiles": [
             "project/run.sh",
@@ -2577,7 +2577,7 @@
       "precise"
     ],
     "scenarioVersion": "3.1.0",
-    "scenarioHash": "ccecba20fa8254b9",
+    "scenarioHash": "d940d602958800fb",
     "responseMode": "live_execution",
     "outputPolicy": null,
     "environmentImage": null,
