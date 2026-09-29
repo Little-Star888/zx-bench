@@ -2,6 +2,13 @@
 
 All notable changes to ZxBench are documented here.
 
+## [0.2.4] — 2026-09-29
+
+### Scoring and reports
+
+- Add optional semantic Judge review for strict execution-world final answers. It runs only after all other checks pass, preserves the literal score and audit evidence, and marks invalid Judge output for manual review.
+- Correct the CLI-027 expected project output path.
+- Publish the [nine-model semantic Judge rescore](docs/semantic-judge-nine-model-rescore-2026-09-29.md) and [latest targeted scores and token usage](docs/nine-model-latest-score-tokens-2026-09-29.md). These are saved-result comparisons; the published report does not overwrite historical model runs.
 
 ## [0.2.3] — 2026-09-28
 
