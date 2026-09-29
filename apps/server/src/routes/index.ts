@@ -1388,50 +1388,12 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
         configNotice = `推理模型 ${modelConfig.name} 的 maxTokens 低于 32768，已自动提升至 49152（拉齐评测配置，避免思考链截断压低分数）`;
       }
 
-      // 构建 Judge 配置（在落库前解析，把实际生效的 Judge ID 固化进 config，便于审计与重跑还原）
-      let judgeOptions: import('@zxbench/core').JudgeOptions | undefined;
-      if (config.judgeEnabled) {
-        // 优先使用前端传入的 judgeModelConfigId，否则查找第一个 judge 类型的模型
-        let judgeRow = body.judgeModelConfigId
-          ? await prisma.modelConfig.findUnique({ where: { id: body.judgeModelConfigId } })
-          : await prisma.modelConfig.findFirst({ where: { modelType: 'judge' } });
-        if (judgeRow) {
-          if (judgeRow.modelType !== 'judge') {
-            return reply.status(400).send({ success: false, error: '选定的 Judge 配置不是 AI Judge 模型' });
-          }
-          // Do not start a long evaluation with a stale provider model name or
-          // unreachable Judge.  Those failures are grading infrastructure
-          // failures and otherwise surface only after many model calls.
-          try {
-            await verifyJudgeRecoveryConfigs([judgeRow], 60_000);
-          } catch (error) {
-            return reply.status(503).send({
-              success: false,
-              error: `Judge 连通性预检失败，请修正模型名、地址或凭据后再启动：${error instanceof Error ? error.message : String(error)}`,
-            });
-          }
-          config.judgeModelConfigId = judgeRow.id;
-          console.log(`[Eval] Judge 模型已选定: ${judgeRow.name} (${judgeRow.id})${body.judgeModelConfigId ? '' : ' ← findFirst 自动选择，建议前端显式指定'}`);
-          judgeOptions = {
-            localModel: {
-              id: judgeRow.id,
-              name: judgeRow.name,
-              provider: judgeRow.provider,
-              baseUrl: judgeRow.baseUrl,
-              apiKey: judgeRow.apiKey ? decryptApiKey(judgeRow.apiKey) : undefined,
-              defaultParams: JSON.parse(judgeRow.defaultParams),
-              reasoningModel: judgeRow.reasoningModel,
-            },
-            escalationThreshold: config.escalationThreshold || 0.85,
-          };
-        } else {
-          console.warn('judgeEnabled=true 但未配置 Judge 模型，跳过 AI Judge');
-        }
-      }
-
       let pack: BenchmarkPack;
       try { pack = await selectBenchmarkPack(config, body.dimensionIds); }
       catch (err) { return reply.status(400).send({ success: false, error: String(err) }); }
+      // Bind any available Judge for semantic final-answer review, even when
+      // generic mixed Judge scoring is disabled.
+      const judgeOptions = await resolveJudgeOptionsForNewRun(config, body.judgeModelConfigId, pack);
       if (config.judgeEnabled && !judgeOptions) return reply.status(400).send({ success: false, error: 'Judge enabled but no Judge model configured' });
       const run = await prisma.evalRun.create({
         data: {
@@ -1468,20 +1430,27 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
   });
 
   // ===== 多模型并行评测：一次请求并发启动多个不同模型的评测任务 =====
-  /** 解析 AI Judge 配置（批量场景共享一个 Judge 模型；实际生效 ID 固化进 config） */
-  async function resolveJudgeOptionsForBatch(config: EvalRunConfig, judgeModelConfigId?: string): Promise<import('@zxbench/core').JudgeOptions | undefined> {
-    if (!config.judgeEnabled) return undefined;
+  /** Bind the selected Judge, or any available Judge, for final-answer review. */
+  async function resolveJudgeOptionsForNewRun(config: EvalRunConfig, judgeModelConfigId: string | undefined, pack: BenchmarkPack): Promise<import('@zxbench/core').JudgeOptions | undefined> {
+    const hasWorld = pack.scenarios.some(s => ((s.requirements as Record<string, unknown> | undefined)
+      ?.executionWorld as { scoreMode?: string } | undefined)?.scoreMode === 'strict');
+    if (!config.judgeEnabled && !hasWorld) {
+      config.semanticFinalReviewEnabled = false;
+      return undefined;
+    }
     const judgeRow = judgeModelConfigId
       ? await prisma.modelConfig.findUnique({ where: { id: judgeModelConfigId } })
       : await prisma.modelConfig.findFirst({ where: { modelType: 'judge' } });
     if (!judgeRow) {
-      console.warn('[Batch] judgeEnabled=true 但未配置 Judge 模型，跳过 AI Judge');
+      if (judgeModelConfigId) throw new Error('选定的 Judge 配置不存在');
+      config.semanticFinalReviewEnabled = false;
       return undefined;
     }
     if (judgeRow.modelType !== 'judge') throw new Error('选定的 Judge 配置不是 AI Judge 模型');
     await verifyJudgeRecoveryConfigs([judgeRow], 60_000);
     config.judgeModelConfigId = judgeRow.id;
-    console.log(`[Batch] Judge 模型已选定: ${judgeRow.name} (${judgeRow.id})${judgeModelConfigId ? '' : ' ← findFirst 自动选择，建议前端显式指定'}`);
+    config.semanticFinalReviewEnabled = true;
+    console.log(`[Eval] Judge 模型已绑定: ${judgeRow.name} (${judgeRow.id})`);
     return {
       localModel: {
         id: judgeRow.id,
@@ -1491,6 +1460,7 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
         apiKey: judgeRow.apiKey ? decryptApiKey(judgeRow.apiKey) : undefined,
         defaultParams: JSON.parse(judgeRow.defaultParams),
         reasoningModel: judgeRow.reasoningModel,
+        modelType: 'judge',
       },
       escalationThreshold: config.escalationThreshold || 0.85,
     };
@@ -1519,7 +1489,7 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
       let pack: BenchmarkPack;
       try { pack = await selectBenchmarkPack(config, body.dimensionIds); }
       catch (err) { return reply.status(400).send({ success: false, error: String(err) }); }
-      const judgeOptions = await resolveJudgeOptionsForBatch(config, body.judgeModelConfigId);
+      const judgeOptions = await resolveJudgeOptionsForNewRun(config, body.judgeModelConfigId, pack);
       if (config.judgeEnabled && !judgeOptions) return reply.status(400).send({ success: false, error: 'Judge enabled but no Judge model configured' });
 
       // 预校验所有模型配置（缺失的加入 skipped，不阻断其他模型启动）
@@ -1692,10 +1662,12 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
 
     // 构建 Judge 配置（优先还原 run 创建时固化的 Judge，避免重启后 findFirst 选错）
     let judgeOptions: import('@zxbench/core').JudgeOptions | undefined;
-    if (config.judgeEnabled) {
+    if (config.judgeEnabled || config.semanticFinalReviewEnabled) {
       const judgeRow = config.judgeModelConfigId
         ? await prisma.modelConfig.findUnique({ where: { id: config.judgeModelConfigId } })
         : await prisma.modelConfig.findFirst({ where: { modelType: 'judge' } });
+      if (config.semanticFinalReviewEnabled && !judgeRow) throw new Error('Frozen semantic Judge configuration is missing');
+      if (judgeRow && judgeRow.modelType !== 'judge') throw new Error('Frozen semantic Judge is not a Judge model');
       if (judgeRow) {
         judgeOptions = {
           localModel: {
@@ -1706,6 +1678,7 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
             apiKey: judgeRow.apiKey ? decryptApiKey(judgeRow.apiKey) : undefined,
             defaultParams: JSON.parse(judgeRow.defaultParams),
             reasoningModel: judgeRow.reasoningModel,
+            modelType: 'judge',
           },
           escalationThreshold: config.escalationThreshold || 0.85,
         };
@@ -1772,10 +1745,12 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
 
     // 构建 Judge 配置（优先还原父运行固化的 Judge）
     let judgeOptions: import('@zxbench/core').JudgeOptions | undefined;
-    if (config.judgeEnabled) {
+    if (config.judgeEnabled || config.semanticFinalReviewEnabled) {
       const judgeRow = config.judgeModelConfigId
         ? await prisma.modelConfig.findUnique({ where: { id: config.judgeModelConfigId } })
         : await prisma.modelConfig.findFirst({ where: { modelType: 'judge' } });
+      if (config.semanticFinalReviewEnabled && !judgeRow) throw new Error('Frozen semantic Judge configuration is missing');
+      if (judgeRow && judgeRow.modelType !== 'judge') throw new Error('Frozen semantic Judge is not a Judge model');
       if (judgeRow) {
         judgeOptions = {
           localModel: {
@@ -1786,6 +1761,7 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
             apiKey: judgeRow.apiKey ? decryptApiKey(judgeRow.apiKey) : undefined,
             defaultParams: JSON.parse(judgeRow.defaultParams),
             reasoningModel: judgeRow.reasoningModel,
+            modelType: 'judge',
           },
           escalationThreshold: config.escalationThreshold || 0.85,
         };
@@ -3825,10 +3801,12 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
 
     // 构建 Judge 配置（优先还原 run 创建时固化的 Judge，保证重跑与首跑条件一致）
     let judgeOptions: import('@zxbench/core').JudgeOptions | undefined;
-    if (evalConfig.judgeEnabled) {
+    if (evalConfig.judgeEnabled || evalConfig.semanticFinalReviewEnabled) {
       const judgeRow = evalConfig.judgeModelConfigId
         ? await prisma.modelConfig.findUnique({ where: { id: evalConfig.judgeModelConfigId } })
         : await prisma.modelConfig.findFirst({ where: { modelType: 'judge' } });
+      if (evalConfig.semanticFinalReviewEnabled && !judgeRow) throw new Error('Frozen semantic Judge configuration is missing');
+      if (judgeRow && judgeRow.modelType !== 'judge') throw new Error('Frozen semantic Judge is not a Judge model');
       if (judgeRow) {
         judgeOptions = {
           localModel: {
@@ -3839,6 +3817,7 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
             apiKey: judgeRow.apiKey ? decryptApiKey(judgeRow.apiKey) : undefined,
             defaultParams: JSON.parse(judgeRow.defaultParams),
             reasoningModel: judgeRow.reasoningModel,
+            modelType: 'judge',
           },
           escalationThreshold: evalConfig.escalationThreshold || 0.85,
         };

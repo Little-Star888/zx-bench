@@ -317,6 +317,17 @@ export interface StructuredContractMetrics {
   };
 }
 
+/** A narrowly scoped Judge decision about failed positive final-answer wording. */
+export interface SemanticFinalReview {
+  version: string;
+  judgeModelId: string;
+  judgeModel: string;
+  status: 'equivalent' | 'not_equivalent' | 'inconclusive' | 'error';
+  checks: Array<{ id: string; equivalent: boolean | null; quote: string }>;
+  tokenUsage?: TokenUsage;
+  error?: string;
+}
+
 export interface EvaluationAudit {
   version: 1;
   scenarioHash: string;
@@ -324,6 +335,7 @@ export interface EvaluationAudit {
   runtimeEvaluation?: RuntimeEvaluation;
   graderVersion?: string;
   criterionResults?: CriterionResult[];
+  semanticFinalReview?: SemanticFinalReview;
   structuredContractMetrics?: StructuredContractMetrics;
   judgeScoreHistory?: number[];
   multiRunStats?: MultiRunStats;
@@ -356,6 +368,7 @@ export interface ScenarioResult {
   axisCoverage?: number;
   totalScore: number;
   criterionResults?: CriterionResult[];
+  semanticFinalReview?: SemanticFinalReview;
   structuredContractMetrics?: StructuredContractMetrics;
   deterministicScore?: number;
   judgeScore?: number;
@@ -571,6 +584,7 @@ export interface RunManifest {
     structuredOutputEnabled?: boolean;
     escalationThreshold?: number;
     judgeModelConfigId?: string | null;
+    semanticFinalReviewEnabled?: boolean;
   };
 }
 
@@ -610,6 +624,8 @@ export interface EvalRunConfig {
   judgeEnabled: boolean;
   /** 实际生效的 Judge 模型配置 ID（创建时固化，重跑/审计时还原同一 Judge） */
   judgeModelConfigId?: string;
+  /** 新运行绑定 Judge 后，独立启用严格执行题的最终答复语义复核。 */
+  semanticFinalReviewEnabled?: boolean;
   judgeLocalModel?: string;
   judgeFrontierModel?: string;
   escalationEnabled: boolean;

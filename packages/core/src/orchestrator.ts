@@ -38,6 +38,7 @@ import { createHash } from 'node:crypto';
 import { buildOutputMetadata } from '@zxbench/utils';
 import { runTieredJudge, runJudgeEnsemble, computeJudgeScore, type JudgeOptions } from './judge/index.js';
 import { getEvaluator } from './evaluators/index.js';
+import { applySemanticFinalReview, reviewSemanticFinalAnswer } from './evaluators/semanticFinalAnswer.js';
 import { prepareStructuredContract } from './evaluators/structuredContract.js';
 import { prepareExtendedContract, type ExtendedContract } from './evaluators/structuredContractV2.js';
 import type { StructuredContractRequirements } from './evaluators/structuredContract.js';
@@ -750,6 +751,15 @@ async function evaluateCandidate(options: OrchestrateOptions): Promise<ScenarioR
     }
   }
 
+  // The execution trace remains authoritative. Only a literal miss in the
+  // positive final-answer wording can be reconsidered by the configured Judge.
+  if (scenarioRequirements.executionWorld && evalConfig.semanticFinalReviewEnabled === true && judgeOptions?.localModel
+    && judgeOptions.localModel.modelType !== 'tested') {
+    const semanticReview = await reviewSemanticFinalAnswer(
+      scenario, modelResponse, outputMetadata, result, judgeOptions.localModel, options.signal);
+    if (semanticReview) applySemanticFinalReview(result, semanticReview);
+  }
+
   // ===== Stage 8: AI Judge（GPT5.6 P1-8 争议记录） =====
   let localJudge: ScenarioResult['localJudge'];
   let frontierJudge: ScenarioResult['frontierJudge'];
@@ -1009,6 +1019,7 @@ async function evaluateCandidate(options: OrchestrateOptions): Promise<ScenarioR
     },
     totalScore: result.totalScore ?? 0,
     criterionResults: result.criterionResults,
+    semanticFinalReview: result.semanticFinalReview,
     structuredContractMetrics: result.structuredContractMetrics,
     deterministicScore: result.deterministicScore,
     judgeScore: result.judgeScore,
@@ -1064,7 +1075,7 @@ export function generateManifest(
       scenarioHash,
     },
     scorers: {
-      version: 'scorer-2026-09-08-execution-v2-reviewed',
+      version: 'scorer-2026-09-29-world-final-semantics-v1',
       configHash: snapshotHash(evalConfig),
     },
     models: [{
@@ -1105,6 +1116,7 @@ export function generateManifest(
       structuredOutputEnabled: evalConfig.structuredOutputEnabled,
       escalationThreshold: evalConfig.escalationThreshold,
       judgeModelConfigId: evalConfig.judgeModelConfigId ?? null,
+      semanticFinalReviewEnabled: evalConfig.semanticFinalReviewEnabled,
     },
   };
 }

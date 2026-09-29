@@ -21,6 +21,7 @@ export function attachEvaluationAudit(result: ScenarioResult, attempts?: Scenari
     runtimeEvaluation: result.runtimeEvaluation,
     graderVersion: result.graderVersion,
     criterionResults: result.criterionResults,
+    semanticFinalReview: result.semanticFinalReview,
     structuredContractMetrics: result.structuredContractMetrics,
     judgeScoreHistory: result.judgeScoreHistory,
     multiRunStats: result.multiRunStats,

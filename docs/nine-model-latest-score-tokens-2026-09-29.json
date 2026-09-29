@@ -1,0 +1,1103 @@
+{
+  "scope": "803 source questions; 189 migrated sources use 306 task instances; 60 structured outputs",
+  "scoreStatus": "derived comparison using saved targeted reruns; original official Signal run retained",
+  "targetedRerunCount": 148,
+  "targetedSummaryCreatedAt": "2026-09-28T20:09:53.649Z",
+  "sourceSha256": {
+    "targeted-rerun-summary.json": "d83e54b3bae4271304f99636fc8949587e611a6d611cc7860b66c64e43cbfcf0",
+    "signal-offline-regrade.json": "aac0689b6d34cf6bc3145fd333777254aea0ac19555bd86fd46d0902a8be5e04",
+    "cli027-offline-regrade.json": "c2e234e936c8aa4903cd006c05651ca22268f371fd25a3924e30fa56f08f18ac",
+    "bonsai.json": "b982ab52a0823dce29bbc46c1b7c7b0691c9320c08d1b729746cc3d0e31f3937",
+    "byteshape.json": "5d8a7d32cc14324ff7efa9ae54a1288ae0bfe0635bd6bb27bd064d682d3a738e",
+    "gsq.json": "f780dc284666cab4e1e7c1b822e70974350c68ea42dd512a178dd9b01a4585a3",
+    "nerkyor.json": "ce61ab73cea44fbdabfda4c11345bf1aff6dd95c9a62510e47cfd827956a691e",
+    "nvfp4.json": "6cffedb69ec4355c543d069c6dd98bebe38c0039e1a350343c13dc521f0b68c7",
+    "qwopus.json": "52c61d930a5a97ce0efc0ae3607b44be7517cf29ab4c92a9b94f98ac0caaf705",
+    "signal.json": "c0b7f980af2029d2b256e70ae0259c701a5cad6e77bcc110b6dfc742a3822404",
+    "swift.json": "c435438eaa0b69d91483eca5c97a2e00e1d0fe4989a6f2babcb6558b418e6400",
+    "twin.json": "74dad3102c16a3bbef9b40bab20902924a811345dfbe47ec61579d9af40bfea2"
+  },
+  "outputTokensIncludeReasoning": true,
+  "reasoningCaveat": "Reasoning is a subset of output; precise separate totals are unavailable for most backends and multi-turn rows",
+  "models": [
+    {
+      "model": "Nerkyor EfficientThink",
+      "scoreBefore": 75.54,
+      "scoreAfter": 76.48,
+      "scoreChange": 0.94,
+      "newAnswerCount": 15,
+      "dimensionsAfter": {
+        "agent_loop": 100.0,
+        "cli_deep_tasks": 80.44,
+        "agent_workflow": 46.54,
+        "safety_authority": 73.66,
+        "tool_cli_workflow": 46.68,
+        "structured_output": 89.08,
+        "hallucination_resistance": 81.82,
+        "program": 68.09,
+        "instruction_following": 91.75,
+        "data_extraction": 82.74,
+        "reasoning_math": 90.33
+      },
+      "tokenUsage": {
+        "model": "Nerkyor EfficientThink",
+        "score": 76.48,
+        "all803": {
+          "recordCount": 920,
+          "inputTokens": 867978,
+          "outputTokensIncludingReasoning": 6874677,
+          "totalTokens": 7742655,
+          "reasoningTokensReported": 0,
+          "reasoningReportedRecordCount": 663,
+          "reasoningUnreportedRecordCount": 257,
+          "reasoningPositiveRecordCount": 0,
+          "tokenUsageSources": {
+            "provider": 658
+          }
+        },
+        "refresh189Plus60": {
+          "recordCount": 366,
+          "inputTokens": 525115,
+          "outputTokensIncludingReasoning": 2716428,
+          "totalTokens": 3241543,
+          "reasoningTokensReported": 0,
+          "reasoningReportedRecordCount": 112,
+          "reasoningUnreportedRecordCount": 254,
+          "reasoningPositiveRecordCount": 0,
+          "tokenUsageSources": {
+            "provider": 107
+          }
+        },
+        "byAnswerSource": {
+          "historical": {
+            "recordCount": 554,
+            "inputTokens": 342863,
+            "outputTokensIncludingReasoning": 4158249,
+            "totalTokens": 4501112,
+            "reasoningTokensReported": 0,
+            "reasoningReportedRecordCount": 551,
+            "reasoningUnreportedRecordCount": 3,
+            "reasoningPositiveRecordCount": 0,
+            "tokenUsageSources": {
+              "provider": 551
+            }
+          },
+          "migrated": {
+            "recordCount": 306,
+            "inputTokens": 497136,
+            "outputTokensIncludingReasoning": 2522163,
+            "totalTokens": 3019299,
+            "reasoningTokensReported": 0,
+            "reasoningReportedRecordCount": 52,
+            "reasoningUnreportedRecordCount": 254,
+            "reasoningPositiveRecordCount": 0,
+            "tokenUsageSources": {
+              "provider": 47
+            }
+          },
+          "structured": {
+            "recordCount": 60,
+            "inputTokens": 27979,
+            "outputTokensIncludingReasoning": 194265,
+            "totalTokens": 222244,
+            "reasoningTokensReported": 0,
+            "reasoningReportedRecordCount": 60,
+            "reasoningUnreportedRecordCount": 0,
+            "reasoningPositiveRecordCount": 0,
+            "tokenUsageSources": {
+              "provider": 60
+            }
+          }
+        },
+        "targetedRerun": {
+          "recordCount": 15,
+          "inputTokens": 12394,
+          "outputTokensIncludingReasoning": 252595,
+          "totalTokens": 264989,
+          "reasoningTokensReported": 0,
+          "reasoningReportedRecordCount": 6,
+          "reasoningUnreportedRecordCount": 9,
+          "reasoningPositiveRecordCount": 0,
+          "tokenUsageSources": {
+            "provider": 6
+          }
+        },
+        "replacedAttempt": {
+          "recordCount": 15,
+          "inputTokens": 39725,
+          "outputTokensIncludingReasoning": 264006,
+          "totalTokens": 303731,
+          "reasoningTokensReported": 0,
+          "reasoningReportedRecordCount": 7,
+          "reasoningUnreportedRecordCount": 8,
+          "reasoningPositiveRecordCount": 0,
+          "tokenUsageSources": {
+            "provider": 7
+          }
+        }
+      }
+    },
+    {
+      "model": "GSQ-RCO",
+      "scoreBefore": 74.77,
+      "scoreAfter": 76.0,
+      "scoreChange": 1.23,
+      "newAnswerCount": 23,
+      "dimensionsAfter": {
+        "agent_loop": 100.0,
+        "cli_deep_tasks": 80.89,
+        "agent_workflow": 37.5,
+        "safety_authority": 66.42,
+        "tool_cli_workflow": 49.29,
+        "structured_output": 97.13,
+        "hallucination_resistance": 83.82,
+        "program": 71.4,
+        "instruction_following": 83.52,
+        "data_extraction": 83.18,
+        "reasoning_math": 94.57
+      },
+      "tokenUsage": {
+        "model": "GSQ-RCO",
+        "score": 76.0,
+        "all803": {
+          "recordCount": 920,
+          "inputTokens": 833516,
+          "outputTokensIncludingReasoning": 6245208,
+          "totalTokens": 7078724,
+          "reasoningTokensReported": 0,
+          "reasoningReportedRecordCount": 544,
+          "reasoningUnreportedRecordCount": 376,
+          "reasoningPositiveRecordCount": 0,
+          "tokenUsageSources": {
+            "provider": 660
+          }
+        },
+        "refresh189Plus60": {
+          "recordCount": 366,
+          "inputTokens": 455471,
+          "outputTokensIncludingReasoning": 1899000,
+          "totalTokens": 2354471,
+          "reasoningTokensReported": 0,
+          "reasoningReportedRecordCount": 113,
+          "reasoningUnreportedRecordCount": 253,
+          "reasoningPositiveRecordCount": 0,
+          "tokenUsageSources": {
+            "provider": 108
+          }
+        },
+        "byAnswerSource": {
+          "historical": {
+            "recordCount": 554,
+            "inputTokens": 378045,
+            "outputTokensIncludingReasoning": 4346208,
+            "totalTokens": 4724253,
+            "reasoningTokensReported": 0,
+            "reasoningReportedRecordCount": 431,
+            "reasoningUnreportedRecordCount": 123,
+            "reasoningPositiveRecordCount": 0,
+            "tokenUsageSources": {
+              "provider": 552
+            }
+          },
+          "migrated": {
+            "recordCount": 306,
+            "inputTokens": 425212,
+            "outputTokensIncludingReasoning": 1691270,
+            "totalTokens": 2116482,
+            "reasoningTokensReported": 0,
+            "reasoningReportedRecordCount": 53,
+            "reasoningUnreportedRecordCount": 253,
+            "reasoningPositiveRecordCount": 0,
+            "tokenUsageSources": {
+              "provider": 48
+            }
+          },
+          "structured": {
+            "recordCount": 60,
+            "inputTokens": 30259,
+            "outputTokensIncludingReasoning": 207730,
+            "totalTokens": 237989,
+            "reasoningTokensReported": 0,
+            "reasoningReportedRecordCount": 60,
+            "reasoningUnreportedRecordCount": 0,
+            "reasoningPositiveRecordCount": 0,
+            "tokenUsageSources": {
+              "provider": 60
+            }
+          }
+        },
+        "targetedRerun": {
+          "recordCount": 23,
+          "inputTokens": 23503,
+          "outputTokensIncludingReasoning": 211518,
+          "totalTokens": 235021,
+          "reasoningTokensReported": 0,
+          "reasoningReportedRecordCount": 7,
+          "reasoningUnreportedRecordCount": 16,
+          "reasoningPositiveRecordCount": 0,
+          "tokenUsageSources": {
+            "provider": 7
+          }
+        },
+        "replacedAttempt": {
+          "recordCount": 23,
+          "inputTokens": 56217,
+          "outputTokensIncludingReasoning": 463893,
+          "totalTokens": 520110,
+          "reasoningTokensReported": 0,
+          "reasoningReportedRecordCount": 7,
+          "reasoningUnreportedRecordCount": 16,
+          "reasoningPositiveRecordCount": 0,
+          "tokenUsageSources": {
+            "provider": 7
+          }
+        }
+      }
+    },
+    {
+      "model": "Swift",
+      "scoreBefore": 72.96,
+      "scoreAfter": 74.26,
+      "scoreChange": 1.29,
+      "newAnswerCount": 15,
+      "dimensionsAfter": {
+        "agent_loop": 100.0,
+        "cli_deep_tasks": 80.0,
+        "agent_workflow": 38.56,
+        "safety_authority": 46.42,
+        "tool_cli_workflow": 49.53,
+        "structured_output": 92.6,
+        "hallucination_resistance": 83.44,
+        "program": 68.73,
+        "instruction_following": 92.18,
+        "data_extraction": 86.16,
+        "reasoning_math": 92.02
+      },
+      "tokenUsage": {
+        "model": "Swift",
+        "score": 74.26,
+        "all803": {
+          "recordCount": 920,
+          "inputTokens": 790045,
+          "outputTokensIncludingReasoning": 2893287,
+          "totalTokens": 3683332,
+          "reasoningTokensReported": 0,
+          "reasoningReportedRecordCount": 665,
+          "reasoningUnreportedRecordCount": 255,
+          "reasoningPositiveRecordCount": 0,
+          "tokenUsageSources": {
+            "provider": 660
+          }
+        },
+        "refresh189Plus60": {
+          "recordCount": 366,
+          "inputTokens": 438467,
+          "outputTokensIncludingReasoning": 878151,
+          "totalTokens": 1316618,
+          "reasoningTokensReported": 0,
+          "reasoningReportedRecordCount": 113,
+          "reasoningUnreportedRecordCount": 253,
+          "reasoningPositiveRecordCount": 0,
+          "tokenUsageSources": {
+            "provider": 108
+          }
+        },
+        "byAnswerSource": {
+          "historical": {
+            "recordCount": 554,
+            "inputTokens": 351578,
+            "outputTokensIncludingReasoning": 2015136,
+            "totalTokens": 2366714,
+            "reasoningTokensReported": 0,
+            "reasoningReportedRecordCount": 552,
+            "reasoningUnreportedRecordCount": 2,
+            "reasoningPositiveRecordCount": 0,
+            "tokenUsageSources": {
+              "provider": 552
+            }
+          },
+          "migrated": {
+            "recordCount": 306,
+            "inputTokens": 410488,
+            "outputTokensIncludingReasoning": 753522,
+            "totalTokens": 1164010,
+            "reasoningTokensReported": 0,
+            "reasoningReportedRecordCount": 53,
+            "reasoningUnreportedRecordCount": 253,
+            "reasoningPositiveRecordCount": 0,
+            "tokenUsageSources": {
+              "provider": 48
+            }
+          },
+          "structured": {
+            "recordCount": 60,
+            "inputTokens": 27979,
+            "outputTokensIncludingReasoning": 124629,
+            "totalTokens": 152608,
+            "reasoningTokensReported": 0,
+            "reasoningReportedRecordCount": 60,
+            "reasoningUnreportedRecordCount": 0,
+            "reasoningPositiveRecordCount": 0,
+            "tokenUsageSources": {
+              "provider": 60
+            }
+          }
+        },
+        "targetedRerun": {
+          "recordCount": 15,
+          "inputTokens": 8055,
+          "outputTokensIncludingReasoning": 50193,
+          "totalTokens": 58248,
+          "reasoningTokensReported": 0,
+          "reasoningReportedRecordCount": 7,
+          "reasoningUnreportedRecordCount": 8,
+          "reasoningPositiveRecordCount": 0,
+          "tokenUsageSources": {
+            "provider": 7
+          }
+        },
+        "replacedAttempt": {
+          "recordCount": 15,
+          "inputTokens": 29455,
+          "outputTokensIncludingReasoning": 97358,
+          "totalTokens": 126813,
+          "reasoningTokensReported": 0,
+          "reasoningReportedRecordCount": 7,
+          "reasoningUnreportedRecordCount": 8,
+          "reasoningPositiveRecordCount": 0,
+          "tokenUsageSources": {
+            "provider": 7
+          }
+        }
+      }
+    },
+    {
+      "model": "Signal",
+      "scoreBefore": 72.3,
+      "scoreAfter": 73.6,
+      "scoreChange": 1.29,
+      "newAnswerCount": 15,
+      "dimensionsAfter": {
+        "hallucination_resistance": 80.34,
+        "cli_deep_tasks": 74.67,
+        "agent_loop": 97.33,
+        "program": 68.2,
+        "data_extraction": 84.71,
+        "agent_workflow": 43.09,
+        "instruction_following": 92.36,
+        "safety_authority": 52.08,
+        "tool_cli_workflow": 47.37,
+        "reasoning_math": 88.17,
+        "structured_output": 93.0
+      },
+      "tokenUsage": {
+        "model": "Signal",
+        "score": 73.6,
+        "all803": {
+          "recordCount": 920,
+          "inputTokens": 824792,
+          "outputTokensIncludingReasoning": 4723522,
+          "totalTokens": 5548314,
+          "reasoningTokensReported": 0,
+          "reasoningReportedRecordCount": 662,
+          "reasoningUnreportedRecordCount": 258,
+          "reasoningPositiveRecordCount": 0,
+          "tokenUsageSources": {
+            "provider": 657
+          }
+        },
+        "refresh189Plus60": {
+          "recordCount": 366,
+          "inputTokens": 485711,
+          "outputTokensIncludingReasoning": 1418955,
+          "totalTokens": 1904666,
+          "reasoningTokensReported": 0,
+          "reasoningReportedRecordCount": 112,
+          "reasoningUnreportedRecordCount": 254,
+          "reasoningPositiveRecordCount": 0,
+          "tokenUsageSources": {
+            "provider": 107
+          }
+        },
+        "byAnswerSource": {
+          "migrated": {
+            "recordCount": 306,
+            "inputTokens": 461872,
+            "outputTokensIncludingReasoning": 1261059,
+            "totalTokens": 1722931,
+            "reasoningTokensReported": 0,
+            "reasoningReportedRecordCount": 52,
+            "reasoningUnreportedRecordCount": 254,
+            "reasoningPositiveRecordCount": 0,
+            "tokenUsageSources": {
+              "provider": 47
+            }
+          },
+          "official-other": {
+            "recordCount": 554,
+            "inputTokens": 339081,
+            "outputTokensIncludingReasoning": 3304567,
+            "totalTokens": 3643648,
+            "reasoningTokensReported": 0,
+            "reasoningReportedRecordCount": 550,
+            "reasoningUnreportedRecordCount": 4,
+            "reasoningPositiveRecordCount": 0,
+            "tokenUsageSources": {
+              "provider": 550
+            }
+          },
+          "structured": {
+            "recordCount": 60,
+            "inputTokens": 23839,
+            "outputTokensIncludingReasoning": 157896,
+            "totalTokens": 181735,
+            "reasoningTokensReported": 0,
+            "reasoningReportedRecordCount": 60,
+            "reasoningUnreportedRecordCount": 0,
+            "reasoningPositiveRecordCount": 0,
+            "tokenUsageSources": {
+              "provider": 60
+            }
+          }
+        },
+        "targetedRerun": {
+          "recordCount": 15,
+          "inputTokens": 9112,
+          "outputTokensIncludingReasoning": 84066,
+          "totalTokens": 93178,
+          "reasoningTokensReported": 0,
+          "reasoningReportedRecordCount": 7,
+          "reasoningUnreportedRecordCount": 8,
+          "reasoningPositiveRecordCount": 0,
+          "tokenUsageSources": {
+            "provider": 7
+          }
+        },
+        "replacedAttempt": {
+          "recordCount": 15,
+          "inputTokens": 33633,
+          "outputTokensIncludingReasoning": 217196,
+          "totalTokens": 250829,
+          "reasoningTokensReported": 0,
+          "reasoningReportedRecordCount": 7,
+          "reasoningUnreportedRecordCount": 8,
+          "reasoningPositiveRecordCount": 0,
+          "tokenUsageSources": {
+            "provider": 7
+          }
+        }
+      }
+    },
+    {
+      "model": "NVFP4",
+      "scoreBefore": 72.19,
+      "scoreAfter": 73.47,
+      "scoreChange": 1.28,
+      "newAnswerCount": 15,
+      "dimensionsAfter": {
+        "agent_loop": 100.0,
+        "cli_deep_tasks": 75.78,
+        "agent_workflow": 40.96,
+        "safety_authority": 58.44,
+        "tool_cli_workflow": 42.42,
+        "structured_output": 91.82,
+        "hallucination_resistance": 78.79,
+        "program": 73.53,
+        "instruction_following": 84.75,
+        "data_extraction": 77.01,
+        "reasoning_math": 91.39
+      },
+      "tokenUsage": {
+        "model": "NVFP4",
+        "score": 73.47,
+        "all803": {
+          "recordCount": 920,
+          "inputTokens": 889105,
+          "outputTokensIncludingReasoning": 5804488,
+          "totalTokens": 6693593,
+          "reasoningTokensReported": 4442232,
+          "reasoningReportedRecordCount": 667,
+          "reasoningUnreportedRecordCount": 253,
+          "reasoningPositiveRecordCount": 667,
+          "tokenUsageSources": {
+            "provider": 662
+          }
+        },
+        "refresh189Plus60": {
+          "recordCount": 366,
+          "inputTokens": 514658,
+          "outputTokensIncludingReasoning": 1735355,
+          "totalTokens": 2250013,
+          "reasoningTokensReported": 565586,
+          "reasoningReportedRecordCount": 113,
+          "reasoningUnreportedRecordCount": 253,
+          "reasoningPositiveRecordCount": 113,
+          "tokenUsageSources": {
+            "provider": 108
+          }
+        },
+        "byAnswerSource": {
+          "extra": {
+            "recordCount": 69,
+            "inputTokens": 42839,
+            "outputTokensIncludingReasoning": 115255,
+            "totalTokens": 158094,
+            "reasoningTokensReported": 112225,
+            "reasoningReportedRecordCount": 69,
+            "reasoningUnreportedRecordCount": 0,
+            "reasoningPositiveRecordCount": 69,
+            "tokenUsageSources": {
+              "provider": 69
+            }
+          },
+          "historical": {
+            "recordCount": 485,
+            "inputTokens": 331608,
+            "outputTokensIncludingReasoning": 3953878,
+            "totalTokens": 4285486,
+            "reasoningTokensReported": 3764421,
+            "reasoningReportedRecordCount": 485,
+            "reasoningUnreportedRecordCount": 0,
+            "reasoningPositiveRecordCount": 485,
+            "tokenUsageSources": {
+              "provider": 485
+            }
+          },
+          "migrated": {
+            "recordCount": 306,
+            "inputTokens": 484400,
+            "outputTokensIncludingReasoning": 1588906,
+            "totalTokens": 2073306,
+            "reasoningTokensReported": 449539,
+            "reasoningReportedRecordCount": 53,
+            "reasoningUnreportedRecordCount": 253,
+            "reasoningPositiveRecordCount": 53,
+            "tokenUsageSources": {
+              "provider": 48
+            }
+          },
+          "structured": {
+            "recordCount": 60,
+            "inputTokens": 30258,
+            "outputTokensIncludingReasoning": 146449,
+            "totalTokens": 176707,
+            "reasoningTokensReported": 116047,
+            "reasoningReportedRecordCount": 60,
+            "reasoningUnreportedRecordCount": 0,
+            "reasoningPositiveRecordCount": 60,
+            "tokenUsageSources": {
+              "provider": 60
+            }
+          }
+        },
+        "targetedRerun": {
+          "recordCount": 15,
+          "inputTokens": 15095,
+          "outputTokensIncludingReasoning": 113976,
+          "totalTokens": 129071,
+          "reasoningTokensReported": 98257,
+          "reasoningReportedRecordCount": 7,
+          "reasoningUnreportedRecordCount": 8,
+          "reasoningPositiveRecordCount": 7,
+          "tokenUsageSources": {
+            "provider": 7
+          }
+        },
+        "replacedAttempt": {
+          "recordCount": 15,
+          "inputTokens": 35417,
+          "outputTokensIncludingReasoning": 201569,
+          "totalTokens": 236986,
+          "reasoningTokensReported": 61596,
+          "reasoningReportedRecordCount": 7,
+          "reasoningUnreportedRecordCount": 8,
+          "reasoningPositiveRecordCount": 7,
+          "tokenUsageSources": {
+            "provider": 7
+          }
+        }
+      }
+    },
+    {
+      "model": "ByteShape IQ2_XXS",
+      "scoreBefore": 69.36,
+      "scoreAfter": 70.31,
+      "scoreChange": 0.95,
+      "newAnswerCount": 16,
+      "dimensionsAfter": {
+        "agent_loop": 96.67,
+        "cli_deep_tasks": 68.67,
+        "agent_workflow": 48.94,
+        "safety_authority": 69.59,
+        "tool_cli_workflow": 49.29,
+        "structured_output": 87.29,
+        "hallucination_resistance": 79.9,
+        "program": 63.11,
+        "instruction_following": 92.15,
+        "data_extraction": 78.22,
+        "reasoning_math": 58.9
+      },
+      "tokenUsage": {
+        "model": "ByteShape IQ2_XXS",
+        "score": 70.31,
+        "all803": {
+          "recordCount": 920,
+          "inputTokens": 814867,
+          "outputTokensIncludingReasoning": 4960440,
+          "totalTokens": 5775307,
+          "reasoningTokensReported": 0,
+          "reasoningReportedRecordCount": 526,
+          "reasoningUnreportedRecordCount": 394,
+          "reasoningPositiveRecordCount": 0,
+          "tokenUsageSources": {
+            "provider": 617
+          }
+        },
+        "refresh189Plus60": {
+          "recordCount": 366,
+          "inputTokens": 485235,
+          "outputTokensIncludingReasoning": 1468741,
+          "totalTokens": 1953976,
+          "reasoningTokensReported": 0,
+          "reasoningReportedRecordCount": 112,
+          "reasoningUnreportedRecordCount": 254,
+          "reasoningPositiveRecordCount": 0,
+          "tokenUsageSources": {
+            "provider": 107
+          }
+        },
+        "byAnswerSource": {
+          "extra": {
+            "recordCount": 4,
+            "inputTokens": 4744,
+            "outputTokensIncludingReasoning": 67707,
+            "totalTokens": 72451,
+            "reasoningTokensReported": 0,
+            "reasoningReportedRecordCount": 4,
+            "reasoningUnreportedRecordCount": 0,
+            "reasoningPositiveRecordCount": 0,
+            "tokenUsageSources": {
+              "provider": 4
+            }
+          },
+          "historical": {
+            "recordCount": 550,
+            "inputTokens": 324888,
+            "outputTokensIncludingReasoning": 3423992,
+            "totalTokens": 3748880,
+            "reasoningTokensReported": 0,
+            "reasoningReportedRecordCount": 410,
+            "reasoningUnreportedRecordCount": 140,
+            "reasoningPositiveRecordCount": 0,
+            "tokenUsageSources": {
+              "provider": 506
+            }
+          },
+          "migrated": {
+            "recordCount": 306,
+            "inputTokens": 457256,
+            "outputTokensIncludingReasoning": 1306699,
+            "totalTokens": 1763955,
+            "reasoningTokensReported": 0,
+            "reasoningReportedRecordCount": 52,
+            "reasoningUnreportedRecordCount": 254,
+            "reasoningPositiveRecordCount": 0,
+            "tokenUsageSources": {
+              "provider": 47
+            }
+          },
+          "structured": {
+            "recordCount": 60,
+            "inputTokens": 27979,
+            "outputTokensIncludingReasoning": 162042,
+            "totalTokens": 190021,
+            "reasoningTokensReported": 0,
+            "reasoningReportedRecordCount": 60,
+            "reasoningUnreportedRecordCount": 0,
+            "reasoningPositiveRecordCount": 0,
+            "tokenUsageSources": {
+              "provider": 60
+            }
+          }
+        },
+        "targetedRerun": {
+          "recordCount": 16,
+          "inputTokens": 15890,
+          "outputTokensIncludingReasoning": 192762,
+          "totalTokens": 208652,
+          "reasoningTokensReported": 0,
+          "reasoningReportedRecordCount": 6,
+          "reasoningUnreportedRecordCount": 10,
+          "reasoningPositiveRecordCount": 0,
+          "tokenUsageSources": {
+            "provider": 6
+          }
+        },
+        "replacedAttempt": {
+          "recordCount": 16,
+          "inputTokens": 31920,
+          "outputTokensIncludingReasoning": 162248,
+          "totalTokens": 194168,
+          "reasoningTokensReported": 0,
+          "reasoningReportedRecordCount": 7,
+          "reasoningUnreportedRecordCount": 9,
+          "reasoningPositiveRecordCount": 0,
+          "tokenUsageSources": {
+            "provider": 7
+          }
+        }
+      }
+    },
+    {
+      "model": "Bonsai-2 Q1",
+      "scoreBefore": 67.16,
+      "scoreAfter": 67.95,
+      "scoreChange": 0.79,
+      "newAnswerCount": 19,
+      "dimensionsAfter": {
+        "agent_loop": 93.33,
+        "cli_deep_tasks": 62.44,
+        "agent_workflow": 34.04,
+        "safety_authority": 52.1,
+        "tool_cli_workflow": 32.94,
+        "structured_output": 81.93,
+        "hallucination_resistance": 80.12,
+        "program": 66.13,
+        "instruction_following": 81.62,
+        "data_extraction": 84.45,
+        "reasoning_math": 82.35
+      },
+      "tokenUsage": {
+        "model": "Bonsai-2 Q1",
+        "score": 67.95,
+        "all803": {
+          "recordCount": 920,
+          "inputTokens": 831553,
+          "outputTokensIncludingReasoning": 6188060,
+          "totalTokens": 7019613,
+          "reasoningTokensReported": 0,
+          "reasoningReportedRecordCount": 106,
+          "reasoningUnreportedRecordCount": 814,
+          "reasoningPositiveRecordCount": 0,
+          "tokenUsageSources": {
+            "provider": 649
+          }
+        },
+        "refresh189Plus60": {
+          "recordCount": 366,
+          "inputTokens": 468096,
+          "outputTokensIncludingReasoning": 2099902,
+          "totalTokens": 2567998,
+          "reasoningTokensReported": 0,
+          "reasoningReportedRecordCount": 106,
+          "reasoningUnreportedRecordCount": 260,
+          "reasoningPositiveRecordCount": 0,
+          "tokenUsageSources": {
+            "provider": 108
+          }
+        },
+        "byAnswerSource": {
+          "historical": {
+            "recordCount": 554,
+            "inputTokens": 363457,
+            "outputTokensIncludingReasoning": 4088158,
+            "totalTokens": 4451615,
+            "reasoningTokensReported": 0,
+            "reasoningReportedRecordCount": 0,
+            "reasoningUnreportedRecordCount": 554,
+            "reasoningPositiveRecordCount": 0,
+            "tokenUsageSources": {
+              "provider": 541
+            }
+          },
+          "migrated": {
+            "recordCount": 306,
+            "inputTokens": 437837,
+            "outputTokensIncludingReasoning": 1812140,
+            "totalTokens": 2249977,
+            "reasoningTokensReported": 0,
+            "reasoningReportedRecordCount": 46,
+            "reasoningUnreportedRecordCount": 260,
+            "reasoningPositiveRecordCount": 0,
+            "tokenUsageSources": {
+              "provider": 48
+            }
+          },
+          "structured": {
+            "recordCount": 60,
+            "inputTokens": 30259,
+            "outputTokensIncludingReasoning": 287762,
+            "totalTokens": 318021,
+            "reasoningTokensReported": 0,
+            "reasoningReportedRecordCount": 60,
+            "reasoningUnreportedRecordCount": 0,
+            "reasoningPositiveRecordCount": 0,
+            "tokenUsageSources": {
+              "provider": 60
+            }
+          }
+        },
+        "targetedRerun": {
+          "recordCount": 19,
+          "inputTokens": 32265,
+          "outputTokensIncludingReasoning": 234014,
+          "totalTokens": 266279,
+          "reasoningTokensReported": 0,
+          "reasoningReportedRecordCount": 0,
+          "reasoningUnreportedRecordCount": 19,
+          "reasoningPositiveRecordCount": 0,
+          "tokenUsageSources": {
+            "provider": 7
+          }
+        },
+        "replacedAttempt": {
+          "recordCount": 19,
+          "inputTokens": 39815,
+          "outputTokensIncludingReasoning": 289894,
+          "totalTokens": 329709,
+          "reasoningTokensReported": 0,
+          "reasoningReportedRecordCount": 7,
+          "reasoningUnreportedRecordCount": 12,
+          "reasoningPositiveRecordCount": 0,
+          "tokenUsageSources": {
+            "provider": 7
+          }
+        }
+      }
+    },
+    {
+      "model": "DavidAU Twin",
+      "scoreBefore": 66.76,
+      "scoreAfter": 67.35,
+      "scoreChange": 0.58,
+      "newAnswerCount": 15,
+      "dimensionsAfter": {
+        "agent_loop": 82.29,
+        "cli_deep_tasks": 78.44,
+        "agent_workflow": 27.39,
+        "safety_authority": 50.23,
+        "tool_cli_workflow": 37.2,
+        "structured_output": 86.62,
+        "hallucination_resistance": 67.16,
+        "program": 72.67,
+        "instruction_following": 88.84,
+        "data_extraction": 82.05,
+        "reasoning_math": 70.18
+      },
+      "tokenUsage": {
+        "model": "DavidAU Twin",
+        "score": 67.35,
+        "all803": {
+          "recordCount": 920,
+          "inputTokens": 875481,
+          "outputTokensIncludingReasoning": 1885831,
+          "totalTokens": 2761312,
+          "reasoningTokensReported": 0,
+          "reasoningReportedRecordCount": 113,
+          "reasoningUnreportedRecordCount": 807,
+          "reasoningPositiveRecordCount": 0,
+          "tokenUsageSources": {
+            "provider": 657
+          }
+        },
+        "refresh189Plus60": {
+          "recordCount": 366,
+          "inputTokens": 502066,
+          "outputTokensIncludingReasoning": 326680,
+          "totalTokens": 828746,
+          "reasoningTokensReported": 0,
+          "reasoningReportedRecordCount": 113,
+          "reasoningUnreportedRecordCount": 253,
+          "reasoningPositiveRecordCount": 0,
+          "tokenUsageSources": {
+            "provider": 108
+          }
+        },
+        "byAnswerSource": {
+          "historical": {
+            "recordCount": 554,
+            "inputTokens": 373415,
+            "outputTokensIncludingReasoning": 1559151,
+            "totalTokens": 1932566,
+            "reasoningTokensReported": 0,
+            "reasoningReportedRecordCount": 0,
+            "reasoningUnreportedRecordCount": 554,
+            "reasoningPositiveRecordCount": 0,
+            "tokenUsageSources": {
+              "provider": 549
+            }
+          },
+          "migrated": {
+            "recordCount": 306,
+            "inputTokens": 471807,
+            "outputTokensIncludingReasoning": 249372,
+            "totalTokens": 721179,
+            "reasoningTokensReported": 0,
+            "reasoningReportedRecordCount": 53,
+            "reasoningUnreportedRecordCount": 253,
+            "reasoningPositiveRecordCount": 0,
+            "tokenUsageSources": {
+              "provider": 48
+            }
+          },
+          "structured": {
+            "recordCount": 60,
+            "inputTokens": 30259,
+            "outputTokensIncludingReasoning": 77308,
+            "totalTokens": 107567,
+            "reasoningTokensReported": 0,
+            "reasoningReportedRecordCount": 60,
+            "reasoningUnreportedRecordCount": 0,
+            "reasoningPositiveRecordCount": 0,
+            "tokenUsageSources": {
+              "provider": 60
+            }
+          }
+        },
+        "targetedRerun": {
+          "recordCount": 15,
+          "inputTokens": 17516,
+          "outputTokensIncludingReasoning": 9994,
+          "totalTokens": 27510,
+          "reasoningTokensReported": 0,
+          "reasoningReportedRecordCount": 7,
+          "reasoningUnreportedRecordCount": 8,
+          "reasoningPositiveRecordCount": 0,
+          "tokenUsageSources": {
+            "provider": 7
+          }
+        },
+        "replacedAttempt": {
+          "recordCount": 15,
+          "inputTokens": 22178,
+          "outputTokensIncludingReasoning": 18125,
+          "totalTokens": 40303,
+          "reasoningTokensReported": 0,
+          "reasoningReportedRecordCount": 7,
+          "reasoningUnreportedRecordCount": 8,
+          "reasoningPositiveRecordCount": 0,
+          "tokenUsageSources": {
+            "provider": 7
+          }
+        }
+      }
+    },
+    {
+      "model": "Qwopus Flash V2",
+      "scoreBefore": 63.9,
+      "scoreAfter": 64.74,
+      "scoreChange": 0.84,
+      "newAnswerCount": 15,
+      "dimensionsAfter": {
+        "agent_loop": 96.67,
+        "cli_deep_tasks": 57.33,
+        "agent_workflow": 27.13,
+        "safety_authority": 47.33,
+        "tool_cli_workflow": 28.91,
+        "structured_output": 79.58,
+        "hallucination_resistance": 78.22,
+        "program": 69.99,
+        "instruction_following": 81.68,
+        "data_extraction": 82.59,
+        "reasoning_math": 67.07
+      },
+      "tokenUsage": {
+        "model": "Qwopus Flash V2",
+        "score": 64.74,
+        "all803": {
+          "recordCount": 920,
+          "inputTokens": 776042,
+          "outputTokensIncludingReasoning": 2555996,
+          "totalTokens": 3332038,
+          "reasoningTokensReported": 0,
+          "reasoningReportedRecordCount": 537,
+          "reasoningUnreportedRecordCount": 383,
+          "reasoningPositiveRecordCount": 0,
+          "tokenUsageSources": {
+            "provider": 637
+          }
+        },
+        "refresh189Plus60": {
+          "recordCount": 366,
+          "inputTokens": 460921,
+          "outputTokensIncludingReasoning": 327119,
+          "totalTokens": 788040,
+          "reasoningTokensReported": 0,
+          "reasoningReportedRecordCount": 113,
+          "reasoningUnreportedRecordCount": 253,
+          "reasoningPositiveRecordCount": 0,
+          "tokenUsageSources": {
+            "provider": 108
+          }
+        },
+        "byAnswerSource": {
+          "historical": {
+            "recordCount": 554,
+            "inputTokens": 315121,
+            "outputTokensIncludingReasoning": 2228877,
+            "totalTokens": 2543998,
+            "reasoningTokensReported": 0,
+            "reasoningReportedRecordCount": 424,
+            "reasoningUnreportedRecordCount": 130,
+            "reasoningPositiveRecordCount": 0,
+            "tokenUsageSources": {
+              "provider": 529
+            }
+          },
+          "migrated": {
+            "recordCount": 306,
+            "inputTokens": 435222,
+            "outputTokensIncludingReasoning": 249791,
+            "totalTokens": 685013,
+            "reasoningTokensReported": 0,
+            "reasoningReportedRecordCount": 53,
+            "reasoningUnreportedRecordCount": 253,
+            "reasoningPositiveRecordCount": 0,
+            "tokenUsageSources": {
+              "provider": 48
+            }
+          },
+          "structured": {
+            "recordCount": 60,
+            "inputTokens": 25699,
+            "outputTokensIncludingReasoning": 77328,
+            "totalTokens": 103027,
+            "reasoningTokensReported": 0,
+            "reasoningReportedRecordCount": 60,
+            "reasoningUnreportedRecordCount": 0,
+            "reasoningPositiveRecordCount": 0,
+            "tokenUsageSources": {
+              "provider": 60
+            }
+          }
+        },
+        "targetedRerun": {
+          "recordCount": 15,
+          "inputTokens": 11336,
+          "outputTokensIncludingReasoning": 25079,
+          "totalTokens": 36415,
+          "reasoningTokensReported": 0,
+          "reasoningReportedRecordCount": 7,
+          "reasoningUnreportedRecordCount": 8,
+          "reasoningPositiveRecordCount": 0,
+          "tokenUsageSources": {
+            "provider": 7
+          }
+        },
+        "replacedAttempt": {
+          "recordCount": 15,
+          "inputTokens": 26862,
+          "outputTokensIncludingReasoning": 30852,
+          "totalTokens": 57714,
+          "reasoningTokensReported": 0,
+          "reasoningReportedRecordCount": 7,
+          "reasoningUnreportedRecordCount": 8,
+          "reasoningPositiveRecordCount": 0,
+          "tokenUsageSources": {
+            "provider": 7
+          }
+        }
+      }
+    }
+  ]
+}

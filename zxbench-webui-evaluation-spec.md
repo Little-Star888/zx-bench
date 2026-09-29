@@ -171,6 +171,10 @@ interface Evaluator {
 
 ## 5. Grader Details
 
+### Strict execution-world final-answer semantics
+
+For `executionWorld` scenarios with `scoreMode: 'strict'`, the execution trace remains authoritative. If every call, state, safety, protocol and completion check passes but a positive final-answer phrase check misses its literal wording, any bound `modelType: judge` model verifies semantic equivalence against the final answer alone. This runs independently of the general Judge mixed-scoring switch. All failed positive phrase checks must be confirmed for that task instance to receive 100; a negative, uncertain or failed Judge decision keeps the original score. See [the scoring and audit contract](docs/semantic-final-answer-review.md).
+
 ### 5.1 bug_finding v2
 
 > **Note:** bug_finding is now a sub-category of the `program` dimension (via `category` field), no longer a standalone dimension. The evaluator and scoring logic remain unchanged.
